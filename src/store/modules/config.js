@@ -1,5 +1,11 @@
-const apiBase = '/api/v1/'
+const apiBase = '/api/v1'
+const apiAuth =  {auth: {
+    username: 'xxxx',
+    password: 'xxxx!',
+  }
+}
 
-export default {
-  apiBase,
+module.exports = {
+
+  apiBase, apiAuth
 }

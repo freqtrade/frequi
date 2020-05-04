@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-     <header class="bg-secondary">
+    <header class="bg-secondary">
       <nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
         <ul>
           <li class="nav-item text-white">
-              <img class="logo" src="./assets/freqtrade-logo.png" alt />
-              Freqtrade UI
+            <img class="logo" src="./assets/freqtrade-logo.png" alt />
+            Freqtrade UI
           </li>
         </ul>
       </nav>
+      <div class="text-white">{{ ping }}</div>
     </header>
     <main>
       <TradeView />
@@ -17,12 +18,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import TradeView from './ftbot/TradeView.vue';
 
 export default {
   name: 'App',
   components: {
-    'TradeView': TradeView,
+    TradeView,
+  },
+  computed: {
+    ...mapState({ ping: 'ping' }),
   },
 };
 </script>
@@ -35,7 +41,6 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 
 main {
   margin: 0 auto;
@@ -58,5 +63,4 @@ ul {
   font-size: 22px;
   /* border-right: 1px solid #bbb; */
 }
-
 </style>
