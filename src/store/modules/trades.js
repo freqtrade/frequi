@@ -9,6 +9,11 @@ export default {
     trade_count: 0,
 
   },
+  getters: {
+    openTrades(state) {
+      return state.trades.filter((item) => item.is_open);
+    },
+  },
   mutations: {
     updateTrades(state, trades) {
       state.trades = trades.trades;

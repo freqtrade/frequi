@@ -1,21 +1,23 @@
 <template>
-  <div class=".container-fluid">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-sm">Top left</div>
       <div class="col-sm">Performance</div>
     </div>
     <div class="row">
-      <div class="col-sm">Bottom left</div>
-      <div class="col-sm">Bottom right</div>
+      <div class="col-md-7"><TradeList :trades="openTrades" title="Open trades" /></div>
+      <div class="col-md-5">
+        Bottom right
+      </div>
     </div>
     <div class="row">
-      <TradeList v-if="trades" :trades="trades" />
+      <TradeList :trades="trades" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 import TradeList from './TradeList.vue';
 
@@ -27,7 +29,8 @@ export default {
     this.getTrades();
   },
   computed: {
-    ...mapState('trades', ['trades']),
+    ...mapState('trades', ['trades', 'open_trades']),
+    ...mapGetters('trades', ['openTrades']),
   },
   methods: {
     ...mapActions('trades', ['getTrades']),

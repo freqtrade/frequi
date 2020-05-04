@@ -28,6 +28,10 @@ export default new Vuex.Store({
       axios.get(`${apiBase}/ping`)
         .then((result) => commit('setPing', result.data))
         .catch(console.error);
+    },
+    refresh_all({dispatch}) {
+      // Refresh all data
+      dispatch('trades/getTrades');
     }
   }
 })
