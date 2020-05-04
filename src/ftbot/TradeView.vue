@@ -29,11 +29,11 @@ export default {
     this.getTrades();
   },
   computed: {
-    ...mapState('trades', ['trades', 'open_trades']),
-    ...mapGetters('trades', ['openTrades']),
+    ...mapState('ftbot', ['trades', 'open_trades']),
+    ...mapGetters('ftbot', ['openTrades']),
   },
   methods: {
-    ...mapActions('trades', ['getTrades']),
+    ...mapActions('ftbot', ['getTrades']),
     ...mapActions(['ping']),
   },
 };

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios';
 
-import tradesModule from './modules/trades';
+import ftbotModule from './modules/ftbot';
 
 
 import { apiBase } from './modules/config';
@@ -14,7 +14,7 @@ export default new Vuex.Store({
     ping: 'ddd',
   },
   modules: {
-    trades: tradesModule
+    ftbot: ftbotModule
   },
   mutations: {
     setPing(state, ping) {
@@ -31,7 +31,7 @@ export default new Vuex.Store({
     },
     refresh_all({dispatch}) {
       // Refresh all data
-      dispatch('trades/getTrades');
+      dispatch('ftbot/getTrades');
     }
   }
 })
