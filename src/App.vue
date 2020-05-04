@@ -11,16 +11,18 @@
       </nav>
     </header>
     <main>
-      <button class="btn-primary" >asdf</button>
+      <TradeView />
     </main>
   </div>
 </template>
 
 <script>
+import TradeView from './ftbot/TradeView.vue';
 
 export default {
   name: 'App',
   components: {
+    'TradeView': TradeView,
   },
 };
 </script>
