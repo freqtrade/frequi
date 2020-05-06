@@ -8,11 +8,10 @@
             Freqtrade UI
           </li>
         </ul>
-        <li>
+        <li class="nav-item text-white">
           <button class="btn-primary pull-right" @click="refresh_data()">Refresh</button>
         </li>
       </nav>
-      <div class="text-white">{{ ping }}</div>
     </header>
     <main class="container-fluid">
       <TradeView />
@@ -21,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 import TradeView from './ftbot/TradeView.vue';
 
@@ -29,9 +28,6 @@ export default {
   name: 'App',
   components: {
     TradeView,
-  },
-  computed: {
-    ...mapState({ ping: 'ping' }),
   },
   methods: {
     ...mapActions(['refresh_all']),

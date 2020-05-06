@@ -11,7 +11,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    ping: 'ddd',
   },
   modules: {
     ftbot: ftbotModule
@@ -31,7 +30,10 @@ export default new Vuex.Store({
     },
     refresh_all({dispatch}) {
       // Refresh all data
+      dispatch('ftbot/getState')
       dispatch('ftbot/getTrades');
+      dispatch('ftbot/getPerformance');
+      dispatch('ftbot/getProfit');
     }
   }
 })
