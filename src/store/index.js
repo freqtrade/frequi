@@ -30,7 +30,8 @@ export default new Vuex.Store({
     },
     refresh_all({dispatch}) {
       // Refresh all data
-      dispatch('ftbot/getState')
+      dispatch('ftbot/getState');
+      dispatch('ftbot/getOpentrades');
       dispatch('ftbot/getTrades');
       dispatch('ftbot/getPerformance');
       dispatch('ftbot/getProfit');

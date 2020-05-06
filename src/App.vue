@@ -61,3 +61,10 @@ nav a {
   color: #ccc;
 }
 </style>
+
+<style>
+/* Global styles - populating to child elementes */
+.card-header {
+  font-size: 1.3em;
+}
+</style>

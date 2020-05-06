@@ -6,17 +6,18 @@
     </p>
     <p>
       Running with
-      <b>
-        {{ botState.max_open_trades }}x{{ botState.stake_amount }}
-        {{ botState.stake_currency }}
-      </b>
+      <strong>
+        {{ botState.max_open_trades }}x{{ botState.stake_amount }} {{ botState.stake_currency }}
+      </strong>
       on
-      <b>{{ botState.exchange }}</b
-      >, with Strategy <b>{{ botState.strategy }}</b
-      >.
+      <strong>{{ botState.exchange }}</strong>
+      , with Strategy<strong>{{ botState.strategy }}</strong>
     </p>
     <p>
-      Currently <b>{{ botState.state }}</b>
+      Currently <strong>{{ botState.state }}</strong>
+    </p>
+    <p>
+      <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
     </p>
   </div>
 </template>

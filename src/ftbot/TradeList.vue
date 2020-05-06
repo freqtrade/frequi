@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>{{ title }}</h2>
+  <div class="card">
+    <div class="card-header">{{ title }}</div>
     <table v-if="trades" class="table table-sm table-hover">
       <thead>
         <tr>
@@ -9,8 +9,8 @@
           <th>Amount</th>
           <th>Stake amount</th>
           <th>Open rate</th>
-          <th>Close rate</th>
-          <th>Profit</th>
+          <th>{{ activeTrades ? 'Current rate' : 'Close rate' }}</th>
+          <th>{{ activeTrades ? 'Current Profit' : 'Profit' }}</th>
           <th>Open date</th>
           <th>Close date</th>
         </tr>
@@ -22,8 +22,8 @@
           <td>{{ trade.amount }}</td>
           <td>{{ trade.stake_amount }}</td>
           <td>{{ trade.open_rate }}</td>
-          <td>{{ trade.close_rate }}</td>
-          <td>{{ trade.close_profit }}</td>
+          <td>{{ activeTrades ? trade.current_rate : trade.close_rate }}</td>
+          <td>{{ activeTrades ? trade.current_profit : trade.close_profit.toFixed(3) }}%</td>
           <td>{{ trade.open_date }}</td>
           <td>{{ trade.close_date }}</td>
         </tr>
@@ -44,6 +44,11 @@ export default {
       type: String,
       required: false,
       default: 'Trades',
+    },
+    activeTrades: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
 };

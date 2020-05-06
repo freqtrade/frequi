@@ -4,12 +4,12 @@
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-12">
-            <TradeList :trades="openTrades" title="Open trades" />
+            <TradeList :trades="openTrades" title="Open trades" activeTrades="True" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <TradeList :trades="trades" />
+            <TradeList :trades="closedtrades" title="Trade history" />
           </div>
         </div>
       </div>
@@ -58,27 +58,27 @@ export default {
   data() {
     return {
       refresh_interval: null,
-    }
+    };
   },
   computed: {
-    ...mapState('ftbot', ['trades', 'open_trades']),
-    ...mapGetters('ftbot', ['openTrades']),
+    ...mapState('ftbot', ['open_trades']),
+    ...mapGetters('ftbot', ['openTrades', 'closedtrades']),
   },
   methods: {
     ...mapActions(['refresh_all']),
     ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
   },
   mounted() {
-    console.log(`Starting automatic refresh.`)
+    console.log(`Starting automatic refresh.`);
     this.refresh_interval = setInterval(() => {
       this.refresh_all();
     }, 5000);
   },
   beforeDestroy() {
-    console.log(`Stopping automatic refresh.`)
+    console.log(`Stopping automatic refresh.`);
     clearInterval(this.refresh_interval);
-  }
+  },
 };
 </script>
 
-<style>
+<style></style>

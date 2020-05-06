@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Performance</h2>
+  <div class="card">
+    <div class="card-header">Performance</div>
     <table v-if="performanceStats" class="table table-sm table-hover ">
       <thead>
         <tr>

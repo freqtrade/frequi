@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state: {
     trades: [],
+    openTrades: [],
     trade_count: 0,
     performanceStats: [],
     profit: {},
@@ -13,13 +14,20 @@ export default {
   },
   getters: {
     openTrades(state) {
-      return state.trades.filter((item) => item.is_open);
+      return state.openTrades;
+      // return state.trades.filter((item) => item.is_open);
     },
+    closedtrades(state) {
+      return state.trades.filter((item) => !item.is_open);
+    }
   },
   mutations: {
     updateTrades(state, trades) {
       state.trades = trades.trades;
       state.trade_count = trades.trade_count;
+    },
+    updateOpenTrades(state, trades) {
+      state.openTrades = trades;
     },
     updatePerformance(state, performance) {
       state.performanceStats = performance;
@@ -38,6 +46,13 @@ export default {
         ...apiAuth
       })
         .then((result) => commit('updateTrades', result.data))
+        .catch(console.error);
+    },
+    getOpentrades({ commit }) {
+      axios.get(`${apiBase}/status`, {
+        ...apiAuth
+      })
+        .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
     getPerformance({commit}) {
@@ -62,13 +77,6 @@ export default {
         .catch(console.error);
     },
     // Post methods
-    stopBot() {
-      axios.post(`${apiBase}/stop`, {}, {
-        ...apiAuth
-      })
-        // .then((result) => )
-        .catch(console.error);
-    },
     startBot() {
       axios.post(`${apiBase}/start`, {}, {
         ...apiAuth
@@ -76,6 +84,26 @@ export default {
         // .then((result) => )
         .catch(console.error);
     },
-
+    stopBot() {
+      axios.post(`${apiBase}/stop`, {}, {
+        ...apiAuth
+      })
+        // .then((result) => )
+        .catch(console.error);
+    },
+    stopBuy() {
+      axios.post(`${apiBase}/stopbuy`, {}, {
+        ...apiAuth
+      })
+        // .then((result) => )
+        .catch(console.error);
+    },
+    reloadConfig() {
+      axios.post(`${apiBase}/reload_conf`, {}, {
+        ...apiAuth
+      })
+        // .then((result) => )
+        .catch(console.error);
+    },
   },
 };

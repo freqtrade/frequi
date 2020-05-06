@@ -18,4 +18,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.home {
+  margin-top: 1.5em;
+}
+</style>
