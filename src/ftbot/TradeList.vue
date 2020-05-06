@@ -47,7 +47,7 @@ export default {
     },
     activeTrades: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false,
     },
   },

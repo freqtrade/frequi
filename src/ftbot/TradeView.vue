@@ -4,7 +4,7 @@
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-12">
-            <TradeList :trades="openTrades" title="Open trades" activeTrades="True" />
+            <TradeList :trades="openTrades" title="Open trades" v-bind:activeTrades="true" />
           </div>
         </div>
         <div class="row">

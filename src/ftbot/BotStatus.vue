@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p v-if="profit">
+    <p v-if="profit.profit_all_coin">
       Avg Profit {{ profit.profit_all_coin.toFixed(2) }}% in {{ profit.trade_count }} Trades, with
       an average duration of {{ profit.avg_duration }}. Best pair: {{ profit.best_pair }}.
     </p>
