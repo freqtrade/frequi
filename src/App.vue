@@ -6,7 +6,7 @@
           <img class="logo" src="./assets/freqtrade-logo.png" alt />
           Freqtrade UI
         </h3>
-        <ul>
+        <ul class="navbar-nav mr-auto">
           <li>
             <router-link to="/" exact>Home</router-link>
           </li>
@@ -17,6 +17,15 @@
             <router-link to="/about">About</router-link>
           </li>
         </ul>
+        <ul class="navbar-nav ">
+          <li class="nav-item" v-if="loggedIn">
+            <router-link to="/" v-on:click.native="logout()">Logout</router-link>
+          </li>
+          <li class="nav-item" v-else>
+            <!-- should open Modal window! -->
+            <router-link to="/login">login</router-link>
+          </li>
+        </ul>
       </nav>
     </header>
     <main class="container-fluid">
@@ -24,7 +33,18 @@
     </main>
   </div>
 </template>
+<script>
+import { mapActions, mapState } from 'vuex';
 
+export default {
+  computed: {
+    ...mapState('user', ['loggedIn']),
+  },
+  methods: {
+    ...mapActions('user', ['logout']),
+  },
+};
+</script>
 <style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

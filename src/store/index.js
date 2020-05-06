@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios';
 
 import ftbotModule from './modules/ftbot';
+import userModule from './modules/user';
 
 
 import { apiBase } from './modules/config';
@@ -11,9 +12,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+
   },
   modules: {
-    ftbot: ftbotModule
+    ftbot: ftbotModule,
+    user: userModule,
   },
   mutations: {
     setPing(state, ping) {

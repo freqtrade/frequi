@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { apiBase, apiAuth } from './config';
+import { apiBase } from './config';
 
 export default {
   namespaced: true,
@@ -13,6 +13,9 @@ export default {
     botState: {},
   },
   getters: {
+    apiAuth(state, getters, rootState, rootGetters) {
+      return rootGetters['user/apiAuth']
+    },
     openTrades(state) {
       return state.openTrades;
       // return state.trades.filter((item) => item.is_open);
@@ -41,66 +44,66 @@ export default {
     },
   },
   actions: {
-    getTrades({ commit }) {
+    getTrades({ commit, getters }) {
       axios.get(`${apiBase}/trades`, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         .then((result) => commit('updateTrades', result.data))
         .catch(console.error);
     },
-    getOpentrades({ commit }) {
+    getOpentrades({ commit, getters }) {
       axios.get(`${apiBase}/status`, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
-    getPerformance({commit}) {
+    getPerformance({ commit, getters }) {
       axios.get(`${apiBase}/performance`, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         .then((result) => commit('updatePerformance', result.data))
         .catch(console.error);
     },
-    getProfit({ commit }) {
+    getProfit({ commit, getters }) {
       axios.get(`${apiBase}/profit`, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         .then((result) => commit('updateProfit', result.data))
         .catch(console.error);
     },
-    getState({ commit }) {
+    getState({ commit, getters }) {
       axios.get(`${apiBase}/show_config`, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         .then((result) => commit('updateState', result.data))
         .catch(console.error);
     },
     // Post methods
-    startBot() {
+    startBot({ getters }) {
       axios.post(`${apiBase}/start`, {}, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
     },
-    stopBot() {
+    stopBot({ getters }) {
       axios.post(`${apiBase}/stop`, {}, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
     },
-    stopBuy() {
+    stopBuy({ getters }) {
       axios.post(`${apiBase}/stopbuy`, {}, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
     },
-    reloadConfig() {
+    reloadConfig({ getters }) {
       axios.post(`${apiBase}/reload_conf`, {}, {
-        ...apiAuth
+        ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
