@@ -2,48 +2,30 @@
   <div id="app">
     <header class="bg-secondary">
       <nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+        <h3 class="text-white header-title">
+          <img class="logo" src="./assets/freqtrade-logo.png" alt />
+          Freqtrade UI
+        </h3>
         <ul>
-          <li class="nav-item text-white">
-            <img class="logo" src="./assets/freqtrade-logo.png" alt />
-            Freqtrade UI
+          <li>
+            <router-link to="/" exact>Home</router-link>
+          </li>
+          <li>
+            <router-link to="/trade">Trade</router-link>
+          </li>
+          <li>
+            <router-link to="/about">About</router-link>
           </li>
         </ul>
-        <li class="nav-item text-white">
-          <button class="btn-primary pull-right" @click="refresh_data()">Refresh</button>
-        </li>
       </nav>
     </header>
     <main class="container-fluid">
-      <TradeView />
+      <router-view />
     </main>
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex';
-
-import TradeView from './ftbot/TradeView.vue';
-
-export default {
-  name: 'App',
-  components: {
-    TradeView,
-  },
-  methods: {
-    ...mapActions(['refresh_all']),
-    refresh_data() {
-      this.refresh_all();
-    },
-  },
-  mounted() {
-    setInterval(() => {
-      this.refresh_all();
-    }, 5000);
-  },
-};
-</script>
-
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -52,25 +34,30 @@ export default {
   color: #2c3e50;
 }
 
-main {
-  margin: 0 auto;
-  /* padding: 30px; */
-  background-color: white;
-  width: 964px;
-  min-height: 300px;
-}
-ul {
-  padding: 3px;
-  display: flex;
-}
 .logo {
   vertical-align: middle;
   height: 30px;
 }
-.nav-item {
-  display: inline-block;
-  padding: 5px 10px;
-  font-size: 22px;
-  /* border-right: 1px solid #bbb; */
+.header-title {
+  margin-right: 2em;
+}
+
+#nav {
+  padding: 30px;
+}
+
+ul {
+  padding: 3px;
+  display: flex;
+  list-style-type: none;
+}
+li {
+  margin-right: 15px;
+}
+.router-link-active {
+  color: white;
+}
+nav a {
+  color: #ccc;
 }
 </style>
