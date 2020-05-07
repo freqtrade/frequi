@@ -4,12 +4,17 @@
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-12">
-            <TradeList :trades="openTrades" title="Open trades" v-bind:activeTrades="true" />
+            <TradeList
+              class="open-trades"
+              :trades="openTrades"
+              title="Open trades"
+              v-bind:activeTrades="true"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <TradeList :trades="closedtrades" title="Trade history" />
+            <TradeList class="trade-history" :trades="closedtrades" title="Trade history" />
           </div>
         </div>
       </div>
@@ -29,13 +34,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-7"></div>
-      <div class="col-md-5">
-        Bottom right
-      </div>
-    </div>
-    <div class="row"></div>
   </div>
 </template>
 
@@ -81,4 +79,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.open-trades {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.trade-history {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+</style>
