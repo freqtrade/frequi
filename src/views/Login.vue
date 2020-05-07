@@ -1,14 +1,6 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
-
-    <div class="mt-3">
-      Submitted Names:
-      <div v-if="submittedNames.length === 0">--</div>
-      <ul v-else class="mb-0 pl-3">
-        <li v-for="(name, index) in submittedNames" :key="index">{{ name }}</li>
-      </ul>
-    </div>
+    <b-button v-b-modal.modal-prevent-closing>Login</b-button>
 
     <b-modal
       id="modal-prevent-closing"
@@ -61,7 +53,6 @@ export default {
         password: '',
       },
       nameState: null,
-      submittedNames: [],
     };
   },
   methods: {
@@ -88,7 +79,6 @@ export default {
         return;
       }
       // Push the name to submitted names
-      this.submittedNames.push(this.auth.username);
       this.login(this.auth);
       // localStorage.setItem('auth', JSON.stringify(this.auth));
       // Hide the modal manually

@@ -23,7 +23,7 @@
           </li>
           <li class="nav-item" v-else>
             <!-- should open Modal window! -->
-            <router-link to="/login">login</router-link>
+            <Login />
           </li>
         </ul>
       </nav>
@@ -35,8 +35,10 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
+import Login from './views/Login.vue';
 
 export default {
+  components: { Login },
   computed: {
     ...mapState('user', ['loggedIn']),
   },
