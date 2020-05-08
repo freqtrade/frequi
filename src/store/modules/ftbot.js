@@ -39,7 +39,6 @@ export default {
       state.profit = profit;
     },
     updateState(state, botState) {
-      console.log(botState);
       state.botState = botState;
     },
   },

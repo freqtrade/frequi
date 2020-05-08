@@ -80,12 +80,12 @@ export default {
 </script>
 
 <style scoped>
-.open-trades {
+.scrollpanel .open-trades {
   max-height: 300px;
-  overflow-y: scroll;
+  min-height: 250px;
 }
 .trade-history {
+  max-height: 300px;
   max-height: 500px;
-  overflow-y: scroll;
 }
 </style>
