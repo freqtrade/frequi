@@ -28,7 +28,7 @@
               <BotControls />
             </div>
             <div class="col-md-12">
-              <PerformanceView />
+              <PerformanceView class="performance-view" />
             </div>
           </div>
         </div>
@@ -80,12 +80,18 @@ export default {
 </script>
 
 <style scoped>
-.scrollpanel .open-trades {
+.card-body {
+  overflow: auto;
+}
+.open-trades {
   max-height: 300px;
   min-height: 250px;
 }
 .trade-history {
-  max-height: 300px;
+  min-height: 300px;
+  max-height: 500px;
+}
+.performance-view {
   max-height: 500px;
 }
 </style>

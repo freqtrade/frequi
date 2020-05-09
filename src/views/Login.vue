@@ -64,7 +64,8 @@ export default {
       return valid;
     },
     resetModal() {
-      this.username = '';
+      this.auth.username = '';
+      this.auth.password = '';
       this.nameState = null;
     },
     handleOk(bvModalEvt) {
