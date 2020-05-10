@@ -44,6 +44,7 @@ export default {
   },
   actions: {
     getTrades({ commit, getters }) {
+
       axios.get(`${apiBase}/trades`, {
         ...getters.apiAuth
       })
@@ -71,12 +72,22 @@ export default {
         .then((result) => commit('updateProfit', result.data))
         .catch(console.error);
     },
-    getState({ commit, getters }) {
+    getState({ commit, getters, dispatch }) {
       axios.get(`${apiBase}/show_config`, {
         ...getters.apiAuth
       })
         .then((result) => commit('updateState', result.data))
-        .catch(console.error);
+        .catch((error) => {
+          console.error(error);
+          if (error.response.status !== 401) {
+            return new Promise((resolve, reject) => {
+              reject(error);
+            });
+          }
+          console.log("Dispatching refresh_token...")
+          dispatch('user/refresh_token', null, { root: true })
+          return null;
+        });
     },
     // Post methods
     startBot({ getters }) {
