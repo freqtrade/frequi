@@ -80,9 +80,6 @@ export default {
 </script>
 
 <style scoped>
-.card-body {
-  overflow: auto;
-}
 .open-trades {
   max-height: 300px;
   min-height: 250px;

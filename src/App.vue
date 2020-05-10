@@ -89,4 +89,7 @@ nav a {
 .card-header {
   font-size: 1.3em;
 }
+.card-body {
+  overflow: auto;
+}
 </style>
