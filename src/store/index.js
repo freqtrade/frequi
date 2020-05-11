@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import ftbotModule from './modules/ftbot';
 import userModule from './modules/user';
-
+import alertsModule from './modules/alerts';
 
 import { apiBase } from './modules/config';
 
@@ -17,6 +17,7 @@ export default new Vuex.Store({
   modules: {
     ftbot: ftbotModule,
     user: userModule,
+    alerts: alertsModule,
   },
   mutations: {
     setPing(state, ping) {

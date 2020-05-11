@@ -2,12 +2,25 @@
   <div class="card">
     <div class="card-header">{{ title }}</div>
     <div class="card-body">
-      <b-table class="table-sm" :items="trades" :fields="table_fields"></b-table>
+      <b-table
+        class="table-sm"
+        :items="trades"
+        :fields="table_fields"
+        @row-contextmenu="handleContextMenuEvent"
+      >
+        <template v-slot:cell(actions)="row">
+          <b-button size="sm" @click="forcesellHandler(row.item, row.index, $event.target)">
+            Forcesell
+          </b-button>
+        </template>
+      </b-table>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'TradeList',
   props: {
@@ -45,12 +58,25 @@ export default {
         },
         { key: 'open_date', label: 'Open date' },
         { key: 'close_date', label: 'Close date' },
+        ...(this.activeTrades ? [{ key: 'actions' }] : []),
       ],
     };
   },
   methods: {
+    ...mapActions('ftbot', ['forcesell']),
     formatPercent(value) {
       return `${value.toFixed(3)}%`;
+    },
+    forcesellHandler(item) {
+      this.forcesell(item.trade_id)
+        .then(() => console.log('asdf'))
+        .catch(error => console.log(error.response));
+    },
+    handleContextMenuEvent(item, index, event) {
+      // stop browser context menu from appearing
+      event.preventDefault();
+      // log the selected item to the console
+      console.log(item);
     },
   },
 };

@@ -17,6 +17,7 @@
             <router-link to="/about">About</router-link>
           </li>
         </ul>
+        <BotAlerts></BotAlerts>
         <ul class="navbar-nav ">
           <li class="nav-item" v-if="loggedIn">
             <router-link to="/" v-on:click.native="logout()">Logout</router-link>
@@ -36,9 +37,10 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Login from './views/Login.vue';
+import BotAlerts from './ftbot/BotAlerts.vue';
 
 export default {
-  components: { Login },
+  components: { Login, BotAlerts },
   computed: {
     ...mapState('user', ['loggedIn']),
   },

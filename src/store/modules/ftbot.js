@@ -118,13 +118,21 @@ export default {
         // .then((result) => )
         .catch(console.error);
     },
-    forcesell({ getters }, tradeid) {
-      if (!tradeid) {
-        return axios.post(`${apiBase}/forcesell`, {}, {
+    forcesell({ getters, dispatch }, tradeid) {
+      console.log(tradeid);
+      if (tradeid) {
+        const payload = {tradeid};
+        console.log(payload);
+        return axios.post(`${apiBase}/forcesell`, payload, {
           ...getters.apiAuth
+        }).then((result) => {
+          console.log(result.data)
+          dispatch('alerts/addAlert', { message: `Sell order for ${tradeid} created`}, { root: true }, )
+        }).catch((error) => {
+          console.error(error.response)
+          dispatch('alerts/addAlert', { message: `Failed to create sell order for ${tradeid}`, severity: 'danger'}, { root: true }, )
+
         })
-          // .then((result) => )
-          .catch(console.error);
       }
       // Error branchs
       const error = "Tradeid is empty";
