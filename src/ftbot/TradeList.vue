@@ -2,34 +2,7 @@
   <div class="card">
     <div class="card-header">{{ title }}</div>
     <div class="card-body">
-      <table v-if="trades" class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Pair</th>
-            <th>Amount</th>
-            <th>Stake amount</th>
-            <th>Open rate</th>
-            <th>{{ activeTrades ? 'Current rate' : 'Close rate' }}</th>
-            <th>{{ activeTrades ? 'Current Profit' : 'Profit' }}</th>
-            <th>Open date</th>
-            <th>Close date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(trade, index) in trades" :key="index">
-            <td>{{ trade.trade_id }}</td>
-            <td>{{ trade.pair }}</td>
-            <td>{{ trade.amount }}</td>
-            <td>{{ trade.stake_amount }}</td>
-            <td>{{ trade.open_rate }}</td>
-            <td>{{ activeTrades ? trade.current_rate : trade.close_rate }}</td>
-            <td>{{ activeTrades ? trade.current_profit : trade.close_profit.toFixed(3) }}%</td>
-            <td>{{ trade.open_date }}</td>
-            <td>{{ trade.close_date }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <b-table class="table-sm" :items="trades" :fields="table_fields"></b-table>
     </div>
   </div>
 </template>
@@ -51,6 +24,33 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+  },
+  data() {
+    return {
+      table_fields: [
+        { key: 'trade_id', label: 'ID' },
+        { key: 'pair', label: 'Pair' },
+        { key: 'amount', label: 'Amount' },
+        { key: 'stake_amount', label: 'Stake amount' },
+        { key: 'open_rate', label: 'Open rate' },
+        {
+          key: this.activeTrades ? 'current_rate' : 'close_rate',
+          label: this.activeTrades ? 'Current rate' : 'Close rate',
+        },
+        {
+          key: this.activeTrades ? 'current_profit' : 'close_profit',
+          label: this.activeTrades ? 'Current profit' : 'Profit',
+          formatter: 'formatPercent',
+        },
+        { key: 'open_date', label: 'Open date' },
+        { key: 'close_date', label: 'Close date' },
+      ],
+    };
+  },
+  methods: {
+    formatPercent(value) {
+      return `${value.toFixed(3)}%`;
     },
   },
 };

@@ -2,22 +2,7 @@
   <div class="card">
     <div class="card-header">Performance</div>
     <div class="card-body">
-      <table v-if="performanceStats" class="table table-sm table-hover ">
-        <thead>
-          <tr>
-            <th>Pair</th>
-            <th>Profit</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(pair, index) in performanceStats" :key="index">
-            <td>{{ pair.pair }}</td>
-            <td>{{ pair.profit }}</td>
-            <td>{{ pair.count }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <b-table class="table-sm" :items="performanceStats" :fields="table_fields"></b-table>
     </div>
   </div>
 </template>
@@ -29,6 +14,15 @@ export default {
   name: 'PerformanceView',
   computed: {
     ...mapState('ftbot', ['performanceStats']),
+  },
+  data() {
+    return {
+      table_fields: [
+        { key: 'pair', label: 'Pair' },
+        { key: 'profit', label: 'Profit' },
+        { key: 'count', label: 'Count' },
+      ],
+    };
   },
 };
 </script>
