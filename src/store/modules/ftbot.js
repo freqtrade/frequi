@@ -76,7 +76,16 @@ export default {
         ...getters.apiAuth
       })
         .then((result) => commit('updateState', result.data))
-        .catch(console.error);
+        .catch((error) => {
+          console.error(error);
+          if (error.response.status !== 401) {
+            return new Promise((resolve, reject) => {
+              reject(error);
+            });
+          }
+          console.log("Dispatching refresh_token...")
+          dispatch('user/refresh_token', null, { root: true })
+        });
     },
     // Post methods
     // TODO: Migrate calls to API to a seperate module unrelated to vuex?
