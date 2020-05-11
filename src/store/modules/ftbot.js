@@ -44,68 +44,84 @@ export default {
   },
   actions: {
     getTrades({ commit, getters }) {
-      axios.get(`${apiBase}/trades`, {
+      return axios.get(`${apiBase}/trades`, {
         ...getters.apiAuth
       })
         .then((result) => commit('updateTrades', result.data))
         .catch(console.error);
     },
     getOpentrades({ commit, getters }) {
-      axios.get(`${apiBase}/status`, {
+      return axios.get(`${apiBase}/status`, {
         ...getters.apiAuth
       })
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
     getPerformance({ commit, getters }) {
-      axios.get(`${apiBase}/performance`, {
+      return axios.get(`${apiBase}/performance`, {
         ...getters.apiAuth
       })
         .then((result) => commit('updatePerformance', result.data))
         .catch(console.error);
     },
     getProfit({ commit, getters }) {
-      axios.get(`${apiBase}/profit`, {
+      return axios.get(`${apiBase}/profit`, {
         ...getters.apiAuth
       })
         .then((result) => commit('updateProfit', result.data))
         .catch(console.error);
     },
     getState({ commit, getters }) {
-      axios.get(`${apiBase}/show_config`, {
+      return axios.get(`${apiBase}/show_config`, {
         ...getters.apiAuth
       })
         .then((result) => commit('updateState', result.data))
         .catch(console.error);
     },
     // Post methods
+    // TODO: Migrate calls to API to a seperate module unrelated to vuex?
     startBot({ getters }) {
-      axios.post(`${apiBase}/start`, {}, {
+      return axios.post(`${apiBase}/start`, {}, {
         ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
     },
     stopBot({ getters }) {
-      axios.post(`${apiBase}/stop`, {}, {
+      return axios.post(`${apiBase}/stop`, {}, {
         ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
     },
     stopBuy({ getters }) {
-      axios.post(`${apiBase}/stopbuy`, {}, {
+      return axios.post(`${apiBase}/stopbuy`, {}, {
         ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
     },
     reloadConfig({ getters }) {
-      axios.post(`${apiBase}/reload_conf`, {}, {
+      return axios.post(`${apiBase}/reload_conf`, {}, {
         ...getters.apiAuth
       })
         // .then((result) => )
         .catch(console.error);
+    },
+    forcesell({ getters }, tradeid) {
+      if (!tradeid) {
+        return axios.post(`${apiBase}/forcesell`, {}, {
+          ...getters.apiAuth
+        })
+          // .then((result) => )
+          .catch(console.error);
+      }
+      // Error branchs
+      const error = "Tradeid is empty";
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
     },
   },
 };
