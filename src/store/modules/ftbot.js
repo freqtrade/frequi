@@ -71,7 +71,7 @@ export default {
         .then((result) => commit('updateProfit', result.data))
         .catch(console.error);
     },
-    getState({ commit, getters }) {
+    getState({ commit, getters, dispatch }) {
       return axios.get(`${apiBase}/show_config`, {
         ...getters.apiAuth
       })
@@ -85,6 +85,7 @@ export default {
           }
           console.log("Dispatching refresh_token...")
           dispatch('user/refresh_token', null, { root: true })
+          return null;
         });
     },
     // Post methods
