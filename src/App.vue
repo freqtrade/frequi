@@ -17,7 +17,6 @@
             <router-link to="/about">About</router-link>
           </li>
         </ul>
-        <BotAlerts></BotAlerts>
         <ul class="navbar-nav ">
           <li class="nav-item" v-if="loggedIn">
             <router-link to="/" v-on:click.native="logout()">Logout</router-link>
@@ -30,6 +29,10 @@
       </nav>
     </header>
     <main class="container-fluid">
+      <div class="container">
+        <BotAlerts />
+      </div>
+
       <router-view />
     </main>
   </div>
