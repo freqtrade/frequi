@@ -9,6 +9,8 @@ export default {
     openTrades: [],
     trade_count: 0,
     performanceStats: [],
+    whitelist: [],
+    blacklist: [],
     profit: {},
     botState: {},
   },
@@ -34,6 +36,12 @@ export default {
     },
     updatePerformance(state, performance) {
       state.performanceStats = performance;
+    },
+    updateWhitelist(state, whitelist) {
+      state.whitelist = whitelist.whitelist;
+    },
+    updateBlacklist(state, blacklist) {
+      state.blacklist = blacklist.blacklist;
     },
     updateProfit(state, profit) {
       state.profit = profit;
@@ -62,6 +70,20 @@ export default {
         ...getters.apiAuth
       })
         .then((result) => commit('updatePerformance', result.data))
+        .catch(console.error);
+    },
+    getWhitelist({ commit, getters }) {
+      return axios.get(`${apiBase}/whitelist`, {
+        ...getters.apiAuth
+      })
+        .then((result) => commit('updateWhitelist', result.data))
+        .catch(console.error);
+    },
+    getBlacklist({ commit, getters }) {
+      return axios.get(`${apiBase}/blacklist`, {
+        ...getters.apiAuth
+      })
+        .then((result) => commit('updateBlacklist', result.data))
         .catch(console.error);
     },
     getProfit({ commit, getters }) {
@@ -125,8 +147,7 @@ export default {
         console.log(payload);
         return axios.post(`${apiBase}/forcesell`, payload, {
           ...getters.apiAuth
-        }).then((result) => {
-          console.log(result.data)
+        }).then(() => {
           dispatch('alerts/addAlert', { message: `Sell order for ${tradeid} created`}, { root: true }, )
         }).catch((error) => {
           console.error(error.response)

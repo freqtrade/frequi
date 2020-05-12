@@ -38,6 +38,8 @@ export default new Vuex.Store({
       dispatch('ftbot/getOpentrades');
       dispatch('ftbot/getTrades');
       dispatch('ftbot/getPerformance');
+      dispatch('ftbot/getWhitelist');
+      dispatch('ftbot/getBlacklist');
       dispatch('ftbot/getProfit');
     }
   }
