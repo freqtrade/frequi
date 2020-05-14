@@ -21,6 +21,7 @@
             id="username-input"
             v-model="auth.username"
             :state="nameState"
+            @keydown.enter.native="handleOk"
             required
           ></b-form-input>
         </b-form-group>
@@ -33,6 +34,7 @@
             id="password-input"
             v-model="auth.password"
             required
+            @keydown.enter.native="handleOk"
             type="password"
           ></b-form-input>
         </b-form-group>
