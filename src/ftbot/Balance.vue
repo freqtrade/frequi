@@ -4,10 +4,12 @@
     <div class="card-body">
       <b-table class="table-sm" :items="balance.currencies" :fields="table_fields">
         <template slot="bottom-row">
-          <td>Total</td>
+          <td><strong>Total</strong></td>
           <td></td>
           <!-- this is a computed prop that adds up all the expenses in the visible rows -->
-          <td>{{ formatCurrency(balance.total) }}</td>
+          <td>
+            <strong>{{ formatCurrency(balance.total) }}</strong>
+          </td>
         </template>
       </b-table>
     </div>
