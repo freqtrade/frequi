@@ -58,13 +58,12 @@ export default {
   name: 'TradeView',
   components: { TradeList, Performance, BotControls, BotStatus, Balance },
   created() {
-    this.getTrades();
-    this.getProfit();
-    this.getState();
+    this.refreshAll();
   },
   data() {
     return {
       refresh_interval: null,
+      refresh_interval_slow: null,
     };
   },
   computed: {
@@ -72,18 +71,22 @@ export default {
     ...mapGetters('ftbot', ['openTrades', 'closedtrades']),
   },
   methods: {
-    ...mapActions(['refresh_all']),
-    ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
+    ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll']),
+    // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
   },
   mounted() {
     console.log(`Starting automatic refresh.`);
     this.refresh_interval = setInterval(() => {
-      this.refresh_all();
+      this.refreshFrequent();
     }, 5000);
+    this.refresh_interval_slow = setInterval(() => {
+      this.refreshSlow();
+    }, 60000);
   },
   beforeDestroy() {
     console.log(`Stopping automatic refresh.`);
     clearInterval(this.refresh_interval);
+    clearInterval(this.refresh_interval_slow);
   },
 };
 </script>

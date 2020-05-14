@@ -32,16 +32,23 @@ export default new Vuex.Store({
         .then((result) => commit('setPing', result.data))
         .catch(console.error);
     },
-    refresh_all({dispatch}) {
+    refreshAll({dispatch}) {
+      dispatch('refreshFrequent');
+      dispatch('refreshSlow');
+
+    },
+    refreshSlow({ dispatch }) {
+      dispatch('ftbot/getBalance');
+      dispatch('ftbot/getPerformance');
+      dispatch('ftbot/getProfit');
+    },
+    refreshFrequent({dispatch}) {
       // Refresh all data
       dispatch('ftbot/getState');
       dispatch('ftbot/getOpentrades');
       dispatch('ftbot/getTrades');
-      dispatch('ftbot/getPerformance');
       dispatch('ftbot/getWhitelist');
       dispatch('ftbot/getBlacklist');
-      dispatch('ftbot/getProfit');
-      dispatch('ftbot/getBalance');
-    }
+    },
   }
 })
