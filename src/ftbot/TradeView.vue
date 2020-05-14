@@ -1,6 +1,29 @@
 <template>
   <div class="container-fluid">
     <div class="row">
+      <div class="row col-md-4">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <BotControls class="mt-3" />
+            </div>
+            <div class="col-md-12">
+              <b-tabs content-class="mt-3" class="mt-3">
+                <b-tab title="Performance" active>
+                  <Performance class="performance-view" />
+                </b-tab>
+                <b-tab title="Status">
+                  <BotStatus />
+                </b-tab>
+                <b-tab title="Balance">
+                  <Balance />
+                </b-tab>
+                <b-tab title="Whitelist"> </b-tab>
+              </b-tabs>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-12">
@@ -15,29 +38,6 @@
         <div class="row">
           <div class="col-md-12">
             <TradeList class="trade-history" :trades="closedtrades" title="Trade history" />
-          </div>
-        </div>
-      </div>
-      <div class="row col-md-4">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <BotControls />
-            </div>
-            <div class="col-md-12">
-              <b-tabs content-class="mt-3" class="mt-5">
-                <b-tab title="Performance" active>
-                  <Performance class="performance-view" />
-                </b-tab>
-                <b-tab title="Status">
-                  <BotStatus />
-                </b-tab>
-                <b-tab title="Balance">
-                  <Balance />
-                </b-tab>
-                <b-tab title="Whitelist"> </b-tab>
-              </b-tabs>
-            </div>
           </div>
         </div>
       </div>
