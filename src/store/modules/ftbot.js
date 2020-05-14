@@ -13,6 +13,7 @@ export default {
     blacklist: [],
     profit: {},
     botState: {},
+    balance: {}
   },
   getters: {
     apiAuth(state, getters, rootState, rootGetters) {
@@ -45,6 +46,9 @@ export default {
     },
     updateProfit(state, profit) {
       state.profit = profit;
+    },
+    updateBalance(state, balance) {
+      state.balance = balance;
     },
     updateState(state, botState) {
       state.botState = botState;
@@ -91,6 +95,13 @@ export default {
         ...getters.apiAuth
       })
         .then((result) => commit('updateProfit', result.data))
+        .catch(console.error);
+    },
+    getBalance({ commit, getters }) {
+      return axios.get(`${apiBase}/balance`, {
+        ...getters.apiAuth
+      })
+        .then((result) => commit('updateBalance', result.data))
         .catch(console.error);
     },
     getState({ commit, getters, dispatch }) {

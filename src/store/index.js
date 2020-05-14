@@ -41,6 +41,7 @@ export default new Vuex.Store({
       dispatch('ftbot/getWhitelist');
       dispatch('ftbot/getBlacklist');
       dispatch('ftbot/getProfit');
+      dispatch('ftbot/getBalance');
     }
   }
 })

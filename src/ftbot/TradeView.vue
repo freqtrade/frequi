@@ -32,6 +32,9 @@
                 <b-tab title="Status">
                   <BotStatus />
                 </b-tab>
+                <b-tab title="Balance">
+                  <Balance />
+                </b-tab>
                 <b-tab title="Whitelist"> </b-tab>
               </b-tabs>
             </div>
@@ -49,10 +52,11 @@ import TradeList from './TradeList.vue';
 import Performance from './Performance.vue';
 import BotControls from './BotControls.vue';
 import BotStatus from './BotStatus.vue';
+import Balance from './Balance.vue';
 
 export default {
   name: 'TradeView',
-  components: { TradeList, Performance, BotControls, BotStatus },
+  components: { TradeList, Performance, BotControls, BotStatus, Balance },
   created() {
     this.getTrades();
     this.getProfit();
