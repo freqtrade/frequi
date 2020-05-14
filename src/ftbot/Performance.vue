@@ -11,7 +11,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  name: 'PerformanceView',
+  name: 'Performance',
   computed: {
     ...mapState('ftbot', ['performanceStats']),
   },

@@ -22,13 +22,18 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
-              <BotStatus />
-            </div>
-            <div class="col-md-12">
               <BotControls />
             </div>
             <div class="col-md-12">
-              <PerformanceView class="performance-view" />
+              <b-tabs content-class="mt-3" class="mt-5">
+                <b-tab title="Performance" active>
+                  <Performance class="performance-view" />
+                </b-tab>
+                <b-tab title="Status">
+                  <BotStatus />
+                </b-tab>
+                <b-tab title="Whitelist"> </b-tab>
+              </b-tabs>
             </div>
           </div>
         </div>
@@ -41,13 +46,13 @@
 import { mapActions, mapState, mapGetters } from 'vuex';
 
 import TradeList from './TradeList.vue';
-import PerformanceView from './PerformanceView.vue';
+import Performance from './Performance.vue';
 import BotControls from './BotControls.vue';
 import BotStatus from './BotStatus.vue';
 
 export default {
   name: 'TradeView',
-  components: { TradeList, PerformanceView, BotControls, BotStatus },
+  components: { TradeList, Performance, BotControls, BotStatus },
   created() {
     this.getTrades();
     this.getProfit();
