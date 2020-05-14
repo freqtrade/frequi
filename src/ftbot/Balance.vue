@@ -2,6 +2,9 @@
   <div class="card">
     <div class="card-header">Balance</div>
     <div class="card-body">
+      <p v-if="balance.note">
+        <strong>{{ balance.note }}</strong>
+      </p>
       <b-table class="table-sm" :items="balance.currencies" :fields="table_fields">
         <template slot="bottom-row">
           <td><strong>Total</strong></td>
