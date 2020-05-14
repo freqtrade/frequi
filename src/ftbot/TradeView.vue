@@ -9,11 +9,11 @@
             </div>
             <div class="col-md-12">
               <b-tabs content-class="mt-3" class="mt-3">
-                <b-tab title="Performance" active>
-                  <Performance class="performance-view" />
-                </b-tab>
-                <b-tab title="Status">
+                <b-tab title="Status" active>
                   <BotStatus />
+                </b-tab>
+                <b-tab title="Performance">
+                  <Performance class="performance-view" />
                 </b-tab>
                 <b-tab title="Balance">
                   <Balance />
