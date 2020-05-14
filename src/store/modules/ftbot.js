@@ -173,5 +173,27 @@ export default {
         reject(error);
       });
     },
+    forcebuy({getters, dispatch}, payload) {
+      console.log(payload);
+      if (payload && payload.pair) {
+
+        return axios.post(`${apiBase}/forcebuy`, payload, {
+          ...getters.apiAuth
+        }).then(() => {
+          dispatch('alerts/addAlert', { message: `Buy order for ${payload.pair} created.` }, { root: true })
+        }).catch((error) => {
+          console.error(error.response)
+          dispatch('alerts/addAlert', { message: `Error occured buying: '${error.response.data.error}'`, severity: 'danger' }, { root: true })
+
+        })
+      }
+      // Error branchs
+      const error = "Pair is empty";
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+
+    },
   },
 };
