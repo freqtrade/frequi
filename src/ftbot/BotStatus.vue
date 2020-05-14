@@ -14,7 +14,8 @@
       , with Strategy<strong>{{ botState.strategy }}</strong>
     </p>
     <p>
-      Currently <strong>{{ botState.state }}</strong>
+      Currently <strong>{{ botState.state }}</strong
+      >, <strong>forcebuy: {{ botState.forcebuy_enabled }}</strong>
     </p>
     <p>
       <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>

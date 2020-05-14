@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     formatCurrency(value) {
-      return value.toFixed(5);
+      return value ? value.toFixed(5) : '';
     },
   },
 };
