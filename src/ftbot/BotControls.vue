@@ -1,11 +1,15 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <button class="btn-primary" @click="startBot()">Start</button>
-      <button class="btn-primary" @click="stopBot()">Stop</button>
-      <button class="btn-primary" @click="stopBuy()">StopBuy</button>
-      <button class="btn-primary" @click="reloadConfig()">Reload Config</button>
-      <button v-if="botState.forcebuy_enabled" class="btn-primary" @click="initiate_forcebuy">
+      <button class="btn-primary col-md-5 m-1" @click="startBot()">Start</button>
+      <button class="btn-primary col-md-5 m-1" @click="stopBot()">Stop</button>
+      <button class="btn-primary col-md-5 m-1" @click="stopBuy()">StopBuy</button>
+      <button class="btn-primary col-md-5 m-1" @click="reloadConfig()">Reload Config</button>
+      <button
+        class="btn-primary col-md-5 m-1"
+        v-if="botState.forcebuy_enabled"
+        @click="initiate_forcebuy"
+      >
         Forcebuy
       </button>
       <ForceBuyForm :modalShow="forcebuy_show" @close="this.$bvModal.hide('forcebuy-modal')" />
