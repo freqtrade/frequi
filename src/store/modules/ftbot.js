@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { apiBase } from './config';
+import { api } from '../../shared/apiService';
 
 export default {
   namespaced: true,
@@ -16,9 +14,6 @@ export default {
     balance: {}
   },
   getters: {
-    apiAuth(state, getters, rootState, rootGetters) {
-      return rootGetters['user/apiAuth']
-    },
     openTrades(state) {
       return state.openTrades;
       // return state.trades.filter((item) => item.is_open);
@@ -55,114 +50,78 @@ export default {
     },
   },
   actions: {
-    getTrades({ commit, getters }) {
-      return axios.get(`${apiBase}/trades`, {
-        ...getters.apiAuth
-      })
+    getTrades({ commit }) {
+      console.log("fetching trades")
+      return api.get('/trades')
         .then((result) => commit('updateTrades', result.data))
         .catch(console.error);
-    },
-    getOpentrades({ commit, getters }) {
-      return axios.get(`${apiBase}/status`, {
-        ...getters.apiAuth
-      })
+  },
+    getOpentrades({ commit }) {
+      return api.get(`/status`)
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
-    },
-    getPerformance({ commit, getters }) {
-      return axios.get(`${apiBase}/performance`, {
-        ...getters.apiAuth
-      })
+  },
+    getPerformance({ commit }) {
+      return api.get(`/performance`)
         .then((result) => commit('updatePerformance', result.data))
         .catch(console.error);
     },
-    getWhitelist({ commit, getters }) {
-      return axios.get(`${apiBase}/whitelist`, {
-        ...getters.apiAuth
-      })
+    getWhitelist({ commit }) {
+      return api.get(`/whitelist`)
         .then((result) => commit('updateWhitelist', result.data))
         .catch(console.error);
     },
-    getBlacklist({ commit, getters }) {
-      return axios.get(`${apiBase}/blacklist`, {
-        ...getters.apiAuth
-      })
+    getBlacklist({ commit }) {
+      return api.get(`/blacklist`)
         .then((result) => commit('updateBlacklist', result.data))
         .catch(console.error);
-    },
-    getProfit({ commit, getters }) {
-      return axios.get(`${apiBase}/profit`, {
-        ...getters.apiAuth
-      })
+  },
+    getProfit({ commit }) {
+      return api.get(`/profit`)
         .then((result) => commit('updateProfit', result.data))
         .catch(console.error);
     },
-    getBalance({ commit, getters }) {
-      return axios.get(`${apiBase}/balance`, {
-        ...getters.apiAuth
-      })
+    getBalance({ commit }) {
+      return api.get(`/balance`)
         .then((result) => commit('updateBalance', result.data))
         .catch(console.error);
     },
-    getState({ commit, getters, dispatch }) {
-      return axios.get(`${apiBase}/show_config`, {
-        ...getters.apiAuth
-      })
+    getState({ commit }) {
+      return api.get(`/show_config`)
         .then((result) => commit('updateState', result.data))
-        .catch((error) => {
-          console.error(error);
-          if (error.response.status !== 401) {
-            return new Promise((resolve, reject) => {
-              reject(error);
-            });
-          }
-          console.log("Dispatching refresh_token...")
-          dispatch('user/refresh_token', null, { root: true })
-          return null;
-        });
-    },
+        .catch(console.error);
+  },
     // Post methods
     // TODO: Migrate calls to API to a seperate module unrelated to vuex?
-    startBot({ getters }) {
-      return axios.post(`${apiBase}/start`, {}, {
-        ...getters.apiAuth
-      })
-        // .then((result) => )
+    startBot() {
+      return api.post(`/start`, {})
         .catch(console.error);
-    },
-    stopBot({ getters }) {
-      return axios.post(`${apiBase}/stop`, {}, {
-        ...getters.apiAuth
-      })
-        // .then((result) => )
+  },
+    stopBot() {
+      return api.post(`/stop`, {})
         .catch(console.error);
+
     },
-    stopBuy({ getters }) {
-      return axios.post(`${apiBase}/stopbuy`, {}, {
-        ...getters.apiAuth
-      })
-        // .then((result) => )
+    stopBuy() {
+      return api.post(`/stopbuy`, {})
         .catch(console.error);
+
     },
-    reloadConfig({ getters }) {
-      return axios.post(`${apiBase}/reload_conf`, {}, {
-        ...getters.apiAuth
-      })
-        // .then((result) => )
+    reloadConfig() {
+      return api.post(`/reload_conf`, {})
         .catch(console.error);
+
     },
-    forcesell({ getters, dispatch }, tradeid) {
+    forcesell({ dispatch }, tradeid) {
       console.log(tradeid);
       if (tradeid) {
-        const payload = {tradeid};
+        const payload = { tradeid };
         console.log(payload);
-        return axios.post(`${apiBase}/forcesell`, payload, {
-          ...getters.apiAuth
-        }).then(() => {
-          dispatch('alerts/addAlert', { message: `Sell order for ${tradeid} created`}, { root: true }, )
+        return api.post(`/forcesell`, payload).then(() => {
+          dispatch('alerts/addAlert', { message: `Sell order for ${tradeid} created` }, { root: true })
         }).catch((error) => {
           console.error(error.response)
-          dispatch('alerts/addAlert', { message: `Failed to create sell order for ${tradeid}`, severity: 'danger'}, { root: true }, )
+          dispatch('alerts/addAlert', { message: `Failed to create sell order for ${tradeid}`, severity: 'danger' }, { root: true })
 
         })
       }
@@ -173,13 +132,11 @@ export default {
         reject(error);
       });
     },
-    forcebuy({getters, dispatch}, payload) {
+    forcebuy({ dispatch }, payload) {
       console.log(payload);
       if (payload && payload.pair) {
 
-        return axios.post(`${apiBase}/forcebuy`, payload, {
-          ...getters.apiAuth
-        }).then(() => {
+        return api.post(`/forcebuy`, payload).then(() => {
           dispatch('alerts/addAlert', { message: `Buy order for ${payload.pair} created.` }, { root: true })
         }).catch((error) => {
           console.error(error.response)

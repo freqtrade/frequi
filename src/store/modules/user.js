@@ -19,9 +19,7 @@ export default {
       let result = {}
       if (state.accessToken) {
         result = {
-          headers: {
             Authorization: `Bearer ${state.accessToken}`,
-          }
         };
       }
       else {
@@ -84,7 +82,6 @@ export default {
 
       })
         .then((result) => {
-          console.log(result.data)
           if (result.data.access_token) {
             commit('setAccessTokens', result.data.access_token);
           }
