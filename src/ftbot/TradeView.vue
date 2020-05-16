@@ -5,6 +5,7 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
+              <b-form-checkbox v-model="autoRefresh" size="lg" switch>AutoRefresh</b-form-checkbox>
               <BotControls class="mt-3" />
             </div>
             <div class="col-md-12">
@@ -62,6 +63,7 @@ export default {
   },
   data() {
     return {
+      autoRefresh: true,
       refresh_interval: null,
       refresh_interval_slow: null,
     };
@@ -73,20 +75,35 @@ export default {
   methods: {
     ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll']),
     // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
+    startRefresh() {
+      console.log(`Starting automatic refresh.`);
+      this.refresh_interval = setInterval(() => {
+        this.refreshFrequent();
+      }, 5000);
+      this.refresh_interval_slow = setInterval(() => {
+        this.refreshSlow();
+      }, 60000);
+    },
+    stopRefresh() {
+      console.log(`Stopping automatic refresh.`);
+      clearInterval(this.refresh_interval);
+      clearInterval(this.refresh_interval_slow);
+    },
   },
   mounted() {
-    console.log(`Starting automatic refresh.`);
-    this.refresh_interval = setInterval(() => {
-      this.refreshFrequent();
-    }, 5000);
-    this.refresh_interval_slow = setInterval(() => {
-      this.refreshSlow();
-    }, 60000);
+    this.startRefresh();
   },
   beforeDestroy() {
-    console.log(`Stopping automatic refresh.`);
-    clearInterval(this.refresh_interval);
-    clearInterval(this.refresh_interval_slow);
+    this.stopRefresh();
+  },
+  watch: {
+    autoRefresh(val) {
+      if (val) {
+        this.startRefresh();
+      } else {
+        this.stopRefresh();
+      }
+    },
   },
 };
 </script>
