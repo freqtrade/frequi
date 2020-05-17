@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'Balance',
@@ -35,9 +35,13 @@ export default {
     },
   },
   methods: {
+    ...mapActions('ftbot', ['getBalance']),
     formatCurrency(value) {
       return value ? value.toFixed(5) : '';
     },
+  },
+  mounted() {
+    this.getBalance();
   },
 };
 </script>

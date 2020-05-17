@@ -16,9 +16,13 @@
                 <b-tab title="Performance">
                   <Performance class="performance-view" />
                 </b-tab>
-                <b-tab title="Balance">
+                <b-tab title="Balance" lazy>
                   <Balance />
                 </b-tab>
+                <b-tab title="Daily Stats" lazy>
+                  <DailyStats />
+                </b-tab>
+
                 <b-tab title="Whitelist"> </b-tab>
               </b-tabs>
             </div>
@@ -54,10 +58,11 @@ import Performance from './Performance.vue';
 import BotControls from './BotControls.vue';
 import BotStatus from './BotStatus.vue';
 import Balance from './Balance.vue';
+import DailyStats from './DailyStats.vue';
 
 export default {
   name: 'TradeView',
-  components: { TradeList, Performance, BotControls, BotStatus, Balance },
+  components: { TradeList, Performance, BotControls, BotStatus, Balance, DailyStats },
   created() {
     this.refreshAll();
   },

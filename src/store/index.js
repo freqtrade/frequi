@@ -35,17 +35,19 @@ export default new Vuex.Store({
     refreshAll({dispatch}) {
       dispatch('refreshFrequent');
       dispatch('refreshSlow');
+      dispatch('ftbot/getDaily');
+      dispatch('ftbot/getBalance');
 
     },
     refreshSlow({ dispatch }) {
-      dispatch('ftbot/getBalance');
+      // dispatch('ftbot/getDaily');
       dispatch('ftbot/getPerformance');
       dispatch('ftbot/getProfit');
     },
     refreshFrequent({dispatch}) {
       // Refresh all data
-      dispatch('ftbot/getState');
       dispatch('ftbot/getOpentrades');
+      dispatch('ftbot/getState');
       dispatch('ftbot/getTrades');
       dispatch('ftbot/getWhitelist');
       dispatch('ftbot/getBlacklist');

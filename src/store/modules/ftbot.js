@@ -11,7 +11,8 @@ export default {
     blacklist: [],
     profit: {},
     botState: {},
-    balance: {}
+    balance: {},
+    dailyStats: [],
   },
   getters: {
     openTrades(state) {
@@ -41,6 +42,9 @@ export default {
     },
     updateProfit(state, profit) {
       state.profit = profit;
+    },
+    updateDaily(state, daily) {
+      state.dailyStats = daily;
     },
     updateBalance(state, balance) {
       state.balance = balance;
@@ -84,6 +88,11 @@ export default {
     getBalance({ commit }) {
       return api.get(`/balance`)
         .then((result) => commit('updateBalance', result.data))
+        .catch(console.error);
+    },
+    getDaily({ commit }) {
+      return api.get(`/daily`)
+        .then((result) => commit('updateDaily', result.data))
         .catch(console.error);
     },
     getState({ commit }) {
