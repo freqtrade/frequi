@@ -82,9 +82,11 @@ export default {
     // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
     startRefresh() {
       console.log(`Starting automatic refresh.`);
+      this.refreshFrequent();
       this.refresh_interval = setInterval(() => {
         this.refreshFrequent();
       }, 5000);
+      this.refreshSlow();
       this.refresh_interval_slow = setInterval(() => {
         this.refreshSlow();
       }, 60000);
