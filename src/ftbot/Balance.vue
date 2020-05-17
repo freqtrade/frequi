@@ -1,6 +1,9 @@
 <template>
   <div class="card">
-    <div class="card-header">Balance</div>
+    <div class="card-header">
+      <label class="mr-auto">Balance</label>
+      <b-button class="float-right" size="sm" @click="getBalance">R</b-button>
+    </div>
     <div class="card-body">
       <p v-if="balance.note">
         <strong>{{ balance.note }}</strong>
