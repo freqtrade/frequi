@@ -1,67 +1,27 @@
 <template>
-  <div id="app">
-    <Header/>
-
-    <main class="container-fluid">
-      <div class="container">
-        <BotAlerts />
-      </div>
-
-      <router-view />
-    </main>
-  </div>
+    <Container>
+      <Header/>
+      <Body/>
+    </Container>
 </template>
 
 <script>
-import BotAlerts from '@/components/ftbot/BotAlerts.vue';
+
+import Container from "@/components/layout/Container.vue"
+import Header from "@/components/layout/Header.vue"
+import Body from "@/components/layout/Body.vue"
 
 export default {
-  components: { BotAlerts },
+  components: { Container, Header, Body },
 };
 </script>
-<style scoped>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-.logo {
-  vertical-align: middle;
-  height: 30px;
-}
-.header-title {
-  margin-right: 2em;
-}
-
-#nav {
-  padding: 30px;
-}
-
-ul {
-  padding: 3px;
-  display: flex;
-  list-style-type: none;
-}
-li {
-  margin-right: 15px;
-}
-.router-link-active {
-  color: white;
-}
-nav a {
-  color: #ccc;
-}
-</style>
 
 <style>
 /* Global styles - populating to child elementes */
 .card-header {
-  font-size: 1.3em;
+  /* font-size: 1.3em; */
 }
 .card-body {
-  overflow: auto;
+  /* overflow: auto; */
 }
 </style>
