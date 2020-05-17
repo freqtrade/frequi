@@ -77,7 +77,7 @@ export default {
       // call forcebuy
       const payload = { pair: this.pair };
       if (this.price) {
-        payload.price = this.price;
+        payload.price = Number(this.price);
       }
       this.forcebuy(payload);
       this.$nextTick(() => {
