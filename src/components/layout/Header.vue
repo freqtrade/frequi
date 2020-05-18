@@ -16,6 +16,5 @@ export default {
 <style scoped>
 header {
   padding-bottom: 1em;
-  
 }
 </style>

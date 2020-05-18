@@ -19,9 +19,9 @@ export default {
 <style>
 /* Global styles - populating to child elementes */
 .card-header {
-  /* font-size: 1.3em; */
+  font-size: 1.3em;
 }
 .card-body {
-  /* overflow: auto; */
+  overflow: auto;
 }
 </style>

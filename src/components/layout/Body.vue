@@ -1,9 +1,6 @@
 <template>
-        <main class="container-fluid">
-      <div class="container">
-        <BotAlerts />
-      </div>
-
+    <main class="container-fluid">
+      <BotAlerts />
       <router-view />
     </main>
 </template>
