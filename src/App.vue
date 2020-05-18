@@ -1,15 +1,14 @@
 <template>
-    <Container>
-      <Header/>
-      <Body/>
-    </Container>
+  <Container>
+    <Header />
+    <Body />
+  </Container>
 </template>
 
 <script>
-
-import Container from "@/components/layout/Container.vue"
-import Header from "@/components/layout/Header.vue"
-import Body from "@/components/layout/Body.vue"
+import Container from '@/components/layout/Container.vue';
+import Header from '@/components/layout/Header.vue';
+import Body from '@/components/layout/Body.vue';
 
 export default {
   components: { Container, Header, Body },
