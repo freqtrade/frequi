@@ -16,14 +16,13 @@ export default {
   getters: {
     apiAuth(state) {
       // const token = JSON.parse(localStorage.getItem('auth'));
-      let result = {}
+      let result = {};
       if (state.accessToken) {
         result = {
-            Authorization: `Bearer ${state.accessToken}`,
+          Authorization: `Bearer ${state.accessToken}`,
         };
-      }
-      else {
-        console.log("user not logged in");
+      } else {
+        console.log('user not logged in');
       }
       return result;
     },
@@ -43,21 +42,26 @@ export default {
       state.loggedIn = true;
     },
     logout(state) {
-      console.log("Logging out");
+      console.log('Logging out');
       localStorage.removeItem(AUTH_REF_TOKEN);
       localStorage.removeItem(AUTH_ACCESS_TOKEN);
 
       state.auth = null;
       state.loggedIn = false;
-    }
+    },
   },
   actions: {
     login({ commit }, auth) {
       //  Login using username / password
       console.log(auth);
-      axios.post(`${apiBase}/token/login`, {}, {
-        auth: { ...auth }
-      })
+      axios
+        .post(
+          `${apiBase}/token/login`,
+          {},
+          {
+            auth: { ...auth },
+          },
+        )
         .then((result) => {
           console.log(result.data);
 
@@ -66,21 +70,25 @@ export default {
           // commit('setLogin');
           // }
           if (result.data.access_token) {
-            commit('setAccessTokens', result.data.access_token)
+            commit('setAccessTokens', result.data.access_token);
           }
           if (result.data.refresh_token) {
-            commit('setRefreshTokens', result.data.refresh_token)
+            commit('setRefreshTokens', result.data.refresh_token);
           }
         })
         .catch(console.error);
     },
     refresh_token({ commit, dispatch }) {
-      console.log("Refreshing token...")
+      console.log('Refreshing token...');
       const token = JSON.parse(localStorage.getItem(AUTH_REF_TOKEN));
-      axios.post(`${apiBase}/token/refresh`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-
-      })
+      axios
+        .post(
+          `${apiBase}/token/refresh`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
         .then((result) => {
           if (result.data.access_token) {
             commit('setAccessTokens', result.data.access_token);
@@ -95,10 +103,8 @@ export default {
 
     logout({ commit, state }) {
       if (state.loggedIn) {
-
         commit('logout');
-      }
-      else {
+      } else {
         console.log('Not logged in');
       }
     },

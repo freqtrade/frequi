@@ -1,16 +1,16 @@
 <template>
   <header>
-     <NavBar/>
+    <NavBar />
   </header>
 </template>
 
 <script>
-import NavBar from "./NavBar.vue"
+import NavBar from './NavBar.vue';
 
 export default {
-    name: "Header",
-    components: {NavBar},
-}
+  name: 'Header',
+  components: { NavBar },
+};
 </script>
 
 <style scoped>

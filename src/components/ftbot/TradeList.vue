@@ -70,7 +70,7 @@ export default {
     forcesellHandler(item) {
       this.forcesell(item.trade_id)
         .then(() => console.log('asdf'))
-        .catch(error => console.log(error.response));
+        .catch((error) => console.log(error.response));
     },
     handleContextMenuEvent(item, index, event) {
       // stop browser context menu from appearing

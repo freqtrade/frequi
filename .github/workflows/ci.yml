@@ -22,11 +22,6 @@ jobs:
     - name: npm install
       uses: bahmutov/npm-install@v1
 
-    - name: run lint
+    - name: Run Lint
       run: |
-        npm run lint
-
-    # - name: Prettify code
-    #   uses: creyD/prettier_action@v2.2
-    #   with:
-    #     dry: True
+        npm run lint-ci

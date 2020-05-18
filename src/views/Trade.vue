@@ -62,7 +62,14 @@ import DailyStats from '@/components/ftbot/DailyStats.vue';
 
 export default {
   name: 'Trade',
-  components: { TradeList, Performance, BotControls, BotStatus, Balance, DailyStats },
+  components: {
+    TradeList,
+    Performance,
+    BotControls,
+    BotStatus,
+    Balance,
+    DailyStats,
+  },
   created() {
     this.refreshAll();
   },
@@ -81,7 +88,7 @@ export default {
     ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll']),
     // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
     startRefresh() {
-      console.log(`Starting automatic refresh.`);
+      console.log('Starting automatic refresh.');
       this.refreshFrequent();
       this.refresh_interval = setInterval(() => {
         this.refreshFrequent();
@@ -92,7 +99,7 @@ export default {
       }, 60000);
     },
     stopRefresh() {
-      console.log(`Stopping automatic refresh.`);
+      console.log('Stopping automatic refresh.');
       clearInterval(this.refresh_interval);
       clearInterval(this.refresh_interval_slow);
     },
