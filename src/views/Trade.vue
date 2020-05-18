@@ -16,9 +16,13 @@
                 <b-tab title="Performance">
                   <Performance class="performance-view" />
                 </b-tab>
-                <b-tab title="Balance">
+                <b-tab title="Balance" lazy>
                   <Balance />
                 </b-tab>
+                <b-tab title="Daily Stats" lazy>
+                  <DailyStats />
+                </b-tab>
+
                 <b-tab title="Whitelist"> </b-tab>
               </b-tabs>
             </div>
@@ -49,15 +53,16 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex';
 
-import TradeList from './TradeList.vue';
-import Performance from './Performance.vue';
-import BotControls from './BotControls.vue';
-import BotStatus from './BotStatus.vue';
-import Balance from './Balance.vue';
+import TradeList from '@/components/ftbot/TradeList.vue';
+import Performance from '@/components/ftbot/Performance.vue';
+import BotControls from '@/components/ftbot/BotControls.vue';
+import BotStatus from '@/components/ftbot/BotStatus.vue';
+import Balance from '@/components/ftbot/Balance.vue';
+import DailyStats from '@/components/ftbot/DailyStats.vue';
 
 export default {
   name: 'Trade',
-  components: { TradeList, Performance, BotControls, BotStatus, Balance },
+  components: { TradeList, Performance, BotControls, BotStatus, Balance, DailyStats },
   created() {
     this.refreshAll();
   },
@@ -77,9 +82,11 @@ export default {
     // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
     startRefresh() {
       console.log(`Starting automatic refresh.`);
+      this.refreshFrequent();
       this.refresh_interval = setInterval(() => {
         this.refreshFrequent();
       }, 5000);
+      this.refreshSlow();
       this.refresh_interval_slow = setInterval(() => {
         this.refreshSlow();
       }, 60000);
