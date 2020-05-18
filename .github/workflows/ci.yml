@@ -1,4 +1,4 @@
-name: Freqtrade CI
+name: FreqUI CI
 
 on:
   push:
