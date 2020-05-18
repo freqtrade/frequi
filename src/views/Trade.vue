@@ -53,15 +53,15 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex';
 
-import TradeList from './TradeList.vue';
-import Performance from './Performance.vue';
-import BotControls from './BotControls.vue';
-import BotStatus from './BotStatus.vue';
-import Balance from './Balance.vue';
-import DailyStats from './DailyStats.vue';
+import TradeList from '@/components/ftbot/TradeList.vue';
+import Performance from '@/components/ftbot/Performance.vue';
+import BotControls from '@/components/ftbot/BotControls.vue';
+import BotStatus from '@/components/ftbot/BotStatus.vue';
+import Balance from '@/components/ftbot/Balance.vue';
+import DailyStats from '@/components/ftbot/DailyStats.vue';
 
 export default {
-  name: 'TradeView',
+  name: 'Trade',
   components: { TradeList, Performance, BotControls, BotStatus, Balance, DailyStats },
   created() {
     this.refreshAll();
