@@ -39,7 +39,6 @@ api.interceptors.response.use(
   },
 );
 
-
 export function setBaseUrl(baseURL) {
   if (baseURL === null) {
     // Reset to "local" baseurl
