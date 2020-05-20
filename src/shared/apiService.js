@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { apiBase } from '../store/modules/config';
+
+export const apiBase = '/api/v1';
 
 export const apiStore = { store: null };
 
@@ -37,3 +38,16 @@ api.interceptors.response.use(
     // // return Promise.reject(err);
   },
 );
+
+
+export function setBaseUrl(baseURL) {
+  if (baseURL === null) {
+    // Reset to "local" baseurl
+    api.defaults.baseURL = apiBase;
+  } else if (!baseURL.endsWith(apiBase)) {
+    api.defaults.baseURL = `${baseURL}${apiBase}`;
+  } else {
+    api.defaults.baseURL = `${baseURL}`;
+  }
+  // Do some more testing here ?
+}

@@ -1,11 +1,15 @@
 import axios from 'axios';
 
-import { apiBase } from './config';
+import { apiBase, setBaseUrl } from '@/shared/apiService';
 
 const AUTH_REF_TOKEN = 'auth_ref_token';
 const AUTH_ACCESS_TOKEN = 'auth_access_token';
+const AUTH_API_URL = 'auth_api_url';
 
 const initAccessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN));
+
+// Construct the api as "inserted URL" + /api/v1
+setBaseUrl(`${JSON.parse(localStorage.getItem(AUTH_API_URL))}`);
 
 export default {
   namespaced: true,
@@ -28,6 +32,10 @@ export default {
     },
   },
   mutations: {
+    setAPIUrl(state, apiurl) {
+      localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
+      setBaseUrl(apiurl);
+    },
     setAccessTokens(state, token) {
       localStorage.setItem(AUTH_ACCESS_TOKEN, JSON.stringify(token));
       state.accessToken = token;
@@ -45,18 +53,21 @@ export default {
       console.log('Logging out');
       localStorage.removeItem(AUTH_REF_TOKEN);
       localStorage.removeItem(AUTH_ACCESS_TOKEN);
+      localStorage.removeItem(AUTH_API_URL);
 
       state.auth = null;
       state.loggedIn = false;
+      setBaseUrl(null);
     },
   },
   actions: {
     login({ commit }, auth) {
+      commit('setAPIUrl', auth.url);
       //  Login using username / password
       console.log(auth);
       axios
         .post(
-          `${apiBase}/token/login`,
+          `${auth.url}${apiBase}/token/login`,
           {},
           {
             auth: { ...auth },

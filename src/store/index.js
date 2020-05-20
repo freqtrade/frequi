@@ -1,12 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 
 import ftbotModule from './modules/ftbot';
 import userModule from './modules/user';
 import alertsModule from './modules/alerts';
-
-import { apiBase } from './modules/config';
 
 Vue.use(Vuex);
 
@@ -25,12 +22,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    ping({ commit }) {
-      axios
-        .get(`${apiBase}/ping`)
-        .then((result) => commit('setPing', result.data))
-        .catch(console.error);
-    },
     refreshAll({ dispatch }) {
       dispatch('refreshFrequent');
       dispatch('refreshSlow');

@@ -1,4 +1,4 @@
-import { api } from '../../shared/apiService';
+import { api } from '@/shared/apiService';
 
 export default {
   namespaced: true,
@@ -54,6 +54,12 @@ export default {
     },
   },
   actions: {
+    ping({ commit }) {
+      api
+        .get('/ping')
+        .then((result) => commit('setPing', result.data))
+        .catch(console.error);
+    },
     getTrades({ commit }) {
       console.log('fetching trades');
       return api

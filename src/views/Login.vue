@@ -11,9 +11,23 @@
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
+          :state="urlState"
+          label="API Url"
+          label-for="url-input"
+          invalid-feedback="API Url required"
+        >
+          <b-form-input
+            id="url-input"
+            v-model="auth.url"
+            :state="nameState"
+            @keydown.enter.native="handleOk"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
           :state="nameState"
           label="Username"
-          label-for="name-input"
+          label-for="username-input"
           invalid-feedback="Name is required"
         >
           <b-form-input
@@ -50,10 +64,12 @@ export default {
   data() {
     return {
       auth: {
+        url: 'http://localhost:8080',
         username: '',
         password: '',
       },
       nameState: null,
+      urlState: null,
     };
   },
   methods: {
