@@ -19,7 +19,7 @@
           <li class="nav-item" v-if="loggedIn">
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                <b-avatar button src="https://placekitten.com/300/300"></b-avatar>
+                <b-avatar button>FT</b-avatar>
               </template>
               <b-dropdown-item to="/settings">Settings</b-dropdown-item>
               <b-dropdown-item to="/" v-on:click.native="logout()">Sign Out</b-dropdown-item>
