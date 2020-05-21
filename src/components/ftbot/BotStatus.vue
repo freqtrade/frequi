@@ -11,7 +11,7 @@
       </strong>
       on
       <strong>{{ botState.exchange }}</strong>
-      , with Strategy<strong>{{ botState.strategy }}</strong>
+      , with Strategy <strong>{{ botState.strategy }}</strong>
     </p>
     <p>
       Currently <strong>{{ botState.state }}</strong
