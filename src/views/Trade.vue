@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid h-100">
     <div class="row">
       <div class="row col-md-4">
         <div class="col-md-12">
@@ -124,14 +124,11 @@ export default {
 
 <style scoped>
 .open-trades {
-  max-height: 300px;
   min-height: 250px;
+  max-height: 300px;
 }
 .trade-history {
   min-height: 300px;
-  max-height: 500px;
-}
-.performance-view {
   max-height: 500px;
 }
 </style>
