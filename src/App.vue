@@ -12,6 +12,9 @@ import Body from '@/components/layout/Body.vue';
 
 export default {
   components: { Container, Header, Body },
+  mounted() {
+    this.$store.dispatch('theme/initTheme');
+  },
 };
 </script>
 

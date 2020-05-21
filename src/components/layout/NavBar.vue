@@ -16,6 +16,10 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
+          <li class="nav-item">
+            <b-checkbox ize="lg" switch @change="changeTheme" />
+          </li>
+
           <li class="nav-item" v-if="loggedIn">
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
@@ -47,6 +51,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['logout']),
+    ...mapActions('theme', ['changeTheme']),
   },
 };
 </script>

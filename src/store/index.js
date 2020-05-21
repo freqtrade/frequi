@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import ftbotModule from './modules/ftbot';
 import userModule from './modules/user';
 import alertsModule from './modules/alerts';
+import themeModule from './modules/theme';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     ftbot: ftbotModule,
     user: userModule,
     alerts: alertsModule,
+    theme: themeModule,
   },
   mutations: {
     setPing(state, ping) {
