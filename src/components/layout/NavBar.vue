@@ -17,7 +17,9 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <li class="nav-item">
-            <b-checkbox ize="lg" switch @change="changeTheme" />
+            <b-checkbox v-model="DarkTheme" size="lg" checked switch @change="changeTheme"
+              >Dark</b-checkbox
+            >
           </li>
 
           <li class="nav-item" v-if="loggedIn">
@@ -45,6 +47,11 @@ import Login from '@/views/Login.vue';
 
 export default {
   name: 'NavBar',
+  data() {
+    return {
+      DarkTheme: true,
+    };
+  },
   components: { Login },
   computed: {
     ...mapState('user', ['loggedIn']),
