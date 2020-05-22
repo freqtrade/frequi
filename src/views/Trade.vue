@@ -23,7 +23,9 @@
                   <DailyStats />
                 </b-tab>
 
-                <b-tab title="Whitelist"> </b-tab>
+                <b-tab title="Pairlist">
+                  <FTBotAPIPairList />
+                </b-tab>
               </b-tabs>
             </div>
           </div>
@@ -59,6 +61,7 @@ import BotControls from '@/components/ftbot/BotControls.vue';
 import BotStatus from '@/components/ftbot/BotStatus.vue';
 import Balance from '@/components/ftbot/Balance.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
+import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 
 export default {
   name: 'Trade',
@@ -69,6 +72,7 @@ export default {
     BotStatus,
     Balance,
     DailyStats,
+    FTBotAPIPairList,
   },
   created() {
     this.refreshAll();

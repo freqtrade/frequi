@@ -20,8 +20,8 @@
     <p>
       <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
     </p>
-    <p>Whitelist: {{ whitelist }}</p>
-    <p>Blacklist: {{ blacklist }}</p>
+    <!-- <p>Whitelist: {{ whitelist }}</p> -->
+    <!-- <p>Blacklist: {{ blacklist }}</p> -->
   </div>
 </template>
 
