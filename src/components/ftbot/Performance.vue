@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
-    <div class="card-header">Performance</div>
-    <div class="card-body">
-      <b-table class="table-sm" :items="performanceStats" :fields="table_fields"></b-table>
+  <div>
+    <div class="mb-2">
+      <h3>Performance</h3>
     </div>
+    <b-table class="table-sm" :items="performanceStats" :fields="table_fields"></b-table>
   </div>
 </template>
 

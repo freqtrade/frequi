@@ -1,10 +1,10 @@
 <template>
-  <div class="card">
-    <div class="card-header">
-      <label class="mr-auto">Daily Stats</label>
+  <div>
+    <div class="mb-2">
+      <label class="mr-auto h3">Daily Stats</label>
       <b-button class="float-right" size="sm" @click="getDaily">R</b-button>
     </div>
-    <div class="card-body">
+    <div>
       <b-table class="table-sm" :items="dailyStats.data" :fields="daily_fields"> </b-table>
     </div>
   </div>

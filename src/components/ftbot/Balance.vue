@@ -1,10 +1,10 @@
 <template>
-  <div class="card">
-    <div class="card-header">
-      <label class="mr-auto">Balance</label>
+  <div>
+    <div class="mb-2">
+      <label class="mr-auto h3">Balance</label>
       <b-button class="float-right" size="sm" @click="getBalance">R</b-button>
     </div>
-    <div class="card-body">
+    <div>
       <p v-if="balance.note">
         <strong>{{ balance.note }}</strong>
       </p>
