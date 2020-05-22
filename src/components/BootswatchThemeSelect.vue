@@ -43,7 +43,7 @@ export default {
   updated() {
     if (this.supportsLocalStorage) {
       const { theme } = window.localStorage;
-      console.log('theme', window.localStorage.theme);
+      console.log('theme ', window.localStorage.theme);
       if (theme) {
         console.log('Theme found in localstorage', theme);
         this.setTheme(theme);
@@ -52,25 +52,39 @@ export default {
   },
   methods: {
     handleClick(e) {
-      this.setTheme(e.target.value);
+      // this.setTheme(e.target.value);
+      this.setTheme(e.target.innerText.toLowerCase().trim());
+      // console.log(e.target);
     },
     setTheme(theme) {
       // Change the stylesheet to a different cdn
       if (this.activeTheme === theme) {
         return;
       }
+      // const stylesheet = document.querySelector(
+      //   'link[rel="stylesheet"][href$="/bootstrap.min.css"]',
+      // );
+
+      // if (stylesheet) {
+      //   stylesheet.href = theme;
+      // } else {
+      //   const link = document.createElement('link');
+      //   link.href = theme;
+      //   link.rel = 'stylesheet';
+      //   link.title = 'bootswatch-theme';
+      //   document.body.append(link);
+      // }
+      // const cdn = import(`bootswatch/dist/${theme}/bootstrap.min.css`);
+
+      // different
+
       const stylesheet = document.querySelector(
         'link[rel="stylesheet"][href$="/bootstrap.min.css"]',
       );
-      if (stylesheet) {
-        stylesheet.href = theme;
-      } else {
-        const link = document.createElement('link');
-        link.href = theme;
-        link.rel = 'stylesheet';
-        link.title = 'bootswatch-theme';
-        document.body.append(link);
-      }
+      // eslint-disable-next-line no-unused-expressions
+      // import(`bootswatch/dist/${theme}/bootstrap.min.css`);
+
+      console.log(stylesheet);
 
       // Save the theme as localstorage
       if (this.supportsLocalStorage) {
@@ -85,6 +99,7 @@ export default {
         .then((res) => {
           const { themes } = res.data;
           this.themes = themes;
+          console.log(themes);
         })
         .catch((error) => {
           console.log(error);
