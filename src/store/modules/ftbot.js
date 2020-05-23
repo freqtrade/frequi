@@ -22,6 +22,12 @@ export default {
     closedtrades(state) {
       return state.trades.filter((item) => !item.is_open);
     },
+    whitelist(state) {
+      return state.whitelist;
+    },
+    blacklist(state) {
+      return state.blacklist;
+    },
   },
   mutations: {
     updateTrades(state, trades) {
