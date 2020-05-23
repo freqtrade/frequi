@@ -5,16 +5,24 @@
       id="my-nav-dropdown"
       text="Theme"
       toggle-class="nav-link-custom"
+      @show.once="fetchApi"
       right
       lazy
     >
+      <b-dropdown-item v-if="themes.length === 0">
+        <b-spinner small></b-spinner>
+        Loading Themes...
+      </b-dropdown-item>
+
+      <!-- TODO Add  v-b-tooltip.hover.right=="{ variant: 'info' }" for tooltip class rendered from bootswatch-->
       <b-dropdown-item-button
         v-for="(theme, key) in themes"
         :key="key"
         @click="handleClick"
         :value="theme.cssCdn"
-        :active="activeTheme === theme.cssCdn"
-        :disabled="activeTheme === theme.cssCdn"
+        :active="activeTheme === theme.name"
+        v-b-tooltip.hover.right
+        :title="theme.description"
         >{{ theme.name }}
       </b-dropdown-item-button>
     </b-nav-item-dropdown>
@@ -34,72 +42,68 @@ export default {
   },
   name: 'BootswatchThemeSelect',
   created() {
-    console.log('Calling bootswatch api');
-    this.fetchApi();
+    // this.fetchApi();
+    // We don't need to call the api here because it will be called once the show event is triggered from clicking on the dropdown.
   },
   mounted() {
     this.supportsLocalStorage = window.localStorage.length > 0;
+    this.getTheme();
   },
-  updated() {
-    if (this.supportsLocalStorage) {
-      const { theme } = window.localStorage;
-      console.log('theme ', window.localStorage.theme);
-      if (theme) {
-        console.log('Theme found in localstorage', theme);
-        this.setTheme(theme);
-      }
-    }
-  },
+  updated() {},
   methods: {
     handleClick(e) {
-      // this.setTheme(e.target.value);
-      this.setTheme(e.target.innerText.toLowerCase().trim());
-      // console.log(e.target);
+      this.setTheme(e.target.innerText.trim());
     },
-    setTheme(theme) {
-      // Change the stylesheet to a different cdn
-      if (this.activeTheme === theme) {
+    setTheme(themeName) {
+      // Change the stylesheet to a different theme
+      if (this.activeTheme === themeName) {
         return;
       }
-      // const stylesheet = document.querySelector(
-      //   'link[rel="stylesheet"][href$="/bootstrap.min.css"]',
-      // );
 
-      // if (stylesheet) {
-      //   stylesheet.href = theme;
-      // } else {
-      //   const link = document.createElement('link');
-      //   link.href = theme;
-      //   link.rel = 'stylesheet';
-      //   link.title = 'bootswatch-theme';
-      //   document.body.append(link);
-      // }
-      // const cdn = import(`bootswatch/dist/${theme}/bootstrap.min.css`);
-
-      // different
-
-      const stylesheet = document.querySelector(
-        'link[rel="stylesheet"][href$="/bootstrap.min.css"]',
-      );
-      // eslint-disable-next-line no-unused-expressions
-      // import(`bootswatch/dist/${theme}/bootstrap.min.css`);
-
-      console.log(stylesheet);
+      import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then(() => {
+        const styles = document.getElementsByTagName('style');
+        const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
+        bw.forEach((style, index) => {
+          if (!style.id) {
+            // If its a style that was just imported and hasn't been assigned an id.
+            bw[index].id = themeName;
+          } else if (style.id === themeName) {
+            // If it's a style that has been imported already.
+            bw[index].disabled = false;
+          } else {
+            // All other style themes should be disabled.
+            bw[index].disabled = true;
+          }
+        });
+      });
 
       // Save the theme as localstorage
       if (this.supportsLocalStorage) {
-        console.log('Setting new theme as ', theme);
-        window.localStorage.theme = theme;
+        console.log('Setting new theme as ', themeName);
+        window.localStorage.theme = themeName;
       }
-      this.activeTheme = theme;
+      this.activeTheme = themeName;
+    },
+    getTheme() {
+      // console.log('Looking in local storage for theme.');
+      if (this.supportsLocalStorage) {
+        const themeName = window.localStorage.theme;
+        if (themeName) {
+          console.log(`${themeName} theme found in localstorage`);
+          this.setTheme(themeName);
+        }
+      }
     },
     fetchApi() {
+      // Fetches boostswatch api and dynamically sets themes.
+      // console.log('Calling bootswatch api');
+
       axios
         .get('https://bootswatch.com/api/4.json')
         .then((res) => {
           const { themes } = res.data;
           this.themes = themes;
-          console.log(themes);
+          // console.log(themes);
         })
         .catch((error) => {
           console.log(error);
@@ -109,4 +113,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
