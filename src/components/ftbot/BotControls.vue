@@ -5,6 +5,7 @@
       <button class="btn-primary col-md-5 m-1" @click="stopBot()">Stop</button>
       <button class="btn-primary col-md-5 m-1" @click="stopBuy()">StopBuy</button>
       <button class="btn-primary col-md-5 m-1" @click="reloadConfig()">Reload Config</button>
+      <button class="btn-primary col-md-5 m-1" @click="startTrade()">Start Trading</button>
       <button
         class="btn-primary col-md-5 m-1"
         v-if="botState.forcebuy_enabled"
@@ -33,7 +34,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('ftbot', ['startBot', 'stopBot', 'stopBuy', 'reloadConfig']),
+    ...mapActions('ftbot', ['startBot', 'stopBot', 'stopBuy', 'reloadConfig', 'startTrade']),
     initiate_forcebuy() {
       console.log('Forcebuy started');
       this.$bvModal.show('forcebuy-modal');

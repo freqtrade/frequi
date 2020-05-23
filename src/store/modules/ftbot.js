@@ -141,6 +141,9 @@ export default {
     reloadConfig() {
       return api.post('/reload_conf', {}).catch(console.error);
     },
+    startTrade() {
+      return api.post('/start_trade', {}).catch(console.error);
+    },
     forcesell({ dispatch }, tradeid) {
       console.log(tradeid);
       if (tradeid) {
