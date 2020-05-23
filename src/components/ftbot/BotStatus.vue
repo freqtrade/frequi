@@ -20,8 +20,6 @@
     <p>
       <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
     </p>
-    <!-- <p>Whitelist: {{ whitelist }}</p> -->
-    <!-- <p>Blacklist: {{ blacklist }}</p> -->
   </div>
 </template>
 
@@ -31,7 +29,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'BotStatus',
   computed: {
-    ...mapState('ftbot', ['profit', 'botState', 'whitelist', 'blacklist']),
+    ...mapState('ftbot', ['profit', 'botState']),
   },
 };
 </script>

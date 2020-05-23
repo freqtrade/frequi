@@ -13,6 +13,7 @@ export default {
     botState: {},
     balance: {},
     dailyStats: [],
+    pairlistMethods: [],
   },
   getters: {
     openTrades(state) {
@@ -21,12 +22,6 @@ export default {
     },
     closedtrades(state) {
       return state.trades.filter((item) => !item.is_open);
-    },
-    whitelist(state) {
-      return state.whitelist;
-    },
-    blacklist(state) {
-      return state.blacklist;
     },
   },
   mutations: {
@@ -42,6 +37,7 @@ export default {
     },
     updateWhitelist(state, whitelist) {
       state.whitelist = whitelist.whitelist;
+      state.pairlistMethods = whitelist.method;
     },
     updateBlacklist(state, blacklist) {
       state.blacklist = blacklist.blacklist;

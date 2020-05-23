@@ -1,6 +1,15 @@
 <template>
   <!-- TODO We could move the list into a component since we are reusing the same code for both lists. -->
   <div>
+    <div>
+      <h3>Whitelist Methods</h3>
+
+      <div v-if="pairlistMethods.length" class="list">
+        <b-list-group v-for="(method, key) in pairlistMethods" :key="key">
+          <b-list-group-item href="#" class="pair white">{{ method }}</b-list-group-item>
+        </b-list-group>
+      </div>
+    </div>
     <!-- Show Whitelist -->
     <h3>Whitelist</h3>
     <div v-if="whitelist.length" class="list">
@@ -25,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'FTBotAPIPairList',
@@ -36,7 +45,7 @@ export default {
     this.init();
   },
   computed: {
-    ...mapGetters('ftbot', ['whitelist', 'blacklist']),
+    ...mapState('ftbot', ['whitelist', 'blacklist', 'pairlistMethods']),
   },
   methods: {
     ...mapActions('ftbot', ['getWhitelist', 'getBlacklist']),
@@ -55,7 +64,7 @@ export default {
 <style scoped>
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   grid-gap: 0.5rem;
   padding-bottom: 1rem;
 }
