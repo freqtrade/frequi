@@ -78,13 +78,11 @@ export default {
   cursor: pointer;
 }
 .white {
-  /* border: 1px solid black; */
   background: white;
   color: black;
 }
 
 .black {
-  /* border: 1px solid white; */
   background: black;
   color: white;
 }
