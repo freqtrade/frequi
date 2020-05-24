@@ -12,8 +12,8 @@
         <b-navbar-nav>
           <b-nav-item to="/trade">Trade</b-nav-item>
           <b-nav-item to="/about">About</b-nav-item>
+          <BootswatchThemeSelect />
         </b-navbar-nav>
-
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <li class="nav-item" v-if="loggedIn">
@@ -38,10 +38,11 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Login from '@/views/Login.vue';
+import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
 
 export default {
   name: 'NavBar',
-  components: { Login },
+  components: { Login, BootswatchThemeSelect },
   computed: {
     ...mapState('user', ['loggedIn']),
   },
