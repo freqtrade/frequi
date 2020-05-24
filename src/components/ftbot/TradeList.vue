@@ -65,7 +65,7 @@ export default {
   methods: {
     ...mapActions('ftbot', ['forcesell']),
     formatPercent(value) {
-      return `${value.toFixed(3)}%`;
+      return `${(value * 100).toFixed(3)}%`;
     },
     forcesellHandler(item) {
       this.forcesell(item.trade_id)
