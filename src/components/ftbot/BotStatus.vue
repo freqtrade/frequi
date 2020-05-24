@@ -4,6 +4,13 @@
       Avg Profit {{ profit.profit_all_coin.toFixed(2) }}% in {{ profit.trade_count }} Trades, with
       an average duration of {{ profit.avg_duration }}. Best pair: {{ profit.best_pair }}.
     </p>
+    <p v-if="profit.first_trade_timestamp">
+      First trade opened:
+      <strong>{{ formatTimestamp(profit.first_trade_timestamp) }}</strong> <br />
+      Last trade opened:
+      <strong>{{ formatTimestamp(profit.latest_trade_timestamp) }}</strong>
+    </p>
+
     <p>
       Running with
       <strong>
@@ -30,6 +37,11 @@ export default {
   name: 'BotStatus',
   computed: {
     ...mapState('ftbot', ['profit', 'botState']),
+  },
+  methods: {
+    formatTimestamp(timestamp) {
+      return new Date(timestamp).toUTCString();
+    },
   },
 };
 </script>
