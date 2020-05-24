@@ -27,7 +27,7 @@ export default {
   mutations: {
     updateTrades(state, trades) {
       state.trades = trades.trades;
-      state.trade_count = trades.trade_count;
+      state.trade_count = trades.trades_count;
     },
     updateOpenTrades(state, trades) {
       state.openTrades = trades;
