@@ -75,6 +75,7 @@ export default {
     FTBotAPIPairList,
   },
   created() {
+    this.refreshOnce();
     this.refreshAll();
   },
   data() {
@@ -89,7 +90,7 @@ export default {
     ...mapGetters('ftbot', ['openTrades', 'closedtrades']),
   },
   methods: {
-    ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll']),
+    ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll', 'refreshOnce']),
     // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
     startRefresh() {
       console.log('Starting automatic refresh.');

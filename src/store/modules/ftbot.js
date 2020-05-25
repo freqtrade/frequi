@@ -3,6 +3,7 @@ import { api } from '@/shared/apiService';
 export default {
   namespaced: true,
   state: {
+    version: '',
     trades: [],
     openTrades: [],
     trade_count: 0,
@@ -53,6 +54,9 @@ export default {
     },
     updateState(state, botState) {
       state.botState = botState;
+    },
+    updateVersion(state, version) {
+      state.version = version.version;
     },
   },
   actions: {
@@ -115,6 +119,12 @@ export default {
       return api
         .get('/show_config')
         .then((result) => commit('updateState', result.data))
+        .catch(console.error);
+    },
+    getVersion({ commit }) {
+      return api
+        .get('/version')
+        .then((result) => commit('updateVersion', result.data))
         .catch(console.error);
     },
     // Post methods

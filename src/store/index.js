@@ -22,6 +22,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    refreshOnce({ dispatch }) {
+      dispatch('ftbot/getVersion');
+    },
     refreshAll({ dispatch }) {
       dispatch('refreshFrequent');
       dispatch('refreshSlow');

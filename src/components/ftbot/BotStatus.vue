@@ -1,5 +1,8 @@
 <template>
   <div>
+    <p>
+      Running Freqtrade <strong>{{ version }}</strong>
+    </p>
     <p v-if="profit.profit_all_coin">
       Avg Profit {{ profit.profit_all_coin.toFixed(2) }}% in {{ profit.trade_count }} Trades, with
       an average duration of {{ profit.avg_duration }}. Best pair: {{ profit.best_pair }}.
@@ -36,7 +39,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'BotStatus',
   computed: {
-    ...mapState('ftbot', ['profit', 'botState']),
+    ...mapState('ftbot', ['version', 'profit', 'botState']),
   },
   methods: {
     formatTimestamp(timestamp) {
