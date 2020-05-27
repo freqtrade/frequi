@@ -21,7 +21,31 @@
     <hr />
 
     <!-- Blacklsit -->
-    <h3>Blacklist</h3>
+    <div>
+      <label class="mr-auto h3">Blacklist</label>
+      <b-button id="blacklist-add-btn" class="float-right" size="sm">+</b-button>
+      <b-popover target="blacklist-add-btn" triggers="click" :show.sync="blackListShow">
+        <form ref="form">
+          <div>
+            <b-form-group label-cols="2" label="Pair" label-for="pair-input">
+              <b-form-input
+                id="pair-input"
+                v-model="newblacklistpair"
+                required
+                autofocus
+              ></b-form-input>
+            </b-form-group>
+            <b-button
+              class="float-right mb-2"
+              id="blacklist-submit"
+              size="sm"
+              @click="addBlacklistPair"
+              >Add</b-button
+            >
+          </div>
+        </form>
+      </b-popover>
+    </div>
     <div v-if="blacklist.length" class="list">
       <b-list-group v-for="(pair, key) in blacklist" :key="key">
         <b-list-group-item href="#" class="pair black">{{ pair }}</b-list-group-item>
@@ -39,7 +63,10 @@ import { mapState, mapActions } from 'vuex';
 export default {
   name: 'FTBotAPIPairList',
   data() {
-    return {};
+    return {
+      newblacklistpair: '',
+      blackListShow: false,
+    };
   },
   created() {
     this.init();
@@ -48,13 +75,21 @@ export default {
     ...mapState('ftbot', ['whitelist', 'blacklist', 'pairlistMethods']),
   },
   methods: {
-    ...mapActions('ftbot', ['getWhitelist', 'getBlacklist']),
+    ...mapActions('ftbot', ['getWhitelist', 'getBlacklist', 'addBlacklist']),
     init() {
       if (this.whitelist.length === 0) {
         this.getWhitelist();
       }
       if (this.blacklist.length === 0) {
         this.getBlacklist();
+      }
+    },
+    addBlacklistPair() {
+      if (this.newblacklistpair) {
+        this.blackListShow = false;
+
+        this.addBlacklist({ blacklist: [this.newblacklistpair] });
+        this.newblacklistpair = '';
       }
     },
   },

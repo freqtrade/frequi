@@ -202,5 +202,37 @@ export default {
         reject(error);
       });
     },
+    addBlacklist({ commit, dispatch }, payload) {
+      console.log(`Adding ${payload} to blacklist`);
+      if (payload && payload.blacklist) {
+        return api
+          .post('/blacklist', payload)
+          .then((result) => {
+            commit('updateBlacklist', result.data);
+            dispatch(
+              'alerts/addAlert',
+              { message: `Pairs ${payload.blacklist} added` },
+              { root: true },
+            );
+          })
+          .catch((error) => {
+            console.error(error.response);
+            dispatch(
+              'alerts/addAlert',
+              {
+                message: `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
+                severity: 'danger',
+              },
+              { root: true },
+            );
+          });
+      }
+      // Error branchs
+      const error = 'Pair is empty';
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+    },
   },
 };
