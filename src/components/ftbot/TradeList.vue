@@ -7,6 +7,8 @@
         :items="trades"
         :fields="table_fields"
         @row-contextmenu="handleContextMenuEvent"
+        show-empty
+        :emptyText="emptyText"
       >
         <template v-slot:cell(actions)="row">
           <b-button size="sm" @click="forcesellHandler(row.item, row.index, $event.target)">
@@ -37,6 +39,11 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    emptyText: {
+      type: String,
+      required: false,
+      default: 'No Trades to show.',
     },
   },
   data() {
