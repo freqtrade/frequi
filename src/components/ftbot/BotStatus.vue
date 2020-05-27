@@ -20,8 +20,8 @@
         {{ botState.max_open_trades }}x{{ botState.stake_amount }} {{ botState.stake_currency }}
       </strong>
       on
-      <strong>{{ botState.exchange }}</strong>
-      , with Strategy <strong>{{ botState.strategy }}</strong>
+      <strong>{{ botState.exchange }}</strong
+      >, with Strategy <strong>{{ botState.strategy }}</strong>
     </p>
     <p>
       Currently <strong>{{ botState.state }}</strong
