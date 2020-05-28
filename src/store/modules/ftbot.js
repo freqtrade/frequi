@@ -209,11 +209,24 @@ export default {
           .post('/blacklist', payload)
           .then((result) => {
             commit('updateBlacklist', result.data);
-            dispatch(
-              'alerts/addAlert',
-              { message: `Pairs ${payload.blacklist} added` },
-              { root: true },
-            );
+            if (result.data.errors && Object.keys(result.data.errors).length !== 0) {
+              const { errors } = result.data;
+              Object.keys(errors).forEach((pair) => {
+                dispatch(
+                  'alerts/addAlert',
+                  {
+                    message: `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
+                  },
+                  { root: true },
+                );
+              });
+            } else {
+              dispatch(
+                'alerts/addAlert',
+                { message: `Pair ${payload.blacklist} added.` },
+                { root: true },
+              );
+            }
           })
           .catch((error) => {
             console.error(error.response);

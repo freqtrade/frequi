@@ -25,7 +25,7 @@
       <label class="mr-auto h3">Blacklist</label>
       <b-button id="blacklist-add-btn" class="float-right" size="sm">+</b-button>
       <b-popover target="blacklist-add-btn" triggers="click" :show.sync="blackListShow">
-        <form ref="form">
+        <form ref="form" @submit.prevent>
           <div>
             <b-form-group label-cols="2" label="Pair" label-for="pair-input">
               <b-form-input
@@ -39,6 +39,7 @@
               class="float-right mb-2"
               id="blacklist-submit"
               size="sm"
+              type="submit"
               @click="addBlacklistPair"
               >Add</b-button
             >
