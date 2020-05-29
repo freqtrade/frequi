@@ -5,7 +5,15 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
-              <b-form-checkbox v-model="autoRefresh" size="lg" switch>AutoRefresh</b-form-checkbox>
+              <div>
+                <button @click="refreshAll()" class="btn btn-secondary">
+                  Refresh all
+                </button>
+
+                <b-form-checkbox class="float-right" v-model="autoRefresh" size="lg" switch
+                  >AutoRefresh</b-form-checkbox
+                >
+              </div>
               <BotControls class="mt-3" />
             </div>
             <div class="col-md-12">
