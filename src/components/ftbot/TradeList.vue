@@ -15,6 +15,12 @@
             Forcesell
           </b-button>
         </template>
+        <template v-slot:cell(pair)="row">
+          <span class="mr-1" v-html="profitSymbol(row.item)"></span>
+          <span>
+            {{ row.item.pair }}
+          </span>
+        </template>
       </b-table>
     </div>
   </div>
@@ -74,6 +80,10 @@ export default {
     formatPercent(value) {
       return `${(value * 100).toFixed(3)}%`;
     },
+    profitSymbol(item) {
+      // Red arrow / green circle
+      return item.close_profit < 0 || item.current_profit < 0 ? `&#x1F534;` : `&#x1F7E2;`;
+    },
     forcesellHandler(item) {
       this.forcesell(item.trade_id)
         .then(() => console.log('asdf'))
@@ -81,6 +91,9 @@ export default {
     },
     handleContextMenuEvent(item, index, event) {
       // stop browser context menu from appearing
+      if (!this.activeTrades) {
+        return;
+      }
       event.preventDefault();
       // log the selected item to the console
       console.log(item);
@@ -88,3 +101,6 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+</style>
