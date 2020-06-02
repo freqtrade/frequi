@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { formatPercent } from '@/shared/formatters';
 
 export default {
@@ -55,7 +54,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(),
     formatPercent,
   },
 };

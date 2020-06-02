@@ -24,13 +24,13 @@
       </b-table>
     </b-card-body>
     <b-card-body class="border-top p-0" v-if="showDetail">
-      <TradeDetail :trade="detailTrade"></TradeDetail>
+      <TradeDetail :trade="openTradeDetail"></TradeDetail>
     </b-card-body>
   </b-card>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations, mapGetters } from 'vuex';
 import { formatPercent } from '@/shared/formatters';
 import TradeDetail from './TradeDetail.vue';
 
@@ -58,6 +58,9 @@ export default {
     },
   },
   components: { TradeDetail },
+  computed: {
+    ...mapGetters('ftbot', ['openTradeDetail']),
+  },
   data() {
     return {
       table_fields: [
@@ -80,11 +83,12 @@ export default {
         ...(this.activeTrades ? [{ key: 'actions' }] : []),
       ],
       showDetail: false,
-      detailTrade: {},
     };
   },
   methods: {
     ...mapActions('ftbot', ['forcesell']),
+    ...mapMutations('ftbot', ['setDetailTrade']),
+
     formatPercent,
     profitSymbol(item) {
       // Red arrow / green circle
@@ -107,7 +111,7 @@ export default {
     showDetails(trade) {
       console.log(trade);
       this.showDetail = !this.showDetail;
-      this.detailTrade = trade;
+      this.setDetailTrade(trade);
     },
   },
 };
