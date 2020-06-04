@@ -1,49 +1,54 @@
 <template>
-  <div class="container-flex row mr-4">
-    <div class="container col-4">
-      <div class="row">
-        <label class="col-4">TradeId</label>
-        <div class="col-8">{{ trade.trade_id }}</div>
-      </div>
-      <div class="row">
-        <label class="col-4">Stoploss</label>
-        <div class="col-8">
-          {{ formatPercent(trade.stop_loss_pct / 100) }} | {{ trade.stop_loss.toFixed(8) }}
-        </div>
-      </div>
-      <div class="row">
-        <label class="col-4">Initial Stoploss</label>
-        <div class="col-8">
-          {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
-          {{ trade.initial_stop_loss.toFixed(8) }}
-        </div>
+  <b-card header="Trade detail">
+    <div class="row">
+      <label class="col-4">TradeId</label>
+      <div class="col-8">{{ trade.trade_id }}</div>
+    </div>
+    <div class="row">
+      <label class="col-4">Stoploss</label>
+      <div class="col-8">
+        {{ formatPercent(trade.stop_loss_pct / 100) }} | {{ formatPrice(trade.stop_loss) }}
       </div>
     </div>
-    <div class="container col-4">
-      <div class="row">
-        <label class="col-4">Open Rate</label>
-        <div class="col-8">{{ trade.open_rate }}</div>
-      </div>
-      <div class="row">
-        <label class="col-4">Close Rate</label>
-        <div class="col-8">{{ trade.close_rate }}</div>
+    <div class="row">
+      <label class="col-4">Initial Stoploss</label>
+      <div class="col-8">
+        {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
+        {{ formatPrice(trade.initial_stop_loss) }}
       </div>
     </div>
-    <div class="container col-4">
-      <div class="row">
-        <label class="col-4">Min Rate</label>
-        <div class="col-8">{{ trade.min_rate }}</div>
-      </div>
-      <div class="row">
-        <label class="col-4">Max Rate</label>
-        <div class="col-8">{{ trade.max_rate }}</div>
+    <div class="row">
+      <label class="col-4">Current stoploss dist</label>
+      <div class="col-8">
+        {{ formatPercent(trade.current_stoploss_dist_ratio) }} |
+        {{ formatPrice(trade.current_stoploss_dist) }}
       </div>
     </div>
-  </div>
+    <div class="row">
+      <label class="col-4">Open Rate</label>
+      <div class="col-8">{{ trade.open_rate }}</div>
+    </div>
+    <div class="row">
+      <label class="col-4">Close Rate</label>
+      <div class="col-8">{{ trade.close_rate }}</div>
+    </div>
+    <div class="row">
+      <label class="col-4">Min Rate</label>
+      <div class="col-8">{{ trade.min_rate }}</div>
+    </div>
+    <div class="row">
+      <label class="col-4">Max Rate</label>
+      <div class="col-8">{{ trade.max_rate }}</div>
+    </div>
+    <div class="row">
+      <label class="col-4">Current profit</label>
+      <div class="col-8">{{ trade.current_profit_abs }}</div>
+    </div>
+  </b-card>
 </template>
 
 <script>
-import { formatPercent } from '@/shared/formatters';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 
 export default {
   name: 'TradeDetail',
@@ -55,6 +60,7 @@ export default {
   },
   methods: {
     formatPercent,
+    formatPrice,
   },
 };
 </script>

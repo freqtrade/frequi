@@ -58,7 +58,9 @@
               :trades="closedtrades"
               title="Trade history"
               emptyText="No closed trades so far."
+              v-if="!detailTradeId"
             />
+            <TradeDetail v-if="detailTradeId" :trade="openTradeDetail"></TradeDetail>
           </div>
         </div>
       </div>
@@ -76,6 +78,7 @@ import BotStatus from '@/components/ftbot/BotStatus.vue';
 import Balance from '@/components/ftbot/Balance.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
+import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 
 export default {
   name: 'Trade',
@@ -87,6 +90,7 @@ export default {
     Balance,
     DailyStats,
     FTBotAPIPairList,
+    TradeDetail,
   },
   created() {
     this.refreshOnce();
@@ -100,8 +104,8 @@ export default {
     };
   },
   computed: {
-    ...mapState('ftbot', ['open_trades']),
-    ...mapGetters('ftbot', ['openTrades', 'closedtrades']),
+    ...mapState('ftbot', ['open_trades', 'detailTradeId']),
+    ...mapGetters('ftbot', ['openTrades', 'closedtrades', 'openTradeDetail']),
   },
   methods: {
     ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll', 'refreshOnce']),

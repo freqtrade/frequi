@@ -23,16 +23,12 @@
         </template>
       </b-table>
     </b-card-body>
-    <b-card-body class="border-top p-0" v-if="showDetail">
-      <TradeDetail :trade="openTradeDetail"></TradeDetail>
-    </b-card-body>
   </b-card>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex';
+import { mapActions, mapMutations, mapGetters, mapState } from 'vuex';
 import { formatPercent } from '@/shared/formatters';
-import TradeDetail from './TradeDetail.vue';
 
 export default {
   name: 'TradeList',
@@ -57,9 +53,9 @@ export default {
       default: 'No Trades to show.',
     },
   },
-  components: { TradeDetail },
   computed: {
     ...mapGetters('ftbot', ['openTradeDetail']),
+    ...mapState('ftbot', ['detailTradeId']),
   },
   data() {
     return {
@@ -82,7 +78,6 @@ export default {
         { key: 'close_date', label: 'Close date' },
         ...(this.activeTrades ? [{ key: 'actions' }] : []),
       ],
-      showDetail: false,
     };
   },
   methods: {
@@ -110,8 +105,7 @@ export default {
     },
     showDetails(trade) {
       console.log(trade);
-      this.showDetail = !this.showDetail;
-      this.setDetailTrade(trade);
+      this.setDetailTrade(this.detailTradeId ? null : trade);
     },
   },
 };

@@ -64,7 +64,7 @@ export default {
       state.version = version.version;
     },
     setDetailTrade(state, trade) {
-      state.detailTradeId = trade.trade_id;
+      state.detailTradeId = trade ? trade.trade_id : null;
     },
   },
   actions: {
