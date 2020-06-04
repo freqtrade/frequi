@@ -1,4 +1,4 @@
-FROM node:12-stretch
+FROM node:12-stretch as dev
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -27,6 +27,15 @@ USER $USERNAME
 WORKDIR $HOME
 
 EXPOSE 8080
+
+# install dependencies
+RUN yarn install
+
+WORKDIR $HOME/frequi
+
+FROM dev as vscode
+
+WORKDIR $HOME
 
 # load ssh key in bash terminal
 RUN  echo "eval \$(ssh-agent) && ssh-add ~/.ssh/id_rsa"  >> .bashrc

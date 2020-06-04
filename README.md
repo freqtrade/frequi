@@ -37,6 +37,27 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+## Project setup for docker (developing inside dev container) without vscode
+
+### Built dev docker image and run container(s) detached
+
+```
+cd .devcontainer
+docker-compose up -d
+```
+
+### Go inside web service container and serve
+
+```
+docker-compose exec web /bin/bash
+```
+
+then
+
+```
+yarn serve
+```
+
 ## Project setup for vscode and docker (developing inside dev container) on linux
 
 The goal is it have a complete dev environment very quickly and isolated.
@@ -49,11 +70,7 @@ Follow [getting strated](https://code.visualstudio.com/docs/remote/containers#_g
 
 View > Command palette > Enter: Remote-Containers rebuild container
 
-### Install dependencies and serve your local server
-
-```
-yarn install
-```
+### Serve your local server
 
 ```
 yarn serve
