@@ -8,8 +8,9 @@ This project is still in it's early stages, and is not yet stable nor recommende
 
 It will require Freqtrade to be running on the same host with the API enabled under (`localhost:8081`). This port can be changed in `vue.config.js`.
 
+## Project setup with node install locally
 
-## Project setup
+### Project setup
 
 ```
 npm install
@@ -35,3 +36,44 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Project setup for docker (developing inside dev container) without vscode
+
+### Built dev docker image and run container(s) detached
+
+```
+cd .devcontainer
+docker-compose up -d
+```
+
+### Go inside web service container and serve
+
+```
+docker-compose exec web /bin/bash
+```
+
+then
+
+```
+yarn serve
+```
+
+## Project setup for vscode and docker (developing inside dev container) on linux
+
+The goal is it have a complete dev environment very quickly and isolated.
+
+### Install missing tools if needed
+
+Follow [getting strated](https://code.visualstudio.com/docs/remote/containers#_getting-started) section.
+
+### Build your dev container
+
+View > Command palette > Enter: Remote-Containers rebuild container
+
+### Serve your local server
+
+```
+yarn serve
+```
+
+You now have useful vscode extentions, git support, your command history of the project.

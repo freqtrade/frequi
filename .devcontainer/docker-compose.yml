@@ -1,0 +1,20 @@
+version: '3.4'
+services:
+  web:
+    build: 
+      context: ..
+      target: dev
+      dockerfile: .devcontainer/Dockerfile
+    image: freqtradeorg/frequi:dev
+    user: dev
+    volumes:
+      - ../node_modules:/home/dev/frequi/node_modules
+      - ../:/home/dev/frequi
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - frequi
+    ports:
+      - 8080:8080
+
+networks:
+  frequi:
