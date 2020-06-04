@@ -1,0 +1,25 @@
+version: '3.4'
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    user: dev
+    volumes:
+      - ../:/home/dev/frequi
+      - "/home/${USER}/.ssh:/home/dev/.ssh:ro"
+      - "/home/${USER}/.gitconfig:/home/dev/.gitconfig:ro"
+      - frequi-bashhistory:/home/dev/commandhistory
+      - frequi-vscode-server:/home/dev/.vscode-server
+      - frequi-server-insiders:/home/dev/.vscode-server-insiders
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - frequi
+
+networks:
+  frequi:
+
+volumes:
+  frequi-bashhistory:
+  frequi-vscode-server:
+  frequi-server-insiders:

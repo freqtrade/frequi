@@ -1,0 +1,22 @@
+/* cSpell:disable */
+{
+	"name": "frequi",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "web",
+    "workspaceFolder": "/home/dev/frequi",
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"emmet.includeLanguages": {
+			"vue": "html",
+			"vue-html": "html"
+		}
+	},
+	"extensions": [
+		"octref.vetur",
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
+		"yzhang.markdown-all-in-one",
+		"marquesmps.dockerfile-validator",
+		"streetsidesoftware.code-spell-checker",
+	]
+}
