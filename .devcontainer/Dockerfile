@@ -29,6 +29,7 @@ WORKDIR $HOME
 EXPOSE 8080
 
 # install dependencies
+RUN yarn global add @vue/cli
 RUN yarn install
 
 WORKDIR $HOME/frequi
