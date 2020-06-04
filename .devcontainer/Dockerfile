@@ -1,4 +1,4 @@
-FROM node:12-stretch as dev
+FROM node:12-slim as dev
 
 ENV DEBIAN_FRONTEND=noninteractive
 
