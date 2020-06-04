@@ -23,16 +23,18 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV HOME /home/$USERNAME
-USER $USERNAME
-WORKDIR $HOME
-
-EXPOSE 8080
-
-# install dependencies
-RUN yarn global add @vue/cli
-RUN yarn install
 
 WORKDIR $HOME/frequi
+
+COPY ./package.json .
+
+# install dependencies
+RUN yarn install
+RUN yarn global add @vue/cli
+
+USER $USERNAME
+
+EXPOSE 8080
 
 FROM dev as vscode
 
