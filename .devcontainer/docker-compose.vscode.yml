@@ -2,7 +2,6 @@ version: '3.4'
 services:
   web:
     build: 
-      context: .
       target: vscode
     image: freqtradeorg/frequi:vscode
     volumes:
