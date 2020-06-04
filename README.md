@@ -37,7 +37,7 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-## Project setup for vscode and docker (developping inside dev contener) on linux
+## Project setup for vscode and docker (developing inside dev container) on linux
 
 The goal is it have a complete dev environment very quickly and isolated.
 
