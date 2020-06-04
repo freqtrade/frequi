@@ -10,6 +10,7 @@ module.exports = {
     'prettier',
     'plugin:prettier-vue/recommended',
     'prettier/vue',
+    '@vue/typescript/recommended',
   ],
   parserOptions: {
     parser: 'babel-eslint',

@@ -29,7 +29,7 @@ api.interceptors.response.use(
     console.log(err);
     if (err.response && err.response.status === 401) {
       console.log('Dispatching refresh_token...');
-      apiStore.store.dispatch('user/refresh_token');
+      apiStore.store.dispatch('user/refreshToken');
       // maybe redirect to /login if needed !
     }
     return new Promise((resolve, reject) => {

@@ -89,7 +89,7 @@ export default {
         })
         .catch(console.error);
     },
-    refresh_token({ commit, dispatch }) {
+    refreshToken({ commit, dispatch }) {
       console.log('Refreshing token...');
       const token = JSON.parse(localStorage.getItem(AUTH_REF_TOKEN));
       axios
