@@ -5,6 +5,10 @@
       <div class="col-8">{{ trade.trade_id }}</div>
     </div>
     <div class="row">
+      <label class="col-4">Pair</label>
+      <div class="col-8">{{ trade.pair }}</div>
+    </div>
+    <div class="row">
       <label class="col-4">Stoploss</label>
       <div class="col-8">
         {{ formatPercent(trade.stop_loss_pct / 100) }} | {{ formatPrice(trade.stop_loss) }}
@@ -41,6 +45,18 @@
       <div class="col-8">{{ trade.max_rate }}</div>
     </div>
     <div class="row">
+      <label class="col-4">Open date</label>
+      <div class="col-8">{{ timestampms(trade.open_timestamp) }}</div>
+    </div>
+    <div class="row" v-if="trade.close_date">
+      <label class="col-4">Close date</label>
+      <div class="col-8">{{ timestampms(trade.close_timestamp) }}</div>
+    </div>
+    <div class="row">
+      <label class="col-4">Stoploss last updated</label>
+      <div class="col-8">{{ timestampms(trade.stoploss_last_update_timestamp) }}</div>
+    </div>
+    <div class="row">
       <label class="col-4">Current profit</label>
       <div class="col-8">{{ trade.current_profit_abs }}</div>
     </div>
@@ -48,7 +64,7 @@
 </template>
 
 <script>
-import { formatPercent, formatPrice } from '@/shared/formatters';
+import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
 
 export default {
   name: 'TradeDetail',
@@ -61,6 +77,7 @@ export default {
   methods: {
     formatPercent,
     formatPrice,
+    timestampms,
   },
 };
 </script>
