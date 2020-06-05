@@ -7,10 +7,10 @@ module.exports = {
     'plugin:vue/essential',
     // 'plugin:vue/recommended',
     '@vue/airbnb',
+    '@vue/typescript/recommended',
     'prettier',
     'plugin:prettier-vue/recommended',
     'prettier/vue',
-    '@vue/typescript/recommended',
   ],
   parserOptions: {
     parser: 'babel-eslint',
