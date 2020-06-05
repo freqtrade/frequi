@@ -15,10 +15,6 @@ export default {
       type: String,
       required: true,
     },
-    // content: {
-    //   type: String,
-    //   required: true,
-    // },
   },
 };
 </script>
@@ -26,5 +22,8 @@ export default {
 <style scoped>
 label {
   font-weight: bold;
+}
+.row {
+  max-width: 50em;
 }
 </style>

@@ -15,15 +15,19 @@
       {{ formatPrice(trade.current_stoploss_dist) }}
     </ValuePair>
     <ValuePair description="Open Rate">{{ trade.open_rate }}</ValuePair>
-    <ValuePair description="Close Rate">{{ trade.close_rate }}</ValuePair>
+    <ValuePair description="Close Rate" v-if="!trade.is_open">{{ trade.close_rate }}</ValuePair>
     <ValuePair description="Min Rate">{{ trade.min_rate }}</ValuePair>
     <ValuePair description="Max Rate">{{ trade.max_rate }}</ValuePair>
     <ValuePair description="Open date">{{ trade.open_timestamp }}</ValuePair>
-    <ValuePair description="Close date">{{ trade.close_timestamp }}</ValuePair>
+    <ValuePair description="Close date" v-if="trade.close_timestamp">
+      {{ trade.close_timestamp }}
+    </ValuePair>
     <ValuePair description="Stoploss last updated">
       {{ trade.stoploss_last_update_timestamp }}
     </ValuePair>
-    <ValuePair description="Current profit">{{ trade.current_profit_abs }}</ValuePair>
+    <ValuePair description="Current profit" v-if="trade.current_profit_abs">
+      {{ trade.current_profit_abs }}
+    </ValuePair>
   </b-card>
 </template>
 
