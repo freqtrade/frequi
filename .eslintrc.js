@@ -7,13 +7,16 @@ module.exports = {
     'plugin:vue/essential',
     // 'plugin:vue/recommended',
     '@vue/airbnb',
-    '@vue/typescript/recommended',
     'prettier',
     'plugin:prettier-vue/recommended',
     'prettier/vue',
+    'prettier/@typescript-eslint',
+    // 'plugin:@typescript-eslint/recommended',
+    '@vue/typescript',
+    '@vue/typescript/recommended',
   ],
   parserOptions: {
-    parser: 'babel-eslint',
+    ecmaVersion: 2020,
   },
   plugins: ['vue'],
   rules: {
