@@ -11,8 +11,8 @@
       {{ formatPrice(trade.initial_stop_loss) }}
     </ValuePair>
     <ValuePair description="Current stoploss dist">
-      {{ formatPercent(trade.current_stoploss_dist_ratio) }} |
-      {{ formatPrice(trade.current_stoploss_dist) }}
+      {{ formatPercent(trade.stoploss_current_dist_ratio) }} |
+      {{ formatPrice(trade.stoploss_current_dist) }}
     </ValuePair>
     <ValuePair description="Open Rate">{{ trade.open_rate }}</ValuePair>
     <ValuePair description="Close Rate" v-if="!trade.is_open">{{ trade.close_rate }}</ValuePair>

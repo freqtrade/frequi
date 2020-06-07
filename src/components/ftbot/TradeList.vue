@@ -104,8 +104,11 @@ export default {
       console.log(item);
     },
     showDetails(trade) {
-      console.log(trade);
-      this.setDetailTrade(this.detailTradeId ? null : trade);
+      if (this.detailTradeId === trade.trade_id) {
+        this.setDetailTrade(null);
+      } else {
+        this.setDetailTrade(trade);
+      }
     },
   },
 };
