@@ -123,9 +123,9 @@ export default {
         .then((result) => commit('updateBalance', result.data))
         .catch(console.error);
     },
-    getDaily({ commit }) {
+    getDaily({ commit }, timescale = 15) {
       return api
-        .get('/daily')
+        .get('/daily', { params: { timescale } })
         .then((result) => commit('updateDaily', result.data))
         .catch(console.error);
     },
