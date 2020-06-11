@@ -5,10 +5,10 @@
       <b-button class="float-right" size="sm" @click="getDaily">&#x21bb;</b-button>
     </div>
     <div>
-      <b-table class="table-sm" :items="dailyStats.data" :fields="dailyFields"> </b-table>
+      <v-chart :options="dailyChart" />
     </div>
     <div>
-      <v-chart :options="dailyChart" />
+      <b-table class="table-sm" :items="dailyStats.data" :fields="daily_fields"> </b-table>
     </div>
   </div>
 </template>
@@ -37,7 +37,8 @@ export default {
     dailyChart() {
       return {
         title: {
-          text: 'Hello world',
+          text: 'Daily profit',
+          show: true,
         },
         dataset: {
           dimensions: ['date', 'abs_profit', 'trade_count'],
