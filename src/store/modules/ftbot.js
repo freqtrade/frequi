@@ -147,7 +147,7 @@ export default {
       return api.post('/stopbuy', {}).catch(console.error);
     },
     reloadConfig() {
-      return api.post('/reload_conf', {}).catch(console.error);
+      return api.post('/reload_config', {}).catch(console.error);
     },
     forcesell({ dispatch }, tradeid) {
       console.log(tradeid);
