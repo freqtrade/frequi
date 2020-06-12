@@ -5,15 +5,7 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
-              <div>
-                <button @click="refreshAll()" class="btn btn-secondary">
-                  Refresh all
-                </button>
-
-                <b-form-checkbox class="float-right" v-model="autoRefresh" size="lg" switch
-                  >AutoRefresh</b-form-checkbox
-                >
-              </div>
+              <ReloadControl />
               <BotControls class="mt-3" />
             </div>
             <div class="col-md-12">
@@ -69,7 +61,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import TradeList from '@/components/ftbot/TradeList.vue';
 import Performance from '@/components/ftbot/Performance.vue';
@@ -79,6 +71,7 @@ import Balance from '@/components/ftbot/Balance.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
+import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 
 export default {
   name: 'Trade',
@@ -91,56 +84,12 @@ export default {
     DailyStats,
     FTBotAPIPairList,
     TradeDetail,
+    ReloadControl,
   },
-  created() {
-    this.refreshOnce();
-    this.refreshAll();
-  },
-  data() {
-    return {
-      autoRefresh: true,
-      refresh_interval: null,
-      refresh_interval_slow: null,
-    };
-  },
+
   computed: {
     ...mapState('ftbot', ['open_trades', 'detailTradeId']),
     ...mapGetters('ftbot', ['openTrades', 'closedtrades', 'openTradeDetail']),
-  },
-  methods: {
-    ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll', 'refreshOnce']),
-    // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
-    startRefresh() {
-      console.log('Starting automatic refresh.');
-      this.refreshFrequent();
-      this.refresh_interval = setInterval(() => {
-        this.refreshFrequent();
-      }, 5000);
-      this.refreshSlow();
-      this.refresh_interval_slow = setInterval(() => {
-        this.refreshSlow();
-      }, 60000);
-    },
-    stopRefresh() {
-      console.log('Stopping automatic refresh.');
-      clearInterval(this.refresh_interval);
-      clearInterval(this.refresh_interval_slow);
-    },
-  },
-  mounted() {
-    this.startRefresh();
-  },
-  beforeDestroy() {
-    this.stopRefresh();
-  },
-  watch: {
-    autoRefresh(val) {
-      if (val) {
-        this.startRefresh();
-      } else {
-        this.stopRefresh();
-      }
-    },
   },
 };
 </script>
