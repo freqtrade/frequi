@@ -5,7 +5,7 @@
       <b-button class="float-right" size="sm" @click="getDaily">&#x21bb;</b-button>
     </div>
     <div>
-      <v-chart :options="dailyChart" />
+      <v-chart v-if="dailyStats.data" :options="dailyChart" />
     </div>
     <div>
       <b-table class="table-sm" :items="dailyStats.data" :fields="daily_fields"> </b-table>
@@ -18,6 +18,12 @@ import { mapActions, mapState } from 'vuex';
 import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/legend';
+
+// Define Column labels here to avoid typos
+const CHART_ABS_PROFIT = 'Absolute profit';
+const CHART_TRADE_COUNT = 'Trade Count';
 
 export default {
   name: 'DailyStats',
@@ -44,6 +50,18 @@ export default {
           dimensions: ['date', 'abs_profit', 'trade_count'],
           source: this.dailyStats.data,
         },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'line',
+            label: {
+              backgroundColor: '#6a7985',
+            },
+          },
+        },
+        legend: {
+          data: [CHART_ABS_PROFIT, CHART_TRADE_COUNT],
+        },
         xAxis: {
           type: 'category',
           inverse: true,
@@ -51,7 +69,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: 'Absolute Profit',
+            name: CHART_ABS_PROFIT,
             splitLine: {
               show: false,
             },
@@ -61,7 +79,7 @@ export default {
           },
           {
             type: 'value',
-            name: 'Trade count',
+            name: CHART_TRADE_COUNT,
             nameRotate: 90,
             nameLocation: 'middle',
             nameGap: 30,
@@ -70,11 +88,13 @@ export default {
         series: [
           {
             type: 'line',
-            name: 'Absolute profit',
+            name: CHART_ABS_PROFIT,
+            color: 'black',
           },
           {
             type: 'bar',
-            name: 'trade_count',
+            name: CHART_TRADE_COUNT,
+            color: 'rgba(150,150,150,0.3)',
             yAxisIndex: 1,
           },
         ],
@@ -83,13 +103,6 @@ export default {
   },
   methods: {
     ...mapActions('ftbot', ['getDaily']),
-    dailyChartData() {
-      const arr = this.dailyStats.data.map((itm) => {
-        return { name: itm.date, value: Number(itm.abs_profit) + 2 };
-      });
-      console.log(arr);
-      return arr;
-    },
   },
   mounted() {
     this.getDaily();
