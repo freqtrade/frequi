@@ -26,6 +26,7 @@ export default {
     dailyStats: [],
     pairlistMethods: [],
     detailTradeId: null,
+    history: {},
   },
   getters: {
     [BotStoreGetters.openTrades](state) {
@@ -81,6 +82,10 @@ export default {
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
     },
+    updatePairHistory(state, { pair, timeframe, data }) {
+      console.log(JSON.parse(data));
+      state.history[`${pair}__${timeframe}`] = data;
+    },
   },
   actions: {
     ping({ commit, rootState }) {
@@ -108,6 +113,33 @@ export default {
         .get('/status')
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
+    },
+    getPairHistory({ commit }, payload) {
+      if (payload.pair && payload.timeframe && payload.limit) {
+        return api
+          .get('/pair_history', {
+            params: { pair: payload.pair, timeframe: payload.timeframe, limit: payload.limit },
+          })
+          .then((result) => {
+            try {
+              console.log(JSON.parse(result.data));
+            } catch (err) {
+              console.error(err);
+            }
+            commit('updatePairHistory', {
+              pair: payload.pair,
+              timeframe: payload.timeframe,
+              data: result.data,
+            });
+          })
+          .catch(console.error);
+      }
+      // Error branchs
+      const error = 'pair or timeframe not specified';
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
     },
     getPerformance({ commit }) {
       return api
