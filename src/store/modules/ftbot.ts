@@ -83,8 +83,7 @@ export default {
       state.detailTradeId = trade ? trade.trade_id : null;
     },
     updatePairHistory(state, { pair, timeframe, data }) {
-      console.log(JSON.parse(data));
-      state.history[`${pair}__${timeframe}`] = data;
+      state.history = { ...state.history, [`${pair}__${timeframe}`]: data };
     },
   },
   actions: {
@@ -121,11 +120,6 @@ export default {
             params: { pair: payload.pair, timeframe: payload.timeframe, limit: payload.limit },
           })
           .then((result) => {
-            try {
-              console.log(JSON.parse(result.data));
-            } catch (err) {
-              console.error(err);
-            }
             commit('updatePairHistory', {
               pair: payload.pair,
               timeframe: payload.timeframe,
