@@ -33,10 +33,10 @@ export default {
       if (!this.hasData) {
         return {};
       }
-      const upColor = '#ec0000';
-      const upBorderColor = '#8A0000';
-      const downColor = '#00da3c';
-      const downBorderColor = '#008F28';
+      const upColor = '#00da3c';
+      const upBorderColor = '#008F28';
+      const downColor = '#ec0000';
+      const downBorderColor = '#8A0000';
       console.log(this.dataset.data);
       return {
         title: {
@@ -56,8 +56,8 @@ export default {
           axisPointer: {
             type: 'cross',
             lineStyle: {
-              color: '#376df4',
-              width: 2,
+              color: '#cccccc',
+              width: 1,
               opacity: 1,
             },
           },
@@ -73,7 +73,6 @@ export default {
             type: 'category',
             scale: true,
             boundaryGap: false,
-            // inverse: true,
             axisLine: { onZero: false },
             splitLine: { show: false },
             splitNumber: 20,
@@ -125,7 +124,7 @@ export default {
           {
             type: 'inside',
             xAxisIndex: [0, 1],
-            start: 10,
+            start: 50,
             end: 100,
           },
           {
@@ -135,22 +134,21 @@ export default {
             bottom: 10,
             start: 10,
             end: 100,
-            handleIcon:
-              'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-            handleSize: '105%',
           },
         ],
         // visualMap: {
+        //   //  TODO: this would allow to colorize volume bars (if we'd want this)
+        //   //  Needs green / red indicator column in data.
         //   show: true,
-        //   seriesIndex: 2,
-        //   dimension: 1,
+        //   seriesIndex: 1,
+        //   dimension: 5,
         //   pieces: [
         //     {
-        //       value: 1,
+        //       max: 500000.0,
         //       color: downColor,
         //     },
         //     {
-        //       value: -1,
+        //       min: 500000.0,
         //       color: upColor,
         //     },
         //   ],
@@ -176,9 +174,9 @@ export default {
             type: 'bar',
             xAxisIndex: 1,
             yAxisIndex: 1,
-            // itemStyle: {
-            //   color: '#7fbe9e',
-            // },
+            itemStyle: {
+              color: '#777777',
+            },
             large: true,
             encode: {
               x: 0,
