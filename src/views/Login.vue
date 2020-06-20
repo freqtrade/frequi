@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import userService from '@/shared/userService';
 
 export default {
   name: 'Login',
@@ -73,8 +73,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions('user', ['login']),
-
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();
       this.nameState = valid;
@@ -97,8 +95,7 @@ export default {
         return;
       }
       // Push the name to submitted names
-      this.login(this.auth);
-      // localStorage.setItem('auth', JSON.stringify(this.auth));
+      userService.login(this.auth);
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide('modal-prevent-closing');

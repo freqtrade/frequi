@@ -36,15 +36,18 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import Login from '@/views/Login.vue';
+import userService from '@/shared/userService';
 import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
 
 export default {
   name: 'NavBar',
   components: { Login, BootswatchThemeSelect },
   computed: {
-    ...mapState('user', ['loggedIn']),
+    loggedIn() {
+      return userService.loggedIn();
+    },
   },
   methods: {
     ...mapActions('user', ['logout']),

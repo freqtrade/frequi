@@ -1,9 +1,7 @@
 import axios from 'axios';
-import store from '../store';
+import userService from './userService';
 
 export const apiBase = '/api/v1';
-
-export const apiStore = { store: store };
 
 export const api = axios.create({
   baseURL: apiBase,
@@ -15,7 +13,7 @@ api.interceptors.request.use(
   (config) => {
     const custconfig = config;
     // Merge custconfig dicts
-    custconfig.headers = { ...config.headers, ...apiStore.store.getters['user/apiAuth'] };
+    custconfig.headers = { ...config.headers, ...userService.getAuthHeader() };
     // Do something before request is sent
     // console.log(custconfig)
     return custconfig;
@@ -30,7 +28,7 @@ api.interceptors.response.use(
     console.log(err);
     if (err.response && err.response.status === 401) {
       console.log('Dispatching refresh_token...');
-      apiStore.store.dispatch('user/refreshToken');
+      userService.refreshToken();
       // maybe redirect to /login if needed !
     }
     return new Promise((resolve, reject) => {
