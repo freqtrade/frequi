@@ -7,7 +7,7 @@
       <div class="col-mb-2"></div>
     </div>
     <div class="row">
-      <CandleChart :pair="pair" :timeframe="timeframe"> </CandleChart>
+      <CandleChart :pair="pair" :timeframe="timeframe" :dataset="dataset"> </CandleChart>
     </div>
   </div>
 </template>
@@ -29,7 +29,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('ftbot', ['whitelist']),
+    ...mapState('ftbot', ['whitelist', 'history']),
+    dataset() {
+      return this.history[`${this.pair}__${this.timeframe}`];
+    },
   },
   mounted() {
     this.getWhitelist();

@@ -9,9 +9,9 @@
 <script>
 import ECharts from 'vue-echarts';
 import 'echarts';
-import { mapState } from 'vuex';
 
-const MARGINLEFT = '8%';
+const MARGINLEFT = '5%';
+const MARGINRIGHT = '5%';
 
 // TODO plotConfig should come from the backend, or be configurable via UI
 const plotConfig = {
@@ -35,13 +35,15 @@ export default {
   props: {
     pair: {
       type: String,
-      required: false,
-      default: 'XRP/USDT',
+      required: true,
     },
     timeframe: {
       type: String,
-      required: false,
-      default: '5m',
+      required: true,
+    },
+    dataset: {
+      type: Object,
+      required: true,
     },
   },
 
@@ -49,13 +51,10 @@ export default {
     return {};
   },
   computed: {
-    ...mapState('ftbot', ['history']),
     hasData() {
       return this.dataset !== null;
     },
-    dataset() {
-      return this.history[`${this.pair}__${this.timeframe}`];
-    },
+
     chartOptions() {
       if (!this.hasData) {
         return {};
@@ -116,7 +115,7 @@ export default {
           subPlots.xaxisIndex.push(plotIndex);
           subPlots.grid.push({
             left: MARGINLEFT,
-            right: '5%',
+            right: MARGINRIGHT,
             bottom: `${(plotIndex - 1) * 50}px`,
             height: '8%',
           });
@@ -232,14 +231,14 @@ export default {
         grid: [
           {
             left: MARGINLEFT,
-            right: '5%',
+            right: MARGINRIGHT,
             // height: '50%',
             bottom: '150px',
           },
           {
             // Volume
             left: MARGINLEFT,
-            right: '5%',
+            right: MARGINRIGHT,
             bottom: '20%',
             height: '80px',
           },
