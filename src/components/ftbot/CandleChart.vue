@@ -11,6 +11,24 @@ import ECharts from 'vue-echarts';
 import 'echarts';
 import { mapState } from 'vuex';
 
+const MARGINLEFT = '8%';
+
+// TODO plotConfig should come from the backend, or be configurable via UI
+const plotConfig = {
+  main_plot: {
+    tema: { color: 'orange' },
+  },
+  subplots: {
+    MACD: {
+      macd: { color: 'blue' },
+      macdsignal: { color: 'orange' },
+    },
+    RSI: {
+      rsi: { color: 'red' },
+    },
+  },
+};
+
 export default {
   name: 'CandleChart',
   components: { 'v-chart': ECharts },
@@ -38,6 +56,7 @@ export default {
       const downColor = '#ec0000';
       const downBorderColor = '#8A0000';
       console.log(`Available Columns: ${this.dataset.columns}`);
+      // Find default columns (sequence might be different, depending on the strategy)
       const colDate = this.dataset.columns.findIndex((el) => el === 'date');
       const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
       const colHigh = this.dataset.columns.findIndex((el) => el === 'high');
@@ -46,35 +65,102 @@ export default {
       const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
       const colBuy = this.dataset.columns.findIndex((el) => el === 'buy');
       const colSell = this.dataset.columns.findIndex((el) => el === 'sell');
+      // Plot data
       const buyData = [];
       const sellData = [];
+
+      const subPlots = {
+        legend: [],
+        grid: [],
+        yaxis: [],
+        xaxis: [],
+        xaxisIndex: [],
+        series: [],
+      };
+
+      if ('subplots' in plotConfig) {
+        let plotIndex = 2;
+        Object.entries(plotConfig.subplots).forEach(([key, value]) => {
+          subPlots.legend.push(key);
+          // define yaxis
+          subPlots.yaxis.push({
+            scale: true,
+            gridIndex: plotIndex,
+            name: key,
+            nameLocation: 'middle',
+            nameGap: 60,
+            axisLabel: { show: true },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+          });
+          subPlots.xaxis.push({
+            scale: true,
+            gridIndex: plotIndex,
+            boundaryGap: false,
+            axisLine: { onZero: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+            axisLabel: { show: false },
+            splitNumber: 20,
+          });
+          subPlots.xaxisIndex.push(plotIndex);
+          subPlots.grid.push({
+            left: MARGINLEFT,
+            right: '5%',
+            bottom: `${(plotIndex - 1) * 50}px`,
+            height: '8%',
+          });
+          Object.entries(value).forEach(([sk, sv]) => {
+            // entries per subplot
+            const col = this.dataset.columns.findIndex((el) => el === sk);
+            if (col) {
+              const sp = {
+                name: key,
+                type: 'line',
+                xAxisIndex: plotIndex,
+                yAxisIndex: plotIndex,
+                itemStyle: {
+                  color: sv.color,
+                },
+                encode: {
+                  x: colDate,
+                  y: col,
+                },
+              };
+              subPlots.series.push(sp);
+              console.log(subPlots);
+            } else {
+              console.log(`element ${sk} was not found in the columns.`);
+            }
+          });
+
+          plotIndex += 1;
+        });
+      }
       // Generate Buy and sell array (using open rate to display marker)
       for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
         if (this.dataset.data[i][colBuy] === 1) {
-          console.log(this.dataset.data[i][colBuy]);
           buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
         }
         if (this.dataset.data[i][colSell] === 1) {
           sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
         }
       }
-      console.log(this.dataset.data);
-      console.log('buy');
-      console.log(buyData);
-      console.log('sell');
-      console.log(sellData);
+      // console.log(this.dataset.data);
+
       return {
         title: {
           text: `${this.pair} - ${this.timeframe}`,
           show: true,
         },
-        backgroundColor: '231202D',
+        backgroundColor: '#231202D',
         dataset: {
           source: this.dataset.data,
         },
         animation: false,
         legend: {
-          data: ['Candles', 'Volume', 'Buy', 'Sell'],
+          data: ['Candles', 'Volume', 'Buy', 'Sell', ...subPlots.legend],
         },
         tooltip: {
           trigger: 'axis',
@@ -117,6 +203,7 @@ export default {
             min: 'dataMin',
             max: 'dataMax',
           },
+          ...subPlots.xaxis,
         ],
         yAxis: [
           {
@@ -131,31 +218,34 @@ export default {
             axisTick: { show: false },
             splitLine: { show: false },
           },
+          ...subPlots.yaxis,
         ],
         grid: [
           {
-            left: '5%',
+            left: MARGINLEFT,
             right: '5%',
             // height: '50%',
             bottom: '150px',
           },
           {
-            left: '5%',
+            // Volume
+            left: MARGINLEFT,
             right: '5%',
-            bottom: '50px',
+            bottom: '20%',
             height: '80px',
           },
+          ...subPlots.grid,
         ],
         dataZoom: [
           {
             type: 'inside',
-            xAxisIndex: [0, 1],
+            xAxisIndex: [0, 1, ...subPlots.xaxisIndex],
             start: 50,
             end: 100,
           },
           {
             show: true,
-            xAxisIndex: [0, 1],
+            xAxisIndex: [0, 1, ...subPlots.xaxisIndex],
             type: 'slider',
             bottom: 10,
             start: 10,
@@ -239,6 +329,7 @@ export default {
               y: 1,
             },
           },
+          ...subPlots.series,
         ],
       };
     },
