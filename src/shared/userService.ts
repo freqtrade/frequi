@@ -37,7 +37,7 @@ export default {
       )
       .then((result) => {
         console.log(result.data);
-
+        this.setAPIUrl(auth.url);
         if (result.data.access_token) {
           this.setAccessToken(result.data.access_token);
         }
@@ -51,6 +51,8 @@ export default {
   refreshToken() {
     console.log('Refreshing token...');
     const token = JSON.parse(localStorage.getItem(AUTH_REF_TOKEN) || '{}');
+    const apiurl = this.getAPIUrl();
+    console.log(apiurl);
     axios
       .post(
         `${this.getAPIUrl()}/token/refresh`,

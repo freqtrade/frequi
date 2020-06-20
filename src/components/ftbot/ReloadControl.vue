@@ -32,6 +32,7 @@ export default {
       console.log('Starting automatic refresh.');
       this.refreshFrequent();
       this.refreshInterval = setInterval(() => {
+        console.log('refreshing_interval');
         this.refreshFrequent();
       }, 5000);
       this.refreshSlow();
@@ -41,7 +42,7 @@ export default {
     },
     stopRefresh() {
       console.log('Stopping automatic refresh.');
-      clearInterval(this.refreshinterval);
+      clearInterval(this.refreshInterval);
       clearInterval(this.refreshIntervalSlow);
     },
   },
