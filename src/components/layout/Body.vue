@@ -5,13 +5,12 @@
   </main>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import BotAlerts from '@/components/ftbot/BotAlerts.vue';
 
-export default {
-  name: 'Body',
-  components: {
-    BotAlerts,
-  },
-};
+@Component({
+  components: { BotAlerts },
+})
+export default class Body extends Vue {}
 </script>
