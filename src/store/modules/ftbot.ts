@@ -1,4 +1,4 @@
-import { api } from '@/shared/apiService';
+import { api } from '../../shared/apiService';
 
 export default {
   namespaced: true,

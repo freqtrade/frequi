@@ -1,8 +1,9 @@
 import axios from 'axios';
+import store from '../store';
 
 export const apiBase = '/api/v1';
 
-export const apiStore = { store: null };
+export const apiStore = { store: store };
 
 export const api = axios.create({
   baseURL: apiBase,
