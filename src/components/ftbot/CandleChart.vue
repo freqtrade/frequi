@@ -11,7 +11,7 @@ import ECharts from 'vue-echarts';
 import 'echarts';
 
 const MARGINLEFT = '5%';
-const MARGINRIGHT = '5%';
+const MARGINRIGHT = '4%';
 
 // TODO plotConfig should come from the backend, or be configurable via UI
 const plotConfig = {
@@ -232,8 +232,9 @@ export default {
           {
             left: MARGINLEFT,
             right: MARGINRIGHT,
-            // height: '50%',
-            bottom: '150px',
+            height: '60%',
+            // top: '0px',
+            // bottom: '150px',
           },
           {
             // Volume
