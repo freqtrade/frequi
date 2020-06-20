@@ -38,7 +38,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Login from '@/views/Login.vue';
-import userService from '@/shared/userService';
+import userService from '../../shared/userService';
 import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
 
 @Component({

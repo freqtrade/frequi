@@ -60,7 +60,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import { mapState, mapGetters } from 'vuex';
 
 import TradeList from '@/components/ftbot/TradeList.vue';
@@ -73,8 +74,7 @@ import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 
-export default {
-  name: 'Trade',
+@Component({
   components: {
     TradeList,
     Performance,
@@ -86,12 +86,12 @@ export default {
     TradeDetail,
     ReloadControl,
   },
-
   computed: {
     ...mapState('ftbot', ['open_trades', 'detailTradeId']),
     ...mapGetters('ftbot', ['openTrades', 'closedtrades', 'openTradeDetail']),
   },
-};
+})
+export default class Trade extends Vue {}
 </script>
 
 <style scoped>
