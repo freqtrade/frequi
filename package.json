@@ -14,6 +14,7 @@
     "bootstrap-vue": "^2.14.0",
     "bootswatch": "^4.5.0",
     "core-js": "^3.6.4",
+    "moment": "^2.26.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.0.0",
@@ -42,8 +43,8 @@
     "popper.js": "^1.16.0",
     "portal-vue": "^2.1.6",
     "prettier": "^2.0.5",
-    "sass": "^1.19.0",
-    "sass-loader": "^8.0.0",
+    "sass": "^1.26.8",
+    "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-bootstrap-vue": "~0.6.0",
     "vue-template-compiler": "^2.6.11"

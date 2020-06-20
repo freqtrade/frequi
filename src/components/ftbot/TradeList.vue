@@ -1,7 +1,6 @@
 <template>
-  <div class="card">
-    <div class="card-header">{{ title }}</div>
-    <div class="card-body">
+  <b-card :header="title" no-body>
+    <b-card-body>
       <b-table
         class="table-sm"
         :items="trades"
@@ -14,6 +13,7 @@
           <b-button size="sm" @click="forcesellHandler(row.item, row.index, $event.target)">
             Forcesell
           </b-button>
+          <b-button size="sm" @click="showDetails(row.item)">D</b-button>
         </template>
         <template v-slot:cell(pair)="row">
           <span class="mr-1" v-html="profitSymbol(row.item)"></span>
@@ -22,12 +22,13 @@
           </span>
         </template>
       </b-table>
-    </div>
-  </div>
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations, mapGetters, mapState } from 'vuex';
+import { formatPercent } from '@/shared/formatters';
 
 export default {
   name: 'TradeList',
@@ -51,6 +52,10 @@ export default {
       required: false,
       default: 'No Trades to show.',
     },
+  },
+  computed: {
+    ...mapGetters('ftbot', ['openTradeDetail']),
+    ...mapState('ftbot', ['detailTradeId']),
   },
   data() {
     return {
@@ -77,9 +82,9 @@ export default {
   },
   methods: {
     ...mapActions('ftbot', ['forcesell']),
-    formatPercent(value) {
-      return `${(value * 100).toFixed(3)}%`;
-    },
+    ...mapMutations('ftbot', ['setDetailTrade']),
+
+    formatPercent,
     profitSymbol(item) {
       // Red arrow / green circle
       return item.close_profit < 0 || item.current_profit < 0 ? `&#x1F534;` : `&#x1F7E2;`;
@@ -97,6 +102,13 @@ export default {
       event.preventDefault();
       // log the selected item to the console
       console.log(item);
+    },
+    showDetails(trade) {
+      if (this.detailTradeId === trade.trade_id) {
+        this.setDetailTrade(null);
+      } else {
+        this.setDetailTrade(trade);
+      }
     },
   },
 };

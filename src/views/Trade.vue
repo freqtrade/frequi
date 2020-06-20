@@ -5,15 +5,7 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
-              <div>
-                <button @click="refreshAll()" class="btn btn-secondary">
-                  Refresh all
-                </button>
-
-                <b-form-checkbox class="float-right" v-model="autoRefresh" size="lg" switch
-                  >AutoRefresh</b-form-checkbox
-                >
-              </div>
+              <ReloadControl />
               <BotControls class="mt-3" />
             </div>
             <div class="col-md-12">
@@ -58,7 +50,9 @@
               :trades="closedtrades"
               title="Trade history"
               emptyText="No closed trades so far."
+              v-if="!detailTradeId"
             />
+            <TradeDetail v-if="detailTradeId" :trade="openTradeDetail"></TradeDetail>
           </div>
         </div>
       </div>
@@ -67,7 +61,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import TradeList from '@/components/ftbot/TradeList.vue';
 import Performance from '@/components/ftbot/Performance.vue';
@@ -76,6 +70,8 @@ import BotStatus from '@/components/ftbot/BotStatus.vue';
 import Balance from '@/components/ftbot/Balance.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
+import TradeDetail from '@/components/ftbot/TradeDetail.vue';
+import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 
 export default {
   name: 'Trade',
@@ -87,56 +83,13 @@ export default {
     Balance,
     DailyStats,
     FTBotAPIPairList,
+    TradeDetail,
+    ReloadControl,
   },
-  created() {
-    this.refreshOnce();
-    this.refreshAll();
-  },
-  data() {
-    return {
-      autoRefresh: true,
-      refreshInterval: null,
-      refreshIntervalSlow: null,
-    };
-  },
+
   computed: {
-    ...mapState('ftbot', ['open_trades']),
-    ...mapGetters('ftbot', ['openTrades', 'closedtrades']),
-  },
-  methods: {
-    ...mapActions(['refreshSlow', 'refreshFrequent', 'refreshAll', 'refreshOnce']),
-    // ...mapActions('ftbot', ['getTrades', 'getProfit', 'getState']),
-    startRefresh() {
-      console.log('Starting automatic refresh.');
-      this.refreshFrequent();
-      this.refreshInterval = setInterval(() => {
-        this.refreshFrequent();
-      }, 5000);
-      this.refreshSlow();
-      this.refreshIntervalSlow = setInterval(() => {
-        this.refreshSlow();
-      }, 60000);
-    },
-    stopRefresh() {
-      console.log('Stopping automatic refresh.');
-      clearInterval(this.refreshInterval);
-      clearInterval(this.refreshIntervalSlow);
-    },
-  },
-  mounted() {
-    this.startRefresh();
-  },
-  beforeDestroy() {
-    this.stopRefresh();
-  },
-  watch: {
-    autoRefresh(val) {
-      if (val) {
-        this.startRefresh();
-      } else {
-        this.stopRefresh();
-      }
-    },
+    ...mapState('ftbot', ['open_trades', 'detailTradeId']),
+    ...mapGetters('ftbot', ['openTrades', 'closedtrades', 'openTradeDetail']),
   },
 };
 </script>

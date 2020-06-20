@@ -22,7 +22,15 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+
+
+RUN yarn global add @vue/cli
+
+USER $USERNAME
+
 ENV HOME /home/$USERNAME
+
+RUN mkdir -p $HOME/frequi/node_modules
 
 WORKDIR $HOME/frequi
 
@@ -30,9 +38,6 @@ COPY ./package.json .
 
 # install dependencies
 RUN yarn install
-RUN yarn global add @vue/cli
-
-USER $USERNAME
 
 EXPOSE 8080
 

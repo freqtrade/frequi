@@ -15,11 +15,16 @@ export default {
     balance: {},
     dailyStats: [],
     pairlistMethods: [],
+    detailTradeId: null,
   },
   getters: {
     openTrades(state) {
       return state.openTrades;
       // return state.trades.filter((item) => item.is_open);
+    },
+    openTradeDetail(state) {
+      const [dTrade] = state.openTrades.filter((item) => item.trade_id === state.detailTradeId);
+      return dTrade;
     },
     closedtrades(state) {
       return state.trades.filter((item) => !item.is_open);
@@ -57,6 +62,9 @@ export default {
     },
     updateVersion(state, version) {
       state.version = version.version;
+    },
+    setDetailTrade(state, trade) {
+      state.detailTradeId = trade ? trade.trade_id : null;
     },
   },
   actions: {
@@ -139,7 +147,7 @@ export default {
       return api.post('/stopbuy', {}).catch(console.error);
     },
     reloadConfig() {
-      return api.post('/reload_conf', {}).catch(console.error);
+      return api.post('/reload_config', {}).catch(console.error);
     },
     forcesell({ dispatch }, tradeid) {
       console.log(tradeid);

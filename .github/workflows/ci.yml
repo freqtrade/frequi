@@ -24,4 +24,4 @@ jobs:
 
     - name: Run Lint
       run: |
-        npm run lint-ci
+        yarn lint-ci
