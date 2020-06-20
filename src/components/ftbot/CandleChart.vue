@@ -32,12 +32,21 @@ const plotConfig = {
 export default {
   name: 'CandleChart',
   components: { 'v-chart': ECharts },
+  props: {
+    pair: {
+      type: String,
+      required: false,
+      default: 'XRP/USDT',
+    },
+    timeframe: {
+      type: String,
+      required: false,
+      default: '5m',
+    },
+  },
 
   data() {
-    return {
-      pair: 'XRP/USDT',
-      timeframe: '5m',
-    };
+    return {};
   },
   computed: {
     ...mapState('ftbot', ['history']),
