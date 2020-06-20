@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { timestampms } from '@/shared/formatters';
 import ECharts from 'vue-echarts';
 import 'echarts';
 
@@ -197,6 +198,11 @@ export default {
             splitNumber: 20,
             min: 'dataMin',
             max: 'dataMax',
+            axisLabel: {
+              formatter: (value) => {
+                return timestampms(value);
+              },
+            },
           },
           {
             type: 'category',
