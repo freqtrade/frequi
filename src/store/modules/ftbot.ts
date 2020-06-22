@@ -1,4 +1,4 @@
-import { api } from '@/shared/apiService';
+import { api } from '../../shared/apiService';
 
 export default {
   namespaced: true,
@@ -6,7 +6,7 @@ export default {
     version: '',
     trades: [],
     openTrades: [],
-    trade_count: 0,
+    tradeCount: 0,
     performanceStats: [],
     whitelist: [],
     blacklist: [],
@@ -33,7 +33,7 @@ export default {
   mutations: {
     updateTrades(state, trades) {
       state.trades = trades.trades;
-      state.trade_count = trades.trades_count;
+      state.tradeCount = trades.trades_count;
     },
     updateOpenTrades(state, trades) {
       state.openTrades = trades;

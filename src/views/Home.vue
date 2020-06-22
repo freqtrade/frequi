@@ -13,12 +13,11 @@
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
+<script lang='ts'>
+import { Component, Vue } from 'vue-property-decorator';
 
-export default {
-  name: 'Home',
-};
+@Component
+export default class Home extends Vue {}
 </script>
 
 <style scoped>

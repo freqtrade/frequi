@@ -4,7 +4,7 @@
       <b-table
         class="table-sm"
         :items="trades"
-        :fields="table_fields"
+        :fields="tableFields"
         @row-contextmenu="handleContextMenuEvent"
         show-empty
         :emptyText="emptyText"
@@ -59,7 +59,7 @@ export default {
   },
   data() {
     return {
-      table_fields: [
+      tableFields: [
         { key: 'trade_id', label: 'ID' },
         { key: 'pair', label: 'Pair' },
         { key: 'amount', label: 'Amount' },

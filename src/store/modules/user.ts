@@ -1,20 +1,20 @@
 import axios from 'axios';
 
-import { apiBase, setBaseUrl } from '@/shared/apiService';
+import { apiBase, setBaseUrl } from '../../shared/apiService';
 
 const AUTH_REF_TOKEN = 'auth_ref_token';
 const AUTH_ACCESS_TOKEN = 'auth_access_token';
 const AUTH_API_URL = 'auth_api_url';
 
-const initAccessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN));
+const initAccessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
 
 // Construct the api as "inserted URL" + /api/v1
-setBaseUrl(`${JSON.parse(localStorage.getItem(AUTH_API_URL))}`);
+setBaseUrl(`${JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}')}`);
 
 export default {
   namespaced: true,
   state: {
-    loggedIn: initAccessToken ? 1 !== 2 : false,
+    loggedIn: initAccessToken ? 'true' : false,
     accessToken: initAccessToken,
   },
   getters: {
@@ -45,7 +45,7 @@ export default {
       localStorage.setItem(AUTH_REF_TOKEN, JSON.stringify(token));
     },
     setLogin(state, tokens) {
-      localStorage.setItem('ftloggedin', true);
+      localStorage.setItem('ftloggedin', 'true');
       state.tokens = tokens;
       state.loggedIn = true;
     },
@@ -89,9 +89,9 @@ export default {
         })
         .catch(console.error);
     },
-    refresh_token({ commit, dispatch }) {
+    refreshToken({ commit, dispatch }) {
       console.log('Refreshing token...');
-      const token = JSON.parse(localStorage.getItem(AUTH_REF_TOKEN));
+      const token = JSON.parse(localStorage.getItem(AUTH_REF_TOKEN) || '{}');
       axios
         .post(
           `${apiBase}/token/refresh`,

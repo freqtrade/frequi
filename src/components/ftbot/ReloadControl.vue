@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       autoRefresh: true,
-      refresh_interval: null,
-      refresh_interval_slow: null,
+      refreshInterval: null,
+      refreshIntervalSlow: null,
     };
   },
   created() {
@@ -31,18 +31,19 @@ export default {
     startRefresh() {
       console.log('Starting automatic refresh.');
       this.refreshFrequent();
-      this.refresh_interval = setInterval(() => {
+      this.refreshInterval = setInterval(() => {
+        console.log('refreshing_interval');
         this.refreshFrequent();
       }, 5000);
       this.refreshSlow();
-      this.refresh_interval_slow = setInterval(() => {
+      this.refreshIntervalSlow = setInterval(() => {
         this.refreshSlow();
       }, 60000);
     },
     stopRefresh() {
       console.log('Stopping automatic refresh.');
-      clearInterval(this.refresh_interval);
-      clearInterval(this.refresh_interval_slow);
+      clearInterval(this.refreshInterval);
+      clearInterval(this.refreshIntervalSlow);
     },
   },
   mounted() {

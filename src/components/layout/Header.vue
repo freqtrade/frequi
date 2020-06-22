@@ -4,13 +4,14 @@
   </header>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import NavBar from './NavBar.vue';
 
-export default {
-  name: 'Header',
+@Component({
   components: { NavBar },
-};
+})
+export default class Header extends Vue {}
 </script>
 
 <style scoped>
