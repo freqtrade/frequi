@@ -41,7 +41,7 @@ api.interceptors.response.use(
   },
 );
 
-export function setBaseUrl(baseURL) {
+export function setBaseUrl(baseURL: string) {
   if (baseURL === null) {
     // Reset to "local" baseurl
     api.defaults.baseURL = apiBase;
@@ -52,3 +52,5 @@ export function setBaseUrl(baseURL) {
   }
   // Do some more testing here ?
 }
+
+setBaseUrl(userService.getAPIUrl());

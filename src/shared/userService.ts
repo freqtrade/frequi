@@ -5,6 +5,7 @@ const AUTH_ACCESS_TOKEN = 'auth_access_token';
 const AUTH_API_URL = 'auth_api_url';
 
 export default {
+  AUTH_API_URL,
   setAPIUrl(apiurl) {
     localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
   },
@@ -24,28 +25,24 @@ export default {
     localStorage.removeItem(AUTH_API_URL);
   },
 
-  login(auth) {
+  async login(auth) {
     //  Login using username / password
     console.log(auth);
-    axios
-      .post(
-        `${auth.url}/api/v1/token/login`,
-        {},
-        {
-          auth: { ...auth },
-        },
-      )
-      .then((result) => {
-        console.log(result.data);
-        this.setAPIUrl(auth.url);
-        if (result.data.access_token) {
-          this.setAccessToken(result.data.access_token);
-        }
-        if (result.data.refresh_token) {
-          this.setRefreshTokens(result.data.refresh_token);
-        }
-      })
-      .catch(console.error);
+    const result = await axios.post(
+      `${auth.url}/api/v1/token/login`,
+      {},
+      {
+        auth: { ...auth },
+      },
+    );
+    console.log(result.data);
+    this.setAPIUrl(auth.url);
+    if (result.data.access_token) {
+      this.setAccessToken(result.data.access_token);
+    }
+    if (result.data.refresh_token) {
+      this.setRefreshTokens(result.data.refresh_token);
+    }
   },
 
   refreshToken() {
@@ -77,8 +74,9 @@ export default {
     return localStorage.getItem(AUTH_ACCESS_TOKEN) !== null;
   },
 
-  getAPIUrl() {
-    return JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
+  getAPIUrl(): string {
+    const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
+    return typeof apiUrl === 'object' ? '' : apiUrl;
   },
 
   getAccessToken() {
