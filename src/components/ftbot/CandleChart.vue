@@ -16,6 +16,7 @@ const MARGINRIGHT = '4%';
 
 // TODO plotConfig should come from the backend, or be configurable via UI
 const plotConfig = {
+  // eslint-disable-next-line @typescript-eslint/camelcase
   main_plot: {
     tema: { color: 'orange' },
   },

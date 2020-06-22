@@ -12,39 +12,49 @@
   </div>
 </template>
 
-<script>
-import { mapActions, mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { mapActions } from 'vuex';
+import { namespace } from 'vuex-class';
 
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 
-export default {
-  name: 'Graphs',
-  components: {
-    CandleChart,
+const ftbot = namespace('ftbot');
+
+@Component({
+  components: { CandleChart },
+  methods: {
+    ...mapActions('ftbot', ['getPairHistory', 'getWhitelist']),
   },
-  data() {
-    return {
-      pair: 'XRP/USDT',
-      timeframe: '5m',
-    };
-  },
-  computed: {
-    ...mapState('ftbot', ['whitelist', 'history']),
-    dataset() {
-      return this.history[`${this.pair}__${this.timeframe}`];
-    },
-  },
+})
+export default class Graphs extends Vue {
+  pair = 'XRP/USDT';
+
+  timeframe = '5m';
+
+  @ftbot.State history;
+
+  @ftbot.State whitelist;
+
+  @ftbot.Action
+  public getPairHistory;
+
+  @ftbot.Action
+  public getWhitelist;
+
   mounted() {
     this.getWhitelist();
     this.refresh();
-  },
-  methods: {
-    ...mapActions('ftbot', ['getPairHistory', 'getWhitelist']),
-    refresh() {
-      this.getPairHistory({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
-    },
-  },
-};
+  }
+
+  get dataset() {
+    return this.history[`${this.pair}__${this.timeframe}`];
+  }
+
+  refresh() {
+    this.getPairHistory({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+  }
+}
 </script>
 
 <style scoped></style>
