@@ -31,6 +31,9 @@ api.interceptors.response.use(
       userService.refreshToken();
       // maybe redirect to /login if needed !
     }
+    if (err.response && err.response.status === 500) {
+      console.log('Bot seems to be offline...');
+    }
     return new Promise((resolve, reject) => {
       reject(err);
     });
