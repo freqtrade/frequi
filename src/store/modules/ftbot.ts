@@ -1,5 +1,13 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload, Trade } from '@/types';
+import {
+  BotState,
+  BlacklistPayload,
+  ForcebuyPayload,
+  Logs,
+  DailyPayload,
+  Trade,
+  PairHistoryPayload,
+} from '@/types';
 
 import { showAlert } from './alerts';
 
@@ -113,7 +121,7 @@ export default {
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
-    getPairHistory({ commit }, payload) {
+    getPairHistory({ commit }, payload: PairHistoryPayload) {
       if (payload.pair && payload.timeframe && payload.limit) {
         return api
           .get('/pair_history', {

@@ -137,3 +137,9 @@ export interface ClosedTrade extends Trade {
   initial_stop_loss_pct?: number;
   open_order_id?: string;
 }
+
+export interface PairHistoryPayload {
+  pair: string;
+  timeframe: string;
+  limit: number;
+}
