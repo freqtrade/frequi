@@ -78,6 +78,27 @@ export default {
         series: [],
       };
 
+      if ('main_plot' in this.plotConfig) {
+        Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
+          const col = this.dataset.columns.findIndex((el) => el === key);
+          subPlots.legend.push(key);
+          const sp = {
+            name: key,
+            type: 'line',
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: value.color,
+            },
+            encode: {
+              x: colDate,
+              y: col,
+            },
+          };
+          subPlots.series.push(sp);
+        });
+      }
+
       if ('subplots' in this.plotConfig) {
         let plotIndex = 2;
         Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
