@@ -3,8 +3,10 @@ import axios from 'axios';
 const AUTH_REF_TOKEN = 'auth_ref_token';
 const AUTH_ACCESS_TOKEN = 'auth_access_token';
 const AUTH_API_URL = 'auth_api_url';
+const apiBase = '/api/v1';
 
 export default {
+  apiBase,
   AUTH_API_URL,
   setAPIUrl(apiurl) {
     localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
@@ -52,7 +54,7 @@ export default {
     console.log(apiurl);
     axios
       .post(
-        `${this.getAPIUrl()}/token/refresh`,
+        `${this.getAPIUrl()}/${apiBase}/token/refresh`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -1,11 +1,9 @@
 import axios from 'axios';
 import userService from './userService';
 
-export const apiBase = '/api/v1';
-
 export const api = axios.create({
-  baseURL: apiBase,
-  timeout: 1000,
+  baseURL: userService.apiBase,
+  timeout: 2000,
   withCredentials: true,
 });
 
@@ -43,11 +41,11 @@ api.interceptors.response.use(
 export function setBaseUrl(baseURL: string) {
   if (baseURL === null) {
     // Reset to "local" baseurl
-    api.defaults.baseURL = apiBase;
-  } else if (!baseURL.endsWith(apiBase)) {
-    api.defaults.baseURL = `${baseURL}${apiBase}`;
+    api.defaults.baseURL = userService.apiBase;
+  } else if (!baseURL.endsWith(userService.apiBase)) {
+    api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
   } else {
-    api.defaults.baseURL = `${baseURL}`;
+    api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
   }
   // Do some more testing here ?
 }
