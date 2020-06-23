@@ -63,10 +63,14 @@ export default {
           this.setAccessToken(result.data.access_token);
         }
       })
-      .catch((error) => {
-        console.error(error);
-        // in case of errors when using the refresh token - logout.
-        this.logout();
+      .catch((err) => {
+        console.error(err);
+        if (err.response && err.response.status === 401) {
+          // in case of errors when using the refresh token - logout.
+          this.logout();
+        } else if (err.response && (err.response.status === 500 || err.response.status === 404)) {
+          console.log('Bot seems to be offline... - retrying later');
+        }
       });
   },
 
