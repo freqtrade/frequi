@@ -20,11 +20,27 @@
           </b-form-group>
         </div>
         <div class="col-mb-3 ml-2">
-          <b-form-group label-cols="auto" label="Target field" label-for="columnSelector">
-            <b-form-select id="FieldSel" :options="plotsegments" v-model="selField">
-            </b-form-select>
+          <b-form-group label-cols="auto" label="Plot Section" label-for="FieldSel">
+            <b-form-radio v-model="plotOption" name="plot_section" value="main_plot">
+              Main Plot
+            </b-form-radio>
+            <b-form-radio v-model="plotOption" name="plot_section" value="subplots">
+              Subplots
+            </b-form-radio>
           </b-form-group>
         </div>
+        <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
+          <b-form-group label-cols="auto" label="Target field" label-for="FieldSel">
+            <b-form-select id="FieldSel" :options="subplots" v-model="selField"> </b-form-select>
+          </b-form-group>
+        </div>
+
+        <div class="col-mb-3 ml-2">
+          <b-form-group label-cols="auto" label="Color" label-for="colsel">
+            <b-form-input id="colsel" v-model="selColor"></b-form-input>
+          </b-form-group>
+        </div>
+
         <div class="col-mb-3 ml-2">
           <b-button variant="primary" @click="addBar">Add</b-button>
         </div>
@@ -45,8 +61,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-
 import CandleChart from '@/components/ftbot/CandleChart.vue';
+import randomColor from '../shared/randomColor';
 
 const ftbot = namespace('ftbot');
 
@@ -64,8 +80,11 @@ export default class Graphs extends Vue {
 
   selField = '';
 
-  selColor = '#FFFF00';
+  plotOption = 'main_plot';
 
+  selColor = randomColor();
+
+  // Custom plot config - manually changed by user.
   customPlotConfig = {};
 
   @ftbot.State history;
@@ -86,6 +105,8 @@ export default class Graphs extends Vue {
   mounted() {
     this.getWhitelist();
     this.refresh();
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    this.customPlotConfig = this.plotConfig || { main_plot: {}, subplots: {} };
   }
 
   get selectedPlotConfig() {
@@ -96,8 +117,9 @@ export default class Graphs extends Vue {
     return this.history[`${this.pair}__${this.timeframe}`];
   }
 
-  get plotsegments() {
-    return Object.keys(this.plotConfig);
+  get subplots() {
+    // Subplot keys (for selection window)
+    return Object.keys(this.plotConfig.subplots);
   }
 
   refresh() {
@@ -107,13 +129,20 @@ export default class Graphs extends Vue {
   }
 
   addBar() {
-    console.log('Add clicked');
-    console.log(this.selColumn);
-    console.log(this.selField);
-    console.log(this.plotConfig);
+    console.log(`Adding ${this.selColumn} to ${this.selField}`);
+    console.log(this.customPlotConfig);
 
-    this.plotConfig[this.selField][this.selColumn] = { color: this.selColor };
-    console.log(this.plotConfig);
+    const plotConfig = this.customPlotConfig;
+    if (this.plotOption === 'main_plot') {
+      plotConfig[this.plotOption][this.selColumn] = { color: this.selColor };
+    } else {
+      plotConfig[this.plotOption][this.selField][this.selColumn] = { color: this.selColor };
+    }
+
+    this.customPlotConfig = { ...plotConfig };
+    // Reset random color
+    this.selColor = randomColor();
+    console.log(this.customPlotConfig);
   }
 }
 </script>
