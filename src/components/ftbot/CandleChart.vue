@@ -9,6 +9,7 @@
 <script>
 import { timestampms } from '@/shared/formatters';
 import ECharts from 'vue-echarts';
+import randomColor from '../../shared/randomColor';
 import 'echarts';
 
 const MARGINLEFT = '5%';
@@ -103,7 +104,6 @@ export default {
       if ('subplots' in this.plotConfig) {
         let plotIndex = 2;
         Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
-          subPlots.legend.push(key);
           // define yaxis
           subPlots.yaxis.push({
             scale: true,
@@ -134,16 +134,17 @@ export default {
             height: '8%',
           });
           Object.entries(value).forEach(([sk, sv]) => {
+            subPlots.legend.push(sk);
             // entries per subplot
             const col = this.dataset.columns.findIndex((el) => el === sk);
             if (col) {
               const sp = {
-                name: key,
+                name: sk,
                 type: 'line',
                 xAxisIndex: plotIndex,
                 yAxisIndex: plotIndex,
                 itemStyle: {
-                  color: sv.color,
+                  color: sv.color || randomColor(),
                 },
                 encode: {
                   x: colDate,
