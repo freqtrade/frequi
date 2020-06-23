@@ -7,6 +7,7 @@ import {
   DailyPayload,
   Trade,
   PairHistoryPayload,
+  PlotConfig,
 } from '@/types';
 
 import { showAlert } from './alerts';
@@ -35,6 +36,7 @@ export default {
     pairlistMethods: [],
     detailTradeId: null,
     history: {},
+    plotConfig: {},
   },
   getters: {
     [BotStoreGetters.openTrades](state) {
@@ -93,6 +95,9 @@ export default {
     updatePairHistory(state, { pair, timeframe, data }) {
       state.history = { ...state.history, [`${pair}__${timeframe}`]: data };
     },
+    updatePlotConfig(state, plotConfig: PlotConfig) {
+      state.plotConfig = plotConfig;
+    },
   },
   actions: {
     ping({ commit, rootState }) {
@@ -142,6 +147,12 @@ export default {
       return new Promise((resolve, reject) => {
         reject(error);
       });
+    },
+    getPlotConfig({ commit }) {
+      return api
+        .get('/plot_config')
+        .then((result) => commit('updatePlotConfig', result.data))
+        .catch(console.error);
     },
     getPerformance({ commit }) {
       return api

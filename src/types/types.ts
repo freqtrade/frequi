@@ -143,3 +143,8 @@ export interface PairHistoryPayload {
   timeframe: string;
   limit: number;
 }
+
+export interface PlotConfig {
+  main_plot?: object;
+  subplots?: object;
+}

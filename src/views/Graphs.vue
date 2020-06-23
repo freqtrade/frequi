@@ -7,14 +7,14 @@
       <div class="col-mb-2"></div>
     </div>
     <div class="row">
-      <CandleChart :pair="pair" :timeframe="timeframe" :dataset="dataset"> </CandleChart>
+      <CandleChart :pair="pair" :timeframe="timeframe" :dataset="dataset" :plotConfig="plotConfig">
+      </CandleChart>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapActions } from 'vuex';
 import { namespace } from 'vuex-class';
 
 import CandleChart from '@/components/ftbot/CandleChart.vue';
@@ -23,9 +23,6 @@ const ftbot = namespace('ftbot');
 
 @Component({
   components: { CandleChart },
-  methods: {
-    ...mapActions('ftbot', ['getPairHistory', 'getWhitelist']),
-  },
 })
 export default class Graphs extends Vue {
   pair = 'XRP/USDT';
@@ -36,11 +33,16 @@ export default class Graphs extends Vue {
 
   @ftbot.State whitelist;
 
+  @ftbot.State plotConfig;
+
   @ftbot.Action
   public getPairHistory;
 
   @ftbot.Action
   public getWhitelist;
+
+  @ftbot.Action
+  public getPlotConfig;
 
   mounted() {
     this.getWhitelist();
@@ -53,6 +55,8 @@ export default class Graphs extends Vue {
 
   refresh() {
     this.getPairHistory({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+
+    this.getPlotConfig();
   }
 }
 </script>

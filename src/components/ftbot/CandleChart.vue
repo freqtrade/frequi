@@ -14,23 +14,6 @@ import 'echarts';
 const MARGINLEFT = '5%';
 const MARGINRIGHT = '4%';
 
-// TODO plotConfig should come from the backend, or be configurable via UI
-const plotConfig = {
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  main_plot: {
-    tema: { color: 'orange' },
-  },
-  subplots: {
-    MACD: {
-      macd: { color: 'blue' },
-      macdsignal: { color: 'orange' },
-    },
-    RSI: {
-      rsi: { color: 'red' },
-    },
-  },
-};
-
 export default {
   name: 'CandleChart',
   components: { 'v-chart': ECharts },
@@ -46,6 +29,13 @@ export default {
     dataset: {
       type: Object,
       required: true,
+    },
+    plotConfig: {
+      type: Object,
+      required: false,
+      default() {
+        return {};
+      },
     },
   },
 
@@ -88,9 +78,9 @@ export default {
         series: [],
       };
 
-      if ('subplots' in plotConfig) {
+      if ('subplots' in this.plotConfig) {
         let plotIndex = 2;
-        Object.entries(plotConfig.subplots).forEach(([key, value]) => {
+        Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
           subPlots.legend.push(key);
           // define yaxis
           subPlots.yaxis.push({
