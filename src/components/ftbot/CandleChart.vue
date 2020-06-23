@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     hasData() {
-      return this.dataset !== null;
+      return this.dataset !== null && typeof this.dataset === 'object';
     },
 
     chartOptions() {
@@ -94,6 +94,7 @@ export default {
               x: colDate,
               y: col,
             },
+            showSymbol: false,
           };
           subPlots.series.push(sp);
         });
@@ -148,6 +149,7 @@ export default {
                   x: colDate,
                   y: col,
                 },
+                showSymbol: false,
               };
               subPlots.series.push(sp);
               console.log(subPlots);
