@@ -144,7 +144,11 @@ export interface PairHistoryPayload {
   limit: number;
 }
 
+export interface IndicatorConfig {
+  color?: string;
+}
+
 export interface PlotConfig {
-  main_plot?: object;
-  subplots?: object;
+  main_plot: Record<string, IndicatorConfig>;
+  subplots: Record<string, Record<string, IndicatorConfig>>;
 }
