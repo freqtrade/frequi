@@ -14,8 +14,13 @@ import { PlotConfig } from '../../store/types';
 import randomColor from '../../shared/randomColor';
 import 'echarts';
 
+// Chart default options
 const MARGINLEFT = '5%';
 const MARGINRIGHT = '4%';
+const upColor = '#00da3c';
+const upBorderColor = '#008F28';
+const downColor = '#ec0000';
+const downBorderColor = '#8A0000';
 
 @Component({
   components: { 'v-chart': ECharts },
@@ -37,10 +42,7 @@ export default class CandleChart extends Vue {
     if (!this.hasData) {
       return {};
     }
-    const upColor = '#00da3c';
-    const upBorderColor = '#008F28';
-    const downColor = '#ec0000';
-    const downBorderColor = '#8A0000';
+
     console.log(`Available Columns: ${this.dataset.columns}`);
     // Find default columns (sequence might be different, depending on the strategy)
     const colDate = this.dataset.columns.findIndex((el) => el === 'date');
@@ -55,6 +57,7 @@ export default class CandleChart extends Vue {
     const buyData = [] as Array<number>[];
     const sellData = [] as Array<number>[];
 
+    // This will be merged into final plot config
     const subPlots = {
       legend: [] as string[],
       grid: [] as object[],
