@@ -34,6 +34,13 @@ export default class CandleChart extends Vue {
 
   @Prop({ required: false }) readonly plotConfig!: PlotConfig;
 
+  // Only recalculate buy / sell data if necessary
+  signalsCalculated = false;
+
+  buyData = [] as Array<number>[];
+
+  sellData = [] as Array<number>[];
+
   get hasData() {
     return this.dataset !== null && typeof this.dataset === 'object';
   }
@@ -54,8 +61,8 @@ export default class CandleChart extends Vue {
     const colBuy = this.dataset.columns.findIndex((el) => el === 'buy');
     const colSell = this.dataset.columns.findIndex((el) => el === 'sell');
     // Plot data
-    const buyData = [] as Array<number>[];
-    const sellData = [] as Array<number>[];
+
+    this.createSignalData(colDate, colOpen, colBuy, colSell);
 
     // This will be merged into final plot config
     const subPlots = {
@@ -150,17 +157,9 @@ export default class CandleChart extends Vue {
         plotIndex += 1;
       });
     }
-    // Generate Buy and sell array (using open rate to display marker)
-    for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
-      if (this.dataset.data[i][colBuy] === 1) {
-        buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-      }
-      if (this.dataset.data[i][colSell] === 1) {
-        sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-      }
-    }
-    // console.log(this.dataset.data);
 
+    // console.log(this.dataset.data);
+    // TODO: Rebuilding this causes a full redraw for every new step
     return {
       title: {
         text: `${this.pair} - ${this.timeframe}`,
@@ -321,7 +320,7 @@ export default class CandleChart extends Vue {
           name: 'Buy',
           type: 'scatter',
           symbol: 'triangle',
-          data: buyData,
+          data: this.buyData,
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
@@ -335,7 +334,7 @@ export default class CandleChart extends Vue {
         {
           name: 'Sell',
           type: 'scatter',
-          data: sellData,
+          data: this.sellData,
           symbol: 'diamond',
           xAxisIndex: 0,
           yAxisIndex: 0,
@@ -350,6 +349,22 @@ export default class CandleChart extends Vue {
         ...subPlots.series,
       ],
     };
+  }
+
+  createSignalData(colDate: string, colOpen: string, colBuy: string, colSell: string): void {
+    // Calculate Buy and sell Series
+    if (!this.signalsCalculated) {
+      // Generate Buy and sell array (using open rate to display marker)
+      for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
+        if (this.dataset.data[i][colBuy] === 1) {
+          this.buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
+        }
+        if (this.dataset.data[i][colSell] === 1) {
+          this.sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
+        }
+      }
+      this.signalsCalculated = true;
+    }
   }
 }
 </script>
