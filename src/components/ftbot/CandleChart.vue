@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ECharts from 'vue-echarts';
 // import { EChartOption } from 'echarts';
 import * as echarts from 'echarts';
@@ -42,6 +42,21 @@ export default class CandleChart extends Vue {
   buyData = [] as Array<number>[];
 
   sellData = [] as Array<number>[];
+
+  @Watch('pair')
+  pairChanged() {
+    this.signalsCalculated = false;
+  }
+
+  @Watch('timeframe')
+  timeframeChanged() {
+    this.signalsCalculated = false;
+  }
+
+  @Watch('dataset')
+  datasetChanged() {
+    this.signalsCalculated = false;
+  }
 
   get hasData() {
     return this.dataset !== null && typeof this.dataset === 'object';
