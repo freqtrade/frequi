@@ -144,6 +144,13 @@ export interface PairHistoryPayload {
   limit: number;
 }
 
+export interface PairHistory {
+  columns: string[];
+  data: number[];
+  length: number;
+  last_analyzed: number;
+}
+
 export interface IndicatorConfig {
   color?: string;
 }

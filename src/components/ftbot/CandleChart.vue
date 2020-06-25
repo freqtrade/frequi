@@ -9,8 +9,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ECharts from 'vue-echarts';
+// import { EChartOption } from 'echarts';
+import * as echarts from 'echarts';
 import { timestampms } from '../../shared/formatters';
-import { PlotConfig } from '../../store/types';
+import { PairHistory, PlotConfig } from '../../store/types';
 import randomColor from '../../shared/randomColor';
 import 'echarts';
 
@@ -30,7 +32,7 @@ export default class CandleChart extends Vue {
 
   @Prop({ required: true }) readonly timeframe: string = '';
 
-  @Prop({ required: true }) readonly dataset: Record<string, any> = {};
+  @Prop({ required: true }) readonly dataset!: PairHistory;
 
   @Prop({ required: false }) readonly plotConfig!: PlotConfig;
 
@@ -62,105 +64,7 @@ export default class CandleChart extends Vue {
     const colSell = this.dataset.columns.findIndex((el) => el === 'sell');
     // Plot data
 
-    this.createSignalData(colDate, colOpen, colBuy, colSell);
-
-    // This will be merged into final plot config
-    const subPlots = {
-      legend: [] as string[],
-      grid: [] as object[],
-      yaxis: [] as object[],
-      xaxis: [] as object[],
-      xaxisIndex: [] as number[],
-      series: [] as object[],
-    };
-
-    if ('main_plot' in this.plotConfig) {
-      Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
-        const col = this.dataset.columns.findIndex((el) => el === key);
-        subPlots.legend.push(key);
-        const sp = {
-          name: key,
-          type: 'line',
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: value.color,
-          },
-          encode: {
-            x: colDate,
-            y: col,
-          },
-          showSymbol: false,
-        };
-        subPlots.series.push(sp);
-      });
-    }
-
-    if ('subplots' in this.plotConfig) {
-      let plotIndex = 2;
-      Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
-        // define yaxis
-        subPlots.yaxis.push({
-          scale: true,
-          gridIndex: plotIndex,
-          name: key,
-          nameLocation: 'middle',
-          nameGap: 60,
-          axisLabel: { show: true },
-          axisLine: { show: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
-        });
-        subPlots.xaxis.push({
-          scale: true,
-          gridIndex: plotIndex,
-          boundaryGap: false,
-          axisLine: { onZero: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
-          axisLabel: { show: false },
-          splitNumber: 20,
-        });
-        subPlots.xaxisIndex.push(plotIndex);
-        subPlots.grid.push({
-          left: MARGINLEFT,
-          right: MARGINRIGHT,
-          bottom: `${(plotIndex - 1) * 50}px`,
-          height: '8%',
-        });
-        Object.entries(value).forEach(([sk, sv]) => {
-          subPlots.legend.push(sk);
-          // entries per subplot
-          const col = this.dataset.columns.findIndex((el) => el === sk);
-          if (col) {
-            const sp = {
-              name: sk,
-              type: 'line',
-              xAxisIndex: plotIndex,
-              yAxisIndex: plotIndex,
-              itemStyle: {
-                color: sv.color || randomColor(),
-              },
-              encode: {
-                x: colDate,
-                y: col,
-              },
-              showSymbol: false,
-            };
-            subPlots.series.push(sp);
-            console.log(subPlots);
-          } else {
-            console.log(`element ${sk} was not found in the columns.`);
-          }
-        });
-
-        plotIndex += 1;
-      });
-    }
-
-    // console.log(this.dataset.data);
-    // TODO: Rebuilding this causes a full redraw for every new step
-    return {
+    const options: echarts.EChartOption = {
       title: {
         text: `${this.pair} - ${this.timeframe}`,
         show: true,
@@ -171,7 +75,7 @@ export default class CandleChart extends Vue {
       },
       animation: false,
       legend: {
-        data: ['Candles', 'Volume', 'Buy', 'Sell', ...subPlots.legend],
+        data: ['Candles', 'Volume', 'Buy', 'Sell'],
       },
       tooltip: {
         trigger: 'axis',
@@ -185,7 +89,7 @@ export default class CandleChart extends Vue {
         },
       },
       axisPointer: {
-        link: { xAxisIndex: 'all' },
+        link: [{ xAxisIndex: 'all' }],
         label: {
           backgroundColor: '#777',
         },
@@ -219,7 +123,6 @@ export default class CandleChart extends Vue {
           min: 'dataMin',
           max: 'dataMax',
         },
-        ...subPlots.xaxis,
       ],
       yAxis: [
         {
@@ -234,7 +137,6 @@ export default class CandleChart extends Vue {
           axisTick: { show: false },
           splitLine: { show: false },
         },
-        ...subPlots.yaxis,
       ],
       grid: [
         {
@@ -251,18 +153,17 @@ export default class CandleChart extends Vue {
           bottom: '20%',
           height: '80px',
         },
-        ...subPlots.grid,
       ],
       dataZoom: [
         {
           type: 'inside',
-          xAxisIndex: [0, 1, ...subPlots.xaxisIndex],
+          xAxisIndex: [0, 1],
           start: 50,
           end: 100,
         },
         {
           show: true,
-          xAxisIndex: [0, 1, ...subPlots.xaxisIndex],
+          xAxisIndex: [0, 1],
           type: 'slider',
           bottom: 10,
           start: 10,
@@ -346,12 +247,129 @@ export default class CandleChart extends Vue {
             y: 1,
           },
         },
-        ...subPlots.series,
       ],
     };
+
+    this.createSignalData(colDate, colOpen, colBuy, colSell);
+
+    // This will be merged into final plot config
+    // const subPlots = {
+    //   legend: [] as string[],
+    //   grid: [] as object[],
+    //   yaxis: [] as object[],
+    //   xaxis: [] as object[],
+    //   xaxisIndex: [] as number[],
+    //   series: [] as object[],
+    // };
+
+    if ('main_plot' in this.plotConfig) {
+      Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
+        const col = this.dataset.columns.findIndex((el) => el === key);
+        if (options.legend && options.legend.data) {
+          options.legend.data.push(key);
+        }
+        const sp = {
+          name: key,
+          type: 'line',
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          itemStyle: {
+            color: value.color,
+          },
+          encode: {
+            x: colDate,
+            y: col,
+          },
+          showSymbol: false,
+        };
+        if (options.series) {
+          options.series.push(sp);
+        }
+      });
+    }
+
+    if ('subplots' in this.plotConfig) {
+      let plotIndex = 2;
+      Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
+        // define yaxis
+        if (options.yAxis && Array.isArray(options.yAxis)) {
+          options.yAxis.push({
+            scale: true,
+            gridIndex: plotIndex,
+            name: key,
+            nameLocation: 'middle',
+            nameGap: 60,
+            axisLabel: { show: true },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+          });
+        }
+        if (options.xAxis && Array.isArray(options.xAxis)) {
+          options.xAxis.push({
+            type: 'category',
+            scale: true,
+            gridIndex: plotIndex,
+            boundaryGap: false,
+            axisLine: { onZero: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+            axisLabel: { show: false },
+            splitNumber: 20,
+          });
+        }
+        if (options.dataZoom) {
+          options.dataZoom.forEach((el) =>
+            el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
+          );
+        }
+        if (options.grid && Array.isArray(options.grid)) {
+          options.grid.push({
+            left: MARGINLEFT,
+            right: MARGINRIGHT,
+            bottom: `${(plotIndex - 1) * 50}px`,
+            height: '8%',
+          });
+        }
+        Object.entries(value).forEach(([sk, sv]) => {
+          if (options.legend && options.legend.data && Array.isArray(options.legend.data)) {
+            options.legend.data.push(sk);
+          }
+          // entries per subplot
+          const col = this.dataset.columns.findIndex((el) => el === sk);
+          if (col) {
+            const sp = {
+              name: sk,
+              type: 'line',
+              xAxisIndex: plotIndex,
+              yAxisIndex: plotIndex,
+              itemStyle: {
+                color: sv.color || randomColor(),
+              },
+              encode: {
+                x: colDate,
+                y: col,
+              },
+              showSymbol: false,
+            };
+            if (options.series && Array.isArray(options.series)) {
+              options.series.push(sp);
+            }
+          } else {
+            console.log(`element ${sk} was not found in the columns.`);
+          }
+        });
+
+        plotIndex += 1;
+      });
+    }
+
+    console.log(options);
+    // TODO: Rebuilding this causes a full redraw for every new step
+    return options;
   }
 
-  createSignalData(colDate: string, colOpen: string, colBuy: string, colSell: string): void {
+  createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
     // Calculate Buy and sell Series
     if (!this.signalsCalculated) {
       // Generate Buy and sell array (using open rate to display marker)
