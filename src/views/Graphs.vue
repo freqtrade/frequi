@@ -34,6 +34,13 @@
             <b-form-select id="FieldSel" :options="subplots" v-model="selField"> </b-form-select>
           </b-form-group>
         </div>
+        <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
+          <b-form-group label-cols="auto" label="New subplot" label-for="newSubplot">
+            <b-form-input class="addPlot" id="newSubplot" v-model="newSubplotName"></b-form-input>
+
+            <b-button id="FieldSel" @click="addSubplot">+</b-button>
+          </b-form-group>
+        </div>
 
         <div class="col-mb-3 ml-2">
           <b-form-group label-cols="auto" label="Color" label-for="colsel">
@@ -43,6 +50,9 @@
 
         <div class="col-mb-3 ml-2">
           <b-button variant="primary" @click="addBar">Add</b-button>
+        </div>
+        <div class="col-mb-3 ml-2">
+          <b-button variant="primary">Show</b-button>
         </div>
       </div>
     </div>
@@ -63,6 +73,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 import randomColor from '../shared/randomColor';
+import { PlotConfig } from '../store/types';
 
 const ftbot = namespace('ftbot');
 
@@ -80,12 +91,15 @@ export default class Graphs extends Vue {
 
   selField = '';
 
+  newSubplotName = '';
+
   plotOption = 'main_plot';
 
   selColor = randomColor();
 
   // Custom plot config - manually changed by user.
-  customPlotConfig = {};
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  customPlotConfig: PlotConfig = { main_plot: {}, subplots: {} };
 
   @ftbot.State history;
 
@@ -142,6 +156,16 @@ export default class Graphs extends Vue {
     this.customPlotConfig = { ...plotConfig };
     // Reset random color
     this.selColor = randomColor();
+    console.log(this.customPlotConfig);
+  }
+
+  addSubplot() {
+    this.customPlotConfig.subplots = {
+      ...this.customPlotConfig.subplots,
+      [this.newSubplotName]: {},
+    };
+    this.selField = this.newSubplotName;
+    this.newSubplotName = '';
     console.log(this.customPlotConfig);
   }
 }
