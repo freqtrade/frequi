@@ -8,6 +8,8 @@
         @row-contextmenu="handleContextMenuEvent"
         show-empty
         :emptyText="emptyText"
+        :per-page="perPage"
+        :current-page="currentPage"
       >
         <template v-slot:cell(actions)="row">
           <b-button size="sm" @click="forcesellHandler(row.item, row.index, $event.target)">
@@ -22,6 +24,13 @@
           </span>
         </template>
       </b-table>
+      <b-pagination
+        v-if="!activeTrades"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-table"
+      ></b-pagination>
     </b-card-body>
   </b-card>
 </template>
@@ -38,7 +47,7 @@ const ftbot = namespace('ftbot');
 @Component({})
 export default class TradeList extends Vue {
   @Prop({ required: true })
-  trades: Array<Trade> = [];
+  trades!: Array<Trade>;
 
   @Prop({ default: 'Trades' })
   title!: string;
@@ -47,7 +56,7 @@ export default class TradeList extends Vue {
   activeTrades!: boolean;
 
   @Prop({ default: 'No Trades to show.' })
-  emptyText?: string;
+  emptyText!: string;
 
   @ftbot.State detailTradeId?: string;
 
@@ -57,7 +66,13 @@ export default class TradeList extends Vue {
 
   @ftbot.Action forcesell;
 
-  formatPercent;
+  currentPage = 1;
+
+  get rows(): number {
+    return this.trades.length;
+  }
+
+  perPage = this.activeTrades ? 200 : 15;
 
   tableFields: Array<Record<string, string>> = [
     { key: 'trade_id', label: 'ID' },
