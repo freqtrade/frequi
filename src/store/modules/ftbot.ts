@@ -74,7 +74,6 @@ export default {
         .catch(console.error);
     },
     getTrades({ commit }) {
-      console.log('fetching trades');
       return api
         .get('/trades')
         .then((result) => commit('updateTrades', result.data))

@@ -31,14 +31,18 @@ export default {
     startRefresh() {
       console.log('Starting automatic refresh.');
       this.refreshFrequent();
-      this.refreshInterval = setInterval(() => {
-        console.log('refreshing_interval');
-        this.refreshFrequent();
-      }, 5000);
+      if (this.autoRefresh) {
+        this.refreshInterval = setInterval(() => {
+          console.log('refreshing_interval');
+          this.refreshFrequent();
+        }, 5000);
+      }
       this.refreshSlow();
-      this.refreshIntervalSlow = setInterval(() => {
-        this.refreshSlow();
-      }, 60000);
+      if (this.autoRefresh) {
+        this.refreshIntervalSlow = setInterval(() => {
+          this.refreshSlow();
+        }, 60000);
+      }
     },
     stopRefresh() {
       console.log('Stopping automatic refresh.');
