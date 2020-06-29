@@ -236,6 +236,7 @@ export default class CandleChart extends Vue {
           name: 'Buy',
           type: 'scatter',
           symbol: 'triangle',
+          symbolSize: 8,
           data: this.buyData,
           xAxisIndex: 0,
           yAxisIndex: 0,
@@ -252,6 +253,7 @@ export default class CandleChart extends Vue {
           type: 'scatter',
           data: this.sellData,
           symbol: 'diamond',
+          symbolSize: 8,
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
