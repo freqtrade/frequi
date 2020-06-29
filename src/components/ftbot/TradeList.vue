@@ -26,92 +26,90 @@
   </b-card>
 </template>
 
-<script>
-import { mapActions, mapMutations, mapGetters, mapState } from 'vuex';
-import { formatPercent } from '@/shared/formatters';
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
-export default {
-  name: 'TradeList',
-  props: {
-    trades: {
-      type: Array,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: false,
-      default: 'Trades',
-    },
-    activeTrades: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    emptyText: {
-      type: String,
-      required: false,
-      default: 'No Trades to show.',
-    },
-  },
-  computed: {
-    ...mapGetters('ftbot', ['openTradeDetail']),
-    ...mapState('ftbot', ['detailTradeId']),
-  },
-  data() {
-    return {
-      tableFields: [
-        { key: 'trade_id', label: 'ID' },
-        { key: 'pair', label: 'Pair' },
-        { key: 'amount', label: 'Amount' },
-        { key: 'stake_amount', label: 'Stake amount' },
-        { key: 'open_rate', label: 'Open rate' },
-        {
-          key: this.activeTrades ? 'current_rate' : 'close_rate',
-          label: this.activeTrades ? 'Current rate' : 'Close rate',
-        },
-        {
-          key: this.activeTrades ? 'current_profit' : 'close_profit',
-          label: this.activeTrades ? 'Current profit' : 'Profit',
-          formatter: 'formatPercent',
-        },
-        { key: 'open_date', label: 'Open date' },
-        { key: 'close_date', label: 'Close date' },
-        ...(this.activeTrades ? [{ key: 'actions' }] : []),
-      ],
-    };
-  },
-  methods: {
-    ...mapActions('ftbot', ['forcesell']),
-    ...mapMutations('ftbot', ['setDetailTrade']),
+import { formatPercent } from '../../shared/formatters';
+import { Trade } from '../../store/types';
 
-    formatPercent,
-    profitSymbol(item) {
-      // Red arrow / green circle
-      return item.close_profit < 0 || item.current_profit < 0 ? `&#x1F534;` : `&#x1F7E2;`;
+const ftbot = namespace('ftbot');
+
+@Component({})
+export default class TradeList extends Vue {
+  @Prop({ required: true })
+  trades: Array<Trade> = [];
+
+  @Prop({ default: 'Trades' })
+  title!: string;
+
+  @Prop({ default: false })
+  activeTrades!: boolean;
+
+  @Prop({ default: 'No Trades to show.' })
+  emptyText?: string;
+
+  @ftbot.State detailTradeId?: string;
+
+  @ftbot.Getter openTradeDetail?: Trade;
+
+  @ftbot.Mutation setDetailTrade;
+
+  @ftbot.Action forcesell;
+
+  formatPercent;
+
+  tableFields: Array<Record<string, string>> = [
+    { key: 'trade_id', label: 'ID' },
+    { key: 'pair', label: 'Pair' },
+    { key: 'amount', label: 'Amount' },
+    { key: 'stake_amount', label: 'Stake amount' },
+    { key: 'open_rate', label: 'Open rate' },
+    {
+      key: this.activeTrades ? 'current_rate' : 'close_rate',
+      label: this.activeTrades ? 'Current rate' : 'Close rate',
     },
-    forcesellHandler(item) {
-      this.forcesell(item.trade_id)
-        .then(() => console.log('asdf'))
-        .catch((error) => console.log(error.response));
+    {
+      key: this.activeTrades ? 'current_profit' : 'close_profit',
+      label: this.activeTrades ? 'Current profit' : 'Profit',
+      formatter: 'formatPercent',
     },
-    handleContextMenuEvent(item, index, event) {
-      // stop browser context menu from appearing
-      if (!this.activeTrades) {
-        return;
-      }
-      event.preventDefault();
-      // log the selected item to the console
-      console.log(item);
-    },
-    showDetails(trade) {
-      if (this.detailTradeId === trade.trade_id) {
-        this.setDetailTrade(null);
-      } else {
-        this.setDetailTrade(trade);
-      }
-    },
-  },
-};
+    { key: 'open_date', label: 'Open date' },
+    { key: 'close_date', label: 'Close date' },
+    ...(this.activeTrades ? [{ key: 'actions' }] : []),
+  ];
+
+  formatPercent;
+
+  profitSymbol(item) {
+    // Red arrow / green circle
+    return item.close_profit < 0 || item.current_profit < 0 ? `&#x1F534;` : `&#x1F7E2;`;
+  }
+
+  forcesellHandler(item) {
+    this.forcesell(item.trade_id)
+      .then(() => console.log('asdf'))
+      .catch((error) => console.log(error.response));
+  }
+
+  handleContextMenuEvent(item, index, event) {
+    // stop browser context menu from appearing
+    if (!this.activeTrades) {
+      return;
+    }
+    event.preventDefault();
+    // log the selected item to the console
+    console.log(item);
+  }
+
+  showDetails(trade) {
+    if (this.detailTradeId === trade.trade_id) {
+      this.setDetailTrade(null);
+    } else {
+      this.setDetailTrade(trade);
+    }
+  }
+}
 </script>
 
 <style scoped>

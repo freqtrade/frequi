@@ -62,6 +62,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
 import TradeList from '@/components/ftbot/TradeList.vue';
 import Performance from '@/components/ftbot/Performance.vue';
@@ -72,7 +73,6 @@ import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
-import { namespace } from 'vuex-class';
 
 import { Trade } from '../store/types';
 
