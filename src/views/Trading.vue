@@ -62,7 +62,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapState, mapGetters } from 'vuex';
 
 import TradeList from '@/components/ftbot/TradeList.vue';
 import Performance from '@/components/ftbot/Performance.vue';
@@ -73,6 +72,11 @@ import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
+import { namespace } from 'vuex-class';
+
+import { Trade } from '../store/types';
+
+const ftbot = namespace('ftbot');
 
 @Component({
   components: {
@@ -86,12 +90,19 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
     TradeDetail,
     ReloadControl,
   },
-  computed: {
-    ...mapState('ftbot', ['open_trades', 'detailTradeId']),
-    ...mapGetters('ftbot', ['openTrades', 'closedtrades', 'openTradeDetail']),
-  },
 })
-export default class Trade extends Vue {}
+export default class Trading extends Vue {
+  @ftbot.State detailTradeId!: string;
+
+  @ftbot.Getter
+  openTrades!: Array<Trade>;
+
+  @ftbot.Getter
+  closedtrades!: Array<Trade>;
+
+  @ftbot.Getter
+  openTradeDetail!: Trade;
+}
 </script>
 
 <style scoped>
