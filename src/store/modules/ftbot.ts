@@ -8,8 +8,10 @@ import {
   Trade,
   PairHistoryPayload,
   PlotConfig,
+  EMPTY_PLOTCONFIG,
 } from '@/types';
 
+import { saveCustomPlotConfig } from '@/shared/storage';
 import { showAlert } from './alerts';
 
 export enum BotStoreGetters {
@@ -37,6 +39,7 @@ export default {
     detailTradeId: null,
     history: {},
     plotConfig: {},
+    customPlotConfig: { ...EMPTY_PLOTCONFIG },
   },
   getters: {
     [BotStoreGetters.openTrades](state) {
@@ -97,6 +100,10 @@ export default {
     },
     updatePlotConfig(state, plotConfig: PlotConfig) {
       state.plotConfig = plotConfig;
+    },
+    saveCustomPlotConfig(state, plotConfig: PlotConfig) {
+      state.customPlotConfig = plotConfig;
+      saveCustomPlotConfig(plotConfig);
     },
   },
   actions: {

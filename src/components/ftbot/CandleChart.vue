@@ -28,9 +28,9 @@ const downBorderColor = '#8A0000';
   components: { 'v-chart': ECharts },
 })
 export default class CandleChart extends Vue {
-  @Prop({ required: true }) readonly pair: string = '';
+  @Prop({ required: true }) readonly pair!: string;
 
-  @Prop({ required: true }) readonly timeframe: string = '';
+  @Prop({ required: true }) readonly timeframe!: string;
 
   @Prop({ required: true }) readonly dataset!: PairHistory;
 

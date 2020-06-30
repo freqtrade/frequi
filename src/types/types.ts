@@ -159,3 +159,6 @@ export interface PlotConfig {
   main_plot: Record<string, IndicatorConfig>;
   subplots: Record<string, Record<string, IndicatorConfig>>;
 }
+
+// eslint-disable-next-line @typescript-eslint/camelcase
+export const EMPTY_PLOTCONFIG: PlotConfig = { main_plot: {}, subplots: {} };

@@ -31,7 +31,8 @@
         </div>
         <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
           <b-form-group label-cols="auto" label="Target field" label-for="FieldSel">
-            <b-form-select id="FieldSel" :options="subplots" v-model="selField"> </b-form-select>
+            <b-form-select id="FieldSel" :options="subplots" v-model="selField" :select-size="4">
+            </b-form-select>
           </b-form-group>
         </div>
         <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
@@ -50,6 +51,13 @@
 
         <div class="col-mb-3 ml-2">
           <b-button variant="primary" @click="addBar">Add</b-button>
+        </div>
+
+        <div class="col-mb-3 ml-2">
+          <b-button variant="primary" @click="loadPlotConfig">Load</b-button>
+        </div>
+        <div class="col-mb-3 ml-2">
+          <b-button variant="primary" @click="savePlotConfig">Save</b-button>
         </div>
         <div class="col-mb-3 ml-2">
           <b-button variant="primary" @click="showConfig = !showConfig">Show</b-button>
@@ -76,7 +84,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 import randomColor from '../shared/randomColor';
-import { PlotConfig } from '../store/types';
+import { loadCustomPlotConfig } from '../shared/storage';
+import { PlotConfig, EMPTY_PLOTCONFIG } from '../store/types';
 
 const ftbot = namespace('ftbot');
 
@@ -102,7 +111,7 @@ export default class Graphs extends Vue {
 
   // Custom plot config - manually changed by user.
   // eslint-disable-next-line @typescript-eslint/camelcase
-  customPlotConfig: PlotConfig = { main_plot: {}, subplots: {} };
+  customPlotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
   @ftbot.State history;
 
@@ -119,13 +128,16 @@ export default class Graphs extends Vue {
   @ftbot.Action
   public getPlotConfig;
 
+  @ftbot.Mutation
+  saveCustomPlotConfig;
+
   showConfig = false;
 
   mounted() {
     this.getWhitelist();
     this.refresh();
     // eslint-disable-next-line @typescript-eslint/camelcase
-    // this.customPlotConfig = this.plotConfig || { main_plot: {}, subplots: {} };
+    this.customPlotConfig = loadCustomPlotConfig();
   }
 
   get selectedPlotConfig() {
@@ -178,6 +190,16 @@ export default class Graphs extends Vue {
     this.selField = this.newSubplotName;
     this.newSubplotName = '';
     console.log(this.customPlotConfig);
+  }
+
+  savePlotConfig() {
+    this.saveCustomPlotConfig(this.customPlotConfig);
+  }
+
+  loadPlotConfig() {
+    this.customPlotConfig = loadCustomPlotConfig();
+    console.log(this.customPlotConfig);
+    console.log('loading config');
   }
 }
 </script>
