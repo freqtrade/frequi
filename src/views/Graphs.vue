@@ -138,7 +138,7 @@ export default class Graphs extends Vue {
 
   get subplots() {
     // Subplot keys (for selection window)
-    return Object.keys(this.plotConfig.subplots);
+    return Object.keys(this.selectedPlotConfig.subplots);
   }
 
   get plotConfigJson() {
