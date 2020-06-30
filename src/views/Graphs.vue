@@ -52,7 +52,10 @@
           <b-button variant="primary" @click="addBar">Add</b-button>
         </div>
         <div class="col-mb-3 ml-2">
-          <b-button variant="primary">Show</b-button>
+          <b-button variant="primary" @click="showConfig = !showConfig">Show</b-button>
+        </div>
+        <div class="col-mb-5 ml-2" v-if="showConfig">
+          <b-textarea id="TextArea" v-model="plotConfigJson"> </b-textarea>
         </div>
       </div>
     </div>
@@ -116,11 +119,13 @@ export default class Graphs extends Vue {
   @ftbot.Action
   public getPlotConfig;
 
+  showConfig = false;
+
   mounted() {
     this.getWhitelist();
     this.refresh();
     // eslint-disable-next-line @typescript-eslint/camelcase
-    this.customPlotConfig = this.plotConfig || { main_plot: {}, subplots: {} };
+    // this.customPlotConfig = this.plotConfig || { main_plot: {}, subplots: {} };
   }
 
   get selectedPlotConfig() {
@@ -136,6 +141,10 @@ export default class Graphs extends Vue {
     return Object.keys(this.plotConfig.subplots);
   }
 
+  get plotConfigJson() {
+    return JSON.stringify(this.selectedPlotConfig, null, 2);
+  }
+
   refresh() {
     this.getPairHistory({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
 
@@ -143,13 +152,15 @@ export default class Graphs extends Vue {
   }
 
   addBar() {
-    console.log(`Adding ${this.selColumn} to ${this.selField}`);
     console.log(this.customPlotConfig);
 
     const plotConfig = this.customPlotConfig;
     if (this.plotOption === 'main_plot') {
+      console.log(`Adding ${this.selColumn} to MainPlot`);
+      console.log(plotConfig);
       plotConfig[this.plotOption][this.selColumn] = { color: this.selColor };
     } else {
+      console.log(`Adding ${this.selColumn} to ${this.selField}`);
       plotConfig[this.plotOption][this.selField][this.selColumn] = { color: this.selColor };
     }
 
