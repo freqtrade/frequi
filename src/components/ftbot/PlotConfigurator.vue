@@ -1,61 +1,77 @@
 <template>
-  <div v-if="columns" class="container-fluid">
-    <div class="row">
-      <label class="h3">Plot config builder</label>
+  <div v-if="columns">
+    <div class="col-mb-3 ml-2">
+      <b-form-group label-cols="auto" label="Plot Section" label-for="FieldSel">
+        <b-form-radio v-model="plotOption" name="plot_section" value="main_plot">
+          Main Plot
+        </b-form-radio>
+        <b-form-radio v-model="plotOption" name="plot_section" value="subplots">
+          Subplots
+        </b-form-radio>
+      </b-form-group>
     </div>
+    <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
+      <b-form-group label-cols="auto" label="Target field" label-for="FieldSel">
+        <b-form-select id="FieldSel" :options="subplots" v-model="selField" :select-size="4">
+        </b-form-select>
+      </b-form-group>
+    </div>
+    <b-form-group v-if="plotOption == 'subplots'" label="New subplot" label-for="newSubplot">
+      <b-form-input class="addPlot" id="newSubplot" v-model="newSubplotName"></b-form-input>
+      <b-button id="FieldSel" @click="addSubplot">+</b-button>
+      <b-button id="FieldSel" @click="delSubplot" v-if="selField">-</b-button>
+    </b-form-group>
+
+    <b-form-group label="Choose column" label-for="columnSelector">
+      <b-form-select id="columnSelector" :options="columns" v-model="selColumn"> </b-form-select>
+    </b-form-group>
+
+    <b-form-group label="Color" label-for="colsel">
+      <div class="row">
+        <div class="col-4">
+          <b-form-input id="colsel" v-model="selColor"> </b-form-input>
+        </div>
+        <div class="col-1">
+          <div v-bind:style="{ 'background-color': selColor }" class="colorbox"></div>
+        </div>
+        <div class="col-1">
+          <b-button variant="primary" @click="newColor" size="sm">&#x21bb;</b-button>
+        </div>
+      </div>
+    </b-form-group>
     <div class="row">
-      <div class="col-mb-3">
-        <b-form-group label-cols="auto" label="Choose column" label-for="columnSelector">
-          <b-form-select id="columnSelector" :options="columns" v-model="selColumn">
-          </b-form-select>
-        </b-form-group>
-      </div>
       <div class="col-mb-3 ml-2">
-        <b-form-group label-cols="auto" label="Plot Section" label-for="FieldSel">
-          <b-form-radio v-model="plotOption" name="plot_section" value="main_plot">
-            Main Plot
-          </b-form-radio>
-          <b-form-radio v-model="plotOption" name="plot_section" value="subplots">
-            Subplots
-          </b-form-radio>
-        </b-form-group>
-      </div>
-      <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
-        <b-form-group label-cols="auto" label="Target field" label-for="FieldSel">
-          <b-form-select id="FieldSel" :options="subplots" v-model="selField" :select-size="4">
-          </b-form-select>
-        </b-form-group>
-      </div>
-      <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
-        <b-form-group label-cols="auto" label="New subplot" label-for="newSubplot">
-          <b-form-input class="addPlot" id="newSubplot" v-model="newSubplotName"></b-form-input>
-
-          <b-button id="FieldSel" @click="addSubplot">+</b-button>
-        </b-form-group>
+        <b-button variant="primary" @click="addBar" title="Add configuration to plot" size="sm">
+          Add
+        </b-button>
       </div>
 
       <div class="col-mb-3 ml-2">
-        <b-form-group label-cols="auto" label="Color" label-for="colsel">
-          <b-form-input id="colsel" v-model="selColor"></b-form-input>
-        </b-form-group>
-      </div>
-
-      <div class="col-mb-3 ml-2">
-        <b-button variant="primary" @click="addBar">Add</b-button>
-      </div>
-
-      <div class="col-mb-3 ml-2">
-        <b-button variant="primary" @click="loadPlotConfig">Load</b-button>
+        <b-button variant="primary" @click="loadPlotConfig" size="sm">Load</b-button>
       </div>
       <div class="col-mb-3 ml-2">
-        <b-button variant="primary" @click="savePlotConfig">Save</b-button>
+        <b-button
+          variant="primary"
+          @click="savePlotConfig"
+          size="sm"
+          data-toggle="tooltip"
+          title="Save configuration"
+          >Save</b-button
+        >
       </div>
       <div class="col-mb-3 ml-2">
-        <b-button variant="primary" @click="showConfig = !showConfig">Show</b-button>
+        <b-button
+          id="showButton"
+          variant="primary"
+          @click="showConfig = !showConfig"
+          size="sm"
+          title="Show configuration for easy transfer to a strategy"
+          >Show</b-button
+        >
       </div>
-      <div class="col-mb-5 ml-2" v-if="showConfig">
-        <b-textarea id="TextArea" v-model="plotConfigJson"> </b-textarea>
-      </div>
+    </div>
+    <div class="col-mb-5 ml-2" v-if="showConfig">
+      <b-textarea id="TextArea" class="textArea" v-model="plotConfigJson" size="sm"> </b-textarea>
     </div>
   </div>
 </template>
@@ -111,6 +127,10 @@ export default class PlotConfigurator extends Vue {
     this.plotConfig = this.value;
   }
 
+  newColor() {
+    this.selColor = randomColor();
+  }
+
   addBar() {
     console.log(this.plotConfig);
 
@@ -126,7 +146,7 @@ export default class PlotConfigurator extends Vue {
 
     this.plotConfig = { ...plotConfig };
     // Reset random color
-    this.selColor = randomColor();
+    this.newColor();
     console.log(this.plotConfig);
     this.emitPlotConfig();
   }
@@ -142,6 +162,11 @@ export default class PlotConfigurator extends Vue {
     this.emitPlotConfig();
   }
 
+  delSubplot() {
+    delete this.plotConfig.subplots[this.selField];
+    this.plotConfig.subplots = { ...this.plotConfig.subplots };
+  }
+
   savePlotConfig() {
     this.saveCustomPlotConfig(this.plotConfig);
   }
@@ -155,5 +180,12 @@ export default class PlotConfigurator extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
+.textArea {
+  min-height: 250px;
+}
+.colorbox {
+  height: 25px;
+  width: 25px;
+}
 </style>

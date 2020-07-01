@@ -8,7 +8,16 @@
         <b-checkbox v-model="strategyPlotConfig">Use strategy plot_config</b-checkbox>
       </div>
     </div>
-    <PlotConfigurator :columns="datasetColumns" v-model="customPlotConfig" />
+    <b-button @click="showConfigurator">Show configurator</b-button>
+    <b-modal
+      id="plotConfiguratorModal"
+      title="Plot Configurator"
+      ok-only
+      hide-backdrop
+      button-size="sm"
+    >
+      <PlotConfigurator :columns="datasetColumns" v-model="customPlotConfig" />
+    </b-modal>
     <div class="row">
       <CandleChart
         :pair="pair"
@@ -79,6 +88,10 @@ export default class Graphs extends Vue {
 
   get datasetColumns() {
     return this.dataset ? this.dataset.columns : [];
+  }
+
+  showConfigurator() {
+    this.$bvModal.show('plotConfiguratorModal');
   }
 
   refresh() {
