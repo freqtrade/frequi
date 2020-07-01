@@ -11,7 +11,7 @@
       </b-form-group>
     </div>
     <div class="col-mb-3 ml-2" v-if="plotOption == 'subplots'">
-      <b-form-group label-cols="auto" label="Target field" label-for="FieldSel">
+      <b-form-group label="Target field" label-for="FieldSel">
         <b-form-select id="FieldSel" :options="subplots" v-model="selField" :select-size="4">
         </b-form-select>
       </b-form-group>
@@ -29,6 +29,11 @@
 
     <b-form-group label="Choose column" label-for="columnSelector">
       <b-form-select id="columnSelector" :options="columns" v-model="selColumn"> </b-form-select>
+    </b-form-group>
+
+    <b-form-group label="Choose type" label-for="columnSelector">
+      <b-form-select id="plotTypeSelector" :options="availableGraphTypes" v-model="graphType">
+      </b-form-select>
     </b-form-group>
     <hr />
 
@@ -109,6 +114,10 @@ export default class PlotConfigurator extends Vue {
 
   selColumn = '';
 
+  graphType = 'line';
+
+  availableGraphTypes = ['line', 'bar', 'scatter'];
+
   showConfig = false;
 
   selField = '';
@@ -143,10 +152,13 @@ export default class PlotConfigurator extends Vue {
     if (this.plotOption === 'main_plot') {
       console.log(`Adding ${this.selColumn} to MainPlot`);
       console.log(plotConfig);
-      plotConfig[this.plotOption][this.selColumn] = { color: this.selColor };
+      plotConfig[this.plotOption][this.selColumn] = { color: this.selColor, type: this.graphType };
     } else {
       console.log(`Adding ${this.selColumn} to ${this.selField}`);
-      plotConfig[this.plotOption][this.selField][this.selColumn] = { color: this.selColor };
+      plotConfig[this.plotOption][this.selField][this.selColumn] = {
+        color: this.selColor,
+        type: this.graphType,
+      };
     }
 
     this.plotConfig = { ...plotConfig };

@@ -287,7 +287,7 @@ export default class CandleChart extends Vue {
         }
         const sp = {
           name: key,
-          type: 'line',
+          type: value.type || 'line',
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
@@ -357,7 +357,7 @@ export default class CandleChart extends Vue {
           if (col) {
             const sp = {
               name: sk,
-              type: 'line',
+              type: sv.type || 'line',
               xAxisIndex: plotIndex,
               yAxisIndex: plotIndex,
               itemStyle: {
@@ -381,7 +381,7 @@ export default class CandleChart extends Vue {
       });
     }
 
-    console.log(options);
+    // console.log(options);
     // TODO: Rebuilding this causes a full redraw for every new step
     return options;
   }

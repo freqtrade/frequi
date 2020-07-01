@@ -153,6 +153,7 @@ export interface PairHistory {
 
 export interface IndicatorConfig {
   color?: string;
+  type?: string;
 }
 
 export interface PlotConfig {
