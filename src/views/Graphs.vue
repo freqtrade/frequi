@@ -8,7 +8,7 @@
         <b-checkbox v-model="strategyPlotConfig">Use strategy plot_config</b-checkbox>
       </div>
     </div>
-    <div v-if="!strategyPlotConfig" class="container-fluid">
+    <div v-if="!strategyPlotConfig && dataset" class="container-fluid">
       <div class="row">
         <label class="h3">Plot config builder</label>
       </div>
