@@ -17,28 +17,33 @@
       </b-form-group>
     </div>
     <b-form-group v-if="plotOption == 'subplots'" label="New subplot" label-for="newSubplot">
-      <b-form-input class="addPlot" id="newSubplot" v-model="newSubplotName"></b-form-input>
-      <b-button id="FieldSel" @click="addSubplot">+</b-button>
-      <b-button id="FieldSel" @click="delSubplot" v-if="selField">-</b-button>
+      <b-input-group>
+        <b-form-input class="addPlot" id="newSubplot" v-model="newSubplotName"></b-form-input>
+        <b-input-group-append>
+          <b-button @click="addSubplot">+</b-button>
+          <b-button @click="delSubplot" v-if="selField">-</b-button>
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
+    <hr />
 
     <b-form-group label="Choose column" label-for="columnSelector">
       <b-form-select id="columnSelector" :options="columns" v-model="selColumn"> </b-form-select>
     </b-form-group>
+    <hr />
 
     <b-form-group label="Color" label-for="colsel">
-      <div class="row">
-        <div class="col-4">
-          <b-form-input id="colsel" v-model="selColor"> </b-form-input>
-        </div>
-        <div class="col-1">
-          <div v-bind:style="{ 'background-color': selColor }" class="colorbox"></div>
-        </div>
-        <div class="col-1">
+      <b-input-group>
+        <b-input-group-prepend>
+          <div v-bind:style="{ 'background-color': selColor }" class="colorbox mr-2"></div>
+        </b-input-group-prepend>
+        <b-form-input id="colsel" v-model="selColor"> </b-form-input>
+        <b-input-group-append>
           <b-button variant="primary" @click="newColor" size="sm">&#x21bb;</b-button>
-        </div>
-      </div>
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
+    <hr />
     <div class="row">
       <div class="col-mb-3 ml-2">
         <b-button variant="primary" @click="addBar" title="Add configuration to plot" size="sm">
@@ -185,7 +190,10 @@ export default class PlotConfigurator extends Vue {
   min-height: 250px;
 }
 .colorbox {
+  border-radius: 50%;
+  margin-top: 15%;
   height: 25px;
   width: 25px;
+  vertical-align: center;
 }
 </style>
