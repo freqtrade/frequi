@@ -3,6 +3,8 @@
     <div class="row mb-2">
       <div class="col-mb-2">
         <b-checkbox v-model="historicView">HistoricData</b-checkbox>
+      </div>
+      <div class="col-mb-2 ml-2 mr-2">
         <b-button @click="refresh">&#x21bb;</b-button>
       </div>
       <div class="col-mb-2">
