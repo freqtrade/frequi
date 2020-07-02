@@ -2,7 +2,7 @@
   <div>
     <div class="mb-2">
       <label class="mr-auto h3">Balance</label>
-      <b-button class="float-right" size="sm" @click="getBalance">R</b-button>
+      <b-button class="float-right" size="sm" @click="getBalance">&#x21bb;</b-button>
     </div>
     <div>
       <p v-if="balance.note">

@@ -1,5 +1,10 @@
 <template>
-  <textarea class="mt-2" v-model="formattedLogs" readonly></textarea>
+  <div class="container-fluid mt-2">
+    <label class="mr-auto h3">Logs</label>
+    <b-button class="float-right mr-4" size="sm" @click="getLogs">&#x21bb;</b-button>
+
+    <textarea v-model="formattedLogs" readonly></textarea>
+  </div>
 </template>
 
 <script lang="ts">

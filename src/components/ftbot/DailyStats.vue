@@ -2,7 +2,7 @@
   <div>
     <div class="mb-2">
       <label class="mr-auto h3">Daily Stats</label>
-      <b-button class="float-right" size="sm" @click="getDaily">R</b-button>
+      <b-button class="float-right" size="sm" @click="getDaily">&#x21bb;</b-button>
     </div>
     <div>
       <b-table class="table-sm" :items="dailyStats.data" :fields="dailyFields"> </b-table>
