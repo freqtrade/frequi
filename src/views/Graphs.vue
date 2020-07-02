@@ -7,8 +7,11 @@
       <div class="col-mb-2">
         <b-checkbox v-model="strategyPlotConfig">Use strategy plot_config</b-checkbox>
       </div>
+      <div class="col-mb-2 ml-5">
+        <b-button @click="showConfigurator">Show configurator</b-button>
+      </div>
     </div>
-    <b-button @click="showConfigurator">Show configurator</b-button>
+
     <b-modal
       id="plotConfiguratorModal"
       title="Plot Configurator"
