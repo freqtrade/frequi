@@ -75,8 +75,8 @@ export default class CandleChart extends Vue {
     const colLow = this.dataset.columns.findIndex((el) => el === 'low');
     const colClose = this.dataset.columns.findIndex((el) => el === 'close');
     const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
-    const colBuy = this.dataset.columns.findIndex((el) => el === 'buy');
-    const colSell = this.dataset.columns.findIndex((el) => el === 'sell');
+    const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
+    const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
     // Plot data
 
     const options: echarts.EChartOption = {
@@ -237,7 +237,6 @@ export default class CandleChart extends Vue {
           type: 'scatter',
           symbol: 'triangle',
           symbolSize: 8,
-          data: this.buyData,
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
@@ -245,13 +244,12 @@ export default class CandleChart extends Vue {
           },
           encode: {
             x: 0,
-            y: 1,
+            y: colBuyData,
           },
         },
         {
           name: 'Sell',
           type: 'scatter',
-          data: this.sellData,
           symbol: 'diamond',
           symbolSize: 8,
           xAxisIndex: 0,
@@ -261,13 +259,13 @@ export default class CandleChart extends Vue {
           },
           encode: {
             x: 0,
-            y: 1,
+            y: colSellData,
           },
         },
       ],
     };
 
-    this.createSignalData(colDate, colOpen, colBuy, colSell);
+    // this.createSignalData(colDate, colOpen, colBuy, colSell);
 
     // This will be merged into final plot config
     // const subPlots = {
@@ -386,21 +384,21 @@ export default class CandleChart extends Vue {
     return options;
   }
 
-  createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
-    // Calculate Buy and sell Series
-    if (!this.signalsCalculated) {
-      // Generate Buy and sell array (using open rate to display marker)
-      for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
-        if (this.dataset.data[i][colBuy] === 1) {
-          this.buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-        }
-        if (this.dataset.data[i][colSell] === 1) {
-          this.sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-        }
-      }
-      this.signalsCalculated = true;
-    }
-  }
+  // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
+  // Calculate Buy and sell Series
+  // if (!this.signalsCalculated) {
+  //   // Generate Buy and sell array (using open rate to display marker)
+  //   for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
+  //     if (this.dataset.data[i][colBuy] === 1) {
+  //       this.buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
+  //     }
+  //     if (this.dataset.data[i][colSell] === 1) {
+  //       this.sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
+  //     }
+  //   }
+  //   this.signalsCalculated = true;
+  // }
+  // }
 }
 </script>
 

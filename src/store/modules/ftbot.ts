@@ -6,6 +6,7 @@ import {
   Logs,
   DailyPayload,
   Trade,
+  PairCandlePayload,
   PairHistoryPayload,
   PlotConfig,
   EMPTY_PLOTCONFIG,
@@ -38,6 +39,7 @@ export default {
     pairlistMethods: [],
     detailTradeId: null,
     candleData: {},
+    history: {},
     plotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
   },
@@ -98,6 +100,10 @@ export default {
     updatePairCandles(state, { pair, timeframe, data }) {
       state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
     },
+    updatePairHistory(state, { pair, timeframe, data }) {
+      // Intentionally drop the previous state here.
+      state.history = { [`${pair}__${timeframe}`]: data };
+    },
     updatePlotConfig(state, plotConfig: PlotConfig) {
       state.plotConfig = plotConfig;
     },
@@ -133,11 +139,11 @@ export default {
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
-    getPairCandles({ commit }, payload: PairHistoryPayload) {
+    getPairCandles({ commit }, payload: PairCandlePayload) {
       if (payload.pair && payload.timeframe && payload.limit) {
         return api
           .get('/pair_candles', {
-            params: { pair: payload.pair, timeframe: payload.timeframe, limit: payload.limit },
+            params: { ...payload },
           })
           .then((result) => {
             commit('updatePairCandles', {
@@ -150,6 +156,30 @@ export default {
       }
       // Error branchs
       const error = 'pair or timeframe not specified';
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+    },
+    getPairHistory({ commit }, payload: PairHistoryPayload) {
+      if (payload.pair && payload.timeframe && payload.limit && payload.timerange) {
+        return api
+          .get('/pair_history', {
+            params: { ...payload },
+            timeout: 10000,
+          })
+          .then((result) => {
+            commit('updatePairHistory', {
+              pair: payload.pair,
+              timeframe: payload.timeframe,
+              timerange: payload.timerange,
+              data: result.data,
+            });
+          })
+          .catch(console.error);
+      }
+      // Error branchs
+      const error = 'pair or timeframe or timerange not specified';
       console.error(error);
       return new Promise((resolve, reject) => {
         reject(error);

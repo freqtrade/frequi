@@ -138,13 +138,18 @@ export interface ClosedTrade extends Trade {
   open_order_id?: string;
 }
 
-export interface PairHistoryPayload {
+export interface PairCandlePayload {
   pair: string;
   timeframe: string;
   limit: number;
 }
 
+export interface PairHistoryPayload extends PairCandlePayload {
+  timerange: string;
+}
+
 export interface PairHistory {
+  pair: string;
   columns: string[];
   data: number[];
   length: number;

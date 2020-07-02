@@ -2,6 +2,10 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-mb-2">
+        <b-checkbox v-model="historicView">HistoricData</b-checkbox>
+        <b-button @click="refresh">&#x21bb;</b-button>
+      </div>
+      <div class="col-mb-2">
         <b-form-select :options="whitelist" v-model="pair" @change="refresh"> </b-form-select>
       </div>
       <div class="col-mb-2">
@@ -38,7 +42,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 import PlotConfigurator from '@/components/ftbot/PlotConfigurator.vue';
-import { PlotConfig, EMPTY_PLOTCONFIG } from '../store/types';
+import {
+  PlotConfig,
+  EMPTY_PLOTCONFIG,
+  PairCandlePayload,
+  PairHistoryPayload,
+} from '../store/types';
 import { loadCustomPlotConfig } from '../shared/storage';
 
 const ftbot = namespace('ftbot');
@@ -55,18 +64,25 @@ export default class Graphs extends Vue {
 
   plotOption = 'main_plot';
 
+  historicView = false;
+
   // Custom plot config - manually changed by user.
   // eslint-disable-next-line @typescript-eslint/camelcase
   customPlotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
   @ftbot.State candleData;
 
+  @ftbot.State history;
+
   @ftbot.State whitelist;
 
   @ftbot.State plotConfig;
 
   @ftbot.Action
-  public getPairCandles;
+  public getPairCandles!: (payload: PairCandlePayload) => void;
+
+  @ftbot.Action
+  public getPairHistory!: (payload: PairHistoryPayload) => void;
 
   @ftbot.Action
   public getWhitelist;
@@ -86,6 +102,9 @@ export default class Graphs extends Vue {
   }
 
   get dataset() {
+    if (this.historicView) {
+      return this.history[`${this.pair}__${this.timeframe}`];
+    }
     return this.candleData[`${this.pair}__${this.timeframe}`];
   }
 
@@ -98,7 +117,16 @@ export default class Graphs extends Vue {
   }
 
   refresh() {
-    this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+    if (this.historicView) {
+      this.getPairHistory({
+        pair: this.pair,
+        timeframe: this.timeframe,
+        limit: 500,
+        timerange: '20200101-20200201',
+      });
+    } else {
+      this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+    }
 
     this.getPlotConfig();
   }
