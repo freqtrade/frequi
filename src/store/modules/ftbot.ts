@@ -37,7 +37,7 @@ export default {
     dailyStats: [],
     pairlistMethods: [],
     detailTradeId: null,
-    history: {},
+    candleData: {},
     plotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
   },
@@ -95,8 +95,8 @@ export default {
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
     },
-    updatePairHistory(state, { pair, timeframe, data }) {
-      state.history = { ...state.history, [`${pair}__${timeframe}`]: data };
+    updatePairCandles(state, { pair, timeframe, data }) {
+      state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
     },
     updatePlotConfig(state, plotConfig: PlotConfig) {
       state.plotConfig = plotConfig;
@@ -133,14 +133,14 @@ export default {
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
-    getPairHistory({ commit }, payload: PairHistoryPayload) {
+    getPairCandles({ commit }, payload: PairHistoryPayload) {
       if (payload.pair && payload.timeframe && payload.limit) {
         return api
-          .get('/pair_history', {
+          .get('/pair_candles', {
             params: { pair: payload.pair, timeframe: payload.timeframe, limit: payload.limit },
           })
           .then((result) => {
-            commit('updatePairHistory', {
+            commit('updatePairCandles', {
               pair: payload.pair,
               timeframe: payload.timeframe,
               data: result.data,

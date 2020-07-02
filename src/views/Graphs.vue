@@ -59,14 +59,14 @@ export default class Graphs extends Vue {
   // eslint-disable-next-line @typescript-eslint/camelcase
   customPlotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
-  @ftbot.State history;
+  @ftbot.State candleData;
 
   @ftbot.State whitelist;
 
   @ftbot.State plotConfig;
 
   @ftbot.Action
-  public getPairHistory;
+  public getPairCandles;
 
   @ftbot.Action
   public getWhitelist;
@@ -86,7 +86,7 @@ export default class Graphs extends Vue {
   }
 
   get dataset() {
-    return this.history[`${this.pair}__${this.timeframe}`];
+    return this.candleData[`${this.pair}__${this.timeframe}`];
   }
 
   get datasetColumns() {
@@ -98,7 +98,7 @@ export default class Graphs extends Vue {
   }
 
   refresh() {
-    this.getPairHistory({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+    this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
 
     this.getPlotConfig();
   }
