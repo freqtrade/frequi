@@ -13,7 +13,7 @@
       <div class="col-mb-2">
         <b-checkbox v-model="strategyPlotConfig">Use strategy plot_config</b-checkbox>
       </div>
-      <div class="col-mb-2 ml-5">
+      <div class="col-mb-2 ml-5" v-if="!strategyPlotConfig">
         <b-button @click="showConfigurator">Show configurator</b-button>
       </div>
     </div>

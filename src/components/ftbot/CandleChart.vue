@@ -9,9 +9,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ECharts from 'vue-echarts';
-// import { EChartOption } from 'echarts';
 import * as echarts from 'echarts';
-import { timestampms } from '../../shared/formatters';
 import { PairHistory, PlotConfig } from '../../store/types';
 import randomColor from '../../shared/randomColor';
 import 'echarts';
@@ -77,7 +75,9 @@ export default class CandleChart extends Vue {
     const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
     const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
     const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
-    // Plot data
+
+    // Always show ~250 candles max as starting point
+    const startingZoom = (1 - 250 / this.dataset.length) * 100;
 
     const options: echarts.EChartOption = {
       title: {
@@ -119,11 +119,6 @@ export default class CandleChart extends Vue {
           splitNumber: 20,
           min: 'dataMin',
           max: 'dataMax',
-          axisLabel: {
-            formatter: (value) => {
-              return timestampms(value);
-            },
-          },
         },
         {
           type: 'category',
@@ -165,15 +160,15 @@ export default class CandleChart extends Vue {
           // Volume
           left: MARGINLEFT,
           right: MARGINRIGHT,
-          bottom: '20%',
-          height: '80px',
+          top: '70%',
+          height: '10%',
         },
       ],
       dataZoom: [
         {
           type: 'inside',
           xAxisIndex: [0, 1],
-          start: 50,
+          start: startingZoom,
           end: 100,
         },
         {
@@ -181,7 +176,7 @@ export default class CandleChart extends Vue {
           xAxisIndex: [0, 1],
           type: 'slider',
           bottom: 10,
-          start: 10,
+          start: startingZoom,
           end: 100,
         },
       ],
