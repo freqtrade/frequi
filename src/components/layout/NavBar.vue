@@ -56,7 +56,7 @@ export default class NavBar extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 .logo {
   vertical-align: middle;
   height: 30px;

@@ -17,12 +17,5 @@ import Body from '@/components/layout/Body.vue';
 export default class App extends Vue {}
 </script>
 
-<style>
-/* Global styles - populating to child elementes */
-.card-header {
-  font-size: 1.3em;
-}
-.card-body {
-  overflow: auto;
-}
+<style scoped>
 </style>

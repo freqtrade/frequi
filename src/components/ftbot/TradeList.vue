@@ -1,6 +1,6 @@
 <template>
   <b-card :header="title" no-body>
-    <b-card-body>
+    <b-card-body class="overflow-auto">
       <b-table
         class="table-sm"
         :items="trades"
@@ -129,4 +129,7 @@ export default class TradeList extends Vue {
 </script>
 
 <style scoped>
+.card-header {
+  font-size: 1.3em;
+}
 </style>
