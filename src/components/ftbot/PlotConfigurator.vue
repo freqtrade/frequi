@@ -79,9 +79,26 @@
           >Show</b-button
         >
       </div>
+      <div class="col-mb-3 ml-2">
+        <b-button
+          variant="primary"
+          @click="loadConfigFromString"
+          size="sm"
+          v-if="showConfig"
+          title="Load configuration from text box below"
+          >Load from String</b-button
+        >
+      </div>
     </div>
-    <div class="col-mb-5 ml-2" v-if="showConfig">
-      <b-textarea id="TextArea" class="textArea" v-model="plotConfigJson" size="sm"> </b-textarea>
+    <div class="col-mb-5 ml-2 mt-2" v-if="showConfig">
+      <b-textarea
+        id="TextArea"
+        class="textArea"
+        v-model="plotConfigJson"
+        size="sm"
+        :state="tempPlotConfigValid"
+      >
+      </b-textarea>
     </div>
   </div>
 </template>
@@ -122,6 +139,10 @@ export default class PlotConfigurator extends Vue {
 
   selField = '';
 
+  tempPlotConfig?: PlotConfig = undefined;
+
+  tempPlotConfigValid = true;
+
   selColor = randomColor();
 
   @ftbot.Mutation
@@ -129,6 +150,16 @@ export default class PlotConfigurator extends Vue {
 
   get plotConfigJson() {
     return JSON.stringify(this.plotConfig, null, 2);
+  }
+
+  set plotConfigJson(newValue: string) {
+    try {
+      this.tempPlotConfig = JSON.parse(newValue);
+      // TODO: Should Validate schema validity (should be PlotConfig type...)
+      this.tempPlotConfigValid = true;
+    } catch (err) {
+      this.tempPlotConfigValid = false;
+    }
   }
 
   get subplots() {
@@ -193,6 +224,14 @@ export default class PlotConfigurator extends Vue {
     console.log(this.plotConfig);
     console.log('loading config');
     this.emitPlotConfig();
+  }
+
+  loadConfigFromString() {
+    // this.plotConfig = JSON.parse();
+    if (this.tempPlotConfig !== undefined && this.tempPlotConfigValid) {
+      this.plotConfig = this.tempPlotConfig;
+      this.emitPlotConfig();
+    }
   }
 }
 </script>
