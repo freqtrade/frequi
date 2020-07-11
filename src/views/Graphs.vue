@@ -17,6 +17,36 @@
         <b-button @click="showConfigurator">Show configurator</b-button>
       </div>
     </div>
+    <div class="row mt-2" v-if="historicView">
+      <div class="col-mb-4">
+        <label for="dp_dateFrom">Start date</label>
+        <b-input-group class="mb-3">
+          <b-input-group-prepend>
+            <b-form-datepicker v-model="dateFrom" class="mb-2" button-only></b-form-datepicker>
+          </b-input-group-prepend>
+          <b-form-input
+            id="dp_dateFrom"
+            v-model="dateFrom"
+            type="text"
+            placeholder="YYYY-MM-DD"
+            autocomplete="off"
+          ></b-form-input>
+        </b-input-group>
+        <label for="dp_dateTo">End date</label>
+        <b-input-group class="mb-3">
+          <b-input-group-prepend>
+            <b-form-datepicker v-model="dateTo" class="mb-2" button-only></b-form-datepicker>
+          </b-input-group-prepend>
+          <b-form-input
+            id="dp_dateTo"
+            v-model="dateTo"
+            type="text"
+            placeholder="YYYY-MM-DD"
+            autocomplete="off"
+          ></b-form-input>
+        </b-input-group>
+      </div>
+    </div>
 
     <b-modal
       id="plotConfiguratorModal"
@@ -51,8 +81,10 @@ import {
   PairHistoryPayload,
 } from '../store/types';
 import { loadCustomPlotConfig } from '../shared/storage';
+import { dateStringToTimeRange, timestampToDateString } from '../shared/formatters';
 
 const ftbot = namespace('ftbot');
+const now = new Date();
 
 @Component({
   components: { CandleChart, PlotConfigurator },
@@ -67,6 +99,10 @@ export default class Graphs extends Vue {
   plotOption = 'main_plot';
 
   historicView = false;
+
+  dateFrom = timestampToDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+
+  dateTo = '';
 
   // Custom plot config - manually changed by user.
   // eslint-disable-next-line @typescript-eslint/camelcase
@@ -123,13 +159,11 @@ export default class Graphs extends Vue {
       this.getPairHistory({
         pair: this.pair,
         timeframe: this.timeframe,
-        limit: 500,
-        timerange: '20200101-20200201',
+        timerange: `${dateStringToTimeRange(this.dateFrom)}-${dateStringToTimeRange(this.dateTo)}`,
       });
     } else {
       this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
     }
-
     this.getPlotConfig();
   }
 }
