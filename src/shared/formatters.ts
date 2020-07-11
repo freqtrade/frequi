@@ -16,6 +16,14 @@ export function timestampms(ts: number | Date): string {
   return moment.utc(ts).format('YYYY-MM-DD HH:mm:ss');
 }
 
+export function timestampToDateString(ts: number): string {
+  return moment(ts).format('YYYY-MM-DD');
+}
+
+export function dateStringToTimeRange(ts: string): string {
+  return ts.replace(/-/g, '');
+}
+
 export function timestampHour(ts: number | Date): number {
   return moment.utc(ts).hour();
 }
@@ -24,4 +32,6 @@ export default {
   formatPrice,
   formatPercent,
   timestampms,
+  timestampToDateString,
+  dateStringToTimeRange,
 };
