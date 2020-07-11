@@ -162,7 +162,7 @@ export default {
       });
     },
     getPairHistory({ commit }, payload: PairHistoryPayload) {
-      if (payload.pair && payload.timeframe && payload.limit && payload.timerange) {
+      if (payload.pair && payload.timeframe && payload.timerange) {
         return api
           .get('/pair_history', {
             params: { ...payload },

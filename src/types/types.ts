@@ -144,7 +144,9 @@ export interface PairCandlePayload {
   limit: number;
 }
 
-export interface PairHistoryPayload extends PairCandlePayload {
+export interface PairHistoryPayload {
+  pair: string;
+  timeframe: string;
   timerange: string;
 }
 
