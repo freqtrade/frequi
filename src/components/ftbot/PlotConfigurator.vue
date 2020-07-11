@@ -50,45 +50,43 @@
     </b-form-group>
     <hr />
     <div class="row">
-      <div class="col-mb-3 ml-2">
-        <b-button variant="primary" @click="addBar" title="Add configuration to plot" size="sm">
-          Add
-        </b-button>
-      </div>
-
-      <div class="col-mb-3 ml-2">
-        <b-button variant="primary" @click="loadPlotConfig" size="sm">Load</b-button>
-      </div>
-      <div class="col-mb-3 ml-2">
-        <b-button
-          variant="primary"
-          @click="savePlotConfig"
-          size="sm"
-          data-toggle="tooltip"
-          title="Save configuration"
-          >Save</b-button
-        >
-      </div>
-      <div class="col-mb-3 ml-2">
-        <b-button
-          id="showButton"
-          variant="primary"
-          @click="showConfig = !showConfig"
-          size="sm"
-          title="Show configuration for easy transfer to a strategy"
-          >Show</b-button
-        >
-      </div>
-      <div class="col-mb-3 ml-2">
-        <b-button
-          variant="primary"
-          @click="loadConfigFromString"
-          size="sm"
-          v-if="showConfig"
-          title="Load configuration from text box below"
-          >Load from String</b-button
-        >
-      </div>
+      <b-button
+        class="mx-1"
+        variant="primary"
+        @click="addBar"
+        title="Add configuration to plot"
+        size="sm"
+      >
+        Add
+      </b-button>
+      <b-button class="mx-1" variant="primary" @click="loadPlotConfig" size="sm">Load</b-button>
+      <b-button
+        class="mx-1"
+        variant="primary"
+        @click="savePlotConfig"
+        size="sm"
+        data-toggle="tooltip"
+        title="Save configuration"
+        >Save</b-button
+      >
+      <b-button
+        class="mx-1"
+        id="showButton"
+        variant="primary"
+        @click="showConfig = !showConfig"
+        size="sm"
+        title="Show configuration for easy transfer to a strategy"
+        >Show</b-button
+      >
+      <b-button
+        class="mx-1"
+        variant="primary"
+        @click="loadConfigFromString"
+        size="sm"
+        v-if="showConfig"
+        title="Load configuration from text box below"
+        >Load from String</b-button
+      >
     </div>
     <div class="col-mb-5 ml-2 mt-2" v-if="showConfig">
       <b-textarea
