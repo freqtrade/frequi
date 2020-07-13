@@ -1,4 +1,5 @@
 import { api } from '../../shared/apiService';
+import { BotState } from '../types';
 
 export default {
   namespaced: true,
@@ -56,7 +57,7 @@ export default {
     updateBalance(state, balance) {
       state.balance = balance;
     },
-    updateState(state, botState) {
+    updateState(state, botState: BotState) {
       state.botState = botState;
     },
     updateVersion(state, version) {
