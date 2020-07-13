@@ -12,6 +12,9 @@ import ECharts from 'vue-echarts';
 import * as echarts from 'echarts';
 import { Trade, PairHistory, PlotConfig } from '../../store/types';
 import randomColor from '../../shared/randomColor';
+import { roundTimeframe } from '../../shared/timemath';
+import { timestampms } from '../../shared/formatters';
+
 import 'echarts';
 
 // Chart default options
@@ -29,6 +32,8 @@ export default class CandleChart extends Vue {
   @Prop({ required: true }) readonly pair!: string;
 
   @Prop({ required: true }) readonly timeframe!: string;
+
+  @Prop({ required: true }) readonly timeframems!: number;
 
   @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
 
@@ -390,7 +395,10 @@ export default class CandleChart extends Vue {
           trade.open_timestamp >= this.dataset.data_start_ts &&
           trade.open_timestamp <= this.dataset.data_stop_ts
         ) {
-          trades.push([trade.open_date, trade.open_rate]);
+          trades.push([
+            timestampms(roundTimeframe(this.timeframems, trade.open_timestamp)),
+            trade.open_rate,
+          ]);
         }
         if (
           trade.close_timestamp !== undefined &&
@@ -398,7 +406,10 @@ export default class CandleChart extends Vue {
           trade.close_timestamp > this.dataset.data_start_ts
         ) {
           if (trade.close_date !== undefined && trade.close_rate !== undefined) {
-            tradesClose.push([trade.close_date, trade.close_rate]);
+            tradesClose.push([
+              timestampms(roundTimeframe(this.timeframems, trade.close_timestamp)),
+              trade.close_rate,
+            ]);
           }
         }
       }

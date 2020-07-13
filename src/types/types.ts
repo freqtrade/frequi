@@ -56,8 +56,10 @@ export interface BotState {
   strategy: string;
   /** Timeframe in readable form (e.g. 5m) */
   timeframe: string;
-  /** Timeframe in Milliseconds */
+  /** Timeframe in milliseconds */
   timeframe_ms: number;
+  /** Timeframe in Minutes */
+  timeframe_min: number;
 
   trailing_only_offset_is_reached: boolean;
   trailing_stop: boolean;
@@ -156,6 +158,14 @@ export interface PairHistory {
   data: number[];
   length: number;
   last_analyzed: number;
+  /** Data start date in as millisecond timestamp */
+  data_start_ts: number;
+  /** Data start date in in the format YYYY-MM-DD HH24:MI:SS+00:00 */
+  data_start: string;
+  /** End date in in the format YYYY-MM-DD HH24:MI:SS+00:00 */
+  data_stop: string;
+  /** Data end date in as millisecond timestamp */
+  data_stop_ts: number;
 }
 
 export interface IndicatorConfig {

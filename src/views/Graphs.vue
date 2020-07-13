@@ -34,6 +34,7 @@
       <CandleChart
         :pair="pair"
         :timeframe="timeframe"
+        :timeframems="timeframems"
         :dataset="dataset"
         :plotConfig="selectedPlotConfig"
         :trades="trades"
@@ -65,6 +66,8 @@ export default class Graphs extends Vue {
   pair = 'XRP/USDT';
 
   timeframe = '5m';
+
+  timeframems = 300000;
 
   strategyPlotConfig = false;
 
