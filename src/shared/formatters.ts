@@ -8,8 +8,8 @@ export function formatPrice(value: number): string {
   return value ? value.toFixed(8) : '';
 }
 
-export function timestampms(ts: number): string {
-  return moment(ts).format('YYYY-MM-DD hh:mm:ss');
+export function timestampms(ts: number | Date): string {
+  return moment(ts).format('YYYY-MM-DD HH:mm:ss');
 }
 
 export default {
