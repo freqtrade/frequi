@@ -36,6 +36,7 @@
         :timeframe="timeframe"
         :dataset="dataset"
         :plotConfig="selectedPlotConfig"
+        :trades="trades"
       >
       </CandleChart>
     </div>
@@ -84,6 +85,8 @@ export default class Graphs extends Vue {
   @ftbot.State whitelist;
 
   @ftbot.State plotConfig;
+
+  @ftbot.State trades;
 
   @ftbot.Action
   public getPairCandles!: (payload: PairCandlePayload) => void;

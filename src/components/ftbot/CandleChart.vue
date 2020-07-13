@@ -10,7 +10,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ECharts from 'vue-echarts';
 import * as echarts from 'echarts';
-import { PairHistory, PlotConfig } from '../../store/types';
+import { Trade, PairHistory, PlotConfig } from '../../store/types';
 import randomColor from '../../shared/randomColor';
 import 'echarts';
 
@@ -29,6 +29,8 @@ export default class CandleChart extends Vue {
   @Prop({ required: true }) readonly pair!: string;
 
   @Prop({ required: true }) readonly timeframe!: string;
+
+  @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
 
   @Prop({ required: true }) readonly dataset!: PairHistory;
 
@@ -58,6 +60,10 @@ export default class CandleChart extends Vue {
 
   get hasData() {
     return this.dataset !== null && typeof this.dataset === 'object';
+  }
+
+  get filteredTrades() {
+    return this.trades.filter((item: Trade) => item.pair === this.pair);
   }
 
   get chartOptions() {
@@ -111,7 +117,7 @@ export default class CandleChart extends Vue {
       },
       xAxis: [
         {
-          type: 'category',
+          type: 'time',
           scale: true,
           boundaryGap: false,
           axisLine: { onZero: false },
@@ -121,7 +127,7 @@ export default class CandleChart extends Vue {
           max: 'dataMax',
         },
         {
-          type: 'category',
+          type: 'time',
           gridIndex: 1,
           scale: true,
           boundaryGap: false,
@@ -278,7 +284,7 @@ export default class CandleChart extends Vue {
         if (options.legend && options.legend.data) {
           options.legend.data.push(key);
         }
-        const sp = {
+        const sp: echarts.EChartOption.Series = {
           name: key,
           type: value.type || 'line',
           xAxisIndex: 0,
@@ -348,7 +354,7 @@ export default class CandleChart extends Vue {
           // entries per subplot
           const col = this.dataset.columns.findIndex((el) => el === sk);
           if (col) {
-            const sp = {
+            const sp: echarts.EChartOption.Series = {
               name: sk,
               type: sv.type || 'line',
               xAxisIndex: plotIndex,
@@ -372,6 +378,69 @@ export default class CandleChart extends Vue {
 
         plotIndex += 1;
       });
+    }
+
+    if (this.filteredTrades.length > 0) {
+      // Show trades
+      const trades: Array<string | number>[] = [];
+      const tradesClose: Array<string | number>[] = [];
+      for (let i = 0, len = this.filteredTrades.length; i < len; i += 1) {
+        const trade: Trade = this.filteredTrades[i];
+        if (
+          trade.open_timestamp >= this.dataset.data_start_ts &&
+          trade.open_timestamp <= this.dataset.data_stop_ts
+        ) {
+          trades.push([trade.open_date, trade.open_rate]);
+        }
+        if (
+          trade.close_timestamp !== undefined &&
+          trade.close_timestamp < this.dataset.data_stop_ts &&
+          trade.close_timestamp > this.dataset.data_start_ts
+        ) {
+          if (trade.close_date !== undefined && trade.close_rate !== undefined) {
+            tradesClose.push([trade.close_date, trade.close_rate]);
+          }
+        }
+      }
+      console.log(`Trades: ${trades.length}`);
+      console.log(trades);
+      console.log(`ClosesTrades: ${tradesClose.length}`);
+      console.log(tradesClose);
+
+      const name = 'Trades';
+      const nameClose = 'Trades Close';
+      if (options.legend && options.legend.data) {
+        options.legend.data.push(name);
+      }
+      const sp: echarts.EChartOption.SeriesScatter = {
+        name,
+        type: 'scatter',
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        itemStyle: {
+          color: 'cyan',
+        },
+        data: trades,
+      };
+      if (options.series) {
+        options.series.push(sp);
+      }
+      if (options.legend && options.legend.data) {
+        options.legend.data.push(nameClose);
+      }
+      const closeSeries: echarts.EChartOption.SeriesScatter = {
+        name: nameClose,
+        type: 'scatter',
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        itemStyle: {
+          color: 'pink',
+        },
+        data: tradesClose,
+      };
+      if (options.series) {
+        options.series.push(closeSeries);
+      }
     }
 
     // console.log(options);
