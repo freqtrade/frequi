@@ -328,7 +328,7 @@ export default class CandleChart extends Vue {
         }
         if (options.xAxis && Array.isArray(options.xAxis)) {
           options.xAxis.push({
-            type: 'category',
+            type: 'time',
             scale: true,
             gridIndex: plotIndex,
             boundaryGap: false,
@@ -358,7 +358,7 @@ export default class CandleChart extends Vue {
           }
           // entries per subplot
           const col = this.dataset.columns.findIndex((el) => el === sk);
-          if (col) {
+          if (col > 0) {
             const sp: echarts.EChartOption.Series = {
               name: sk,
               type: sv.type || 'line',
@@ -413,10 +413,10 @@ export default class CandleChart extends Vue {
           }
         }
       }
-      console.log(`Trades: ${trades.length}`);
-      console.log(trades);
-      console.log(`ClosesTrades: ${tradesClose.length}`);
-      console.log(tradesClose);
+      // console.log(`Trades: ${trades.length}`);
+      // console.log(trades);
+      // console.log(`ClosesTrades: ${tradesClose.length}`);
+      // console.log(tradesClose);
 
       const name = 'Trades';
       const nameClose = 'Trades Close';
