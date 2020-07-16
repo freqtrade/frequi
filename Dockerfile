@@ -8,12 +8,12 @@ WORKDIR /app
 
 COPY package.json /app/package.json
 
-RUN npm install
+RUN yarn
 
-RUN npm install -g @vue/cli
+RUN yarn global add @vue/cli
 
 COPY . /app
-RUN npm run build
+RUN yarn build
 
 FROM nginx:alpine
 COPY  --from=ui-builder /app/dist /usr/share/nginx/html
