@@ -1,0 +1,21 @@
+FROM node:14.2.0-alpine as ui-builder
+
+RUN mkdir /app
+
+WORKDIR /app
+
+# ENV PATH /usr/src/app/node_modules/.bin:$PATH
+
+COPY package.json /app/package.json
+
+RUN yarn
+
+RUN yarn global add @vue/cli
+
+COPY . /app
+RUN yarn build
+
+FROM nginx:alpine
+COPY  --from=ui-builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
