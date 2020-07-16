@@ -31,7 +31,7 @@
     "@vue/cli-plugin-typescript": "~4.4.0",
     "@vue/cli-plugin-vuex": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
-    "@vue/eslint-config-airbnb": "^5.0.2",
+    "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
