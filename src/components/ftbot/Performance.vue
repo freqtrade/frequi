@@ -3,7 +3,7 @@
     <div class="mb-2">
       <h3>Performance</h3>
     </div>
-    <b-table class="table-sm" :items="performanceStats" :fields="table_fields"></b-table>
+    <b-table class="table-sm" :items="performanceStats" :fields="tableFields"></b-table>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      table_fields: [
+      tableFields: [
         { key: 'pair', label: 'Pair' },
         { key: 'profit', label: 'Profit' },
         { key: 'count', label: 'Count' },

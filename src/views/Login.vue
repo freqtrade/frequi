@@ -19,7 +19,7 @@
           <b-form-input
             id="url-input"
             v-model="auth.url"
-            :state="nameState"
+            :state="urlState"
             @keydown.enter.native="handleOk"
             required
           ></b-form-input>
@@ -52,12 +52,18 @@
           ></b-form-input>
         </b-form-group>
       </form>
+      <div>
+        <b-alert v-if="errorMessage" show variant="warning">
+          {{ errorMessage }}
+        </b-alert>
+      </div>
     </b-modal>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import userService from '@/shared/userService';
+import { setBaseUrl } from '@/shared/apiService';
 
 export default {
   name: 'Login',
@@ -70,11 +76,10 @@ export default {
       },
       nameState: null,
       urlState: null,
+      errorMessage: '',
     };
   },
   methods: {
-    ...mapActions('user', ['login']),
-
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();
       this.nameState = valid;
@@ -84,6 +89,7 @@ export default {
       this.auth.username = '';
       this.auth.password = '';
       this.nameState = null;
+      this.errorMessage = '';
     },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
@@ -97,15 +103,35 @@ export default {
         return;
       }
       // Push the name to submitted names
-      this.login(this.auth);
-      // localStorage.setItem('auth', JSON.stringify(this.auth));
+      userService
+        .login(this.auth)
+        .then(() => {
+          console.log('Login success.');
+          this.$nextTick(() => {
+            this.$bvModal.hide('modal-prevent-closing');
+          });
+        })
+        .catch((error) => {
+          // this.nameState = false;
+          console.log(error.response);
+          if (error.response && error.response.status === 401) {
+            this.nameState = false;
+            this.errorMessage = 'Login failed, Username or Password wrong.';
+          } else {
+            this.urlState = false;
+            this.errorMessage = `Login failed.
+            Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
+            You can try this by going to http://${this.auth.url}/api/v1/ping`;
+          }
+          console.log(this.errorMessage);
+          // this.addAlert({ message: 'Login failed' });
+        });
+      setBaseUrl(userService.getAPIUrl());
       // Hide the modal manually
-      this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing');
-      });
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+</style>

@@ -2,22 +2,22 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import ftbotModule from './modules/ftbot';
-import userModule from './modules/user';
 import alertsModule from './modules/alerts';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    ping: '',
+  },
   modules: {
     ftbot: ftbotModule,
-    user: userModule,
     alerts: alertsModule,
   },
   mutations: {
     setPing(state, ping) {
-      console.log(ping);
-      const now = Date(Date.now());
+      // console.log(ping);
+      const now = Date.now();
       state.ping = `${ping.status} ${now.toString()}`;
     },
   },

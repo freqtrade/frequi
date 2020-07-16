@@ -5,7 +5,7 @@
       <b-button class="float-right" size="sm" @click="getDaily">R</b-button>
     </div>
     <div>
-      <b-table class="table-sm" :items="dailyStats.data" :fields="daily_fields"> </b-table>
+      <b-table class="table-sm" :items="dailyStats.data" :fields="dailyFields"> </b-table>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: 'DailyStats',
   computed: {
     ...mapState('ftbot', ['dailyStats']),
-    daily_fields() {
+    dailyFields() {
       return [
         { key: 'date', label: 'Day' },
         { key: 'abs_profit', label: 'Profit' },

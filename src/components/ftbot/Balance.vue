@@ -8,7 +8,7 @@
       <p v-if="balance.note">
         <strong>{{ balance.note }}</strong>
       </p>
-      <b-table class="table-sm" :items="balance.currencies" :fields="table_fields">
+      <b-table class="table-sm" :items="balance.currencies" :fields="tableFields">
         <template slot="bottom-row">
           <td><strong>Total</strong></td>
           <td></td>
@@ -29,7 +29,7 @@ export default {
   name: 'Balance',
   computed: {
     ...mapState('ftbot', ['balance']),
-    table_fields() {
+    tableFields() {
       return [
         { key: 'currency', label: 'Currency' },
         { key: 'free', label: 'Available', formatter: 'formatCurrency' },

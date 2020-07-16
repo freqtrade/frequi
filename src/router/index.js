@@ -12,11 +12,11 @@ const routes = [
   },
   {
     path: '/trade',
-    name: 'Freqtrade Trade',
+    name: 'Freqtrade Trading',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/Trade.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Trading.vue'),
   },
   {
     path: '/about',

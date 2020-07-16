@@ -8,11 +8,11 @@
       <button
         class="btn-primary col-md-5 m-1"
         v-if="botState.forcebuy_enabled"
-        @click="initiate_forcebuy"
+        @click="initiateForcebuy"
       >
         Forcebuy
       </button>
-      <ForceBuyForm :modalShow="forcebuy_show" @close="this.$bvModal.hide('forcebuy-modal')" />
+      <ForceBuyForm :modalShow="forcebuyShow" @close="this.$bvModal.hide('forcebuy-modal')" />
     </div>
   </div>
 </template>
@@ -29,12 +29,12 @@ export default {
   },
   data() {
     return {
-      forcebuy_show: false,
+      forcebuyShow: false,
     };
   },
   methods: {
     ...mapActions('ftbot', ['startBot', 'stopBot', 'stopBuy', 'reloadConfig']),
-    initiate_forcebuy() {
+    initiateForcebuy() {
       console.log('Forcebuy started');
       this.$bvModal.show('forcebuy-modal');
     },

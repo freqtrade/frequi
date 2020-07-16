@@ -1,12 +1,9 @@
 import axios from 'axios';
-
-export const apiBase = '/api/v1';
-
-export const apiStore = { store: null };
+import userService from './userService';
 
 export const api = axios.create({
-  baseURL: apiBase,
-  timeout: 1000,
+  baseURL: userService.apiBase,
+  timeout: 2000,
   withCredentials: true,
 });
 
@@ -14,7 +11,7 @@ api.interceptors.request.use(
   (config) => {
     const custconfig = config;
     // Merge custconfig dicts
-    custconfig.headers = { ...config.headers, ...apiStore.store.getters['user/apiAuth'] };
+    custconfig.headers = { ...config.headers, ...userService.getAuthHeader() };
     // Do something before request is sent
     // console.log(custconfig)
     return custconfig;
@@ -29,8 +26,10 @@ api.interceptors.response.use(
     console.log(err);
     if (err.response && err.response.status === 401) {
       console.log('Dispatching refresh_token...');
-      apiStore.store.dispatch('user/refresh_token');
+      userService.refreshToken();
       // maybe redirect to /login if needed !
+    } else if (err.response && err.response.status === 500) {
+      console.log('Bot seems to be offline...');
     }
     return new Promise((resolve, reject) => {
       reject(err);
@@ -39,14 +38,16 @@ api.interceptors.response.use(
   },
 );
 
-export function setBaseUrl(baseURL) {
+export function setBaseUrl(baseURL: string) {
   if (baseURL === null) {
     // Reset to "local" baseurl
-    api.defaults.baseURL = apiBase;
-  } else if (!baseURL.endsWith(apiBase)) {
-    api.defaults.baseURL = `${baseURL}${apiBase}`;
+    api.defaults.baseURL = userService.apiBase;
+  } else if (!baseURL.endsWith(userService.apiBase)) {
+    api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
   } else {
-    api.defaults.baseURL = `${baseURL}`;
+    api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
   }
   // Do some more testing here ?
 }
+
+setBaseUrl(userService.getAPIUrl());

@@ -35,24 +35,28 @@
   </div>
 </template>
 
-<script>
-import { mapActions, mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import Login from '@/views/Login.vue';
+import userService from '../../shared/userService';
 import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
 
-export default {
-  name: 'NavBar',
+@Component({
   components: { Login, BootswatchThemeSelect },
-  computed: {
-    ...mapState('user', ['loggedIn']),
-  },
-  methods: {
-    ...mapActions('user', ['logout']),
-  },
-};
+})
+export default class NavBar extends Vue {
+  get loggedIn(): boolean {
+    console.log(userService.loggedIn());
+    return userService.loggedIn();
+  }
+
+  logout(): void {
+    userService.logout();
+  }
+}
 </script>
 
-<style>
+<style scoped>
 .logo {
   vertical-align: middle;
   height: 30px;
