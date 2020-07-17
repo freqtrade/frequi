@@ -47,7 +47,7 @@
           <div class="col-md-12">
             <TradeList
               class="trade-history"
-              :trades="closedtrades"
+              :trades="closedTrades"
               title="Trade history"
               emptyText="No closed trades so far."
               v-if="!detailTradeId"
@@ -98,7 +98,7 @@ export default class Trading extends Vue {
   openTrades!: Array<Trade>;
 
   @ftbot.Getter
-  closedtrades!: Array<Trade>;
+  closedTrades!: Array<Trade>;
 
   @ftbot.Getter
   openTradeDetail!: Trade;

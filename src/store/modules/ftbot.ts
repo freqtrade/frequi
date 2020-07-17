@@ -26,7 +26,7 @@ export default {
       const [dTrade] = state.openTrades.filter((item) => item.trade_id === state.detailTradeId);
       return dTrade;
     },
-    closedtrades(state) {
+    closedTrades(state) {
       return state.trades.filter((item) => !item.is_open);
     },
   },
