@@ -38,7 +38,7 @@ export default new Vuex.Store({
     },
     refreshFrequent({ dispatch }) {
       // Refresh all data
-      dispatch('ftbot/getOpentrades');
+      dispatch('ftbot/getOpenTrades');
       dispatch('ftbot/getState');
       dispatch('ftbot/getTrades');
       dispatch('ftbot/getWhitelist');

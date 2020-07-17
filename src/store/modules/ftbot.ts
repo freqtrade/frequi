@@ -80,7 +80,7 @@ export default {
         .then((result) => commit('updateTrades', result.data))
         .catch(console.error);
     },
-    getOpentrades({ commit }) {
+    getOpenTrades({ commit }) {
       return api
         .get('/status')
         .then((result) => commit('updateOpenTrades', result.data))
