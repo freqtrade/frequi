@@ -1,3 +1,9 @@
+export interface AuthPayload {
+  url: string;
+  username: string;
+  password: string;
+}
+
 export interface DailyInterface {
   timescale: number;
 }

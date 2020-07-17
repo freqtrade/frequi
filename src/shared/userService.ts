@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { AuthPayload } from '../store/types';
+
 const AUTH_REFRESH_TOKEN = 'auth_ref_token';
 const AUTH_ACCESS_TOKEN = 'auth_access_token';
 const AUTH_API_URL = 'auth_api_url';
@@ -27,9 +29,8 @@ export default {
     localStorage.removeItem(AUTH_API_URL);
   },
 
-  async login(auth) {
+  async login(auth: AuthPayload) {
     //  Login using username / password
-    console.log(auth);
     const result = await axios.post(
       `${auth.url}/api/v1/token/login`,
       {},
