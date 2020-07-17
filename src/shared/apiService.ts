@@ -10,10 +10,13 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const custconfig = config;
-    // Merge custconfig dicts
-    custconfig.headers = { ...config.headers, ...userService.getAuthHeader() };
-    // Do something before request is sent
-    // console.log(custconfig)
+    const token = userService.getAccessToken();
+    if (token) {
+      // Merge custconfig dicts
+      custconfig.headers = { ...config.headers, ...{ Authorization: `Bearer ${token}` } };
+      // Do something before request is sent
+      // console.log(custconfig)
+    }
     return custconfig;
   },
   (error) => Promise.reject(error),
@@ -26,9 +29,32 @@ api.interceptors.response.use(
     console.log(err);
     if (err.response && err.response.status === 401) {
       console.log('Dispatching refresh_token...');
-      userService.refreshToken();
+      return userService
+        .refreshToken()
+        .then((token) => {
+          // Retry original request with new token
+          const { config } = err;
+          config.headers.Authorization = `Bearer ${token}`;
+
+          return new Promise((resolve, reject) => {
+            axios
+              .request(config)
+              .then((response) => {
+                resolve(response);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          });
+        })
+        .catch((error) => {
+          console.log('No new token received');
+          console.log(error);
+        });
+
       // maybe redirect to /login if needed !
-    } else if (err.response && err.response.status === 500) {
+    }
+    if (err.response && err.response.status === 500) {
       console.log('Bot seems to be offline...');
     }
     return new Promise((resolve, reject) => {
