@@ -27,7 +27,7 @@
           </li>
           <li v-else>
             <!-- should open Modal window! -->
-            <Login />
+            <LoginModal />
           </li>
         </b-navbar-nav>
       </b-collapse>
@@ -37,13 +37,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Login from '@/views/Login.vue';
+import LoginModal from '@/views/LoginModal.vue';
 import { State, Mutation } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 
 @Component({
-  components: { Login, BootswatchThemeSelect },
+  components: { LoginModal, BootswatchThemeSelect },
 })
 export default class NavBar extends Vue {
   @State loggedIn!: boolean;
