@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, State } from 'vuex-class';
 
 @Component({})
 export default class ReloadControl extends Vue {
@@ -23,8 +23,10 @@ export default class ReloadControl extends Vue {
   refreshIntervalSlow: NodeJS.Timer | null = null;
 
   created() {
-    this.refreshOnce();
-    this.refreshAll();
+    if (this.loggedIn) {
+      this.refreshOnce();
+      this.refreshAll();
+    }
   }
 
   mounted() {
@@ -35,6 +37,8 @@ export default class ReloadControl extends Vue {
     this.stopRefresh();
   }
 
+  @State loggedIn;
+
   @Action refreshSlow;
 
   @Action refreshFrequent;
@@ -44,6 +48,10 @@ export default class ReloadControl extends Vue {
   @Action refreshOnce;
 
   startRefresh() {
+    if (this.loggedIn !== true) {
+      console.log('Not logged in.');
+      return;
+    }
     console.log('Starting automatic refresh.');
     this.refreshFrequent();
     if (this.autoRefresh) {

@@ -35,6 +35,8 @@ export default new Vuex.Store({
       dispatch('refreshSlow');
       dispatch('ftbot/getDaily');
       dispatch('ftbot/getBalance');
+      dispatch('ftbot/getWhitelist');
+      dispatch('ftbot/getBlacklist');
     },
     refreshSlow({ dispatch }) {
       // dispatch('ftbot/getDaily');
@@ -46,8 +48,6 @@ export default new Vuex.Store({
       dispatch('ftbot/getOpenTrades');
       dispatch('ftbot/getState');
       dispatch('ftbot/getTrades');
-      dispatch('ftbot/getWhitelist');
-      dispatch('ftbot/getBlacklist');
     },
   },
 });

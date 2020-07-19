@@ -23,7 +23,7 @@
                   <DailyStats />
                 </b-tab>
 
-                <b-tab title="Pairlist">
+                <b-tab title="Pairlist" lazy>
                   <FTBotAPIPairList />
                 </b-tab>
               </b-tabs>
