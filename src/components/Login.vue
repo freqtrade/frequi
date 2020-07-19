@@ -65,7 +65,7 @@ const defaultURL = 'http://localhost:8080';
 export default class Login extends Vue {
   @Mutation setLoggedIn;
 
-  @Prop({ default: false, required: true }) inModal!: boolean;
+  @Prop({ default: false }) inModal!: boolean;
 
   $refs!: {
     form: HTMLFormElement;
@@ -126,7 +126,17 @@ export default class Login extends Vue {
         this.setLoggedIn(true);
         this.emitLoginResult(true);
         if (this.inModal === false) {
-          this.$router.push('/');
+          if (typeof this.$route.query.redirect === 'string') {
+            const resolved = this.$router.resolve({ path: this.$route.query.redirect });
+            if (resolved.route.name !== '404') {
+              this.$router.push(resolved.route.path);
+            } else {
+              console.log('Invalid redirect detected. Redirecting to home.');
+              this.$router.push('/');
+            }
+          } else {
+            this.$router.push('/');
+          }
         }
       })
       .catch((error) => {
