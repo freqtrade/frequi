@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import userService from '@/shared/userService';
 import ftbotModule from './modules/ftbot';
 import alertsModule from './modules/alerts';
-import userService from '../shared/userService';
 
 Vue.use(Vuex);
 

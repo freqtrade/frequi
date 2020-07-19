@@ -1,5 +1,5 @@
-import { api } from '../../shared/apiService';
-import { BotState } from '../types';
+import { api } from '@/shared/apiService';
+import { BotState } from '@/store/types';
 
 export default {
   namespaced: true,

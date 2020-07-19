@@ -39,8 +39,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Login from '@/views/Login.vue';
 import { State, Mutation } from 'vuex-class';
-import userService from '../../shared/userService';
-import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
+import userService from '@/shared/userService';
+import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 
 @Component({
   components: { Login, BootswatchThemeSelect },

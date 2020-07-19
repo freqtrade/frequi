@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AuthPayload } from '../store/types';
+import { AuthPayload } from '@/store/types';
 
 const AUTH_REFRESH_TOKEN = 'auth_ref_token';
 const AUTH_ACCESS_TOKEN = 'auth_access_token';

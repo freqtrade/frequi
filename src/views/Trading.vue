@@ -74,7 +74,7 @@ import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 
-import { Trade } from '../store/types';
+import { Trade } from '@/store/types';
 
 const ftbot = namespace('ftbot');
 

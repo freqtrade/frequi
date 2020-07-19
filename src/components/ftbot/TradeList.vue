@@ -40,8 +40,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { formatPercent } from '../../shared/formatters';
-import { Trade } from '../../store/types';
+import { formatPercent } from '@/shared/formatters';
+import { Trade } from '@/store/types';
 
 const ftbot = namespace('ftbot');
 
