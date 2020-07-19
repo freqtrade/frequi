@@ -38,6 +38,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Login from '@/views/Login.vue';
+import { State, Mutation } from 'vuex-class';
 import userService from '../../shared/userService';
 import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
 
@@ -45,13 +46,13 @@ import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
   components: { Login, BootswatchThemeSelect },
 })
 export default class NavBar extends Vue {
-  get loggedIn(): boolean {
-    console.log(userService.loggedIn());
-    return userService.loggedIn();
-  }
+  @State loggedIn;
+
+  @Mutation setLoggedIn;
 
   logout(): void {
     userService.logout();
+    this.setLoggedIn(false);
   }
 }
 </script>

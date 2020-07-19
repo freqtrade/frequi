@@ -3,12 +3,14 @@ import Vuex from 'vuex';
 
 import ftbotModule from './modules/ftbot';
 import alertsModule from './modules/alerts';
+import userService from '../shared/userService';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     ping: '',
+    loggedIn: userService.loggedIn(),
   },
   modules: {
     ftbot: ftbotModule,
@@ -19,6 +21,9 @@ export default new Vuex.Store({
       // console.log(ping);
       const now = Date.now();
       state.ping = `${ping.status} ${now.toString()}`;
+    },
+    setLoggedIn(state, loggedin: boolean) {
+      state.loggedIn = loggedin;
     },
   },
   actions: {

@@ -63,6 +63,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Mutation } from 'vuex-class';
 import userService from '../shared/userService';
 import { setBaseUrl } from '../shared/apiService';
 
@@ -70,6 +71,8 @@ import { AuthPayload } from '../store/types';
 
 @Component({})
 export default class Login extends Vue {
+  @Mutation setLoggedIn;
+
   $refs!: {
     form: HTMLFormElement;
   };
@@ -116,6 +119,7 @@ export default class Login extends Vue {
       .login(this.auth)
       .then(() => {
         console.log('Login success.');
+        this.setLoggedIn(true);
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing');
         });

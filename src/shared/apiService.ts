@@ -3,7 +3,7 @@ import userService from './userService';
 
 export const api = axios.create({
   baseURL: userService.apiBase,
-  timeout: 2000,
+  timeout: 5000,
   withCredentials: true,
 });
 
