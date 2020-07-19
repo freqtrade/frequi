@@ -46,7 +46,7 @@ import BootswatchThemeSelect from '../BootswatchThemeSelect.vue';
   components: { Login, BootswatchThemeSelect },
 })
 export default class NavBar extends Vue {
-  @State loggedIn;
+  @State loggedIn!: boolean;
 
   @Mutation setLoggedIn;
 
