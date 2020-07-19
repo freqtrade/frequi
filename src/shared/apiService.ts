@@ -11,11 +11,10 @@ api.interceptors.request.use(
   (config) => {
     const custconfig = config;
     const token = userService.getAccessToken();
+    // Append token to each request
     if (token) {
       // Merge custconfig dicts
       custconfig.headers = { ...config.headers, ...{ Authorization: `Bearer ${token}` } };
-      // Do something before request is sent
-      // console.log(custconfig)
     }
     return custconfig;
   },
@@ -25,7 +24,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (err) => {
-    // console.log(err.response.status);
     console.log(err);
     if (err.response && err.response.status === 401) {
       console.log('Dispatching refresh_token...');
@@ -60,7 +58,6 @@ api.interceptors.response.use(
     return new Promise((resolve, reject) => {
       reject(err);
     });
-    // // return Promise.reject(err);
   },
 );
 
@@ -73,7 +70,6 @@ export function setBaseUrl(baseURL: string) {
   } else {
     api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
   }
-  // Do some more testing here ?
 }
 
 setBaseUrl(userService.getAPIUrl());
