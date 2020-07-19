@@ -5,8 +5,8 @@
       id="modal-prevent-closing"
       ref="modal"
       title="Submit Your Name"
-      @show="resetModal"
-      @hidden="resetModal"
+      @show="resetLogin"
+      @hidden="resetLogin"
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
@@ -95,7 +95,7 @@ export default class Login extends Vue {
     return valid;
   }
 
-  resetModal() {
+  resetLogin() {
     this.auth.username = '';
     this.auth.password = '';
     this.nameState = null;
