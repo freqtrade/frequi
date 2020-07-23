@@ -56,7 +56,6 @@ export default class ReloadControl extends Vue {
     this.refreshFrequent();
     if (this.autoRefresh) {
       this.refreshInterval = setInterval(() => {
-        console.log('refreshing_interval');
         this.refreshFrequent();
       }, 5000);
     }

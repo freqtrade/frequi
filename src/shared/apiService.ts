@@ -52,7 +52,7 @@ api.interceptors.response.use(
 
       // maybe redirect to /login if needed !
     }
-    if (err.response && err.response.status === 500) {
+    if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
       console.log('Bot seems to be offline...');
     }
     return new Promise((resolve, reject) => {
