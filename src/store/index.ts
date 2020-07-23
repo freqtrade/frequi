@@ -5,12 +5,15 @@ import userService from '@/shared/userService';
 import ftbotModule from './modules/ftbot';
 import alertsModule from './modules/alerts';
 
+const AUTO_REFRESH = 'ft_auto_refresh';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     ping: '',
     loggedIn: userService.loggedIn(),
+    autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || 'false'),
   },
   modules: {
     ftbot: ftbotModule,
@@ -25,8 +28,15 @@ export default new Vuex.Store({
     setLoggedIn(state, loggedin: boolean) {
       state.loggedIn = loggedin;
     },
+    setAutoRefresh(state, newRefreshValue: boolean) {
+      state.autoRefresh = newRefreshValue;
+    },
   },
   actions: {
+    setAutoRefresh({ commit }, newRefreshValue) {
+      commit('setAutoRefresh', newRefreshValue);
+      localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
+    },
     refreshOnce({ dispatch }) {
       dispatch('ftbot/getVersion');
     },

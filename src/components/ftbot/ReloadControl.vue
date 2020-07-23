@@ -4,7 +4,7 @@
       Refresh all
     </button>
 
-    <b-form-checkbox class="float-right" v-model="autoRefresh" size="lg" switch
+    <b-form-checkbox class="float-right" v-model="autoRefreshLoc" size="lg" switch
       >AutoRefresh</b-form-checkbox
     >
   </div>
@@ -16,8 +16,6 @@ import { Action, State } from 'vuex-class';
 
 @Component({})
 export default class ReloadControl extends Vue {
-  autoRefresh = true;
-
   refreshInterval: NodeJS.Timer | null = null;
 
   refreshIntervalSlow: NodeJS.Timer | null = null;
@@ -39,6 +37,10 @@ export default class ReloadControl extends Vue {
 
   @State loggedIn;
 
+  @State autoRefresh!: boolean;
+
+  @Action setAutoRefresh!: (newValue: boolean) => void;
+
   @Action refreshSlow;
 
   @Action refreshFrequent;
@@ -46,6 +48,14 @@ export default class ReloadControl extends Vue {
   @Action refreshAll;
 
   @Action refreshOnce;
+
+  get autoRefreshLoc() {
+    return this.autoRefresh;
+  }
+
+  set autoRefreshLoc(newValue: boolean) {
+    this.setAutoRefresh(newValue);
+  }
 
   startRefresh() {
     if (this.loggedIn !== true) {
