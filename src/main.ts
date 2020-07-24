@@ -3,6 +3,9 @@ import './plugins/bootstrap-vue';
 import App from './App.vue';
 import store from './store';
 import router from './router';
+import { init } from './shared/apiService';
+
+init(store);
 
 Vue.config.productionTip = false;
 
