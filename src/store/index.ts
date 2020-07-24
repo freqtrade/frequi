@@ -13,7 +13,8 @@ export default new Vuex.Store({
   state: {
     ping: '',
     loggedIn: userService.loggedIn(),
-    autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || 'false'),
+    autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
+    isBotOnline: true,
   },
   modules: {
     ftbot: ftbotModule,
@@ -31,11 +32,21 @@ export default new Vuex.Store({
     setAutoRefresh(state, newRefreshValue: boolean) {
       state.autoRefresh = newRefreshValue;
     },
+    setIsBotOnline(state, isBotOnline: boolean) {
+      state.isBotOnline = isBotOnline;
+    },
   },
   actions: {
     setAutoRefresh({ commit }, newRefreshValue) {
       commit('setAutoRefresh', newRefreshValue);
       localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
+    },
+    setIsBotOnline({ commit, dispatch }, isOnline) {
+      commit('setIsBotOnline', isOnline);
+      if (isOnline === false) {
+        console.log('disabling autorun');
+        dispatch('setAutoRefresh', false);
+      }
     },
     refreshOnce({ dispatch }) {
       dispatch('ftbot/getVersion');

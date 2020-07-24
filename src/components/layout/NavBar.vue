@@ -16,6 +16,11 @@
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
+          <li class="nav-item text-secondary mr-2">
+            <b-nav-text class="verticalCenter">
+              {{ isBotOnline ? 'Online' : 'Offline' }}
+            </b-nav-text>
+          </li>
           <li class="nav-item" v-if="loggedIn">
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
@@ -48,6 +53,8 @@ import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 export default class NavBar extends Vue {
   @State loggedIn!: boolean;
 
+  @State isBotOnline!: boolean;
+
   @Mutation setLoggedIn;
 
   logout(): void {
@@ -57,7 +64,7 @@ export default class NavBar extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .logo {
   vertical-align: middle;
   height: 30px;
@@ -73,5 +80,10 @@ export default class NavBar extends Vue {
 
 .nav-link:active {
   color: white;
+}
+.verticalCenter {
+  align-items: center;
+  display: inline-flex;
+  height: 100%;
 }
 </style>
