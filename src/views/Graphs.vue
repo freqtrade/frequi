@@ -50,13 +50,8 @@ import { namespace } from 'vuex-class';
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 import PlotConfigurator from '@/components/ftbot/PlotConfigurator.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
-import {
-  PlotConfig,
-  EMPTY_PLOTCONFIG,
-  PairCandlePayload,
-  PairHistoryPayload,
-} from '../store/types';
-import { loadCustomPlotConfig } from '../shared/storage';
+import { PlotConfig, EMPTY_PLOTCONFIG, PairCandlePayload, PairHistoryPayload } from '@/store/types';
+import { loadCustomPlotConfig } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 @Component({

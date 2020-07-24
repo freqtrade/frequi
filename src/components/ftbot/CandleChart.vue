@@ -10,10 +10,10 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ECharts from 'vue-echarts';
 import * as echarts from 'echarts';
-import { Trade, PairHistory, PlotConfig } from '../../store/types';
-import randomColor from '../../shared/randomColor';
-import { roundTimeframe } from '../../shared/timemath';
-import { timestampms } from '../../shared/formatters';
+import { Trade, PairHistory, PlotConfig } from '@/store/types';
+import randomColor from '@/shared/randomColor';
+import { roundTimeframe } from '@/shared/timemath';
+import { timestampms } from '@/shared/formatters';
 
 import 'echarts';
 

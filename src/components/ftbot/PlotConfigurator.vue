@@ -104,9 +104,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { PlotConfig, EMPTY_PLOTCONFIG } from '../../store/types';
-import randomColor from '../../shared/randomColor';
-import { loadCustomPlotConfig } from '../../shared/storage';
+import { PlotConfig, EMPTY_PLOTCONFIG } from '@/store/types';
+import randomColor from '@/shared/randomColor';
+import { loadCustomPlotConfig } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 

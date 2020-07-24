@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Vue, Emit } from 'vue-property-decorator';
-import { dateStringToTimeRange, timestampToDateString } from '../../shared/formatters';
+import { dateStringToTimeRange, timestampToDateString } from '@/shared/formatters';
 
 const now = new Date();
 @Component({})
