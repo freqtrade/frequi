@@ -34,6 +34,10 @@ export default {
       activeTheme: '',
       themes: [
         {
+          name: 'Bootstrap',
+          description: 'Plain bootstrap default theme',
+        },
+        {
           name: 'Cerulean',
           description: 'A calm blue sky',
         },
@@ -134,24 +138,33 @@ export default {
       if (this.activeTheme === themeName) {
         return;
       }
-
-      // Dynamic import for a different theme, to avoid loading ALL themes.
-      import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then(() => {
+      if (themeName.toLowerCase() === 'bootstrap') {
+        console.log('bootstrap');
         const styles = document.getElementsByTagName('style');
         const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
+        // Reset all bootswatch styles
         bw.forEach((style, index) => {
-          if (!style.id) {
-            // If its a style that was just imported and hasn't been assigned an id.
-            bw[index].id = themeName;
-          } else if (style.id === themeName) {
-            // If it's a style that has been imported already.
-            bw[index].disabled = false;
-          } else {
-            // All other style themes should be disabled.
-            bw[index].disabled = true;
-          }
+          bw[index].disabled = true;
         });
-      });
+      } else {
+        // Dynamic import for a different theme, to avoid loading ALL themes.
+        import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then(() => {
+          const styles = document.getElementsByTagName('style');
+          const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
+          bw.forEach((style, index) => {
+            if (!style.id) {
+              // If its a style that was just imported and hasn't been assigned an id.
+              bw[index].id = themeName;
+            } else if (style.id === themeName) {
+              // If it's a style that has been imported already.
+              bw[index].disabled = false;
+            } else {
+              // All other style themes should be disabled.
+              bw[index].disabled = true;
+            }
+          });
+        });
+      }
       // Save the theme as localstorage
       console.log('Setting theme as', themeName);
       window.localStorage.theme = themeName;
