@@ -14,7 +14,7 @@ export default new Vuex.Store({
     ping: '',
     loggedIn: userService.loggedIn(),
     autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
-    isBotOnline: true,
+    isBotOnline: false,
   },
   modules: {
     ftbot: ftbotModule,
