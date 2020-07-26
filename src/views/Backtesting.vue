@@ -1,7 +1,18 @@
 <template>
   <div class="container-fluid">
-    <div class="row mb-2">
-      <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+    <div class="row ml-1">
+      <div class="col-mb-12">
+        <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+      </div>
+      <div class="col-mb-12">
+        <b-form-group
+          label="Strategy"
+          label-for="strategyName"
+          invalid-feedback="Strategy is required"
+        >
+          <b-form-input id="strategyName" v-model="strategy"></b-form-input>
+        </b-form-group>
+      </div>
     </div>
     <div class="row">
       <b-button variant="primary" :disabled="backtestRunning" @click="clickBacktest">

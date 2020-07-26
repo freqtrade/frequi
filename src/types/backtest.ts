@@ -16,6 +16,7 @@ export interface PairResults {
   profit_sum_pct: number;
   profit_total_abs: number;
   profit_total_pct: number;
+  profit_total: number;
   trades: number;
   wins: number;
 }
@@ -56,6 +57,8 @@ export interface StrategyBacktestResult {
   results_per_pair: Array<PairResults>;
   sell_reason_summary: Array<SellReasonResults>;
   stake_amount: number;
+  stake_currency: string;
+  max_open_trades: number;
   total_trades: number;
   trades_per_day: number;
   winner_holding_avg: number;
