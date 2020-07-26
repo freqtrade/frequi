@@ -27,6 +27,14 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "graph" */ '@/views/Graphs.vue'),
   },
   {
+    path: '/backtest',
+    name: 'Freqtrade Backtest',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Backtesting.vue'),
+  },
+  {
     path: '/dashboard',
     name: 'Freqtrade Dashboard',
     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),

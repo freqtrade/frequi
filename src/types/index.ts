@@ -1,5 +1,6 @@
 export * from './auth';
 export * from './balance';
+export * from './backtest';
 export * from './blacklist';
 export * from './chart';
 export * from './daily';

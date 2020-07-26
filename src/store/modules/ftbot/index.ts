@@ -1,6 +1,7 @@
 import { api } from '@/shared/apiService';
 
 import {
+  BacktestResult,
   BotState,
   BlacklistPayload,
   ForcebuyPayload,
@@ -188,6 +189,12 @@ export default {
       state.customPlotConfig = plotConfig;
       storeCustomPlotConfig(plotConfig);
       state.availablePlotConfigNames = getAllPlotConfigNames();
+    },
+    updateBacktestRunning(state, running: boolean) {
+      state.backtestRunning = running;
+    },
+    updateBacktestResult(state, backtestResult: BacktestResult) {
+      state.backtestResult = backtestResult;
     },
   },
   actions: {
@@ -571,6 +578,21 @@ export default {
       const error = 'Pair is empty';
       console.error(error);
       return Promise.reject(error);
+    },
+    async startBacktest({ commit }, payload) {
+      try {
+        const result = await api.post('/backtest', payload);
+        commit('updateBacktestRunning', result.data.running);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async pollBacktest({ commit }) {
+      const result = await api.get('/backtest');
+      commit('updateBacktestRunning', result.data.running);
+      if (result.data.running === false && result.data.backtest_result) {
+        commit('updateBacktestResult', result.data.backtest_result);
+      }
     },
   },
 };

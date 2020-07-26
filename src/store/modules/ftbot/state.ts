@@ -10,6 +10,7 @@ import {
   LockResponse,
   PlotConfigStorage,
   ProfitInterface,
+  BacktestResult,
 } from '@/types';
 
 export interface FtbotStateType {
@@ -41,6 +42,8 @@ export interface FtbotStateType {
   strategy: StrategyResult | {};
   pairlist: string[];
   currentLocks?: LockResponse;
+  backtestRunning: boolean;
+  backtestResult?: BacktestResult;
 }
 const state: FtbotStateType = {
   version: '',
@@ -69,6 +72,9 @@ const state: FtbotStateType = {
   strategy: {},
   pairlist: [],
   currentLocks: undefined,
+  // backtesting
+  backtestRunning: false,
+  backtestResult: undefined,
 };
 
 export default state;

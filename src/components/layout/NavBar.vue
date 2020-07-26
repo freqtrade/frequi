@@ -13,6 +13,7 @@
           <b-nav-item to="/trade">Trade</b-nav-item>
           <!-- <b-nav-item to="/graph">Graph</b-nav-item> -->
           <b-nav-item to="/dashboard">Dashboard</b-nav-item>
+          <b-nav-item to="/backtest">Backtest</b-nav-item>
           <BootswatchThemeSelect />
         </b-navbar-nav>
         <!-- Right aligned nav items -->
