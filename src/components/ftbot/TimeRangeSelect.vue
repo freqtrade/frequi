@@ -69,5 +69,4 @@ export default class TimeRangeSelect extends Vue {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
