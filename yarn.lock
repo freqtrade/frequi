@@ -3470,10 +3470,10 @@ eslint-plugin-import@^2.21.2:
     resolve "^1.17.0"
     tsconfig-paths "^3.9.0"
 
-eslint-plugin-prettier-vue@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier-vue/-/eslint-plugin-prettier-vue-2.1.0.tgz#5ff05d9ef0f7bf6be1d1a3ba2d5bc90052be5ec1"
-  integrity sha512-osE8owzqCWFGPiHf3KbPJu01VElWUWmJspm4NhBQ7DxM23Wv2XJwL4fsQv3W4ehMFh49KJuYbYSdvZMgOteasA==
+eslint-plugin-prettier-vue@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier-vue/-/eslint-plugin-prettier-vue-2.1.1.tgz#7a60568677ae0e6194988eda5c2b94afd5ffd11b"
+  integrity sha512-B9nYJCwf6508tc36fBU6a7QRwmp688Z8q6BPDvHLftR5KccqVNRkCUwPYjHXouw1m6NzdcRZraJ0A0jXwtNCTQ==
   dependencies:
     "@vue/component-compiler-utils" "^3.1.2"
     chalk "^4.0.0"

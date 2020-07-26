@@ -17,5 +17,4 @@ import Body from '@/components/layout/Body.vue';
 export default class App extends Vue {}
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

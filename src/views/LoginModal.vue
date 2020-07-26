@@ -31,5 +31,4 @@ export default class LoginModal extends Vue {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
