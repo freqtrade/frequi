@@ -43,19 +43,36 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { State, Mutation } from 'vuex-class';
+import { State, Mutation, Action, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
+
+const ftbot = namespace('ftbot');
 
 @Component({
   components: { LoginModal, BootswatchThemeSelect },
 })
 export default class NavBar extends Vue {
+  pingInterval: NodeJS.Timer | null = null;
+
   @State loggedIn!: boolean;
 
   @State isBotOnline!: boolean;
 
   @Mutation setLoggedIn;
+
+  @ftbot.Action ping;
+
+  mounted() {
+    this.ping();
+    this.pingInterval = setInterval(this.ping, 60000);
+  }
+
+  beforeDestroy() {
+    if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+    }
+  }
 
   logout(): void {
     userService.logout();

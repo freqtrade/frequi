@@ -71,7 +71,10 @@ export default {
     ping({ commit }) {
       api
         .get('/ping')
-        .then((result) => commit('setPing', result.data))
+        .then((result) => {
+          commit('setPing', result.data, { root: true });
+          commit('setIsBotOnline', result.data, { root: true });
+        })
         .catch(console.error);
     },
     getTrades({ commit }) {
