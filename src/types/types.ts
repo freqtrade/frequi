@@ -150,6 +150,7 @@ export interface PairHistoryPayload {
   pair: string;
   timeframe: string;
   timerange: string;
+  strategy: string;
 }
 
 export interface PairHistory {

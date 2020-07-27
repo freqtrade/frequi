@@ -78,7 +78,7 @@ export default class CandleChart extends Vue {
 
     console.log(`Available Columns: ${this.dataset.columns}`);
     // Find default columns (sequence might be different, depending on the strategy)
-    const colDate = this.dataset.columns.findIndex((el) => el === 'date');
+    const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
     const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
     const colHigh = this.dataset.columns.findIndex((el) => el === 'high');
     const colLow = this.dataset.columns.findIndex((el) => el === 'low');
@@ -96,6 +96,7 @@ export default class CandleChart extends Vue {
         show: true,
       },
       backgroundColor: '#231202D',
+      useUTC: true,
       dataset: {
         source: this.dataset.data,
       },
@@ -219,7 +220,7 @@ export default class CandleChart extends Vue {
             borderColor0: downBorderColor,
           },
           encode: {
-            x: 0,
+            x: colDate,
             // open, close, low, high
             y: [colOpen, colClose, colLow, colHigh],
           },
@@ -234,7 +235,7 @@ export default class CandleChart extends Vue {
           },
           large: true,
           encode: {
-            x: 0,
+            x: colDate,
             y: colVolume,
           },
         },
@@ -249,7 +250,7 @@ export default class CandleChart extends Vue {
             color: '#00FF00',
           },
           encode: {
-            x: 0,
+            x: colDate,
             y: colBuyData,
           },
         },
@@ -264,7 +265,7 @@ export default class CandleChart extends Vue {
             color: '#FF0000',
           },
           encode: {
-            x: 0,
+            x: colDate,
             y: colSellData,
           },
         },

@@ -70,6 +70,8 @@ export default class Graphs extends Vue {
 
   historicView = false;
 
+  strategy = '';
+
   timerange = '';
 
   // Custom plot config - manually changed by user.
@@ -130,6 +132,7 @@ export default class Graphs extends Vue {
         pair: this.pair,
         timeframe: this.timeframe,
         timerange: this.timerange,
+        strategy: this.strategy,
       });
     } else {
       this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
