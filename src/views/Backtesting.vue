@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+    <h2>Backtesting</h2>
     <div class="row ml-1">
       <div class="col-mb-12">
         <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
@@ -23,10 +24,28 @@
       </b-button>
     </div>
     <div v-if="hasBacktestResult" class="text-center w-100 mt-5">
-      <BacktestResultView
-        :strategy="strategy"
-        :backtest-result="backtestResult.strategy ? backtestResult.strategy[strategy] : {}"
-      />
+      <b-tabs content-class="mt-3" class="mt-3">
+        <b-tab title="Textbased Result" active>
+          <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
+        </b-tab>
+        <b-tab title="Graph" lazy @click="clickGraphTab">
+          <b-form-select
+            v-model="pair"
+            :options="selectedBacktestResult.pairlist"
+            @change="clickGraphTab"
+          >
+          </b-form-select>
+          <CandleChart
+            :pair="pair"
+            :timeframe="timeframe"
+            :timeframems="timeframems"
+            :dataset="dataset"
+            :plot-config="selectedPlotConfig"
+            :trades="selectedBacktestResult.trades"
+          >
+          </CandleChart>
+        </b-tab>
+      </b-tabs>
     </div>
   </div>
 </template>
@@ -36,12 +55,21 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
+import CandleChart from '@/components/charts/CandleChart.vue';
 
-import { BacktestPayload, BacktestResult } from '@/types';
+import {
+  BacktestPayload,
+  BacktestResult,
+  PairHistoryPayload,
+  PlotConfig,
+  StrategyBacktestResult,
+} from '@/types';
+
+import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 @Component({
-  components: { BacktestResultView, TimeRangeSelect },
+  components: { BacktestResultView, TimeRangeSelect, CandleChart },
 })
 export default class Backtesting extends Vue {
   pair = 'XRP/USDT';
@@ -50,13 +78,20 @@ export default class Backtesting extends Vue {
 
   timeframe = '5m';
 
+  timeframems = 300000;
+
   strategy = 'BinHV45';
 
-  timeframems = 300000;
+  selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
 
   @ftbot.State backtestRunning!: boolean;
 
   @ftbot.State backtestResult!: BacktestResult;
+
+  @ftbot.State history;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
 
   timerange = '';
 
@@ -69,6 +104,14 @@ export default class Backtesting extends Vue {
     return Object.keys(this.backtestResult).length !== 0;
   }
 
+  get selectedBacktestResult(): StrategyBacktestResult {
+    return this.backtestResult.strategy[this.strategy] || {};
+  }
+
+  get dataset() {
+    return this.history[`${this.pair}__${this.timeframe}`];
+  }
+
   clickBacktest() {
     console.log('Backtesting');
     const btPayload: BacktestPayload = {
@@ -76,6 +119,15 @@ export default class Backtesting extends Vue {
       timerange: this.timerange,
     };
     this.startBacktest(btPayload);
+  }
+
+  clickGraphTab() {
+    this.getPairHistory({
+      pair: this.pair,
+      timeframe: this.timeframe,
+      timerange: this.timerange,
+      strategy: this.strategy,
+    });
   }
 
   @Watch('backtestRunning')
