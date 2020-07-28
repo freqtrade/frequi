@@ -40,7 +40,7 @@ export default {
     detailTradeId: null,
     candleData: {},
     history: {},
-    plotConfig: {},
+    strategyPlotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
   },
   getters: {
@@ -105,7 +105,7 @@ export default {
       state.history = { [`${pair}__${timeframe}`]: data };
     },
     updatePlotConfig(state, plotConfig: PlotConfig) {
-      state.plotConfig = plotConfig;
+      state.strategyPlotConfig = plotConfig;
     },
     saveCustomPlotConfig(state, plotConfig: PlotConfig) {
       state.customPlotConfig = plotConfig;

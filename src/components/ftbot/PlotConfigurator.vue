@@ -60,6 +60,10 @@
         Add
       </b-button>
       <b-button class="mx-1" variant="primary" @click="loadPlotConfig" size="sm">Load</b-button>
+      <b-button class="mx-1" variant="primary" @click="loadPlotConfigFromStrategy" size="sm">
+        Load from strategy
+      </b-button>
+
       <b-button
         class="mx-1"
         variant="primary"
@@ -120,6 +124,10 @@ export default class PlotConfigurator extends Vue {
   emitPlotConfig() {
     return this.plotConfig;
   }
+
+  @ftbot.Action getPlotConfig;
+
+  @ftbot.State strategyPlotConfig;
 
   plotConfig: PlotConfig = EMPTY_PLOTCONFIG;
 
@@ -230,6 +238,11 @@ export default class PlotConfigurator extends Vue {
       this.plotConfig = this.tempPlotConfig;
       this.emitPlotConfig();
     }
+  }
+
+  async loadPlotConfigFromStrategy() {
+    await this.getPlotConfig();
+    this.plotConfig = this.strategyPlotConfig;
   }
 }
 </script>
