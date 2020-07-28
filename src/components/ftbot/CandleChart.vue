@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid d-flex flex-column align-items-stretch d-flex">
+  <div class="container-fluid flex-column align-items-stretch d-flex">
     <b-modal
       id="plotConfiguratorModal"
       title="Plot Configurator"
@@ -9,10 +9,15 @@
     >
       <PlotConfigurator :columns="datasetColumns" v-model="plotConfig" />
     </b-modal>
-    <div class="col-mb-2 ml-auto position-relative">
-      <b-button class="mt-5" @click="showConfigurator" size="sm" title="Plot configurator">
-        &#9881;
-      </b-button>
+    <div class="row ml-auto">
+      <div class="col-mb-2 mr-2">
+        <b-checkbox v-model="useUTC" title="Use UTC for graph">useUtc</b-checkbox>
+      </div>
+      <div class="col-mb-2 mr-3">
+        <b-button @click="showConfigurator" size="sm" title="Plot configurator">
+          &#9881;
+        </b-button>
+      </div>
     </div>
     <div class="row flex-grow-1 chart-wrapper">
       <v-chart v-if="hasData" theme="dark" autoresize :options="chartOptions" />
@@ -56,6 +61,8 @@ export default class CandleChart extends Vue {
   @Prop({ required: true }) readonly dataset!: PairHistory;
 
   plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
+
+  useUTC = true;
 
   // Only recalculate buy / sell data if necessary
   signalsCalculated = false;
@@ -124,7 +131,7 @@ export default class CandleChart extends Vue {
         show: true,
       },
       backgroundColor: '#231202D',
-      useUTC: true,
+      useUTC: this.useUTC,
       dataset: {
         source: this.dataset.data,
       },
