@@ -154,6 +154,7 @@ export interface PairHistoryPayload {
 }
 
 export interface PairHistory {
+  strategy: string;
   pair: string;
   columns: string[];
   data: number[];

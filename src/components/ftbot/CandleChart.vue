@@ -50,8 +50,6 @@ const downBorderColor = '#8A0000';
   components: { 'v-chart': ECharts, PlotConfigurator },
 })
 export default class CandleChart extends Vue {
-  @Prop({ required: true }) readonly pair!: string;
-
   @Prop({ required: true }) readonly timeframe!: string;
 
   @Prop({ required: true }) readonly timeframems!: number;
@@ -79,11 +77,6 @@ export default class CandleChart extends Vue {
     this.$bvModal.show('plotConfiguratorModal');
   }
 
-  @Watch('pair')
-  pairChanged() {
-    this.signalsCalculated = false;
-  }
-
   @Watch('timeframe')
   timeframeChanged() {
     this.signalsCalculated = false;
@@ -92,6 +85,14 @@ export default class CandleChart extends Vue {
   @Watch('dataset')
   datasetChanged() {
     this.signalsCalculated = false;
+  }
+
+  get strategy() {
+    return this.dataset ? this.dataset.strategy : '';
+  }
+
+  get pair() {
+    return this.dataset ? this.dataset.pair : '';
   }
 
   get datasetColumns() {
@@ -127,7 +128,7 @@ export default class CandleChart extends Vue {
 
     const options: echarts.EChartOption = {
       title: {
-        text: `${this.pair} - ${this.timeframe}`,
+        text: `${this.strategy} - ${this.pair} - ${this.timeframe}`,
         show: true,
       },
       backgroundColor: '#231202D',
