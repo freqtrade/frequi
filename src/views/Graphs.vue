@@ -11,9 +11,9 @@
         <b-form-select :options="whitelist" v-model="pair" @change="refresh"> </b-form-select>
       </div>
     </div>
-    <div class="mt-2" v-if="historicView">
-      <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
-      <StrategyList v-model="strategy"></StrategyList>
+    <div class="mt-2 row" v-if="historicView">
+      <TimeRangeSelect class="col-md-4" v-model="timerange"></TimeRangeSelect>
+      <StrategyList class="col-md-2" v-model="strategy"></StrategyList>
     </div>
 
     <div class="row">
