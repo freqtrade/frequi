@@ -13,6 +13,7 @@
     </div>
     <div class="mt-2" v-if="historicView">
       <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+      <StrategyList v-model="strategy"></StrategyList>
     </div>
 
     <div class="row">
@@ -33,11 +34,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
+import StrategyList from '@/components/ftbot/StrategyList.vue';
 import { PairCandlePayload, PairHistoryPayload } from '@/store/types';
 
 const ftbot = namespace('ftbot');
+
 @Component({
-  components: { CandleChart, TimeRangeSelect },
+  components: { CandleChart, StrategyList, TimeRangeSelect },
 })
 export default class Graphs extends Vue {
   pair = 'XRP/USDT';

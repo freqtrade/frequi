@@ -42,6 +42,7 @@ export default {
     history: {},
     strategyPlotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
+    strategyList: [],
   },
   getters: {
     [BotStoreGetters.openTrades](state) {
@@ -96,6 +97,9 @@ export default {
     },
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
+    },
+    updateStrategyList(state, list) {
+      state.strategyList = list;
     },
     updatePairCandles(state, { pair, timeframe, data }) {
       state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
@@ -189,6 +193,12 @@ export default {
       return api
         .get('/plot_config')
         .then((result) => commit('updatePlotConfig', result.data))
+        .catch(console.error);
+    },
+    getStrategyList({ commit }) {
+      return api
+        .get('/strategies')
+        .then((result) => commit('updateStrategyList', result.data))
         .catch(console.error);
     },
     getPerformance({ commit }) {
