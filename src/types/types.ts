@@ -140,6 +140,10 @@ export interface ClosedTrade extends Trade {
   open_order_id?: string;
 }
 
+export interface StrategyResult {
+  strategies: Array<string>;
+}
+
 export interface PairCandlePayload {
   pair: string;
   timeframe: string;

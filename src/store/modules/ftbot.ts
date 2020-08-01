@@ -9,6 +9,7 @@ import {
   PairCandlePayload,
   PairHistoryPayload,
   PlotConfig,
+  StrategyResult,
   EMPTY_PLOTCONFIG,
 } from '@/types';
 
@@ -98,8 +99,8 @@ export default {
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
     },
-    updateStrategyList(state, list) {
-      state.strategyList = list;
+    updateStrategyList(state, result: StrategyResult) {
+      state.strategyList = result.strategies;
     },
     updatePairCandles(state, { pair, timeframe, data }) {
       state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
