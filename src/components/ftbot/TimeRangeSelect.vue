@@ -1,5 +1,5 @@
 <template>
-  <b-card class="row mb-2 mr-4">
+  <b-card class="row">
     <b-list-group class="col-mb-4" horizontal="md">
       <b-form-group label="Start date" label-for="dp_dateFrom">
         <b-input-group>
@@ -69,4 +69,11 @@ export default class TimeRangeSelect extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.card-body {
+  padding-bottom: 0.5rem;
+  padding-top: 0.8rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+</style>

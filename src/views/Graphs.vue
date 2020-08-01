@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="mt-2 row" v-if="historicView">
-      <TimeRangeSelect class="col-md-4" v-model="timerange"></TimeRangeSelect>
+      <TimeRangeSelect class="col-md-4 mr-2" v-model="timerange"></TimeRangeSelect>
       <StrategyList class="col-md-2" v-model="strategy"></StrategyList>
     </div>
 
