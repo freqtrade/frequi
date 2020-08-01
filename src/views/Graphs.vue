@@ -8,7 +8,12 @@
         <b-button @click="refresh">&#x21bb;</b-button>
       </div>
       <div class="col-mb-2">
-        <b-form-select :options="whitelist" v-model="pair" @change="refresh"> </b-form-select>
+        <b-form-select
+          :options="historicView ? pairlist : whitelist"
+          v-model="pair"
+          @change="refresh"
+        >
+        </b-form-select>
       </div>
     </div>
     <div class="mt-2 row" v-if="historicView">
@@ -55,6 +60,8 @@ export default class Graphs extends Vue {
 
   timerange = '';
 
+  @ftbot.State pairlist;
+
   @ftbot.State candleData;
 
   @ftbot.State history;
@@ -72,10 +79,13 @@ export default class Graphs extends Vue {
   @ftbot.Action
   public getWhitelist;
 
+  @ftbot.Action
+  public getAvailablePairs!: (payload: AvailablePairPayload) => void;
+
   mounted() {
     this.getWhitelist();
     this.refresh();
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    this.getAvailablePairs({ timeframe: this.timeframe });
   }
 
   get dataset() {

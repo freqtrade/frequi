@@ -11,6 +11,7 @@ import {
   PlotConfig,
   StrategyResult,
   EMPTY_PLOTCONFIG,
+  AvailablePairPayload,
 } from '@/types';
 
 import { saveCustomPlotConfig } from '@/shared/storage';
@@ -44,6 +45,7 @@ export default {
     strategyPlotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
     strategyList: [],
+    pairlist: [],
   },
   getters: {
     [BotStoreGetters.openTrades](state) {
@@ -101,6 +103,9 @@ export default {
     },
     updateStrategyList(state, result: StrategyResult) {
       state.strategyList = result.strategies;
+    },
+    updatePairs(state, pairlist: Array<string>) {
+      state.pairlist = pairlist;
     },
     updatePairCandles(state, { pair, timeframe, data }) {
       state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
@@ -200,6 +205,18 @@ export default {
       return api
         .get('/strategies')
         .then((result) => commit('updateStrategyList', result.data))
+        .catch(console.error);
+    },
+    getAvailablePairs({ commit }, payload: AvailablePairPayload) {
+      return api
+        .get('/available_pairs', {
+          params: { ...payload },
+        })
+        .then((result) => {
+          // result is of type AvailablePairResult
+          const { pairs } = result.data;
+          commit('updatePairs', pairs);
+        })
         .catch(console.error);
     },
     getPerformance({ commit }) {

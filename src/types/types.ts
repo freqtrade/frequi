@@ -144,6 +144,20 @@ export interface StrategyResult {
   strategies: Array<string>;
 }
 
+export interface AvailablePairPayload {
+  timeframe?: string;
+  stake_currency?: string;
+}
+
+export interface AvailablePairResult {
+  pairs: Array<string>;
+  /**
+   * List of lists, as [pair, timeframe]
+   */
+  pair_interval: Array<Array<string>>;
+  length: number;
+}
+
 export interface PairCandlePayload {
   pair: string;
   timeframe: string;
