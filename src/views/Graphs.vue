@@ -40,7 +40,7 @@ import { namespace } from 'vuex-class';
 import CandleChart from '@/components/ftbot/CandleChart.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
-import { PairCandlePayload, PairHistoryPayload } from '@/store/types';
+import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/store/types';
 
 const ftbot = namespace('ftbot');
 
