@@ -61,6 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { BlacklistPayload } from '@/store/types';
 
 const ftbot = namespace('ftbot');
 
@@ -74,13 +75,13 @@ export default class FTBotAPIPairList extends Vue {
 
   @ftbot.Action getBlacklist;
 
-  @ftbot.Action addBlacklist;
+  @ftbot.Action addBlacklist!: (payload: BlacklistPayload) => Promise<any>;
 
-  @ftbot.State whitelist;
+  @ftbot.State whitelist!: Array<string>;
 
-  @ftbot.State blacklist;
+  @ftbot.State blacklist!: Array<string>;
 
-  @ftbot.State pairlistMethods;
+  @ftbot.State pairlistMethods!: Array<string>;
 
   created() {
     this.initBlacklist();
