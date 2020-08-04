@@ -151,35 +151,32 @@ export default {
     reloadConfig() {
       return api.post('/reload_config', {}).catch(console.error);
     },
-    async deleteTrade({ dispatch }, payload) {
-      const tradeid = payload.trade_id;
-      console.log(tradeid);
-      if (tradeid) {
-        try {
-          await api.delete(`/trades/${tradeid}`);
-          dispatch('alerts/addAlert', { message: `Deleted trade ${tradeid}` }, { root: true });
-        } catch (error) {
-          console.error(error.response);
-          dispatch(
-            'alerts/addAlert',
-            { message: `Failed to delete trade ${tradeid}`, severity: 'danger' },
-            { root: true },
-          );
-        }
+    async deleteTrade({ dispatch }, tradeid: string) {
+      try {
+        const res = await api.delete(`/trades/${tradeid}`);
+        dispatch('alerts/addAlert', { message: `Deleted trade ${tradeid}` }, { root: true });
+        return Promise.resolve(res);
+      } catch (error) {
+        console.error(error.response);
+        dispatch(
+          'alerts/addAlert',
+          { message: `Failed to delete trade ${tradeid}`, severity: 'danger' },
+          { root: true },
+        );
+        return Promise.reject(error);
       }
     },
-    async forcesell({ dispatch }, tradeid) {
-      console.log(tradeid);
+    async forcesell({ dispatch }, tradeid: string) {
       if (tradeid) {
         const payload = { tradeid };
-        console.log(payload);
         try {
-          await api.post('/forcesell', payload);
+          const res = await api.post('/forcesell', payload);
           dispatch(
             'alerts/addAlert',
             { message: `Sell order for ${tradeid} created` },
             { root: true },
           );
+          return Promise.resolve(res);
         } catch (error) {
           console.error(error.response);
           dispatch(
@@ -187,45 +184,41 @@ export default {
             { message: `Failed to create sell order for ${tradeid}`, severity: 'danger' },
             { root: true },
           );
+          return Promise.reject(error);
         }
       }
       // Error branchs
       const error = 'Tradeid is empty';
       console.error(error);
-      return new Promise((resolve, reject) => {
-        reject(error);
-      });
+      return Promise.reject(error);
     },
-    forcebuy({ dispatch }, payload) {
-      console.log(payload);
+    async forcebuy({ dispatch }, payload) {
       if (payload && payload.pair) {
-        return api
-          .post('/forcebuy', payload)
-          .then(() => {
-            dispatch(
-              'alerts/addAlert',
-              { message: `Buy order for ${payload.pair} created.` },
-              { root: true },
-            );
-          })
-          .catch((error) => {
-            console.error(error.response);
-            dispatch(
-              'alerts/addAlert',
-              {
-                message: `Error occured buying: '${error.response.data.error}'`,
-                severity: 'danger',
-              },
-              { root: true },
-            );
-          });
+        try {
+          const res = await api.post('/forcebuy', payload);
+          dispatch(
+            'alerts/addAlert',
+            { message: `Buy order for ${payload.pair} created.` },
+            { root: true },
+          );
+          return Promise.resolve(res);
+        } catch (error) {
+          console.error(error.response);
+          dispatch(
+            'alerts/addAlert',
+            {
+              message: `Error occured buying: '${error.response.data.error}'`,
+              severity: 'danger',
+            },
+            { root: true },
+          );
+          return Promise.reject(error);
+        }
       }
       // Error branchs
       const error = 'Pair is empty';
       console.error(error);
-      return new Promise((resolve, reject) => {
-        reject(error);
-      });
+      return Promise.reject(error);
     },
     addBlacklist({ commit, dispatch }, payload) {
       console.log(`Adding ${payload} to blacklist`);
