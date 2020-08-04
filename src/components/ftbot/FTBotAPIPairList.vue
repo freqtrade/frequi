@@ -58,43 +58,52 @@
   </div>
 </template>
 
-<script>
-import { mapState, mapActions } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
-export default {
-  name: 'FTBotAPIPairList',
-  data() {
-    return {
-      newblacklistpair: '',
-      blackListShow: false,
-    };
-  },
+const ftbot = namespace('ftbot');
+
+@Component({})
+export default class FTBotAPIPairList extends Vue {
+  newblacklistpair = '';
+
+  blackListShow = false;
+
+  @ftbot.Action getWhitelist;
+
+  @ftbot.Action getBlacklist;
+
+  @ftbot.Action addBlacklist;
+
+  @ftbot.State whitelist;
+
+  @ftbot.State blacklist;
+
+  @ftbot.State pairlistMethods;
+
   created() {
-    this.init();
-  },
-  computed: {
-    ...mapState('ftbot', ['whitelist', 'blacklist', 'pairlistMethods']),
-  },
-  methods: {
-    ...mapActions('ftbot', ['getWhitelist', 'getBlacklist', 'addBlacklist']),
-    init() {
-      if (this.whitelist.length === 0) {
-        this.getWhitelist();
-      }
-      if (this.blacklist.length === 0) {
-        this.getBlacklist();
-      }
-    },
-    addBlacklistPair() {
-      if (this.newblacklistpair) {
-        this.blackListShow = false;
+    this.initBlacklist();
+  }
 
-        this.addBlacklist({ blacklist: [this.newblacklistpair] });
-        this.newblacklistpair = '';
-      }
-    },
-  },
-};
+  initBlacklist() {
+    if (this.whitelist.length === 0) {
+      this.getWhitelist();
+    }
+    if (this.blacklist.length === 0) {
+      this.getBlacklist();
+    }
+  }
+
+  addBlacklistPair() {
+    if (this.newblacklistpair) {
+      this.blackListShow = false;
+
+      this.addBlacklist({ blacklist: [this.newblacklistpair] });
+      this.newblacklistpair = '';
+    }
+  }
+}
 </script>
 
 <style scoped>
