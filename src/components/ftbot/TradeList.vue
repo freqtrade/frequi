@@ -13,9 +13,10 @@
       >
         <template v-slot:cell(actions)="row">
           <b-button size="sm" @click="forcesellHandler(row.item, row.index, $event.target)">
-            Forcesell
+            FS
           </b-button>
           <b-button size="sm" @click="showDetails(row.item)">D</b-button>
+          <b-button size="sm" @click="deleteTrade(row.item)">RM</b-button>
         </template>
         <template v-slot:cell(pair)="row">
           <span class="mr-1" v-html="profitSymbol(row.item)"></span>
@@ -65,7 +66,9 @@ export default class TradeList extends Vue {
 
   @ftbot.Mutation setDetailTrade;
 
-  @ftbot.Action forcesell;
+  @ftbot.Action forcesell!: (tradeid: string) => Promise<string>;
+
+  @ftbot.Action deleteTrade!: (tradeid: string) => Promise<string>;
 
   currentPage = 1;
 
@@ -103,9 +106,7 @@ export default class TradeList extends Vue {
   }
 
   forcesellHandler(item) {
-    this.forcesell(item.trade_id)
-      .then(() => console.log('asdf'))
-      .catch((error) => console.log(error.response));
+    this.forcesell(item.trade_id).catch((error) => console.log(error.response));
   }
 
   handleContextMenuEvent(item, index, event) {
@@ -116,6 +117,11 @@ export default class TradeList extends Vue {
     event.preventDefault();
     // log the selected item to the console
     console.log(item);
+  }
+
+  removeTrade(trade) {
+    console.log(trade.trade_id);
+    this.deleteTrade(trade.trade_id).catch((error) => console.log(error.response));
   }
 
   showDetails(trade) {

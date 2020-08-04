@@ -151,28 +151,43 @@ export default {
     reloadConfig() {
       return api.post('/reload_config', {}).catch(console.error);
     },
-    forcesell({ dispatch }, tradeid) {
+    async deleteTrade({ dispatch }, payload) {
+      const tradeid = payload.trade_id;
+      console.log(tradeid);
+      if (tradeid) {
+        try {
+          await api.delete(`/trades/${tradeid}`);
+          dispatch('alerts/addAlert', { message: `Deleted trade ${tradeid}` }, { root: true });
+        } catch (error) {
+          console.error(error.response);
+          dispatch(
+            'alerts/addAlert',
+            { message: `Failed to delete trade ${tradeid}`, severity: 'danger' },
+            { root: true },
+          );
+        }
+      }
+    },
+    async forcesell({ dispatch }, tradeid) {
       console.log(tradeid);
       if (tradeid) {
         const payload = { tradeid };
         console.log(payload);
-        return api
-          .post('/forcesell', payload)
-          .then(() => {
-            dispatch(
-              'alerts/addAlert',
-              { message: `Sell order for ${tradeid} created` },
-              { root: true },
-            );
-          })
-          .catch((error) => {
-            console.error(error.response);
-            dispatch(
-              'alerts/addAlert',
-              { message: `Failed to create sell order for ${tradeid}`, severity: 'danger' },
-              { root: true },
-            );
-          });
+        try {
+          await api.post('/forcesell', payload);
+          dispatch(
+            'alerts/addAlert',
+            { message: `Sell order for ${tradeid} created` },
+            { root: true },
+          );
+        } catch (error) {
+          console.error(error.response);
+          dispatch(
+            'alerts/addAlert',
+            { message: `Failed to create sell order for ${tradeid}`, severity: 'danger' },
+            { root: true },
+          );
+        }
       }
       // Error branchs
       const error = 'Tradeid is empty';
