@@ -4,6 +4,10 @@ export interface AuthPayload {
   password: string;
 }
 
+export interface BlacklistPayload {
+  blacklist: Array<string>;
+}
+
 export interface DailyInterface {
   timescale: number;
 }

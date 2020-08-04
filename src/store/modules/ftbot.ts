@@ -1,5 +1,5 @@
 import { api } from '@/shared/apiService';
-import { BotState } from '@/store/types';
+import { BotState, BlacklistPayload } from '@/store/types';
 
 export default {
   namespaced: true,
@@ -220,50 +220,48 @@ export default {
       console.error(error);
       return Promise.reject(error);
     },
-    addBlacklist({ commit, dispatch }, payload) {
+    async addBlacklist({ commit, dispatch }, payload: BlacklistPayload) {
       console.log(`Adding ${payload} to blacklist`);
       if (payload && payload.blacklist) {
-        return api
-          .post('/blacklist', payload)
-          .then((result) => {
-            commit('updateBlacklist', result.data);
-            if (result.data.errors && Object.keys(result.data.errors).length !== 0) {
-              const { errors } = result.data;
-              Object.keys(errors).forEach((pair) => {
-                dispatch(
-                  'alerts/addAlert',
-                  {
-                    message: `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
-                  },
-                  { root: true },
-                );
-              });
-            } else {
+        try {
+          const result = await api.post('/blacklist', payload);
+          commit('updateBlacklist', result.data);
+          if (result.data.errors && Object.keys(result.data.errors).length !== 0) {
+            const { errors } = result.data;
+            Object.keys(errors).forEach((pair) => {
               dispatch(
                 'alerts/addAlert',
-                { message: `Pair ${payload.blacklist} added.` },
+                {
+                  message: `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
+                },
                 { root: true },
               );
-            }
-          })
-          .catch((error) => {
-            console.error(error.response);
+            });
+          } else {
             dispatch(
               'alerts/addAlert',
-              {
-                message: `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
-                severity: 'danger',
-              },
+              { message: `Pair ${payload.blacklist} added.` },
               { root: true },
             );
-          });
+          }
+          return Promise.resolve(result);
+        } catch (error) {
+          console.error(error.response);
+          dispatch(
+            'alerts/addAlert',
+            {
+              message: `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
+              severity: 'danger',
+            },
+            { root: true },
+          );
+          return Promise.reject(error);
+        }
       }
       // Error branchs
       const error = 'Pair is empty';
       console.error(error);
-      return new Promise((resolve, reject) => {
-        reject(error);
-      });
+      return Promise.reject(error);
     },
   },
 };
