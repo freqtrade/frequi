@@ -154,7 +154,11 @@ export default {
     async deleteTrade({ dispatch }, tradeid: string) {
       try {
         const res = await api.delete(`/trades/${tradeid}`);
-        dispatch('alerts/addAlert', { message: `Deleted trade ${tradeid}` }, { root: true });
+        dispatch(
+          'alerts/addAlert',
+          { message: res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}` },
+          { root: true },
+        );
         return Promise.resolve(res);
       } catch (error) {
         console.error(error.response);
