@@ -14,7 +14,7 @@ import {
   AvailablePairPayload,
 } from '@/types';
 
-import { saveCustomPlotConfig } from '@/shared/storage';
+import { storeCustomPlotConfig } from '@/shared/storage';
 import { showAlert } from './alerts';
 
 export enum BotStoreGetters {
@@ -119,7 +119,7 @@ export default {
     },
     saveCustomPlotConfig(state, plotConfig: PlotConfig) {
       state.customPlotConfig = plotConfig;
-      saveCustomPlotConfig(plotConfig);
+      storeCustomPlotConfig(plotConfig);
     },
   },
   actions: {

@@ -2,7 +2,7 @@ import { PlotConfig, EMPTY_PLOTCONFIG } from '@/types';
 
 const PLOT_CONFIG = 'ft_custom_plot_config';
 
-export function saveCustomPlotConfig(plotConfig: PlotConfig) {
+export function storeCustomPlotConfig(plotConfig: PlotConfig) {
   localStorage.setItem(PLOT_CONFIG, JSON.stringify(plotConfig));
 }
 
