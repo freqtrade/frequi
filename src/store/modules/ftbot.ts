@@ -195,7 +195,7 @@ export default {
         reject(error);
       });
     },
-    getPlotConfig({ commit }) {
+    getStrategyPlotConfig({ commit }) {
       return api
         .get('/plot_config')
         .then((result) => commit('updatePlotConfig', result.data))

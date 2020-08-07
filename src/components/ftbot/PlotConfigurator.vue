@@ -152,7 +152,7 @@ export default class PlotConfigurator extends Vue {
     return this.plotConfig;
   }
 
-  @ftbot.Action getPlotConfig;
+  @ftbot.Action getStrategyPlotConfig;
 
   @ftbot.State strategyPlotConfig;
 
@@ -308,7 +308,7 @@ export default class PlotConfigurator extends Vue {
   }
 
   async loadPlotConfigFromStrategy() {
-    await this.getPlotConfig();
+    await this.getStrategyPlotConfig();
     this.plotConfig = this.strategyPlotConfig;
   }
 }
