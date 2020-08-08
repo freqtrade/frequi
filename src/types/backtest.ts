@@ -59,6 +59,7 @@ export interface StrategyBacktestResult {
   stake_amount: number;
   stake_currency: string;
   max_open_trades: number;
+  timeframe: string;
   total_trades: number;
   trades_per_day: number;
   winner_holding_avg: number;

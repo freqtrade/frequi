@@ -2,17 +2,9 @@
   <div class="container-fluid">
     <h2>Backtesting</h2>
     <div class="row ml-1">
-      <div class="col-mb-12">
+      <div class="row col-mb-6 mr-2">
         <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
-      </div>
-      <div class="col-mb-12">
-        <b-form-group
-          label="Strategy"
-          label-for="strategyName"
-          invalid-feedback="Strategy is required"
-        >
-          <b-form-input id="strategyName" v-model="strategy"></b-form-input>
-        </b-form-group>
+        <StrategyList v-model="strategy" class="col-md-2"></StrategyList>
       </div>
     </div>
     <div class="row">
@@ -55,7 +47,8 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
-import CandleChart from '@/components/charts/CandleChart.vue';
+import CandleChart from '@/components/charts/CandleChartContainer.vue';
+import StrategyList from '@/components/ftbot/StrategyList.vue';
 
 import {
   BacktestPayload,
@@ -69,14 +62,12 @@ import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 @Component({
-  components: { BacktestResultView, TimeRangeSelect, CandleChart },
+  components: { BacktestResultView, TimeRangeSelect, CandleChart, StrategyList },
 })
 export default class Backtesting extends Vue {
   pair = 'XRP/USDT';
 
   pollInterval: number | null = null;
-
-  timeframe = '5m';
 
   timeframems = 300000;
 
@@ -106,6 +97,14 @@ export default class Backtesting extends Vue {
 
   get selectedBacktestResult(): StrategyBacktestResult {
     return this.backtestResult.strategy[this.strategy] || {};
+  }
+
+  get timeframe(): string {
+    try {
+      return this.backtestResult.strategy[this.strategy].timeframe;
+    } catch (err) {
+      return '';
+    }
   }
 
   get dataset() {
