@@ -229,7 +229,6 @@ export default class PlotConfigurator extends Vue {
   }
 
   mounted() {
-    console.log('mounted');
     this.plotConfig = this.value;
   }
 

@@ -34,7 +34,7 @@ import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
 import { timestampms } from '@/shared/formatters';
 import PlotConfigurator from '@/components/ftbot/PlotConfigurator.vue';
-import { loadCustomPlotConfig } from '@/shared/storage';
+import { loadCustomPlotConfig, loadPlotConfigName } from '@/shared/storage';
 
 import 'echarts';
 
@@ -70,7 +70,7 @@ export default class CandleChart extends Vue {
   sellData = [] as Array<number>[];
 
   mounted() {
-    this.plotConfig = loadCustomPlotConfig();
+    this.plotConfig = loadCustomPlotConfig(loadPlotConfigName());
   }
 
   showConfigurator() {

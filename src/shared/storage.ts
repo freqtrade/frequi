@@ -12,7 +12,7 @@ export function storePlotConfigName(plotConfigName: string): void {
 }
 
 export function loadAllCustomPlotConfig(): PlotConfig {
-  return JSON.parse(localStorage.getItem(PLOT_CONFIG) || JSON.stringify(EMPTY_PLOTCONFIG));
+  return JSON.parse(localStorage.getItem(PLOT_CONFIG) || '{}');
 }
 
 export function loadCustomPlotConfig(configName: string): PlotConfig {
