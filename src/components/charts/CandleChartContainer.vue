@@ -7,16 +7,22 @@
       hide-backdrop
       button-size="sm"
     >
-      <PlotConfigurator :columns="datasetColumns" v-model="plotConfig" />
+      <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" />
     </b-modal>
     <div class="row ml-auto">
+      <div class="col-mb-2 mr-2">
+        <b-select
+          v-model="plotConfigName"
+          :options="availablePlotConfigNames"
+          @change="plotConfigChanged"
+        >
+        </b-select>
+      </div>
       <div class="col-mb-2 mr-2">
         <b-checkbox v-model="useUTC" title="Use UTC for graph">useUtc</b-checkbox>
       </div>
       <div class="col-mb-2 mr-3">
-        <b-button @click="showConfigurator" size="sm" title="Plot configurator">
-          &#9881;
-        </b-button>
+        <b-button size="sm" title="Plot configurator" @click="showConfigurator"> &#9881; </b-button>
       </div>
     </div>
     <CandleChart
@@ -24,7 +30,7 @@
       :timeframems="timeframems"
       :dataset="dataset"
       :trades="trades"
-      :plotConfig="plotConfig"
+      :plot-config="plotConfig"
     >
     </CandleChart>
   </div>
@@ -32,10 +38,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig } from '@/store/types';
+import { namespace } from 'vuex-class';
+import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
-import { loadCustomPlotConfig, loadPlotConfigName } from '../../shared/storage';
+import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
+
+const ftbot = namespace('ftbot');
 
 @Component({ components: { CandleChart, PlotConfigurator } })
 export default class CandleChartContainer extends Vue {
@@ -51,12 +60,21 @@ export default class CandleChartContainer extends Vue {
 
   plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
+  plotConfigName = '';
+
+  @ftbot.State availablePlotConfigNames!: Array<string>;
+
   get datasetColumns() {
     return this.dataset ? this.dataset.columns : [];
   }
 
   mounted() {
-    this.plotConfig = loadCustomPlotConfig(loadPlotConfigName());
+    this.plotConfigName = getPlotConfigName();
+    this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+  }
+
+  plotConfigChanged() {
+    this.plotConfig = getCustomPlotConfig(this.plotConfigName);
   }
 
   showConfigurator() {

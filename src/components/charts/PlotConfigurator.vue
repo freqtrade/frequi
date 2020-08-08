@@ -2,28 +2,28 @@
   <div v-if="columns">
     <div class="col-mb-3 ml-2">
       <b-form-radio-group
-        class="w-100"
         v-model="plotOption"
+        class="w-100"
         :options="plotOptions"
         buttons
         button-variant="outline-primary"
       >
       </b-form-radio-group>
     </div>
-    <div class="col-mb-3" v-if="plotOption == 'subplots'">
+    <div v-if="plotOption == 'subplots'" class="col-mb-3">
       <hr />
 
       <b-form-group label="Subplot" label-for="FieldSel">
-        <b-form-select id="FieldSel" :options="subplots" v-model="selSubPlot" :select-size="4">
+        <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="4">
         </b-form-select>
       </b-form-group>
     </div>
     <b-form-group v-if="plotOption == 'subplots'" label="New subplot" label-for="newSubplot">
       <b-input-group size="sm">
-        <b-form-input class="addPlot" id="newSubplot" v-model="newSubplotName"></b-form-input>
+        <b-form-input id="newSubplot" v-model="newSubplotName" class="addPlot"></b-form-input>
         <b-input-group-append>
           <b-button @click="addSubplot">+</b-button>
-          <b-button @click="delSubplot" v-if="selSubPlot">-</b-button>
+          <b-button v-if="selSubPlot" @click="delSubplot">-</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
@@ -31,8 +31,8 @@
     <b-form-group label="Used indicators" label-for="selectedIndicators">
       <b-form-select
         id="selectedIndicators"
-        :options="usedColumns"
         v-model="selIndicator"
+        :options="usedColumns"
         :select-size="4"
       >
       </b-form-select>
@@ -40,15 +40,15 @@
     <b-form-group label="Add indicator" label-for="indicatorSelector">
       <b-form-select
         id="indicatorSelector"
-        :options="columns"
         v-model="selAvailableIndicator"
+        :options="columns"
         :select-size="4"
       >
       </b-form-select>
     </b-form-group>
 
     <b-form-group label="Choose type" label-for="plotTypeSelector">
-      <b-form-select id="plotTypeSelector" :options="availableGraphTypes" v-model="graphType">
+      <b-form-select id="plotTypeSelector" v-model="graphType" :options="availableGraphTypes">
       </b-form-select>
     </b-form-group>
     <hr />
@@ -56,78 +56,78 @@
     <b-form-group label="Color" label-for="colsel" size="sm">
       <b-input-group>
         <b-input-group-prepend>
-          <div v-bind:style="{ 'background-color': selColor }" class="colorbox mr-2"></div>
+          <div :style="{ 'background-color': selColor }" class="colorbox mr-2"></div>
         </b-input-group-prepend>
         <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
         <b-input-group-append>
-          <b-button variant="primary" @click="newColor" size="sm">&#x21bb;</b-button>
+          <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
     <hr />
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input id="idPlotConfigName" :options="availableGraphTypes" v-model="plotConfigName">
+      <b-form-input id="idPlotConfigName" v-model="plotConfigName" :options="availableGraphTypes">
       </b-form-input>
     </b-form-group>
     <div class="row">
       <b-button
         class="ml-1"
         variant="primary"
-        @click="addIndicator"
         title="Add indicator to plot"
         size="sm"
         :disabled="!selAvailableIndicator"
+        @click="addIndicator"
       >
         Add
       </b-button>
       <b-button
         class="ml-1"
         variant="primary"
-        @click="removeIndicator"
         title="Remove indicator to plot"
         size="sm"
         :disabled="!selIndicator"
+        @click="removeIndicator"
       >
         Remove
       </b-button>
-      <b-button class="ml-1" variant="primary" @click="loadPlotConfig" size="sm">Load</b-button>
-      <b-button class="ml-1" variant="primary" @click="loadPlotConfigFromStrategy" size="sm">
+      <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
+      <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
         Load from strategy
       </b-button>
 
       <b-button
         class="ml-1"
         variant="primary"
-        @click="savePlotConfig"
         size="sm"
         data-toggle="tooltip"
         title="Save configuration"
+        @click="savePlotConfig"
         >Save</b-button
       >
       <b-button
-        class="ml-1"
         id="showButton"
+        class="ml-1"
         variant="primary"
-        @click="showConfig = !showConfig"
         size="sm"
         title="Show configuration for easy transfer to a strategy"
+        @click="showConfig = !showConfig"
         >Show</b-button
       >
       <b-button
+        v-if="showConfig"
         class="ml-1"
         variant="primary"
-        @click="loadConfigFromString"
         size="sm"
-        v-if="showConfig"
         title="Load configuration from text box below"
+        @click="loadConfigFromString"
         >Load from String</b-button
       >
     </div>
-    <div class="col-mb-5 ml-2 mt-2" v-if="showConfig">
+    <div v-if="showConfig" class="col-mb-5 ml-2 mt-2">
       <b-textarea
         id="TextArea"
-        class="textArea"
         v-model="plotConfigJson"
+        class="textArea"
         size="sm"
         :state="tempPlotConfigValid"
       >
@@ -139,9 +139,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { PlotConfig, EMPTY_PLOTCONFIG } from '@/store/types';
+import { PlotConfig, EMPTY_PLOTCONFIG } from '@/types';
 import randomColor from '@/shared/randomColor';
-import { loadCustomPlotConfig } from '@/shared/storage';
+import { getCustomPlotConfig } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 
@@ -302,7 +302,7 @@ export default class PlotConfigurator extends Vue {
   }
 
   loadPlotConfig() {
-    this.plotConfig = loadCustomPlotConfig(this.plotConfigName);
+    this.plotConfig = getCustomPlotConfig(this.plotConfigName);
     console.log(this.plotConfig);
     console.log('loading config');
     this.emitPlotConfig();

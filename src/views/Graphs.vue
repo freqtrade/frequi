@@ -8,17 +8,13 @@
         <b-button @click="refresh">&#x21bb;</b-button>
       </div>
       <div class="col-mb-2">
-        <b-form-select
-          :options="historicView ? pairlist : whitelist"
-          v-model="pair"
-          @change="refresh"
-        >
-        </b-form-select>
+        <b-select v-model="pair" :options="historicView ? pairlist : whitelist" @change="refresh">
+        </b-select>
       </div>
     </div>
-    <div class="mt-2 row" v-if="historicView">
-      <TimeRangeSelect class="col-md-4 mr-2" v-model="timerange"></TimeRangeSelect>
-      <StrategyList class="col-md-2" v-model="strategy"></StrategyList>
+    <div v-if="historicView" class="mt-2 row">
+      <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
+      <StrategyList v-model="strategy" class="col-md-2"></StrategyList>
     </div>
 
     <div class="row">
@@ -40,7 +36,7 @@ import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
-import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/store/types';
+import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/types';
 
 const ftbot = namespace('ftbot');
 

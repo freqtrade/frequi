@@ -15,7 +15,12 @@ import {
   PlotConfigStorage,
 } from '@/types';
 
-import { storeCustomPlotConfig, loadPlotConfigName, storePlotConfigName } from '@/shared/storage';
+import {
+  storeCustomPlotConfig,
+  getPlotConfigName,
+  getAllPlotConfigNames,
+  storePlotConfigName,
+} from '@/shared/storage';
 import { showAlert } from './alerts';
 
 export enum BotStoreGetters {
@@ -47,7 +52,8 @@ export default {
     history: {},
     strategyPlotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
-    plotConfigName: loadPlotConfigName(),
+    plotConfigName: getPlotConfigName(),
+    availablePlotConfigNames: getAllPlotConfigNames(),
     strategyList: [],
     pairlist: [],
   },
@@ -128,12 +134,14 @@ export default {
       state.strategyPlotConfig = plotConfig;
     },
     updatePlotConfigName(state, plotConfigName: string) {
+      // Set default plot config name
       state.plotConfigName = plotConfigName;
       storePlotConfigName(plotConfigName);
     },
     saveCustomPlotConfig(state, plotConfig: PlotConfigStorage) {
       state.customPlotConfig = plotConfig;
       storeCustomPlotConfig(plotConfig);
+      state.availablePlotConfigNames = getAllPlotConfigNames();
     },
   },
   actions: {
