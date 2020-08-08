@@ -81,6 +81,8 @@ export default class TradeList extends Vue {
   @Prop({ default: 'No Trades to show.' })
   emptyText!: string;
 
+  @Prop({ default: 'close_profit' }) profitColumn!: string;
+
   @ftbot.State detailTradeId?: number;
 
   @ftbot.Action setDetailTrade;
@@ -131,7 +133,7 @@ export default class TradeList extends Vue {
       formatter: (value) => formatPrice(value),
     },
     {
-      key: this.activeTrades ? 'current_profit' : 'close_profit',
+      key: this.activeTrades ? 'current_profit' : this.profitColumn,
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
       formatter: (value) => formatPercent(value, 3),
     },

@@ -22,7 +22,11 @@
         </b-table>
       </b-card>
 
-      <TradeList class="trade-history mt-2" :trades="backtestResult.trades" />
+      <TradeList
+        class="trade-history mt-2"
+        :trades="backtestResult.trades"
+        profitColumn="profit_percent"
+      />
     </div>
   </div>
 </template>
@@ -62,7 +66,7 @@ export default class BacktestResultView extends Vue {
       { metric: 'Max Drawdown', value: this.backtestResult.max_drawdown },
       { metric: 'Drawdown start', value: this.backtestResult.drawdown_start },
       { metric: 'Drawdown end', value: this.backtestResult.drawdown_end },
-      { metric: 'Market chnage', value: this.backtestResult.market_change },
+      { metric: 'Market change', value: this.backtestResult.market_change },
     ];
   }
 
