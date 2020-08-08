@@ -22,14 +22,14 @@
     </div>
 
     <div class="row">
-      <CandleChart
+      <CandleChartContainer
         :pair="pair"
         :timeframe="timeframe"
         :timeframems="timeframems"
         :dataset="dataset"
         :trades="trades"
       >
-      </CandleChart>
+      </CandleChartContainer>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import CandleChart from '@/components/ftbot/CandleChart.vue';
+import CandleChartContainer from '@/components/ftbot/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/store/types';
@@ -45,7 +45,7 @@ import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/s
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { CandleChart, StrategyList, TimeRangeSelect },
+  components: { CandleChartContainer, StrategyList, TimeRangeSelect },
 })
 export default class Graphs extends Vue {
   pair = 'XRP/USDT';

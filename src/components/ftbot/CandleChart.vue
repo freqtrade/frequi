@@ -1,27 +1,6 @@
 <template>
-  <div class="container-fluid flex-column align-items-stretch d-flex">
-    <b-modal
-      id="plotConfiguratorModal"
-      title="Plot Configurator"
-      ok-only
-      hide-backdrop
-      button-size="sm"
-    >
-      <PlotConfigurator :columns="datasetColumns" v-model="plotConfig" />
-    </b-modal>
-    <div class="row ml-auto">
-      <div class="col-mb-2 mr-2">
-        <b-checkbox v-model="useUTC" title="Use UTC for graph">useUtc</b-checkbox>
-      </div>
-      <div class="col-mb-2 mr-3">
-        <b-button @click="showConfigurator" size="sm" title="Plot configurator">
-          &#9881;
-        </b-button>
-      </div>
-    </div>
-    <div class="row flex-grow-1 chart-wrapper">
-      <v-chart v-if="hasData" theme="dark" autoresize :options="chartOptions" />
-    </div>
+  <div class="row flex-grow-1 chart-wrapper">
+    <v-chart v-if="hasData" theme="dark" autoresize :options="chartOptions" />
   </div>
 </template>
 
@@ -29,12 +8,10 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ECharts from 'vue-echarts';
 import * as echarts from 'echarts';
-import { Trade, PairHistory, PlotConfig, EMPTY_PLOTCONFIG } from '@/store/types';
+import { Trade, PairHistory, PlotConfig } from '@/store/types';
 import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
 import { timestampms } from '@/shared/formatters';
-import PlotConfigurator from '@/components/ftbot/PlotConfigurator.vue';
-import { loadCustomPlotConfig, loadPlotConfigName } from '@/shared/storage';
 
 import 'echarts';
 
@@ -47,7 +24,7 @@ const downColor = '#ec0000';
 const downBorderColor = '#8A0000';
 
 @Component({
-  components: { 'v-chart': ECharts, PlotConfigurator },
+  components: { 'v-chart': ECharts },
 })
 export default class CandleChart extends Vue {
   @Prop({ required: true }) readonly timeframe!: string;
@@ -58,9 +35,9 @@ export default class CandleChart extends Vue {
 
   @Prop({ required: true }) readonly dataset!: PairHistory;
 
-  plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
+  @Prop({ default: true }) readonly useUTC!: boolean;
 
-  useUTC = true;
+  @Prop({ required: true }) plotConfig!: PlotConfig;
 
   // Only recalculate buy / sell data if necessary
   signalsCalculated = false;
@@ -68,14 +45,6 @@ export default class CandleChart extends Vue {
   buyData = [] as Array<number>[];
 
   sellData = [] as Array<number>[];
-
-  mounted() {
-    this.plotConfig = loadCustomPlotConfig(loadPlotConfigName());
-  }
-
-  showConfigurator() {
-    this.$bvModal.show('plotConfiguratorModal');
-  }
 
   @Watch('timeframe')
   timeframeChanged() {
