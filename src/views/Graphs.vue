@@ -37,7 +37,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import CandleChartContainer from '@/components/ftbot/CandleChartContainer.vue';
+import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/store/types';

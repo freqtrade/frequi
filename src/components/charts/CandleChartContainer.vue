@@ -33,8 +33,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig } from '@/store/types';
-import CandleChart from '@/components/ftbot/CandleChart.vue';
-import PlotConfigurator from '@/components/ftbot/PlotConfigurator.vue';
+import CandleChart from '@/components/charts/CandleChart.vue';
+import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { loadCustomPlotConfig, loadPlotConfigName } from '../../shared/storage';
 
 @Component({ components: { CandleChart, PlotConfigurator } })
