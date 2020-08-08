@@ -4,7 +4,7 @@ const PLOT_CONFIG = 'ft_custom_plot_config';
 const PLOT_CONFIG_NAME = 'ft_selected_plot_config';
 
 export function loadPlotConfigName(): string {
-  return localStorage.getItem(PLOT_CONFIG_NAME) || '';
+  return localStorage.getItem(PLOT_CONFIG_NAME) || 'default';
 }
 
 export function storePlotConfigName(plotConfigName: string): void {

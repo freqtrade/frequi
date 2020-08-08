@@ -195,6 +195,8 @@ export default class PlotConfigurator extends Vue {
 
   @ftbot.Mutation updatePlotConfigName!: (plotConfigName: string) => void;
 
+  @ftbot.State('plotConfigName') usedPlotConfigName!: string;
+
   get plotConfigJson() {
     return JSON.stringify(this.plotConfig, null, 2);
   }
@@ -230,6 +232,7 @@ export default class PlotConfigurator extends Vue {
 
   mounted() {
     this.plotConfig = this.value;
+    this.plotConfigName = this.usedPlotConfigName;
   }
 
   newColor() {
