@@ -17,27 +17,30 @@
   </div>
 </template>
 
-<script>
-import { mapActions, mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { BotState } from '@/store/types';
 import ForceBuyForm from './ForceBuyForm.vue';
 
-export default {
-  name: 'BotControls',
-  components: { ForceBuyForm },
-  computed: {
-    ...mapState('ftbot', ['botState']),
-  },
-  data() {
-    return {
-      forcebuyShow: false,
-    };
-  },
-  methods: {
-    ...mapActions('ftbot', ['startBot', 'stopBot', 'stopBuy', 'reloadConfig']),
-    initiateForcebuy() {
-      console.log('Forcebuy started');
-      this.$bvModal.show('forcebuy-modal');
-    },
-  },
-};
+const ftbot = namespace('ftbot');
+
+@Component({ components: { ForceBuyForm } })
+export default class BotControls extends Vue {
+  forcebuyShow = false;
+
+  @ftbot.State botState: BotState;
+
+  @ftbot.Action startBot;
+
+  @ftbot.Action stopBot;
+
+  @ftbot.Action stopBuy;
+
+  @ftbot.Action reloadConfig;
+
+  initiateForcebuy() {
+    this.$bvModal.show('forcebuy-modal');
+  }
+}
 </script>
