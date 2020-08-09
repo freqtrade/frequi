@@ -28,25 +28,47 @@
       </b-input-group>
     </b-form-group>
     <hr />
-    <b-form-group label="Used indicators" label-for="selectedIndicators">
-      <b-form-select
-        id="selectedIndicators"
-        v-model="selIndicator"
-        :options="usedColumns"
-        :select-size="4"
-      >
-      </b-form-select>
-    </b-form-group>
-    <b-form-group label="Add indicator" label-for="indicatorSelector">
-      <b-form-select
-        id="indicatorSelector"
-        v-model="selAvailableIndicator"
-        :options="columns"
-        :select-size="4"
-      >
-      </b-form-select>
-    </b-form-group>
-
+    <div class="row">
+      <b-form-group class="col" label="Add indicator" label-for="indicatorSelector">
+        <b-form-select
+          id="indicatorSelector"
+          v-model="selAvailableIndicator"
+          :options="columns"
+          :select-size="4"
+        >
+        </b-form-select>
+      </b-form-group>
+      <div class="col-1 px-0 text-center">
+        <b-button
+          class="mt-5"
+          variant="primary"
+          title="Add indicator to plot"
+          size="sm"
+          :disabled="!selAvailableIndicator"
+          @click="addIndicator"
+        >
+          &gt;
+        </b-button>
+        <b-button
+          variant="primary"
+          title="Remove indicator to plot"
+          size="sm"
+          :disabled="!selIndicator"
+          @click="removeIndicator"
+        >
+          &lt;
+        </b-button>
+      </div>
+      <b-form-group class="col" label="Used indicators" label-for="selectedIndicators">
+        <b-form-select
+          id="selectedIndicators"
+          v-model="selIndicator"
+          :options="usedColumns"
+          :select-size="4"
+        >
+        </b-form-select>
+      </b-form-group>
+    </div>
     <b-form-group label="Choose type" label-for="plotTypeSelector">
       <b-form-select id="plotTypeSelector" v-model="graphType" :options="availableGraphTypes">
       </b-form-select>
@@ -70,27 +92,7 @@
       </b-form-input>
     </b-form-group>
     <div class="row">
-      <b-button
-        class="ml-1"
-        variant="primary"
-        title="Add indicator to plot"
-        size="sm"
-        :disabled="!selAvailableIndicator"
-        @click="addIndicator"
-      >
-        Add
-      </b-button>
-      <b-button
-        class="ml-1"
-        variant="primary"
-        title="Remove indicator to plot"
-        size="sm"
-        :disabled="!selIndicator"
-        @click="removeIndicator"
-      >
-        Remove
-      </b-button>
-      <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
+      <b-button class="ml-3" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
         Load from strategy
       </b-button>
