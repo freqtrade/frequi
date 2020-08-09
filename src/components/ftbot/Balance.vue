@@ -22,29 +22,33 @@
   </div>
 </template>
 
-<script>
-import { mapActions, mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { BalanceInterface } from '@/store/types';
 
-export default {
-  name: 'Balance',
-  computed: {
-    ...mapState('ftbot', ['balance']),
-    tableFields() {
-      return [
-        { key: 'currency', label: 'Currency' },
-        { key: 'free', label: 'Available', formatter: 'formatCurrency' },
-        { key: 'est_stake', label: `in ${this.balance.stake}`, formatter: 'formatCurrency' },
-      ];
-    },
-  },
-  methods: {
-    ...mapActions('ftbot', ['getBalance']),
-    formatCurrency(value) {
-      return value ? value.toFixed(5) : '';
-    },
-  },
+const ftbot = namespace('ftbot');
+
+@Component({})
+export default class Balance extends Vue {
+  @ftbot.Action getBalance;
+
+  @ftbot.State balance!: BalanceInterface;
+
+  get tableFields() {
+    return [
+      { key: 'currency', label: 'Currency' },
+      { key: 'free', label: 'Available', formatter: 'formatCurrency' },
+      { key: 'est_stake', label: `in ${this.balance.stake}`, formatter: 'formatCurrency' },
+    ];
+  }
+
   mounted() {
     this.getBalance();
-  },
-};
+  }
+
+  formatCurrency(value) {
+    return value ? value.toFixed(5) : '';
+  }
+}
 </script>

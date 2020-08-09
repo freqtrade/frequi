@@ -31,7 +31,7 @@
   </b-card>
 </template>
 
-<script>
+<script lang="ts">
 import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/ftbot/ValuePair.vue';
 
