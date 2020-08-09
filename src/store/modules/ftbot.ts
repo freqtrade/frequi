@@ -1,5 +1,5 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload } from '@/store/types';
+import { BotState, BlacklistPayload, ForcebuyPayload } from '@/store/types';
 
 export default {
   namespaced: true,
@@ -196,7 +196,7 @@ export default {
       console.error(error);
       return Promise.reject(error);
     },
-    async forcebuy({ dispatch }, payload) {
+    async forcebuy({ dispatch }, payload: ForcebuyPayload) {
       if (payload && payload.pair) {
         try {
           const res = await api.post('/forcebuy', payload);

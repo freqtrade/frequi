@@ -12,6 +12,11 @@ export interface DailyInterface {
   timescale: number;
 }
 
+export interface ForcebuyPayload {
+  pair: string;
+  price?: number;
+}
+
 export interface PerformanceEntry {
   count: number;
   pair: string;

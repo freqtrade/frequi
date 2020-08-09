@@ -35,55 +35,61 @@
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { ForcebuyPayload } from '@/store/types';
 
-export default {
-  name: 'ForceBuyForm',
+const ftbot = namespace('ftbot');
+
+@Component({})
+export default class ForceBuyForm extends Vue {
+  pair = '';
+
+  price = null;
+
+  @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
+
   created() {
     this.$bvModal.show();
-  },
-  data() {
-    return {
-      pair: '',
-      price: null,
-    };
-  },
-  methods: {
-    ...mapActions('ftbot', ['forcebuy']),
-    close() {
-      this.$emit('close');
-    },
-    checkFormValidity() {
-      const valid = this.$refs.form.checkValidity();
+  }
 
-      return valid;
-    },
-    handleBuy(bvModalEvt) {
-      // Prevent modal from closing
-      bvModalEvt.preventDefault();
-      // Trigger submit handler
-      this.handleSubmit();
-    },
-    resetForm() {
-      this.pair = '';
-      this.price = null;
-    },
-    handleSubmit() {
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        return;
-      }
-      // call forcebuy
-      const payload = { pair: this.pair };
-      if (this.price) {
-        payload.price = Number(this.price);
-      }
-      this.forcebuy(payload);
-      this.$nextTick(() => {
-        this.$bvModal.hide('forcebuy-modal');
-      });
-    },
-  },
-};
+  close() {
+    this.$emit('close');
+  }
+
+  checkFormValidity() {
+    const valid = this.$refs.form.checkValidity();
+
+    return valid;
+  }
+
+  handleBuy(bvModalEvt) {
+    // Prevent modal from closing
+    bvModalEvt.preventDefault();
+    // Trigger submit handler
+    this.handleSubmit();
+  }
+
+  resetForm() {
+    this.pair = '';
+    this.price = null;
+  }
+
+  handleSubmit() {
+    // Exit when the form isn't valid
+    if (!this.checkFormValidity()) {
+      return;
+    }
+    // call forcebuy
+    const payload: ForcebuyPayload = { pair: this.pair };
+    if (this.price) {
+      payload.price = Number(this.price);
+    }
+    this.forcebuy(payload);
+    this.$nextTick(() => {
+      this.$bvModal.hide('forcebuy-modal');
+    });
+  }
+}
 </script>
