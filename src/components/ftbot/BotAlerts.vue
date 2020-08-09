@@ -14,22 +14,20 @@
   </div>
 </template>
 
-<script>
-import { mapState, mapMutations } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
-export default {
-  name: 'BotAlerts',
-  computed: {
-    ...mapState('alerts', ['activeMessages']),
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    ...mapMutations('alerts', ['removeAlert']),
-    closeAlert() {
-      this.removeAlert();
-    },
-  },
-};
+const alerts = namespace('alerts');
+
+@Component({})
+export default class BotAlerts extends Vue {
+  @alerts.State activeMessages;
+
+  @alerts.Mutations removeAlert;
+
+  closeAlert() {
+    this.removeAlert();
+  }
+}
 </script>

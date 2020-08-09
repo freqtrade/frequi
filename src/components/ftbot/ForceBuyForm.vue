@@ -48,6 +48,10 @@ export default class ForceBuyForm extends Vue {
 
   price = null;
 
+  $refs!: {
+    form: HTMLFormElement;
+  };
+
   @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
 
   created() {

@@ -33,18 +33,23 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import BotState from '@/store/types';
 
-export default {
-  name: 'BotStatus',
-  computed: {
-    ...mapState('ftbot', ['version', 'profit', 'botState']),
-  },
-  methods: {
-    formatTimestamp(timestamp) {
-      return new Date(timestamp).toUTCString();
-    },
-  },
-};
+const ftbot = namespace('ftbot');
+
+@Component({})
+export default class BotStatus extends Vue {
+  @ftbot.State version;
+
+  @ftbot.State profit;
+
+  @ftbot.State botState: BotState;
+
+  formatTimestamp(timestamp) {
+    return new Date(timestamp).toUTCString();
+  }
+}
 </script>
