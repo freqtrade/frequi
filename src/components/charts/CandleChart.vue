@@ -92,6 +92,11 @@ export default class CandleChart extends Vue {
     const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
     const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
 
+    const subplotCount =
+      'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length : 0;
+
+    console.log(`subplotcount: ${subplotCount}`);
+
     // Always show ~250 candles max as starting point
     const startingZoom = (1 - 250 / this.dataset.length) * 100;
 
@@ -169,7 +174,7 @@ export default class CandleChart extends Vue {
         {
           left: MARGINLEFT,
           right: MARGINRIGHT,
-          height: '60%',
+          height: subplotCount === 0 ? '70%' : '60%',
           // top: '0px',
           // bottom: '150px',
         },
@@ -177,7 +182,7 @@ export default class CandleChart extends Vue {
           // Volume
           left: MARGINLEFT,
           right: MARGINRIGHT,
-          top: '70%',
+          top: subplotCount === 0 ? '80%' : '70%',
           height: '10%',
         },
       ],
