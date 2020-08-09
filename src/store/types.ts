@@ -12,6 +12,12 @@ export interface DailyInterface {
   timescale: number;
 }
 
+export interface PerformanceEntry {
+  count: number;
+  pair: string;
+  profit: number;
+}
+
 export interface BotState {
   bid_strategy: object;
   ask_strategy: object;

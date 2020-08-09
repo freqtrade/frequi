@@ -7,22 +7,21 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { PerformanceEntry } from '@/store/types';
 
-export default {
-  name: 'Performance',
-  computed: {
-    ...mapState('ftbot', ['performanceStats']),
-  },
-  data() {
-    return {
-      tableFields: [
-        { key: 'pair', label: 'Pair' },
-        { key: 'profit', label: 'Profit' },
-        { key: 'count', label: 'Count' },
-      ],
-    };
-  },
-};
+const ftbot = namespace('ftbot');
+
+@Component({})
+export default class Performance extends Vue {
+  @ftbot.State performanceStats!: Array<PerformanceEntry>;
+
+  private tableFields = [
+    { key: 'pair', label: 'Pair' },
+    { key: 'profit', label: 'Profit' },
+    { key: 'count', label: 'Count' },
+  ];
+}
 </script>

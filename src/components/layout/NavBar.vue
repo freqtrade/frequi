@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { State, Mutation, Action, namespace } from 'vuex-class';
+import { State, Mutation, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 
