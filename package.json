@@ -45,7 +45,7 @@
     "portal-vue": "^2.1.6",
     "prettier": "^2.0.5",
     "sass": "^1.26.10",
-    "sass-loader": "^9.0.2",
+    "sass-loader": "^9.0.3",
     "typescript": "~3.9.7",
     "vue-cli-plugin-bootstrap-vue": "~0.6.0",
     "vue-template-compiler": "^2.6.11"
