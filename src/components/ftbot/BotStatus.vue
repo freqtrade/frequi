@@ -46,7 +46,7 @@ export default class BotStatus extends Vue {
 
   @ftbot.State profit;
 
-  @ftbot.State botState: BotState;
+  @ftbot.State botState!: BotState;
 
   formatTimestamp(timestamp) {
     return new Date(timestamp).toUTCString();
