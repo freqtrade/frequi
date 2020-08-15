@@ -1,5 +1,5 @@
 <template>
-  <textarea v-model="formattedLogs" readonly></textarea>
+  <textarea class="mt-2" v-model="formattedLogs" readonly></textarea>
 </template>
 
 <script lang="ts">
