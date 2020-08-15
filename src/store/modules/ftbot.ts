@@ -1,10 +1,11 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload, ForcebuyPayload } from '@/store/types';
+import { BotState, BlacklistPayload, ForcebuyPayload, Logs } from '@/store/types';
 
 export default {
   namespaced: true,
   state: {
     version: '',
+    lastLogs: '',
     trades: [],
     openTrades: [],
     tradeCount: 0,
@@ -62,6 +63,9 @@ export default {
     },
     updateVersion(state, version) {
       state.version = version.version;
+    },
+    updateLogs(state, logs: Logs) {
+      state.lastLogs = logs.logs;
     },
     setDetailTrade(state, trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
@@ -135,6 +139,12 @@ export default {
       return api
         .get('/version')
         .then((result) => commit('updateVersion', result.data))
+        .catch(console.error);
+    },
+    getLogs({ commit }) {
+      return api
+        .get('/logs')
+        .then((result) => commit('updateLogs', result.data))
         .catch(console.error);
     },
     // Post methods

@@ -57,6 +57,9 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <LogViewer />
+    </div>
   </div>
 </template>
 
@@ -73,6 +76,7 @@ import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
+import LogViewer from '@/components/ftbot/LogViewer.vue';
 
 import { Trade } from '@/store/types';
 
@@ -89,6 +93,7 @@ const ftbot = namespace('ftbot');
     FTBotAPIPairList,
     TradeDetail,
     ReloadControl,
+    LogViewer,
   },
 })
 export default class Trading extends Vue {

@@ -32,6 +32,16 @@ export interface BalanceRecords {
   stake: string;
 }
 
+export interface Logs {
+  /**
+   * Array of Logs
+   * Log format:
+   * [Formatted datetime, timestamp, Module, LogLevel, Message]
+   */
+  logs: Array<[string, number, string, string, string]>;
+  log_count: number;
+}
+
 export interface BalanceInterface {
   currencies: Array<BalanceRecords>;
   note: string;
