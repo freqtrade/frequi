@@ -24,7 +24,7 @@ const alerts = namespace('alerts');
 export default class BotAlerts extends Vue {
   @alerts.State activeMessages;
 
-  @alerts.Mutations removeAlert;
+  @alerts.Mutation removeAlert;
 
   closeAlert() {
     this.removeAlert();
