@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bot-alerts">
     <b-alert
       v-for="(alert, index) in activeMessages"
       :key="index"

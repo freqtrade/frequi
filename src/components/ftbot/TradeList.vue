@@ -1,5 +1,5 @@
 <template>
-  <b-card :header="title" no-body>
+  <b-card class="h-100" :header="title" no-body>
     <b-card-body class="overflow-auto">
       <b-table
         class="table-sm"
