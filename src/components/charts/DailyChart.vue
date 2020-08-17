@@ -12,7 +12,7 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
 
-import { DailyReturn } from '@/store/types';
+import { DailyReturnValue } from '@/store/types';
 
 // Define Column labels here to avoid typos
 const CHART_ABS_PROFIT = 'Absolute profit';
@@ -24,7 +24,7 @@ const CHART_TRADE_COUNT = 'Trade Count';
   },
 })
 export default class DailyChart extends Vue {
-  @Prop({ required: true }) dailyStats!: DailyReturn;
+  @Prop({ required: true }) dailyStats!: DailyReturnValue;
 
   get dailyChartOptions() {
     return {

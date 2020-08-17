@@ -27,7 +27,7 @@ export interface DailyRecord {
   trade_count: number;
 }
 
-export interface DailyReturn {
+export interface DailyReturnValue {
   data: Array<DailyRecord>;
 }
 
