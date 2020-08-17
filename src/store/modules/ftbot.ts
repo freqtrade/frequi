@@ -259,7 +259,7 @@ export default {
               { root: true },
             );
           }
-          return Promise.resolve(result);
+          return Promise.resolve(result.data);
         } catch (error) {
           console.error(error.response);
           dispatch(

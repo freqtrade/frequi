@@ -55,7 +55,7 @@ export default class ForceBuyForm extends Vue {
   @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
 
   created() {
-    this.$bvModal.show();
+    this.$bvModal.show('forcebuy-modal');
   }
 
   close() {
