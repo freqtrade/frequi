@@ -52,6 +52,26 @@ export default class DailyChart extends Vue {
         type: 'category',
         inverse: true,
       },
+      visualMap: {
+        dimension: 1,
+        seriesIndex: 0,
+        show: false,
+        pieces: [
+          {
+            min: 0.0,
+            color: 'green',
+          },
+          {
+            value: 0.0,
+            color: 'gray',
+          },
+          {
+            max: 0.0,
+            min: -100000,
+            color: 'red',
+          },
+        ],
+      },
       yAxis: [
         {
           type: 'value',
@@ -76,7 +96,6 @@ export default class DailyChart extends Vue {
           type: 'line',
           name: CHART_ABS_PROFIT,
           color: 'black',
-          smooth: true,
         },
         {
           type: 'bar',

@@ -1,16 +1,19 @@
 <template>
-  <v-chart :options="hourlyChartOptions" />
+  <v-chart v-if="trades.length > 0" :options="hourlyChartOptions" />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import ECharts from 'vue-echarts';
+
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
+import 'echarts/lib/component/visualMap';
+import 'echarts/lib/component/visualMapPiecewise';
 
 import { Trade } from '@/store/types';
 import { timestampHour } from '@/shared/formatters';
@@ -30,7 +33,7 @@ export default class HourlyChart extends Vue {
   get hourlyData() {
     const res = new Array(24);
     for (let i = 0; i < 24; i += 1) {
-      res[i] = { hour: i, hourDesc: `${i}h`, profit: 0, count: 0 };
+      res[i] = { hour: i, hourDesc: `${i}h`, profit: 0.0, count: 0.0 };
     }
 
     for (let i = 0, len = this.trades.length; i < len; i += 1) {
@@ -46,7 +49,6 @@ export default class HourlyChart extends Vue {
   }
 
   get hourlyChartOptions() {
-    console.log(this.hourlyData);
     return {
       title: {
         text: 'Hourly Profit',
@@ -90,12 +92,28 @@ export default class HourlyChart extends Vue {
           nameGap: 30,
         },
       ],
+      visualMap: {
+        dimension: 1,
+        seriesIndex: 0,
+        show: false,
+        pieces: [
+          {
+            min: 0,
+            color: 'green',
+          },
+          {
+            max: 0.0,
+            min: -1,
+            color: 'red',
+          },
+        ],
+      },
       series: [
         {
           type: 'line',
           name: CHART_PROFIT,
           color: 'black',
-          smooth: true,
+          // symbol: 'none',
         },
         {
           type: 'bar',
