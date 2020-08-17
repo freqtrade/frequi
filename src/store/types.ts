@@ -8,8 +8,8 @@ export interface BlacklistPayload {
   blacklist: Array<string>;
 }
 
-export interface DailyInterface {
-  timescale: number;
+export interface DailyPayload {
+  timescale?: number;
 }
 
 export interface ForcebuyPayload {

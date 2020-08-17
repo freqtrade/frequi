@@ -1,5 +1,5 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload, ForcebuyPayload, Logs } from '@/store/types';
+import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload } from '@/store/types';
 
 export default {
   namespaced: true,
@@ -123,7 +123,7 @@ export default {
         .then((result) => commit('updateBalance', result.data))
         .catch(console.error);
     },
-    getDaily({ commit }, payload = {}) {
+    getDaily({ commit }, payload: DailyPayload) {
       const { timescale = 20 } = payload;
       return api
         .get('/daily', { params: { timescale } })
