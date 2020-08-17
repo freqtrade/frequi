@@ -12,6 +12,10 @@ export function timestampms(ts: number | Date): string {
   return moment(ts).format('YYYY-MM-DD HH:mm:ss');
 }
 
+export function timestampHour(ts: number | Date): number {
+  return moment(ts).hour();
+}
+
 export default {
   formatPrice,
   formatPercent,
