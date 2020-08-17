@@ -123,7 +123,7 @@ export default {
         .then((result) => commit('updateBalance', result.data))
         .catch(console.error);
     },
-    getDaily({ commit }, payload: DailyPayload) {
+    getDaily({ commit }, payload: DailyPayload = {}) {
       const { timescale = 20 } = payload;
       return api
         .get('/daily', { params: { timescale } })
