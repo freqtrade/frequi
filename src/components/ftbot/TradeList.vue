@@ -72,6 +72,8 @@ export default class TradeList extends Vue {
 
   currentPage = 1;
 
+  formatPercent = formatPercent;
+
   get rows(): number {
     return this.trades.length;
   }
@@ -90,15 +92,13 @@ export default class TradeList extends Vue {
     },
     {
       key: this.activeTrades ? 'current_profit' : 'close_profit',
-      label: this.activeTrades ? 'Current profit' : 'Profit',
+      label: this.activeTrades ? 'Current profit %' : 'Profit %',
       formatter: 'formatPercent',
     },
     { key: 'open_date', label: 'Open date' },
     { key: 'close_date', label: 'Close date' },
     ...(this.activeTrades ? [{ key: 'actions' }] : []),
   ];
-
-  formatPercent;
 
   profitSymbol(item) {
     // Red arrow / green circle

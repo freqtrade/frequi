@@ -3,11 +3,11 @@
     <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
     <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
     <ValuePair description="Stoploss">
-      {{ formatPercent(trade.stop_loss_pct / 100) }} |
+      {{ formatPercent(trade.stop_loss_ratio) }} |
       {{ formatPrice(trade.stop_loss) }}
     </ValuePair>
     <ValuePair description="Initial Stoploss">
-      {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
+      {{ formatPercent(trade.initial_stop_loss_ratio) }} |
       {{ formatPrice(trade.initial_stop_loss) }}
     </ValuePair>
     <ValuePair description="Current stoploss dist">
@@ -26,7 +26,7 @@
       {{ timestampms(trade.stoploss_last_update_timestamp) }}
     </ValuePair>
     <ValuePair description="Current profit" v-if="trade.current_profit_abs">
-      {{ trade.current_profit_abs }}
+      {{ trade.current_profit_abs }} ({{ formatPercent(trade.current_profit) }})
     </ValuePair>
   </b-card>
 </template>
