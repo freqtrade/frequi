@@ -11,6 +11,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item to="/trade">Trade</b-nav-item>
+          <b-nav-item to="/dashboard">Dashboard</b-nav-item>
           <b-nav-item to="/about">About</b-nav-item>
           <BootswatchThemeSelect />
         </b-navbar-nav>
