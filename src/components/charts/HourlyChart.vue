@@ -95,6 +95,7 @@ export default class HourlyChart extends Vue {
           type: 'line',
           name: CHART_PROFIT,
           color: 'black',
+          smooth: true,
         },
         {
           type: 'bar',

@@ -76,6 +76,7 @@ export default class DailyChart extends Vue {
           type: 'line',
           name: CHART_ABS_PROFIT,
           color: 'black',
+          smooth: true,
         },
         {
           type: 'bar',
