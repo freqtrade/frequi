@@ -27,6 +27,7 @@
                 <b-avatar button>FT</b-avatar>
               </template>
               <b-dropdown-item to="/settings">Settings</b-dropdown-item>
+              <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <b-dropdown-item to="/" @click.native="logout()">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </li>
@@ -48,6 +49,7 @@ import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 
 const ftbot = namespace('ftbot');
+const layoutNs = namespace('layout');
 
 @Component({
   components: { LoginModal, BootswatchThemeSelect },
@@ -63,6 +65,10 @@ export default class NavBar extends Vue {
 
   @ftbot.Action ping;
 
+  @layoutNs.Action resetDashboardLayout;
+
+  @layoutNs.Action resetTradingLayout;
+
   mounted() {
     this.ping();
     this.pingInterval = setInterval(this.ping, 60000);
@@ -77,6 +83,20 @@ export default class NavBar extends Vue {
   logout(): void {
     userService.logout();
     this.setLoggedIn(false);
+  }
+
+  resetDynamicLayout(): void {
+    const route = this.$router.currentRoute.path;
+    console.log(`resetLayout called for ${route}`);
+    switch (route) {
+      case '/trade':
+        this.resetTradingLayout();
+        break;
+      case '/dashboard':
+        this.resetDashboardLayout();
+        break;
+      default:
+    }
   }
 }
 </script>

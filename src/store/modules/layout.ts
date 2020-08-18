@@ -18,8 +18,8 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
 export default {
   namespaced: true,
   state: {
-    dashboardLayout: DEFAULT_DASHBOARD_LAYOUT,
-    tradingLayout: DEFAULT_TRADING_LAYOUT,
+    dashboardLayout: JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT)),
+    tradingLayout: JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT)),
   },
 
   getters: {
@@ -43,11 +43,11 @@ export default {
 
   actions: {
     resetDashboardLayout({ commit }) {
-      commit('setDashboardLayout', DEFAULT_DASHBOARD_LAYOUT);
+      commit('setDashboardLayout', JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT)));
     },
 
     resetTradingLayout({ commit }) {
-      commit('setTradingLayout', DEFAULT_TRADING_LAYOUT);
+      commit('setTradingLayout', JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT)));
     },
   },
 };
