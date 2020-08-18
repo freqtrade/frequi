@@ -1,5 +1,10 @@
 <template>
-  <GridLayout class="h-100 w-100" :row-height="50" :layout="gridLayout">
+  <GridLayout
+    class="h-100 w-100"
+    :row-height="50"
+    :layout="gridLayout"
+    @layout-updated="layoutUpdatedEvent"
+  >
     <GridItem
       :i="gridLayout[0].i"
       :x="gridLayout[0].x"
@@ -109,6 +114,7 @@ import { Trade } from '@/types';
 import { UserStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
+const layoutNs = namespace('layout');
 
 @Component({
   components: {
@@ -135,14 +141,17 @@ export default class Trading extends Vue {
 
   @ftbot.Getter [UserStoreGetters.tradeDetail]!: Trade;
 
-  public gridLayout: GridItemData[] = [
-    { i: 'g-reloadControl', x: 0, y: 0, w: 4, h: 1 },
-    { i: 'g-botControls', x: 0, y: 0, w: 4, h: 3 },
-    { i: 'g-MultiPane', x: 0, y: 0, w: 4, h: 7 },
-    { i: 'g-openTrades', x: 4, y: 0, w: 8, h: 5 },
-    { i: 'g-tradeHistory', x: 4, y: 4, w: 8, h: 6 },
-    { i: 'g-logView', x: 0, y: 9, w: 12, h: 3 },
-  ];
+  @layoutNs.Getter getTradingLayout!: GridItemData[];
+
+  @layoutNs.Mutation setTradingLayout;
+
+  get gridLayout(): GridItemData[] {
+    return this.getTradingLayout;
+  }
+
+  layoutUpdatedEvent(newLayout) {
+    this.setTradingLayout(newLayout);
+  }
 }
 </script>
 

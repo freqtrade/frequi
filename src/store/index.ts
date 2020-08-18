@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import userService from '@/shared/userService';
 import ftbotModule from './modules/ftbot';
 import alertsModule from './modules/alerts';
+import layoutModule from './modules/layout';
 
 const AUTO_REFRESH = 'ft_auto_refresh';
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   modules: {
     ftbot: ftbotModule,
     alerts: alertsModule,
+    layout: layoutModule,
   },
   mutations: {
     setPing(state, ping) {

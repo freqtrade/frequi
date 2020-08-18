@@ -47,6 +47,7 @@ import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import { Trade, DailyReturnValue } from '@/types';
 
 const ftbot = namespace('ftbot');
+const layoutNs = namespace('layout');
 
 @Component({
   components: {
@@ -57,7 +58,7 @@ const ftbot = namespace('ftbot');
     CumProfitChart,
   },
 })
-export default class Trading extends Vue {
+export default class Dashboard extends Vue {
   @ftbot.Getter closedTrades!: Trade[];
 
   @ftbot.State dailyStats!: DailyReturnValue;
@@ -66,19 +67,21 @@ export default class Trading extends Vue {
 
   @ftbot.Action getTrades;
 
-  public gridLayout: GridItemData[] = [
-    { i: 'g-dailyChart', x: 0, y: 0, w: 4, h: 6 },
-    { i: 'g-hourlyChart', x: 4, y: 0, w: 4, h: 6 },
-    { i: 'g-cumChartChart', x: 4, y: 0, w: 4, h: 6 },
-  ];
+  @layoutNs.Getter getDashboardLayout!: GridItemData[];
+
+  @layoutNs.Mutation setDashboardLayout;
+
+  get gridLayout(): GridItemData[] {
+    return this.getDashboardLayout;
+  }
 
   mounted() {
     this.getDaily();
     this.getTrades();
   }
 
-  layoutUpdatedEvent(newLayout: GridItemData[]) {
-    console.log(newLayout);
+  layoutUpdatedEvent(newLayout) {
+    this.setDashboardLayout(newLayout);
   }
 }
 </script>
