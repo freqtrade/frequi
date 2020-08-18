@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="hourlyChartOptions" />
+  <v-chart v-if="trades.length > 0" :options="hourlyChartOptions" autoresize />
 </template>
 
 <script lang="ts">
@@ -48,7 +48,7 @@ export default class HourlyChart extends Vue {
     return res;
   }
 
-  get hourlyChartOptions() {
+  get hourlyChartOptions(): echarts.ChartO {
     return {
       title: {
         text: 'Hourly Profit',
@@ -129,4 +129,9 @@ export default class HourlyChart extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.echarts {
+  width: 100%;
+  height: 100%;
+}
+</style>

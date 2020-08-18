@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="dailyStats.data" :options="dailyChartOptions" />
+  <v-chart v-if="dailyStats.data" :options="dailyChartOptions" autoresize />
 </template>
 
 <script lang="ts">
@@ -124,4 +124,9 @@ export default class DailyChart extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.echarts {
+  width: 100%;
+  height: 100%;
+}
+</style>
