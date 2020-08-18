@@ -25,7 +25,7 @@
       <TradeList
         class="trade-history mt-2"
         :trades="backtestResult.trades"
-        profitColumn="profit_percent"
+        profit-column="profit_percent"
       />
     </div>
   </div>

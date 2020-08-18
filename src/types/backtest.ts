@@ -61,6 +61,9 @@ export interface StrategyBacktestResult {
   max_open_trades: number;
   timeframe: string;
   total_trades: number;
+  profit_mean: number;
+  profit_total: number;
+  profit_total_abs: number;
   trades_per_day: number;
   winner_holding_avg: number;
   winning_days: number;
