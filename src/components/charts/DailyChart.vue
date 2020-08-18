@@ -26,6 +26,24 @@ const CHART_TRADE_COUNT = 'Trade Count';
 export default class DailyChart extends Vue {
   @Prop({ required: true }) dailyStats!: DailyReturnValue;
 
+  get absoluteMin() {
+    return Number(
+      this.dailyStats.data.reduce(
+        (min, p) => (p.abs_profit < min ? p.abs_profit : min),
+        this.dailyStats.data[0].abs_profit,
+      ),
+    );
+  }
+
+  get absoluteMax() {
+    return Number(
+      this.dailyStats.data.reduce(
+        (max, p) => (p.abs_profit > max ? p.abs_profit : max),
+        this.dailyStats.data[0].abs_profit,
+      ),
+    );
+  }
+
   get dailyChartOptions() {
     return {
       title: {
@@ -58,17 +76,13 @@ export default class DailyChart extends Vue {
         show: false,
         pieces: [
           {
-            min: 0.0,
-            color: 'green',
-          },
-          {
-            value: 0.0,
-            color: 'gray',
-          },
-          {
-            max: 0.0,
-            min: -100000,
+            max: -0.01,
+            min: this.absoluteMin - 2,
             color: 'red',
+          },
+          {
+            min: -0.00001,
+            color: 'green',
           },
         ],
       },

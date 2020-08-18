@@ -19,7 +19,7 @@ import { Trade } from '@/store/types';
 import { timestampHour } from '@/shared/formatters';
 
 // Define Column labels here to avoid typos
-const CHART_PROFIT = 'Profit';
+const CHART_PROFIT = 'Profit %';
 const CHART_TRADE_COUNT = 'Trade Count';
 
 @Component({
@@ -98,13 +98,14 @@ export default class HourlyChart extends Vue {
         show: false,
         pieces: [
           {
-            min: 0,
-            color: 'green',
+            max: -0.001,
+            // min: -2,
+            color: 'red',
           },
           {
-            max: 0.0,
-            min: -1,
-            color: 'red',
+            min: -0.01,
+            max: 2,
+            color: 'green',
           },
         ],
       },
