@@ -99,7 +99,7 @@ export default class HourlyChart extends Vue {
         pieces: [
           {
             max: -0.001,
-            // min: -2,
+            min: -2,
             color: 'red',
           },
           {
