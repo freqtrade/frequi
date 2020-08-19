@@ -11,6 +11,8 @@
       :y="gridLayout[0].y"
       :w="gridLayout[0].w"
       :h="gridLayout[0].h"
+      :minW="3"
+      :minH="4"
     >
       <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" />
     </GridItem>
@@ -20,6 +22,8 @@
       :y="gridLayout[1].y"
       :w="gridLayout[1].w"
       :h="gridLayout[1].h"
+      :minW="3"
+      :minH="4"
     >
       <HourlyChart :trades="closedTrades" />
     </GridItem>
