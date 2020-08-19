@@ -94,6 +94,9 @@ export default class NavBar extends Vue {
 .navbar-brand-title {
   padding-left: 0.5em;
 }
+.navbar {
+  padding: 0.5rem 1rem;
+}
 
 .nav-link:active {
   color: white;

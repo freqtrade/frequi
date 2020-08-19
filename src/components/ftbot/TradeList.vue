@@ -137,6 +137,9 @@ export default class TradeList extends Vue {
 
 <style scoped>
 .card-header {
-  font-size: 1.3em;
+  font-size: 1.2em;
+}
+.card-body {
+  padding: 0 0.2em;
 }
 </style>
