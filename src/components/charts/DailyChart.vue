@@ -65,6 +65,7 @@ export default class DailyChart extends Vue {
       },
       legend: {
         data: [CHART_ABS_PROFIT, CHART_TRADE_COUNT],
+        right: '5%',
       },
       xAxis: {
         type: 'category',

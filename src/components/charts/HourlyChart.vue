@@ -69,6 +69,7 @@ export default class HourlyChart extends Vue {
       },
       legend: {
         data: [CHART_PROFIT, CHART_TRADE_COUNT],
+        right: '5%',
       },
       xAxis: {
         type: 'category',
