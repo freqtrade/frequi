@@ -15,11 +15,23 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: 'g-cumChartChart', x: 0, y: 6, w: 4, h: 6 },
 ];
 
+const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';
+const STORE_TRADING_LAYOUT = 'ftTradingLayout';
+
+function getLayout(storageString: string, defaultLayout: GridItemData[]) {
+  const fromStore = localStorage.getItem(storageString);
+  if (fromStore) {
+    return JSON.parse(fromStore);
+  }
+
+  return JSON.parse(JSON.stringify(defaultLayout));
+}
+
 export default {
   namespaced: true,
   state: {
-    dashboardLayout: JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT)),
-    tradingLayout: JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT)),
+    dashboardLayout: getLayout(STORE_DASHBOARD_LAYOUT, DEFAULT_DASHBOARD_LAYOUT),
+    tradingLayout: getLayout(STORE_TRADING_LAYOUT, DEFAULT_TRADING_LAYOUT),
   },
 
   getters: {
@@ -35,9 +47,11 @@ export default {
     setDashboardLayout(state, layout) {
       console.log('set dashboard layout');
       state.dashboardLayout = layout;
+      localStorage.setItem(STORE_DASHBOARD_LAYOUT, JSON.stringify(layout));
     },
     setTradingLayout(state, layout) {
       state.tradingLayout = layout;
+      localStorage.setItem(STORE_TRADING_LAYOUT, JSON.stringify(layout));
     },
   },
 
