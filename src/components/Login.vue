@@ -124,6 +124,7 @@ export default class Login extends Vue {
       .then(() => {
         console.log('Login success.');
         this.setLoggedIn(true);
+        setBaseUrl(userService.getAPIUrl());
         this.emitLoginResult(true);
         if (this.inModal === false) {
           if (typeof this.$route.query.redirect === 'string') {
@@ -154,7 +155,6 @@ export default class Login extends Vue {
         console.log(this.errorMessage);
         this.emitLoginResult(false);
       });
-    setBaseUrl(userService.getAPIUrl());
   }
 }
 </script>
