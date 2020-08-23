@@ -60,15 +60,16 @@ export default new Vuex.Store({
       dispatch('ftbot/getBlacklist');
     },
     refreshSlow({ dispatch }) {
+      // Refresh data that's needed "from time to time"
       // dispatch('ftbot/getDaily');
       dispatch('ftbot/getPerformance');
       dispatch('ftbot/getProfit');
+      dispatch('ftbot/getTrades');
     },
     refreshFrequent({ dispatch }) {
-      // Refresh all data
+      // Refresh data that's needed in near realtime
       dispatch('ftbot/getOpenTrades');
       dispatch('ftbot/getState');
-      dispatch('ftbot/getTrades');
     },
   },
 });
