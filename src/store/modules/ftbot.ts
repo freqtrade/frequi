@@ -1,6 +1,12 @@
 import { api } from '@/shared/apiService';
 import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload } from '@/store/types';
 
+export enum UserStoreGetters {
+  openTrades = 'openTrades',
+  openTradeDetail = 'openTradeDetail',
+  closedTrades = 'closedTrades',
+}
+
 export default {
   namespaced: true,
   state: {
@@ -20,14 +26,14 @@ export default {
     detailTradeId: null,
   },
   getters: {
-    openTrades(state) {
+    [UserStoreGetters.openTrades](state) {
       return state.openTrades;
     },
-    openTradeDetail(state) {
+    [UserStoreGetters.openTradeDetail](state) {
       const [dTrade] = state.openTrades.filter((item) => item.trade_id === state.detailTradeId);
       return dTrade;
     },
-    closedTrades(state) {
+    [UserStoreGetters.closedTrades](state) {
       return state.trades.filter((item) => !item.is_open);
     },
   },

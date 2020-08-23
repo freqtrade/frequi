@@ -62,8 +62,6 @@ export default class TradeList extends Vue {
 
   @ftbot.State detailTradeId?: string;
 
-  @ftbot.Getter openTradeDetail?: Trade;
-
   @ftbot.Mutation setDetailTrade;
 
   @ftbot.Action forcesell!: (tradeid: string) => Promise<string>;
