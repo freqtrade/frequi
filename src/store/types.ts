@@ -117,6 +117,7 @@ export interface Trade {
   close_timestamp?: number;
   close_rate?: number;
   close_profit?: number;
+  close_profit_abs?: number;
   fee_close?: number;
   fee_close_cost?: number;
   fee_close_currency?: string;
