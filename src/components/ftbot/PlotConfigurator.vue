@@ -65,6 +65,10 @@
       </b-input-group>
     </b-form-group>
     <hr />
+    <b-form-group label="Plot config name" label-for="idPlotConfigName">
+      <b-form-input id="idPlotConfigName" :options="availableGraphTypes" v-model="plotConfigName">
+      </b-form-input>
+    </b-form-group>
     <div class="row">
       <b-button
         class="ml-1"
@@ -165,6 +169,8 @@ export default class PlotConfigurator extends Vue {
 
   plotOption = 'main_plot';
 
+  plotConfigName = 'default';
+
   newSubplotName = '';
 
   selAvailableIndicator = '';
@@ -185,8 +191,9 @@ export default class PlotConfigurator extends Vue {
 
   selColor = randomColor();
 
-  @ftbot.Mutation
-  saveCustomPlotConfig;
+  @ftbot.Mutation saveCustomPlotConfig;
+
+  @ftbot.Mutation updatePlotConfigName!: (plotConfigName: string) => void;
 
   get plotConfigJson() {
     return JSON.stringify(this.plotConfig, null, 2);
@@ -289,11 +296,11 @@ export default class PlotConfigurator extends Vue {
   }
 
   savePlotConfig() {
-    this.saveCustomPlotConfig(this.plotConfig);
+    this.saveCustomPlotConfig({ [this.plotConfigName]: this.plotConfig });
   }
 
   loadPlotConfig() {
-    this.plotConfig = loadCustomPlotConfig();
+    this.plotConfig = loadCustomPlotConfig(this.plotConfigName);
     console.log(this.plotConfig);
     console.log('loading config');
     this.emitPlotConfig();

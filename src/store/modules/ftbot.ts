@@ -12,15 +12,18 @@ import {
   StrategyResult,
   EMPTY_PLOTCONFIG,
   AvailablePairPayload,
+  PlotConfigStorage,
 } from '@/types';
 
-import { storeCustomPlotConfig } from '@/shared/storage';
+import { storeCustomPlotConfig, loadPlotConfigName, storePlotConfigName } from '@/shared/storage';
 import { showAlert } from './alerts';
 
 export enum BotStoreGetters {
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
   closedTrades = 'closedTrades',
+  plotConfig = 'plotConfig',
+  plotConfigNames = 'plotConfigNames',
 }
 
 export default {
@@ -44,10 +47,17 @@ export default {
     history: {},
     strategyPlotConfig: {},
     customPlotConfig: { ...EMPTY_PLOTCONFIG },
+    plotConfigName: loadPlotConfigName(),
     strategyList: [],
     pairlist: [],
   },
   getters: {
+    [BotStoreGetters.plotConfig](state) {
+      return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
+    },
+    [BotStoreGetters.plotConfigNames](state): Array<string> {
+      return Object.keys(state.customPlotConfig);
+    },
     [BotStoreGetters.openTrades](state) {
       return state.openTrades;
     },
@@ -117,7 +127,11 @@ export default {
     updatePlotConfig(state, plotConfig: PlotConfig) {
       state.strategyPlotConfig = plotConfig;
     },
-    saveCustomPlotConfig(state, plotConfig: PlotConfig) {
+    updatePlotConfigName(state, plotConfigName: string) {
+      state.plotConfigName = plotConfigName;
+      storePlotConfigName(plotConfigName);
+    },
+    saveCustomPlotConfig(state, plotConfig: PlotConfigStorage) {
       state.customPlotConfig = plotConfig;
       storeCustomPlotConfig(plotConfig);
     },
