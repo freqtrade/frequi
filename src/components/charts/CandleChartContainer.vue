@@ -22,7 +22,7 @@
         <b-checkbox v-model="useUTC" title="Use UTC for graph">useUtc</b-checkbox>
       </div>
       <div class="col-mb-2 mr-3">
-        <b-button size="sm" title="Plot configurator" @click="showConfigurator"> &#9881; </b-button>
+        <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
       </div>
     </div>
     <CandleChart
@@ -64,6 +64,8 @@ export default class CandleChartContainer extends Vue {
 
   @ftbot.State availablePlotConfigNames!: Array<string>;
 
+  @ftbot.Action setPlotConfigName;
+
   get datasetColumns() {
     return this.dataset ? this.dataset.columns : [];
   }
@@ -74,7 +76,9 @@ export default class CandleChartContainer extends Vue {
   }
 
   plotConfigChanged() {
+    console.log('plotConfigChanged');
     this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+    this.setPlotConfigName(this.plotConfigName);
   }
 
   showConfigurator() {

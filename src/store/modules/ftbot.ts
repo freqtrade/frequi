@@ -223,6 +223,9 @@ export default {
         .then((result) => commit('updatePlotConfig', result.data))
         .catch(console.error);
     },
+    setPlotConfigName({ commit }, plotConfigName: string) {
+      commit('updatePlotConfigName', plotConfigName);
+    },
     getStrategyList({ commit }) {
       return api
         .get('/strategies')
