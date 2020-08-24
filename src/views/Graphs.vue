@@ -5,7 +5,7 @@
         <b-checkbox v-model="historicView">HistoricData</b-checkbox>
       </div>
       <div class="col-mb-2 ml-2 mr-2">
-        <b-button @click="refresh">&#x21bb;</b-button>
+        <b-button @click="refresh" :disabled="!!!pair">&#x21bb;</b-button>
       </div>
       <div class="col-mb-2">
         <b-select v-model="pair" :options="historicView ? pairlist : whitelist" @change="refresh">
@@ -44,7 +44,7 @@ const ftbot = namespace('ftbot');
   components: { CandleChartContainer, StrategyList, TimeRangeSelect },
 })
 export default class Graphs extends Vue {
-  pair = 'XRP/USDT';
+  pair = '';
 
   timeframe = '5m';
 
@@ -81,7 +81,9 @@ export default class Graphs extends Vue {
   mounted() {
     this.getWhitelist();
     this.refresh();
-    this.getAvailablePairs({ timeframe: this.timeframe });
+    this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
+      console.log(val);
+    });
   }
 
   get dataset() {
