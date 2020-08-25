@@ -68,8 +68,6 @@ export default class TradeList extends Vue {
 
   currentPage = 1;
 
-  formatPercent = formatPercent;
-
   get rows(): number {
     return this.trades.length;
   }
@@ -89,7 +87,7 @@ export default class TradeList extends Vue {
     {
       key: this.activeTrades ? 'current_profit' : 'close_profit',
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
-      formatter: 'formatPercent',
+      formatter: (value) => formatPercent(value, 3),
     },
     { key: 'open_date', label: 'Open date' },
     { key: 'close_date', label: 'Close date' },
