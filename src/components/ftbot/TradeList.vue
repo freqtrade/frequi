@@ -74,7 +74,7 @@ export default class TradeList extends Vue {
 
   perPage = this.activeTrades ? 200 : 15;
 
-  tableFields: Array<Record<string, string>> = [
+  tableFields: Array<Record<string, string | Function>> = [
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },

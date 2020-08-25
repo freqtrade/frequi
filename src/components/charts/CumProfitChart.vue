@@ -16,7 +16,7 @@ import 'echarts/lib/component/dataZoom';
 import 'echarts/lib/component/visualMap';
 import 'echarts/lib/component/visualMapPiecewise';
 
-import { Trade } from '@/store/types';
+import { ClosedTrade } from '@/store/types';
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
@@ -28,7 +28,7 @@ const CHART_TRADE_COUNT = 'Trade Count';
   },
 })
 export default class CumProfitChart extends Vue {
-  @Prop({ required: true }) trades!: Array<Trade>;
+  @Prop({ required: true }) trades!: ClosedTrade[];
 
   get cumulativeData() {
     const res: Record<string, any>[] = [];
