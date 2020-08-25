@@ -12,9 +12,7 @@
         :current-page="currentPage"
       >
         <template v-slot:cell(actions)="row">
-          <b-button size="sm" @click="forcesellHandler(row.item)">
-            FS
-          </b-button>
+          <b-button size="sm" @click="forcesellHandler(row.item)"> FS </b-button>
           <b-button size="sm" @click="showDetails(row.item)">D</b-button>
           <b-button size="sm" @click="removeTradeHandler(row.item)">RM</b-button>
         </template>
