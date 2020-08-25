@@ -126,4 +126,9 @@ export default class CumProfitChart extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.echarts {
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -3,6 +3,7 @@
     class="h-100 w-100"
     :row-height="50"
     :layout="gridLayout"
+    :vertical-compact="false"
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
