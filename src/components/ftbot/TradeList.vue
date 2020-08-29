@@ -116,7 +116,11 @@ export default class TradeList extends Vue {
   }
 
   removeTradeHandler(item) {
-    this.deleteTrade(item.trade_id).catch((error) => console.log(error.response));
+    this.$bvModal.msgBoxConfirm(`Really delete trade ${item.it}?`).then((value: boolean) => {
+      if (value) {
+        this.deleteTrade(item.trade_id).catch((error) => console.log(error.response));
+      }
+    });
   }
 
   showDetails(trade) {
