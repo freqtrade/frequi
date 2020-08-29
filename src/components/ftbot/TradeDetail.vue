@@ -51,24 +51,23 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/ftbot/ValuePair.vue';
+import { Trade } from '@/types';
 
-export default {
-  name: 'TradeDetail',
-  props: {
-    trade: {
-      type: Object,
-      required: true,
-    },
-  },
+@Component({
   components: { ValuePair },
-  methods: {
-    formatPercent,
-    formatPrice,
-    timestampms,
-  },
-};
+})
+export default class TradeDetail extends Vue {
+  @Prop({ type: Object, required: true }) trade!: Trade;
+
+  timestampms = timestampms;
+
+  formatPercent = formatPercent;
+
+  formatPrice = formatPrice;
+}
 </script>
 <style scoped>
 .detail-header {
