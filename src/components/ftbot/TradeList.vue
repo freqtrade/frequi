@@ -15,8 +15,10 @@
         @row-selected="onRowSelected"
       >
         <template v-slot:cell(actions)="row">
-          <b-button size="sm" @click="forcesellHandler(row.item)"> FS </b-button>
-          <b-button size="sm" @click="removeTradeHandler(row.item)">RM</b-button>
+          <b-button size="sm" @click="forcesellHandler(row.item)" title="Forcesell"> FS </b-button>
+          <b-button size="sm" @click="removeTradeHandler(row.item)" title="Delete trade"
+            >RM</b-button
+          >
         </template>
         <template v-slot:cell(pair)="row">
           <span class="mr-1" v-html="profitSymbol(row.item)"></span>
