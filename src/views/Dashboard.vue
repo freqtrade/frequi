@@ -1,5 +1,10 @@
 <template>
-  <GridLayout class="h-100 w-100" :row-height="50" :layout="gridLayout">
+  <GridLayout
+    class="h-100 w-100"
+    :row-height="50"
+    :layout="gridLayout"
+    @layout-updated="layoutUpdatedEvent"
+  >
     <GridItem
       :i="gridLayout[0].i"
       :x="gridLayout[0].x"
@@ -33,7 +38,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import VueGridLayout from 'vue-grid-layout';
+import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import DailyChart from '@/components/charts/DailyChart.vue';
 import HourlyChart from '@/components/charts/HourlyChart.vue';
@@ -45,8 +50,8 @@ const ftbot = namespace('ftbot');
 
 @Component({
   components: {
-    GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem,
+    GridLayout,
+    GridItem,
     DailyChart,
     HourlyChart,
     CumProfitChart,
@@ -61,7 +66,7 @@ export default class Trading extends Vue {
 
   @ftbot.Action getTrades;
 
-  public gridLayout = [
+  public gridLayout: GridItemData[] = [
     { i: 'g-dailyChart', x: 0, y: 0, w: 4, h: 6 },
     { i: 'g-hourlyChart', x: 4, y: 0, w: 4, h: 6 },
     { i: 'g-cumChartChart', x: 4, y: 0, w: 4, h: 6 },
@@ -70,6 +75,10 @@ export default class Trading extends Vue {
   mounted() {
     this.getDaily();
     this.getTrades();
+  }
+
+  layoutUpdatedEvent(newLayout: GridItemData[]) {
+    console.log(newLayout);
   }
 }
 </script>

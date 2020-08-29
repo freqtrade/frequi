@@ -92,7 +92,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import VueGridLayout from 'vue-grid-layout';
+import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import TradeList from '@/components/ftbot/TradeList.vue';
 import Performance from '@/components/ftbot/Performance.vue';
@@ -112,8 +112,8 @@ const ftbot = namespace('ftbot');
 
 @Component({
   components: {
-    GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem,
+    GridLayout,
+    GridItem,
     TradeList,
     Performance,
     BotControls,
@@ -135,7 +135,7 @@ export default class Trading extends Vue {
 
   @ftbot.Getter [UserStoreGetters.tradeDetail]!: Trade;
 
-  public gridLayout = [
+  public gridLayout: GridItemData[] = [
     { i: 'g-reloadControl', x: 0, y: 0, w: 4, h: 1 },
     { i: 'g-botControls', x: 0, y: 0, w: 4, h: 3 },
     { i: 'g-MultiPane', x: 0, y: 0, w: 4, h: 7 },
