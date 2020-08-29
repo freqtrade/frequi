@@ -16,7 +16,7 @@ const ftbot = namespace('ftbot');
 
 @Component({})
 export default class Performance extends Vue {
-  @ftbot.State performanceStats!: Array<PerformanceEntry>;
+  @ftbot.State performanceStats!: PerformanceEntry[];
 
   private tableFields = [
     { key: 'pair', label: 'Pair' },

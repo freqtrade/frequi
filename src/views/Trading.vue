@@ -100,9 +100,9 @@ const ftbot = namespace('ftbot');
 export default class Trading extends Vue {
   @ftbot.State detailTradeId!: string;
 
-  @ftbot.Getter openTrades!: Array<Trade>;
+  @ftbot.Getter openTrades!: Trade[];
 
-  @ftbot.Getter closedTrades!: Array<Trade>;
+  @ftbot.Getter closedTrades!: Trade[];
 
   @ftbot.Getter [UserStoreGetters.tradeDetail]!: Trade;
 }

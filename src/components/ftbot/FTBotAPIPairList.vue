@@ -77,11 +77,11 @@ export default class FTBotAPIPairList extends Vue {
 
   @ftbot.Action addBlacklist!: (payload: BlacklistPayload) => Promise<BlacklistResponse>;
 
-  @ftbot.State whitelist!: Array<string>;
+  @ftbot.State whitelist!: string[];
 
-  @ftbot.State blacklist!: Array<string>;
+  @ftbot.State blacklist!: string[];
 
-  @ftbot.State pairlistMethods!: Array<string>;
+  @ftbot.State pairlistMethods!: string[];
 
   created() {
     this.initBlacklist();

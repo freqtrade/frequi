@@ -26,7 +26,7 @@ const ftbot = namespace('ftbot');
   },
 })
 export default class Trading extends Vue {
-  @ftbot.Getter closedTrades!: Array<Trade>;
+  @ftbot.Getter closedTrades!: Trade[];
 
   @ftbot.State dailyStats!: DailyReturnValue;
 

@@ -16,7 +16,7 @@ const ftbot = namespace('ftbot');
 
 @Component({})
 export default class LogViewer extends Vue {
-  @ftbot.State lastLogs!: Array<Logs>;
+  @ftbot.State lastLogs!: Logs[];
 
   @ftbot.Action getLogs;
 

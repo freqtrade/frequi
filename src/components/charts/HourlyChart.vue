@@ -28,7 +28,7 @@ const CHART_TRADE_COUNT = 'Trade Count';
   },
 })
 export default class HourlyChart extends Vue {
-  @Prop({ required: true }) trades!: Array<Trade>;
+  @Prop({ required: true }) trades!: Trade[];
 
   get hourlyData() {
     const res = new Array(24);
