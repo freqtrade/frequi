@@ -102,9 +102,15 @@ export default class TradeList extends Vue {
   }
 
   forcesellHandler(item) {
-    this.forcesell(item.trade_id)
-      .then((xxx) => console.log(xxx))
-      .catch((error) => console.log(error.response));
+    this.$bvModal
+      .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
+      .then((value: boolean) => {
+        if (value) {
+          this.forcesell(item.trade_id)
+            .then((xxx) => console.log(xxx))
+            .catch((error) => console.log(error.response));
+        }
+      });
   }
 
   handleContextMenuEvent(item, index, event) {
@@ -118,11 +124,14 @@ export default class TradeList extends Vue {
   }
 
   removeTradeHandler(item) {
-    this.$bvModal.msgBoxConfirm(`Really delete trade ${item.it}?`).then((value: boolean) => {
-      if (value) {
-        this.deleteTrade(item.trade_id).catch((error) => console.log(error.response));
-      }
-    });
+    console.log(item);
+    this.$bvModal
+      .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
+      .then((value: boolean) => {
+        if (value) {
+          this.deleteTrade(item.trade_id).catch((error) => console.log(error.response));
+        }
+      });
   }
 
   onRowSelected(items) {
