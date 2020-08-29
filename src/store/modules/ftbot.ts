@@ -3,7 +3,7 @@ import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload } from 
 
 export enum UserStoreGetters {
   openTrades = 'openTrades',
-  openTradeDetail = 'openTradeDetail',
+  tradeDetail = 'tradeDetail',
   closedTrades = 'closedTrades',
 }
 
@@ -29,8 +29,11 @@ export default {
     [UserStoreGetters.openTrades](state) {
       return state.openTrades;
     },
-    [UserStoreGetters.openTradeDetail](state) {
-      const [dTrade] = state.openTrades.filter((item) => item.trade_id === state.detailTradeId);
+    [UserStoreGetters.tradeDetail](state) {
+      let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
+      if (!dTrade) {
+        dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
+      }
       return dTrade;
     },
     [UserStoreGetters.closedTrades](state) {

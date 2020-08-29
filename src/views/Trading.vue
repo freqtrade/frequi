@@ -52,7 +52,7 @@
               emptyText="No closed trades so far."
               v-if="!detailTradeId"
             />
-            <TradeDetail v-if="detailTradeId" :trade="openTradeDetail"></TradeDetail>
+            <TradeDetail v-if="detailTradeId" :trade="tradeDetail"></TradeDetail>
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@ export default class Trading extends Vue {
 
   @ftbot.Getter closedTrades!: Array<Trade>;
 
-  @ftbot.Getter [UserStoreGetters.openTradeDetail]!: Trade;
+  @ftbot.Getter [UserStoreGetters.tradeDetail]!: Trade;
 }
 </script>
 
