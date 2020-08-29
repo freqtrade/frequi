@@ -16,10 +16,16 @@
       <h5 class="detail-header">Profit</h5>
       <b-card-text>
         <ValuePair description="Current % profit" v-if="trade.current_profit_pct">
-          {{ trade.current_profit_pct }}%
+          {{ formatPercent(trade.current_profit_pct) }}
         </ValuePair>
         <ValuePair description="Current profit" v-if="trade.current_profit_abs">
           {{ trade.current_profit_abs }}
+        </ValuePair>
+        <ValuePair description="Close % profit" v-if="trade.close_profit">
+          {{ formatPercent(trade.close_profit) }}
+        </ValuePair>
+        <ValuePair description="Close profit" v-if="trade.close_profit_abs">
+          {{ trade.close_profit_abs }}
         </ValuePair>
       </b-card-text>
       <h5 class="detail-header">Stoploss</h5>
