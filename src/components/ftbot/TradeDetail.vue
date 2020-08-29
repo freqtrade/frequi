@@ -32,7 +32,7 @@
           {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
           {{ formatPrice(trade.initial_stop_loss) }}
         </ValuePair>
-        <ValuePair description="Current stoploss dist">
+        <ValuePair v-if="trade.is_open" description="Current stoploss dist">
           {{ formatPercent(trade.stoploss_current_dist_ratio) }} |
           {{ formatPrice(trade.stoploss_current_dist) }}
         </ValuePair>
