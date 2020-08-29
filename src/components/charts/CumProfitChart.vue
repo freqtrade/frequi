@@ -16,7 +16,7 @@ import 'echarts/lib/component/dataZoom';
 import 'echarts/lib/component/visualMap';
 import 'echarts/lib/component/visualMapPiecewise';
 
-import { ClosedTrade } from '@/types';
+import { ClosedTrade, CumProfitData } from '@/types';
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
@@ -31,7 +31,7 @@ export default class CumProfitChart extends Vue {
   @Prop({ required: true }) trades!: ClosedTrade[];
 
   get cumulativeData() {
-    const res: Record<string, any>[] = [];
+    const res: CumProfitData[] = [];
     const closedTrades = this.trades; // .filter((t) => t.close_timestamp);
 
     closedTrades.sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
