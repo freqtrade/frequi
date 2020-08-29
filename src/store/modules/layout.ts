@@ -1,18 +1,34 @@
 import { GridItemData } from 'vue-grid-layout';
 
+export enum TradeLayout {
+  reloadControl = 'g-reloadControl',
+  botControls = 'g-botControls',
+  multiPane = 'g-multiPane',
+  openTrades = 'g-openTrades',
+  tradeHistory = 'g-tradeHistory',
+  logView = 'g-logView',
+}
+
+export enum DashboardLayout {
+  dailyChart = 'g-dailyChart',
+  hourlyChart = 'g-hourlyChart',
+  cumChartChart = 'g-cumChartChart',
+}
+
+// Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
-  { i: 'g-reloadControl', x: 0, y: 0, w: 4, h: 1 },
-  { i: 'g-botControls', x: 0, y: 0, w: 4, h: 3 },
-  { i: 'g-MultiPane', x: 0, y: 0, w: 4, h: 7 },
-  { i: 'g-openTrades', x: 4, y: 0, w: 8, h: 5 },
-  { i: 'g-tradeHistory', x: 4, y: 4, w: 8, h: 6 },
-  { i: 'g-logView', x: 0, y: 9, w: 12, h: 3 },
+  { i: TradeLayout.reloadControl, x: 0, y: 0, w: 4, h: 1 },
+  { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 3 },
+  { i: TradeLayout.multiPane, x: 0, y: 0, w: 4, h: 7 },
+  { i: TradeLayout.openTrades, x: 4, y: 0, w: 8, h: 5 },
+  { i: TradeLayout.tradeHistory, x: 4, y: 4, w: 8, h: 6 },
+  { i: TradeLayout.logView, x: 0, y: 9, w: 12, h: 3 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
-  { i: 'g-dailyChart', x: 0, y: 0, w: 4, h: 6 },
-  { i: 'g-hourlyChart', x: 4, y: 0, w: 4, h: 6 },
-  { i: 'g-cumChartChart', x: 0, y: 6, w: 4, h: 6 },
+  { i: DashboardLayout.dailyChart, x: 0, y: 0, w: 4, h: 6 },
+  { i: DashboardLayout.hourlyChart, x: 4, y: 0, w: 4, h: 6 },
+  { i: DashboardLayout.cumChartChart, x: 0, y: 6, w: 4, h: 6 },
 ];
 
 const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';
@@ -25,6 +41,19 @@ function getLayout(storageString: string, defaultLayout: GridItemData[]) {
   }
 
   return JSON.parse(JSON.stringify(defaultLayout));
+}
+
+/**
+ * Helper function finding a layout entry
+ * @param gridLayout Array of grid layouts used in this layout. Must be passed to GridLayout, too.
+ * @param name Name within the dashboard layout to find
+ */
+export function findGridLayout(gridLayout: GridItemData[], name: string): GridItemData {
+  let layout = gridLayout.find((value) => value.i === name);
+  if (!layout) {
+    layout = { i: name, x: 0, y: 0, w: 4, h: 6 };
+  }
+  return layout;
 }
 
 export default {

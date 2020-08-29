@@ -62,6 +62,7 @@ import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import { Trade, DailyReturnValue } from '@/types';
+import { DashboardLayout, findGridLayout } from '@/store/modules/layout';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -93,24 +94,16 @@ export default class Dashboard extends Vue {
     return this.getDashboardLayout;
   }
 
-  findGridLayout(name: string): GridItemData {
-    let layout = this.getDashboardLayout.find((value) => value.i === name);
-    if (!layout) {
-      layout = { i: name, x: 0, y: 6, w: 4, h: 6 };
-    }
-    return layout;
-  }
-
   get gridLayoutDaily(): GridItemData {
-    return this.findGridLayout('g-dailyChart');
+    return findGridLayout(this.gridLayout, DashboardLayout.dailyChart);
   }
 
   get gridLayoutHourly(): GridItemData {
-    return this.findGridLayout('g-hourlyChart');
+    return findGridLayout(this.gridLayout, DashboardLayout.hourlyChart);
   }
 
   get gridLayoutCumChart(): GridItemData {
-    return this.findGridLayout('g-cumChartChart');
+    return findGridLayout(this.gridLayout, DashboardLayout.cumChartChart);
   }
 
   mounted() {

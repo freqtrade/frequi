@@ -7,29 +7,29 @@
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
-      :i="gridLayout[0].i"
-      :x="gridLayout[0].x"
-      :y="gridLayout[0].y"
-      :w="gridLayout[0].w"
-      :h="gridLayout[0].h"
+      :i="gridLayoutReload.i"
+      :x="gridLayoutReload.x"
+      :y="gridLayoutReload.y"
+      :w="gridLayoutReload.w"
+      :h="gridLayoutReload.h"
     >
       <ReloadControl />
     </GridItem>
     <GridItem
-      :i="gridLayout[1].i"
-      :x="gridLayout[1].x"
-      :y="gridLayout[1].y"
-      :w="gridLayout[1].w"
-      :h="gridLayout[1].h"
+      :i="gridLayoutBotControls.i"
+      :x="gridLayoutBotControls.x"
+      :y="gridLayoutBotControls.y"
+      :w="gridLayoutBotControls.w"
+      :h="gridLayoutBotControls.h"
     >
       <BotControls class="mt-3" />
     </GridItem>
     <GridItem
-      :i="gridLayout[2].i"
-      :x="gridLayout[2].x"
-      :y="gridLayout[2].y"
-      :w="gridLayout[2].w"
-      :h="gridLayout[2].h"
+      :i="gridLayoutMultiPane.i"
+      :x="gridLayoutMultiPane.x"
+      :y="gridLayoutMultiPane.y"
+      :w="gridLayoutMultiPane.w"
+      :h="gridLayoutMultiPane.h"
     >
       <b-tabs content-class="mt-3" class="mt-3">
         <b-tab title="Status" active>
@@ -51,11 +51,11 @@
       </b-tabs>
     </GridItem>
     <GridItem
-      :i="gridLayout[3].i"
-      :x="gridLayout[3].x"
-      :y="gridLayout[3].y"
-      :w="gridLayout[3].w"
-      :h="gridLayout[3].h"
+      :i="gridLayoutOpenTrades.i"
+      :x="gridLayoutOpenTrades.x"
+      :y="gridLayoutOpenTrades.y"
+      :w="gridLayoutOpenTrades.w"
+      :h="gridLayoutOpenTrades.h"
       drag-allow-from=".card-header"
     >
       <TradeList
@@ -67,11 +67,11 @@
       />
     </GridItem>
     <GridItem
-      :i="gridLayout[4].i"
-      :x="gridLayout[4].x"
-      :y="gridLayout[4].y"
-      :w="gridLayout[4].w"
-      :h="gridLayout[4].h"
+      :i="gridLayoutTradeHistory.i"
+      :x="gridLayoutTradeHistory.x"
+      :y="gridLayoutTradeHistory.y"
+      :w="gridLayoutTradeHistory.w"
+      :h="gridLayoutTradeHistory.h"
       drag-allow-from=".card-header"
     >
       <TradeList
@@ -84,11 +84,11 @@
       <TradeDetail v-if="detailTradeId" :trade="tradeDetail"> </TradeDetail>
     </GridItem>
     <GridItem
-      :i="gridLayout[5].i"
-      :x="gridLayout[5].x"
-      :y="gridLayout[5].y"
-      :w="gridLayout[5].w"
-      :h="gridLayout[5].h"
+      :i="gridLayoutLogView.i"
+      :x="gridLayoutLogView.x"
+      :y="gridLayoutLogView.y"
+      :w="gridLayoutLogView.w"
+      :h="gridLayoutLogView.h"
     >
       <LogViewer />
     </GridItem>
@@ -113,6 +113,7 @@ import LogViewer from '@/components/ftbot/LogViewer.vue';
 
 import { Trade } from '@/types';
 import { UserStoreGetters } from '@/store/modules/ftbot';
+import { TradeLayout, findGridLayout } from '@/store/modules/layout';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -148,6 +149,30 @@ export default class Trading extends Vue {
 
   get gridLayout(): GridItemData[] {
     return this.getTradingLayout;
+  }
+
+  get gridLayoutReload(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.reloadControl);
+  }
+
+  get gridLayoutBotControls(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.botControls);
+  }
+
+  get gridLayoutMultiPane(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.multiPane);
+  }
+
+  get gridLayoutOpenTrades(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.openTrades);
+  }
+
+  get gridLayoutTradeHistory(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.tradeHistory);
+  }
+
+  get gridLayoutLogView(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.logView);
   }
 
   layoutUpdatedEvent(newLayout) {
