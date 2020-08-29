@@ -10,10 +10,12 @@
         :emptyText="emptyText"
         :per-page="perPage"
         :current-page="currentPage"
+        selectable
+        select-mode="single"
+        @row-selected="onRowSelected"
       >
         <template v-slot:cell(actions)="row">
           <b-button size="sm" @click="forcesellHandler(row.item)"> FS </b-button>
-          <b-button size="sm" @click="showDetails(row.item)">D</b-button>
           <b-button size="sm" @click="removeTradeHandler(row.item)">RM</b-button>
         </template>
         <template v-slot:cell(pair)="row">
@@ -123,11 +125,12 @@ export default class TradeList extends Vue {
     });
   }
 
-  showDetails(trade) {
-    if (this.detailTradeId === trade.trade_id) {
-      this.setDetailTrade(null);
+  onRowSelected(items) {
+    // Only allow single selection mode!
+    if (items.length > 0) {
+      this.setDetailTrade(items[0]);
     } else {
-      this.setDetailTrade(trade);
+      this.setDetailTrade(null);
     }
   }
 }
