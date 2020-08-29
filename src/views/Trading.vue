@@ -79,6 +79,7 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import LogViewer from '@/components/ftbot/LogViewer.vue';
 
 import { Trade } from '@/store/types';
+import { UserStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -99,14 +100,11 @@ const ftbot = namespace('ftbot');
 export default class Trading extends Vue {
   @ftbot.State detailTradeId!: string;
 
-  @ftbot.Getter
-  openTrades!: Array<Trade>;
+  @ftbot.Getter openTrades!: Array<Trade>;
 
-  @ftbot.Getter
-  closedTrades!: Array<Trade>;
+  @ftbot.Getter closedTrades!: Array<Trade>;
 
-  @ftbot.Getter
-  openTradeDetail!: Trade;
+  @ftbot.Getter [UserStoreGetters.openTradeDetail]!: Trade;
 }
 </script>
 
