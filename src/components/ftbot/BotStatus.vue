@@ -36,7 +36,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BotState } from '@/store/types';
+import { BotState } from '@/types';
 
 const ftbot = namespace('ftbot');
 

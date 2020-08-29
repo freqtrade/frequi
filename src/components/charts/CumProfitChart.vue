@@ -16,7 +16,7 @@ import 'echarts/lib/component/dataZoom';
 import 'echarts/lib/component/visualMap';
 import 'echarts/lib/component/visualMapPiecewise';
 
-import { ClosedTrade } from '@/store/types';
+import { ClosedTrade } from '@/types';
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';

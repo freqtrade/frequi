@@ -15,7 +15,7 @@ import 'echarts/lib/component/legend';
 import 'echarts/lib/component/visualMap';
 import 'echarts/lib/component/visualMapPiecewise';
 
-import { Trade } from '@/store/types';
+import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
 
 // Define Column labels here to avoid typos

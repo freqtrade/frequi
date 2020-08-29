@@ -1,5 +1,5 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload } from '@/store/types';
+import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload } from '@/types';
 
 export enum UserStoreGetters {
   openTrades = 'openTrades',

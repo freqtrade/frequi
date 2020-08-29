@@ -20,7 +20,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BotState } from '@/store/types';
+import { BotState } from '@/types';
 import ForceBuyForm from './ForceBuyForm.vue';
 
 const ftbot = namespace('ftbot');

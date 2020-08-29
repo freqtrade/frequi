@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { PerformanceEntry } from '@/store/types';
+import { PerformanceEntry } from '@/types';
 
 const ftbot = namespace('ftbot');
 

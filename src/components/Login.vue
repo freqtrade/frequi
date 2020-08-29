@@ -57,7 +57,7 @@ import { Mutation } from 'vuex-class';
 import userService from '@/shared/userService';
 import { setBaseUrl } from '@/shared/apiService';
 
-import { AuthPayload } from '@/store/types';
+import { AuthPayload } from '@/types';
 
 const defaultURL = 'http://localhost:8080';
 

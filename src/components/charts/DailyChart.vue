@@ -12,7 +12,7 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/legend';
 
-import { DailyReturnValue } from '@/store/types';
+import { DailyReturnValue } from '@/types';
 
 // Define Column labels here to avoid typos
 const CHART_ABS_PROFIT = 'Absolute profit';

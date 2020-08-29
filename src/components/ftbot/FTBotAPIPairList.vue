@@ -61,7 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BlacklistPayload, BlacklistResponse } from '@/store/types';
+import { BlacklistPayload, BlacklistResponse } from '@/types';
 
 const ftbot = namespace('ftbot');
 

@@ -14,7 +14,7 @@ import DailyChart from '@/components/charts/DailyChart.vue';
 import HourlyChart from '@/components/charts/HourlyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 
-import { Trade, DailyReturnValue } from '@/store/types';
+import { Trade, DailyReturnValue } from '@/types';
 
 const ftbot = namespace('ftbot');
 

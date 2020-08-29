@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BalanceInterface } from '@/store/types';
+import { BalanceInterface } from '@/types';
 
 const ftbot = namespace('ftbot');
 

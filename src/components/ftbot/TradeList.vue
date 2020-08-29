@@ -42,7 +42,7 @@ import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent } from '@/shared/formatters';
-import { Trade } from '@/store/types';
+import { Trade } from '@/types';
 
 const ftbot = namespace('ftbot');
 

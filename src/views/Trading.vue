@@ -78,7 +78,7 @@ import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import LogViewer from '@/components/ftbot/LogViewer.vue';
 
-import { Trade } from '@/store/types';
+import { Trade } from '@/types';
 import { UserStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
