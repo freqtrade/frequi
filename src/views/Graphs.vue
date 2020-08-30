@@ -76,7 +76,7 @@ export default class Graphs extends Vue {
   public getWhitelist;
 
   @ftbot.Action
-  public getAvailablePairs!: (payload: AvailablePairPayload) => void;
+  public getAvailablePairs!: (payload: AvailablePairPayload) => Promise<void>;
 
   mounted() {
     this.getWhitelist();
