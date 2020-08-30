@@ -320,6 +320,7 @@ export default class CandleChart extends Vue {
       });
     }
 
+    // START Subplots
     if ('subplots' in this.plotConfig) {
       let plotIndex = 2;
       Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
@@ -395,6 +396,7 @@ export default class CandleChart extends Vue {
         plotIndex += 1;
       });
     }
+    // END Subplots
 
     if (this.filteredTrades.length > 0) {
       // Show trades
