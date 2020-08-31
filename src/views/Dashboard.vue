@@ -7,11 +7,11 @@
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
-      :i="gridLayout[0].i"
-      :x="gridLayout[0].x"
-      :y="gridLayout[0].y"
-      :w="gridLayout[0].w"
-      :h="gridLayout[0].h"
+      :i="gridLayoutDaily.i"
+      :x="gridLayoutDaily.x"
+      :y="gridLayoutDaily.y"
+      :w="gridLayoutDaily.w"
+      :h="gridLayoutDaily.h"
       :min-w="3"
       :min-h="4"
       drag-allow-from=".drag-header"
@@ -21,11 +21,11 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      :i="gridLayout[1].i"
-      :x="gridLayout[1].x"
-      :y="gridLayout[1].y"
-      :w="gridLayout[1].w"
-      :h="gridLayout[1].h"
+      :i="gridLayoutHourly.i"
+      :x="gridLayoutHourly.x"
+      :y="gridLayoutHourly.y"
+      :w="gridLayoutHourly.w"
+      :h="gridLayoutHourly.h"
       :min-w="3"
       :min-h="4"
       drag-allow-from=".drag-header"
@@ -35,11 +35,11 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      :i="gridLayout[2].i"
-      :x="gridLayout[2].x"
-      :y="gridLayout[2].y"
-      :w="gridLayout[2].w"
-      :h="gridLayout[2].h"
+      :i="gridLayoutCumChart.i"
+      :x="gridLayoutCumChart.x"
+      :y="gridLayoutCumChart.y"
+      :w="gridLayoutCumChart.w"
+      :h="gridLayoutCumChart.h"
       :min-w="3"
       :min-h="4"
       drag-allow-from=".drag-header"
@@ -89,8 +89,28 @@ export default class Dashboard extends Vue {
 
   @layoutNs.Mutation setDashboardLayout;
 
-  get gridLayout(): GridItemData[] {
+  get gridLayout() {
     return this.getDashboardLayout;
+  }
+
+  findGridLayout(name: string): GridItemData {
+    let layout = this.getDashboardLayout.find((value) => value.i === name);
+    if (!layout) {
+      layout = { i: name, x: 0, y: 6, w: 4, h: 6 };
+    }
+    return layout;
+  }
+
+  get gridLayoutDaily(): GridItemData {
+    return this.findGridLayout('g-dailyChart');
+  }
+
+  get gridLayoutHourly(): GridItemData {
+    return this.findGridLayout('g-hourlyChart');
+  }
+
+  get gridLayoutCumChart(): GridItemData {
+    return this.findGridLayout('g-cumChartChart');
   }
 
   mounted() {

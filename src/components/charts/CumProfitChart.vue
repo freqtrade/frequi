@@ -45,7 +45,6 @@ export default class CumProfitChart extends Vue {
         res.push({ date: trade.close_timestamp, profit, raising: trade.close_profit_abs > 0 });
       }
     }
-    console.log(res[res.length - 1]);
     return res;
   }
 
