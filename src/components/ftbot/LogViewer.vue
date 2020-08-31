@@ -1,9 +1,7 @@
 <template>
-  <div class="container-fluid mt-2">
-    <label class="mr-auto h3">Logs</label>
-    <b-button class="float-right mr-4" size="sm" @click="getLogs">&#x21bb;</b-button>
-
-    <textarea v-model="formattedLogs" readonly></textarea>
+  <div class="d-flex h-100 p-0 align-items-start">
+    <textarea v-model="formattedLogs" class="h-100" readonly></textarea>
+    <b-button size="sm" @click="getLogs">&#x21bb;</b-button>
   </div>
 </template>
 
@@ -39,5 +37,6 @@ export default class LogViewer extends Vue {
 textarea {
   width: 100%;
   min-height: 6em;
+  resize: none;
 }
 </style>

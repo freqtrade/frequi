@@ -23,6 +23,7 @@ export default class DraggableContainer extends Vue {
   padding: 0.25rem 0.5rem;
 }
 .card-body {
-  padding: 0.25rem 0 0 0.25rem;
+  /* Padding should be controled by the contained element */
+  padding: 0;
 }
 </style>
