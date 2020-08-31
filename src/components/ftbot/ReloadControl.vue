@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button class="btn btn-secondary" @click="refreshAll()">Refresh all</button>
+    <button class="btn btn-secondary btn-sm" @click="refreshAll()">Refresh all</button>
 
-    <b-form-checkbox v-model="autoRefreshLoc" class="float-right" size="lg" switch
+    <b-form-checkbox v-model="autoRefreshLoc" class="float-right" size="sm" switch
       >AutoRefresh</b-form-checkbox
     >
   </div>

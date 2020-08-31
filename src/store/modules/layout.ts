@@ -1,7 +1,6 @@
 import { GridItemData } from 'vue-grid-layout';
 
 export enum TradeLayout {
-  reloadControl = 'g-reloadControl',
   botControls = 'g-botControls',
   multiPane = 'g-multiPane',
   openTrades = 'g-openTrades',
@@ -17,8 +16,7 @@ export enum DashboardLayout {
 
 // Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
-  { i: TradeLayout.reloadControl, x: 0, y: 0, w: 4, h: 1 },
-  { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 3 },
+  { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 4 },
   { i: TradeLayout.multiPane, x: 0, y: 0, w: 4, h: 7 },
   { i: TradeLayout.openTrades, x: 4, y: 0, w: 8, h: 5 },
   { i: TradeLayout.tradeHistory, x: 4, y: 4, w: 8, h: 6 },

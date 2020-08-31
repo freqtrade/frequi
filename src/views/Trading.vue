@@ -7,22 +7,16 @@
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
-      :i="gridLayoutReload.i"
-      :x="gridLayoutReload.x"
-      :y="gridLayoutReload.y"
-      :w="gridLayoutReload.w"
-      :h="gridLayoutReload.h"
-    >
-      <ReloadControl />
-    </GridItem>
-    <GridItem
       :i="gridLayoutBotControls.i"
       :x="gridLayoutBotControls.x"
       :y="gridLayoutBotControls.y"
       :w="gridLayoutBotControls.w"
       :h="gridLayoutBotControls.h"
     >
-      <BotControls class="mt-3" />
+      <DraggableContainer header="Bot Controls">
+        <ReloadControl class="mt-3" />
+        <BotControls />
+      </DraggableContainer>
     </GridItem>
     <GridItem
       :i="gridLayoutMultiPane.i"
@@ -31,24 +25,26 @@
       :w="gridLayoutMultiPane.w"
       :h="gridLayoutMultiPane.h"
     >
-      <b-tabs content-class="mt-3" class="mt-3">
-        <b-tab title="Status" active>
-          <BotStatus />
-        </b-tab>
-        <b-tab title="Performance">
-          <Performance class="performance-view" />
-        </b-tab>
-        <b-tab title="Balance" lazy>
-          <Balance />
-        </b-tab>
-        <b-tab title="Daily Stats" lazy>
-          <DailyStats />
-        </b-tab>
+      <DraggableContainer header="Multi Pane">
+        <b-tabs content-class="mt-3" class="mt-3">
+          <b-tab title="Status" active>
+            <BotStatus />
+          </b-tab>
+          <b-tab title="Performance">
+            <Performance class="performance-view" />
+          </b-tab>
+          <b-tab title="Balance" lazy>
+            <Balance />
+          </b-tab>
+          <b-tab title="Daily Stats" lazy>
+            <DailyStats />
+          </b-tab>
 
-        <b-tab title="Pairlist" lazy>
-          <FTBotAPIPairList />
-        </b-tab>
-      </b-tabs>
+          <b-tab title="Pairlist" lazy>
+            <FTBotAPIPairList />
+          </b-tab>
+        </b-tabs>
+      </DraggableContainer>
     </GridItem>
     <GridItem
       :i="gridLayoutOpenTrades.i"
@@ -58,13 +54,15 @@
       :h="gridLayoutOpenTrades.h"
       drag-allow-from=".card-header"
     >
-      <TradeList
-        class="open-trades"
-        :trades="openTrades"
-        title="Open trades"
-        :active-trades="true"
-        empty-text="Currently no open trades."
-      />
+      <DraggableContainer header="Open Trades">
+        <TradeList
+          class="open-trades"
+          :trades="openTrades"
+          title="Open trades"
+          :active-trades="true"
+          empty-text="Currently no open trades."
+        />
+      </DraggableContainer>
     </GridItem>
     <GridItem
       :i="gridLayoutTradeHistory.i"
@@ -74,14 +72,16 @@
       :h="gridLayoutTradeHistory.h"
       drag-allow-from=".card-header"
     >
-      <TradeList
-        v-if="!detailTradeId"
-        class="trade-history"
-        :trades="closedTrades"
-        title="Trade history"
-        empty-text="No closed trades so far."
-      />
-      <TradeDetail v-if="detailTradeId" :trade="tradeDetail"> </TradeDetail>
+      <DraggableContainer header="Closed Trades">
+        <TradeList
+          v-if="!detailTradeId"
+          class="trade-history"
+          :trades="closedTrades"
+          title="Trade history"
+          empty-text="No closed trades so far."
+        />
+        <TradeDetail v-if="detailTradeId" :trade="tradeDetail"> </TradeDetail>
+      </DraggableContainer>
     </GridItem>
     <GridItem
       :i="gridLayoutLogView.i"
@@ -90,7 +90,9 @@
       :w="gridLayoutLogView.w"
       :h="gridLayoutLogView.h"
     >
-      <LogViewer />
+      <DraggableContainer header="Logs">
+        <LogViewer />
+      </DraggableContainer>
     </GridItem>
   </GridLayout>
 </template>
@@ -110,6 +112,7 @@ import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import LogViewer from '@/components/ftbot/LogViewer.vue';
+import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import { Trade } from '@/types';
 import { UserStoreGetters } from '@/store/modules/ftbot';
@@ -122,6 +125,7 @@ const layoutNs = namespace('layout');
   components: {
     GridLayout,
     GridItem,
+    DraggableContainer,
     TradeList,
     Performance,
     BotControls,
@@ -149,10 +153,6 @@ export default class Trading extends Vue {
 
   get gridLayout(): GridItemData[] {
     return this.getTradingLayout;
-  }
-
-  get gridLayoutReload(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.reloadControl);
   }
 
   get gridLayoutBotControls(): GridItemData {
