@@ -6,13 +6,13 @@
       <button class="btn-primary col-md-5 m-1" @click="stopBuy()">StopBuy</button>
       <button class="btn-primary col-md-5 m-1" @click="reloadConfig()">Reload Config</button>
       <button
-        class="btn-primary col-md-5 m-1"
         v-if="botState.forcebuy_enabled"
+        class="btn-primary col-md-5 m-1"
         @click="initiateForcebuy"
       >
         Forcebuy
       </button>
-      <ForceBuyForm :modalShow="forcebuyShow" @close="this.$bvModal.hide('forcebuy-modal')" />
+      <ForceBuyForm :modal-show="forcebuyShow" @close="this.$bvModal.hide('forcebuy-modal')" />
     </div>
   </div>
 </template>

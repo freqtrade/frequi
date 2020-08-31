@@ -36,8 +36,8 @@
               ></b-form-input>
             </b-form-group>
             <b-button
-              class="float-right mb-2"
               id="blacklist-submit"
+              class="float-right mb-2"
               size="sm"
               type="submit"
               @click="addBlacklistPair"

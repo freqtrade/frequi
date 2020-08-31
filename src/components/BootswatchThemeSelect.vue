@@ -15,10 +15,10 @@
       <b-dropdown-item-button
         v-for="(theme, key) in themes"
         :key="key"
-        @click="handleClick"
-        :active="activeTheme === theme.name"
         v-b-tooltip.hover.right
+        :active="activeTheme === theme.name"
         :title="theme.description"
+        @click="handleClick"
         >{{ theme.name }}</b-dropdown-item-button
       >
     </b-nav-item-dropdown>
@@ -29,6 +29,7 @@
 import axios from 'axios';
 
 export default {
+  name: 'BootswatchThemeSelect',
   data() {
     return {
       activeTheme: '',
@@ -124,7 +125,6 @@ export default {
       ],
     };
   },
-  name: 'BootswatchThemeSelect',
   mounted() {
     // If a theme has been stored in localstorage, the theme will be set.
     if (window.localStorage.theme) this.setTheme(window.localStorage.theme);

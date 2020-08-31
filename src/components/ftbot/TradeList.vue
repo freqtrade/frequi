@@ -5,18 +5,18 @@
         class="table-sm"
         :items="trades"
         :fields="tableFields"
-        @row-contextmenu="handleContextMenuEvent"
         show-empty
-        :emptyText="emptyText"
+        :empty-text="emptyText"
         :per-page="perPage"
         :current-page="currentPage"
         selectable
         select-mode="single"
+        @row-contextmenu="handleContextMenuEvent"
         @row-selected="onRowSelected"
       >
         <template v-slot:cell(actions)="row">
-          <b-button size="sm" @click="forcesellHandler(row.item)" title="Forcesell"> FS </b-button>
-          <b-button size="sm" @click="removeTradeHandler(row.item)" title="Delete trade">
+          <b-button size="sm" title="Forcesell" @click="forcesellHandler(row.item)"> FS </b-button>
+          <b-button size="sm" title="Delete trade" @click="removeTradeHandler(row.item)">
             RM
           </b-button>
         </template>

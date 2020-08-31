@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form ref="form" @submit.stop.prevent="handleSubmit" @reset="handleReset" novalidate>
+    <form ref="form" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
       <b-form-group
         :state="urlState"
         label="API Url"
@@ -11,8 +11,8 @@
           id="url-input"
           v-model="auth.url"
           :state="urlState"
-          @keydown.enter.native="handleOk"
           required
+          @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -25,8 +25,8 @@
           id="username-input"
           v-model="auth.username"
           :state="nameState"
-          @keydown.enter.native="handleOk"
           required
+          @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
       <b-form-group label="Password" label-for="password-input" invalid-feedback="Invalid Password">
@@ -34,8 +34,8 @@
           id="password-input"
           v-model="auth.password"
           required
-          @keydown.enter.native="handleOk"
           type="password"
+          @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
       <div v-if="inModal === false" class="float-right">

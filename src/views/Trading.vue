@@ -38,19 +38,19 @@
               class="open-trades"
               :trades="openTrades"
               title="Open trades"
-              v-bind:activeTrades="true"
-              emptyText="Currently no open trades."
+              :active-trades="true"
+              empty-text="Currently no open trades."
             />
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <TradeList
+              v-if="!detailTradeId"
               class="trade-history"
               :trades="closedTrades"
               title="Trade history"
-              emptyText="No closed trades so far."
-              v-if="!detailTradeId"
+              empty-text="No closed trades so far."
             />
             <TradeDetail v-if="detailTradeId" :trade="tradeDetail"></TradeDetail>
           </div>

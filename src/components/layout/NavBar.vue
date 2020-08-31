@@ -21,13 +21,13 @@
               {{ isBotOnline ? 'Online' : 'Offline' }}
             </b-nav-text>
           </li>
-          <li class="nav-item" v-if="loggedIn">
+          <li v-if="loggedIn" class="nav-item">
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
                 <b-avatar button>FT</b-avatar>
               </template>
               <b-dropdown-item to="/settings">Settings</b-dropdown-item>
-              <b-dropdown-item to="/" v-on:click.native="logout()">Sign Out</b-dropdown-item>
+              <b-dropdown-item to="/" @click.native="logout()">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </li>
           <li v-else>

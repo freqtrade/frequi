@@ -13,8 +13,8 @@
           <b-form-input
             id="pair-input"
             v-model="pair"
-            @keydown.enter.native="handleBuy"
             required
+            @keydown.enter.native="handleBuy"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -25,9 +25,9 @@
           <b-form-input
             id="price-input"
             v-model="price"
-            @keydown.enter.native="handleBuy"
             type="number"
             step="0.01"
+            @keydown.enter.native="handleBuy"
           ></b-form-input>
         </b-form-group>
       </form>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DailyChart v-if="dailyStats.data" :dailyStats="dailyStats" />
+    <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" />
     <CumProfitChart :trades="closedTrades" />
     <HourlyChart :trades="closedTrades" />
   </div>

@@ -6,25 +6,25 @@
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
         <ValuePair description="Open Rate">{{ trade.open_rate }}</ValuePair>
-        <ValuePair description="Close Rate" v-if="!trade.is_open">{{ trade.close_rate }}</ValuePair>
+        <ValuePair v-if="!trade.is_open" description="Close Rate">{{ trade.close_rate }}</ValuePair>
         <ValuePair description="Min Rate">{{ trade.min_rate }}</ValuePair>
         <ValuePair description="Max Rate">{{ trade.max_rate }}</ValuePair>
-        <ValuePair description="Close date" v-if="trade.close_timestamp">{{
+        <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
       </b-card-text>
       <h5 class="detail-header">Profit</h5>
       <b-card-text>
-        <ValuePair description="Current % profit" v-if="trade.current_profit_pct">
+        <ValuePair v-if="trade.current_profit_pct" description="Current % profit">
           {{ formatPercent(trade.current_profit_pct) }}
         </ValuePair>
-        <ValuePair description="Current profit" v-if="trade.current_profit_abs">
+        <ValuePair v-if="trade.current_profit_abs" description="Current profit">
           {{ trade.current_profit_abs }}
         </ValuePair>
-        <ValuePair description="Close % profit" v-if="trade.close_profit">
+        <ValuePair v-if="trade.close_profit" description="Close % profit">
           {{ formatPercent(trade.close_profit) }}
         </ValuePair>
-        <ValuePair description="Close profit" v-if="trade.close_profit_abs">
+        <ValuePair v-if="trade.close_profit_abs" description="Close profit">
           {{ trade.close_profit_abs }}
         </ValuePair>
       </b-card-text>

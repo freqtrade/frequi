@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-alert
+      v-for="(alert, index) in activeMessages"
+      :key="index"
       variant="warning"
       dismissible
       :show="5"
-      v-for="(alert, index) in activeMessages"
-      :key="index"
       :value="!!alert.message"
       @dismissed="closeAlert"
     >

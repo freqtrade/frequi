@@ -2,7 +2,7 @@
   <div>
     <b-button v-b-modal.modal-prevent-closing>Login</b-button>
     <b-modal id="modal-prevent-closing" ref="modal" title="Submit Your Name" @ok="handleOk">
-      <Login id="loginForm" ref="loginForm" inModal />
+      <Login id="loginForm" ref="loginForm" in-modal />
     </b-modal>
   </div>
 </template>

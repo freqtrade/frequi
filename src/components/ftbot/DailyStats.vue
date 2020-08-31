@@ -5,7 +5,7 @@
       <b-button class="float-right" size="sm" @click="getDaily">&#x21bb;</b-button>
     </div>
     <div>
-      <DailyChart v-if="dailyStats.data" :dailyStats="dailyStats" />
+      <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" />
     </div>
     <div>
       <b-table class="table-sm" :items="dailyStats.data" :fields="dailyFields"> </b-table>
