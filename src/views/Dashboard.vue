@@ -12,10 +12,13 @@
       :y="gridLayout[0].y"
       :w="gridLayout[0].w"
       :h="gridLayout[0].h"
-      :minW="3"
-      :minH="4"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
     >
-      <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" />
+      <DraggableContainer header="Daily Profit">
+        <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" :show-title="false" />
+      </DraggableContainer>
     </GridItem>
     <GridItem
       :i="gridLayout[1].i"
@@ -23,10 +26,13 @@
       :y="gridLayout[1].y"
       :w="gridLayout[1].w"
       :h="gridLayout[1].h"
-      :minW="3"
-      :minH="4"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
     >
-      <HourlyChart :trades="closedTrades" />
+      <DraggableContainer header="Hourly Profit">
+        <HourlyChart :trades="closedTrades" :show-title="false" />
+      </DraggableContainer>
     </GridItem>
     <GridItem
       :i="gridLayout[2].i"
@@ -34,8 +40,13 @@
       :y="gridLayout[2].y"
       :w="gridLayout[2].w"
       :h="gridLayout[2].h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
     >
-      <CumProfitChart :trades="closedTrades" />
+      <DraggableContainer header="Cumulative Profit">
+        <CumProfitChart :trades="closedTrades" :show-title="false" />
+      </DraggableContainer>
     </GridItem>
   </GridLayout>
 </template>
@@ -48,6 +59,7 @@ import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import HourlyChart from '@/components/charts/HourlyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
+import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import { Trade, DailyReturnValue } from '@/types';
 
@@ -61,6 +73,7 @@ const layoutNs = namespace('layout');
     DailyChart,
     HourlyChart,
     CumProfitChart,
+    DraggableContainer,
   },
 })
 export default class Dashboard extends Vue {

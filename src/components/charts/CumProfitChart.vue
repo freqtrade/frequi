@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="chartOptions" />
+  <v-chart v-if="trades.length > 0" :options="chartOptions" autoresize />
 </template>
 
 <script lang="ts">
@@ -30,6 +30,8 @@ const CHART_TRADE_COUNT = 'Trade Count';
 export default class CumProfitChart extends Vue {
   @Prop({ required: true }) trades!: ClosedTrade[];
 
+  @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+
   get cumulativeData() {
     const res: CumProfitData[] = [];
     const closedTrades = this.trades; // .filter((t) => t.close_timestamp);
@@ -51,7 +53,7 @@ export default class CumProfitChart extends Vue {
     return {
       title: {
         text: 'Cumulative Profit',
-        show: true,
+        show: this.showTitle,
       },
       dataset: {
         dimensions: ['date', 'profit'],

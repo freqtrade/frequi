@@ -30,6 +30,8 @@ const CHART_TRADE_COUNT = 'Trade Count';
 export default class HourlyChart extends Vue {
   @Prop({ required: true }) trades!: Trade[];
 
+  @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+
   get hourlyData() {
     const res = new Array(24);
     for (let i = 0; i < 24; i += 1) {
@@ -48,11 +50,11 @@ export default class HourlyChart extends Vue {
     return res;
   }
 
-  get hourlyChartOptions(): echarts.ChartO {
+  get hourlyChartOptions() {
     return {
       title: {
         text: 'Hourly Profit',
-        show: true,
+        show: this.showTitle,
       },
       dataset: {
         dimensions: ['hourDesc', 'profit', 'count'],

@@ -26,6 +26,8 @@ const CHART_TRADE_COUNT = 'Trade Count';
 export default class DailyChart extends Vue {
   @Prop({ required: true }) dailyStats!: DailyReturnValue;
 
+  @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+
   get absoluteMin() {
     return Number(
       this.dailyStats.data.reduce(
@@ -48,7 +50,7 @@ export default class DailyChart extends Vue {
     return {
       title: {
         text: 'Daily profit',
-        show: true,
+        show: this.showTitle,
       },
       dataset: {
         dimensions: ['date', 'abs_profit', 'trade_count'],
