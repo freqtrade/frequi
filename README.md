@@ -1,5 +1,7 @@
 # frequi
 
+![FreqUI CI](https://github.com/freqtrade/frequi/workflows/FreqUI%20CI/badge.svg)
+
 Freqtrade UI build with [Vue.js](https://vuejs.org/) and [boostrap-vue](https://bootstrap-vue.org/).
 
 ## WARNING
