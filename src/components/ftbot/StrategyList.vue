@@ -1,6 +1,6 @@
 <template>
   <b-form-group label="Strategy" label-for="strategyName" invalid-feedback="Strategy is required">
-    <b-form-select :options="strategyList" v-model="strategy" @change="strategyChanged">
+    <b-form-select v-model="strategy" :options="strategyList" @change="strategyChanged">
     </b-form-select>
   </b-form-group>
 </template>

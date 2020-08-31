@@ -5,7 +5,7 @@
         <b-checkbox v-model="historicView">HistoricData</b-checkbox>
       </div>
       <div class="col-mb-2 ml-2 mr-2">
-        <b-button @click="refresh" :disabled="!!!pair">&#x21bb;</b-button>
+        <b-button :disabled="!!!pair" @click="refresh">&#x21bb;</b-button>
       </div>
       <div class="col-mb-2">
         <b-select v-model="pair" :options="historicView ? pairlist : whitelist" @change="refresh">
