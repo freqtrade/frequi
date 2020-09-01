@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <b-card header="Trade detail" class="mt-1">
-      <b-card-text>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5">
+        <h5 class="detail-header">General</h5>
         <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
@@ -12,24 +13,16 @@
         <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
-      </b-card-text>
-      <h5 class="detail-header">Profit</h5>
-      <b-card-text>
-        <ValuePair v-if="trade.current_profit_pct" description="Current % profit">
-          {{ formatPercent(trade.current_profit_pct) }}
-        </ValuePair>
-        <ValuePair v-if="trade.current_profit_abs" description="Current profit">
-          {{ trade.current_profit_abs }}
+        <ValuePair v-if="trade.current_profit_pct" description="Current Profit">
+          {{ formatPercent(trade.current_profit_pct) }} | {{ trade.current_profit_abs }}
         </ValuePair>
         <ValuePair v-if="trade.close_profit" description="Close % profit">
-          {{ formatPercent(trade.close_profit) }}
+          {{ formatPercent(trade.close_profit) }} | {{ trade.close_profit_abs }}
         </ValuePair>
-        <ValuePair v-if="trade.close_profit_abs" description="Close profit">
-          {{ trade.close_profit_abs }}
-        </ValuePair>
-      </b-card-text>
-      <h5 class="detail-header">Stoploss</h5>
-      <b-card-text>
+        <ValuePair v-if="trade.close_profit_abs" description="Close profit"> </ValuePair>
+      </div>
+      <div class="col-lg-7">
+        <h5 class="detail-header">Stoploss</h5>
         <ValuePair description="Stoploss">
           {{ formatPercent(trade.stop_loss_pct / 100) }} |
           {{ formatPrice(trade.stop_loss) }}
@@ -45,8 +38,8 @@
         <ValuePair description="Stoploss last updated">
           {{ timestampms(trade.stoploss_last_update_timestamp) }}
         </ValuePair>
-      </b-card-text>
-    </b-card>
+      </div>
+    </div>
   </div>
 </template>
 

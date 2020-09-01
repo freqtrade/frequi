@@ -1,6 +1,6 @@
 <template>
-  <b-card class="h-100" :header="title" no-body>
-    <b-card-body class="overflow-auto">
+  <div class="h-100 d-flex overflow-auto">
+    <div>
       <b-table
         class="table-sm"
         :items="trades"
@@ -34,8 +34,8 @@
         :per-page="perPage"
         aria-controls="my-table"
       ></b-pagination>
-    </b-card-body>
-  </b-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

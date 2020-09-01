@@ -74,13 +74,24 @@
     >
       <DraggableContainer header="Closed Trades">
         <TradeList
-          v-if="!detailTradeId"
           class="trade-history"
           :trades="closedTrades"
           title="Trade history"
           empty-text="No closed trades so far."
         />
-        <TradeDetail v-if="detailTradeId" :trade="tradeDetail"> </TradeDetail>
+      </DraggableContainer>
+    </GridItem>
+    <GridItem
+      v-if="detailTradeId"
+      :i="gridLayoutTradeDetail.i"
+      :x="gridLayoutTradeDetail.x"
+      :y="gridLayoutTradeDetail.y"
+      :w="gridLayoutTradeDetail.w"
+      :h="gridLayoutTradeDetail.h"
+      drag-allow-from=".card-header"
+    >
+      <DraggableContainer header="Trade Detail">
+        <TradeDetail :trade="tradeDetail"> </TradeDetail>
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -169,6 +180,10 @@ export default class Trading extends Vue {
 
   get gridLayoutTradeHistory(): GridItemData {
     return findGridLayout(this.gridLayout, TradeLayout.tradeHistory);
+  }
+
+  get gridLayoutTradeDetail(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.tradeDetail);
   }
 
   get gridLayoutLogView(): GridItemData {

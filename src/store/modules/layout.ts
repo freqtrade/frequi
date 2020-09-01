@@ -5,6 +5,7 @@ export enum TradeLayout {
   multiPane = 'g-multiPane',
   openTrades = 'g-openTrades',
   tradeHistory = 'g-tradeHistory',
+  tradeDetail = 'g-tradeDetail',
   logView = 'g-logView',
 }
 
@@ -19,6 +20,7 @@ const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
   { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 4 },
   { i: TradeLayout.multiPane, x: 0, y: 0, w: 4, h: 7 },
   { i: TradeLayout.openTrades, x: 4, y: 0, w: 8, h: 5 },
+  { i: TradeLayout.tradeDetail, x: 4, y: 4, w: 8, h: 5 },
   { i: TradeLayout.tradeHistory, x: 4, y: 4, w: 8, h: 6 },
   { i: TradeLayout.logView, x: 0, y: 9, w: 12, h: 3 },
 ];
