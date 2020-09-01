@@ -25,7 +25,7 @@
         <h5 class="detail-header">Stoploss</h5>
         <ValuePair description="Stoploss">
           {{ formatPercent(trade.stop_loss_pct / 100) }} |
-          {{ formatPrice(trade.stop_loss) }}
+          {{ formatPrice(trade.stop_loss_abs) }}
         </ValuePair>
         <ValuePair description="Initial Stoploss">
           {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
