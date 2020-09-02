@@ -41,6 +41,9 @@ export default new Vuex.Store({
       commit('setAutoRefresh', newRefreshValue);
       localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
     },
+    setLoggedIn({ commit }, loggedin: boolean) {
+      commit('setLoggedIn', loggedin);
+    },
     setIsBotOnline({ commit, dispatch }, isOnline) {
       commit('setIsBotOnline', isOnline);
       if (isOnline === false) {

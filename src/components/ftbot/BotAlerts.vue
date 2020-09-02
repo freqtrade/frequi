@@ -17,6 +17,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { AlertActions } from '@/store/modules/alerts';
 
 const alerts = namespace('alerts');
 
@@ -24,10 +25,10 @@ const alerts = namespace('alerts');
 export default class BotAlerts extends Vue {
   @alerts.State activeMessages;
 
-  @alerts.Mutation removeAlert;
+  @alerts.Action [AlertActions.removeAlert];
 
   closeAlert() {
-    this.removeAlert();
+    this[AlertActions.removeAlert]();
   }
 }
 </script>
