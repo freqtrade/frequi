@@ -2,6 +2,7 @@
   <b-card :header="title" no-body>
     <b-card-body class="overflow-auto">
       <b-table
+        ref="tradesTable"
         class="table-sm"
         :items="trades"
         :fields="tableFields"
@@ -9,9 +10,11 @@
         :empty-text="emptyText"
         :per-page="perPage"
         :current-page="currentPage"
+        primary-key="trade_id"
         selectable
         select-mode="single"
         @row-contextmenu="handleContextMenuEvent"
+        @row-clicked="onRowClicked"
         @row-selected="onRowSelected"
       >
         <template v-slot:cell(actions)="row">
@@ -62,15 +65,17 @@ export default class TradeList extends Vue {
   @Prop({ default: 'No Trades to show.' })
   emptyText!: string;
 
-  @ftbot.State detailTradeId?: string;
+  @ftbot.State detailTradeId?: number;
 
-  @ftbot.Mutation setDetailTrade;
+  @ftbot.Action setDetailTrade;
 
   @ftbot.Action forcesell!: (tradeid: string) => Promise<string>;
 
   @ftbot.Action deleteTrade!: (tradeid: string) => Promise<string>;
 
   currentPage = 1;
+
+  selectedItemIndex? = undefined;
 
   get rows(): number {
     return this.trades.length;
@@ -136,12 +141,32 @@ export default class TradeList extends Vue {
       });
   }
 
-  onRowSelected(items) {
+  onRowClicked(item, index) {
     // Only allow single selection mode!
-    if (items.length > 0) {
-      this.setDetailTrade(items[0]);
+    if (
+      item &&
+      item.trade_id !== this.detailTradeId &&
+      !this.$refs.tradesTable.isRowSelected(index)
+    ) {
+      this.setDetailTrade(item);
     } else {
+      console.log('unsetting item');
       this.setDetailTrade(null);
+    }
+  }
+
+  onRowSelected(items) {
+    // console.log('onRowSelected1');
+    // console.log(items);
+    if (this.detailTradeId) {
+      // console.log('onRowSelected2');
+      const itemIndex = this.trades.findIndex((v) => v.trade_id === this.detailTradeId);
+      if (itemIndex >= 0) {
+        this.$refs.tradesTable.selectRow(itemIndex);
+      } else {
+        console.log(`Unsetting item for tradeid ${this.selectedItemIndex}`);
+        this.selectedItemIndex = undefined;
+      }
     }
   }
 }
