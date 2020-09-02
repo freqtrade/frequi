@@ -24,7 +24,7 @@
           </b-button>
         </template>
         <template v-slot:cell(pair)="row">
-          <span class="mr-1" v-html="profitSymbol(row.item)"></span>
+          <ProfitSymbol :trade="row.item" />
           <span>
             {{ row.item.pair }}
           </span>
@@ -48,11 +48,18 @@ import { namespace } from 'vuex-class';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent } from '@/shared/formatters';
 import { Trade } from '@/types';
+import ProfitSymbol from './ProfitSymbol.vue';
 
 const ftbot = namespace('ftbot');
 
-@Component({})
+@Component({
+  components: { ProfitSymbol },
+})
 export default class TradeList extends Vue {
+  $refs!: {
+    tradesTable: HTMLFormElement;
+  };
+
   @Prop({ required: true })
   trades!: Array<Trade>;
 
@@ -102,11 +109,6 @@ export default class TradeList extends Vue {
     { key: 'close_date', label: 'Close date' },
     ...(this.activeTrades ? [{ key: 'actions' }] : []),
   ];
-
-  profitSymbol(item) {
-    // Red arrow / green circle
-    return item.close_profit < 0 || item.current_profit < 0 ? `&#x1F534;` : `&#x1F7E2;`;
-  }
 
   forcesellHandler(item) {
     this.$bvModal
