@@ -13,13 +13,12 @@
         <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
-        <ValuePair v-if="trade.current_profit_pct" description="Current Profit">
-          {{ formatPercent(trade.current_profit_pct) }} | {{ trade.current_profit_abs }}
+        <ValuePair v-if="trade.current_profit" description="Current Profit">
+          {{ formatPercent(trade.current_profit) }} | {{ trade.current_profit_abs }}
         </ValuePair>
-        <ValuePair v-if="trade.close_profit" description="Close % profit">
+        <ValuePair v-if="trade.close_profit" description="Close Profit">
           {{ formatPercent(trade.close_profit) }} | {{ trade.close_profit_abs }}
         </ValuePair>
-        <ValuePair v-if="trade.close_profit_abs" description="Close profit"> </ValuePair>
       </div>
       <div class="col-lg-7">
         <h5 class="detail-header">Stoploss</h5>
