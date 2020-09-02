@@ -1,5 +1,5 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload } from '@/types';
+import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload, Trade } from '@/types';
 
 export enum UserStoreGetters {
   openTrades = 'openTrades',
@@ -76,7 +76,7 @@ export default {
     updateLogs(state, logs: Logs) {
       state.lastLogs = logs.logs;
     },
-    setDetailTrade(state, trade) {
+    setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
     },
   },
@@ -89,6 +89,9 @@ export default {
           commit('setIsBotOnline', result.data, { root: true });
         })
         .catch(console.error);
+    },
+    setDetailTrade({ commit }, trade: Trade) {
+      commit('setDetailTrade', trade);
     },
     getTrades({ commit }) {
       return api

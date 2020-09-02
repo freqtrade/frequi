@@ -98,7 +98,7 @@ const ftbot = namespace('ftbot');
   },
 })
 export default class Trading extends Vue {
-  @ftbot.State detailTradeId!: string;
+  @ftbot.State detailTradeId!: number;
 
   @ftbot.Getter openTrades!: Trade[];
 
