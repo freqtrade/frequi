@@ -55,7 +55,7 @@ import DailyChart from '@/components/charts/DailyChart.vue';
 import HourlyChart from '@/components/charts/HourlyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 
-import { Trade, DailyReturnValue, BalanceInterface } from '@/types';
+import { Trade, DailyReturnValue, BalanceInterface, ProfitInterface } from '@/types';
 
 const ftbot = namespace('ftbot');
 
@@ -75,7 +75,7 @@ export default class Trading extends Vue {
 
   @ftbot.State balance!: BalanceInterface;
 
-  @ftbot.State profit!: BalanceInterface;
+  @ftbot.State profit!: ProfitInterface;
 
   @ftbot.State performanceStats!: Array<PerformanceEntry>;
 
