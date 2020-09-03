@@ -99,6 +99,12 @@ export default class TradeList extends Vue {
 
   perPage = this.activeTrades ? 200 : 15;
 
+  // Added to table-fields for current trades
+  openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
+
+  // Added to table-fields for historic trades
+  closedFields: Record<string, string | Function>[] = [{ key: 'close_date', label: 'Close date' }];
+
   tableFields: Record<string, string | Function>[] = [
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
@@ -116,8 +122,7 @@ export default class TradeList extends Vue {
       formatter: (value) => formatPercent(value, 3),
     },
     { key: 'open_date', label: 'Open date' },
-    { key: 'close_date', label: 'Close date' },
-    ...(this.activeTrades ? [{ key: 'actions' }] : []),
+    ...(this.activeTrades ? this.openFields : this.closedFields),
   ];
 
   forcesellHandler(item) {
