@@ -15,7 +15,7 @@
           </b-card-text>
         </b-card>
         <b-card header="Last trade">
-          <b-card-text>{{ profit.latest_trade_date }} {{ ftbot }}</b-card-text>
+          <b-card-text>{{ profit.latest_trade_date }}</b-card-text>
         </b-card>
       </b-card-group>
     </div>
