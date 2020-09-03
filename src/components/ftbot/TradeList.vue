@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,6 +83,15 @@ export default class TradeList extends Vue {
   currentPage = 1;
 
   selectedItemIndex? = undefined;
+
+  @Watch('detailTradeId')
+  watchTradeDetail(val) {
+    const index = this.trades.findIndex((v) => v.trade_id === val);
+    // Unselect when another tradeTable is selected!
+    if (index < 0) {
+      this.$refs.tradesTable.clearSelected();
+    }
+  }
 
   get rows(): number {
     return this.trades.length;
