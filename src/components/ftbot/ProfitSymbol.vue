@@ -1,12 +1,12 @@
 <template>
-  <span>{{ isProfitable ? '&#x1F534;' : '&#x1F7E2;' }}</span>
+  <div class="h-100 d-inline-block">
+    <div :class="isProfitable ? 'triangle-up' : 'triangle-down'"></div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Trade } from '@/types';
-
-//
 
 @Component({})
 export default class ProfitSymbol extends Vue {
@@ -21,4 +21,19 @@ export default class ProfitSymbol extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0.5rem 0.9rem 0.5rem;
+  border-color: transparent transparent #00db58 transparent;
+}
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.9rem 0.5rem 0 0.5rem;
+  border-color: #ff0000 transparent transparent transparent;
+}
+</style>
