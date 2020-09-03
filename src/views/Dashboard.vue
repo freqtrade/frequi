@@ -17,43 +17,39 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Bot KPI">
-        <div>
-          <b-card-group deck>
-            <b-card header="Open / Total trades">
-              <b-card-text>
-                <span class="text-primary">{{ openTrades.length }}</span> /
-                <span class="text-secondary">{{ profit.trade_count }}</span>
-              </b-card-text>
-            </b-card>
-            <b-card header="Won / lost trades">
-              <b-card-text>
-                <span class="text-success">{{ profit.winning_trades }}</span> /
-                <span class="text-danger">{{ profit.losing_trades }}</span>
-              </b-card-text>
-            </b-card>
-            <b-card header="Last trade">
-              <b-card-text>{{ profit.latest_trade_date }}</b-card-text>
-            </b-card>
-          </b-card-group>
-        </div>
-        <div class="mt-3">
-          <b-card-group deck>
-            <b-card header="Best performing">
-              <b-card-text>{{ profit.best_pair }}</b-card-text>
-            </b-card>
-            <b-card header="Total Balance">
-              <b-card-text
-                >{{ formatPrice(balance.total) }} {{ dailyStats.stake_currency }}</b-card-text
-              >
-            </b-card>
-            <b-card v-if="profit.profit_closed_fiat" header="Total profit">
-              <b-card-text
-                >{{ formatPrice(profit.profit_closed_fiat) }}
-                {{ dailyStats.fiat_display_currency }}</b-card-text
-              >
-            </b-card>
-          </b-card-group>
-        </div>
+        <b-card-group deck>
+          <b-card header="Open / Total trades">
+            <b-card-text>
+              <span class="text-primary">{{ openTrades.length }}</span> /
+              <span class="text-secondary">{{ profit.trade_count }}</span>
+            </b-card-text>
+          </b-card>
+          <b-card header="Won / lost trades">
+            <b-card-text>
+              <span class="text-success">{{ profit.winning_trades }}</span> /
+              <span class="text-danger">{{ profit.losing_trades }}</span>
+            </b-card-text>
+          </b-card>
+          <b-card header="Last trade">
+            <b-card-text>{{ profit.latest_trade_date }}</b-card-text>
+          </b-card>
+        </b-card-group>
+        <b-card-group deck class="mt-2">
+          <b-card header="Best performing">
+            <b-card-text>{{ profit.best_pair }}</b-card-text>
+          </b-card>
+          <b-card header="Total Balance">
+            <b-card-text
+              >{{ formatPrice(balance.total) }} {{ dailyStats.stake_currency }}</b-card-text
+            >
+          </b-card>
+          <b-card v-if="profit.profit_closed_fiat" header="Total profit">
+            <b-card-text
+              >{{ formatPrice(profit.profit_closed_fiat) }}
+              {{ dailyStats.fiat_display_currency }}</b-card-text
+            >
+          </b-card>
+        </b-card-group>
       </DraggableContainer>
     </GridItem>
     <GridItem
