@@ -114,7 +114,7 @@ import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import { DashboardLayout, findGridLayout } from '@/store/modules/layout';
-import { Trade, DailyReturnValue, BalanceInterface, ProfitInterface } from '@/types';
+import { Trade, DailyReturnValue, BalanceInterface, ProfitInterface, DailyPayload } from '@/types';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -144,7 +144,7 @@ export default class Dashboard extends Vue {
 
   @ftbot.Action getPerformance;
 
-  @ftbot.Action getDaily;
+  @ftbot.Action getDaily!: (payload?: DailyPayload) => void;
 
   @ftbot.Action getTrades;
 
@@ -181,7 +181,7 @@ export default class Dashboard extends Vue {
   }
 
   mounted() {
-    this.getDaily();
+    this.getDaily({ timescale: 30 });
     this.getTrades();
     this.getOpenTrades();
     this.getBalance();
