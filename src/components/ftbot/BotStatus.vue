@@ -3,9 +3,10 @@
     <p>
       Running Freqtrade <strong>{{ version }}</strong>
     </p>
-    <p v-if="profit.profit_all_coin">
-      Avg Profit {{ profit.profit_all_coin.toFixed(2) }}% in {{ profit.trade_count }} Trades, with
-      an average duration of {{ profit.avg_duration }}. Best pair: {{ profit.best_pair }}.
+    <p>
+      Avg Profit {{ formatPercent(profit.profit_all_ratio_mean) }} (&sum;
+      {{ formatPercent(profit.profit_all_ratio_sum) }}) in {{ profit.trade_count }} Trades, with an
+      average duration of {{ profit.avg_duration }}. Best pair: {{ profit.best_pair }}.
     </p>
     <p v-if="profit.first_trade_timestamp">
       First trade opened:
@@ -38,6 +39,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { BotState } from '@/types';
 
+import { formatPercent } from '@/shared/formatters';
+
 const ftbot = namespace('ftbot');
 
 @Component({})
@@ -47,6 +50,8 @@ export default class BotStatus extends Vue {
   @ftbot.State profit;
 
   @ftbot.State botState!: BotState;
+
+  formatPercent = formatPercent;
 
   formatTimestamp(timestamp) {
     return new Date(timestamp).toUTCString();

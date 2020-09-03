@@ -1,20 +1,33 @@
+export enum AlertActions {
+  addAlert = 'addAlert',
+  removeAlert = 'removeAlert',
+}
+
+export enum AlertMutations {
+  addAlert = 'addAlert',
+  removeAlert = 'removeAlert',
+}
+
 export default {
   namespaced: true,
   state: {
     activeMessages: [],
   },
   mutations: {
-    addAlert(state, message) {
+    [AlertMutations.addAlert](state, message) {
       console.log(`adding message '${message.message}' to message queue`);
       state.activeMessages.push(message);
     },
-    removeAlert(state) {
+    [AlertMutations.removeAlert](state) {
       state.activeMessages.shift();
     },
   },
   actions: {
-    addAlert({ commit }, message) {
-      commit('addAlert', message);
+    [AlertActions.addAlert]({ commit }, message) {
+      commit(AlertMutations.addAlert, message);
+    },
+    [AlertActions.removeAlert]({ commit }) {
+      commit(AlertMutations.removeAlert);
     },
   },
 };

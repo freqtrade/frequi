@@ -2,6 +2,7 @@
   <div class="h-100 d-flex overflow-auto">
     <div>
       <b-table
+        ref="tradesTable"
         class="table-sm"
         :items="trades"
         :fields="tableFields"
@@ -9,9 +10,11 @@
         :empty-text="emptyText"
         :per-page="perPage"
         :current-page="currentPage"
+        primary-key="trade_id"
         selectable
         select-mode="single"
         @row-contextmenu="handleContextMenuEvent"
+        @row-clicked="onRowClicked"
         @row-selected="onRowSelected"
       >
         <template v-slot:cell(actions)="row">
@@ -21,7 +24,7 @@
           </b-button>
         </template>
         <template v-slot:cell(pair)="row">
-          <span class="mr-1" v-html="profitSymbol(row.item)"></span>
+          <ProfitSymbol :trade="row.item" />
           <span>
             {{ row.item.pair }}
           </span>
@@ -45,11 +48,18 @@ import { namespace } from 'vuex-class';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent } from '@/shared/formatters';
 import { Trade } from '@/types';
+import ProfitSymbol from './ProfitSymbol.vue';
 
 const ftbot = namespace('ftbot');
 
-@Component({})
+@Component({
+  components: { ProfitSymbol },
+})
 export default class TradeList extends Vue {
+  $refs!: {
+    tradesTable: HTMLFormElement;
+  };
+
   @Prop({ required: true })
   trades!: Array<Trade>;
 
@@ -62,15 +72,17 @@ export default class TradeList extends Vue {
   @Prop({ default: 'No Trades to show.' })
   emptyText!: string;
 
-  @ftbot.State detailTradeId?: string;
+  @ftbot.State detailTradeId?: number;
 
-  @ftbot.Mutation setDetailTrade;
+  @ftbot.Action setDetailTrade;
 
   @ftbot.Action forcesell!: (tradeid: string) => Promise<string>;
 
   @ftbot.Action deleteTrade!: (tradeid: string) => Promise<string>;
 
   currentPage = 1;
+
+  selectedItemIndex? = undefined;
 
   get rows(): number {
     return this.trades.length;
@@ -97,11 +109,6 @@ export default class TradeList extends Vue {
     { key: 'close_date', label: 'Close date' },
     ...(this.activeTrades ? [{ key: 'actions' }] : []),
   ];
-
-  profitSymbol(item) {
-    // Red arrow / green circle
-    return item.close_profit < 0 || item.current_profit < 0 ? `&#x1F534;` : `&#x1F7E2;`;
-  }
 
   forcesellHandler(item) {
     this.$bvModal
@@ -136,12 +143,32 @@ export default class TradeList extends Vue {
       });
   }
 
-  onRowSelected(items) {
+  onRowClicked(item, index) {
     // Only allow single selection mode!
-    if (items.length > 0) {
-      this.setDetailTrade(items[0]);
+    if (
+      item &&
+      item.trade_id !== this.detailTradeId &&
+      !this.$refs.tradesTable.isRowSelected(index)
+    ) {
+      this.setDetailTrade(item);
     } else {
+      console.log('unsetting item');
       this.setDetailTrade(null);
+    }
+  }
+
+  onRowSelected(items) {
+    // console.log('onRowSelected1');
+    // console.log(items);
+    if (this.detailTradeId) {
+      // console.log('onRowSelected2');
+      const itemIndex = this.trades.findIndex((v) => v.trade_id === this.detailTradeId);
+      if (itemIndex >= 0) {
+        this.$refs.tradesTable.selectRow(itemIndex);
+      } else {
+        console.log(`Unsetting item for tradeid ${this.selectedItemIndex}`);
+        this.selectedItemIndex = undefined;
+      }
     }
   }
 }

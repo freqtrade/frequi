@@ -90,6 +90,7 @@ export interface Trade {
   fee_close_currency?: string;
 
   current_rate?: number;
+  current_profit?: number;
   sell_reason?: string;
   min_rate?: number;
   max_rate?: number;

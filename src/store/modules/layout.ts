@@ -10,6 +10,7 @@ export enum TradeLayout {
 }
 
 export enum DashboardLayout {
+  KPI = 'g-kpi',
   dailyChart = 'g-dailyChart',
   hourlyChart = 'g-hourlyChart',
   cumChartChart = 'g-cumChartChart',
@@ -26,8 +27,9 @@ const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
-  { i: DashboardLayout.dailyChart, x: 0, y: 0, w: 4, h: 6 },
-  { i: DashboardLayout.hourlyChart, x: 4, y: 0, w: 4, h: 6 },
+  { i: DashboardLayout.KPI, x: 0, y: 0, w: 4, h: 6 },
+  { i: DashboardLayout.dailyChart, x: 4, y: 0, w: 4, h: 6 },
+  { i: DashboardLayout.hourlyChart, x: 4, y: 6, w: 4, h: 6 },
   { i: DashboardLayout.cumChartChart, x: 0, y: 6, w: 4, h: 6 },
 ];
 

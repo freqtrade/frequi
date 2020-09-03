@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
-import { Mutation } from 'vuex-class';
+import { Action } from 'vuex-class';
 import userService from '@/shared/userService';
 import { setBaseUrl } from '@/shared/apiService';
 
@@ -63,7 +63,7 @@ const defaultURL = 'http://localhost:8080';
 
 @Component({})
 export default class Login extends Vue {
-  @Mutation setLoggedIn;
+  @Action setLoggedIn;
 
   @Prop({ default: false }) inModal!: boolean;
 

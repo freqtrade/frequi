@@ -44,7 +44,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { State, Mutation, namespace } from 'vuex-class';
+import { State, Action, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 
@@ -61,7 +61,7 @@ export default class NavBar extends Vue {
 
   @State isBotOnline!: boolean;
 
-  @Mutation setLoggedIn;
+  @Action setLoggedIn;
 
   @ftbot.Action ping;
 
