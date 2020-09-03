@@ -46,7 +46,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { formatPercent } from '@/shared/formatters';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 import { Trade } from '@/types';
 import ProfitSymbol from './ProfitSymbol.vue';
 
@@ -95,10 +95,11 @@ export default class TradeList extends Vue {
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },
     { key: 'stake_amount', label: 'Stake amount' },
-    { key: 'open_rate', label: 'Open rate' },
+    { key: 'open_rate', label: 'Open rate', formatter: (value) => formatPrice(value) },
     {
       key: this.activeTrades ? 'current_rate' : 'close_rate',
       label: this.activeTrades ? 'Current rate' : 'Close rate',
+      formatter: (value) => formatPrice(value),
     },
     {
       key: this.activeTrades ? 'current_profit' : 'close_profit',
