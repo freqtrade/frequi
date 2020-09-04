@@ -33,11 +33,11 @@ export default {
       ];
     },
   },
-  methods: {
-    ...mapActions('ftbot', ['getDaily']),
-  },
   mounted() {
     this.getDaily();
+  },
+  methods: {
+    ...mapActions('ftbot', ['getDaily']),
   },
 };
 </script>
