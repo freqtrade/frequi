@@ -33,10 +33,11 @@ export default class LogViewer extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 textarea {
   width: 100%;
   min-height: 6em;
   resize: none;
+  font-size: $fontsize-small;
 }
 </style>

@@ -189,8 +189,11 @@ export default class TradeList extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .card-body {
   padding: 0 0.2em;
+}
+.table-sm {
+  font-size: $fontsize-small;
 }
 </style>

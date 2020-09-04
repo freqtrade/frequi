@@ -26,14 +26,14 @@ export default class ProfitSymbol extends Vue {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 0 0.5rem 0.9rem 0.5rem;
+  border-width: 0 0.45rem 0.7rem 0.45rem;
   border-color: transparent transparent #00db58 transparent;
 }
 .triangle-down {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 0.9rem 0.5rem 0 0.5rem;
+  border-width: 0.7rem 0.45rem 0 0.45rem;
   border-color: #ff0000 transparent transparent transparent;
 }
 </style>
