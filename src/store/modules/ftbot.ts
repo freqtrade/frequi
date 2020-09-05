@@ -171,8 +171,16 @@ export default {
     stopBuy() {
       return api.post('/stopbuy', {}).catch(console.error);
     },
-    reloadConfig() {
-      return api.post('/reload_config', {}).catch(console.error);
+    async reloadConfig({ dispatch }) {
+      try {
+        const res = await api.post('/reload_config', {});
+        console.log(res.data);
+        dispatch('alerts/addAlert', { message: res.data.status }, { root: true });
+        return Promise.resolve(res);
+      } catch (error) {
+        console.error(error.resposne);
+        return Promise.reject(error);
+      }
     },
     async deleteTrade({ dispatch }, tradeid: string) {
       try {
