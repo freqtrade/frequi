@@ -1,6 +1,8 @@
 import { api } from '@/shared/apiService';
 import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload, Trade } from '@/types';
 
+import { AlertActions } from './alerts';
+
 export enum UserStoreGetters {
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
@@ -175,10 +177,12 @@ export default {
       try {
         const res = await api.post('/reload_config', {});
         console.log(res.data);
-        dispatch('alerts/addAlert', { message: res.data.status }, { root: true });
+        dispatch(AlertActions.addAlert, { message: res.data.status }, { root: true });
         return Promise.resolve(res);
       } catch (error) {
         console.error(error.resposne);
+        dispatch(AlertActions.addAlert, { message: 'Error reloading ' }, { root: true });
+
         return Promise.reject(error);
       }
     },
@@ -186,7 +190,7 @@ export default {
       try {
         const res = await api.delete(`/trades/${tradeid}`);
         dispatch(
-          'alerts/addAlert',
+          AlertActions.addAlert,
           { message: res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}` },
           { root: true },
         );
@@ -194,7 +198,7 @@ export default {
       } catch (error) {
         console.error(error.response);
         dispatch(
-          'alerts/addAlert',
+          AlertActions.addAlert,
           { message: `Failed to delete trade ${tradeid}`, severity: 'danger' },
           { root: true },
         );
@@ -207,7 +211,7 @@ export default {
         try {
           const res = await api.post('/forcesell', payload);
           dispatch(
-            'alerts/addAlert',
+            AlertActions.addAlert,
             { message: `Sell order for ${tradeid} created` },
             { root: true },
           );
@@ -215,7 +219,7 @@ export default {
         } catch (error) {
           console.error(error.response);
           dispatch(
-            'alerts/addAlert',
+            AlertActions.addAlert,
             { message: `Failed to create sell order for ${tradeid}`, severity: 'danger' },
             { root: true },
           );
@@ -232,7 +236,7 @@ export default {
         try {
           const res = await api.post('/forcebuy', payload);
           dispatch(
-            'alerts/addAlert',
+            AlertActions.addAlert,
             { message: `Buy order for ${payload.pair} created.` },
             { root: true },
           );
@@ -240,7 +244,7 @@ export default {
         } catch (error) {
           console.error(error.response);
           dispatch(
-            'alerts/addAlert',
+            AlertActions.addAlert,
             {
               message: `Error occured buying: '${error.response.data.error}'`,
               severity: 'danger',
@@ -265,7 +269,7 @@ export default {
             const { errors } = result.data;
             Object.keys(errors).forEach((pair) => {
               dispatch(
-                'alerts/addAlert',
+                AlertActions.addAlert,
                 {
                   message: `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
                 },
@@ -274,7 +278,7 @@ export default {
             });
           } else {
             dispatch(
-              'alerts/addAlert',
+              AlertActions.addAlert,
               { message: `Pair ${payload.blacklist} added.` },
               { root: true },
             );
@@ -283,7 +287,7 @@ export default {
         } catch (error) {
           console.error(error.response);
           dispatch(
-            'alerts/addAlert',
+            AlertActions.addAlert,
             {
               message: `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
               severity: 'danger',
