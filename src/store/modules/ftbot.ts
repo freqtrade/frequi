@@ -1,7 +1,7 @@
 import { api } from '@/shared/apiService';
 import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload, Trade } from '@/types';
 
-import { AlertActions } from './alerts';
+import { showAlert } from './alerts';
 
 export enum UserStoreGetters {
   openTrades = 'openTrades',
@@ -164,44 +164,60 @@ export default {
     },
     // Post methods
     // TODO: Migrate calls to API to a seperate module unrelated to vuex?
-    startBot() {
-      return api.post('/start', {}).catch(console.error);
+    async startBot({ dispatch }) {
+      try {
+        const res = await api.post('/start', {});
+        console.log(res.data);
+        showAlert(dispatch, res.data.status);
+        return Promise.resolve(res);
+      } catch (error) {
+        console.error(error.resposne);
+        showAlert(dispatch, 'Error starting bot.');
+        return Promise.reject(error);
+      }
     },
-    stopBot() {
-      return api.post('/stop', {}).catch(console.error);
+    async stopBot({ dispatch }) {
+      try {
+        const res = await api.post('/stop', {});
+        showAlert(dispatch, res.data.status);
+        return Promise.resolve(res);
+      } catch (error) {
+        console.error(error.resposne);
+        showAlert(dispatch, 'Error stopping bot.');
+        return Promise.reject(error);
+      }
     },
-    stopBuy() {
-      return api.post('/stopbuy', {}).catch(console.error);
+    async stopBuy({ dispatch }) {
+      try {
+        const res = await api.post('/stopbuy', {});
+        showAlert(dispatch, res.data.status);
+        return Promise.resolve(res);
+      } catch (error) {
+        console.error(error.resposne);
+        showAlert(dispatch, 'Error calling stopbuy.');
+        return Promise.reject(error);
+      }
     },
     async reloadConfig({ dispatch }) {
       try {
         const res = await api.post('/reload_config', {});
         console.log(res.data);
-        dispatch(AlertActions.addAlert, { message: res.data.status }, { root: true });
+        showAlert(dispatch, res.data.status);
         return Promise.resolve(res);
       } catch (error) {
         console.error(error.resposne);
-        dispatch(AlertActions.addAlert, { message: 'Error reloading ' }, { root: true });
-
+        showAlert(dispatch, 'Error reloading.');
         return Promise.reject(error);
       }
     },
     async deleteTrade({ dispatch }, tradeid: string) {
       try {
         const res = await api.delete(`/trades/${tradeid}`);
-        dispatch(
-          AlertActions.addAlert,
-          { message: res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}` },
-          { root: true },
-        );
+        showAlert(dispatch, res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}`);
         return Promise.resolve(res);
       } catch (error) {
         console.error(error.response);
-        dispatch(
-          AlertActions.addAlert,
-          { message: `Failed to delete trade ${tradeid}`, severity: 'danger' },
-          { root: true },
-        );
+        showAlert(dispatch, `Failed to delete trade ${tradeid}`, 'danger');
         return Promise.reject(error);
       }
     },
@@ -210,19 +226,11 @@ export default {
         const payload = { tradeid };
         try {
           const res = await api.post('/forcesell', payload);
-          dispatch(
-            AlertActions.addAlert,
-            { message: `Sell order for ${tradeid} created` },
-            { root: true },
-          );
+          showAlert(dispatch, `Sell order for ${tradeid} created`);
           return Promise.resolve(res);
         } catch (error) {
           console.error(error.response);
-          dispatch(
-            AlertActions.addAlert,
-            { message: `Failed to create sell order for ${tradeid}`, severity: 'danger' },
-            { root: true },
-          );
+          showAlert(dispatch, `Failed to create sell order for ${tradeid}`, 'danger');
           return Promise.reject(error);
         }
       }
@@ -235,22 +243,12 @@ export default {
       if (payload && payload.pair) {
         try {
           const res = await api.post('/forcebuy', payload);
-          dispatch(
-            AlertActions.addAlert,
-            { message: `Buy order for ${payload.pair} created.` },
-            { root: true },
-          );
+          showAlert(dispatch, `Buy order for ${payload.pair} created.`);
+
           return Promise.resolve(res);
         } catch (error) {
           console.error(error.response);
-          dispatch(
-            AlertActions.addAlert,
-            {
-              message: `Error occured buying: '${error.response.data.error}'`,
-              severity: 'danger',
-            },
-            { root: true },
-          );
+          showAlert(dispatch, `Error occured buying: '${error.response.data.error}'`, 'danger');
           return Promise.reject(error);
         }
       }
@@ -268,32 +266,23 @@ export default {
           if (result.data.errors && Object.keys(result.data.errors).length !== 0) {
             const { errors } = result.data;
             Object.keys(errors).forEach((pair) => {
-              dispatch(
-                AlertActions.addAlert,
-                {
-                  message: `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
-                },
-                { root: true },
+              showAlert(
+                dispatch,
+                `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
               );
             });
           } else {
-            dispatch(
-              AlertActions.addAlert,
-              { message: `Pair ${payload.blacklist} added.` },
-              { root: true },
-            );
+            showAlert(dispatch, `Pair ${payload.blacklist} added.`);
           }
           return Promise.resolve(result.data);
         } catch (error) {
           console.error(error.response);
-          dispatch(
-            AlertActions.addAlert,
-            {
-              message: `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
-              severity: 'danger',
-            },
-            { root: true },
+          showAlert(
+            dispatch,
+            `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
+            'danger',
           );
+
           return Promise.reject(error);
         }
       }

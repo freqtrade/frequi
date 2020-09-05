@@ -31,3 +31,7 @@ export default {
     },
   },
 };
+
+export function showAlert(dispatch, message: string, severity = '') {
+  dispatch(`alerts/${AlertActions.addAlert}`, { message, severity }, { root: true });
+}
