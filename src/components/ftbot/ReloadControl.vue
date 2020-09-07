@@ -14,9 +14,9 @@ import { Action, State } from 'vuex-class';
 
 @Component({})
 export default class ReloadControl extends Vue {
-  refreshInterval: NodeJS.Timer | null = null;
+  refreshInterval: number | null = null;
 
-  refreshIntervalSlow: NodeJS.Timer | null = null;
+  refreshIntervalSlow: number | null = null;
 
   created() {
     if (this.loggedIn) {
@@ -63,13 +63,13 @@ export default class ReloadControl extends Vue {
     console.log('Starting automatic refresh.');
     this.refreshFrequent();
     if (this.autoRefresh) {
-      this.refreshInterval = setInterval(() => {
+      this.refreshInterval = window.setInterval(() => {
         this.refreshFrequent();
       }, 5000);
     }
     this.refreshSlow();
     if (this.autoRefresh) {
-      this.refreshIntervalSlow = setInterval(() => {
+      this.refreshIntervalSlow = window.setInterval(() => {
         this.refreshSlow();
       }, 60000);
     }
@@ -78,10 +78,10 @@ export default class ReloadControl extends Vue {
   stopRefresh() {
     console.log('Stopping automatic refresh.');
     if (this.refreshInterval) {
-      clearInterval(this.refreshInterval);
+      window.clearInterval(this.refreshInterval);
     }
     if (this.refreshIntervalSlow) {
-      clearInterval(this.refreshIntervalSlow);
+      window.clearInterval(this.refreshIntervalSlow);
     }
   }
 

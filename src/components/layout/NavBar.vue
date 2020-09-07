@@ -55,7 +55,7 @@ const layoutNs = namespace('layout');
   components: { LoginModal, BootswatchThemeSelect },
 })
 export default class NavBar extends Vue {
-  pingInterval: NodeJS.Timer | null = null;
+  pingInterval: number | null = null;
 
   @State loggedIn!: boolean;
 
@@ -71,7 +71,7 @@ export default class NavBar extends Vue {
 
   mounted() {
     this.ping();
-    this.pingInterval = setInterval(this.ping, 60000);
+    this.pingInterval = window.setInterval(this.ping, 60000);
   }
 
   beforeDestroy() {
