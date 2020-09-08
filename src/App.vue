@@ -5,7 +5,7 @@
   </Container>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Container from '@/components/layout/Container.vue';
 import Header from '@/components/layout/Header.vue';

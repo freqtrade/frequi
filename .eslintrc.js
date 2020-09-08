@@ -4,16 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
+    // vue/recommended includes all higher levels (vue/strongly-recommended, vue/essential)
     'plugin:vue/recommended',
     '@vue/airbnb',
-    'prettier',
-    'plugin:prettier-vue/recommended',
-    'prettier/vue',
-    'prettier/@typescript-eslint',
-    'plugin:@typescript-eslint/recommended',
-    '@vue/typescript',
     '@vue/typescript/recommended',
+    '@vue/prettier',
+    '@vue/prettier/@typescript-eslint',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -25,5 +21,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'class-methods-use-this': 0,
+    // disable eslint no-shadow as it's causing false positives on typescript enums
+    'no-shadow': 'off',
   },
 };
