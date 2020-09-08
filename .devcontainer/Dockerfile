@@ -56,6 +56,3 @@ RUN echo "export PROMPT_COMMAND='history -a'" >> .bashrc \
 RUN mkdir -p .vscode-server .vscode-server-insiders commandhistory
 
 ENV DEBIAN_FRONTEND=
-
-
-

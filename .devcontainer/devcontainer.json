@@ -4,7 +4,7 @@
 	"dockerComposeFile": ["docker-compose.yml","docker-compose.vscode.yml"],
 	"service": "web",
     "workspaceFolder": "/home/dev/frequi",
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
 		"emmet.includeLanguages": {
 			"vue": "html",
@@ -13,7 +13,6 @@
 	},
 	"extensions": [
 		"octref.vetur",
-		"esbenp.prettier-vscode",
 		"dbaeumer.vscode-eslint",
 		"yzhang.markdown-all-in-one",
 		"marquesmps.dockerfile-validator",

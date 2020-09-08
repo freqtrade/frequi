@@ -6,6 +6,15 @@ updates:
     interval: "daily"
     time: "05:00"
   open-pull-requests-limit: 10
+
+- package-ecosystem: docker
+  directory: "/.devcontainer/"
+  schedule:
+    interval: "daily"
+    time: "05:00"
+  open-pull-requests-limit: 10
+  
+
 - package-ecosystem: npm
   directory: "/"
   schedule:
