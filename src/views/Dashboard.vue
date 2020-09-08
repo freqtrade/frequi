@@ -140,6 +140,7 @@ export default class Dashboard extends Vue {
 
   @ftbot.Action getPerformance;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action getDaily!: (payload?: DailyPayload) => void;
 
   @ftbot.Action getTrades;

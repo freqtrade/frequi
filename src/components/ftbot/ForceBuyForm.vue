@@ -52,6 +52,7 @@ export default class ForceBuyForm extends Vue {
     form: HTMLFormElement;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
 
   created() {

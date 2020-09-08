@@ -37,6 +37,7 @@ export default class ReloadControl extends Vue {
 
   @State autoRefresh!: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Action setAutoRefresh!: (newValue: boolean) => void;
 
   @Action refreshSlow;

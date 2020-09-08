@@ -76,8 +76,10 @@ export default class TradeList extends Vue {
 
   @ftbot.Action setDetailTrade;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action forcesell!: (tradeid: string) => Promise<string>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action deleteTrade!: (tradeid: string) => Promise<string>;
 
   currentPage = 1;
@@ -172,7 +174,7 @@ export default class TradeList extends Vue {
     }
   }
 
-  onRowSelected(items) {
+  onRowSelected() {
     // console.log('onRowSelected1');
     // console.log(items);
     if (this.detailTradeId) {

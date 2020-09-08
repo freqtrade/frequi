@@ -75,6 +75,7 @@ export default class FTBotAPIPairList extends Vue {
 
   @ftbot.Action getBlacklist;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action addBlacklist!: (payload: BlacklistPayload) => Promise<BlacklistResponse>;
 
   @ftbot.State whitelist!: string[];
