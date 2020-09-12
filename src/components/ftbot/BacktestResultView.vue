@@ -36,7 +36,12 @@ import TradeList from '@/components/ftbot/TradeList.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { StrategyBacktestResult } from '@/types';
 
-import { timestampms, formatPercent } from '@/shared/formatters';
+import {
+  timestampms,
+  formatPercent,
+  formatPrice,
+  humanizeDurationFromSeconds,
+} from '@/shared/formatters';
 
 @Component({
   components: { TradeList },
@@ -58,15 +63,32 @@ export default class BacktestResultView extends Vue {
       { metric: 'Total trades', value: this.backtestResult.total_trades },
       // { metric: 'First trade', value: this.backtestResult.backtest_fi },
       // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
+      {
+        metric: 'Total Profit',
+        value: `${formatPercent(this.backtestResult.profit_total)} | ${formatPrice(
+          this.backtestResult.profit_total_abs,
+        )} ${this.backtestResult.stake_currency}`,
+      },
       { metric: 'Trades per day', value: this.backtestResult.trades_per_day },
-      { metric: 'Best day', value: this.backtestResult.backtest_best_day },
-      { metric: 'Wrost day', value: this.backtestResult.backtest_worst_day },
-      { metric: 'Avg. Duration winners', value: this.backtestResult.winner_holding_avg },
-      { metric: 'Avg. Duration Losers', value: this.backtestResult.loser_holding_avg },
-      { metric: 'Max Drawdown', value: this.backtestResult.max_drawdown },
+      { metric: 'Best day', value: formatPercent(this.backtestResult.backtest_best_day, 2) },
+      { metric: 'Worst day', value: formatPercent(this.backtestResult.backtest_worst_day, 2) },
+      {
+        metric: 'Days win/draw/loss',
+        value: `${this.backtestResult.winning_days} / ${this.backtestResult.draw_days} / ${this.backtestResult.losing_days}`,
+      },
+
+      {
+        metric: 'Avg. Duration winners',
+        value: humanizeDurationFromSeconds(this.backtestResult.winner_holding_avg),
+      },
+      {
+        metric: 'Avg. Duration Losers',
+        value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
+      },
+      { metric: 'Max Drawdown', value: formatPercent(this.backtestResult.max_drawdown) },
       { metric: 'Drawdown start', value: this.backtestResult.drawdown_start },
       { metric: 'Drawdown end', value: this.backtestResult.drawdown_end },
-      { metric: 'Market change', value: this.backtestResult.market_change },
+      { metric: 'Market change', value: formatPercent(this.backtestResult.market_change) },
     ];
   }
 
@@ -76,7 +98,11 @@ export default class BacktestResultView extends Vue {
       { key: 'trades', label: 'Buys' },
       { key: 'profit_mean', label: 'Avg Profit %', formatter: (value) => formatPercent(value, 2) },
       { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
-      { key: 'profit_total_abs', label: `Tot Profit ${this.backtestResult.stake_currency}` },
+      {
+        key: 'profit_total_abs',
+        label: `Tot Profit ${this.backtestResult.stake_currency}`,
+        formatter: (value) => formatPrice(value),
+      },
       {
         key: 'profit_total_pct',
         label: 'Tot Profit %',

@@ -27,7 +27,7 @@
             @change="clickGraphTab"
           >
           </b-form-select>
-          <CandleChart
+          <CandleChartContainer
             :pair="pair"
             :timeframe="timeframe"
             :timeframems="timeframems"
@@ -35,7 +35,7 @@
             :plot-config="selectedPlotConfig"
             :trades="selectedBacktestResult.trades"
           >
-          </CandleChart>
+          </CandleChartContainer>
         </b-tab>
       </b-tabs>
     </div>
@@ -47,7 +47,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
-import CandleChart from '@/components/charts/CandleChartContainer.vue';
+import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 
 import {
@@ -62,7 +62,7 @@ import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 @Component({
-  components: { BacktestResultView, TimeRangeSelect, CandleChart, StrategyList },
+  components: { BacktestResultView, TimeRangeSelect, CandleChartContainer, StrategyList },
 })
 export default class Backtesting extends Vue {
   pair = 'XRP/USDT';
