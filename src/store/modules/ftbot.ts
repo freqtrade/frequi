@@ -232,29 +232,41 @@ export default {
         .then((result) => commit('updateStrategyList', result.data))
         .catch(console.error);
     },
-    getAvailablePairs({ commit }, payload: AvailablePairPayload) {
-      return api
-        .get('/available_pairs', {
+    async getAvailablePairs({ commit }, payload: AvailablePairPayload) {
+      try {
+        const result = await api.get('/available_pairs', {
           params: { ...payload },
-        })
-        .then((result) => {
-          // result is of type AvailablePairResult
-          const { pairs } = result.data;
-          commit('updatePairs', pairs);
-        })
-        .catch(console.error);
+        });
+        // result is of type AvailablePairResult
+        const { pairs } = result.data;
+        commit('updatePairs', pairs);
+        return Promise.resolve(result.data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
     },
-    getPerformance({ commit }) {
-      return api
-        .get('/performance')
-        .then((result) => commit('updatePerformance', result.data))
-        .catch(console.error);
+    async getPerformance({ commit }) {
+      try {
+        const result = await api.get('/performance');
+        commit('updatePerformance', result.data);
+        return Promise.resolve(result.data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
     },
     getWhitelist({ commit }) {
       return api
         .get('/whitelist')
-        .then((result) => commit('updateWhitelist', result.data))
-        .catch(console.error);
+        .then((result) => {
+          commit('updateWhitelist', result.data);
+          return Promise.resolve(result.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          return Promise.reject(error);
+        });
     },
     getBlacklist({ commit }) {
       return api

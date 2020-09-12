@@ -36,7 +36,12 @@ import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
-import { AvailablePairPayload, PairCandlePayload, PairHistoryPayload } from '@/types';
+import {
+  AvailablePairPayload,
+  AvailablePairResult,
+  PairCandlePayload,
+  PairHistoryPayload,
+} from '@/types';
 
 const ftbot = namespace('ftbot');
 
@@ -66,20 +71,27 @@ export default class Graphs extends Vue {
 
   @ftbot.State trades;
 
-  @ftbot.Action
-  public getPairCandles!: (payload: PairCandlePayload) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action public getPairCandles!: (payload: PairCandlePayload) => void;
 
-  @ftbot.Action
-  public getPairHistory!: (payload: PairHistoryPayload) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
 
-  @ftbot.Action
-  public getWhitelist;
+  @ftbot.Action public getWhitelist!: () => Promise<any>;
 
-  @ftbot.Action
-  public getAvailablePairs!: (payload: AvailablePairPayload) => Promise<void>;
+  @ftbot.Action public getAvailablePairs!: (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    payload: AvailablePairPayload,
+  ) => Promise<AvailablePairResult>;
 
   mounted() {
-    this.getWhitelist();
+    this.getWhitelist().then((whitelist) => {
+      console.log(whitelist?.whitelist?.length > 0);
+      if (whitelist?.whitelist?.length > 0) {
+        [this.pair] = whitelist.whitelist;
+        this.refresh();
+      }
+    });
     this.refresh();
     this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
       console.log(val);

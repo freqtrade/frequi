@@ -195,6 +195,7 @@ export default class PlotConfigurator extends Vue {
 
   @ftbot.Mutation saveCustomPlotConfig;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Mutation updatePlotConfigName!: (plotConfigName: string) => void;
 
   @ftbot.State('plotConfigName') usedPlotConfigName!: string;
