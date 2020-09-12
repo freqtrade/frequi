@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import humanizeDuration from 'humanize-duration';
 
 export function formatPercent(value: number, decimals = 3): string {
   return value ? `${(value * 100).toFixed(decimals)}%` : '';
@@ -38,6 +39,14 @@ export function dateStringToTimeRange(datestring: string): string {
 
 export function timestampHour(ts: number | Date): number {
   return moment.utc(ts).hour();
+}
+
+/**
+ *  Get humanized Duration from seconds
+ * @param duration Duration in seconds
+ */
+export function humanizeDurationFromSeconds(duration: number): string {
+  return humanizeDuration(duration * 1000);
 }
 
 export default {
