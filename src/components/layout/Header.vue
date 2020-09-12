@@ -14,8 +14,4 @@ import NavBar from './NavBar.vue';
 export default class Header extends Vue {}
 </script>
 
-<style scoped>
-header {
-  padding-bottom: 1em;
-}
-</style>
+<style scoped></style>

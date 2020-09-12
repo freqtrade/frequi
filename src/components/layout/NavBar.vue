@@ -24,7 +24,7 @@
           <li v-if="loggedIn" class="nav-item">
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                <b-avatar button>FT</b-avatar>
+                <b-avatar size="2em" button>FT</b-avatar>
               </template>
               <b-dropdown-item to="/settings">Settings</b-dropdown-item>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
@@ -115,7 +115,7 @@ export default class NavBar extends Vue {
   padding-left: 0.5em;
 }
 .navbar {
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 1rem;
 }
 
 .nav-link:active {
