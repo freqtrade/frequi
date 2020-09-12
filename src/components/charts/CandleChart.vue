@@ -11,17 +11,22 @@ import * as echarts from 'echarts';
 import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
-import { timestampms } from '@/shared/formatters';
 
 import 'echarts';
 
 // Chart default options
 const MARGINLEFT = '5%';
 const MARGINRIGHT = '4%';
-const upColor = '#00da3c';
-const upBorderColor = '#008F28';
-const downColor = '#ec0000';
-const downBorderColor = '#8A0000';
+// const upColor = '#00da3c';
+// const downColor = '#ec0000';
+// const upBorderColor = '#008F28';
+// const downBorderColor = '#8A0000';
+
+// Binance colors
+const upColor = '#2ed191';
+const upBorderColor = '#19d189';
+const downColor = '#f84960';
+const downBorderColor = '#e33249';
 
 @Component({
   components: { 'v-chart': ECharts },
