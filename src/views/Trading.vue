@@ -12,6 +12,7 @@
       :y="gridLayoutBotControls.y"
       :w="gridLayoutBotControls.w"
       :h="gridLayoutBotControls.h"
+      drag-allow-from=".card-header"
     >
       <DraggableContainer header="Bot Controls">
         <ReloadControl class="mt-3" />
@@ -24,6 +25,7 @@
       :y="gridLayoutMultiPane.y"
       :w="gridLayoutMultiPane.w"
       :h="gridLayoutMultiPane.h"
+      drag-allow-from=".card-header"
     >
       <DraggableContainer header="Multi Pane">
         <b-tabs content-class="mt-3" class="mt-3">
@@ -100,6 +102,7 @@
       :y="gridLayoutLogView.y"
       :w="gridLayoutLogView.w"
       :h="gridLayoutLogView.h"
+      drag-allow-from=".card-header"
     >
       <DraggableContainer header="Logs">
         <LogViewer />
