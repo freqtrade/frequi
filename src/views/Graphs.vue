@@ -41,6 +41,7 @@ import {
   AvailablePairResult,
   PairCandlePayload,
   PairHistoryPayload,
+  WhitelistResponse,
 } from '@/types';
 
 const ftbot = namespace('ftbot');
@@ -77,7 +78,7 @@ export default class Graphs extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
 
-  @ftbot.Action public getWhitelist!: () => Promise<any>;
+  @ftbot.Action public getWhitelist!: () => Promise<WhitelistResponse>;
 
   @ftbot.Action public getAvailablePairs!: (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,7 +87,7 @@ export default class Graphs extends Vue {
 
   mounted() {
     this.getWhitelist().then((whitelist) => {
-      console.log(whitelist?.whitelist?.length > 0);
+      // Autoselect first pair in whitelist
       if (whitelist?.whitelist?.length > 0) {
         [this.pair] = whitelist.whitelist;
         this.refresh();

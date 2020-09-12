@@ -13,6 +13,7 @@ import {
   EMPTY_PLOTCONFIG,
   AvailablePairPayload,
   PlotConfigStorage,
+  WhitelistResponse,
 } from '@/types';
 
 import {
@@ -89,7 +90,7 @@ export default {
     updatePerformance(state, performance) {
       state.performanceStats = performance;
     },
-    updateWhitelist(state, whitelist) {
+    updateWhitelist(state, whitelist: WhitelistResponse) {
       state.whitelist = whitelist.whitelist;
       state.pairlistMethods = whitelist.method;
     },
