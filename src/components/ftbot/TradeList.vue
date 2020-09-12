@@ -18,8 +18,15 @@
         @row-selected="onRowSelected"
       >
         <template v-slot:cell(actions)="row">
-          <b-button size="sm" title="Forcesell" @click="forcesellHandler(row.item)"> FS </b-button>
-          <b-button size="sm" title="Delete trade" @click="removeTradeHandler(row.item)">
+          <b-button class="btn-xs" size="sm" title="Forcesell" @click="forcesellHandler(row.item)">
+            FS
+          </b-button>
+          <b-button
+            class="btn-xs"
+            size="sm"
+            title="Delete trade"
+            @click="removeTradeHandler(row.item)"
+          >
             RM
           </b-button>
         </template>
@@ -175,10 +182,7 @@ export default class TradeList extends Vue {
   }
 
   onRowSelected() {
-    // console.log('onRowSelected1');
-    // console.log(items);
     if (this.detailTradeId) {
-      // console.log('onRowSelected2');
       const itemIndex = this.trades.findIndex((v) => v.trade_id === this.detailTradeId);
       if (itemIndex >= 0) {
         this.$refs.tradesTable.selectRow(itemIndex);
@@ -197,5 +201,9 @@ export default class TradeList extends Vue {
 }
 .table-sm {
   font-size: $fontsize-small;
+}
+.btn-xs {
+  padding: 0.1rem 0.25rem;
+  font-size: 0.75rem;
 }
 </style>
