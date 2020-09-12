@@ -409,10 +409,7 @@ export default class CandleChart extends Vue {
           trade.open_timestamp >= this.dataset.data_start_ts &&
           trade.open_timestamp <= this.dataset.data_stop_ts
         ) {
-          trades.push([
-            timestampms(roundTimeframe(this.timeframems, trade.open_timestamp)),
-            trade.open_rate,
-          ]);
+          trades.push([roundTimeframe(this.timeframems, trade.open_timestamp), trade.open_rate]);
         }
         if (
           trade.close_timestamp !== undefined &&
@@ -421,7 +418,7 @@ export default class CandleChart extends Vue {
         ) {
           if (trade.close_date !== undefined && trade.close_rate !== undefined) {
             tradesClose.push([
-              timestampms(roundTimeframe(this.timeframems, trade.close_timestamp)),
+              roundTimeframe(this.timeframems, trade.close_timestamp),
               trade.close_rate,
             ]);
           }

@@ -31,6 +31,7 @@
       :dataset="dataset"
       :trades="trades"
       :plot-config="plotConfig"
+      :use-u-t-c="useUTC"
     >
     </CandleChart>
   </div>
