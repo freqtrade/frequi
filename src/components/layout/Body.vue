@@ -1,5 +1,5 @@
 <template>
-  <main class="container-fluid h-100">
+  <main class="container-fluid h-100 container-main">
     <BotAlerts />
     <router-view />
   </main>
@@ -14,3 +14,8 @@ import BotAlerts from '@/components/ftbot/BotAlerts.vue';
 })
 export default class Body extends Vue {}
 </script>
+<style lang="scss" scoped>
+.container-main {
+  padding: 0;
+}
+</style>
