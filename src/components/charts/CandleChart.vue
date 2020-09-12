@@ -223,6 +223,7 @@ export default class CandleChart extends Vue {
         {
           name: 'Candles',
           type: 'candlestick',
+          barWidth: '80%',
           itemStyle: {
             color: upColor,
             color0: downColor,
