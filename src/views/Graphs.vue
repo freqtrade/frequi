@@ -4,13 +4,6 @@
       <div class="col-mb-2">
         <b-checkbox v-model="historicView">HistoricData</b-checkbox>
       </div>
-      <div class="col-mb-2 ml-2 mr-2">
-        <b-button :disabled="!!!pair" @click="refresh">&#x21bb;</b-button>
-      </div>
-      <div class="col-mb-2">
-        <b-select v-model="pair" :options="historicView ? pairlist : whitelist" @change="refresh">
-        </b-select>
-      </div>
     </div>
     <div v-if="historicView" class="mt-2 row">
       <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
@@ -18,7 +11,14 @@
     </div>
 
     <div class="row">
-      <CandleChartContainer :pair="pair" :timeframe="timeframe" :dataset="dataset" :trades="trades">
+      <CandleChartContainer
+        :available-pairs="historicView ? pairlist : whitelist"
+        :historic-view="historicView"
+        :timeframe="timeframe"
+        :trades="trades"
+        :timerange="historicView ? timerange : ''"
+        :strategy="historicView ? strategy : ''"
+      >
       </CandleChartContainer>
     </div>
   </div>
@@ -30,13 +30,7 @@ import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
-import {
-  AvailablePairPayload,
-  AvailablePairResult,
-  PairCandlePayload,
-  PairHistoryPayload,
-  WhitelistResponse,
-} from '@/types';
+import { AvailablePairPayload, AvailablePairResult, WhitelistResponse } from '@/types';
 
 const ftbot = namespace('ftbot');
 
@@ -44,8 +38,6 @@ const ftbot = namespace('ftbot');
   components: { CandleChartContainer, StrategyList, TimeRangeSelect },
 })
 export default class Graphs extends Vue {
-  pair = '';
-
   timeframe = '5m';
 
   historicView = false;
@@ -56,19 +48,9 @@ export default class Graphs extends Vue {
 
   @ftbot.State pairlist;
 
-  @ftbot.State candleData;
-
-  @ftbot.State history;
-
   @ftbot.State whitelist;
 
   @ftbot.State trades;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action public getPairCandles!: (payload: PairCandlePayload) => void;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
 
   @ftbot.Action public getWhitelist!: () => Promise<WhitelistResponse>;
 
@@ -78,39 +60,11 @@ export default class Graphs extends Vue {
   ) => Promise<AvailablePairResult>;
 
   mounted() {
-    this.getWhitelist().then((whitelist) => {
-      // Autoselect first pair in whitelist
-      if (whitelist?.whitelist?.length > 0) {
-        [this.pair] = whitelist.whitelist;
-        this.refresh();
-      }
-    });
-    this.refresh();
+    this.getWhitelist();
+    // this.refresh();
     this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
       console.log(val);
     });
-  }
-
-  get dataset() {
-    if (this.historicView) {
-      return this.history[`${this.pair}__${this.timeframe}`];
-    }
-    return this.candleData[`${this.pair}__${this.timeframe}`];
-  }
-
-  refresh() {
-    if (this.pair && this.timeframe) {
-      if (this.historicView) {
-        this.getPairHistory({
-          pair: this.pair,
-          timeframe: this.timeframe,
-          timerange: this.timerange,
-          strategy: this.strategy,
-        });
-      } else {
-        this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
-      }
-    }
   }
 }
 </script>
