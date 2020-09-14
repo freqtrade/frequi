@@ -3,7 +3,7 @@ import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload, Trade 
 
 import { showAlert } from './alerts';
 
-export enum UserStoreGetters {
+export enum BotStoreGetters {
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
   closedTrades = 'closedTrades',
@@ -28,17 +28,17 @@ export default {
     detailTradeId: null,
   },
   getters: {
-    [UserStoreGetters.openTrades](state) {
+    [BotStoreGetters.openTrades](state) {
       return state.openTrades;
     },
-    [UserStoreGetters.tradeDetail](state) {
+    [BotStoreGetters.tradeDetail](state) {
       let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
       if (!dTrade) {
         dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
       }
       return dTrade;
     },
-    [UserStoreGetters.closedTrades](state) {
+    [BotStoreGetters.closedTrades](state) {
       return state.trades.filter((item) => !item.is_open);
     },
   },

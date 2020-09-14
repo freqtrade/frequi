@@ -129,7 +129,7 @@ import LogViewer from '@/components/ftbot/LogViewer.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import { Trade } from '@/types';
-import { UserStoreGetters } from '@/store/modules/ftbot';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 import { TradeLayout, findGridLayout } from '@/store/modules/layout';
 
 const ftbot = namespace('ftbot');
@@ -159,7 +159,7 @@ export default class Trading extends Vue {
 
   @ftbot.Getter closedTrades!: Trade[];
 
-  @ftbot.Getter [UserStoreGetters.tradeDetail]!: Trade;
+  @ftbot.Getter [BotStoreGetters.tradeDetail]!: Trade;
 
   @layoutNs.Getter getTradingLayout!: GridItemData[];
 
