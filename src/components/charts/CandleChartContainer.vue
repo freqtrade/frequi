@@ -44,8 +44,6 @@ const ftbot = namespace('ftbot');
 export default class CandleChartContainer extends Vue {
   @Prop({ required: true }) readonly timeframe!: string;
 
-  @Prop({ required: true }) readonly timeframems!: number;
-
   @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
 
   @Prop({ required: true }) readonly dataset!: PairHistory;

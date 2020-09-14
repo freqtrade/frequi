@@ -18,13 +18,7 @@
     </div>
 
     <div class="row">
-      <CandleChartContainer
-        :pair="pair"
-        :timeframe="timeframe"
-        :timeframems="timeframems"
-        :dataset="dataset"
-        :trades="trades"
-      >
+      <CandleChartContainer :pair="pair" :timeframe="timeframe" :dataset="dataset" :trades="trades">
       </CandleChartContainer>
     </div>
   </div>
@@ -53,8 +47,6 @@ export default class Graphs extends Vue {
   pair = '';
 
   timeframe = '5m';
-
-  timeframems = 300000;
 
   historicView = false;
 
