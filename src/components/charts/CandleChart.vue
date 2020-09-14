@@ -15,8 +15,8 @@ import { roundTimeframe } from '@/shared/timemath';
 import 'echarts';
 
 // Chart default options
-const MARGINLEFT = '5%';
-const MARGINRIGHT = '4%';
+const MARGINLEFT = '4%';
+const MARGINRIGHT = '1%';
 // const upColor = '#00da3c';
 // const downColor = '#ec0000';
 // const upBorderColor = '#008F28';
