@@ -32,10 +32,6 @@ const downBorderColor = '#e33249';
   components: { 'v-chart': ECharts },
 })
 export default class CandleChart extends Vue {
-  @Prop({ required: true }) readonly timeframe!: string;
-
-  @Prop({ required: true }) readonly timeframems!: number;
-
   @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
 
   @Prop({ required: true }) readonly dataset!: PairHistory;
@@ -67,6 +63,10 @@ export default class CandleChart extends Vue {
 
   get pair() {
     return this.dataset ? this.dataset.pair : '';
+  }
+
+  get timeframe() {
+    return this.dataset ? this.dataset.timeframe : '';
   }
 
   get datasetColumns() {

@@ -25,14 +25,7 @@
         <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
       </div>
     </div>
-    <CandleChart
-      :timeframe="timeframe"
-      :timeframems="timeframems"
-      :dataset="dataset"
-      :trades="trades"
-      :plot-config="plotConfig"
-      :use-u-t-c="useUTC"
-    >
+    <CandleChart :dataset="dataset" :trades="trades" :plot-config="plotConfig" :use-u-t-c="useUTC">
     </CandleChart>
   </div>
 </template>

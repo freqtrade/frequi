@@ -174,6 +174,8 @@ export interface PairHistoryPayload {
 export interface PairHistory {
   strategy: string;
   pair: string;
+  timeframe: string;
+  timeframe_ms: number;
   columns: string[];
   data: number[];
   length: number;
