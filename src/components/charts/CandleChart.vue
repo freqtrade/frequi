@@ -69,6 +69,10 @@ export default class CandleChart extends Vue {
     return this.dataset ? this.dataset.timeframe : '';
   }
 
+  get timeframems() {
+    return this.dataset ? this.dataset.timeframe_ms : 0;
+  }
+
   get datasetColumns() {
     return this.dataset ? this.dataset.columns : [];
   }

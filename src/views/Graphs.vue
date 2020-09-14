@@ -99,15 +99,17 @@ export default class Graphs extends Vue {
   }
 
   refresh() {
-    if (this.historicView) {
-      this.getPairHistory({
-        pair: this.pair,
-        timeframe: this.timeframe,
-        timerange: this.timerange,
-        strategy: this.strategy,
-      });
-    } else {
-      this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+    if (this.pair && this.timeframe) {
+      if (this.historicView) {
+        this.getPairHistory({
+          pair: this.pair,
+          timeframe: this.timeframe,
+          timerange: this.timerange,
+          strategy: this.strategy,
+        });
+      } else {
+        this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+      }
     }
   }
 }
