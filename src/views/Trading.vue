@@ -108,6 +108,25 @@
         <LogViewer />
       </DraggableContainer>
     </GridItem>
+    <GridItem
+      :i="gridLayoutChartView.i"
+      :x="gridLayoutChartView.x"
+      :y="gridLayoutChartView.y"
+      :w="gridLayoutChartView.w"
+      :h="gridLayoutChartView.h"
+      min-h="6"
+      drag-allow-from=".card-header"
+    >
+      <DraggableContainer header="Chart">
+        <CandleChartContainer
+          :available-pairs="whitelist"
+          :historic-view="!!false"
+          :timeframe="timeframe"
+          :trades="allTrades"
+        >
+        </CandleChartContainer>
+      </DraggableContainer>
+    </GridItem>
   </GridLayout>
 </template>
 
@@ -127,6 +146,7 @@ import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import LogViewer from '@/components/ftbot/LogViewer.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
+import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 
 import { Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
@@ -150,16 +170,23 @@ const layoutNs = namespace('layout');
     TradeDetail,
     ReloadControl,
     LogViewer,
+    CandleChartContainer,
   },
 })
 export default class Trading extends Vue {
   @ftbot.State detailTradeId!: number;
 
-  @ftbot.Getter openTrades!: Trade[];
+  @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
 
-  @ftbot.Getter closedTrades!: Trade[];
+  @ftbot.Getter [BotStoreGetters.closedTrades]!: Trade[];
+
+  @ftbot.Getter [BotStoreGetters.allTrades]!: Trade[];
 
   @ftbot.Getter [BotStoreGetters.tradeDetail]!: Trade;
+
+  @ftbot.Getter [BotStoreGetters.timeframe]!: string;
+
+  @ftbot.State whitelist!: string[];
 
   @layoutNs.Getter getTradingLayout!: GridItemData[];
 
@@ -191,6 +218,10 @@ export default class Trading extends Vue {
 
   get gridLayoutLogView(): GridItemData {
     return findGridLayout(this.gridLayout, TradeLayout.logView);
+  }
+
+  get gridLayoutChartView(): GridItemData {
+    return findGridLayout(this.gridLayout, TradeLayout.chartView);
   }
 
   layoutUpdatedEvent(newLayout) {

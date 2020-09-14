@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid flex-column align-items-stretch d-flex">
+  <div class="container-fluid flex-column align-items-stretch d-flex h-100">
     <b-modal
       id="plotConfiguratorModal"
       title="Plot Configurator"
@@ -34,7 +34,7 @@
         <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
       </div>
     </div>
-    <div class="row mr-1 ml-1">
+    <div class="row mr-1 ml-1 h-100">
       <CandleChart
         :dataset="dataset"
         :trades="trades"

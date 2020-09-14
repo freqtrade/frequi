@@ -7,6 +7,7 @@ export enum TradeLayout {
   tradeHistory = 'g-tradeHistory',
   tradeDetail = 'g-tradeDetail',
   logView = 'g-logView',
+  chartView = 'g-chartView',
 }
 
 export enum DashboardLayout {
@@ -20,10 +21,11 @@ export enum DashboardLayout {
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
   { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 4 },
   { i: TradeLayout.multiPane, x: 0, y: 0, w: 4, h: 7 },
-  { i: TradeLayout.openTrades, x: 4, y: 0, w: 8, h: 5 },
-  { i: TradeLayout.tradeDetail, x: 4, y: 4, w: 8, h: 5 },
-  { i: TradeLayout.tradeHistory, x: 4, y: 4, w: 8, h: 6 },
+  { i: TradeLayout.openTrades, x: 4, y: 11, w: 8, h: 5 },
+  { i: TradeLayout.tradeDetail, x: 4, y: 16, w: 8, h: 5 },
+  { i: TradeLayout.tradeHistory, x: 4, y: 10, w: 8, h: 6 },
   { i: TradeLayout.logView, x: 0, y: 9, w: 12, h: 3 },
+  { i: TradeLayout.chartView, x: 4, y: 0, w: 8, h: 11 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [

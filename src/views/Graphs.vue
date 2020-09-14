@@ -10,7 +10,7 @@
       <StrategyList v-model="strategy" class="col-md-2"></StrategyList>
     </div>
 
-    <div class="row">
+    <div class="row chart-row">
       <CandleChartContainer
         :available-pairs="historicView ? pairlist : whitelist"
         :historic-view="historicView"
@@ -69,4 +69,8 @@ export default class Graphs extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart-row {
+  height: 820px;
+}
+</style>

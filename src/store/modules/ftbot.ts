@@ -28,8 +28,10 @@ export enum BotStoreGetters {
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
   closedTrades = 'closedTrades',
+  allTrades = 'allTrades',
   plotConfig = 'plotConfig',
   plotConfigNames = 'plotConfigNames',
+  timeframe = 'timeframe',
 }
 
 export default {
@@ -68,6 +70,9 @@ export default {
     [BotStoreGetters.openTrades](state) {
       return state.openTrades;
     },
+    [BotStoreGetters.allTrades](state) {
+      return [...state.openTrades, ...state.trades];
+    },
     [BotStoreGetters.tradeDetail](state) {
       let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
       if (!dTrade) {
@@ -77,6 +82,9 @@ export default {
     },
     [BotStoreGetters.closedTrades](state) {
       return state.trades.filter((item) => !item.is_open);
+    },
+    [BotStoreGetters.timeframe](state) {
+      return state.botState?.timeframe;
     },
   },
   mutations: {

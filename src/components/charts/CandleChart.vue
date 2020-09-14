@@ -504,7 +504,7 @@ export default class CandleChart extends Vue {
 }
 .echarts {
   width: 100%;
-  min-height: 820px;
+  min-height: 200px;
   /* TODO: height calculation is not working correctly - uses min-height for now */
   /* height: 600px; */
   height: 100%;
