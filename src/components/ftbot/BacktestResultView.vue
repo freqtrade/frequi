@@ -123,7 +123,7 @@ export default class BacktestResultView extends Vue {
       { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
       { key: 'profit_total_abs', label: `Tot Profit ${this.backtestResult.stake_currency}` },
       {
-        key: 'profit_total_pct',
+        key: 'profit_total',
         label: 'Tot Profit %',
         formatter: (value) => formatPercent(value, 2),
       },

@@ -29,6 +29,9 @@ export interface SellReasonResults {
   profit_sum: number;
   profit_sum_pct: number;
   profit_total_abs: number;
+  /** Total profit as ratio */
+  profit_total: number;
+  /** Total profit in percent */
   profit_total_pct: number;
   trades: number;
   wins: number;
