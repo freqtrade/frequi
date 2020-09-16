@@ -122,6 +122,7 @@ export default class CandleChart extends Vue {
       animation: false,
       legend: {
         data: ['Candles', 'Volume', 'Buy', 'Sell'],
+        right: '1%',
       },
       tooltip: {
         trigger: 'axis',
@@ -146,6 +147,9 @@ export default class CandleChart extends Vue {
           scale: true,
           boundaryGap: false,
           axisLine: { onZero: false },
+          axisTick: { show: true },
+          axisLabel: { show: true },
+          position: 'top',
           splitLine: { show: false },
           splitNumber: 20,
           min: 'dataMin',
@@ -158,8 +162,8 @@ export default class CandleChart extends Vue {
           boundaryGap: false,
           axisLine: { onZero: false },
           axisTick: { show: false },
-          splitLine: { show: false },
           axisLabel: { show: false },
+          splitLine: { show: false },
           splitNumber: 20,
           min: 'dataMin',
           max: 'dataMax',
@@ -183,8 +187,9 @@ export default class CandleChart extends Vue {
         {
           left: MARGINLEFT,
           right: MARGINRIGHT,
-          height: subplotCount === 0 ? '70%' : '60%',
+          // height: subplotCount === 0 ? '70%' : '60%',
           // top: '0px',
+          bottom: `${subplotCount * 10 + 10}%`,
           // bottom: '150px',
         },
         {
@@ -356,8 +361,8 @@ export default class CandleChart extends Vue {
             boundaryGap: false,
             axisLine: { onZero: false },
             axisTick: { show: false },
-            splitLine: { show: false },
             axisLabel: { show: false },
+            splitLine: { show: false },
             splitNumber: 20,
           });
         }
@@ -407,6 +412,15 @@ export default class CandleChart extends Vue {
       });
     }
     // END Subplots
+    // Last subplot should show xAxis labels
+    // if (options.xAxis && Array.isArray(options.xAxis)) {
+    //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
+    //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
+    // }
+    if (options.grid && Array.isArray(options.grid)) {
+      options.grid[options.grid.length - 1].bottom = '75px';
+      delete options.grid[options.grid.length - 1].top;
+    }
 
     if (this.filteredTrades.length > 0) {
       // Show trades
