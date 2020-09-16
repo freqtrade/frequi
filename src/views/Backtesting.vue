@@ -15,25 +15,21 @@
         Load backtest result
       </b-button>
     </div>
-    <div v-if="hasBacktestResult" class="text-center w-100 mt-5">
+    <div v-if="hasBacktestResult" class="text-center w-100 mt-2">
       <b-tabs content-class="mt-3" class="mt-3">
         <b-tab title="Textbased Result" active>
           <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
         </b-tab>
-        <b-tab title="Graph" lazy @click="clickGraphTab">
-          <b-form-select
-            v-model="pair"
-            :options="selectedBacktestResult.pairlist"
-            @change="clickGraphTab"
-          >
-          </b-form-select>
+        <b-tab title="Graph" lazy>
           <CandleChartContainer
-            :pair="pair"
+            :available-pairs="selectedBacktestResult.pairlist"
+            :historic-view="!!true"
             :timeframe="timeframe"
-            :timeframems="timeframems"
-            :dataset="dataset"
             :plot-config="selectedPlotConfig"
+            :timerange="timerange"
+            :strategy="strategy"
             :trades="selectedBacktestResult.trades"
+            class="candle-chart-container"
           >
           </CandleChartContainer>
         </b-tab>
@@ -65,11 +61,7 @@ const ftbot = namespace('ftbot');
   components: { BacktestResultView, TimeRangeSelect, CandleChartContainer, StrategyList },
 })
 export default class Backtesting extends Vue {
-  pair = 'XRP/USDT';
-
   pollInterval: number | null = null;
-
-  timeframems = 300000;
 
   strategy = 'BinHV45';
 
@@ -107,10 +99,6 @@ export default class Backtesting extends Vue {
     }
   }
 
-  get dataset() {
-    return this.history[`${this.pair}__${this.timeframe}`];
-  }
-
   clickBacktest() {
     console.log('Backtesting');
     const btPayload: BacktestPayload = {
@@ -118,15 +106,6 @@ export default class Backtesting extends Vue {
       timerange: this.timerange,
     };
     this.startBacktest(btPayload);
-  }
-
-  clickGraphTab() {
-    this.getPairHistory({
-      pair: this.pair,
-      timeframe: this.timeframe,
-      timerange: this.timerange,
-      strategy: this.strategy,
-    });
   }
 
   @Watch('backtestRunning')
@@ -141,4 +120,8 @@ export default class Backtesting extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.candle-chart-container {
+  height: 640px !important;
+}
+</style>
