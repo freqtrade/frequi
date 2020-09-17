@@ -140,8 +140,15 @@ export interface ClosedTrade extends Trade {
   open_order_id?: string;
 }
 
-export interface StrategyResult {
+export interface StrategyListResult {
   strategies: Array<string>;
+}
+
+export interface StrategyResult {
+  /** Strategy name */
+  strategy: string;
+  /** Code of the strategy class */
+  code: string;
 }
 
 export interface AvailablePairPayload {

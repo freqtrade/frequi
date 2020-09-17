@@ -9,11 +9,12 @@ import {
   PairCandlePayload,
   PairHistoryPayload,
   PlotConfig,
-  StrategyResult,
+  StrategyListResult,
   EMPTY_PLOTCONFIG,
   AvailablePairPayload,
   PlotConfigStorage,
   WhitelistResponse,
+  StrategyResult,
 } from '@/types';
 
 import {
@@ -58,6 +59,7 @@ export default {
     plotConfigName: getPlotConfigName(),
     availablePlotConfigNames: getAllPlotConfigNames(),
     strategyList: [],
+    strategy: {},
     pairlist: [],
   },
   getters: {
@@ -126,8 +128,11 @@ export default {
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
     },
-    updateStrategyList(state, result: StrategyResult) {
+    updateStrategyList(state, result: StrategyListResult) {
       state.strategyList = result.strategies;
+    },
+    updateStrategy(state, strategy: StrategyResult) {
+      state.strategy = strategy;
     },
     updatePairs(state, pairlist: Array<string>) {
       state.pairlist = pairlist;
@@ -240,6 +245,16 @@ export default {
         .get('/strategies')
         .then((result) => commit('updateStrategyList', result.data))
         .catch(console.error);
+    },
+    async getStrategy({ commit }, strategy: string) {
+      try {
+        const result = await api.get(`/strategy/${strategy}`, {});
+        commit('updateStrategy', result.data);
+        return Promise.resolve(result.data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
     },
     async getAvailablePairs({ commit }, payload: AvailablePairPayload) {
       try {

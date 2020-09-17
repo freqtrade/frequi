@@ -17,10 +17,14 @@ export default class StrategyList extends Vue {
 
   @ftbot.Action getStrategyList;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action getStrategy!: (strategy: string) => void;
+
   @ftbot.State strategyList;
 
   @Emit('input')
   emitStrategy(strategy: string) {
+    this.getStrategy(strategy);
     return strategy;
   }
 
