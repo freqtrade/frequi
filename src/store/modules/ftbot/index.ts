@@ -594,5 +594,14 @@ export default {
         commit('updateBacktestResult', result.data.backtest_result);
       }
     },
+    async removeBacktest({ commit }) {
+      try {
+        const result = await api.delete('/backtest');
+        commit('updateBacktestRunning', result.data.running);
+        return Promise.resolve(result.data);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    },
   },
 };

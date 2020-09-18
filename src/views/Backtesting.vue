@@ -14,6 +14,9 @@
       <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
         Load backtest result
       </b-button>
+      <b-button variant="primary" :disabled="backtestRunning" @click="removeBacktest">
+        Reset Backtest
+      </b-button>
     </div>
     <div v-if="hasBacktestResult" class="text-center w-100 mt-2">
       <b-tabs content-class="mt-3" class="mt-3">
@@ -82,6 +85,8 @@ export default class Backtesting extends Vue {
   @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
 
   @ftbot.Action pollBacktest!: () => void;
+
+  @ftbot.Action removeBacktest!: () => void;
 
   get hasBacktestResult() {
     return Object.keys(this.backtestResult).length !== 0;
