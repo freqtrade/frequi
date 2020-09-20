@@ -83,14 +83,16 @@ export default {
     },
   },
   actions: {
-    ping({ commit }) {
-      api
-        .get('/ping')
-        .then((result) => {
-          commit('setPing', result.data, { root: true });
-          commit('setIsBotOnline', result.data, { root: true });
-        })
-        .catch(console.error);
+    ping({ commit, rootState }) {
+      if (rootState.loggedIn) {
+        api
+          .get('/ping')
+          .then((result) => {
+            commit('setPing', result.data, { root: true });
+            commit('setIsBotOnline', result.data, { root: true });
+          })
+          .catch(console.error);
+      }
     },
     setDetailTrade({ commit }, trade: Trade) {
       commit('setDetailTrade', trade);
