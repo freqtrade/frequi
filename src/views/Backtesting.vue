@@ -1,42 +1,136 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <h2>Backtesting</h2>
-    <div class="row ml-1">
-      <div class="row col-mb-6 mr-2">
-        <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
-        <StrategyList v-model="strategy" class="col-md-2"></StrategyList>
+    <div class="row mx-5 d-flex flex-wrap justify-space-between mb-4">
+      <b-form-radio v-model="btFormMode" name="bt-form-radios" button value="params"
+        >Define Parameters</b-form-radio
+      >
+      <b-form-radio v-model="btFormMode" name="bt-form-radios" button value="strategy"
+        >Select Strategy</b-form-radio
+      >
+      <b-form-radio
+        v-model="btFormMode"
+        name="bt-form-radios"
+        button
+        value="run"
+        :disabled="!canRunBacktest"
+        >Run backtest</b-form-radio
+      >
+      <b-form-radio
+        v-model="btFormMode"
+        name="bt-form-radios"
+        button
+        value="results"
+        :disabled="!hasBacktestResult"
+        >Analyze result</b-form-radio
+      >
+      <b-form-radio
+        v-model="btFormMode"
+        name="bt-form-radios"
+        button
+        value="visualize"
+        :disabled="!hasBacktestResult"
+        >Visualize result</b-form-radio
+      >
+    </div>
+    <div v-if="btFormMode == 'params'" class="row">
+      <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+    </div>
+    <div v-if="btFormMode == 'params'" class="row">
+      <b-card bg-variant="light" class="w-60">
+        <b-form-group
+          label-cols-lg="2"
+          label="Backtest params"
+          label-size="sm"
+          label-class="font-weight-bold pt-0"
+          class="mb-0"
+        >
+          <b-form-group
+            label-cols-sm="5"
+            label="Timeframe:"
+            label-align-sm="right"
+            label-for="timeframeSelect"
+          >
+            <b-form-select
+              id="timeframe-select"
+              placeholder="Use strategy default"
+              :options="availableTimeframes"
+            ></b-form-select>
+          </b-form-group>
+
+          <b-form-group
+            label-cols-sm="5"
+            label="Max open trades:"
+            label-align-sm="right"
+            label-for="max-open-trades"
+          >
+            <b-form-input
+              id="max-open-trades"
+              placeholder="Use strategy default"
+              type="number"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label-cols-sm="5"
+            label="Stake amount:"
+            label-align-sm="right"
+            label-for="stake-amount"
+          >
+            <b-form-input
+              id="stake-amount"
+              type="number"
+              placeholder="Use strategy default"
+              step="0.01"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
+            <b-form-input
+              id="fee"
+              type="number"
+              placeholder="Use exchange default"
+              step="0.01"
+            ></b-form-input>
+          </b-form-group>
+        </b-form-group>
+      </b-card>
+    </div>
+    <div v-if="btFormMode == 'strategy'" class="row">
+      <StrategyList v-model="strategy" show-details="true"></StrategyList>
+    </div>
+
+    <div v-if="btFormMode == 'run'" class="row container">
+      <div class="row">
+        <h3>Backtesting summary</h3>
+      </div>
+      <div class="row">
+        <b-button variant="primary" :disabled="backtestRunning" @click="clickBacktest">
+          Start backtest
+        </b-button>
+        <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
+          Load backtest result
+        </b-button>
+        <b-button variant="primary" :disabled="backtestRunning" @click="removeBacktest">
+          Reset Backtest
+        </b-button>
       </div>
     </div>
-    <div class="row">
-      <b-button variant="primary" :disabled="backtestRunning" @click="clickBacktest">
-        Start backtest
-      </b-button>
-      <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
-        Load backtest result
-      </b-button>
-      <b-button variant="primary" :disabled="backtestRunning" @click="removeBacktest">
-        Reset Backtest
-      </b-button>
+    <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
+      <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
     </div>
-    <div v-if="hasBacktestResult" class="text-center w-100 mt-2">
-      <b-tabs content-class="mt-3" class="mt-3">
-        <b-tab title="Textbased Result" active>
-          <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
-        </b-tab>
-        <b-tab title="Graph" lazy>
-          <CandleChartContainer
-            :available-pairs="selectedBacktestResult.pairlist"
-            :historic-view="!!true"
-            :timeframe="timeframe"
-            :plot-config="selectedPlotConfig"
-            :timerange="timerange"
-            :strategy="strategy"
-            :trades="selectedBacktestResult.trades"
-            class="candle-chart-container"
-          >
-          </CandleChartContainer>
-        </b-tab>
-      </b-tabs>
+    <div v-if="hasBacktestResult && btFormMode == 'visualize'" class="text-center w-100 mt-2">
+      <CandleChartContainer
+        :available-pairs="selectedBacktestResult.pairlist"
+        :historic-view="!!true"
+        :timeframe="timeframe"
+        :plot-config="selectedPlotConfig"
+        :timerange="timerange"
+        :strategy="strategy"
+        :trades="selectedBacktestResult.trades"
+        class="candle-chart-container"
+      >
+      </CandleChartContainer>
     </div>
   </div>
 </template>
@@ -66,7 +160,29 @@ const ftbot = namespace('ftbot');
 export default class Backtesting extends Vue {
   pollInterval: number | null = null;
 
-  strategy = 'BinHV45';
+  availableTimeframes = [
+    '1m',
+    '3m',
+    '5m',
+    '15m',
+    '30m',
+    '1h',
+    '2h',
+    '4h',
+    '6h',
+    '8h',
+    '12h',
+    '1d',
+    '3d',
+    '1w',
+    '2w',
+    '1M',
+    '1y',
+  ];
+
+  strategy = '';
+
+  btFormMode = 'params';
 
   selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
 
@@ -87,6 +203,11 @@ export default class Backtesting extends Vue {
   @ftbot.Action pollBacktest!: () => void;
 
   @ftbot.Action removeBacktest!: () => void;
+
+  get canRunBacktest() {
+    // TODO: Analyze if parameters and strategy has been selected.
+    return true;
+  }
 
   get hasBacktestResult() {
     return Object.keys(this.backtestResult).length !== 0;
