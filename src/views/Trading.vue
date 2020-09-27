@@ -114,7 +114,7 @@
       :y="gridLayoutChartView.y"
       :w="gridLayoutChartView.w"
       :h="gridLayoutChartView.h"
-      min-h="6"
+      :min-h="6"
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Chart">

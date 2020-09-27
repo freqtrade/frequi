@@ -268,11 +268,11 @@ export default class CandleChart extends Vue {
           name: 'Buy',
           type: 'scatter',
           symbol: 'triangle',
-          symbolSize: 8,
+          symbolSize: 10,
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
-            color: '#00FF00',
+            color: '#00ff26',
           },
           encode: {
             x: colDate,
