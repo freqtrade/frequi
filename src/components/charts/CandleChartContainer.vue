@@ -17,6 +17,10 @@
       <div class="col-mb-2 ml-2 mr-2">
         <b-button :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
       </div>
+      <div class="col-mb-2 ml-2 mr-2">
+        <small>Buysignals: {{ dataset.buy_signals }}</small>
+        <small class="ml-2">SellSignals: {{ dataset.sell_signals }}</small>
+      </div>
       <div class="col-mb-2 ml-auto mr-2">
         <b-select
           v-model="plotConfigName"
@@ -103,7 +107,7 @@ export default class CandleChartContainer extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
 
-  get dataset() {
+  get dataset(): PairHistory {
     if (this.historicView) {
       return this.history[`${this.pair}__${this.timeframe}`];
     }

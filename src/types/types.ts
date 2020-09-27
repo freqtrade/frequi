@@ -186,6 +186,10 @@ export interface PairHistory {
   columns: string[];
   data: number[];
   length: number;
+  /** Number of buy signals in this response */
+  buy_signals: number;
+  /** Number of sell signals in this response */
+  sell_signals: number;
   last_analyzed: number;
   /** Data start date in as millisecond timestamp */
   data_start_ts: number;
