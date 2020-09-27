@@ -90,7 +90,7 @@ export default class CandleChart extends Vue {
       return {};
     }
 
-    console.log(`Available Columns: ${this.dataset.columns}`);
+    // console.log(`Available Columns: ${this.dataset.columns}`);
     // Find default columns (sequence might be different, depending on the strategy)
     const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
     const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
