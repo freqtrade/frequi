@@ -114,7 +114,7 @@ export default class CandleChart extends Vue {
         text: `${this.strategy} - ${this.pair} - ${this.timeframe}`,
         show: true,
       },
-      backgroundColor: '#231202D',
+      backgroundColor: '#1b1b1b',
       useUTC: this.useUTC,
       dataset: {
         source: this.dataset.data,
@@ -195,7 +195,7 @@ export default class CandleChart extends Vue {
           left: MARGINLEFT,
           right: MARGINRIGHT,
           // Grid Layout from bottom to top
-          bottom: `${subplotCount * 10}%`,
+          bottom: `${subplotCount * 10 + 5}%`,
           height: '10%',
         },
       ],
@@ -374,8 +374,8 @@ export default class CandleChart extends Vue {
           options.grid.push({
             left: MARGINLEFT,
             right: MARGINRIGHT,
-            bottom: `${plotIndex * 50}px`,
-            height: '50px',
+            bottom: `${plotIndex * 8}%`,
+            height: '8%',
           });
         }
         Object.entries(value).forEach(([sk, sv]) => {
