@@ -32,7 +32,7 @@
       </div>
 
       <div class="col-mb-2 mr-2">
-        <b-checkbox v-model="useUTC" title="Use UTC for graph">useUtc</b-checkbox>
+        <b-checkbox v-model="useUTC" title="Use UTC for graph">useUTC</b-checkbox>
       </div>
       <div class="col-mb-2 mr-1">
         <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
@@ -40,12 +40,14 @@
     </div>
     <div class="row mr-1 ml-1 h-100">
       <CandleChart
+        v-if="hasDataset"
         :dataset="dataset"
         :trades="trades"
         :plot-config="plotConfig"
         :use-u-t-c="useUTC"
       >
       </CandleChart>
+      <label v-else style="margin: auto auto; font-size: 1.5rem">No data available</label>
     </div>
   </div>
 </template>
@@ -160,4 +162,4 @@ export default class CandleChartContainer extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped></style>

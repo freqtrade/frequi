@@ -31,6 +31,7 @@ import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import { AvailablePairPayload, AvailablePairResult, WhitelistResponse } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -38,8 +39,6 @@ const ftbot = namespace('ftbot');
   components: { CandleChartContainer, StrategyList, TimeRangeSelect },
 })
 export default class Graphs extends Vue {
-  timeframe = '5m';
-
   historicView = false;
 
   strategy = '';
@@ -51,6 +50,8 @@ export default class Graphs extends Vue {
   @ftbot.State whitelist;
 
   @ftbot.State trades;
+
+  @ftbot.Getter [BotStoreGetters.timeframe]!: string;
 
   @ftbot.Action public getWhitelist!: () => Promise<WhitelistResponse>;
 

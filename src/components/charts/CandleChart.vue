@@ -187,16 +187,15 @@ export default class CandleChart extends Vue {
         {
           left: MARGINLEFT,
           right: MARGINRIGHT,
-          // height: subplotCount === 0 ? '70%' : '60%',
-          // top: '0px',
+          // Grid Layout from bottom to top
           bottom: `${subplotCount * 10 + 10}%`,
-          // bottom: '150px',
         },
         {
           // Volume
           left: MARGINLEFT,
           right: MARGINRIGHT,
-          top: subplotCount === 0 ? '80%' : '70%',
+          // Grid Layout from bottom to top
+          bottom: `${subplotCount * 10}%`,
           height: '10%',
         },
       ],
@@ -375,8 +374,8 @@ export default class CandleChart extends Vue {
           options.grid.push({
             left: MARGINLEFT,
             right: MARGINRIGHT,
-            bottom: `${(plotIndex - 1) * 50}px`,
-            height: '8%',
+            bottom: `${plotIndex * 50}px`,
+            height: '50px',
           });
         }
         Object.entries(value).forEach(([sk, sv]) => {
@@ -418,7 +417,8 @@ export default class CandleChart extends Vue {
     //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
     // }
     if (options.grid && Array.isArray(options.grid)) {
-      options.grid[options.grid.length - 1].bottom = '75px';
+      // Last subplot is bottom
+      options.grid[options.grid.length - 1].bottom = '50px';
       delete options.grid[options.grid.length - 1].top;
     }
 
