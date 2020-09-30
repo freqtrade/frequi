@@ -90,6 +90,7 @@
       :y="gridLayoutTradeDetail.y"
       :w="gridLayoutTradeDetail.w"
       :h="gridLayoutTradeDetail.h"
+      :min-h="4"
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Trade Detail">
