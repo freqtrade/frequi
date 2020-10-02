@@ -125,6 +125,7 @@ export default class CandleChart extends Vue {
         right: '1%',
       },
       tooltip: {
+        show: true,
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
