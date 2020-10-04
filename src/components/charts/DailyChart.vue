@@ -6,6 +6,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import ECharts from 'vue-echarts';
+import { EChartOption } from 'echarts';
+
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/title';
@@ -46,7 +48,7 @@ export default class DailyChart extends Vue {
     );
   }
 
-  get dailyChartOptions() {
+  get dailyChartOptions(): EChartOption {
     return {
       title: {
         text: 'Daily profit',
@@ -73,22 +75,24 @@ export default class DailyChart extends Vue {
         type: 'category',
         inverse: true,
       },
-      visualMap: {
-        dimension: 1,
-        seriesIndex: 0,
-        show: false,
-        pieces: [
-          {
-            max: -0.01,
-            min: this.absoluteMin - 2,
-            color: 'red',
-          },
-          {
-            min: -0.00001,
-            color: 'green',
-          },
-        ],
-      },
+      visualMap: [
+        {
+          dimension: 1,
+          seriesIndex: 0,
+          show: false,
+          pieces: [
+            {
+              max: -0.01,
+              min: this.absoluteMin - 2,
+              color: 'red',
+            },
+            {
+              min: -0.00001,
+              color: 'green',
+            },
+          ],
+        },
+      ],
       yAxis: [
         {
           type: 'value',
@@ -112,12 +116,14 @@ export default class DailyChart extends Vue {
         {
           type: 'line',
           name: CHART_ABS_PROFIT,
-          color: 'black',
+          // Color is induced by visualMap
         },
         {
           type: 'bar',
           name: CHART_TRADE_COUNT,
-          color: 'rgba(150,150,150,0.3)',
+          itemStyle: {
+            color: 'rgba(150,150,150,0.3)',
+          },
           yAxisIndex: 1,
         },
       ],

@@ -17,6 +17,7 @@ import 'echarts/lib/component/visualMapPiecewise';
 
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
+import { EChartOption, EChartsOptionConfig } from 'echarts';
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit %';
@@ -50,7 +51,7 @@ export default class HourlyChart extends Vue {
     return res;
   }
 
-  get hourlyChartOptions() {
+  get hourlyChartOptions(): EChartOption {
     return {
       title: {
         text: 'Hourly Profit',
@@ -95,34 +96,37 @@ export default class HourlyChart extends Vue {
           nameGap: 30,
         },
       ],
-      visualMap: {
-        dimension: 1,
-        seriesIndex: 0,
-        show: false,
-        pieces: [
-          {
-            max: -0.001,
-            min: -2,
-            color: 'red',
-          },
-          {
-            min: -0.01,
-            max: 2,
-            color: 'green',
-          },
-        ],
-      },
+      visualMap: [
+        {
+          dimension: 1,
+          seriesIndex: 0,
+          show: false,
+          pieces: [
+            {
+              max: -0.001,
+              min: -2,
+              color: 'red',
+            },
+            {
+              min: -0.01,
+              max: 2,
+              color: 'green',
+            },
+          ],
+        },
+      ],
       series: [
         {
           type: 'line',
           name: CHART_PROFIT,
-          color: 'black',
           // symbol: 'none',
         },
         {
           type: 'bar',
           name: CHART_TRADE_COUNT,
-          color: 'rgba(150,150,150,0.3)',
+          itemStyle: {
+            color: 'rgba(150,150,150,0.3)',
+          },
           yAxisIndex: 1,
         },
       ],
