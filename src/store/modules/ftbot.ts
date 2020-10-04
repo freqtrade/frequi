@@ -1,12 +1,38 @@
 import { api } from '@/shared/apiService';
-import { BotState, BlacklistPayload, ForcebuyPayload, Logs, DailyPayload, Trade } from '@/types';
+import {
+  BotState,
+  BlacklistPayload,
+  ForcebuyPayload,
+  Logs,
+  DailyPayload,
+  Trade,
+  PairCandlePayload,
+  PairHistoryPayload,
+  PlotConfig,
+  StrategyListResult,
+  EMPTY_PLOTCONFIG,
+  AvailablePairPayload,
+  PlotConfigStorage,
+  WhitelistResponse,
+  StrategyResult,
+} from '@/types';
 
+import {
+  storeCustomPlotConfig,
+  getPlotConfigName,
+  getAllPlotConfigNames,
+  storePlotConfigName,
+} from '@/shared/storage';
 import { showAlert } from './alerts';
 
 export enum BotStoreGetters {
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
   closedTrades = 'closedTrades',
+  allTrades = 'allTrades',
+  plotConfig = 'plotConfig',
+  plotConfigNames = 'plotConfigNames',
+  timeframe = 'timeframe',
 }
 
 export default {
@@ -26,10 +52,28 @@ export default {
     dailyStats: [],
     pairlistMethods: [],
     detailTradeId: null,
+    candleData: {},
+    history: {},
+    strategyPlotConfig: {},
+    customPlotConfig: { ...EMPTY_PLOTCONFIG },
+    plotConfigName: getPlotConfigName(),
+    availablePlotConfigNames: getAllPlotConfigNames(),
+    strategyList: [],
+    strategy: {},
+    pairlist: [],
   },
   getters: {
+    [BotStoreGetters.plotConfig](state) {
+      return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
+    },
+    [BotStoreGetters.plotConfigNames](state): Array<string> {
+      return Object.keys(state.customPlotConfig);
+    },
     [BotStoreGetters.openTrades](state) {
       return state.openTrades;
+    },
+    [BotStoreGetters.allTrades](state) {
+      return [...state.openTrades, ...state.trades];
     },
     [BotStoreGetters.tradeDetail](state) {
       let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
@@ -40,6 +84,9 @@ export default {
     },
     [BotStoreGetters.closedTrades](state) {
       return state.trades.filter((item) => !item.is_open);
+    },
+    [BotStoreGetters.timeframe](state) {
+      return state.botState?.timeframe;
     },
   },
   mutations: {
@@ -53,7 +100,7 @@ export default {
     updatePerformance(state, performance) {
       state.performanceStats = performance;
     },
-    updateWhitelist(state, whitelist) {
+    updateWhitelist(state, whitelist: WhitelistResponse) {
       state.whitelist = whitelist.whitelist;
       state.pairlistMethods = whitelist.method;
     },
@@ -80,6 +127,35 @@ export default {
     },
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
+    },
+    updateStrategyList(state, result: StrategyListResult) {
+      state.strategyList = result.strategies;
+    },
+    updateStrategy(state, strategy: StrategyResult) {
+      state.strategy = strategy;
+    },
+    updatePairs(state, pairlist: Array<string>) {
+      state.pairlist = pairlist;
+    },
+    updatePairCandles(state, { pair, timeframe, data }) {
+      state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
+    },
+    updatePairHistory(state, { pair, timeframe, data }) {
+      // Intentionally drop the previous state here.
+      state.history = { [`${pair}__${timeframe}`]: data };
+    },
+    updatePlotConfig(state, plotConfig: PlotConfig) {
+      state.strategyPlotConfig = plotConfig;
+    },
+    updatePlotConfigName(state, plotConfigName: string) {
+      // Set default plot config name
+      state.plotConfigName = plotConfigName;
+      storePlotConfigName(plotConfigName);
+    },
+    saveCustomPlotConfig(state, plotConfig: PlotConfigStorage) {
+      state.customPlotConfig = plotConfig;
+      storeCustomPlotConfig(plotConfig);
+      state.availablePlotConfigNames = getAllPlotConfigNames();
     },
   },
   actions: {
@@ -109,17 +185,112 @@ export default {
         .then((result) => commit('updateOpenTrades', result.data))
         .catch(console.error);
     },
-    getPerformance({ commit }) {
+    getPairCandles({ commit }, payload: PairCandlePayload) {
+      if (payload.pair && payload.timeframe && payload.limit) {
+        return api
+          .get('/pair_candles', {
+            params: { ...payload },
+          })
+          .then((result) => {
+            commit('updatePairCandles', {
+              pair: payload.pair,
+              timeframe: payload.timeframe,
+              data: result.data,
+            });
+          })
+          .catch(console.error);
+      }
+      // Error branchs
+      const error = 'pair or timeframe not specified';
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+    },
+    getPairHistory({ commit }, payload: PairHistoryPayload) {
+      if (payload.pair && payload.timeframe && payload.timerange) {
+        return api
+          .get('/pair_history', {
+            params: { ...payload },
+            timeout: 10000,
+          })
+          .then((result) => {
+            commit('updatePairHistory', {
+              pair: payload.pair,
+              timeframe: payload.timeframe,
+              timerange: payload.timerange,
+              data: result.data,
+            });
+          })
+          .catch(console.error);
+      }
+      // Error branchs
+      const error = 'pair or timeframe or timerange not specified';
+      console.error(error);
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+    },
+    getStrategyPlotConfig({ commit }) {
       return api
-        .get('/performance')
-        .then((result) => commit('updatePerformance', result.data))
+        .get('/plot_config')
+        .then((result) => commit('updatePlotConfig', result.data))
         .catch(console.error);
+    },
+    setPlotConfigName({ commit }, plotConfigName: string) {
+      commit('updatePlotConfigName', plotConfigName);
+    },
+    getStrategyList({ commit }) {
+      return api
+        .get('/strategies')
+        .then((result) => commit('updateStrategyList', result.data))
+        .catch(console.error);
+    },
+    async getStrategy({ commit }, strategy: string) {
+      try {
+        const result = await api.get(`/strategy/${strategy}`, {});
+        commit('updateStrategy', result.data);
+        return Promise.resolve(result.data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    },
+    async getAvailablePairs({ commit }, payload: AvailablePairPayload) {
+      try {
+        const result = await api.get('/available_pairs', {
+          params: { ...payload },
+        });
+        // result is of type AvailablePairResult
+        const { pairs } = result.data;
+        commit('updatePairs', pairs);
+        return Promise.resolve(result.data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    },
+    async getPerformance({ commit }) {
+      try {
+        const result = await api.get('/performance');
+        commit('updatePerformance', result.data);
+        return Promise.resolve(result.data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
     },
     getWhitelist({ commit }) {
       return api
         .get('/whitelist')
-        .then((result) => commit('updateWhitelist', result.data))
-        .catch(console.error);
+        .then((result) => {
+          commit('updateWhitelist', result.data);
+          return Promise.resolve(result.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          return Promise.reject(error);
+        });
     },
     getBlacklist({ commit }) {
       return api

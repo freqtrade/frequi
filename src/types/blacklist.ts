@@ -8,3 +8,9 @@ export interface BlacklistResponse {
   blacklist: Array<string>;
   errors: Record<string, string>;
 }
+
+export interface WhitelistResponse {
+  method: Array<string>;
+  length: number;
+  whitelist: Array<string>;
+}
