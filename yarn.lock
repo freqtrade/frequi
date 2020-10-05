@@ -997,10 +997,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/echarts@^4.6.2":
-  version "4.6.5"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.6.5.tgz#6aba35e7d5fdb97f0852865a11ad1cd52f0b72fe"
-  integrity sha512-lzYceya5tCBAUTjYnTP2Lwd1VAlyjLfWm3pRFqS4Nzj+Lb+1ej+uX40miM/je73jqVXvO+g3FTMNzyKWDmLR1Q==
+"@types/echarts@^4.6.6":
+  version "4.6.6"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.6.6.tgz#d3166302725da1cc98fba8966b8b04a358d981cf"
+  integrity sha512-5sduQxNGHur+rjnBBNwETXKvFQAG3lZBNfmJ0e9bCH/n5K3NWwu8QHhAV8J9gPpwvxMIbEc+bDjwzax4VmjC0w==
   dependencies:
     "@types/zrender" "*"
 
