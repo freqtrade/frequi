@@ -8934,10 +8934,10 @@ vue-class-component@^7.2.5:
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.2.6.tgz#8471e037b8e4762f5a464686e19e5afc708502e4"
   integrity sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==
 
-vue-cli-plugin-bootstrap-vue@~0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-bootstrap-vue/-/vue-cli-plugin-bootstrap-vue-0.6.0.tgz#cc500263b2ffd2c3d7ca1c3e5436860b0b20bb74"
-  integrity sha512-sgW3hPlD26AHGJSCoPmEeF1l3KeB/r18nfOAq9RkhIZx5hEwV4jZuiBCxdiyOsha0L5PiegKoofA4gn4c0eLcQ==
+vue-cli-plugin-bootstrap-vue@~0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-bootstrap-vue/-/vue-cli-plugin-bootstrap-vue-0.7.0.tgz#b44ed7180e59aca2846e981fc67f59d7c77298e3"
+  integrity sha512-KYP7CpwbM6Xw94LR2G6y8ZqqTDKlYTgLDwsxaNUj8NyuAo/mpo2y6Q67T9CXjiPgJYVbWH5IzkhE0gHc+9xZKA==
 
 vue-echarts@^5.0.0-beta.0:
   version "5.0.0-beta.0"
