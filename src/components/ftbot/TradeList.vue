@@ -17,7 +17,7 @@
         @row-clicked="onRowClicked"
         @row-selected="onRowSelected"
       >
-        <template v-slot:cell(actions)="row">
+        <template #cell(actions)="row">
           <b-button class="btn-xs" size="sm" title="Forcesell" @click="forcesellHandler(row.item)">
             FS
           </b-button>
@@ -30,7 +30,7 @@
             RM
           </b-button>
         </template>
-        <template v-slot:cell(pair)="row">
+        <template #cell(pair)="row">
           <ProfitSymbol :trade="row.item" />
           <span>
             {{ row.item.pair }}

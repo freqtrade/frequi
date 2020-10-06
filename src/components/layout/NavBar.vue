@@ -24,7 +24,7 @@
           </li>
           <li v-if="loggedIn" class="nav-item">
             <b-nav-item-dropdown right>
-              <template v-slot:button-content>
+              <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
               <b-dropdown-item to="/settings">Settings</b-dropdown-item>
