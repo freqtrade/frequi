@@ -17,7 +17,7 @@ import 'echarts/lib/component/visualMapPiecewise';
 
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
-import { EChartOption, EChartsOptionConfig } from 'echarts';
+import { EChartOption } from 'echarts';
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit %';
