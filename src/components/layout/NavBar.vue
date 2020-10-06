@@ -48,6 +48,7 @@ import LoginModal from '@/views/LoginModal.vue';
 import { State, Action, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
+import { LayoutActions } from '@/store/modules/layout';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -66,9 +67,9 @@ export default class NavBar extends Vue {
 
   @ftbot.Action ping;
 
-  @layoutNs.Action resetDashboardLayout;
+  @layoutNs.Action [LayoutActions.resetDashboardLayout];
 
-  @layoutNs.Action resetTradingLayout;
+  @layoutNs.Action [LayoutActions.resetTradingLayout];
 
   mounted() {
     this.ping();

@@ -151,7 +151,7 @@ import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 
 import { Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
-import { TradeLayout, findGridLayout } from '@/store/modules/layout';
+import { TradeLayout, findGridLayout, LayoutGetters, LayoutActions } from '@/store/modules/layout';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -189,9 +189,9 @@ export default class Trading extends Vue {
 
   @ftbot.State whitelist!: string[];
 
-  @layoutNs.Getter getTradingLayout!: GridItemData[];
+  @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
 
-  @layoutNs.Mutation setTradingLayout;
+  @layoutNs.Action [LayoutActions.setTradingLayout];
 
   get gridLayout(): GridItemData[] {
     return this.getTradingLayout;

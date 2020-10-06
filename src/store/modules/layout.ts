@@ -17,6 +17,23 @@ export enum DashboardLayout {
   cumChartChart = 'g-cumChartChart',
 }
 
+export enum LayoutGetters {
+  getDashboardLayout = 'getDashboardLayout',
+  getTradingLayout = 'getTradingLayout',
+}
+
+export enum LayoutActions {
+  setDashboardLayout = 'setDashboardLayout',
+  setTradingLayout = 'setTradingLayout',
+  resetDashboardLayout = 'resetDashboardLayout',
+  resetTradingLayout = 'resetTradingLayout',
+}
+
+enum LayoutMutations {
+  setDashboardLayout = 'setDashboardLayout',
+  setTradingLayout = 'setTradingLayout',
+}
+
 // Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
   { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 4 },
@@ -68,33 +85,42 @@ export default {
   },
 
   getters: {
-    getDashboardLayout(state) {
+    [LayoutGetters.getDashboardLayout](state) {
       return state.dashboardLayout;
     },
-    getTradingLayout(state) {
+    [LayoutGetters.getTradingLayout](state) {
       return state.tradingLayout;
     },
   },
 
   mutations: {
-    setDashboardLayout(state, layout) {
+    [LayoutMutations.setDashboardLayout](state, layout) {
       console.log('set dashboard layout');
       state.dashboardLayout = layout;
       localStorage.setItem(STORE_DASHBOARD_LAYOUT, JSON.stringify(layout));
     },
-    setTradingLayout(state, layout) {
+    [LayoutMutations.setTradingLayout](state, layout) {
       state.tradingLayout = layout;
       localStorage.setItem(STORE_TRADING_LAYOUT, JSON.stringify(layout));
     },
   },
 
   actions: {
-    resetDashboardLayout({ commit }) {
-      commit('setDashboardLayout', JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT)));
+    [LayoutActions.setDashboardLayout]({ commit }, layout) {
+      commit(LayoutMutations.setDashboardLayout, layout);
+    },
+    [LayoutActions.setTradingLayout]({ commit }, layout) {
+      commit(LayoutMutations.setTradingLayout, layout);
+    },
+    [LayoutActions.resetDashboardLayout]({ commit }) {
+      commit(
+        LayoutMutations.setDashboardLayout,
+        JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT)),
+      );
     },
 
-    resetTradingLayout({ commit }) {
-      commit('setTradingLayout', JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT)));
+    [LayoutActions.resetTradingLayout]({ commit }) {
+      commit(LayoutMutations.setTradingLayout, JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT)));
     },
   },
 };
