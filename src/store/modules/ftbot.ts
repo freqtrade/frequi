@@ -15,6 +15,8 @@ import {
   PlotConfigStorage,
   WhitelistResponse,
   StrategyResult,
+  BalanceInterface,
+  DailyReturnValue,
 } from '@/types';
 
 import {
@@ -66,16 +68,16 @@ export default {
     [BotStoreGetters.plotConfig](state) {
       return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
     },
-    [BotStoreGetters.plotConfigNames](state): Array<string> {
+    [BotStoreGetters.plotConfigNames](state): string[] {
       return Object.keys(state.customPlotConfig);
     },
-    [BotStoreGetters.openTrades](state) {
+    [BotStoreGetters.openTrades](state): Trade[] {
       return state.openTrades;
     },
-    [BotStoreGetters.allTrades](state) {
+    [BotStoreGetters.allTrades](state): Trade[] {
       return [...state.openTrades, ...state.trades];
     },
-    [BotStoreGetters.tradeDetail](state) {
+    [BotStoreGetters.tradeDetail](state): Trade {
       let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
       if (!dTrade) {
         dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
@@ -85,7 +87,7 @@ export default {
     [BotStoreGetters.closedTrades](state) {
       return state.trades.filter((item) => !item.is_open);
     },
-    [BotStoreGetters.timeframe](state) {
+    [BotStoreGetters.timeframe](state): string {
       return state.botState?.timeframe;
     },
   },
@@ -110,10 +112,10 @@ export default {
     updateProfit(state, profit) {
       state.profit = profit;
     },
-    updateDaily(state, daily) {
+    updateDaily(state, daily: DailyReturnValue) {
       state.dailyStats = daily;
     },
-    updateBalance(state, balance) {
+    updateBalance(state, balance: BalanceInterface) {
       state.balance = balance;
     },
     updateState(state, botState: BotState) {
