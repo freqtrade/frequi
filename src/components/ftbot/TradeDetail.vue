@@ -6,10 +6,10 @@
         <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
-        <ValuePair description="Open Rate">{{ trade.open_rate }}</ValuePair>
-        <ValuePair v-if="!trade.is_open" description="Close Rate">{{ trade.close_rate }}</ValuePair>
-        <ValuePair description="Min Rate">{{ trade.min_rate }}</ValuePair>
-        <ValuePair description="Max Rate">{{ trade.max_rate }}</ValuePair>
+        <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
+        <ValuePair v-if="!trade.is_open" description="Close Rate">{{ formatPrice(trade.close_rate) }}</ValuePair>
+        <ValuePair description="Min Rate">{{ formatPrice(trade.min_rate) }}</ValuePair>
+        <ValuePair description="Max Rate">{{ formatPrice(trade.max_rate) }}</ValuePair>
         <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
