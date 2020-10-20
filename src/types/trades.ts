@@ -23,7 +23,10 @@ export interface Trade {
   fee_close_currency?: string;
 
   current_rate?: number;
+  /** Current profit as ratio */
   current_profit?: number;
+  current_profit_abs?: number;
+  current_profit_pct?: number;
   sell_reason?: string;
   min_rate?: number;
   max_rate?: number;
@@ -37,6 +40,10 @@ export interface Trade {
   initial_stop_loss_abs?: number;
   initial_stop_loss_ratio?: number;
   initial_stop_loss_pct?: number;
+
+  stoploss_current_dist?: number;
+  stoploss_current_dist_ratio?: number;
+  stoploss_current_dist_pct?: number;
   open_order_id?: string;
 }
 
@@ -54,19 +61,7 @@ export interface ClosedTrade extends Trade {
   fee_close_cost?: number;
   fee_close_currency?: string;
 
-  current_rate?: number;
-  sell_reason?: string;
-  min_rate?: number;
-  max_rate?: number;
-
-  stop_loss_abs: number;
-  stop_loss_ratio: number;
-  stop_loss_pct: number;
-  stoploss_order_id?: string;
-  stoploss_last_update?: string;
-  stoploss_last_update_timestamp?: number;
-  initial_stop_loss_abs?: number;
-  initial_stop_loss_ratio?: number;
-  initial_stop_loss_pct?: number;
-  open_order_id?: string;
+  sell_reason: string;
+  min_rate: number;
+  max_rate: number;
 }

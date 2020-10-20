@@ -7,13 +7,22 @@
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
-        <ValuePair v-if="!trade.is_open" description="Close Rate">{{ formatPrice(trade.close_rate) }}</ValuePair>
-        <ValuePair description="Min Rate">{{ formatPrice(trade.min_rate) }}</ValuePair>
-        <ValuePair description="Max Rate">{{ formatPrice(trade.max_rate) }}</ValuePair>
+        <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
+          formatPrice(trade.close_rate)
+        }}</ValuePair>
+        <ValuePair v-if="trade.min_rate" description="Min Rate">{{
+          formatPrice(trade.min_rate)
+        }}</ValuePair>
+        <ValuePair v-if="trade.max_rate" description="Max Rate">{{
+          formatPrice(trade.max_rate)
+        }}</ValuePair>
         <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
-        <ValuePair v-if="trade.current_profit" description="Current Profit">
+        <ValuePair
+          v-if="trade.current_profit && trade.current_profit_abs"
+          description="Current Profit"
+        >
           {{ formatPercent(trade.current_profit) }} | {{ trade.current_profit_abs }}
         </ValuePair>
         <ValuePair v-if="trade.close_profit" description="Close Profit">
@@ -26,15 +35,21 @@
           {{ formatPercent(trade.stop_loss_pct / 100) }} |
           {{ formatPrice(trade.stop_loss_abs) }}
         </ValuePair>
-        <ValuePair description="Initial Stoploss">
+        <ValuePair
+          v-if="trade.initial_stop_loss_pct && trade.initial_stop_loss_abs"
+          description="Initial Stoploss"
+        >
           {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
-          {{ formatPrice(trade.initial_stop_loss) }}
+          {{ formatPrice(trade.initial_stop_loss_abs) }}
         </ValuePair>
-        <ValuePair v-if="trade.is_open" description="Current stoploss dist">
+        <ValuePair
+          v-if="trade.is_open && trade.stoploss_current_dist_ratio && trade.stoploss_current_dist"
+          description="Current stoploss dist"
+        >
           {{ formatPercent(trade.stoploss_current_dist_ratio) }} |
           {{ formatPrice(trade.stoploss_current_dist) }}
         </ValuePair>
-        <ValuePair description="Stoploss last updated">
+        <ValuePair v-if="trade.stoploss_last_update_timestamp" description="Stoploss last updated">
           {{ timestampms(trade.stoploss_last_update_timestamp) }}
         </ValuePair>
       </div>
