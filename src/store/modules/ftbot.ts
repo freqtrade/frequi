@@ -17,6 +17,7 @@ import {
   StrategyResult,
   BalanceInterface,
   DailyReturnValue,
+  LockResponse,
 } from '@/types';
 
 import {
@@ -63,6 +64,7 @@ export default {
     strategyList: [],
     strategy: {},
     pairlist: [],
+    currentLocks: [],
   },
   getters: {
     [BotStoreGetters.plotConfig](state) {
@@ -98,6 +100,9 @@ export default {
     },
     updateOpenTrades(state, trades) {
       state.openTrades = trades;
+    },
+    updateLocks(state, locks: LockResponse) {
+      state.locks = locks;
     },
     updatePerformance(state, performance) {
       state.performanceStats = performance;
@@ -179,6 +184,12 @@ export default {
       return api
         .get('/trades')
         .then((result) => commit('updateTrades', result.data))
+        .catch(console.error);
+    },
+    getLocks({ commit }) {
+      return api
+        .get('/locks')
+        .then((result) => commit('updateLocks', result.data))
         .catch(console.error);
     },
     getOpenTrades({ commit }) {
