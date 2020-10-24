@@ -29,7 +29,7 @@ export enum LayoutActions {
   resetTradingLayout = 'resetTradingLayout',
 }
 
-enum LayoutMutations {
+export enum LayoutMutations {
   setDashboardLayout = 'setDashboardLayout',
   setTradingLayout = 'setTradingLayout',
 }

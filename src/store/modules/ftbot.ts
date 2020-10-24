@@ -64,7 +64,7 @@ export default {
     strategyList: [],
     strategy: {},
     pairlist: [],
-    currentLocks: [],
+    locks: [],
   },
   getters: {
     [BotStoreGetters.plotConfig](state) {

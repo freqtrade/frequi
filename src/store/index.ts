@@ -75,6 +75,7 @@ export default new Vuex.Store({
       // Refresh data that's needed in near realtime
       dispatch('ftbot/getOpenTrades');
       dispatch('ftbot/getState');
+      dispatch('ftbot/getLocks');
     },
   },
 });

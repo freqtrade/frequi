@@ -45,6 +45,9 @@
           <b-tab title="Pairlist" lazy>
             <FTBotAPIPairList />
           </b-tab>
+          <b-tab title="Pair Locks" lazy>
+            <PairLockList />
+          </b-tab>
         </b-tabs>
       </DraggableContainer>
     </GridItem>
@@ -143,6 +146,7 @@ import BotStatus from '@/components/ftbot/BotStatus.vue';
 import Balance from '@/components/ftbot/Balance.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
+import PairLockList from '@/components/ftbot/PairLockList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import LogViewer from '@/components/ftbot/LogViewer.vue';
@@ -168,6 +172,7 @@ const layoutNs = namespace('layout');
     Balance,
     DailyStats,
     FTBotAPIPairList,
+    PairLockList,
     TradeDetail,
     ReloadControl,
     LogViewer,
