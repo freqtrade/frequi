@@ -13,11 +13,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
 import DailyChart from '@/components/charts/DailyChart.vue';
 
-export default {
+export default Vue.extend({
   name: 'DailyStats',
   components: {
     DailyChart,
@@ -39,5 +40,5 @@ export default {
   methods: {
     ...mapActions('ftbot', ['getDaily']),
   },
-};
+});
 </script>
