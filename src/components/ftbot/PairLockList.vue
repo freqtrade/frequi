@@ -5,14 +5,15 @@
       <b-button class="float-right" size="sm" @click="getLocks">&#x21bb;</b-button>
     </div>
     <div>
-      <b-table class="table-sm" :items="locks.locks" :fields="tableFields"> </b-table>
+      <b-table class="table-sm" :items="currentLocks" :fields="tableFields"> </b-table>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { timestampms } from '@/shared/formatters';
-import { LockResponse } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
+import { Lock } from '@/types';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
@@ -22,7 +23,7 @@ const ftbot = namespace('ftbot');
 export default class PairLockList extends Vue {
   @ftbot.Action getLocks;
 
-  @ftbot.State locks!: LockResponse;
+  @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock;
 
   timestampms = timestampms;
 

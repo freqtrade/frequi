@@ -18,6 +18,7 @@ import {
   BalanceInterface,
   DailyReturnValue,
   LockResponse,
+  Lock,
 } from '@/types';
 
 import {
@@ -33,6 +34,7 @@ export enum BotStoreGetters {
   tradeDetail = 'tradeDetail',
   closedTrades = 'closedTrades',
   allTrades = 'allTrades',
+  currentLocks = 'currentLocks',
   plotConfig = 'plotConfig',
   plotConfigNames = 'plotConfigNames',
   timeframe = 'timeframe',
@@ -64,7 +66,7 @@ export default {
     strategyList: [],
     strategy: {},
     pairlist: [],
-    locks: [],
+    currentLocks: [],
   },
   getters: {
     [BotStoreGetters.plotConfig](state) {
@@ -78,6 +80,9 @@ export default {
     },
     [BotStoreGetters.allTrades](state): Trade[] {
       return [...state.openTrades, ...state.trades];
+    },
+    [BotStoreGetters.currentLocks](state): Lock[] {
+      return state.currentLocks.locks;
     },
     [BotStoreGetters.tradeDetail](state): Trade {
       let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
@@ -102,7 +107,7 @@ export default {
       state.openTrades = trades;
     },
     updateLocks(state, locks: LockResponse) {
-      state.locks = locks;
+      state.currentLocks = locks;
     },
     updatePerformance(state, performance) {
       state.performanceStats = performance;
