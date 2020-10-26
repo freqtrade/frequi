@@ -12,7 +12,7 @@
     "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.17.0",
-    "bootswatch": "^4.5.2",
+    "bootswatch": "^4.5.3",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "moment": "^2.29.1",
