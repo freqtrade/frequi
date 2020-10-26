@@ -9,7 +9,7 @@
     "lint-ci": "vue-cli-service lint --no-fix"
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.18.1",
     "bootswatch": "^4.5.3",
