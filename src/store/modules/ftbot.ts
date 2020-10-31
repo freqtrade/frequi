@@ -146,6 +146,9 @@ export default {
       state.detailTradeId = trade ? trade.trade_id : null;
       state.selectedPair = trade ? trade.pair : state.selectedPair;
     },
+    setSelectedPair(state, pair: string) {
+      state.selectedPair = pair;
+    },
     updateStrategyList(state, result: StrategyListResult) {
       state.strategyList = result.strategies;
     },
@@ -190,6 +193,9 @@ export default {
     },
     setDetailTrade({ commit }, trade: Trade) {
       commit('setDetailTrade', trade);
+    },
+    setSelectedPair({ commit }, pair: string) {
+      commit('setSelectedPair', pair);
     },
     getTrades({ commit }) {
       return api
