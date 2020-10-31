@@ -32,6 +32,7 @@ import { showAlert } from './alerts';
 export enum BotStoreGetters {
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
+  selectedPair = 'selectedPair',
   closedTrades = 'closedTrades',
   allTrades = 'allTrades',
   currentLocks = 'currentLocks',
@@ -57,6 +58,7 @@ export default {
     dailyStats: [],
     pairlistMethods: [],
     detailTradeId: null,
+    selectedPair: '',
     candleData: {},
     history: {},
     strategyPlotConfig: {},
@@ -90,6 +92,9 @@ export default {
         dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
       }
       return dTrade;
+    },
+    [BotStoreGetters.selectedPair](state): Trade {
+      return state.selectedPair;
     },
     [BotStoreGetters.closedTrades](state) {
       return state.trades.filter((item) => !item.is_open);
@@ -139,6 +144,7 @@ export default {
     },
     setDetailTrade(state, trade: Trade) {
       state.detailTradeId = trade ? trade.trade_id : null;
+      state.selectedPair = trade ? trade.pair : state.selectedPair;
     },
     updateStrategyList(state, result: StrategyListResult) {
       state.strategyList = result.strategies;

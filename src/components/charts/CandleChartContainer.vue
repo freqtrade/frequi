@@ -66,6 +66,7 @@ import {
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -102,6 +103,8 @@ export default class CandleChartContainer extends Vue {
   @ftbot.State candleData!: PairHistory;
 
   @ftbot.State history!: PairHistory;
+
+  @ftbot.Getter [BotStoreGetters.selectedPair]!: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairCandles!: (payload: PairCandlePayload) => void;
@@ -157,6 +160,12 @@ export default class CandleChartContainer extends Vue {
   @Watch('availablePairs')
   watchAvailablePairs() {
     [this.pair] = this.availablePairs;
+    this.refresh();
+  }
+
+  @Watch(BotStoreGetters.selectedPair)
+  watchSelectedPair() {
+    this.pair = this.selectedPair;
     this.refresh();
   }
 }
