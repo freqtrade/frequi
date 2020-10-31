@@ -6,7 +6,7 @@
       v-for="comb in combinedPairList"
       :key="comb.pair"
       button
-      class="d-flex justify-content-between align-items-center"
+      class="d-flex justify-content-between align-items-center py-1"
       @click="setSelectedPair(comb.pair)"
     >
       <div>
@@ -66,9 +66,14 @@ export default class PairSummary extends Vue {
 
     this.whitelist.forEach((pair) => {
       const trade = this.openTrades.find((el) => el.pair === pair);
-      const locks = this.currentLocks.find((el) => el.pair === pair);
+      const allLocks = this.currentLocks.filter((el) => el.pair === pair);
+      // Sort to have longer timeframe in front
+      allLocks.sort((a, b) => (a.lock_end_timestamp > b.lock_end_timestamp ? -1 : 1));
       let lockReason = '';
-      if (locks) {
+      let locks;
+      if (allLocks.length > 0) {
+        [locks] = allLocks;
+        console.log(locks);
         lockReason = `${timestampms(locks.lock_end_timestamp)} - ${locks.reason}`;
       }
       let profitString = '';
