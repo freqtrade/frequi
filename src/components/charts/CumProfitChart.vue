@@ -33,6 +33,8 @@ export default class CumProfitChart extends Vue {
 
   @Prop({ default: true, type: Boolean }) showTitle!: boolean;
 
+  @Prop({ default: 'close_profit_abs' }) profitColumn!: string;
+
   get cumulativeData() {
     const res: CumProfitData[] = [];
     const closedTrades = this.trades; // .filter((t) => t.close_timestamp);
@@ -41,9 +43,9 @@ export default class CumProfitChart extends Vue {
     let profit = 0.0;
     for (let i = 0, len = closedTrades.length; i < len; i += 1) {
       const trade = closedTrades[i];
-      if (trade.close_timestamp && trade.close_profit_abs) {
-        profit += trade.close_profit_abs;
-        res.push({ date: trade.close_timestamp, profit, raising: trade.close_profit_abs > 0 });
+      if (trade.close_timestamp && trade[this.profitColumn]) {
+        profit += trade[this.profitColumn];
+        res.push({ date: trade.close_timestamp, profit, raising: trade[this.profitColumn] > 0 });
       }
     }
     return res;
