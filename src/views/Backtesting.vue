@@ -28,6 +28,14 @@
         v-model="btFormMode"
         name="bt-form-radios"
         button
+        value="visualize-summary"
+        :disabled="!hasBacktestResult"
+        >Visualize summary</b-form-radio
+      >
+      <b-form-radio
+        v-model="btFormMode"
+        name="bt-form-radios"
+        button
         value="visualize"
         :disabled="!hasBacktestResult"
         >Visualize result</b-form-radio
@@ -122,6 +130,16 @@
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
       <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
     </div>
+    <div
+      v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
+      class="text-center w-100 mt-2 cum-profit-container"
+    >
+      <CumProfitChart
+        :trades="selectedBacktestResult.trades"
+        profit-column="profit_abs"
+        :show-title="true"
+      />
+    </div>
     <div v-if="hasBacktestResult && btFormMode == 'visualize'" class="text-center w-100 mt-2">
       <CandleChartContainer
         :available-pairs="selectedBacktestResult.pairlist"
@@ -146,6 +164,7 @@ import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import ValuePair from '@/components/ftbot/ValuePair.vue';
+import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 
 import {
   BacktestPayload,
@@ -163,6 +182,7 @@ const ftbot = namespace('ftbot');
     BacktestResultView,
     TimeRangeSelect,
     CandleChartContainer,
+    CumProfitChart,
     StrategyList,
     ValuePair,
   },
@@ -258,6 +278,9 @@ export default class Backtesting extends Vue {
 
 <style scoped>
 .candle-chart-container {
+  height: 640px !important;
+}
+.cum-profit-container {
   height: 640px !important;
 }
 </style>
