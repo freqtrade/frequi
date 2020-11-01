@@ -100,7 +100,12 @@
       <StrategyList v-model="strategy" show-details="true"></StrategyList>
     </div>
 
-    <div v-if="btFormMode == 'run'" class="row container">
+    <div v-if="btFormMode == 'run'" class="container">
+      <div class="row">
+        <ValuePair description="Timeframe (not working)">{{ timeframe }}</ValuePair>
+        <ValuePair description="TimeRange">{{ timerange }}</ValuePair>
+        <ValuePair description="Strategy">{{ strategy }}</ValuePair>
+      </div>
       <div class="row">
         <h3>Backtesting summary</h3>
       </div>
@@ -111,9 +116,7 @@
         <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
           Load backtest result
         </b-button>
-        <b-button variant="primary" :disabled="backtestRunning" @click="removeBacktest">
-          Reset Backtest
-        </b-button>
+        <b-button variant="primary" @click="removeBacktest">Reset Backtest</b-button>
       </div>
     </div>
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
@@ -142,6 +145,7 @@ import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
+import ValuePair from '@/components/ftbot/ValuePair.vue';
 
 import {
   BacktestPayload,
@@ -155,7 +159,13 @@ import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 
 const ftbot = namespace('ftbot');
 @Component({
-  components: { BacktestResultView, TimeRangeSelect, CandleChartContainer, StrategyList },
+  components: {
+    BacktestResultView,
+    TimeRangeSelect,
+    CandleChartContainer,
+    StrategyList,
+    ValuePair,
+  },
 })
 export default class Backtesting extends Vue {
   pollInterval: number | null = null;
