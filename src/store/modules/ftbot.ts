@@ -424,6 +424,14 @@ export default {
         return Promise.reject(error);
       }
     },
+    async startTrade() {
+      try {
+        const res = await api.post('/start_trade', {});
+        return Promise.resolve(res);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async forcesell({ dispatch }, tradeid: string) {
       if (tradeid) {
         const payload = { tradeid };

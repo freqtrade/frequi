@@ -29,6 +29,14 @@
       >
         Forcebuy
       </button>
+      <button
+        v-if="botState.runmode === 'webserver'"
+        :disabled="isTrading"
+        class="btn-primary col-md-5 m-1"
+        @click="startTrade()"
+      >
+        Start Trading
+      </button>
       <ForceBuyForm :modal-show="forcebuyShow" @close="this.$bvModal.hide('forcebuy-modal')" />
     </div>
   </div>
@@ -55,6 +63,8 @@ export default class BotControls extends Vue {
   @ftbot.Action stopBuy;
 
   @ftbot.Action reloadConfig;
+
+  @ftbot.Action startTrade;
 
   get isTrading(): boolean {
     return this.botState.runmode === RunModes.LIVE || this.botState.runmode === RunModes.DRY_RUN;
