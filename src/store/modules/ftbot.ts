@@ -19,6 +19,7 @@ import {
   DailyReturnValue,
   LockResponse,
   Lock,
+  RunModes,
 } from '@/types';
 
 import {
@@ -39,6 +40,8 @@ export enum BotStoreGetters {
   plotConfig = 'plotConfig',
   plotConfigNames = 'plotConfigNames',
   timeframe = 'timeframe',
+  isTrading = 'isTrading',
+  isWebserverMode = 'isWebserverMode',
 }
 
 export default {
@@ -101,6 +104,14 @@ export default {
     },
     [BotStoreGetters.timeframe](state): string {
       return state.botState?.timeframe;
+    },
+    [BotStoreGetters.isTrading](state): boolean {
+      return (
+        state.botState.runmode === RunModes.LIVE || state.botState.runmode === RunModes.DRY_RUN
+      );
+    },
+    [BotStoreGetters.isWebserverMode](state): boolean {
+      return state.botState.runmode === RunModes.WEBSERVER;
     },
   },
   mutations: {

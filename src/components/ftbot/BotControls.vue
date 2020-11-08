@@ -30,7 +30,7 @@
         Forcebuy
       </button>
       <button
-        v-if="botState.runmode === 'webserver'"
+        v-if="isWebserverMode"
         :disabled="isTrading"
         class="btn-primary col-md-5 m-1"
         @click="startTrade()"
@@ -45,7 +45,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BotState, RunModes } from '@/types';
+import { BotState } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 import ForceBuyForm from './ForceBuyForm.vue';
 
 const ftbot = namespace('ftbot');
@@ -66,9 +67,9 @@ export default class BotControls extends Vue {
 
   @ftbot.Action startTrade;
 
-  get isTrading(): boolean {
-    return this.botState.runmode === RunModes.LIVE || this.botState.runmode === RunModes.DRY_RUN;
-  }
+  @ftbot.Getter [BotStoreGetters.isTrading]!: boolean;
+
+  @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
 
   initiateForcebuy() {
     this.$bvModal.show('forcebuy-modal');
