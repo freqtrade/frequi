@@ -1,15 +1,30 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <button class="btn btn-primary btn-sm col-md-5 m-1" @click="startBot()">Start</button>
-      <button class="btn btn-primary btn-sm col-md-5 m-1" @click="stopBot()">Stop</button>
-      <button class="btn btn-primary btn-sm col-md-5 m-1" @click="stopBuy()">StopBuy</button>
-      <button class="btn btn-primary btn-sm col-md-5 m-1" @click="reloadConfig()">
+      <button
+        class="btn btn-primary btn-sm col-md-5 m-1"
+        :disabled="!isTrading"
+        @click="startBot()"
+      >
+        Start
+      </button>
+      <button class="btn btn-primary btn-sm col-md-5 m-1" :disabled="!isTrading" @click="stopBot()">
+        Stop
+      </button>
+      <button class="btn btn-primary btn-sm col-md-5 m-1" :disabled="!isTrading" @click="stopBuy()">
+        StopBuy
+      </button>
+      <button
+        class="btn btn-primary btn-sm col-md-5 m-1"
+        :disabled="!isTrading"
+        @click="reloadConfig()"
+      >
         Reload Config
       </button>
       <button
         v-if="botState.forcebuy_enabled"
         class="btn btn-primary btn-sm col-md-5 m-1"
+        :disabled="!isTrading"
         @click="initiateForcebuy"
       >
         Forcebuy
@@ -22,7 +37,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BotState } from '@/types';
+import { BotState, RunModes } from '@/types';
 import ForceBuyForm from './ForceBuyForm.vue';
 
 const ftbot = namespace('ftbot');
@@ -40,6 +55,10 @@ export default class BotControls extends Vue {
   @ftbot.Action stopBuy;
 
   @ftbot.Action reloadConfig;
+
+  get isTrading(): boolean {
+    return this.botState.runmode === RunModes.LIVE || this.botState.runmode === RunModes.DRY_RUN;
+  }
 
   initiateForcebuy() {
     this.$bvModal.show('forcebuy-modal');

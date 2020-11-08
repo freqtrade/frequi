@@ -41,7 +41,29 @@ export interface BalanceInterface {
   value: number;
 }
 
+/** Values for BotState.state */
+export enum BotStates {
+  RUNNING = 'running',
+  STOPPED = 'stopped',
+  RELOAD_CONFIG = 'reload_config',
+}
+
+export enum RunModes {
+  LIVE = 'live',
+  DRY_RUN = 'dry_run',
+  BACKTEST = 'backtest',
+  EDGE = 'edge',
+  HYPEROPT = 'hyperopt',
+  UTIL_EXCHANGE = 'util_exchange',
+  UTIL_NO_EXCHANGE = 'util_no_exchange',
+  PLOT = 'plot',
+  WEBSERVER = 'webserver',
+  OTHER = 'other',
+}
+
 export interface BotState {
+  state: BotStates;
+  runmode: RunModes;
   bid_strategy: object;
   ask_strategy: object;
   dry_run: boolean;
@@ -51,7 +73,6 @@ export interface BotState {
   minimal_roi: object;
   stake_amount: number;
   stake_currency: string;
-  state: string;
   stoploss: number;
   strategy: string;
   /** Timeframe in readable form (e.g. 5m) */
