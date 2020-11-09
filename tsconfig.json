@@ -10,7 +10,11 @@
         "experimentalDecorators": true,
         "noImplicitAny": false,
         "allowJs": true,
+        "sourceMap": true,
         "baseUrl": "src",
+        "types": [
+            "webpack-env"
+        ],
         "paths": {
             "@/*": [
                 "./*"
