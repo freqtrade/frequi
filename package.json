@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/echarts": "^4.9.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.1",
     "@vue/cli-plugin-babel": "~4.5.8",
     "@vue/cli-plugin-eslint": "~4.5.8",
     "@vue/cli-plugin-router": "^4.5.7",
