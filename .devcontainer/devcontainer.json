@@ -1,15 +1,26 @@
 /* cSpell:disable */
 {
 	"name": "frequi",
-	"dockerComposeFile": ["docker-compose.yml","docker-compose.vscode.yml"],
-	"service": "web",
-    "workspaceFolder": "/home/dev/frequi",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"forwardPorts": [
+		8080
+	],
+	"mounts": [
+		"source=frequi-bashhistory,target=/home/node/commandhistory,type=volume"
+	],
+	"remoteUser": "node",
 	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash",
+		// "editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": true
+		},
 		"emmet.includeLanguages": {
 			"vue": "html",
 			"vue-html": "html"
-		}
+		},
+		"workbench.iconTheme": "vscode-icons",
 	},
 	"extensions": [
 		"octref.vetur",
@@ -17,5 +28,7 @@
 		"yzhang.markdown-all-in-one",
 		"marquesmps.dockerfile-validator",
 		"streetsidesoftware.code-spell-checker",
-	]
+		"vscode-icons-team.vscode-icons",
+	],
+	"postCreateCommand": "yarn install",
 }

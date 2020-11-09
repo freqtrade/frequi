@@ -1,58 +1,19 @@
-FROM node:16-slim as dev
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16-buster
 
-ENV DEBIAN_FRONTEND=noninteractive
+ARG USERNAME=node
 
-ARG USERNAME=dev
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
-RUN apt-get update \
-    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
-    # utils
-    && apt-get -y install git procps lsb-release  \
-    # manage dev user
-    && usermod -u 1001 node \
-    #&& groupadd --gid $USER_GID $USERNAME \
-    && useradd -m -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME \
-    # clean
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
-
-
-
-RUN yarn global add @vue/cli
-
-USER $USERNAME
+RUN yarn global add @vue/cli \
+    && sudo apt-get update \
+    && sudo apt-get install -y vim \
+    && sudo apt-get clean
 
 ENV HOME /home/$USERNAME
 
-RUN mkdir -p $HOME/frequi/node_modules
-
-WORKDIR $HOME/frequi
-
-COPY ./package.json .
-
-# install dependencies
-RUN yarn install
+# load ssh key in bash terminal
+RUN mkdir -p ${HOME}/commandhistory \
+    # && echo "eval \$(ssh-agent) && ssh-add ~/.ssh/id_rsa"  >> ${HOME}/.bashrc \
+    # set variable bash history
+    && echo "export PROMPT_COMMAND='history -a'" >> ${HOME}/.bashrc \
+    && echo "export HISTFILE=~/commandhistory/.bash_history" >> ${HOME}/.bashrc
 
 EXPOSE 8080
-
-FROM dev as vscode
-
-WORKDIR $HOME
-
-# load ssh key in bash terminal
-RUN  echo "eval \$(ssh-agent) && ssh-add ~/.ssh/id_rsa"  >> .bashrc
-
-# set variable bash history
-RUN echo "export PROMPT_COMMAND='history -a'" >> .bashrc \
-    && echo "export HISTFILE=~/commandhistory/.bash_history" >> .bashrc
-
-# ensure folder owned by $USERNAME
-RUN mkdir -p .vscode-server .vscode-server-insiders commandhistory
-
-ENV DEBIAN_FRONTEND=
