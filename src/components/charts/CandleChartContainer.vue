@@ -159,8 +159,10 @@ export default class CandleChartContainer extends Vue {
 
   @Watch('availablePairs')
   watchAvailablePairs() {
-    [this.pair] = this.availablePairs;
-    this.refresh();
+    if (!this.availablePairs.find((pair) => pair === this.pair)) {
+      [this.pair] = this.availablePairs;
+      this.refresh();
+    }
   }
 
   @Watch(BotStoreGetters.selectedPair)
