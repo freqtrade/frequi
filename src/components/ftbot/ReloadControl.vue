@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="btn btn-secondary btn-sm" @click="refreshAll()">Refresh all</button>
+    <button class="btn btn-secondary btn-sm" @click="refreshAll(true)">Refresh all</button>
 
     <b-form-checkbox v-model="autoRefreshLoc" class="float-right" size="sm" switch
       >AutoRefresh</b-form-checkbox
@@ -21,7 +21,7 @@ export default class ReloadControl extends Vue {
   created() {
     if (this.loggedIn) {
       this.refreshOnce();
-      this.refreshAll();
+      this.refreshAll(true);
     }
   }
 
@@ -68,10 +68,10 @@ export default class ReloadControl extends Vue {
         this.refreshFrequent();
       }, 5000);
     }
-    this.refreshSlow();
+    this.refreshSlow(true);
     if (this.autoRefresh) {
       this.refreshIntervalSlow = window.setInterval(() => {
-        this.refreshSlow();
+        this.refreshSlow(false);
       }, 60000);
     }
   }

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import userService from '@/shared/userService';
-import ftbotModule from './modules/ftbot';
+import ftbotModule, { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
 
@@ -56,22 +56,26 @@ export default new Vuex.Store({
     refreshOnce({ dispatch }) {
       dispatch('ftbot/getVersion');
     },
-    refreshAll({ dispatch }) {
+    refreshAll({ dispatch }, forceUpdate = false) {
       dispatch('refreshFrequent');
-      dispatch('refreshSlow');
+      dispatch('refreshSlow', forceUpdate);
       dispatch('ftbot/getDaily');
       dispatch('ftbot/getBalance');
+      /* white/blacklist might be refreshed more often as they are not expensive on the backend */
       dispatch('ftbot/getWhitelist');
       dispatch('ftbot/getBlacklist');
     },
-    refreshSlow({ dispatch }) {
-      // Refresh data that's needed "from time to time"
-      // dispatch('ftbot/getDaily');
-      dispatch('ftbot/getPerformance');
-      dispatch('ftbot/getProfit');
-      dispatch('ftbot/getTrades');
+    refreshSlow({ dispatch, commit, getters }, forceUpdate = false) {
+      // Refresh data only when needed
+      if (forceUpdate || getters[`ftbot/${BotStoreGetters.refreshRequired}`]) {
+        dispatch('ftbot/getPerformance');
+        dispatch('ftbot/getProfit');
+        dispatch('ftbot/getTrades');
+        commit('ftbot/updateRefreshRequired', false);
+      }
     },
     refreshFrequent({ dispatch }) {
+      dispatch('refreshSlow', false);
       // Refresh data that's needed in near realtime
       dispatch('ftbot/getOpenTrades');
       dispatch('ftbot/getState');

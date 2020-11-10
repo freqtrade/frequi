@@ -42,6 +42,7 @@ export enum BotStoreGetters {
   timeframe = 'timeframe',
   isTrading = 'isTrading',
   isWebserverMode = 'isWebserverMode',
+  refreshRequired = 'refreshRequired',
 }
 
 export default {
@@ -49,6 +50,7 @@ export default {
   state: {
     version: '',
     lastLogs: '',
+    refreshRequired: true,
     trades: [],
     openTrades: [],
     tradeCount: 0,
@@ -113,8 +115,14 @@ export default {
     [BotStoreGetters.isWebserverMode](state): boolean {
       return state.botState.runmode === RunModes.WEBSERVER;
     },
+    [BotStoreGetters.refreshRequired](state): boolean {
+      return state.refreshRequired;
+    },
   },
   mutations: {
+    updateRefreshRequired(state, refreshRequired: boolean) {
+      state.refreshRequired = refreshRequired;
+    },
     updateTrades(state, trades) {
       state.trades = trades.trades;
       state.tradeCount = trades.trades_count;
@@ -220,10 +228,24 @@ export default {
         .then((result) => commit('updateLocks', result.data))
         .catch(console.error);
     },
-    getOpenTrades({ commit }) {
+    getOpenTrades({ commit, state }) {
       return api
         .get('/status')
-        .then((result) => commit('updateOpenTrades', result.data))
+        .then((result) => {
+          // Check if trade-id's are different in this call, then trigger a full refresh
+          if (
+            Array.isArray(state.openTrades) &&
+            Array.isArray(result.data) &&
+            (state.openTrades.length !== result.data.length ||
+              !state.openTrades.every((val, index) => val.trade_id === result.data[index].trade_id))
+          ) {
+            // Open trades changed, so we should refresh now.
+            commit('updateRefreshRequired', true);
+            // dispatch('refreshSlow', null, { root: true });
+          }
+
+          commit('updateOpenTrades', result.data);
+        })
         .catch(console.error);
     },
     getPairCandles({ commit }, payload: PairCandlePayload) {
