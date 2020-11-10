@@ -104,7 +104,7 @@ export default class CandleChart extends Vue {
     const subplotCount =
       'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length : 0;
 
-    console.log(`subplotcount: ${subplotCount}`);
+    // console.log(`subplotcount: ${subplotCount}`);
 
     // Always show ~250 candles max as starting point
     const startingZoom = (1 - 250 / this.dataset.length) * 100;
