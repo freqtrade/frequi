@@ -1,30 +1,29 @@
 {
-    "compilerOptions": {
-        "target": "es2020",
-        "module": "es2020",
-        // this enables stricter inference for data properties on `this`
-        "strict": true,
-        // if using webpack 2+ or rollup, to leverage tree shaking:
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "noImplicitAny": false,
-        "allowJs": true,
-        "sourceMap": true,
-        "baseUrl": "src",
-        "types": [
-            "webpack-env"
-        ],
-        "paths": {
-            "@/*": [
-                "./*"
-            ]
-        }
-    },
-    "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx",
-        "src/**/*.vue",
-        "tests/**/*.ts",
-        "tests/**/*.tsx"
-    ]
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2020",
+    "strict": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "sourceMap": true,
+    "baseUrl": "src",
+    "types": [
+      "webpack-env",
+      "jest"
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ]
 }
