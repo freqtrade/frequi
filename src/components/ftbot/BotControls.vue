@@ -2,54 +2,54 @@
   <div class="container-fluid">
     <div class="row">
       <button
-        class="btn btn-primary btn-sm col-md-5 m-1"
+        class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || isRunning"
         title="Start Trading"
         @click="startBot()"
       >
-        Start
+        <PlayIcon />
       </button>
       <button
-        class="btn btn-primary btn-sm col-md-5 m-1"
+        class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || !isRunning"
         title="Stop Trading - Also stops handling open trades."
         @click="stopBot()"
       >
-        Stop
+        <StopIcon />
       </button>
       <button
-        class="btn btn-primary btn-sm col-md-5 m-1"
+        class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || !isRunning"
         title="StopBuy - Stops buying, but still handles open trades"
         @click="stopBuy()"
       >
-        StopBuy
+        <PauseIcon />
       </button>
       <button
-        class="btn btn-primary btn-sm col-md-5 m-1"
+        class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading"
         title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
         @click="reloadConfig()"
       >
-        Reload Config
+        <ReloadIcon />
       </button>
       <button
         v-if="botState.forcebuy_enabled"
-        class="btn btn-primary btn-sm col-md-5 m-1"
+        class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || !isRunning"
         title="Force Buy - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
         @click="initiateForcebuy"
       >
-        Forcebuy
+        <ForceBuyIcon />
       </button>
       <button
         v-if="isWebserverMode"
         :disabled="isTrading"
-        class="btn-primary col-md-5 m-1"
+        class="btn btn-secondary btn-sm col-md-5 ml-1"
         title="Start Trading mode"
         @click="startTrade()"
       >
-        Start Trading
+        <PlayIcon />
       </button>
       <ForceBuyForm :modal-show="forcebuyShow" @close="this.$bvModal.hide('forcebuy-modal')" />
     </div>
@@ -61,11 +61,18 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { BotState } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import PlayIcon from 'vue-material-design-icons/Play.vue';
+import StopIcon from 'vue-material-design-icons/Stop.vue';
+import PauseIcon from 'vue-material-design-icons/Pause.vue';
+import ReloadIcon from 'vue-material-design-icons/Reload.vue';
+import ForceBuyIcon from 'vue-material-design-icons/BankPlus.vue';
 import ForceBuyForm from './ForceBuyForm.vue';
 
 const ftbot = namespace('ftbot');
 
-@Component({ components: { ForceBuyForm } })
+@Component({
+  components: { ForceBuyForm, PlayIcon, StopIcon, PauseIcon, ReloadIcon, ForceBuyIcon },
+})
 export default class BotControls extends Vue {
   forcebuyShow = false;
 
