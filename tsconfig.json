@@ -3,11 +3,15 @@
     "target": "es2020",
     "module": "es2020",
     "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
     "noImplicitAny": false,
     "allowJs": true,
-    "sourceMap": true,
     "baseUrl": "src",
     "types": [
       "webpack-env",
@@ -25,5 +29,8 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
+  ],
+    "exclude": [
+      "node_modules"
   ]
 }
