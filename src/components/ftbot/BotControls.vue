@@ -3,15 +3,23 @@
     <div class="row">
       <button
         class="btn btn-primary btn-sm col-md-5 m-1"
-        :disabled="!isTrading"
+        :disabled="!isTrading || isRunning"
         @click="startBot()"
       >
         Start
       </button>
-      <button class="btn btn-primary btn-sm col-md-5 m-1" :disabled="!isTrading" @click="stopBot()">
+      <button
+        class="btn btn-primary btn-sm col-md-5 m-1"
+        :disabled="!isTrading || !isRunning"
+        @click="stopBot()"
+      >
         Stop
       </button>
-      <button class="btn btn-primary btn-sm col-md-5 m-1" :disabled="!isTrading" @click="stopBuy()">
+      <button
+        class="btn btn-primary btn-sm col-md-5 m-1"
+        :disabled="!isTrading || !isRunning"
+        @click="stopBuy()"
+      >
         StopBuy
       </button>
       <button
@@ -24,7 +32,7 @@
       <button
         v-if="botState.forcebuy_enabled"
         class="btn btn-primary btn-sm col-md-5 m-1"
-        :disabled="!isTrading"
+        :disabled="!isTrading || !isRunning"
         @click="initiateForcebuy"
       >
         Forcebuy
@@ -70,6 +78,10 @@ export default class BotControls extends Vue {
   @ftbot.Getter [BotStoreGetters.isTrading]!: boolean;
 
   @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
+
+  get isRunning(): boolean {
+    return this.botState.state === 'running';
+  }
 
   initiateForcebuy() {
     this.$bvModal.show('forcebuy-modal');
