@@ -4,6 +4,7 @@
       <button
         class="btn btn-primary btn-sm col-md-5 m-1"
         :disabled="!isTrading || isRunning"
+        title="Start Trading"
         @click="startBot()"
       >
         Start
@@ -11,6 +12,7 @@
       <button
         class="btn btn-primary btn-sm col-md-5 m-1"
         :disabled="!isTrading || !isRunning"
+        title="Stop Trading - Also stops handling open trades."
         @click="stopBot()"
       >
         Stop
@@ -18,6 +20,7 @@
       <button
         class="btn btn-primary btn-sm col-md-5 m-1"
         :disabled="!isTrading || !isRunning"
+        title="StopBuy - Stops buying, but still handles open trades"
         @click="stopBuy()"
       >
         StopBuy
@@ -25,6 +28,7 @@
       <button
         class="btn btn-primary btn-sm col-md-5 m-1"
         :disabled="!isTrading"
+        title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
         @click="reloadConfig()"
       >
         Reload Config
@@ -33,6 +37,7 @@
         v-if="botState.forcebuy_enabled"
         class="btn btn-primary btn-sm col-md-5 m-1"
         :disabled="!isTrading || !isRunning"
+        title="Force Buy - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
         @click="initiateForcebuy"
       >
         Forcebuy
@@ -41,6 +46,7 @@
         v-if="isWebserverMode"
         :disabled="isTrading"
         class="btn-primary col-md-5 m-1"
+        title="Start Trading mode"
         @click="startTrade()"
       >
         Start Trading
