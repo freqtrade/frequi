@@ -312,25 +312,29 @@ export default class CandleChart extends Vue {
     if ('main_plot' in this.plotConfig) {
       Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
         const col = this.dataset.columns.findIndex((el) => el === key);
-        if (options.legend && options.legend.data) {
-          options.legend.data.push(key);
-        }
-        const sp: echarts.EChartOption.Series = {
-          name: key,
-          type: value.type || 'line',
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: value.color,
-          },
-          encode: {
-            x: colDate,
-            y: col,
-          },
-          showSymbol: false,
-        };
-        if (options.series) {
-          options.series.push(sp);
+        if (col > 1) {
+          if (options.legend && options.legend.data) {
+            options.legend.data.push(key);
+          }
+          const sp: echarts.EChartOption.Series = {
+            name: key,
+            type: value.type || 'line',
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: value.color,
+            },
+            encode: {
+              x: colDate,
+              y: col,
+            },
+            showSymbol: false,
+          };
+          if (options.series) {
+            options.series.push(sp);
+          }
+        } else {
+          console.log(`element ${key} for main plot not found in columns.`);
         }
       });
     }
