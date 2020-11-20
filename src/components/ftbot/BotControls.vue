@@ -45,7 +45,7 @@
       <button
         v-if="isWebserverMode"
         :disabled="isTrading"
-        class="btn btn-secondary btn-sm col-md-5 ml-1"
+        class="btn btn-secondary btn-sm ml-1"
         title="Start Trading mode"
         @click="startTrade()"
       >
@@ -65,7 +65,7 @@ import PlayIcon from 'vue-material-design-icons/Play.vue';
 import StopIcon from 'vue-material-design-icons/Stop.vue';
 import PauseIcon from 'vue-material-design-icons/Pause.vue';
 import ReloadIcon from 'vue-material-design-icons/Reload.vue';
-import ForceBuyIcon from 'vue-material-design-icons/BankPlus.vue';
+import ForceBuyIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
 import ForceBuyForm from './ForceBuyForm.vue';
 
 const ftbot = namespace('ftbot');
