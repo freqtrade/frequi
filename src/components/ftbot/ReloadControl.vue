@@ -1,18 +1,25 @@
 <template>
-  <div>
-    <button class="btn btn-secondary btn-sm" @click="refreshAll(true)">Refresh all</button>
+  <div class="container-fluid">
+    <div class="row">
+      <button class="m-1 btn btn-primary" @click="refreshAll(true)"><RefreshIcon /></button>
 
-    <b-form-checkbox v-model="autoRefreshLoc" class="float-right" size="sm" switch
-      >AutoRefresh</b-form-checkbox
-    >
+      <b-form-checkbox
+        v-model="autoRefreshLoc"
+        class="ml-auto float-right mr-2 my-auto"
+        title="AutoRefresh"
+        switch
+        >AutoRefresh</b-form-checkbox
+      >
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Action, State } from 'vuex-class';
+import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
 
-@Component({})
+@Component({ components: { RefreshIcon } })
 export default class ReloadControl extends Vue {
   refreshInterval: number | null = null;
 
