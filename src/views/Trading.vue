@@ -29,7 +29,10 @@
     >
       <DraggableContainer header="Multi Pane">
         <b-tabs content-class="mt-3" class="mt-3">
-          <b-tab title="Status" active>
+          <b-tab title="Pairs combined" active>
+            <PairSummary />
+          </b-tab>
+          <b-tab title="Status">
             <BotStatus />
           </b-tab>
           <b-tab title="Performance">
@@ -47,9 +50,6 @@
           </b-tab>
           <b-tab title="Pair Locks" lazy>
             <PairLockList />
-          </b-tab>
-          <b-tab title="Pairs combined" active>
-            <PairSummary />
           </b-tab>
         </b-tabs>
       </DraggableContainer>
