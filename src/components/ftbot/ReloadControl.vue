@@ -5,7 +5,7 @@
 
       <b-form-checkbox
         v-model="autoRefreshLoc"
-        class="ml-auto float-right mr-2"
+        class="ml-auto float-right mr-2 my-auto"
         title="AutoRefresh"
         switch
         >AutoRefresh</b-form-checkbox
