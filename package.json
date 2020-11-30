@@ -14,7 +14,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.19.0",
     "bootswatch": "^4.5.3",
-    "core-js": "^3.7.0",
+    "core-js": "^3.8.0",
     "echarts": "^4.9.0",
     "moment": "^2.29.1",
     "vue": "^2.6.12",
