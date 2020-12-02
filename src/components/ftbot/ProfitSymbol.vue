@@ -13,7 +13,7 @@ export default class ProfitSymbol extends Vue {
   @Prop({ required: true }) trade!: Trade;
 
   get isProfitable() {
-    const res = (this.trade.close_profit ?? 0) > 0 || (this.trade.current_profit ?? 0) > 0;
+    const res = (this.trade.profit_ratio ?? 0) > 0;
     return res;
   }
 }

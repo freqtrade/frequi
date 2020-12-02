@@ -11,8 +11,6 @@ describe('ProfitSymbol.vue', () => {
   });
   it('calculates isProfitable with negative profit', () => {
     const trade = {
-      close_profit: -0.5,
-      current_profit: -0.5,
       profit_ratio: -0.5,
     };
     cmp.setProps({ trade });
@@ -32,8 +30,6 @@ describe('ProfitSymbol.vue', () => {
 
   it('renders triangle down when profit is negative', async () => {
     const trade = {
-      close_profit: -0.5,
-      current_profit: -0.5,
       profit_ratio: -0.5,
     };
     cmp.setProps({ trade });
@@ -44,8 +40,6 @@ describe('ProfitSymbol.vue', () => {
 
   it('renders triangle up when profit is positive', async () => {
     const trade = {
-      close_profit: 0.5,
-      current_profit: 0.5,
       profit_ratio: 0.5,
     };
     cmp.setProps({ trade });

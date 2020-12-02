@@ -44,7 +44,7 @@ export default class HourlyChart extends Vue {
       if (trade.close_timestamp) {
         const hour = timestampHour(trade.close_timestamp);
 
-        res[hour].profit += trade.close_profit;
+        res[hour].profit += trade.profit_ratio;
         res[hour].count += 1;
       }
     }

@@ -14,15 +14,11 @@
         <span v-if="comb.locks" :title="comb.lockReason"> &#128274; </span>
       </div>
       <b-badge
-        :variant="
-          comb.trade && comb.trade.current_profit && comb.trade.current_profit > 0
-            ? 'success'
-            : 'danger'
-        "
+        :variant="comb.trade && comb.trade.profit_ratio > 0 ? 'success' : 'danger'"
         pill
         :title="comb.profitString"
         >{{
-          comb.trade && comb.trade.current_profit ? formatPercent(comb.trade.current_profit) : ''
+          comb.trade && comb.trade.profit_ratio ? formatPercent(comb.trade.profit_ratio) : ''
         }}</b-badge
       >
     </b-list-group-item>
@@ -77,8 +73,8 @@ export default class PairSummary extends Vue {
         lockReason = `${timestampms(locks.lock_end_timestamp)} - ${locks.reason}`;
       }
       let profitString = '';
-      if (trade && trade.current_profit) {
-        profitString = `Current profit: ${formatPercent(trade.current_profit)}
+      if (trade && trade.profit_ratio) {
+        profitString = `Current profit: ${formatPercent(trade.profit_ratio)}
 Open since: ${timestampms(trade.open_timestamp)}`;
       }
       comb.push({ pair, trade, locks, lockReason, profitString });

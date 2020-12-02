@@ -16,8 +16,6 @@ export interface Trade {
   close_date?: string;
   close_timestamp?: number;
   close_rate?: number;
-  close_profit?: number;
-  close_profit_abs?: number;
   fee_close?: number;
   fee_close_cost?: number;
   fee_close_currency?: string;
@@ -29,12 +27,6 @@ export interface Trade {
   profit_pct: number;
   /** Current absolute profit */
   profit_abs: number;
-  /** Deprecated */
-  current_profit?: number;
-  /** Deprecated */
-  current_profit_abs?: number;
-  /** Deprecated */
-  current_profit_pct?: number;
 
   sell_reason?: string;
   min_rate?: number;
@@ -64,10 +56,7 @@ export interface ClosedTrade extends Trade {
   close_date: string;
   close_timestamp: number;
   close_rate: number;
-  /** Deprecated */
-  close_profit: number;
-  /** Deprecated */
-  close_profit_abs: number;
+
   fee_close: number;
   fee_close_cost?: number;
   fee_close_currency?: string;
