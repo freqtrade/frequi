@@ -67,7 +67,7 @@ export interface BotState {
 }
 
 export interface StrategyListResult {
-  strategies: Array<string>;
+  strategies: string[];
 }
 
 export interface StrategyResult {
@@ -83,7 +83,7 @@ export interface AvailablePairPayload {
 }
 
 export interface AvailablePairResult {
-  pairs: Array<string>;
+  pairs: string[];
   /**
    * List of lists, as [pair, timeframe]
    */
