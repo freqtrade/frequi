@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <form ref="form" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
       <b-form-group
         :state="urlState"
@@ -38,16 +38,23 @@
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
+      <div>
+        <b-alert v-if="errorMessage" class="alert-wrap" show variant="warning">
+          {{ errorMessage }}
+          <br />
+          <span v-if="errorMessageCORS">
+            Please also check your bot's CORS configuration:
+            <a href="https://www.freqtrade.io/en/latest/rest-api/#cors"
+              >Freqtrade CORS documentation</a
+            ></span
+          >
+        </b-alert>
+      </div>
       <div v-if="inModal === false" class="float-right">
         <b-button class="mr-2" type="reset" variant="danger">Reset</b-button>
         <b-button type="submit" variant="primary">Submit</b-button>
       </div>
     </form>
-    <div>
-      <b-alert v-if="errorMessage" show variant="warning">
-        {{ errorMessage }}
-      </b-alert>
-    </div>
   </div>
 </template>
 
@@ -87,6 +94,8 @@ export default class Login extends Vue {
   urlState: boolean | null = null;
 
   errorMessage = '';
+
+  errorMessageCORS = false;
 
   checkFormValidity() {
     const valid = this.$refs.form.checkValidity();
@@ -141,16 +150,20 @@ export default class Login extends Vue {
         }
       })
       .catch((error) => {
+        this.errorMessageCORS = false;
         // this.nameState = false;
         console.log(error.response);
         if (error.response && error.response.status === 401) {
           this.nameState = false;
-          this.errorMessage = 'Login failed, Username or Password wrong.';
+          this.errorMessage = 'Connected to bot, however Login failed, Username or Password wrong.';
         } else {
           this.urlState = false;
           this.errorMessage = `Login failed.
-            Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
-            You can try this by going to http://${this.auth.url}/api/v1/ping`;
+Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
+You can verify this by navigating to ${this.auth.url}/api/v1/ping to make sure the bot API is reachable`;
+          if (this.auth.url !== window.location.origin) {
+            this.errorMessageCORS = true;
+          }
         }
         console.log(this.errorMessage);
         this.emitLoginResult(false);
@@ -159,4 +172,8 @@ export default class Login extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.alert-wrap {
+  white-space: pre-wrap;
+}
+</style>
