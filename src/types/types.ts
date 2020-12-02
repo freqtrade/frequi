@@ -9,15 +9,6 @@ export interface PerformanceEntry {
   profit: number;
 }
 
-export interface BalanceRecords {
-  balance: number;
-  currency: string;
-  est_stake: number;
-  free: number;
-  used: number;
-  stake: string;
-}
-
 export interface Logs {
   /**
    * Array of Logs
@@ -26,19 +17,6 @@ export interface Logs {
    */
   logs: Array<[string, number, string, string, string]>;
   log_count: number;
-}
-
-export interface BalanceInterface {
-  currencies: Array<BalanceRecords>;
-  note: string;
-  /** Stake currency used */
-  stake: string;
-  /** Fiat symbol used */
-  symbol: string;
-  /** Total Balance in stake currency */
-  total: number;
-  /** Balance in FIAT currency */
-  value: number;
 }
 
 /** Values for BotState.state */
