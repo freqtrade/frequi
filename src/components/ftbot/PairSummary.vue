@@ -45,6 +45,9 @@ export default class PairSummary extends Vue {
 
   @Prop({ required: true }) trades!: Trade[];
 
+  /** Sort method, "normal" (sorts by open trades > pairlist -> locks) or "profit" */
+  @Prop({ required: false, default: 'normal' }) sortMethod!: string;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setSelectedPair!: (pair: string) => void;
 
@@ -82,16 +85,25 @@ export default class PairSummary extends Vue {
       }
       comb.push({ pair, trade, locks, lockReason, profitString, profit });
     });
-    // sort Pairs: "with open trade" -> available -> locked
-    comb.sort((a, b) => {
-      if (a.trade && !b.trade) {
-        return -1;
-      }
-      if (!a.locks && b.locks) {
-        return -1;
-      }
-      return 1;
-    });
+    if (this.sortMethod === 'profit') {
+      comb.sort((a, b) => {
+        if (a.profit > b.profit) {
+          return -1;
+        }
+        return 1;
+      });
+    } else {
+      // sort Pairs: "with open trade" -> available -> locked
+      comb.sort((a, b) => {
+        if (a.trade && !b.trade) {
+          return -1;
+        }
+        if (!a.locks && b.locks) {
+          return -1;
+        }
+        return 1;
+      });
+    }
     return comb;
   }
 
