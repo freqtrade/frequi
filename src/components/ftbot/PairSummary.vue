@@ -60,21 +60,29 @@ export default class PairSummary extends Vue {
     const comb: CombinedPairList[] = [];
 
     this.pairlist.forEach((pair) => {
-      const trade = this.openTrades.find((el) => el.pair === pair);
+      const trades: Trade[] = this.openTrades.filter((el) => el.pair === pair);
       const allLocks = this.currentLocks.filter((el) => el.pair === pair);
-      // Sort to have longer timeframe in front
-      allLocks.sort((a, b) => (a.lock_end_timestamp > b.lock_end_timestamp ? -1 : 1));
       let lockReason = '';
       let locks;
+
+      // Sort to have longer timeframe in front
+      allLocks.sort((a, b) => (a.lock_end_timestamp > b.lock_end_timestamp ? -1 : 1));
       if (allLocks.length > 0) {
         [locks] = allLocks;
-        console.log(locks);
         lockReason = `${timestampms(locks.lock_end_timestamp)} - ${locks.reason}`;
       }
       let profitString = '';
-      if (trade && trade.profit_ratio) {
-        profitString = `Current profit: ${formatPercent(trade.profit_ratio)}
-Open since: ${timestampms(trade.open_timestamp)}`;
+      let profit = 0;
+      trades.forEach((trade) => {
+        profit += trade.profit_ratio;
+      });
+
+      const trade = trades.length === 1 ? trades[0] : undefined;
+      if (trades.length > 0) {
+        profitString = `Current profit: ${formatPercent(profit)}`;
+      }
+      if (trade) {
+        profitString += `\nOpen since: ${timestampms(trade.open_timestamp)}`;
       }
       comb.push({ pair, trade, locks, lockReason, profitString });
     });
