@@ -1,122 +1,123 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <h2>Backtesting</h2>
-    <div class="row mx-5 d-flex flex-wrap justify-space-between mb-4">
-      <b-form-radio v-model="btFormMode" name="bt-form-radios" button value="strategy"
-        >Select Strategy</b-form-radio
-      >
-      <b-form-radio
-        v-model="btFormMode"
-        name="bt-form-radios"
-        button
-        value="run"
-        :disabled="!canRunBacktest"
-        >Run backtest</b-form-radio
-      >
-      <b-form-radio
-        v-model="btFormMode"
-        name="bt-form-radios"
-        button
-        value="results"
-        :disabled="!hasBacktestResult"
-        >Analyze result</b-form-radio
-      >
-      <b-form-radio
-        v-model="btFormMode"
-        name="bt-form-radios"
-        button
-        value="visualize-summary"
-        :disabled="!hasBacktestResult"
-        >Visualize summary</b-form-radio
-      >
-      <b-form-radio
-        v-model="btFormMode"
-        name="bt-form-radios"
-        button
-        value="visualize"
-        :disabled="!hasBacktestResult"
-        >Visualize result</b-form-radio
-      >
-    </div>
-    <div v-if="btFormMode == 'strategy'" class="row">
-      <StrategyList v-model="strategy" show-details="true"></StrategyList>
-    </div>
-    <div v-if="btFormMode == 'run'" class="row">
-      <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
-        <b-form-group
-          label-cols-lg="2"
-          label="Backtest params"
-          label-size="sm"
-          label-class="font-weight-bold pt-0"
-          class="mb-0"
+    <div class="container">
+      <div class="row mx-5 d-flex flex-wrap justify-space-between mb-4">
+        <b-form-radio
+          v-model="btFormMode"
+          name="bt-form-radios"
+          button
+          value="run"
+          :disabled="!canRunBacktest"
+          >Run backtest</b-form-radio
         >
-          <b-form-group
-            label-cols-sm="5"
-            label="Timeframe:"
-            label-align-sm="right"
-            label-for="timeframeSelect"
-          >
-            <b-form-select
-              id="timeframe-select"
-              placeholder="Use strategy default"
-              :options="availableTimeframes"
-            ></b-form-select>
-          </b-form-group>
-
-          <b-form-group
-            label-cols-sm="5"
-            label="Max open trades:"
-            label-align-sm="right"
-            label-for="max-open-trades"
-          >
-            <b-form-input
-              id="max-open-trades"
-              placeholder="Use strategy default"
-              type="number"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            label-cols-sm="5"
-            label="Stake amount:"
-            label-align-sm="right"
-            label-for="stake-amount"
-          >
-            <b-form-input
-              id="stake-amount"
-              type="number"
-              placeholder="Use strategy default"
-              step="0.01"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
-            <b-form-input
-              id="fee"
-              type="number"
-              placeholder="Use exchange default"
-              step="0.01"
-            ></b-form-input>
-          </b-form-group>
-        </b-form-group>
-      </b-card>
-    </div>
-
-    <div v-if="btFormMode == 'run'" class="container">
-      <div class="row">
-        <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+        <b-form-radio
+          v-model="btFormMode"
+          name="bt-form-radios"
+          button
+          value="results"
+          :disabled="!hasBacktestResult"
+          >Analyze result</b-form-radio
+        >
+        <b-form-radio
+          v-model="btFormMode"
+          name="bt-form-radios"
+          button
+          value="visualize-summary"
+          :disabled="!hasBacktestResult"
+          >Visualize summary</b-form-radio
+        >
+        <b-form-radio
+          v-model="btFormMode"
+          name="bt-form-radios"
+          button
+          value="visualize"
+          :disabled="!hasBacktestResult"
+          >Visualize result</b-form-radio
+        >
       </div>
-      <div class="row">
-        <h3>Backtesting summary</h3>
+
+      <div v-if="btFormMode == 'strategy'" class="row"></div>
+      <div v-if="btFormMode == 'run'" class="row">
+        <StrategyList v-model="strategy"></StrategyList>
+
+        <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
+          <!-- Backtesting parameters -->
+          <b-form-group
+            label-cols-lg="2"
+            label="Backtest params"
+            label-size="sm"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
+          >
+            <b-form-group
+              label-cols-sm="5"
+              label="Timeframe:"
+              label-align-sm="right"
+              label-for="timeframeSelect"
+            >
+              <b-form-select
+                id="timeframe-select"
+                placeholder="Use strategy default"
+                :options="availableTimeframes"
+              ></b-form-select>
+            </b-form-group>
+
+            <b-form-group
+              label-cols-sm="5"
+              label="Max open trades:"
+              label-align-sm="right"
+              label-for="max-open-trades"
+            >
+              <b-form-input
+                id="max-open-trades"
+                placeholder="Use strategy default"
+                type="number"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              label-cols-sm="5"
+              label="Stake amount:"
+              label-align-sm="right"
+              label-for="stake-amount"
+            >
+              <b-form-input
+                id="stake-amount"
+                type="number"
+                placeholder="Use strategy default"
+                step="0.01"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
+              <b-form-input
+                id="fee"
+                type="number"
+                placeholder="Use exchange default"
+                step="0.01"
+              ></b-form-input>
+            </b-form-group>
+          </b-form-group>
+        </b-card>
       </div>
-      <div class="row">
-        <b-button variant="primary" :disabled="backtestRunning" @click="clickBacktest">
-          Start backtest
-        </b-button>
-        <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
-          Load backtest result
-        </b-button>
-        <b-button variant="primary" @click="removeBacktest">Reset Backtest</b-button>
+
+      <div v-if="btFormMode == 'run'" class="container">
+        <div class="row">
+          <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+        </div>
+        <div class="row">
+          <h3>Backtesting summary</h3>
+        </div>
+        <div class="row">
+          <b-button variant="primary" :disabled="backtestRunning" @click="clickBacktest">
+            Start backtest
+          </b-button>
+          <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
+            Load backtest result
+          </b-button>
+          <b-button variant="primary" @click="removeBacktest">Reset Backtest</b-button>
+        </div>
       </div>
     </div>
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
@@ -204,7 +205,7 @@ export default class Backtesting extends Vue {
 
   strategy = '';
 
-  btFormMode = 'params';
+  btFormMode = 'run';
 
   selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
 
