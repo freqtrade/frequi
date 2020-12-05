@@ -10,17 +10,17 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-18.04]
+        os: [ ubuntu-20.04]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: npm install
-      uses: bahmutov/npm-install@v1
+    - uses: actions/setup-node@v2-beta
+
+    - run: yarn install
 
     - name: Run Lint
       run: |
