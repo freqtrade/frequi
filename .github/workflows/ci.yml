@@ -31,11 +31,11 @@ jobs:
     - name: Build build
       run: yarn build
 
-    - name: Archive production artifacts
+    - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
         name: FreqUI-dist
         path: |
           dist
-          !dist/**/*.md
+          !dist/**/*.map
         retention-days: 10
