@@ -30,11 +30,7 @@
       <DraggableContainer header="Multi Pane">
         <b-tabs content-class="mt-3" class="mt-3">
           <b-tab title="Pairs combined" active>
-            <PairSummary
-              :pairlist="whitelist"
-              :current-locks="currentLocks"
-              :open-trades="openTrades"
-            />
+            <PairSummary :pairlist="whitelist" :current-locks="currentLocks" :trades="openTrades" />
           </b-tab>
           <b-tab title="Status">
             <BotStatus />

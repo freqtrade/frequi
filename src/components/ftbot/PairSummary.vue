@@ -47,7 +47,7 @@ export default class PairSummary extends Vue {
 
   @Prop({ required: false, default: () => [] }) currentLocks!: Lock[];
 
-  @Prop({ required: true }) openTrades!: Trade[];
+  @Prop({ required: true }) trades!: Trade[];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setSelectedPair!: (pair: string) => void;
@@ -60,7 +60,7 @@ export default class PairSummary extends Vue {
     const comb: CombinedPairList[] = [];
 
     this.pairlist.forEach((pair) => {
-      const trades: Trade[] = this.openTrades.filter((el) => el.pair === pair);
+      const trades: Trade[] = this.trades.filter((el) => el.pair === pair);
       const allLocks = this.currentLocks.filter((el) => el.pair === pair);
       let lockReason = '';
       let locks;
