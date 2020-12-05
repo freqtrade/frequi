@@ -8,6 +8,10 @@ export function formatPrice(value: number): string {
   return value ? value.toFixed(8) : '';
 }
 
+export function dateFromString(datestring: string, format: string): Date {
+  return moment(datestring, format).toDate();
+}
+
 /**
  *
  * @param ts Timestamp as number or date (in utc!!)
