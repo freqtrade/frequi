@@ -60,6 +60,7 @@ export default class BacktestResultView extends Vue {
     return [
       { metric: 'Backtesting from', value: timestampms(this.backtestResult.backtest_start_ts) },
       { metric: 'Backtesting to', value: timestampms(this.backtestResult.backtest_end_ts) },
+      { metric: 'Max open trades', value: this.backtestResult.max_open_trades },
       { metric: 'Total trades', value: this.backtestResult.total_trades },
       // { metric: 'First trade', value: this.backtestResult.backtest_fi },
       // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
@@ -70,6 +71,19 @@ export default class BacktestResultView extends Vue {
         )} ${this.backtestResult.stake_currency}`,
       },
       { metric: 'Trades per day', value: this.backtestResult.trades_per_day },
+      {
+        metric: 'Best Pair',
+        value: `${this.backtestResult.best_pair.key} ${formatPercent(
+          this.backtestResult.best_pair.profit_mean,
+        )}`,
+      },
+      {
+        metric: 'Worst Pair',
+        value: `${this.backtestResult.worst_pair.key} ${formatPercent(
+          this.backtestResult.worst_pair.profit_mean,
+        )}`,
+      },
+
       { metric: 'Best day', value: formatPercent(this.backtestResult.backtest_best_day, 2) },
       { metric: 'Worst day', value: formatPercent(this.backtestResult.backtest_worst_day, 2) },
       {
@@ -104,7 +118,7 @@ export default class BacktestResultView extends Vue {
         formatter: (value) => formatPrice(value),
       },
       {
-        key: 'profit_total_pct',
+        key: 'profit_total',
         label: 'Tot Profit %',
         formatter: (value) => formatPercent(value, 2),
       },

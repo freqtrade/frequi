@@ -5,7 +5,7 @@ export interface BacktestPayload {
   timerange: string;
 }
 
-export interface PairResults {
+export interface PairResult {
   draws: number;
   duration_avg: string;
   key: string;
@@ -39,6 +39,8 @@ export interface SellReasonResults {
 
 export interface StrategyBacktestResult {
   trades: Trade[];
+  best_pair: PairResult;
+  worst_pair: PairResult;
   left_open_trades: Trade[];
   backtest_best_day: number;
   backtest_days: number;
@@ -57,7 +59,7 @@ export interface StrategyBacktestResult {
   market_change: number;
   max_drawdown: number;
   pairlist: string[];
-  results_per_pair: Array<PairResults>;
+  results_per_pair: Array<PairResult>;
   sell_reason_summary: Array<SellReasonResults>;
   stake_amount: number;
   stake_currency: string;
