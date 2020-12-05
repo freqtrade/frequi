@@ -2,9 +2,6 @@
   <div class="container">
     <h2>Backtesting</h2>
     <div class="row mx-5 d-flex flex-wrap justify-space-between mb-4">
-      <b-form-radio v-model="btFormMode" name="bt-form-radios" button value="params"
-        >Define Parameters</b-form-radio
-      >
       <b-form-radio v-model="btFormMode" name="bt-form-radios" button value="strategy"
         >Select Strategy</b-form-radio
       >
@@ -41,11 +38,11 @@
         >Visualize result</b-form-radio
       >
     </div>
-    <div v-if="btFormMode == 'params'" class="row">
-      <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+    <div v-if="btFormMode == 'strategy'" class="row">
+      <StrategyList v-model="strategy" show-details="true"></StrategyList>
     </div>
-    <div v-if="btFormMode == 'params'" class="row">
-      <b-card bg-variant="light" class="w-60">
+    <div v-if="btFormMode == 'run'" class="row">
+      <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
         <b-form-group
           label-cols-lg="2"
           label="Backtest params"
@@ -104,15 +101,10 @@
         </b-form-group>
       </b-card>
     </div>
-    <div v-if="btFormMode == 'strategy'" class="row">
-      <StrategyList v-model="strategy" show-details="true"></StrategyList>
-    </div>
 
     <div v-if="btFormMode == 'run'" class="container">
       <div class="row">
-        <ValuePair description="Timeframe (not working)">{{ timeframe }}</ValuePair>
-        <ValuePair description="TimeRange">{{ timerange }}</ValuePair>
-        <ValuePair description="Strategy">{{ strategy }}</ValuePair>
+        <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
       </div>
       <div class="row">
         <h3>Backtesting summary</h3>
