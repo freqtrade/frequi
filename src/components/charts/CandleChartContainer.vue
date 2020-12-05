@@ -76,7 +76,7 @@ export default class CandleChartContainer extends Vue {
 
   @Prop({ required: true }) readonly timeframe!: string;
 
-  @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
+  @Prop({ required: false, default: () => [] }) readonly trades!: Array<Trade>;
 
   @Prop({ required: false, default: false }) historicView!: boolean;
 

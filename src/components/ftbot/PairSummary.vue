@@ -13,14 +13,9 @@
         {{ comb.pair }}
         <span v-if="comb.locks" :title="comb.lockReason"> &#128274; </span>
       </div>
-      <b-badge
-        :variant="comb.trade && comb.trade.profit_ratio > 0 ? 'success' : 'danger'"
-        pill
-        :title="comb.profitString"
-        >{{
-          comb.trade && comb.trade.profit_ratio ? formatPercent(comb.trade.profit_ratio) : ''
-        }}</b-badge
-      >
+      <b-badge :variant="comb.profit > 0 ? 'success' : 'danger'" pill :title="comb.profitString">{{
+        comb.profit ? formatPercent(comb.profit) : ''
+      }}</b-badge>
     </b-list-group-item>
   </b-list-group>
 </template>
@@ -39,6 +34,7 @@ interface CombinedPairList {
   profitString: string;
   trade?: Trade;
   locks?: Lock;
+  profit: number;
 }
 
 @Component({})
@@ -84,7 +80,7 @@ export default class PairSummary extends Vue {
       if (trade) {
         profitString += `\nOpen since: ${timestampms(trade.open_timestamp)}`;
       }
-      comb.push({ pair, trade, locks, lockReason, profitString });
+      comb.push({ pair, trade, locks, lockReason, profitString, profit });
     });
     // sort Pairs: "with open trade" -> available -> locked
     comb.sort((a, b) => {
