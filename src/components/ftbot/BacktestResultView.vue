@@ -74,13 +74,13 @@ export default class BacktestResultView extends Vue {
       {
         metric: 'Best Pair',
         value: `${this.backtestResult.best_pair.key} ${formatPercent(
-          this.backtestResult.best_pair.profit_mean,
+          this.backtestResult.best_pair.profit_sum,
         )}`,
       },
       {
         metric: 'Worst Pair',
         value: `${this.backtestResult.worst_pair.key} ${formatPercent(
-          this.backtestResult.worst_pair.profit_mean,
+          this.backtestResult.worst_pair.profit_sum,
         )}`,
       },
 
