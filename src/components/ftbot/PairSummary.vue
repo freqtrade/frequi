@@ -45,7 +45,7 @@ interface CombinedPairList {
 export default class PairSummary extends Vue {
   @Prop({ required: true }) pairlist!: string[];
 
-  @Prop({ required: true }) currentLocks!: Lock[];
+  @Prop({ required: false, default: () => [] }) currentLocks!: Lock[];
 
   @Prop({ required: true }) openTrades!: Trade[];
 
