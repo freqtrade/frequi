@@ -30,7 +30,11 @@
       <DraggableContainer header="Multi Pane">
         <b-tabs content-class="mt-3" class="mt-3">
           <b-tab title="Pairs combined" active>
-            <PairSummary />
+            <PairSummary
+              :pairlist="whitelist"
+              :current-locks="currentLocks"
+              :open-trades="openTrades"
+            />
           </b-tab>
           <b-tab title="Status">
             <BotStatus />
@@ -157,7 +161,7 @@ import LogViewer from '@/components/ftbot/LogViewer.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 
-import { Trade } from '@/types';
+import { Lock, Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { TradeLayout, findGridLayout, LayoutGetters, LayoutActions } from '@/store/modules/layout';
 
@@ -196,6 +200,8 @@ export default class Trading extends Vue {
   @ftbot.Getter [BotStoreGetters.tradeDetail]!: Trade;
 
   @ftbot.Getter [BotStoreGetters.timeframe]!: string;
+
+  @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
 
   @ftbot.State whitelist!: string[];
 

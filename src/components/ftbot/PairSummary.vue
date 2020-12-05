@@ -27,9 +27,8 @@
 
 <script lang="ts">
 import { formatPercent, timestampms } from '@/shared/formatters';
-import { BotStoreGetters } from '@/store/modules/ftbot';
 import { Lock, Trade } from '@/types';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 const ftbot = namespace('ftbot');
@@ -44,11 +43,11 @@ interface CombinedPairList {
 
 @Component({})
 export default class PairSummary extends Vue {
-  @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
+  @Prop({ required: true }) pairlist!: string[];
 
-  @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
+  @Prop({ required: true }) currentLocks!: Lock[];
 
-  @ftbot.State whitelist!: string[];
+  @Prop({ required: true }) openTrades!: Trade[];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setSelectedPair!: (pair: string) => void;
@@ -60,7 +59,7 @@ export default class PairSummary extends Vue {
   get combinedPairList() {
     const comb: CombinedPairList[] = [];
 
-    this.whitelist.forEach((pair) => {
+    this.pairlist.forEach((pair) => {
       const trade = this.openTrades.find((el) => el.pair === pair);
       const allLocks = this.currentLocks.filter((el) => el.pair === pair);
       // Sort to have longer timeframe in front
