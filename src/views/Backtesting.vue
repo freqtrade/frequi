@@ -133,7 +133,15 @@
         :show-title="true"
       />
     </div>
-    <div v-if="hasBacktestResult && btFormMode == 'visualize'" class="text-center w-100 mt-2">
+    <div
+      v-if="hasBacktestResult && btFormMode == 'visualize'"
+      class="container-fluid row text-center w-100 mt-2"
+    >
+      <PairSummary
+        class="col-md-2"
+        :pairlist="selectedBacktestResult.pairlist"
+        :trades="selectedBacktestResult.trades"
+      />
       <CandleChartContainer
         :available-pairs="selectedBacktestResult.pairlist"
         :historic-view="!!true"
@@ -142,7 +150,7 @@
         :timerange="timerange"
         :strategy="strategy"
         :trades="selectedBacktestResult.trades"
-        class="candle-chart-container"
+        class="col-md-10 candle-chart-container"
       >
       </CandleChartContainer>
     </div>
@@ -158,6 +166,7 @@ import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import ValuePair from '@/components/ftbot/ValuePair.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
+import PairSummary from '@/components/ftbot/PairSummary.vue';
 
 import {
   BacktestPayload,
@@ -178,6 +187,7 @@ const ftbot = namespace('ftbot');
     CumProfitChart,
     StrategyList,
     ValuePair,
+    PairSummary,
   },
 })
 export default class Backtesting extends Vue {

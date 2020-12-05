@@ -591,7 +591,18 @@ export default {
       const result = await api.get('/backtest');
       commit('updateBacktestRunning', result.data.running);
       if (result.data.running === false && result.data.backtest_result) {
-        commit('updateBacktestResult', result.data.backtest_result);
+        // TODO: This should be aligned in the backend, which would allow us to remove this whole block
+        const backtestresult = result.data.backtest_result;
+        for (let i = 0, len = backtestresult.strategy_comparison.length; i < len; i += 1) {
+          const { key } = backtestresult.strategy_comparison[i];
+          for (let j = 0, len = backtestresult.strategy[key].trades.length; j < len; j += 1) {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            backtestresult.strategy[key].trades[j].profit_ratio =
+              backtestresult.strategy[key].trades[j].profit_percent;
+          }
+        }
+
+        commit('updateBacktestResult', backtestresult);
       }
     },
     async removeBacktest({ commit }) {
