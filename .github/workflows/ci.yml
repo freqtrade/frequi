@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-20.04]
+        os: [ ubuntu-20.04 ]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,9 +23,19 @@ jobs:
     - run: yarn install
 
     - name: Run Lint
-      run: |
-        yarn lint-ci
+      run: yarn lint-ci
 
     - name: Run Tests
-      run: |
-        yarn test:unit
+      run: yarn test:unit
+
+    - name: Build build
+      run: yarn build
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: FreqUI-dist
+        path: |
+          dist
+          !dist/**/*.md
+        retention-days: 10
