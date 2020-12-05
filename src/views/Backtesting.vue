@@ -141,6 +141,7 @@
         class="col-md-2"
         :pairlist="selectedBacktestResult.pairlist"
         :trades="selectedBacktestResult.trades"
+        sort-method="profit"
       />
       <CandleChartContainer
         :available-pairs="selectedBacktestResult.pairlist"
