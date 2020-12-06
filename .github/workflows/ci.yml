@@ -60,4 +60,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
-        asset_paths: '[".*"]'
+        asset_paths: '["./*"]'
