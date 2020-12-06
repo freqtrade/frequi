@@ -33,21 +33,19 @@ jobs:
     - name: Build build
       run: yarn build
 
+    - name: Zip files for release
+      run: |
+        cd dist/
+        zip -r ../freqUI.zip .
+        cd ../
+
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
         name: FreqUI
         path: |
-          dist
-          !dist/**/*.map
+          ./freqUI.zip
         retention-days: 10
-
-    - name: Zip files for release
-      if: github.event_name == 'release'
-      run: |
-        cd dist/
-        zip -r freqUI.zip .
-        cd ../
 
     - name: Upload release binaries
       uses: alexellis/upload-assets@0.2.2
