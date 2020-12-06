@@ -37,7 +37,7 @@ jobs:
       uses: actions/upload-artifact@v2
       # Ideally this would upload the zipfile from below - but this action currently does not support this.
       with:
-        name: FreqUI
+        name: freqUI
         path: |
           dist
           !dist/**/*.map
