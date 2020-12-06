@@ -7,25 +7,56 @@ on:
   pull_request:
     branches:
       - master
+  release:
+    types: [ created ]
+    # types: [published]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-18.04]
+        os: [ ubuntu-20.04 ]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: npm install
-      uses: bahmutov/npm-install@v1
+    - uses: actions/setup-node@v2-beta
+
+    - run: yarn install
 
     - name: Run Lint
-      run: |
-        yarn lint-ci
+      run: yarn lint-ci
 
     - name: Run Tests
-      run: |
-        yarn test:unit
+      run: yarn test:unit
+
+    - name: Build build
+      run: yarn build
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: FreqUI
+        path: |
+          dist
+          !dist/**/*.map
+        retention-days: 10
+
+  deploy:
+    needs: [ build ]
+    runs-on: ubuntu-20.04
+    if: github.event_name == 'release'
+    steps:
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: FreqUI
+        path: ./
+
+    - name: Upload release binaries
+      uses: alexellis/upload-assets@0.2.2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        asset_paths: '["FreqUI.zip"]'

@@ -131,7 +131,6 @@ export default class Login extends Vue {
     userService
       .login(this.auth)
       .then(() => {
-        console.log('Login success.');
         this.setLoggedIn(true);
         setBaseUrl(userService.getAPIUrl());
         this.emitLoginResult(true);
@@ -141,7 +140,6 @@ export default class Login extends Vue {
             if (resolved.route.name !== '404') {
               this.$router.push(resolved.route.path);
             } else {
-              console.log('Invalid redirect detected. Redirecting to home.');
               this.$router.push('/');
             }
           } else {
@@ -152,7 +150,7 @@ export default class Login extends Vue {
       .catch((error) => {
         this.errorMessageCORS = false;
         // this.nameState = false;
-        console.log(error.response);
+        console.error(error.response);
         if (error.response && error.response.status === 401) {
           this.nameState = false;
           this.errorMessage = 'Connected to bot, however Login failed, Username or Password wrong.';
@@ -165,7 +163,7 @@ You can verify this by navigating to ${this.auth.url}/api/v1/ping to make sure t
             this.errorMessageCORS = true;
           }
         }
-        console.log(this.errorMessage);
+        console.error(this.errorMessage);
         this.emitLoginResult(false);
       });
   }
