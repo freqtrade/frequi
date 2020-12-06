@@ -33,19 +33,23 @@ jobs:
     - name: Build build
       run: yarn build
 
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      # Ideally this would upload the zipfile from below - but this action currently does not support this.
+      with:
+        name: FreqUI
+        path: |
+          dist
+          !dist/**/*.map
+        retention-days: 10
+
     - name: Zip files for release
+      if: github.event_name == 'release'
       run: |
         cd dist/
         zip -r ../freqUI.zip .
         cd ../
 
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: FreqUI
-        path: |
-          ./freqUI.zip
-        retention-days: 10
 
     - name: Upload release binaries
       uses: alexellis/upload-assets@0.2.2
