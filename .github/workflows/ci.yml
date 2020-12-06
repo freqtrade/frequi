@@ -44,7 +44,10 @@ jobs:
 
     - name: Zip files for release
       if: github.event_name == 'release'
-      run: zip -r freqUI.zip dist/*
+      run: |
+        cd dist/
+        zip -r freqUI.zip .
+        cd ../
 
     - name: Upload release binaries
       uses: alexellis/upload-assets@0.2.2
