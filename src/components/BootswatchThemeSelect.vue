@@ -139,7 +139,6 @@ export default {
         return;
       }
       if (themeName.toLowerCase() === 'bootstrap') {
-        console.log('bootstrap');
         const styles = document.getElementsByTagName('style');
         const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
         // Reset all bootswatch styles
@@ -166,7 +165,6 @@ export default {
         });
       }
       // Save the theme as localstorage
-      console.log('Setting theme as', themeName);
       window.localStorage.theme = themeName;
       this.activeTheme = themeName;
     },
@@ -187,7 +185,7 @@ export default {
           // );
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     },
   },
