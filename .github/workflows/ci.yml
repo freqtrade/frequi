@@ -42,22 +42,14 @@ jobs:
           !dist/**/*.map
         retention-days: 10
 
-  deploy:
-    needs: [ build ]
-    runs-on: ubuntu-20.04
-    if: github.event_name == 'release'
-    steps:
-
-    - uses: actions/download-artifact@v2
-      with:
-        name: FreqUI
-        path: ./
-
-    - run: ls -l ./
+    - name: Zip files for release
+      if: github.event_name == 'release'
+      run: zip -r freqUI.zip dist/*
 
     - name: Upload release binaries
       uses: alexellis/upload-assets@0.2.2
+      if: github.event_name == 'release'
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
-        asset_paths: '["./*"]'
+        asset_paths: '["./freqUI.zip"]'
