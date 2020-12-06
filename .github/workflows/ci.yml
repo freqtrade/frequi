@@ -53,6 +53,8 @@ jobs:
         name: FreqUI
         path: ./
 
+    - run: ls -l ./
+
     - name: Upload release binaries
       uses: alexellis/upload-assets@0.2.2
       env:
