@@ -71,6 +71,7 @@
             >
               <b-form-input
                 id="max-open-trades"
+                v-model="maxOpenTrades"
                 placeholder="Use strategy default"
                 type="number"
               ></b-form-input>
@@ -84,20 +85,21 @@
             >
               <b-form-input
                 id="stake-amount"
+                v-model="stakeAmount"
                 type="number"
                 placeholder="Use strategy default"
                 step="0.01"
               ></b-form-input>
             </b-form-group>
 
-            <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
+            <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
               <b-form-input
                 id="fee"
                 type="number"
                 placeholder="Use exchange default"
                 step="0.01"
               ></b-form-input>
-            </b-form-group>
+            </b-form-group> -->
           </b-form-group>
         </b-card>
       </div>
@@ -231,6 +233,10 @@ export default class Backtesting extends Vue {
 
   timerange = '';
 
+  maxOpenTrades = '';
+
+  stakeAmount = '';
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
 
@@ -265,6 +271,15 @@ export default class Backtesting extends Vue {
       strategy: this.strategy,
       timerange: this.timerange,
     };
+    if (this.maxOpenTrades && Number.isSafeInteger(this.maxOpenTrades)) {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      btPayload.max_open_trades = parseInt(this.maxOpenTrades, 10);
+    }
+    if (this.stakeAmount && Number.isSafeInteger(this.stakeAmount)) {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      btPayload.stake_amount = Number(this.stakeAmount);
+    }
+
     this.startBacktest(btPayload);
   }
 
