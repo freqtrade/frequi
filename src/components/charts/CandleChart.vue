@@ -287,7 +287,7 @@ export default class CandleChart extends Vue {
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
-            color: '#FF0000',
+            color: '#faba25',
           },
           encode: {
             x: colDate,
