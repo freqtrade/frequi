@@ -28,6 +28,11 @@ const upBorderColor = '#19d189';
 const downColor = '#f84960';
 const downBorderColor = '#e33249';
 
+const buySignalColor = '#00ff26';
+const sellSignalColor = '#faba25';
+const tradeBuyColor = 'cyan';
+const tradeSellColor = 'pink';
+
 @Component({
   components: { 'v-chart': ECharts },
 })
@@ -272,7 +277,7 @@ export default class CandleChart extends Vue {
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
-            color: '#00ff26',
+            color: buySignalColor,
           },
           encode: {
             x: colDate,
@@ -287,7 +292,7 @@ export default class CandleChart extends Vue {
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
-            color: '#faba25',
+            color: sellSignalColor,
           },
           encode: {
             x: colDate,
@@ -468,7 +473,7 @@ export default class CandleChart extends Vue {
         xAxisIndex: 0,
         yAxisIndex: 0,
         itemStyle: {
-          color: 'cyan',
+          color: tradeBuyColor,
         },
         data: trades,
       };
@@ -484,7 +489,7 @@ export default class CandleChart extends Vue {
         xAxisIndex: 0,
         yAxisIndex: 0,
         itemStyle: {
-          color: 'pink',
+          color: tradeSellColor,
         },
         data: tradesClose,
       };
