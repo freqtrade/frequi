@@ -17,10 +17,6 @@ import 'echarts';
 // Chart default options
 const MARGINLEFT = '4%';
 const MARGINRIGHT = '1%';
-// const upColor = '#00da3c';
-// const downColor = '#ec0000';
-// const upBorderColor = '#008F28';
-// const downBorderColor = '#8A0000';
 
 // Binance colors
 const upColor = '#2ed191';
