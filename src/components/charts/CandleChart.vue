@@ -52,6 +52,8 @@ export default class CandleChart extends Vue {
 
   sellData = [] as Array<number>[];
 
+  chartOptions: echarts.EChartOption = {};
+
   @Watch('timeframe')
   timeframeChanged() {
     this.signalsCalculated = false;
@@ -60,6 +62,7 @@ export default class CandleChart extends Vue {
   @Watch('dataset')
   datasetChanged() {
     this.signalsCalculated = false;
+    this.updateChart();
   }
 
   get strategy() {
@@ -90,40 +93,18 @@ export default class CandleChart extends Vue {
     return this.trades.filter((item: Trade) => item.pair === this.pair);
   }
 
-  get chartOptions() {
-    if (!this.hasData) {
-      return {};
-    }
+  mounted() {
+    this.initializeChartOptions();
+  }
 
-    // console.log(`Available Columns: ${this.dataset.columns}`);
-    // Find default columns (sequence might be different, depending on the strategy)
-    const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
-    const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
-    const colHigh = this.dataset.columns.findIndex((el) => el === 'high');
-    const colLow = this.dataset.columns.findIndex((el) => el === 'low');
-    const colClose = this.dataset.columns.findIndex((el) => el === 'close');
-    const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
-    const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
-    const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
-
-    const subplotCount =
-      'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length : 0;
-
-    // console.log(`subplotcount: ${subplotCount}`);
-
-    // Always show ~250 candles max as starting point
-    const startingZoom = (1 - 250 / this.dataset.length) * 100;
-
-    const options: echarts.EChartOption = {
+  initializeChartOptions() {
+    this.chartOptions = {
       title: {
         text: `${this.strategy} - ${this.pair} - ${this.timeframe}`,
         show: true,
       },
       backgroundColor: '#1b1b1b',
       useUTC: this.useUTC,
-      dataset: {
-        source: this.dataset.data,
-      },
       animation: false,
       legend: {
         data: ['Candles', 'Volume', 'Buy', 'Sell'],
@@ -189,6 +170,47 @@ export default class CandleChart extends Vue {
           splitLine: { show: false },
         },
       ],
+      // visualMap: {
+      //   //  TODO: this would allow to colorize volume bars (if we'd want this)
+      //   //  Needs green / red indicator column in data.
+      //   show: true,
+      //   seriesIndex: 1,
+      //   dimension: 5,
+      //   pieces: [
+      //     {
+      //       max: 500000.0,
+      //       color: downColor,
+      //     },
+      //     {
+      //       min: 500000.0,
+      //       color: upColor,
+      //     },
+      //   ],
+      // },
+    };
+    this.updateChart();
+  }
+
+  updateChart() {
+    if (!this.hasData) {
+      return;
+    }
+    const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
+    const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
+    const colHigh = this.dataset.columns.findIndex((el) => el === 'high');
+    const colLow = this.dataset.columns.findIndex((el) => el === 'low');
+    const colClose = this.dataset.columns.findIndex((el) => el === 'close');
+    const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
+    const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
+    const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
+    const subplotCount =
+      'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length : 0;
+    const startingZoom = (1 - 250 / this.dataset.length) * 100;
+
+    const options: echarts.EChartOption = {
+      dataset: {
+        source: this.dataset.data,
+      },
       grid: [
         {
           left: MARGINLEFT,
@@ -221,23 +243,6 @@ export default class CandleChart extends Vue {
           end: 100,
         },
       ],
-      // visualMap: {
-      //   //  TODO: this would allow to colorize volume bars (if we'd want this)
-      //   //  Needs green / red indicator column in data.
-      //   show: true,
-      //   seriesIndex: 1,
-      //   dimension: 5,
-      //   pieces: [
-      //     {
-      //       max: 500000.0,
-      //       color: downColor,
-      //     },
-      //     {
-      //       min: 500000.0,
-      //       color: upColor,
-      //     },
-      //   ],
-      // },
       series: [
         {
           name: 'Candles',
@@ -302,24 +307,15 @@ export default class CandleChart extends Vue {
       ],
     };
 
-    // this.createSignalData(colDate, colOpen, colBuy, colSell);
-
-    // This will be merged into final plot config
-    // const subPlots = {
-    //   legend: [] as string[],
-    //   grid: [] as object[],
-    //   yaxis: [] as object[],
-    //   xaxis: [] as object[],
-    //   xaxisIndex: [] as number[],
-    //   series: [] as object[],
-    // };
+    // Merge this into original data
+    Object.assign(this.chartOptions, options);
 
     if ('main_plot' in this.plotConfig) {
       Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
         const col = this.dataset.columns.findIndex((el) => el === key);
         if (col > 1) {
-          if (options.legend && options.legend.data) {
-            options.legend.data.push(key);
+          if (this.chartOptions.legend && this.chartOptions.legend.data) {
+            this.chartOptions.legend.data.push(key);
           }
           const sp: echarts.EChartOption.Series = {
             name: key,
@@ -335,8 +331,8 @@ export default class CandleChart extends Vue {
             },
             showSymbol: false,
           };
-          if (options.series) {
-            options.series.push(sp);
+          if (this.chartOptions.series) {
+            this.chartOptions.series.push(sp);
           }
         } else {
           console.log(`element ${key} for main plot not found in columns.`);
@@ -349,8 +345,8 @@ export default class CandleChart extends Vue {
       let plotIndex = 2;
       Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
         // define yaxis
-        if (options.yAxis && Array.isArray(options.yAxis)) {
-          options.yAxis.push({
+        if (this.chartOptions.yAxis && Array.isArray(this.chartOptions.yAxis)) {
+          this.chartOptions.yAxis.push({
             scale: true,
             gridIndex: plotIndex,
             name: key,
@@ -362,8 +358,8 @@ export default class CandleChart extends Vue {
             splitLine: { show: false },
           });
         }
-        if (options.xAxis && Array.isArray(options.xAxis)) {
-          options.xAxis.push({
+        if (this.chartOptions.xAxis && Array.isArray(this.chartOptions.xAxis)) {
+          this.chartOptions.xAxis.push({
             type: 'time',
             scale: true,
             gridIndex: plotIndex,
@@ -375,13 +371,13 @@ export default class CandleChart extends Vue {
             splitNumber: 20,
           });
         }
-        if (options.dataZoom) {
-          options.dataZoom.forEach((el) =>
+        if (this.chartOptions.dataZoom) {
+          this.chartOptions.dataZoom.forEach((el) =>
             el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
           );
         }
-        if (options.grid && Array.isArray(options.grid)) {
-          options.grid.push({
+        if (this.chartOptions.grid && Array.isArray(this.chartOptions.grid)) {
+          this.chartOptions.grid.push({
             left: MARGINLEFT,
             right: MARGINRIGHT,
             bottom: `${plotIndex * 8}%`,
@@ -389,8 +385,12 @@ export default class CandleChart extends Vue {
           });
         }
         Object.entries(value).forEach(([sk, sv]) => {
-          if (options.legend && options.legend.data && Array.isArray(options.legend.data)) {
-            options.legend.data.push(sk);
+          if (
+            this.chartOptions.legend &&
+            this.chartOptions.legend.data &&
+            Array.isArray(this.chartOptions.legend.data)
+          ) {
+            this.chartOptions.legend.data.push(sk);
           }
           // entries per subplot
           const col = this.dataset.columns.findIndex((el) => el === sk);
@@ -409,8 +409,8 @@ export default class CandleChart extends Vue {
               },
               showSymbol: false,
             };
-            if (options.series && Array.isArray(options.series)) {
-              options.series.push(sp);
+            if (this.chartOptions.series && Array.isArray(this.chartOptions.series)) {
+              this.chartOptions.series.push(sp);
             }
           } else {
             console.log(`element ${sk} was not found in the columns.`);
@@ -426,12 +426,11 @@ export default class CandleChart extends Vue {
     //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
     //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
     // }
-    if (options.grid && Array.isArray(options.grid)) {
+    if (this.chartOptions.grid && Array.isArray(this.chartOptions.grid)) {
       // Last subplot is bottom
-      options.grid[options.grid.length - 1].bottom = '50px';
-      delete options.grid[options.grid.length - 1].top;
+      this.chartOptions.grid[this.chartOptions.grid.length - 1].bottom = '50px';
+      delete this.chartOptions.grid[this.chartOptions.grid.length - 1].top;
     }
-
     if (this.filteredTrades.length > 0) {
       // Show trades
       const trades: Array<string | number>[] = [];
@@ -464,8 +463,8 @@ export default class CandleChart extends Vue {
 
       const name = 'Trades';
       const nameClose = 'Trades Close';
-      if (options.legend && options.legend.data) {
-        options.legend.data.push(name);
+      if (this.chartOptions.legend && this.chartOptions.legend.data) {
+        this.chartOptions.legend.data.push(name);
       }
       const sp: echarts.EChartOption.SeriesScatter = {
         name,
@@ -477,11 +476,11 @@ export default class CandleChart extends Vue {
         },
         data: trades,
       };
-      if (options.series) {
-        options.series.push(sp);
+      if (this.chartOptions.series) {
+        this.chartOptions.series.push(sp);
       }
-      if (options.legend && options.legend.data) {
-        options.legend.data.push(nameClose);
+      if (this.chartOptions.legend && this.chartOptions.legend.data) {
+        this.chartOptions.legend.data.push(nameClose);
       }
       const closeSeries: echarts.EChartOption.SeriesScatter = {
         name: nameClose,
@@ -493,14 +492,12 @@ export default class CandleChart extends Vue {
         },
         data: tradesClose,
       };
-      if (options.series) {
-        options.series.push(closeSeries);
+      if (this.chartOptions.series) {
+        this.chartOptions.series.push(closeSeries);
       }
     }
 
-    // console.log(options);
-    // TODO: Rebuilding this causes a full redraw for every new step
-    return options;
+    console.log('chartOptions', this.chartOptions);
   }
 
   // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
