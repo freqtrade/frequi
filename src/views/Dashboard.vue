@@ -4,6 +4,7 @@
     :row-height="50"
     :layout="gridLayout"
     :vertical-compact="false"
+    :margin="[5, 5]"
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
