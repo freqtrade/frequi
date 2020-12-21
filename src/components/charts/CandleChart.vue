@@ -45,24 +45,20 @@ export default class CandleChart extends Vue {
 
   @Prop({ required: true }) plotConfig!: PlotConfig;
 
-  // Only recalculate buy / sell data if necessary
-  signalsCalculated = false;
-
   buyData = [] as Array<number>[];
 
   sellData = [] as Array<number>[];
 
   chartOptions: echarts.EChartOption = {};
 
-  @Watch('timeframe')
-  timeframeChanged() {
-    this.signalsCalculated = false;
-  }
-
   @Watch('dataset')
   datasetChanged() {
-    this.signalsCalculated = false;
     this.updateChart();
+  }
+
+  @Watch('plotConfig')
+  plotConfigChanged() {
+    this.initializeChartOptions();
   }
 
   get strategy() {
@@ -107,6 +103,7 @@ export default class CandleChart extends Vue {
       useUTC: this.useUTC,
       animation: false,
       legend: {
+        // Initial legend, further entries are pushed to the below list
         data: ['Candles', 'Volume', 'Buy', 'Sell'],
         right: '1%',
       },
