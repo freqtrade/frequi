@@ -170,6 +170,23 @@ export default class CandleChart extends Vue {
           splitLine: { show: false },
         },
       ],
+      dataZoom: [
+        // Start values are recalculated once the data is known
+        {
+          type: 'inside',
+          xAxisIndex: [0, 1],
+          start: 80,
+          end: 100,
+        },
+        {
+          show: true,
+          xAxisIndex: [0, 1],
+          type: 'slider',
+          bottom: 10,
+          start: 80,
+          end: 100,
+        },
+      ],
       // visualMap: {
       //   //  TODO: this would allow to colorize volume bars (if we'd want this)
       //   //  Needs green / red indicator column in data.
@@ -188,10 +205,11 @@ export default class CandleChart extends Vue {
       //   ],
       // },
     };
-    this.updateChart();
+    console.log('Initialized');
+    this.updateChart(true);
   }
 
-  updateChart() {
+  updateChart(initial = false) {
     if (!this.hasData) {
       return;
     }
@@ -205,7 +223,26 @@ export default class CandleChart extends Vue {
     const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
     const subplotCount =
       'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length : 0;
-    const startingZoom = (1 - 250 / this.dataset.length) * 100;
+
+    if (this.chartOptions?.dataZoom && Array.isArray(this.chartOptions?.dataZoom)) {
+      // Only set zoom once ...
+      if (initial) {
+        const startingZoom = (1 - 250 / this.dataset.length) * 100;
+        this.chartOptions.dataZoom.forEach((el, i) => {
+          if (this.chartOptions && this.chartOptions.dataZoom) {
+            this.chartOptions.dataZoom[i].start = startingZoom;
+          }
+        });
+      } else {
+        // Remove start/end settings after chart initialization to avoid chart resetting
+        this.chartOptions.dataZoom.forEach((el, i) => {
+          if (this.chartOptions && this.chartOptions.dataZoom) {
+            delete this.chartOptions.dataZoom[i].start;
+            delete this.chartOptions.dataZoom[i].end;
+          }
+        });
+      }
+    }
 
     const options: echarts.EChartOption = {
       dataset: {
@@ -227,22 +264,7 @@ export default class CandleChart extends Vue {
           height: '10%',
         },
       ],
-      dataZoom: [
-        {
-          type: 'inside',
-          xAxisIndex: [0, 1],
-          start: startingZoom,
-          end: 100,
-        },
-        {
-          show: true,
-          xAxisIndex: [0, 1],
-          type: 'slider',
-          bottom: 10,
-          start: startingZoom,
-          end: 100,
-        },
-      ],
+
       series: [
         {
           name: 'Candles',
