@@ -455,33 +455,7 @@ export default class CandleChart extends Vue {
     }
     if (this.filteredTrades.length > 0) {
       // Show trades
-      const trades: Array<string | number>[] = [];
-      const tradesClose: Array<string | number>[] = [];
-      for (let i = 0, len = this.filteredTrades.length; i < len; i += 1) {
-        const trade: Trade = this.filteredTrades[i];
-        if (
-          trade.open_timestamp >= this.dataset.data_start_ts &&
-          trade.open_timestamp <= this.dataset.data_stop_ts
-        ) {
-          trades.push([roundTimeframe(this.timeframems, trade.open_timestamp), trade.open_rate]);
-        }
-        if (
-          trade.close_timestamp !== undefined &&
-          trade.close_timestamp < this.dataset.data_stop_ts &&
-          trade.close_timestamp > this.dataset.data_start_ts
-        ) {
-          if (trade.close_date !== undefined && trade.close_rate !== undefined) {
-            tradesClose.push([
-              roundTimeframe(this.timeframems, trade.close_timestamp),
-              trade.close_rate,
-            ]);
-          }
-        }
-      }
-      // console.log(`Trades: ${trades.length}`);
-      // console.log(trades);
-      // console.log(`ClosesTrades: ${tradesClose.length}`);
-      // console.log(tradesClose);
+      const { trades, tradesClose } = this.getTradeEntries();
 
       const name = 'Trades';
       const nameClose = 'Trades Close';
@@ -520,6 +494,34 @@ export default class CandleChart extends Vue {
     }
 
     console.log('chartOptions', this.chartOptions);
+  }
+
+  /** Return trade entries for charting */
+  getTradeEntries() {
+    const trades: (string | number)[][] = [];
+    const tradesClose: (string | number)[][] = [];
+    for (let i = 0, len = this.filteredTrades.length; i < len; i += 1) {
+      const trade: Trade = this.filteredTrades[i];
+      if (
+        trade.open_timestamp >= this.dataset.data_start_ts &&
+        trade.open_timestamp <= this.dataset.data_stop_ts
+      ) {
+        trades.push([roundTimeframe(this.timeframems, trade.open_timestamp), trade.open_rate]);
+      }
+      if (
+        trade.close_timestamp !== undefined &&
+        trade.close_timestamp < this.dataset.data_stop_ts &&
+        trade.close_timestamp > this.dataset.data_start_ts
+      ) {
+        if (trade.close_date !== undefined && trade.close_rate !== undefined) {
+          tradesClose.push([
+            roundTimeframe(this.timeframems, trade.close_timestamp),
+            trade.close_rate,
+          ]);
+        }
+      }
+    }
+    return { trades, tradesClose };
   }
 
   // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
