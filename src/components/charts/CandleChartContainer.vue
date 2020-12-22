@@ -31,7 +31,7 @@
         </b-select>
       </div>
 
-      <div class="col-mb-2 mr-2">
+      <div class="col-mb-2 mr-2 d-flex align-items-center">
         <b-checkbox v-model="useUTC" title="Use UTC for graph">useUTC</b-checkbox>
       </div>
       <div class="col-mb-2 mr-1">
