@@ -54,7 +54,7 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .post(
-          `${this.getAPIUrl()}/${apiBase}/token/refresh`,
+          `${this.getAPIUrl()}${apiBase}/token/refresh`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
