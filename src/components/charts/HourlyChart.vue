@@ -1,9 +1,15 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="hourlyChartOptions" autoresize />
+  <v-chart
+    v-if="trades.length > 0"
+    :options="hourlyChartOptions"
+    autoresize
+    :theme="getChartTheme"
+  />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
 
@@ -32,6 +38,8 @@ export default class HourlyChart extends Vue {
   @Prop({ required: true }) trades!: Trade[];
 
   @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+
+  @Getter getChartTheme!: string;
 
   get hourlyData() {
     const res = new Array(24);

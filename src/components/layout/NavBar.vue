@@ -123,6 +123,7 @@ export default class NavBar extends Vue {
 .nav-link:active {
   color: white;
 }
+
 .verticalCenter {
   align-items: center;
   display: inline-flex;
