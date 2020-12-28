@@ -3,3 +3,50 @@
 // html, body, #app{
 
 // }
+
+
+[data-theme="dark"] {
+    $bg-dark: #3c3c3c;
+    $bg-darker: darken($bg-dark, 5%);
+    $fg-color: #dedede;
+    background-color: darken($bg-dark, 5%) ;
+    color: #eee !important;
+    .card {
+        border: 0;
+    }
+    .card-body {
+        background: $bg-dark;
+        color: $fg-color;
+    }
+    .card-header {
+        background: lighten($bg-dark, 5%);
+        color: $fg-color;
+    }
+    .table {
+        color: $fg-color;
+    }
+    .list-group-item {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+    // .custom-select {
+    //     color: $fg-color;
+    //     // background: $bg-dark;
+    // }
+    .nav-link.active {
+        color: $fg-color;
+        background: $bg-darker;
+    }
+    .modal-content {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+    .form-control {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+    textarea {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+}

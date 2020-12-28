@@ -41,6 +41,11 @@ export default {
           dark: false,
         },
         {
+          name: 'Bootstrap_dark',
+          description: 'Plain dark bootstrap default theme',
+          dark: true,
+        },
+        {
           name: 'Cerulean',
           description: 'A calm blue sky',
           dark: false,
@@ -161,9 +166,13 @@ export default {
       if (this.activeTheme === themeName) {
         return;
       }
-      if (themeName.toLowerCase() === 'bootstrap') {
+      if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'bootstrap_dark') {
         const styles = document.getElementsByTagName('style');
         const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
+        document.documentElement.setAttribute(
+          'data-theme',
+          themeName.toLowerCase() === 'bootstrap_dark' ? 'dark' : 'light',
+        );
         // Reset all bootswatch styles
         bw.forEach((style, index) => {
           bw[index].disabled = true;
@@ -172,6 +181,7 @@ export default {
         // Dynamic import for a different theme, to avoid loading ALL themes.
         import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then((mod) => {
           console.log('theme', mod);
+          document.documentElement.removeAttribute('data-theme');
           const styles = document.getElementsByTagName('style');
           const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
           bw.forEach((style, index) => {
