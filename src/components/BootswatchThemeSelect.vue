@@ -18,8 +18,9 @@
         v-b-tooltip.hover.right
         :active="activeTheme === theme.name"
         :title="theme.description"
+        :name="theme.name"
         @click="handleClick"
-        >{{ theme.name }}</b-dropdown-item-button
+        >{{ theme.name }}{{ theme.dark ? ' [dark]' : '' }}</b-dropdown-item-button
       >
     </b-nav-item-dropdown>
   </div>
@@ -37,90 +38,112 @@ export default {
         {
           name: 'Bootstrap',
           description: 'Plain bootstrap default theme',
+          dark: false,
         },
         {
           name: 'Cerulean',
           description: 'A calm blue sky',
+          dark: false,
         },
         {
           name: 'Cosmo',
           description: 'An ode to Metro',
+          dark: false,
         },
         {
           name: 'Cyborg',
           description: 'Jet black and electric blue',
+          dark: true,
         },
         {
           name: 'Darkly',
           description: 'Flatly in night mode',
+          dark: true,
         },
         {
           name: 'Flatly',
           description: 'Flat and modern',
+          dark: false,
         },
         {
           name: 'Journal',
           description: 'Crisp like a new sheet of paper',
+          dark: false,
         },
         {
           name: 'Litera',
           description: 'The medium is the message',
+          dark: false,
         },
         {
           name: 'Lumen',
           description: 'Light and shadow',
+          dark: false,
         },
         {
           name: 'Lux',
           description: 'A touch of class',
+          dark: false,
         },
         {
           name: 'Materia',
           description: 'Material is the metaphor',
+          dark: false,
         },
         {
           name: 'Minty',
           description: 'A fresh feel',
+          dark: false,
         },
         {
           name: 'Pulse',
           description: 'A trace of purple',
+          dark: false,
         },
         {
           name: 'Sandstone',
           description: 'A touch of warmth',
+          dark: false,
         },
         {
           name: 'Simplex',
           description: 'Mini and minimalist',
+          dark: false,
         },
         {
           name: 'Sketchy',
           description: 'A hand-drawn look for mockups and mirth',
+          dark: false,
         },
         {
           name: 'Slate',
           description: 'Shades of gunmetal gray',
+          dark: true,
         },
         {
           name: 'Solar',
           description: 'A spin on Solarized',
+          dark: true,
         },
         {
           name: 'Spacelab',
           description: 'Silvery and sleek',
+          dark: false,
         },
         {
           name: 'Superhero',
           description: 'The brave and the blue',
+          dark: true,
         },
         {
           name: 'United',
           description: 'Ubuntu orange and unique font',
+          dark: false,
         },
         {
           name: 'Yeti',
           description: 'A friendly foundation',
+          dark: false,
         },
       ],
     };
@@ -131,7 +154,7 @@ export default {
   },
   methods: {
     handleClick(e) {
-      this.setTheme(e.target.innerText.trim());
+      this.setTheme(e.target.name.trim());
     },
     setTheme(themeName) {
       // If theme is already active, do nothing.
@@ -147,7 +170,8 @@ export default {
         });
       } else {
         // Dynamic import for a different theme, to avoid loading ALL themes.
-        import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then(() => {
+        import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then((mod) => {
+          console.log('theme', mod);
           const styles = document.getElementsByTagName('style');
           const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
           bw.forEach((style, index) => {
