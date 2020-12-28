@@ -37,9 +37,22 @@
     //     color: $fg-color;
     //     // background: $bg-dark;
     // }
+    .nav-tabs {
+        border-bottom: 1px solid lighten($bg-dark, 20%);
+        .nav-link
+        {
+            color: $primary;
+
+            &:hover {
+                border-color: lighten($bg-dark, 5%);
+                color: lighten($primary, 10%);
+            }
+        }
+    }
     .nav-link.active {
         color: $fg-color;
         background: $bg-darker;
+        border-color:  lighten($bg-dark, 20%);
     }
     .modal-content {
         color: $fg-color;
