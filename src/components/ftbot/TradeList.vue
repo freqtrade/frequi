@@ -19,15 +19,15 @@
       >
         <template #cell(actions)="row">
           <b-button class="btn-xs" size="sm" title="Forcesell" @click="forcesellHandler(row.item)">
-            FS
+            <ForceSellIcon :size="16" />
           </b-button>
           <b-button
-            class="btn-xs"
+            class="btn-xs ml-1"
             size="sm"
             title="Delete trade"
             @click="removeTradeHandler(row.item)"
           >
-            RM
+            <DeleteIcon :size="16" />
           </b-button>
         </template>
         <template #cell(pair)="row">
@@ -55,12 +55,14 @@ import { namespace } from 'vuex-class';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { Trade } from '@/types';
+import DeleteIcon from 'vue-material-design-icons/Delete.vue';
+import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ProfitSymbol from './ProfitSymbol.vue';
 
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { ProfitSymbol },
+  components: { ProfitSymbol, DeleteIcon, ForceSellIcon },
 })
 export default class TradeList extends Vue {
   $refs!: {
