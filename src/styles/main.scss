@@ -1,8 +1,8 @@
 
 @import '_bootstrap_variables_ovw.scss';
 
-@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';
 
-@import '_variables.scss';
-@import '_styles_ovw.scss';
+@import 'variables';
+@import 'styles_ovw';
