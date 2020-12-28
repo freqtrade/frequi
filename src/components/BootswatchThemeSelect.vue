@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-nav-item-dropdown
+      v-if="!simple"
       id="my-nav-dropdown"
       text="Theme"
       toggle-class="nav-link-custom"
@@ -23,14 +24,26 @@
         >{{ theme.name }}{{ theme.dark ? ' [dark]' : '' }}</b-dropdown-item-button
       >
     </b-nav-item-dropdown>
+    <b-link v-else variant="outline-primary" class="nav-link" @click="toggleNight">
+      <ThemeLightDark :size="16" />
+    </b-link>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import axios from 'axios';
+import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 
-export default {
+export default Vue.extend({
   name: 'BootswatchThemeSelect',
+  components: { ThemeLightDark },
+  props: {
+    simple: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       activeTheme: '',
@@ -161,6 +174,9 @@ export default {
     handleClick(e) {
       this.setTheme(e.target.name.trim());
     },
+    toggleNight() {
+      this.setTheme(this.activeTheme === 'bootstrap_dark' ? 'bootstrap' : 'bootstrap_dark');
+    },
     setTheme(themeName) {
       // If theme is already active, do nothing.
       if (this.activeTheme === themeName) {
@@ -168,32 +184,36 @@ export default {
       }
       if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'bootstrap_dark') {
         const styles = document.getElementsByTagName('style');
-        const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
+        const bw = Array.from(styles).filter((w) => w.textContent?.includes('bootswatch'));
         document.documentElement.setAttribute(
           'data-theme',
           themeName.toLowerCase() === 'bootstrap_dark' ? 'dark' : 'light',
         );
         // Reset all bootswatch styles
         bw.forEach((style, index) => {
-          bw[index].disabled = true;
+          (bw[index] as any).disabled = true;
         });
+        document.documentElement.classList.add('ft-theme-transition');
+        window.setTimeout(() => {
+          document.documentElement.classList.remove('ft-theme-transition');
+        }, 1000);
       } else {
         // Dynamic import for a different theme, to avoid loading ALL themes.
         import(`bootswatch/dist/${themeName.toLowerCase()}/bootstrap.min.css`).then((mod) => {
           console.log('theme', mod);
           document.documentElement.removeAttribute('data-theme');
           const styles = document.getElementsByTagName('style');
-          const bw = Array.from(styles).filter((w) => w.textContent.includes('bootswatch'));
+          const bw = Array.from(styles).filter((w) => w.textContent?.includes('bootswatch'));
           bw.forEach((style, index) => {
             if (!style.id) {
               // If its a style that was just imported and hasn't been assigned an id.
               bw[index].id = themeName;
             } else if (style.id === themeName) {
               // If it's a style that has been imported already.
-              bw[index].disabled = false;
+              (bw[index] as any).disabled = false;
             } else {
               // All other style themes should be disabled.
-              bw[index].disabled = true;
+              (bw[index] as any).disabled = true;
             }
           });
         });
@@ -223,7 +243,7 @@ export default {
         });
     },
   },
-};
+});
 </script>
 
 <style scoped></style>
