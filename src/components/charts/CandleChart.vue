@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-grow-1 chart-wrapper">
-    <v-chart v-if="hasData" theme="dark" autoresize :options="chartOptions" />
+    <v-chart v-if="hasData" :theme="theme" autoresize :options="chartOptions" />
   </div>
 </template>
 
@@ -40,6 +40,8 @@ export default class CandleChart extends Vue {
   @Prop({ default: true }) readonly useUTC!: boolean;
 
   @Prop({ required: true }) plotConfig!: PlotConfig;
+
+  @Prop({ default: 'dark' }) theme!: string;
 
   buyData = [] as Array<number>[];
 
@@ -95,7 +97,7 @@ export default class CandleChart extends Vue {
         text: `${this.strategy} - ${this.pair} - ${this.timeframe}`,
         show: true,
       },
-      backgroundColor: '#1b1b1b',
+      // backgroundColor: '#1b1b1b',
       useUTC: this.useUTC,
       animation: false,
       legend: {
