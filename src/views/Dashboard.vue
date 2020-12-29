@@ -22,7 +22,7 @@
           <b-card header="Open / Total trades">
             <b-card-text>
               <span class="text-primary">{{ openTrades.length }}</span> /
-              <span class="text-secondary">{{ profit.trade_count }}</span>
+              <span class="text">{{ profit.trade_count }}</span>
             </b-card-text>
           </b-card>
           <b-card header="Won / lost trades">

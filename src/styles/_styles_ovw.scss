@@ -1,14 +1,10 @@
 // global main style
 
-// html, body, #app{
-
-// }
-
-
 [data-theme="dark"] {
     $bg-dark: #3c3c3c;
     $bg-darker: darken($bg-dark, 5%);
     $fg-color: #dedede;
+
     background-color: darken($bg-dark, 5%) ;
     color: $fg-color !important;
     body {
@@ -62,6 +58,13 @@
         color: $fg-color;
         background: $bg-dark;
     }
+    .popover {
+        background: $bg-dark;
+    }
+    .popover-body {
+        color: $fg-color;
+    }
+
     textarea {
         color: $fg-color;
         background: $bg-dark;
@@ -73,7 +76,7 @@ html.ft-theme-transition,
 html.ft-theme-transition *,
 html.ft-theme-transition *:before,
 html.ft-theme-transition *:after {
-    transition:background 750ms linear,
-               border-color 750ms linear;
+    transition:background 750ms ease-in-out,
+               border-color 750ms ease-in-out;
     transition-delay: 0 !important;
 }
