@@ -62,7 +62,7 @@ export default Vue.extend({
       this.setTheme(e.target.name.trim());
     },
     toggleNight() {
-      this.setTheme(this.activeTheme === 'bootstrap_dark' ? 'bootstrap' : 'bootstrap_dark');
+      this.setTheme(this.activeTheme === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
     },
     setTheme(themeName) {
       // If theme is already active, do nothing.
@@ -74,7 +74,7 @@ export default Vue.extend({
         const bw = Array.from(styles).filter((w) => w.textContent?.includes('bootswatch'));
         document.documentElement.setAttribute(
           'data-theme',
-          themeName.toLowerCase() === 'bootstrap_dark' ? 'dark' : 'light',
+          themeName.toLowerCase() === 'bootstrap' ? 'light' : 'dark',
         );
         // Reset all bootswatch styles
         bw.forEach((style, index) => {

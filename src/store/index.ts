@@ -26,7 +26,7 @@ export default new Vuex.Store({
       if (theme) {
         return theme.dark;
       }
-      return false;
+      return true;
     },
     getChartTheme(state, getters) {
       return getters.isDarkTheme ? 'dark' : 'light';
