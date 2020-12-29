@@ -1,5 +1,9 @@
 // global main style
 
+.logo-svg {
+    background-color: #000000;
+}
+
 [data-theme="dark"] {
     $bg-dark: #3c3c3c;
     $bg-darker: darken($bg-dark, 5%);
@@ -12,7 +16,7 @@
         color: $fg-color;
     }
     .card {
-        border-color: $bg-dark;
+        border-color: lighten($bg-dark, 10%);
     }
     .card-body {
         background: $bg-dark;
@@ -65,11 +69,16 @@
         color: $fg-color;
     }
 
+    .logo-svg {
+        background-color: $fg-color;
+    }
     textarea {
         color: $fg-color;
         background: $bg-dark;
     }
 }
+
+
 
 
 html.ft-theme-transition,
