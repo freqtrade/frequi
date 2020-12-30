@@ -1,9 +1,10 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="chartOptions" autoresize />
+  <v-chart v-if="trades.length > 0" :options="chartOptions" autoresize :theme="getChartTheme" />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
 import { EChartOption } from 'echarts';
@@ -34,6 +35,8 @@ export default class CumProfitChart extends Vue {
   @Prop({ default: true, type: Boolean }) showTitle!: boolean;
 
   @Prop({ default: 'close_profit_abs' }) profitColumn!: string;
+
+  @Getter getChartTheme!: string;
 
   get cumulativeData() {
     const res: CumProfitData[] = [];
@@ -122,10 +125,10 @@ export default class CumProfitChart extends Vue {
           name: CHART_PROFIT,
           animation: false,
           lineStyle: {
-            color: 'black',
+            color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
           },
           itemStyle: {
-            color: 'black',
+            color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
           },
           // symbol: 'none',
         },

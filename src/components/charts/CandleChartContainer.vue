@@ -45,6 +45,7 @@
         :trades="trades"
         :plot-config="plotConfig"
         :use-u-t-c="useUTC"
+        :theme="getChartTheme"
       >
       </CandleChart>
       <label v-else style="margin: auto auto; font-size: 1.5rem">No data available</label>
@@ -54,7 +55,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { Getter, namespace } from 'vuex-class';
 import {
   Trade,
   PairHistory,
@@ -95,6 +96,8 @@ export default class CandleChartContainer extends Vue {
   plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
   plotConfigName = '';
+
+  @Getter getChartTheme!: string;
 
   @ftbot.State availablePlotConfigNames!: Array<string>;
 

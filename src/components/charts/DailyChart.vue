@@ -1,10 +1,10 @@
 <template>
-  <v-chart v-if="dailyStats.data" :options="dailyChartOptions" autoresize />
+  <v-chart v-if="dailyStats.data" :options="dailyChartOptions" :theme="getChartTheme" autoresize />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-
+import { Getter } from 'vuex-class';
 import ECharts from 'vue-echarts';
 import { EChartOption } from 'echarts';
 
@@ -29,6 +29,8 @@ export default class DailyChart extends Vue {
   @Prop({ required: true }) dailyStats!: DailyReturnValue;
 
   @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+
+  @Getter getChartTheme!: string;
 
   get absoluteMin() {
     return Number(

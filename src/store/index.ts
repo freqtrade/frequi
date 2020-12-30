@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import userService from '@/shared/userService';
+import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import ftbotModule, { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
@@ -9,6 +10,7 @@ import layoutModule from './modules/layout';
 const AUTO_REFRESH = 'ft_auto_refresh';
 
 Vue.use(Vuex);
+const initCurrentTheme = getCurrentTheme();
 
 export default new Vuex.Store({
   state: {
@@ -16,6 +18,19 @@ export default new Vuex.Store({
     loggedIn: userService.loggedIn(),
     autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
     isBotOnline: false,
+    currentTheme: initCurrentTheme,
+  },
+  getters: {
+    isDarkTheme(state) {
+      const theme = getTheme(state.currentTheme);
+      if (theme) {
+        return theme.dark;
+      }
+      return true;
+    },
+    getChartTheme(state, getters) {
+      return getters.isDarkTheme ? 'dark' : 'light';
+    },
   },
   modules: {
     ftbot: ftbotModule,
@@ -37,8 +52,15 @@ export default new Vuex.Store({
     setIsBotOnline(state, isBotOnline: boolean) {
       state.isBotOnline = isBotOnline;
     },
+    mutateCurrentTheme(state, newTheme: string) {
+      storeCurrentTheme(newTheme);
+      state.currentTheme = newTheme;
+    },
   },
   actions: {
+    setCurrentTheme({ commit }, newTheme: string) {
+      commit('mutateCurrentTheme', newTheme);
+    },
     setAutoRefresh({ commit }, newRefreshValue) {
       commit('setAutoRefresh', newRefreshValue);
       localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));

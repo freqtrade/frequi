@@ -1,5 +1,91 @@
 // global main style
 
-// html, body, #app{
+.logo-svg {
+    background-color: #000000;
+}
 
-// }
+[data-theme="dark"] {
+    $bg-dark: #3c3c3c;
+    $bg-darker: darken($bg-dark, 5%);
+    $fg-color: #dedede;
+
+    background-color: darken($bg-dark, 5%) ;
+    color: $fg-color !important;
+    body {
+        background: $bg-darker;
+        color: $fg-color;
+    }
+    .card {
+        border-color: lighten($bg-dark, 10%);
+    }
+    .card-body {
+        background: $bg-dark;
+        color: $fg-color;
+    }
+    .card-header {
+        background: lighten($bg-dark, 5%);
+        color: $fg-color;
+    }
+    .table {
+        color: $fg-color;
+    }
+    .list-group-item {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+    // .custom-select {
+    //     color: $fg-color;
+    //     // background: $bg-dark;
+    // }
+    .nav-tabs {
+        border-bottom: 1px solid lighten($bg-dark, 20%);
+        .nav-link
+        {
+            color: $primary;
+
+            &:hover {
+                border-color: lighten($bg-dark, 5%);
+                color: lighten($primary, 10%);
+            }
+        }
+    }
+    .nav-link.active {
+        color: $fg-color;
+        background: $bg-darker;
+        border-color:  lighten($bg-dark, 20%);
+    }
+    .modal-content {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+    .form-control {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+    .popover {
+        background: $bg-dark;
+    }
+    .popover-body {
+        color: $fg-color;
+    }
+
+    .logo-svg {
+        background-color: $fg-color;
+    }
+    textarea {
+        color: $fg-color;
+        background: $bg-dark;
+    }
+}
+
+
+
+
+html.ft-theme-transition,
+html.ft-theme-transition *,
+html.ft-theme-transition *:before,
+html.ft-theme-transition *:after {
+    transition:background 750ms ease-in-out,
+               border-color 750ms ease-in-out;
+    transition-delay: 0 !important;
+}
