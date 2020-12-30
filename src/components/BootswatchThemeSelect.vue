@@ -80,7 +80,7 @@ export default Vue.extend({
         bw.forEach((style, index) => {
           (bw[index] as any).disabled = true;
         });
-        if (this.simple) {
+        if (this.simple && this.activeTheme) {
           // Only transition if simple mode is active
           document.documentElement.classList.add('ft-theme-transition');
           window.setTimeout(() => {
