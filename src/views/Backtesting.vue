@@ -58,6 +58,7 @@
             >
               <b-form-select
                 id="timeframe-select"
+                v-model="selectedTimeframe"
                 placeholder="Use strategy default"
                 :options="availableTimeframes"
               ></b-form-select>
@@ -216,6 +217,8 @@ export default class Backtesting extends Vue {
     '1y',
   ];
 
+  selectedTimeframe = '';
+
   strategy = '';
 
   btFormMode = 'run';
@@ -266,7 +269,6 @@ export default class Backtesting extends Vue {
   }
 
   clickBacktest() {
-    console.log('Backtesting');
     const btPayload: BacktestPayload = {
       strategy: this.strategy,
       timerange: this.timerange,
@@ -278,6 +280,9 @@ export default class Backtesting extends Vue {
     if (this.stakeAmount && Number.isSafeInteger(this.stakeAmount)) {
       // eslint-disable-next-line @typescript-eslint/camelcase
       btPayload.stake_amount = Number(this.stakeAmount);
+    }
+    if (this.selectedTimeframe) {
+      btPayload.timeframe = this.selectedTimeframe;
     }
 
     this.startBacktest(btPayload);

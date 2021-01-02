@@ -3,6 +3,7 @@ import { Trade } from './trades';
 export interface BacktestPayload {
   strategy: string;
   timerange: string;
+  timeframe?: string;
   max_open_trades?: number;
   stake_amount?: number;
 }
