@@ -127,11 +127,13 @@ export default class HourlyChart extends Vue {
         {
           type: 'line',
           name: CHART_PROFIT,
+          animation: false,
           // symbol: 'none',
         },
         {
           type: 'bar',
           name: CHART_TRADE_COUNT,
+          animation: false,
           itemStyle: {
             color: 'rgba(150,150,150,0.3)',
           },
