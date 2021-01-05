@@ -15,6 +15,7 @@ export enum DashboardLayout {
   dailyChart = 'g-dailyChart',
   hourlyChart = 'g-hourlyChart',
   cumChartChart = 'g-cumChartChart',
+  tradesLogChart = 'g-TradesLogChart',
 }
 
 export enum LayoutGetters {
@@ -50,6 +51,7 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: DashboardLayout.dailyChart, x: 4, y: 0, w: 4, h: 6 },
   { i: DashboardLayout.hourlyChart, x: 4, y: 6, w: 4, h: 6 },
   { i: DashboardLayout.cumChartChart, x: 0, y: 6, w: 4, h: 6 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 8, w: 12, h: 4 },
 ];
 
 const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';

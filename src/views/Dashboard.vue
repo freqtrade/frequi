@@ -95,6 +95,20 @@
         <CumProfitChart :trades="closedTrades" :show-title="false" />
       </DraggableContainer>
     </GridItem>
+    <GridItem
+      :i="gridLayoutTradesLogChart.i"
+      :x="gridLayoutTradesLogChart.x"
+      :y="gridLayoutTradesLogChart.y"
+      :w="gridLayoutTradesLogChart.w"
+      :h="gridLayoutTradesLogChart.h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
+    >
+      <DraggableContainer header="Trades Log">
+        <TradesLogChart :trades="closedTrades" :show-title="false" />
+      </DraggableContainer>
+    </GridItem>
   </GridLayout>
 </template>
 
@@ -108,6 +122,7 @@ import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import HourlyChart from '@/components/charts/HourlyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
+import TradesLogChart from '@/components/charts/TradesLog.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import {
@@ -128,6 +143,7 @@ const layoutNs = namespace('layout');
     DailyChart,
     HourlyChart,
     CumProfitChart,
+    TradesLogChart,
     DraggableContainer,
   },
 })
@@ -181,6 +197,10 @@ export default class Dashboard extends Vue {
 
   get gridLayoutCumChart(): GridItemData {
     return findGridLayout(this.gridLayout, DashboardLayout.cumChartChart);
+  }
+
+  get gridLayoutTradesLogChart(): GridItemData {
+    return findGridLayout(this.gridLayout, DashboardLayout.tradesLogChart);
   }
 
   mounted() {
