@@ -8,17 +8,16 @@
         <b-table class="table-sm" :items="backtestResultStats" :fields="backtestResultFields">
         </b-table>
       </b-card>
-      <b-card header="Results per pair" class="mt-2">
-        <b-table class="table-sm" :items="backtestResult.results_per_pair" :fields="perPairFields">
-        </b-table>
-      </b-card>
-
       <b-card header="Results per Sell-reason" class="mt-2">
         <b-table
           class="table-sm"
           :items="backtestResult.sell_reason_summary"
           :fields="perSellReason"
         >
+        </b-table>
+      </b-card>
+      <b-card header="Results per pair" class="mt-2">
+        <b-table class="table-sm" :items="backtestResult.results_per_pair" :fields="perPairFields">
         </b-table>
       </b-card>
 

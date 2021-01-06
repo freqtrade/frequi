@@ -57,7 +57,7 @@
               label-cols-sm="5"
               label="Timeframe:"
               label-align-sm="right"
-              label-for="timeframeSelect"
+              label-for="timeframe-select"
             >
               <b-form-select
                 id="timeframe-select"
@@ -94,6 +94,19 @@
                 placeholder="Use strategy default"
                 step="0.01"
               ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              label-cols-sm="5"
+              label="Enable Protections:"
+              label-align-sm="right"
+              label-for="enable-protections"
+            >
+              <b-form-checkbox
+                id="enable-protections"
+                v-model="enableProtections"
+                :options="availableTimeframes"
+              ></b-form-checkbox>
             </b-form-group>
 
             <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
@@ -232,6 +245,14 @@ export default class Backtesting extends Vue {
 
   strategy = '';
 
+  timerange = '';
+
+  enableProtections = false;
+
+  maxOpenTrades = '';
+
+  stakeAmount = '';
+
   btFormMode = 'run';
 
   selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
@@ -244,12 +265,6 @@ export default class Backtesting extends Vue {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
-
-  timerange = '';
-
-  maxOpenTrades = '';
-
-  stakeAmount = '';
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
@@ -283,6 +298,8 @@ export default class Backtesting extends Vue {
     const btPayload: BacktestPayload = {
       strategy: this.strategy,
       timerange: this.timerange,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      enable_protections: this.enableProtections,
     };
     const openTradesInt = parseInt(this.maxOpenTrades, 10);
     if (openTradesInt) {

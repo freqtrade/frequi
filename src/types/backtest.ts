@@ -6,6 +6,7 @@ export interface BacktestPayload {
   timeframe?: string;
   max_open_trades?: number;
   stake_amount?: number;
+  enable_protections?: boolean;
 }
 
 export interface PairResult {
