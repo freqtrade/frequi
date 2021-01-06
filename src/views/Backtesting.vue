@@ -1,12 +1,13 @@
 <template>
   <div class="container-fluid">
-    <h2>Backtesting</h2>
+    <h2 class="mt-3">Backtesting</h2>
     <div class="container">
-      <div class="row mx-5 d-flex flex-wrap justify-space-between mb-4">
+      <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4">
         <b-form-radio
           v-model="btFormMode"
           name="bt-form-radios"
           button
+          class="mx-1"
           value="run"
           :disabled="!canRunBacktest"
           >Run backtest</b-form-radio
@@ -15,6 +16,7 @@
           v-model="btFormMode"
           name="bt-form-radios"
           button
+          class="mx-1"
           value="results"
           :disabled="!hasBacktestResult"
           >Analyze result</b-form-radio
@@ -23,6 +25,7 @@
           v-model="btFormMode"
           name="bt-form-radios"
           button
+          class="mx-1"
           value="visualize-summary"
           :disabled="!hasBacktestResult"
           >Visualize summary</b-form-radio
@@ -31,14 +34,14 @@
           v-model="btFormMode"
           name="bt-form-radios"
           button
+          class="mx-1"
           value="visualize"
           :disabled="!hasBacktestResult"
           >Visualize result</b-form-radio
         >
       </div>
 
-      <div v-if="btFormMode == 'strategy'" class="row"></div>
-      <div v-if="btFormMode == 'run'" class="row">
+      <div v-if="btFormMode == 'run'" class="row d-flex flex-column">
         <StrategyList v-model="strategy"></StrategyList>
 
         <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
@@ -103,23 +106,27 @@
             </b-form-group> -->
           </b-form-group>
         </b-card>
-      </div>
 
-      <div v-if="btFormMode == 'run'" class="container">
-        <div class="row">
-          <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
-        </div>
-        <div class="row">
-          <h3>Backtesting summary</h3>
-        </div>
-        <div class="row">
-          <b-button variant="primary" :disabled="backtestRunning" @click="clickBacktest">
+        <TimeRangeSelect v-model="timerange" class="mt-2"></TimeRangeSelect>
+        <h3 class="mt-3">Backtesting summary</h3>
+        <div class="d-flex justify-content-center">
+          <b-button
+            variant="primary"
+            :disabled="backtestRunning"
+            class="mx-1"
+            @click="clickBacktest"
+          >
             Start backtest
           </b-button>
-          <b-button variant="primary" :disabled="backtestRunning" @click="pollBacktest">
+          <b-button
+            variant="primary"
+            :disabled="backtestRunning"
+            class="mx-1"
+            @click="pollBacktest"
+          >
             Load backtest result
           </b-button>
-          <b-button variant="primary" @click="removeBacktest">Reset Backtest</b-button>
+          <b-button variant="primary" class="mx-1" @click="removeBacktest">Reset Backtest</b-button>
         </div>
       </div>
     </div>
