@@ -280,13 +280,15 @@ export default class Backtesting extends Vue {
       strategy: this.strategy,
       timerange: this.timerange,
     };
-    if (this.maxOpenTrades && Number.isSafeInteger(this.maxOpenTrades)) {
+    const openTradesInt = parseInt(this.maxOpenTrades, 10);
+    if (openTradesInt) {
       // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.max_open_trades = parseInt(this.maxOpenTrades, 10);
+      btPayload.max_open_trades = openTradesInt;
     }
-    if (this.stakeAmount && Number.isSafeInteger(this.stakeAmount)) {
+    const stakeAmountInt = Number(this.stakeAmount);
+    if (stakeAmountInt) {
       // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.stake_amount = Number(this.stakeAmount);
+      btPayload.stake_amount = stakeAmountInt;
     }
     if (this.selectedTimeframe) {
       btPayload.timeframe = this.selectedTimeframe;
