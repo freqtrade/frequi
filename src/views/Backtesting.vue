@@ -135,11 +135,13 @@
     </div>
     <div
       v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
-      class="text-center w-100 mt-2 cum-profit-container"
+      class="text-center w-100 mt-2 d-flex flex-column"
     >
+      <TradesLogChart :trades="selectedBacktestResult.trades" class="trades-log" />
       <CumProfitChart
         :trades="selectedBacktestResult.trades"
         profit-column="profit_abs"
+        class="cum-profit"
         :show-title="true"
       />
     </div>
@@ -177,6 +179,7 @@ import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import ValuePair from '@/components/ftbot/ValuePair.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
+import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 
 import {
@@ -196,6 +199,7 @@ const ftbot = namespace('ftbot');
     TimeRangeSelect,
     CandleChartContainer,
     CumProfitChart,
+    TradesLogChart,
     StrategyList,
     ValuePair,
     PairSummary,
@@ -313,7 +317,13 @@ export default class Backtesting extends Vue {
 .candle-chart-container {
   height: 640px !important;
 }
-.cum-profit-container {
-  height: 640px !important;
+
+.cum-profit {
+  height: 350px;
+  max-height: 350px;
+}
+.trades-log {
+  height: 350px;
+  max-height: 350px;
 }
 </style>
