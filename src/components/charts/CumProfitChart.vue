@@ -40,9 +40,11 @@ export default class CumProfitChart extends Vue {
 
   get cumulativeData() {
     const res: CumProfitData[] = [];
-    const closedTrades = this.trades; // .filter((t) => t.close_timestamp);
+    // const closedTrades = [...this.trades]; // .filter((t) => t.close_timestamp);
 
-    closedTrades.sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
+    const closedTrades = this.trades
+      .slice()
+      .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
     let profit = 0.0;
     for (let i = 0, len = closedTrades.length; i < len; i += 1) {
       const trade = closedTrades[i];

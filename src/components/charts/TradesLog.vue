@@ -36,12 +36,12 @@ export default class TradesLogChart extends Vue {
 
   get chartData() {
     const res: number[][] = [];
-    const sortedTrades = this.trades.sort((a, b) =>
-      a.close_timestamp > b.close_timestamp ? 1 : -1,
-    );
+    const sortedTrades = this.trades
+      .slice(0)
+      .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
     for (let i = 0, len = sortedTrades.length; i < len; i += 1) {
       const trade = sortedTrades[i];
-      const entry = [i, trade.profit_pct];
+      const entry = [i, (trade.profit_ratio * 100).toFixed(2)];
       res.push(entry);
     }
 
