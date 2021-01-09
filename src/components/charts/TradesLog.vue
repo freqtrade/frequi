@@ -35,7 +35,7 @@ export default class TradesLogChart extends Vue {
   @Getter getChartTheme!: string;
 
   get chartData() {
-    const res: number[][] = [];
+    const res: (number | string)[][] = [];
     const sortedTrades = this.trades
       .slice(0)
       .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
