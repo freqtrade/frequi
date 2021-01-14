@@ -144,6 +144,16 @@
       </div>
     </div>
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
+      <div class="d-flex">
+        <b-list-group-item
+          v-for="[key, strat] in Object.entries(backtestHistory)"
+          :key="key"
+          button
+          class="d-flex justify-content-between align-items-center py-1"
+        >
+          {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
+        </b-list-group-item>
+      </div>
       <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
     </div>
     <div
@@ -204,6 +214,7 @@ import {
 } from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
+import { formatPercent } from '@/shared/formatters';
 
 const ftbot = namespace('ftbot');
 @Component({
@@ -261,6 +272,8 @@ export default class Backtesting extends Vue {
 
   @ftbot.State backtestResult!: BacktestResult;
 
+  @ftbot.State backtestHistory!: StrategyBacktestResult[];
+
   @ftbot.State history;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -272,6 +285,8 @@ export default class Backtesting extends Vue {
   @ftbot.Action pollBacktest!: () => void;
 
   @ftbot.Action removeBacktest!: () => void;
+
+  formatPercent = formatPercent;
 
   get canRunBacktest() {
     // TODO: Analyze if parameters and strategy has been selected.

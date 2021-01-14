@@ -195,6 +195,11 @@ export default {
     },
     updateBacktestResult(state, backtestResult: BacktestResult) {
       state.backtestResult = backtestResult;
+      // TODO: Properly identify duplicates to avoid pushing the same multiple times
+      Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
+        const xxx = `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
+        state.backtestHistory[xxx] = strat;
+      });
     },
   },
   actions: {

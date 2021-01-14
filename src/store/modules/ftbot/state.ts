@@ -44,6 +44,7 @@ export interface FtbotStateType {
   currentLocks?: LockResponse;
   backtestRunning: boolean;
   backtestResult?: BacktestResult;
+  backtestHistory: Record<string, BacktestResult>;
 }
 const state: FtbotStateType = {
   version: '',
@@ -75,6 +76,7 @@ const state: FtbotStateType = {
   // backtesting
   backtestRunning: false,
   backtestResult: undefined,
+  backtestHistory: {},
 };
 
 export default state;
