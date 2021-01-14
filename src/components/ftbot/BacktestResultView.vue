@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <h2>BacktestResult for {{ strategy }}</h2>
+      <h2>Backtest-result for {{ strategy }}</h2>
     </div>
     <div class="container">
       <b-card header="Metrics">
