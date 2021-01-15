@@ -145,14 +145,16 @@
     </div>
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
       <div class="d-flex">
-        <b-list-group-item
-          v-for="[key, strat] in Object.entries(backtestHistory)"
-          :key="key"
-          button
-          class="d-flex justify-content-between align-items-center py-1"
-        >
-          {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
-        </b-list-group-item>
+        <b-list-group>
+          <b-list-group-item
+            v-for="[key, strat] in Object.entries(backtestHistory)"
+            :key="key"
+            button
+            class="d-flex justify-content-between align-items-center py-1"
+          >
+            {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
+          </b-list-group-item>
+        </b-list-group>
       </div>
       <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
     </div>
@@ -172,23 +174,26 @@
       v-if="hasBacktestResult && btFormMode == 'visualize'"
       class="container-fluid row text-center w-100 mt-2"
     >
-      <PairSummary
-        class="col-md-2"
-        :pairlist="selectedBacktestResult.pairlist"
-        :trades="selectedBacktestResult.trades"
-        sort-method="profit"
-      />
-      <CandleChartContainer
-        :available-pairs="selectedBacktestResult.pairlist"
-        :historic-view="!!true"
-        :timeframe="timeframe"
-        :plot-config="selectedPlotConfig"
-        :timerange="timerange"
-        :strategy="strategy"
-        :trades="selectedBacktestResult.trades"
-        class="col-md-10 candle-chart-container"
-      >
-      </CandleChartContainer>
+      <p>Graph will always show the latest values for the selected strategy.</p>
+      <div class="container-fluid row text-center">
+        <PairSummary
+          class="col-md-2"
+          :pairlist="selectedBacktestResult.pairlist"
+          :trades="selectedBacktestResult.trades"
+          sort-method="profit"
+        />
+        <CandleChartContainer
+          :available-pairs="selectedBacktestResult.pairlist"
+          :historic-view="!!true"
+          :timeframe="timeframe"
+          :plot-config="selectedPlotConfig"
+          :timerange="timerange"
+          :strategy="strategy"
+          :trades="selectedBacktestResult.trades"
+          class="col-md-10 candle-chart-container"
+        >
+        </CandleChartContainer>
+      </div>
     </div>
   </div>
 </template>
@@ -215,6 +220,7 @@ import {
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 @Component({
@@ -274,6 +280,8 @@ export default class Backtesting extends Vue {
 
   @ftbot.State backtestHistory!: StrategyBacktestResult[];
 
+  @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
+
   @ftbot.State history;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -297,9 +305,9 @@ export default class Backtesting extends Vue {
     return Object.keys(this.backtestResult).length !== 0;
   }
 
-  get selectedBacktestResult(): StrategyBacktestResult {
-    return this.backtestResult.strategy[this.strategy] || {};
-  }
+  // get selectedBacktestResult(): StrategyBacktestResult {
+  //   return this.backtestResult.strategy[this.strategy] || {};
+  // }
 
   get timeframe(): string {
     try {

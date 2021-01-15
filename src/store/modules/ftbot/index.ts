@@ -23,6 +23,7 @@ import {
   Lock,
   RunModes,
   TradeResponse,
+  StrategyBacktestResult,
 } from '@/types';
 
 import {
@@ -48,6 +49,7 @@ export enum BotStoreGetters {
   isTrading = 'isTrading',
   isWebserverMode = 'isWebserverMode',
   refreshRequired = 'refreshRequired',
+  selectedBacktestResult = 'selectedBacktestResult',
 }
 
 export default {
@@ -109,6 +111,9 @@ export default {
     },
     [BotStoreGetters.refreshRequired](state: FtbotStateType): boolean {
       return state.refreshRequired;
+    },
+    [BotStoreGetters.selectedBacktestResult](state): StrategyBacktestResult {
+      return state.backtestHistory[state.selectedBacktestResultKey];
     },
   },
   mutations: {
@@ -190,7 +195,7 @@ export default {
       storeCustomPlotConfig(plotConfig);
       state.availablePlotConfigNames = getAllPlotConfigNames();
     },
-    updateBacktestRunning(state, running: boolean) {
+    updateBacktestRunning(state: FtbotStateType, running: boolean) {
       state.backtestRunning = running;
     },
     updateBacktestResult(state, backtestResult: BacktestResult) {
@@ -199,7 +204,11 @@ export default {
       Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
         const xxx = `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
         state.backtestHistory[xxx] = strat;
+        state.selectedBacktestResultKey = xxx;
       });
+    },
+    setBacktestResultKey(state: FtbotStateType, key: string) {
+      state.selectedBacktestResultKey = key;
     },
   },
   actions: {

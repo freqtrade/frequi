@@ -96,7 +96,7 @@ export interface StrategyBacktestResult {
 
   /** Start time of the backtest run */
   backtest_run_start_ts: number;
-  /** ENd time of the backtest run */
+  /** End time of the backtest run */
   backtest_run_end_ts: number;
 }
 
