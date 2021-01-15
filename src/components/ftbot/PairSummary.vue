@@ -7,6 +7,7 @@
       :key="comb.pair"
       button
       class="d-flex justify-content-between align-items-center py-1"
+      :active="comb.pair === selectedPair"
       @click="setSelectedPair(comb.pair)"
     >
       <div>
@@ -22,6 +23,7 @@
 
 <script lang="ts">
 import { formatPercent, timestampms } from '@/shared/formatters';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 import { Lock, Trade } from '@/types';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
@@ -50,6 +52,8 @@ export default class PairSummary extends Vue {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setSelectedPair!: (pair: string) => void;
+
+  @ftbot.Getter [BotStoreGetters.selectedPair]!: string;
 
   timestampms = timestampms;
 
