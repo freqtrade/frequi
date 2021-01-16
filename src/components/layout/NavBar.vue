@@ -18,6 +18,9 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <li class="nav-item text-secondary mr-2">
+            <b-nav-text class="verticalCenter small mr-2">
+              {{ botName }}
+            </b-nav-text>
             <b-nav-text class="verticalCenter">
               {{ isBotOnline ? 'Online' : 'Offline' }}
             </b-nav-text>
@@ -49,6 +52,7 @@ import { State, Action, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions } from '@/store/modules/layout';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -66,6 +70,8 @@ export default class NavBar extends Vue {
   @Action setLoggedIn;
 
   @ftbot.Action ping;
+
+  @ftbot.Getter [BotStoreGetters.botName]: string;
 
   @layoutNs.Action [LayoutActions.resetDashboardLayout];
 

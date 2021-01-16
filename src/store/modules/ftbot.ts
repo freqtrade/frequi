@@ -31,6 +31,7 @@ import {
 import { showAlert } from './alerts';
 
 export enum BotStoreGetters {
+  botName = 'botName',
   openTrades = 'openTrades',
   tradeDetail = 'tradeDetail',
   selectedPair = 'selectedPair',
@@ -45,37 +46,42 @@ export enum BotStoreGetters {
   refreshRequired = 'refreshRequired',
 }
 
+const state = {
+  version: '',
+  lastLogs: '',
+  refreshRequired: true,
+  trades: [],
+  openTrades: [],
+  tradeCount: 0,
+  performanceStats: [],
+  whitelist: [],
+  blacklist: [],
+  profit: {},
+  botState: {},
+  balance: {},
+  dailyStats: [],
+  pairlistMethods: [],
+  detailTradeId: null,
+  selectedPair: '',
+  candleData: {},
+  history: {},
+  strategyPlotConfig: {},
+  customPlotConfig: { ...EMPTY_PLOTCONFIG },
+  plotConfigName: getPlotConfigName(),
+  availablePlotConfigNames: getAllPlotConfigNames(),
+  strategyList: [],
+  strategy: {},
+  pairlist: [],
+  currentLocks: [],
+};
+
 export default {
   namespaced: true,
-  state: {
-    version: '',
-    lastLogs: '',
-    refreshRequired: true,
-    trades: [],
-    openTrades: [],
-    tradeCount: 0,
-    performanceStats: [],
-    whitelist: [],
-    blacklist: [],
-    profit: {},
-    botState: {},
-    balance: {},
-    dailyStats: [],
-    pairlistMethods: [],
-    detailTradeId: null,
-    selectedPair: '',
-    candleData: {},
-    history: {},
-    strategyPlotConfig: {},
-    customPlotConfig: { ...EMPTY_PLOTCONFIG },
-    plotConfigName: getPlotConfigName(),
-    availablePlotConfigNames: getAllPlotConfigNames(),
-    strategyList: [],
-    strategy: {},
-    pairlist: [],
-    currentLocks: [],
-  },
+  state,
   getters: {
+    [BotStoreGetters.botName](state) {
+      return state.botState.bot_name || 'freqtrade';
+    },
     [BotStoreGetters.plotConfig](state) {
       return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
     },
