@@ -27,6 +27,9 @@ jobs:
     - name: Run Lint
       run: yarn lint-ci
 
+    - name: Run type check
+      run: yarn check-types
+
     - name: Run Tests
       run: yarn test:unit
 
