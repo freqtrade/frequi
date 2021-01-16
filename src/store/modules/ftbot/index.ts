@@ -1,4 +1,5 @@
 import { api } from '@/shared/apiService';
+
 import {
   BotState,
   BlacklistPayload,
@@ -24,11 +25,11 @@ import {
 
 import {
   storeCustomPlotConfig,
-  getPlotConfigName,
   getAllPlotConfigNames,
   storePlotConfigName,
 } from '@/shared/storage';
-import { showAlert } from './alerts';
+import state, { FtbotStateType } from './state';
+import { showAlert } from '../alerts';
 
 export enum BotStoreGetters {
   botName = 'botName',
@@ -46,159 +47,130 @@ export enum BotStoreGetters {
   refreshRequired = 'refreshRequired',
 }
 
-const state = {
-  version: '',
-  lastLogs: '',
-  refreshRequired: true,
-  trades: [],
-  openTrades: [],
-  tradeCount: 0,
-  performanceStats: [],
-  whitelist: [],
-  blacklist: [],
-  profit: {},
-  botState: {},
-  balance: {},
-  dailyStats: [],
-  pairlistMethods: [],
-  detailTradeId: null,
-  selectedPair: '',
-  candleData: {},
-  history: {},
-  strategyPlotConfig: {},
-  customPlotConfig: { ...EMPTY_PLOTCONFIG },
-  plotConfigName: getPlotConfigName(),
-  availablePlotConfigNames: getAllPlotConfigNames(),
-  strategyList: [],
-  strategy: {},
-  pairlist: [],
-  currentLocks: [],
-};
-
 export default {
   namespaced: true,
   state,
   getters: {
-    [BotStoreGetters.botName](state) {
-      return state.botState.bot_name || 'freqtrade';
+    [BotStoreGetters.botName](state: FtbotStateType) {
+      return state.botState?.bot_name || 'freqtrade';
     },
-    [BotStoreGetters.plotConfig](state) {
+    [BotStoreGetters.plotConfig](state: FtbotStateType) {
       return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
     },
-    [BotStoreGetters.plotConfigNames](state): string[] {
+    [BotStoreGetters.plotConfigNames](state: FtbotStateType): string[] {
       return Object.keys(state.customPlotConfig);
     },
-    [BotStoreGetters.openTrades](state): Trade[] {
+    [BotStoreGetters.openTrades](state: FtbotStateType): Trade[] {
       return state.openTrades;
     },
-    [BotStoreGetters.allTrades](state): Trade[] {
+    [BotStoreGetters.allTrades](state: FtbotStateType): Trade[] {
       return [...state.openTrades, ...state.trades];
     },
-    [BotStoreGetters.currentLocks](state): Lock[] {
-      return state.currentLocks.locks;
+    [BotStoreGetters.currentLocks](state: FtbotStateType): Lock[] {
+      return state.currentLocks?.locks || [];
     },
-    [BotStoreGetters.tradeDetail](state): Trade {
+    [BotStoreGetters.tradeDetail](state: FtbotStateType): Trade | undefined {
       let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
       if (!dTrade) {
         dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
       }
       return dTrade;
     },
-    [BotStoreGetters.selectedPair](state): Trade {
+    [BotStoreGetters.selectedPair](state: FtbotStateType): string {
       return state.selectedPair;
     },
-    [BotStoreGetters.closedTrades](state) {
+    [BotStoreGetters.closedTrades](state: FtbotStateType) {
       return state.trades.filter((item) => !item.is_open);
     },
-    [BotStoreGetters.timeframe](state): string {
-      return state.botState?.timeframe;
+    [BotStoreGetters.timeframe](state: FtbotStateType): string {
+      return state.botState?.timeframe || '';
     },
-    [BotStoreGetters.isTrading](state): boolean {
+    [BotStoreGetters.isTrading](state: FtbotStateType): boolean {
       return (
-        state.botState.runmode === RunModes.LIVE || state.botState.runmode === RunModes.DRY_RUN
+        state.botState?.runmode === RunModes.LIVE || state.botState?.runmode === RunModes.DRY_RUN
       );
     },
-    [BotStoreGetters.isWebserverMode](state): boolean {
-      return state.botState.runmode === RunModes.WEBSERVER;
+    [BotStoreGetters.isWebserverMode](state: FtbotStateType): boolean {
+      return state.botState?.runmode === RunModes.WEBSERVER;
     },
-    [BotStoreGetters.refreshRequired](state): boolean {
+    [BotStoreGetters.refreshRequired](state: FtbotStateType): boolean {
       return state.refreshRequired;
     },
   },
   mutations: {
-    updateRefreshRequired(state, refreshRequired: boolean) {
+    updateRefreshRequired(state: FtbotStateType, refreshRequired: boolean) {
       state.refreshRequired = refreshRequired;
     },
-    updateTrades(state, trades) {
+    updateTrades(state: FtbotStateType, trades) {
       state.trades = trades.trades;
       state.tradeCount = trades.trades_count;
     },
-    updateOpenTrades(state, trades) {
+    updateOpenTrades(state: FtbotStateType, trades) {
       state.openTrades = trades;
     },
-    updateLocks(state, locks: LockResponse) {
+    updateLocks(state: FtbotStateType, locks: LockResponse) {
       state.currentLocks = locks;
     },
-    updatePerformance(state, performance) {
+    updatePerformance(state: FtbotStateType, performance) {
       state.performanceStats = performance;
     },
-    updateWhitelist(state, whitelist: WhitelistResponse) {
+    updateWhitelist(state: FtbotStateType, whitelist: WhitelistResponse) {
       state.whitelist = whitelist.whitelist;
       state.pairlistMethods = whitelist.method;
     },
-    updateBlacklist(state, blacklist) {
+    updateBlacklist(state: FtbotStateType, blacklist) {
       state.blacklist = blacklist.blacklist;
     },
-    updateProfit(state, profit) {
+    updateProfit(state: FtbotStateType, profit) {
       state.profit = profit;
     },
-    updateDaily(state, daily: DailyReturnValue) {
+    updateDaily(state: FtbotStateType, daily: DailyReturnValue) {
       state.dailyStats = daily;
     },
-    updateBalance(state, balance: BalanceInterface) {
+    updateBalance(state: FtbotStateType, balance: BalanceInterface) {
       state.balance = balance;
     },
-    updateState(state, botState: BotState) {
+    updateState(state: FtbotStateType, botState: BotState) {
       state.botState = botState;
     },
-    updateVersion(state, version) {
+    updateVersion(state: FtbotStateType, version) {
       state.version = version.version;
     },
-    updateLogs(state, logs: Logs) {
+    updateLogs(state: FtbotStateType, logs: Logs) {
       state.lastLogs = logs.logs;
     },
-    setDetailTrade(state, trade: Trade) {
-      state.detailTradeId = trade ? trade.trade_id : null;
+    setDetailTrade(state: FtbotStateType, trade: Trade) {
+      state.detailTradeId = trade ? trade.trade_id : undefined;
       state.selectedPair = trade ? trade.pair : state.selectedPair;
     },
-    setSelectedPair(state, pair: string) {
+    setSelectedPair(state: FtbotStateType, pair: string) {
       state.selectedPair = pair;
     },
-    updateStrategyList(state, result: StrategyListResult) {
+    updateStrategyList(state: FtbotStateType, result: StrategyListResult) {
       state.strategyList = result.strategies;
     },
-    updateStrategy(state, strategy: StrategyResult) {
+    updateStrategy(state: FtbotStateType, strategy: StrategyResult) {
       state.strategy = strategy;
     },
-    updatePairs(state, pairlist: Array<string>) {
+    updatePairs(state: FtbotStateType, pairlist: string[]) {
       state.pairlist = pairlist;
     },
-    updatePairCandles(state, { pair, timeframe, data }) {
+    updatePairCandles(state: FtbotStateType, { pair, timeframe, data }) {
       state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
     },
-    updatePairHistory(state, { pair, timeframe, data }) {
+    updatePairHistory(state: FtbotStateType, { pair, timeframe, data }) {
       // Intentionally drop the previous state here.
       state.history = { [`${pair}__${timeframe}`]: data };
     },
-    updatePlotConfig(state, plotConfig: PlotConfig) {
+    updatePlotConfig(state: FtbotStateType, plotConfig: PlotConfig) {
       state.strategyPlotConfig = plotConfig;
     },
-    updatePlotConfigName(state, plotConfigName: string) {
+    updatePlotConfigName(state: FtbotStateType, plotConfigName: string) {
       // Set default plot config name
       state.plotConfigName = plotConfigName;
       storePlotConfigName(plotConfigName);
     },
-    saveCustomPlotConfig(state, plotConfig: PlotConfigStorage) {
+    saveCustomPlotConfig(state: FtbotStateType, plotConfig: PlotConfigStorage) {
       state.customPlotConfig = plotConfig;
       storeCustomPlotConfig(plotConfig);
       state.availablePlotConfigNames = getAllPlotConfigNames();
