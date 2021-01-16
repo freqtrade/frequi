@@ -34,7 +34,7 @@
         <ReloadIcon />
       </button>
       <button
-        v-if="botState.forcebuy_enabled"
+        v-if="botState && botState.forcebuy_enabled"
         class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || !isRunning"
         title="Force Buy - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
@@ -76,7 +76,7 @@ const ftbot = namespace('ftbot');
 export default class BotControls extends Vue {
   forcebuyShow = false;
 
-  @ftbot.State botState!: BotState;
+  @ftbot.State botState?: BotState;
 
   @ftbot.Action startBot;
 
@@ -93,7 +93,7 @@ export default class BotControls extends Vue {
   @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
 
   get isRunning(): boolean {
-    return this.botState.state === 'running';
+    return this.botState?.state === 'running';
   }
 
   initiateForcebuy() {

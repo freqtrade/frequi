@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="botState">
     <p>
       Running Freqtrade <strong>{{ version }}</strong>
     </p>
@@ -49,7 +49,7 @@ export default class BotStatus extends Vue {
 
   @ftbot.State profit;
 
-  @ftbot.State botState!: BotState;
+  @ftbot.State botState?: BotState;
 
   formatPercent = formatPercent;
 

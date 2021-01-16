@@ -4,7 +4,6 @@ import {
   BotState,
   Trade,
   PlotConfig,
-  EMPTY_PLOTCONFIG,
   StrategyResult,
   BalanceInterface,
   DailyReturnValue,
@@ -24,24 +23,24 @@ export interface FtbotStateType {
   blacklist: string[];
   // TODO: type me
   profit: {};
-  botState: BotState | undefined;
+  botState?: BotState;
   balance: BalanceInterface | {};
   dailyStats: DailyReturnValue | {};
   pairlistMethods: string[];
-  detailTradeId: number | undefined;
+  detailTradeId?: number;
   selectedPair: string;
   // TODO: type me
   candleData: {};
   // TODO: type me
   history: {};
-  strategyPlotConfig: PlotConfig | {};
+  strategyPlotConfig?: PlotConfig;
   customPlotConfig: PlotConfigStorage;
   plotConfigName: string;
   availablePlotConfigNames: string[];
   strategyList: string[];
   strategy: StrategyResult | {};
   pairlist: string[];
-  currentLocks: LockResponse | undefined;
+  currentLocks?: LockResponse;
 }
 const state: FtbotStateType = {
   version: '',
@@ -62,7 +61,7 @@ const state: FtbotStateType = {
   selectedPair: '',
   candleData: {},
   history: {},
-  strategyPlotConfig: {},
+  strategyPlotConfig: undefined,
   customPlotConfig: {},
   plotConfigName: getPlotConfigName(),
   availablePlotConfigNames: getAllPlotConfigNames(),
