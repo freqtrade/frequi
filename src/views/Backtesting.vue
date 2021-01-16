@@ -309,7 +309,7 @@ export default class Backtesting extends Vue {
   }
 
   get hasBacktestResult() {
-    return Object.keys(this.backtestResult).length !== 0;
+    return this.backtestResult ? Object.keys(this.backtestResult).length !== 0 : false;
   }
 
   // get selectedBacktestResult(): StrategyBacktestResult {

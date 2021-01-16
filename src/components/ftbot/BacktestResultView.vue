@@ -70,18 +70,6 @@ export default class BacktestResultView extends Vue {
         )} ${this.backtestResult.stake_currency}`,
       },
       { metric: 'Trades per day', value: this.backtestResult.trades_per_day },
-      {
-        metric: 'Best Pair',
-        value: `${this.backtestResult.best_pair.key} ${formatPercent(
-          this.backtestResult.best_pair.profit_sum,
-        )}`,
-      },
-      {
-        metric: 'Worst Pair',
-        value: `${this.backtestResult.worst_pair.key} ${formatPercent(
-          this.backtestResult.worst_pair.profit_sum,
-        )}`,
-      },
 
       { metric: 'Best day', value: formatPercent(this.backtestResult.backtest_best_day, 2) },
       { metric: 'Worst day', value: formatPercent(this.backtestResult.backtest_worst_day, 2) },
@@ -102,6 +90,19 @@ export default class BacktestResultView extends Vue {
       { metric: 'Drawdown start', value: this.backtestResult.drawdown_start },
       { metric: 'Drawdown end', value: this.backtestResult.drawdown_end },
       { metric: 'Market change', value: formatPercent(this.backtestResult.market_change) },
+
+      {
+        metric: 'Best Pair',
+        value: `${this.backtestResult.best_pair.key} ${formatPercent(
+          this.backtestResult.best_pair.profit_sum,
+        )}`,
+      },
+      {
+        metric: 'Worst Pair',
+        value: `${this.backtestResult.worst_pair.key} ${formatPercent(
+          this.backtestResult.worst_pair.profit_sum,
+        )}`,
+      },
     ];
   }
 
