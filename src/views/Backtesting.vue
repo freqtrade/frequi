@@ -150,7 +150,9 @@
             v-for="[key, strat] in Object.entries(backtestHistory)"
             :key="key"
             button
+            :active="key === selectedBacktestResultKey"
             class="d-flex justify-content-between align-items-center py-1"
+            @click="setBacktestResult(key)"
           >
             {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
           </b-list-group-item>
@@ -280,9 +282,11 @@ export default class Backtesting extends Vue {
 
   @ftbot.State backtestHistory!: StrategyBacktestResult[];
 
-  @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
+  @ftbot.State selectedBacktestResultKey!: string;
 
   @ftbot.State history;
+
+  @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
@@ -293,6 +297,9 @@ export default class Backtesting extends Vue {
   @ftbot.Action pollBacktest!: () => void;
 
   @ftbot.Action removeBacktest!: () => void;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Mutation setBacktestResultKey!: (key: string) => void;
 
   formatPercent = formatPercent;
 
@@ -315,6 +322,10 @@ export default class Backtesting extends Vue {
     } catch (err) {
       return '';
     }
+  }
+
+  setBacktestResult(key: string) {
+    this.setBacktestResultKey(key);
   }
 
   clickBacktest() {
