@@ -1,8 +1,11 @@
 <template>
-  <b-form-group label="Strategy" label-for="strategyName" invalid-feedback="Strategy is required">
-    <b-form-select v-model="strategy" :options="strategyList" @change="strategyChanged">
-    </b-form-select>
-  </b-form-group>
+  <div>
+    <b-form-group label="Strategy" label-for="strategyName" invalid-feedback="Strategy is required">
+      <b-form-select v-model="locStrategy" :options="strategyList" @change="strategyChanged">
+      </b-form-select>
+    </b-form-group>
+    <textarea v-if="showDetails && strategy" v-model="strategyCode" class="w-100 h-100"></textarea>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,6 +18,8 @@ const ftbot = namespace('ftbot');
 export default class StrategyList extends Vue {
   @Prop() value!: string;
 
+  @Prop({ default: false, required: false }) showDetails!: boolean;
+
   @ftbot.Action getStrategyList;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,17 +27,23 @@ export default class StrategyList extends Vue {
 
   @ftbot.State strategyList;
 
+  @ftbot.State strategy;
+
   @Emit('input')
   emitStrategy(strategy: string) {
     this.getStrategy(strategy);
     return strategy;
   }
 
-  get strategy() {
+  get strategyCode(): string {
+    return this.strategy?.code;
+  }
+
+  get locStrategy() {
     return this.value;
   }
 
-  set strategy(val) {
+  set locStrategy(val) {
     this.emitStrategy(val);
   }
 
