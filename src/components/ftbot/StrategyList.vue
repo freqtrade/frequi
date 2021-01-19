@@ -1,9 +1,20 @@
 <template>
   <div>
-    <b-form-group label="Strategy" label-for="strategyName" invalid-feedback="Strategy is required">
-      <b-form-select v-model="locStrategy" :options="strategyList" @change="strategyChanged">
-      </b-form-select>
-    </b-form-group>
+    <div class="w-100 d-flex">
+      <b-form-group
+        label="Strategy"
+        label-for="strategyName"
+        invalid-feedback="Strategy is required"
+        class="flex-grow-1"
+      >
+        <b-form-select v-model="locStrategy" :options="strategyList" @change="strategyChanged">
+        </b-form-select>
+      </b-form-group>
+      <div class="ml-2 d-flex align-items-center">
+        <b-button class="mt-2" @click="getStrategyList">&#x21bb;</b-button>
+      </div>
+    </div>
+
     <textarea v-if="showDetails && strategy" v-model="strategyCode" class="w-100 h-100"></textarea>
   </div>
 </template>
@@ -25,7 +36,7 @@ export default class StrategyList extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action getStrategy!: (strategy: string) => void;
 
-  @ftbot.State strategyList;
+  @ftbot.State strategyList!: string[];
 
   @ftbot.State strategy;
 
@@ -52,7 +63,9 @@ export default class StrategyList extends Vue {
   }
 
   mounted() {
-    this.getStrategyList();
+    if (!this.strategyList) {
+      this.getStrategyList();
+    }
   }
 }
 </script>
