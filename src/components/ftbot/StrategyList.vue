@@ -63,7 +63,7 @@ export default class StrategyList extends Vue {
   }
 
   mounted() {
-    if (!this.strategyList) {
+    if (this.strategyList.length === 0) {
       this.getStrategyList();
     }
   }
