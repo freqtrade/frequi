@@ -72,11 +72,13 @@ export interface StrategyBacktestResult {
   timeframe: string;
   timerange: string;
   strategy_name: string;
+  enable_protections: boolean;
   stoploss: number;
   trailing_stop: boolean;
   trailing_stop_positive?: number;
   trailing_stop_positive_offset?: number;
   trailing_only_offset_is_reached: boolean;
+  use_custom_stoploss: boolean;
   minimal_roi: Record<string, number>;
   use_sell_signal: boolean;
   sell_profit_only: boolean;

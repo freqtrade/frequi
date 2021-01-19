@@ -1,13 +1,28 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div>
       <h2>Backtest-result for {{ strategy }}</h2>
     </div>
     <div class="container">
-      <b-card header="Metrics">
-        <b-table class="table-sm" :items="backtestResultStats" :fields="backtestResultFields">
-        </b-table>
-      </b-card>
+      <div class="row">
+        <div class="col-md-6">
+          <b-card header="Strategy settings">
+            <b-table
+              class="table-sm"
+              :items="backtestResultSettings"
+              :fields="backtestsettingFields"
+            >
+            </b-table>
+          </b-card>
+        </div>
+        <div class="col-md-6">
+          <b-card header="Metrics">
+            <b-table class="table-sm" :items="backtestResultStats" :fields="backtestResultFields">
+            </b-table>
+          </b-card>
+        </div>
+      </div>
+
       <b-card header="Results per Sell-reason" class="mt-2">
         <b-table
           class="table-sm"
@@ -57,9 +72,6 @@ export default class BacktestResultView extends Vue {
   get backtestResultStats() {
     // Transpose Result into readable format
     return [
-      { metric: 'Backtesting from', value: timestampms(this.backtestResult.backtest_start_ts) },
-      { metric: 'Backtesting to', value: timestampms(this.backtestResult.backtest_end_ts) },
-      { metric: 'Max open trades', value: this.backtestResult.max_open_trades },
       { metric: 'Total trades', value: this.backtestResult.total_trades },
       // { metric: 'First trade', value: this.backtestResult.backtest_fi },
       // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
@@ -73,6 +85,18 @@ export default class BacktestResultView extends Vue {
 
       { metric: 'Best day', value: formatPercent(this.backtestResult.backtest_best_day, 2) },
       { metric: 'Worst day', value: formatPercent(this.backtestResult.backtest_worst_day, 2) },
+      {
+        metric: 'Win/Draw/Loss',
+        value: `${
+          this.backtestResult.results_per_pair[this.backtestResult.results_per_pair.length - 1].wins
+        } / ${
+          this.backtestResult.results_per_pair[this.backtestResult.results_per_pair.length - 1]
+            .draws
+        } / ${
+          this.backtestResult.results_per_pair[this.backtestResult.results_per_pair.length - 1]
+            .losses
+        }`,
+      },
       {
         metric: 'Days win/draw/loss',
         value: `${this.backtestResult.winning_days} / ${this.backtestResult.draw_days} / ${this.backtestResult.losing_days}`,
@@ -103,6 +127,34 @@ export default class BacktestResultView extends Vue {
           this.backtestResult.worst_pair.profit_sum,
         )}`,
       },
+    ];
+  }
+
+  get backtestResultSettings() {
+    // Transpose Result into readable format
+    return [
+      { setting: 'Backtesting from', value: timestampms(this.backtestResult.backtest_start_ts) },
+      { setting: 'Backtesting to', value: timestampms(this.backtestResult.backtest_end_ts) },
+      { setting: 'Max open trades', value: this.backtestResult.max_open_trades },
+      { setting: 'Timeframe', value: this.backtestResult.timeframe },
+      { setting: 'Timerange', value: this.backtestResult.timerange },
+      { setting: 'Stoploss', value: formatPercent(this.backtestResult.stoploss, 2) },
+      { setting: 'Trailing Stoploss', value: this.backtestResult.trailing_stop },
+      {
+        setting: 'Trail only when offset is reached',
+        value: this.backtestResult.trailing_only_offset_is_reached,
+      },
+      { setting: 'Trailing Stop positive', value: this.backtestResult.trailing_stop_positive },
+      {
+        setting: 'Trailing stop positive offset',
+        value: this.backtestResult.trailing_stop_positive_offset,
+      },
+      { setting: 'Custom Stoploss', value: this.backtestResult.use_custom_stoploss },
+      { setting: 'ROI', value: this.backtestResult.minimal_roi },
+      { setting: 'Use Sell Signal', value: this.backtestResult.use_sell_signal },
+      { setting: 'Sell profit only', value: this.backtestResult.sell_profit_only },
+      { setting: 'Sell profit offset', value: this.backtestResult.sell_profit_offset },
+      { setting: 'Enable protections', value: this.backtestResult.enable_protections },
     ];
   }
 
@@ -149,6 +201,11 @@ export default class BacktestResultView extends Vue {
 
   backtestResultFields: Array<Record<string, string>> = [
     { key: 'metric', label: 'Metric' },
+    { key: 'value', label: 'Value' },
+  ];
+
+  backtestsettingFields: Array<Record<string, string>> = [
+    { key: 'setting', label: 'Setting' },
     { key: 'value', label: 'Value' },
   ];
 }

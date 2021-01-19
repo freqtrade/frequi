@@ -144,8 +144,9 @@
       </div>
     </div>
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
-      <div class="d-flex">
-        <b-list-group>
+      <div class="container d-flex align-items-center">
+        <label>Available results: </label>
+        <b-list-group class="ml-2">
           <b-list-group-item
             v-for="[key, strat] in Object.entries(backtestHistory)"
             :key="key"
