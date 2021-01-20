@@ -144,21 +144,11 @@
       </div>
     </div>
     <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
-      <div class="container d-flex align-items-center">
-        <label>Available results: </label>
-        <b-list-group class="ml-2">
-          <b-list-group-item
-            v-for="[key, strat] in Object.entries(backtestHistory)"
-            :key="key"
-            button
-            :active="key === selectedBacktestResultKey"
-            class="d-flex justify-content-between align-items-center py-1"
-            @click="setBacktestResult(key)"
-          >
-            {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
-          </b-list-group-item>
-        </b-list-group>
-      </div>
+      <BacktestResultSelect
+        :backtest-history="backtestHistory"
+        :selected-backtest-result-key="selectedBacktestResultKey"
+        @selectionChange="setBacktestResult"
+      />
       <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
     </div>
     <div
@@ -177,7 +167,9 @@
       v-if="hasBacktestResult && btFormMode == 'visualize'"
       class="container-fluid row text-center w-100 mt-2"
     >
-      <p>Graph will always show the latest values for the selected strategy.</p>
+      <p>
+        Graph will always show the latest values for the selected strategy. Strategy: {{ strategy }}
+      </p>
       <div class="container-fluid row text-center">
         <PairSummary
           class="col-md-2"
@@ -206,6 +198,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
+import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import ValuePair from '@/components/ftbot/ValuePair.vue';
@@ -229,6 +222,7 @@ const ftbot = namespace('ftbot');
 @Component({
   components: {
     BacktestResultView,
+    BacktestResultSelect,
     TimeRangeSelect,
     CandleChartContainer,
     CumProfitChart,
