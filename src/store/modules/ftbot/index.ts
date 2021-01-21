@@ -207,6 +207,9 @@ export default {
         state.selectedBacktestResultKey = xxx;
       });
     },
+    resetBacktestHistory(state: FtbotStateType) {
+      state.backtestHistory = {};
+    },
     setBacktestResultKey(state: FtbotStateType, key: string) {
       state.selectedBacktestResultKey = key;
     },
@@ -620,6 +623,7 @@ export default {
       }
     },
     async removeBacktest({ commit }) {
+      commit('resetBacktestHistory');
       try {
         const result = await api.delete('/backtest');
         commit('updateBacktestRunning', result.data.running);

@@ -1,6 +1,9 @@
 <template>
   <div class="container-fluid">
-    <h2 class="mt-3">Backtesting</h2>
+    <div class="mb-2">
+      <h2 class="mt-3 d-inline">Backtesting</h2>
+      <small v-show="backtestRunning" class="bt-running-label">Backtest running</small>
+    </div>
     <div class="container">
       <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4">
         <b-form-radio
@@ -273,8 +276,6 @@ export default class Backtesting extends Vue {
 
   @ftbot.State backtestRunning!: boolean;
 
-  @ftbot.State backtestResult!: BacktestResult;
-
   @ftbot.State backtestHistory!: StrategyBacktestResult[];
 
   @ftbot.State selectedBacktestResultKey!: string;
@@ -304,16 +305,12 @@ export default class Backtesting extends Vue {
   }
 
   get hasBacktestResult() {
-    return this.backtestResult ? Object.keys(this.backtestResult).length !== 0 : false;
+    return this.backtestHistory ? Object.keys(this.backtestHistory).length !== 0 : false;
   }
-
-  // get selectedBacktestResult(): StrategyBacktestResult {
-  //   return this.backtestResult.strategy[this.strategy] || {};
-  // }
 
   get timeframe(): string {
     try {
-      return this.backtestResult.strategy[this.strategy].timeframe;
+      return this.selectedBacktestResult.timeframe;
     } catch (err) {
       return '';
     }
@@ -371,5 +368,10 @@ export default class Backtesting extends Vue {
 .trades-log {
   height: 350px;
   max-height: 350px;
+}
+.bt-running-label {
+  position: absolute;
+  right: 2em;
+  margin-top: 1em;
 }
 </style>

@@ -48,7 +48,7 @@
 <script lang="ts">
 import TradeList from '@/components/ftbot/TradeList.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { StrategyBacktestResult } from '@/types';
+import { StrategyBacktestResult, Trade } from '@/types';
 
 import {
   timestampms,
@@ -69,6 +69,25 @@ export default class BacktestResultView extends Vue {
     return !!this.backtestResult;
   }
 
+  getSortedTrades(backtestResult: StrategyBacktestResult): Trade[] {
+    const sortedTrades = backtestResult.trades
+      .slice()
+      .sort((a, b) => a.profit_ratio - b.profit_ratio);
+    return sortedTrades;
+  }
+
+  get bestPair(): string {
+    const trades = this.getSortedTrades(this.backtestResult);
+    const value = trades[trades.length - 1];
+    return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
+  }
+
+  get worstPair(): string {
+    const trades = this.getSortedTrades(this.backtestResult);
+    const value = trades[0];
+    return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
+  }
+
   get backtestResultStats() {
     // Transpose Result into readable format
     return [
@@ -85,6 +104,7 @@ export default class BacktestResultView extends Vue {
 
       { metric: 'Best day', value: formatPercent(this.backtestResult.backtest_best_day, 2) },
       { metric: 'Worst day', value: formatPercent(this.backtestResult.backtest_worst_day, 2) },
+
       {
         metric: 'Win/Draw/Loss',
         value: `${
@@ -127,6 +147,8 @@ export default class BacktestResultView extends Vue {
           this.backtestResult.worst_pair.profit_sum,
         )}`,
       },
+      { metric: 'Best single Trade', value: this.bestPair },
+      { metric: 'Worst single Trade', value: this.worstPair },
     ];
   }
 
