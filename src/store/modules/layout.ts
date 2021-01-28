@@ -37,7 +37,7 @@ export enum LayoutMutations {
 // Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
   { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 3 },
-  { i: TradeLayout.multiPane, x: 0, y: 3, w: 4, h: 23 },
+  { i: TradeLayout.multiPane, x: 0, y: 3, w: 4, h: 28 },
   { i: TradeLayout.chartView, x: 4, y: 0, w: 8, h: 11 },
   { i: TradeLayout.tradeDetail, x: 4, y: 16, w: 8, h: 5 },
   { i: TradeLayout.openTrades, x: 4, y: 11, w: 8, h: 5 },
