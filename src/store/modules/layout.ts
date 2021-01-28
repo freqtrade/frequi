@@ -39,10 +39,10 @@ const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
   { i: TradeLayout.botControls, x: 0, y: 0, w: 4, h: 3 },
   { i: TradeLayout.multiPane, x: 0, y: 3, w: 4, h: 23 },
   { i: TradeLayout.chartView, x: 4, y: 0, w: 8, h: 11 },
-  { i: TradeLayout.tradeDetail, x: 0, y: 44, w: 5, h: 6 },
+  { i: TradeLayout.tradeDetail, x: 4, y: 16, w: 8, h: 5 },
   { i: TradeLayout.openTrades, x: 4, y: 11, w: 8, h: 5 },
-  { i: TradeLayout.tradeHistory, x: 4, y: 16, w: 8, h: 10 },
-  { i: TradeLayout.logView, x: 0, y: 26, w: 12, h: 15 },
+  { i: TradeLayout.tradeHistory, x: 4, y: 21, w: 8, h: 10 },
+  { i: TradeLayout.logView, x: 0, y: 31, w: 12, h: 13 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
