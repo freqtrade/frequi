@@ -76,7 +76,7 @@ yarn serve
 
 ## Project setup for vscode and docker (developing inside dev container) on Linux
 
-The goal is it has a complete dev environment very quickly and isolated.
+The goal is to have a complete dev environment very quickly and isolated.
 
 ### Install missing tools if needed
 
