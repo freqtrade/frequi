@@ -28,6 +28,7 @@ module.exports = {
     'class-methods-use-this': 0,
     // disable eslint no-shadow as it's causing false positives on typescript enums
     'no-shadow': 'off',
+    'prettier/prettier': ['error'],
   },
 
   overrides: [
