@@ -5,8 +5,8 @@ export function formatPercent(value: number, decimals = 3): string {
   return value ? `${(value * 100).toFixed(decimals)}%` : '';
 }
 
-export function formatPrice(value: number): string {
-  return value ? value.toFixed(8) : '';
+export function formatPrice(value: number, decimals = 8): string {
+  return value ? value.toFixed(decimals) : '';
 }
 
 export function dateFromString(datestring: string, format: string): Date {
