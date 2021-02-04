@@ -114,7 +114,10 @@ export default class TradeList extends Vue {
   openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
 
   // Added to table-fields for historic trades
-  closedFields: Record<string, string | Function>[] = [{ key: 'close_date', label: 'Close date' },{key: 'sell_reason', label: 'Close Reason'}];
+  closedFields: Record<string, string | Function>[] = [
+    { key: 'close_date', label: 'Close date' },
+    { key: 'sell_reason', label: 'Close Reason' },
+  ];
 
   tableFields: Record<string, string | Function>[] = [
     { key: 'trade_id', label: 'ID' },
