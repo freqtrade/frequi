@@ -17,6 +17,7 @@
 import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
 import DailyChart from '@/components/charts/DailyChart.vue';
+import { formatPrice } from '@/shared/formatters';
 
 export default Vue.extend({
   name: 'DailyStats',
@@ -28,8 +29,12 @@ export default Vue.extend({
     dailyFields() {
       return [
         { key: 'date', label: 'Day' },
-        { key: 'abs_profit', label: 'Profit' },
-        { key: 'fiat_value', label: `In ${this.dailyStats.fiat_display_currency}` },
+        { key: 'abs_profit', label: 'Profit', formatter: (value) => formatPrice(value) },
+        {
+          key: 'fiat_value',
+          label: `In ${this.dailyStats.fiat_display_currency}`,
+          formatter: (value) => formatPrice(value, 2),
+        },
         { key: 'trade_count', label: 'Trades' },
       ];
     },

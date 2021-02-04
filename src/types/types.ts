@@ -59,6 +59,8 @@ export interface BotState {
   timeframe_ms: number;
   /** Timeframe in Minutes */
   timeframe_min: number;
+  /** Given name of the bot */
+  bot_name: string;
 
   trailing_only_offset_is_reached: boolean;
   trailing_stop: boolean;
