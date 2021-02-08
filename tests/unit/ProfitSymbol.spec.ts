@@ -9,22 +9,20 @@ describe('ProfitSymbol.vue', () => {
   beforeEach(() => {
     cmp = mount(ProfitSymbol, { propsData: { trade: {} } });
   });
-  it('calculates isProfitable with negative profit', () => {
+  it('calculates isProfitable with negative profit', async () => {
     const trade = {
       profit_ratio: -0.5,
     };
     cmp.setProps({ trade });
-
+    await Vue.nextTick();
     expect(cmp.vm.isProfitable).toBe(false);
   });
-  it('calculates isProfitable with positive profit', () => {
+  it('calculates isProfitable with positive profit', async () => {
     const trade = {
-      close_profit: 0.5,
-      current_profit: 0.5,
       profit_ratio: 0.5,
     };
     cmp.setProps({ trade });
-
+    await Vue.nextTick();
     expect(cmp.vm.isProfitable).toBe(true);
   });
 
