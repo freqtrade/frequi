@@ -1,5 +1,5 @@
 <template>
-  <div class="card h-100 w-100">
+  <div class="card h-100 w-100 overflow-auto">
     <div class="drag-header card-header">
       {{ header }}
     </div>
