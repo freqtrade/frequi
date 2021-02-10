@@ -92,7 +92,7 @@ export default class CumProfitChart extends Vue {
           },
           nameRotate: 90,
           nameLocation: 'middle',
-          nameGap: 30,
+          nameGap: 40,
         },
         {
           type: 'value',
