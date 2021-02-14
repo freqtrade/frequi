@@ -26,7 +26,7 @@
             id="price-input"
             v-model="price"
             type="number"
-            step="0.01"
+            step="0.00000001"
             @keydown.enter.native="handleBuy"
           ></b-form-input>
         </b-form-group>
