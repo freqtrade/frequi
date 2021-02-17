@@ -83,7 +83,19 @@
                 type="number"
               ></b-form-input>
             </b-form-group>
-
+            <b-form-group
+              label-cols-sm="5"
+              label="Starting capital:"
+              label-align-sm="right"
+              label-for="starting-capital"
+            >
+              <b-form-input
+                id="starting-capital"
+                v-model="startingCapital"
+                type="number"
+                step="0.001"
+              ></b-form-input>
+            </b-form-group>
             <b-form-group
               label-cols-sm="5"
               label="Stake amount:"
@@ -270,6 +282,8 @@ export default class Backtesting extends Vue {
 
   stakeAmount = '';
 
+  startingCapital = '';
+
   btFormMode = 'run';
 
   selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
@@ -332,11 +346,18 @@ export default class Backtesting extends Vue {
       // eslint-disable-next-line @typescript-eslint/camelcase
       btPayload.max_open_trades = openTradesInt;
     }
-    const stakeAmountInt = Number(this.stakeAmount);
-    if (stakeAmountInt) {
+    const stakeAmount = Number(this.stakeAmount);
+    if (stakeAmount) {
       // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.stake_amount = stakeAmountInt;
+      btPayload.stake_amount = stakeAmount;
     }
+
+    const startingCapital = Number(this.startingCapital);
+    if (startingCapital) {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      btPayload.dry_run_wallet = startingCapital;
+    }
+
     if (this.selectedTimeframe) {
       btPayload.timeframe = this.selectedTimeframe;
     }

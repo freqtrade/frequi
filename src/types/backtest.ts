@@ -6,7 +6,9 @@ export interface BacktestPayload {
   timerange: string;
   timeframe?: string;
   max_open_trades?: number;
+  // TODO: Should be number or unlimited
   stake_amount?: number;
+  dry_run_wallet?: number;
   enable_protections?: boolean;
 }
 
@@ -51,6 +53,8 @@ export interface StrategyBacktestResult {
   sell_reason_summary: Array<SellReasonResults>;
   left_open_trades: Trade[];
   total_trades: number;
+  total_volume: number;
+  avg_stake_amount: number;
   profit_mean: number;
   profit_total: number;
   profit_total_abs: number;
@@ -68,6 +72,11 @@ export interface StrategyBacktestResult {
   pairlist: string[];
   stake_amount: number;
   stake_currency: string;
+  /** Decimal places to use when displaying values in stake-currency */
+  stake_currency_decimals: number;
+  starting_balance: number;
+  final_balance: number;
+
   max_open_trades: number;
   timeframe: string;
   timerange: string;
@@ -92,6 +101,13 @@ export interface StrategyBacktestResult {
   loser_holding_avg: number;
   losing_days: number;
   max_drawdown: number;
+  /** Absolute max drawdown */
+  max_drawdown_abs: number;
+  max_drawdown_low: number;
+  max_drawdown_high: number;
+
+  cusm_min: number;
+  csum_max: number;
 
   winner_holding_avg: number;
   winning_days: number;
