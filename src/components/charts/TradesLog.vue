@@ -102,20 +102,22 @@ export default class TradesLogChart extends Vue {
           end: 100,
         },
       ],
-      visualMap: {
-        show: true,
-        seriesIndex: 0,
-        pieces: [
-          {
-            max: 0.0,
-            color: '#f84960',
-          },
-          {
-            min: 0.0,
-            color: '#2ed191',
-          },
-        ],
-      },
+      visualMap: [
+        {
+          show: true,
+          seriesIndex: 0,
+          pieces: [
+            {
+              max: 0.0,
+              color: '#f84960',
+            },
+            {
+              min: 0.0,
+              color: '#2ed191',
+            },
+          ],
+        },
+      ],
       series: [
         {
           type: 'bar',
