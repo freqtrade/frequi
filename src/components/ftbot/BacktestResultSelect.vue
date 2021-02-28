@@ -22,7 +22,7 @@ import { StrategyBacktestResult } from '@/types';
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 
 @Component({})
-export default class Template extends Vue {
+export default class BacktestResultSelect extends Vue {
   @Prop({ required: true }) backtestHistory!: StrategyBacktestResult[];
 
   @Prop({ required: false, default: '' }) selectedBacktestResultKey!: string;

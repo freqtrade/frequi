@@ -227,13 +227,7 @@ import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 
-import {
-  BacktestPayload,
-  BacktestResult,
-  PairHistoryPayload,
-  PlotConfig,
-  StrategyBacktestResult,
-} from '@/types';
+import { BacktestPayload, PairHistoryPayload, PlotConfig, StrategyBacktestResult } from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';

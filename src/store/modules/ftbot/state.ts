@@ -11,6 +11,7 @@ import {
   PlotConfigStorage,
   ProfitInterface,
   BacktestResult,
+  StrategyBacktestResult,
 } from '@/types';
 
 export interface FtbotStateType {
@@ -45,7 +46,7 @@ export interface FtbotStateType {
   backtestRunning: boolean;
   backtestResult?: BacktestResult;
   selectedBacktestResultKey: string;
-  backtestHistory: Record<string, BacktestResult>;
+  backtestHistory: Record<string, StrategyBacktestResult>;
 }
 const state: FtbotStateType = {
   version: '',
