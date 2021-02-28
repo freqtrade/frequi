@@ -102,13 +102,20 @@
               label-align-sm="right"
               label-for="stake-amount"
             >
-              <b-form-input
-                id="stake-amount"
-                v-model="stakeAmount"
-                type="number"
-                placeholder="Use strategy default"
-                step="0.01"
-              ></b-form-input>
+              <div class="d-flex">
+                <b-form-checkbox id="stake-amount-bool" v-model="stakeAmountUnlimited"
+                  >Unlimited stake</b-form-checkbox
+                >
+
+                <b-form-input
+                  id="stake-amount"
+                  v-model="stakeAmount"
+                  type="number"
+                  placeholder="Use strategy default"
+                  step="0.01"
+                  :disabled="stakeAmountUnlimited"
+                ></b-form-input>
+              </div>
             </b-form-group>
 
             <b-form-group
@@ -120,7 +127,6 @@
               <b-form-checkbox
                 id="enable-protections"
                 v-model="enableProtections"
-                :options="availableTimeframes"
               ></b-form-checkbox>
             </b-form-group>
 
@@ -280,6 +286,8 @@ export default class Backtesting extends Vue {
 
   maxOpenTrades = '';
 
+  stakeAmountUnlimited = false;
+
   stakeAmount = '';
 
   startingCapital = '';
@@ -346,10 +354,15 @@ export default class Backtesting extends Vue {
       // eslint-disable-next-line @typescript-eslint/camelcase
       btPayload.max_open_trades = openTradesInt;
     }
-    const stakeAmount = Number(this.stakeAmount);
-    if (stakeAmount) {
+    if (this.stakeAmountUnlimited) {
       // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.stake_amount = stakeAmount;
+      btPayload.stake_amount = 'unlimited';
+    } else {
+      const stakeAmount = Number(this.stakeAmount);
+      if (stakeAmount) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        btPayload.stake_amount = stakeAmount;
+      }
     }
 
     const startingCapital = Number(this.startingCapital);

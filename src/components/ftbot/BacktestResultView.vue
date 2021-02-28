@@ -76,6 +76,12 @@ export default class BacktestResultView extends Vue {
     return sortedTrades;
   }
 
+  formatPriceStake(price) {
+    return `${formatPrice(price, this.backtestResult.stake_currency_decimals)} ${
+      this.backtestResult.stake_currency
+    }`;
+  }
+
   get bestPair(): string {
     const trades = this.getSortedTrades(this.backtestResult);
     const value = trades[trades.length - 1];
@@ -96,9 +102,9 @@ export default class BacktestResultView extends Vue {
       // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
       {
         metric: 'Total Profit',
-        value: `${formatPercent(this.backtestResult.profit_total)} | ${formatPrice(
+        value: `${formatPercent(this.backtestResult.profit_total)} | ${this.formatPriceStake(
           this.backtestResult.profit_total_abs,
-        )} ${this.backtestResult.stake_currency}`,
+        )}`,
       },
       { metric: 'Trades per day', value: this.backtestResult.trades_per_day },
 
@@ -131,8 +137,14 @@ export default class BacktestResultView extends Vue {
         value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
       },
       { metric: 'Max Drawdown', value: formatPercent(this.backtestResult.max_drawdown) },
+      {
+        metric: 'Max Drawdown ABS',
+        value: this.formatPriceStake(this.backtestResult.max_drawdown_abs),
+      },
       { metric: 'Drawdown start', value: this.backtestResult.drawdown_start },
       { metric: 'Drawdown end', value: this.backtestResult.drawdown_end },
+      { metric: 'Min balance', value: this.formatPriceStake(this.backtestResult.csum_min) },
+      { metric: 'Max balance', value: this.formatPriceStake(this.backtestResult.csum_max) },
       { metric: 'Market change', value: formatPercent(this.backtestResult.market_change) },
 
       {
@@ -177,6 +189,22 @@ export default class BacktestResultView extends Vue {
       { setting: 'Sell profit only', value: this.backtestResult.sell_profit_only },
       { setting: 'Sell profit offset', value: this.backtestResult.sell_profit_offset },
       { setting: 'Enable protections', value: this.backtestResult.enable_protections },
+      {
+        setting: 'Starting balance',
+        value: this.formatPriceStake(this.backtestResult.starting_balance),
+      },
+      {
+        setting: 'Final balance',
+        value: this.formatPriceStake(this.backtestResult.final_balance),
+      },
+      {
+        setting: 'Avg. stake amount',
+        value: this.formatPriceStake(this.backtestResult.avg_stake_amount),
+      },
+      {
+        setting: 'Total trade volume',
+        value: this.formatPriceStake(this.backtestResult.total_volume),
+      },
     ];
   }
 

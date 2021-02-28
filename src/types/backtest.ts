@@ -7,7 +7,7 @@ export interface BacktestPayload {
   timeframe?: string;
   max_open_trades?: number;
   // TODO: Should be number or unlimited
-  stake_amount?: number;
+  stake_amount?: number | string;
   dry_run_wallet?: number;
   enable_protections?: boolean;
 }
@@ -106,7 +106,7 @@ export interface StrategyBacktestResult {
   max_drawdown_low: number;
   max_drawdown_high: number;
 
-  cusm_min: number;
+  csum_min: number;
   csum_max: number;
 
   winner_holding_avg: number;
