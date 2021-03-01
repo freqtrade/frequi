@@ -1,4 +1,5 @@
 export interface Lock {
+  id: string;
   pair: string;
   /** Lock insertion time in the format Y-M-d HH:mm:ss */
   lock_time: string;

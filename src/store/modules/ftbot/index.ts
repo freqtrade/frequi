@@ -206,6 +206,18 @@ export default {
         .then((result) => commit('updateLocks', result.data))
         .catch(console.error);
     },
+    async deleteLock({ dispatch, commit }, lockid: string) {
+      try {
+        const res = await api.delete(`/locks/${lockid}`);
+        showAlert(dispatch, res.data.result_msg ? res.data.result_msg : `Deleted Lock ${lockid}.`);
+        commit('updateLocks', res.data);
+        return Promise.resolve(res);
+      } catch (error) {
+        console.error(error.response);
+        showAlert(dispatch, `Failed to delete lock ${lockid}`, 'danger');
+        return Promise.reject(error);
+      }
+    },
     getOpenTrades({ commit, state }) {
       return api
         .get('/status')
