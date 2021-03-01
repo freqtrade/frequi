@@ -102,15 +102,35 @@ export default class TradesLogChart extends Vue {
           end: 100,
         },
       ],
+      visualMap: [
+        {
+          show: true,
+          seriesIndex: 0,
+          pieces: [
+            {
+              max: 0.0,
+              color: '#f84960',
+            },
+            {
+              min: 0.0,
+              color: '#2ed191',
+            },
+          ],
+        },
+      ],
       series: [
         {
-          type: 'line',
+          type: 'bar',
           name: CHART_PROFIT,
           step: 'start',
+          barGap: '0%',
+          barCategoryGap: '0%',
           animation: false,
           label: {
             show: true,
             position: 'top',
+            rotate: 90,
+            offset: [7.5, -20],
             formatter: '{@[1]} %',
             color: this.getChartTheme === 'dark' ? '#c2c2c2' : '#3c3c3c',
           },
