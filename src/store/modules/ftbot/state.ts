@@ -9,6 +9,7 @@ import {
   DailyReturnValue,
   LockResponse,
   PlotConfigStorage,
+  ProfitInterface,
 } from '@/types';
 
 export interface FtbotStateType {
@@ -21,8 +22,7 @@ export interface FtbotStateType {
   performanceStats: Performance[];
   whitelist: string[];
   blacklist: string[];
-  // TODO: type me
-  profit: {};
+  profit: ProfitInterface | {};
   botState?: BotState;
   balance: BalanceInterface | {};
   dailyStats: DailyReturnValue | {};
