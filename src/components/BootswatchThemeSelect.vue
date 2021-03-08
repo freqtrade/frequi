@@ -36,6 +36,7 @@ import axios from 'axios';
 import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 import { themeList } from '@/shared/themes';
 import { mapActions } from 'vuex';
+import { FTHTMLStyleElement } from '@/types/styleElement';
 
 export default Vue.extend({
   name: 'BootswatchThemeSelect',
@@ -78,7 +79,7 @@ export default Vue.extend({
         );
         // Reset all bootswatch styles
         bw.forEach((style, index) => {
-          (bw[index] as any).disabled = true;
+          (bw[index] as FTHTMLStyleElement).disabled = true;
         });
         if (this.simple && this.activeTheme) {
           // Only transition if simple mode is active
@@ -100,10 +101,10 @@ export default Vue.extend({
               bw[index].id = themeName;
             } else if (style.id === themeName) {
               // If it's a style that has been imported already.
-              (bw[index] as any).disabled = false;
+              (bw[index] as FTHTMLStyleElement).disabled = false;
             } else {
               // All other style themes should be disabled.
-              (bw[index] as any).disabled = true;
+              (bw[index] as FTHTMLStyleElement).disabled = true;
             }
           });
         });

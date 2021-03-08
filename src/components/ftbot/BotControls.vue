@@ -51,7 +51,7 @@
       >
         <PlayIcon />
       </button>
-      <ForceBuyForm :modal-show="forcebuyShow" @close="this.$bvModal.hide('forcebuy-modal')" />
+      <ForceBuyForm :modal-show="forcebuyShow" @close="$bvModal.hide('forcebuy-modal')" />
     </div>
   </div>
 </template>
