@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h2>Backtest-result for {{ strategy }}</h2>
+      <h2>Backtest-result for {{ backtestResult.strategy_name }}</h2>
     </div>
     <div class="container">
       <div class="row">
@@ -61,8 +61,6 @@ import {
   components: { TradeList },
 })
 export default class BacktestResultView extends Vue {
-  @Prop({ required: true }) readonly strategy!: string;
-
   @Prop({ required: true }) readonly backtestResult!: StrategyBacktestResult;
 
   get hasBacktestResult() {
@@ -108,8 +106,20 @@ export default class BacktestResultView extends Vue {
       },
       { metric: 'Trades per day', value: this.backtestResult.trades_per_day },
 
-      { metric: 'Best day', value: formatPercent(this.backtestResult.backtest_best_day, 2) },
-      { metric: 'Worst day', value: formatPercent(this.backtestResult.backtest_worst_day, 2) },
+      {
+        metric: 'Best day',
+        value: `${formatPercent(
+          this.backtestResult.backtest_best_day,
+          2,
+        )} | ${this.formatPriceStake(this.backtestResult.backtest_best_day_abs)}`,
+      },
+      {
+        metric: 'Worst day',
+        value: `${formatPercent(
+          this.backtestResult.backtest_worst_day,
+          2,
+        )} | ${this.formatPriceStake(this.backtestResult.backtest_worst_day_abs)}`,
+      },
 
       {
         metric: 'Win/Draw/Loss',

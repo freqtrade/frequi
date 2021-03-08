@@ -170,7 +170,7 @@
         :selected-backtest-result-key="selectedBacktestResultKey"
         @selectionChange="setBacktestResult"
       />
-      <BacktestResultView :strategy="strategy" :backtest-result="selectedBacktestResult" />
+      <BacktestResultView :backtest-result="selectedBacktestResult" />
     </div>
     <div
       v-if="hasBacktestResult && btFormMode == 'visualize-summary'"

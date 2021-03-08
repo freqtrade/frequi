@@ -66,6 +66,8 @@ export interface StrategyBacktestResult {
   backtest_days: number;
   backtest_best_day: number;
   backtest_worst_day: number;
+  backtest_best_day_abs: number;
+  backtest_worst_day_abs: number;
 
   trades_per_day: number;
   market_change: number;
