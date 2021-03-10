@@ -167,14 +167,14 @@
         </div>
       </div>
     </div>
-    <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2 row">
+    <div v-if="hasBacktestResult && btFormMode == 'results'" class="w-100 mt-2 row">
       <BacktestResultSelect
         :backtest-history="backtestHistory"
         :selected-backtest-result-key="selectedBacktestResultKey"
         class="col-3 align-self-start sticky-top"
         @selectionChange="setBacktestResult"
       />
-      <BacktestResultView :backtest-result="selectedBacktestResult" class="col-8" />
+      <BacktestResultView :backtest-result="selectedBacktestResult" class="col-9" />
     </div>
     <div
       v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
@@ -226,7 +226,7 @@ import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
-import ValuePair from '@/components/ftbot/ValuePair.vue';
+import ValuePair from '@/components/general/ValuePair.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';

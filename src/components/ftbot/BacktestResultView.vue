@@ -1,26 +1,32 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div>
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <b-card header="Strategy settings">
-            <b-table
-              class="table-sm"
-              :items="backtestResultSettings"
-              :fields="backtestsettingFields"
-            >
-            </b-table>
-          </b-card>
-        </div>
-        <div class="col-md-6">
-          <b-card header="Metrics">
-            <b-table class="table-sm" :items="backtestResultStats" :fields="backtestResultFields">
-            </b-table>
-          </b-card>
-        </div>
+    <div class="container-fluid row text-left">
+      <div class="col-md-6">
+        <b-card header="Strategy settings">
+          <ValuePair description="Backtesting from">{{
+            timestampmsUTC(backtestResult.backtest_start_ts)
+          }}</ValuePair>
+          <ValuePair description="Backtesting to">{{
+            timestampmsUTC(backtestResult.backtest_end_ts)
+          }}</ValuePair>
+
+          <b-table
+            class="table-sm"
+            borderless
+            :items="backtestResultSettings"
+            :fields="backtestsettingFields"
+          >
+          </b-table>
+        </b-card>
+      </div>
+      <div class="col-md-6">
+        <b-card header="Metrics">
+          <b-table class="table-sm" :items="backtestResultStats" :fields="backtestResultFields">
+          </b-table>
+        </b-card>
       </div>
 
       <b-card header="Results per Sell-reason" class="mt-2">
@@ -50,6 +56,8 @@ import TradeList from '@/components/ftbot/TradeList.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { StrategyBacktestResult, Trade } from '@/types';
 
+import ValuePair from '@/components/general/ValuePair.vue';
+
 import {
   timestampms,
   formatPercent,
@@ -58,7 +66,10 @@ import {
 } from '@/shared/formatters';
 
 @Component({
-  components: { TradeList },
+  components: {
+    TradeList,
+    ValuePair,
+  },
 })
 export default class BacktestResultView extends Vue {
   @Prop({ required: true }) readonly backtestResult!: StrategyBacktestResult;
@@ -173,6 +184,8 @@ export default class BacktestResultView extends Vue {
       { metric: 'Worst single Trade', value: this.worstPair },
     ];
   }
+
+  timestampmsUTC = timestampmsUTC;
 
   get backtestResultSettings() {
     // Transpose Result into readable format
