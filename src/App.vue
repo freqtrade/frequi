@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" class="d-flex flex-column vh-100">
     <Header />
-    <Body />
+    <Body class="flex-fill overflow-auto" />
   </div>
 </template>
 

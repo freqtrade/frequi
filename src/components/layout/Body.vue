@@ -1,5 +1,5 @@
 <template>
-  <main class="container-fluid h-100 container-main">
+  <main class="container-fluid container-main">
     <BotAlerts />
     <router-view />
   </main>
