@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h2>Backtest-result for {{ backtestResult.strategy_name }}</h2>
+      <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
     <div class="container">
       <div class="row">

@@ -103,7 +103,10 @@
               label-for="stake-amount"
             >
               <div class="d-flex">
-                <b-form-checkbox id="stake-amount-bool" v-model="stakeAmountUnlimited"
+                <b-form-checkbox
+                  id="stake-amount-bool"
+                  v-model="stakeAmountUnlimited"
+                  class="col-md-6"
                   >Unlimited stake</b-form-checkbox
                 >
 
@@ -164,13 +167,14 @@
         </div>
       </div>
     </div>
-    <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2">
+    <div v-if="hasBacktestResult && btFormMode == 'results'" class="text-center w-100 mt-2 row">
       <BacktestResultSelect
         :backtest-history="backtestHistory"
         :selected-backtest-result-key="selectedBacktestResultKey"
+        class="col-3 align-self-start sticky-top"
         @selectionChange="setBacktestResult"
       />
-      <BacktestResultView :backtest-result="selectedBacktestResult" />
+      <BacktestResultView :backtest-result="selectedBacktestResult" class="col-8" />
     </div>
     <div
       v-if="hasBacktestResult && btFormMode == 'visualize-summary'"

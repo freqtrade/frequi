@@ -1,6 +1,6 @@
 <template>
-  <div class="container d-flex align-items-center">
-    <label>Available results: </label>
+  <div class="container d-flex flex-column align-items-center">
+    <h3>Available results:</h3>
     <b-list-group class="ml-2">
       <b-list-group-item
         v-for="[key, strat] in Object.entries(backtestHistory)"
