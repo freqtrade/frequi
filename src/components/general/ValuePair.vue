@@ -1,7 +1,7 @@
 <template>
   <div class="row">
-    <label class="col-4">{{ description }}</label>
-    <div class="col-8">
+    <label :class="classLabel">{{ description }}</label>
+    <div :class="classValue">
       <slot></slot>
     </div>
   </div>
@@ -17,15 +17,16 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    classLabel: {
+      type: String,
+      default: 'col-4 font-weight-bold',
+    },
+    classValue: {
+      type: String,
+      default: 'col-8',
+    },
   },
 });
 </script>
 
-<style scoped>
-label {
-  font-weight: bold;
-}
-.row {
-  max-width: 50em;
-}
-</style>
+<style scoped></style>

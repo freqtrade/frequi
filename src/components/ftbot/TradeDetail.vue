@@ -60,7 +60,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
-import ValuePair from '@/components/ftbot/ValuePair.vue';
+import ValuePair from '@/components/general/ValuePair.vue';
 import { Trade } from '@/types';
 
 @Component({

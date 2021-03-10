@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import ValuePair from '@/components/ftbot/ValuePair.vue';
+import ValuePair from '@/components/general/ValuePair.vue';
 
 describe('ValuePair.vue', () => {
   it('renders description when passed', () => {
