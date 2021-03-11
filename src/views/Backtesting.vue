@@ -43,8 +43,32 @@
           >Visualize result</b-form-radio
         >
       </div>
+    </div>
+    <div class="d-flex">
+      <!-- Left bar -->
+      <div
+        :class="`${
+          showLeftBar ? 'col-md-3' : ''
+        } sticky-top sticky-offset mr-3 d-flex flex-column bor`"
+      >
+        <b-button
+          class="align-self-start"
+          aria-label="Close"
+          size="sm"
+          @click="showLeftBar = !showLeftBar"
+          >{{ showLeftBar ? '&lt;' : '&gt;' }}</b-button
+        >
+        <BacktestResultSelect
+          v-if="btFormMode !== 'visualize' && showLeftBar"
+          :backtest-history="backtestHistory"
+          :selected-backtest-result-key="selectedBacktestResultKey"
+          class=""
+          @selectionChange="setBacktestResult"
+        />
+      </div>
+      <!-- End Left bar -->
 
-      <div v-if="btFormMode == 'run'" class="row d-flex flex-column">
+      <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column">
         <StrategyList v-model="strategy"></StrategyList>
 
         <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
@@ -166,28 +190,26 @@
           <b-button variant="primary" class="mx-1" @click="removeBacktest">Reset Backtest</b-button>
         </div>
       </div>
-    </div>
-    <div v-if="hasBacktestResult && btFormMode == 'results'" class="w-100 mt-2 row">
-      <BacktestResultSelect
-        :backtest-history="backtestHistory"
-        :selected-backtest-result-key="selectedBacktestResultKey"
-        class="col-3 align-self-start sticky-top"
-        @selectionChange="setBacktestResult"
+      <BacktestResultView
+        v-if="hasBacktestResult && btFormMode == 'results'"
+        :backtest-result="selectedBacktestResult"
+        class="flex-fill"
       />
-      <BacktestResultView :backtest-result="selectedBacktestResult" class="col-9" />
+
+      <div
+        v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
+        class="text-center flex-fill mt-2 d-flex flex-column"
+      >
+        <TradesLogChart :trades="selectedBacktestResult.trades" class="trades-log" />
+        <CumProfitChart
+          :trades="selectedBacktestResult.trades"
+          profit-column="profit_abs"
+          class="cum-profit"
+          :show-title="true"
+        />
+      </div>
     </div>
-    <div
-      v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
-      class="text-center w-100 mt-2 d-flex flex-column"
-    >
-      <TradesLogChart :trades="selectedBacktestResult.trades" class="trades-log" />
-      <CumProfitChart
-        :trades="selectedBacktestResult.trades"
-        profit-column="profit_abs"
-        class="cum-profit"
-        :show-title="true"
-      />
-    </div>
+
     <div
       v-if="hasBacktestResult && btFormMode == 'visualize'"
       class="container-fluid row text-center w-100 mt-2"
@@ -197,7 +219,7 @@
       </p>
       <div class="container-fluid row text-center">
         <PairSummary
-          class="col-md-2"
+          class="col-md-2 overflow-auto vh-100"
           :pairlist="selectedBacktestResult.pairlist"
           :trades="selectedBacktestResult.trades"
           sort-method="profit"
@@ -274,6 +296,8 @@ export default class Backtesting extends Vue {
     '1y',
   ];
 
+  showLeftBar = true;
+
   selectedTimeframe = '';
 
   strategy = '';
@@ -338,6 +362,11 @@ export default class Backtesting extends Vue {
 
   setBacktestResult(key: string) {
     this.setBacktestResultKey(key);
+
+    // Set parameters for this result
+    this.strategy = this.selectedBacktestResult.strategy_name;
+    this.selectedTimeframe = this.selectedBacktestResult.timeframe;
+    this.timerange = this.selectedBacktestResult.timerange;
   }
 
   clickBacktest() {
@@ -405,5 +434,9 @@ export default class Backtesting extends Vue {
   position: absolute;
   right: 2em;
   margin-top: 1em;
+}
+
+.sticky-offset {
+  top: 2em;
 }
 </style>

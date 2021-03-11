@@ -6,12 +6,55 @@
     <div class="container-fluid row text-left">
       <div class="col-md-6">
         <b-card header="Strategy settings">
-          <ValuePair description="Backtesting from">{{
-            timestampmsUTC(backtestResult.backtest_start_ts)
+          <!-- <ValuePair description="Backtesting from">{{
+            timestampms(backtestResult.backtest_start_ts)
           }}</ValuePair>
           <ValuePair description="Backtesting to">{{
-            timestampmsUTC(backtestResult.backtest_end_ts)
+            timestampms(backtestResult.backtest_end_ts)
           }}</ValuePair>
+          <ValuePair description="Max open trades">{{ backtestResult.max_open_trades }}</ValuePair>
+          <ValuePair description="Timeframe">{{ backtestResult.timeframe }} </ValuePair>
+          <ValuePair description="Timerange">{{ backtestResult.timerange }} </ValuePair>
+          <ValuePair description="Stoploss">{{
+            formatPercent(backtestResult.stoploss, 2)
+          }}</ValuePair>
+          <ValuePair description="Trailing Stoploss">{{ backtestResult.trailing_stop }} </ValuePair>
+          <ValuePair description="Trail only when offset is reached">{{
+            backtestResult.trailing_only_offset_is_reached
+          }}</ValuePair>
+
+          <ValuePair description="Trailing Stop positive"
+            >{{ backtestResult.trailing_stop_positive }}
+          </ValuePair>
+          <ValuePair description="Trailing stop positive offset">{{
+            backtestResult.trailing_stop_positive_offset
+          }}</ValuePair>
+          <ValuePair description="Custom Stoploss">{{
+            backtestResult.use_custom_stoploss
+          }}</ValuePair>
+          <ValuePair description="ROI">{{ backtestResult.minimal_roi }} </ValuePair>
+          <ValuePair description="Use Sell Signal">{{ backtestResult.use_sell_signal }} </ValuePair>
+          <ValuePair description="Sell profit only">{{
+            backtestResult.sell_profit_only
+          }}</ValuePair>
+          <ValuePair description="Sell profit offset">{{
+            backtestResult.sell_profit_offset
+          }}</ValuePair>
+          <ValuePair description="Enable protections">{{
+            backtestResult.enable_protections
+          }}</ValuePair>
+          <ValuePair description="Starting balance">{{
+            formatPriceStake(backtestResult.starting_balance)
+          }}</ValuePair>
+          <ValuePair description="Final balance">{{
+            formatPriceStake(backtestResult.final_balance)
+          }}</ValuePair>
+          <ValuePair description="Avg. stake amount">{{
+            formatPriceStake(backtestResult.avg_stake_amount)
+          }}</ValuePair>
+          <ValuePair description="Total trade volume">{{
+            formatPriceStake(backtestResult.total_volume)
+          }}</ValuePair> -->
 
           <b-table
             class="table-sm"
@@ -24,7 +67,12 @@
       </div>
       <div class="col-md-6">
         <b-card header="Metrics">
-          <b-table class="table-sm" :items="backtestResultStats" :fields="backtestResultFields">
+          <b-table
+            class="table-sm"
+            borderless
+            :items="backtestResultStats"
+            :fields="backtestResultFields"
+          >
           </b-table>
         </b-card>
       </div>
@@ -157,16 +205,19 @@ export default class BacktestResultView extends Vue {
         metric: 'Avg. Duration Losers',
         value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
       },
+      { metric: '___', value: '___' },
       { metric: 'Max Drawdown', value: formatPercent(this.backtestResult.max_drawdown) },
       {
         metric: 'Max Drawdown ABS',
         value: this.formatPriceStake(this.backtestResult.max_drawdown_abs),
       },
-      { metric: 'Drawdown start', value: this.backtestResult.drawdown_start },
-      { metric: 'Drawdown end', value: this.backtestResult.drawdown_end },
+      { metric: 'Drawdown start', value: timestampms(this.backtestResult.drawdown_start_ts) },
+      { metric: 'Drawdown end', value: timestampms(this.backtestResult.drawdown_end_ts) },
+      { metric: '___', value: '___' },
       { metric: 'Min balance', value: this.formatPriceStake(this.backtestResult.csum_min) },
       { metric: 'Max balance', value: this.formatPriceStake(this.backtestResult.csum_max) },
       { metric: 'Market change', value: formatPercent(this.backtestResult.market_change) },
+      { metric: '___', value: '___' },
 
       {
         metric: 'Best Pair',
@@ -185,7 +236,9 @@ export default class BacktestResultView extends Vue {
     ];
   }
 
-  timestampmsUTC = timestampmsUTC;
+  timestampms = timestampms;
+
+  formatPercent = formatPercent;
 
   get backtestResultSettings() {
     // Transpose Result into readable format
