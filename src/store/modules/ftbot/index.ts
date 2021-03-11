@@ -24,6 +24,7 @@ import {
   RunModes,
   TradeResponse,
   StrategyBacktestResult,
+  BacktestStatus,
 } from '@/types';
 
 import {
@@ -195,8 +196,11 @@ export default {
       storeCustomPlotConfig(plotConfig);
       state.availablePlotConfigNames = getAllPlotConfigNames();
     },
-    updateBacktestRunning(state: FtbotStateType, running: boolean) {
-      state.backtestRunning = running;
+    updateBacktestRunning(state: FtbotStateType, backtestStatus: BacktestStatus) {
+      state.backtestRunning = backtestStatus.running;
+      state.backtestProgress = backtestStatus.progress;
+      state.backtestStep = backtestStatus.step;
+      state.backtestTradeCount = backtestStatus.trade_count || 0;
     },
     updateBacktestResult(state, backtestResult: BacktestResult) {
       state.backtestResult = backtestResult;
@@ -602,14 +606,14 @@ export default {
     async startBacktest({ commit }, payload) {
       try {
         const result = await api.post('/backtest', payload);
-        commit('updateBacktestRunning', result.data.running);
+        commit('updateBacktestRunning', result.data);
       } catch (err) {
         console.log(err);
       }
     },
     async pollBacktest({ commit }) {
       const result = await api.get('/backtest');
-      commit('updateBacktestRunning', result.data.running);
+      commit('updateBacktestRunning', result.data);
       if (result.data.running === false && result.data.backtest_result) {
         commit('updateBacktestResult', result.data.backtest_result);
       }

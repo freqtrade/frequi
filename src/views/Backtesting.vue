@@ -2,7 +2,9 @@
   <div class="container-fluid">
     <div class="mb-2">
       <h2 class="mt-3 d-inline">Backtesting</h2>
-      <small v-show="backtestRunning" class="bt-running-label">Backtest running</small>
+      <small v-show="backtestRunning" class="bt-running-label"
+        >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress) }}</small
+      >
     </div>
     <div class="container">
       <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4">
@@ -296,7 +298,7 @@ export default class Backtesting extends Vue {
     '1y',
   ];
 
-  showLeftBar = true;
+  showLeftBar = false;
 
   selectedTimeframe = '';
 
@@ -319,6 +321,10 @@ export default class Backtesting extends Vue {
   selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
 
   @ftbot.State backtestRunning!: boolean;
+
+  @ftbot.State backtestStep!: string;
+
+  @ftbot.State backtestProgress!: number;
 
   @ftbot.State backtestHistory!: StrategyBacktestResult[];
 

@@ -12,6 +12,7 @@ import {
   ProfitInterface,
   BacktestResult,
   StrategyBacktestResult,
+  BacktestSteps,
 } from '@/types';
 
 export interface FtbotStateType {
@@ -44,10 +45,14 @@ export interface FtbotStateType {
   pairlist: string[];
   currentLocks?: LockResponse;
   backtestRunning: boolean;
+  backtestProgress: number;
+  backtestStep: BacktestSteps;
+  backtestTradeCount: number;
   backtestResult?: BacktestResult;
   selectedBacktestResultKey: string;
   backtestHistory: Record<string, StrategyBacktestResult>;
 }
+
 const state: FtbotStateType = {
   version: '',
   lastLogs: [],
@@ -77,6 +82,9 @@ const state: FtbotStateType = {
   currentLocks: undefined,
   // backtesting
   backtestRunning: false,
+  backtestProgress: 0.0,
+  backtestStep: BacktestSteps.none,
+  backtestTradeCount: 0,
   backtestResult: undefined,
   selectedBacktestResultKey: '',
   backtestHistory: {},

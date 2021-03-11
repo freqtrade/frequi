@@ -124,3 +124,22 @@ export interface BacktestResult {
   strategy: Record<string, StrategyBacktestResult>;
   strategy_comparison: Array<Record<string, string | number>>;
 }
+
+export enum BacktestSteps {
+  startup,
+  dataload,
+  analyze,
+  convert,
+  backtest,
+  none = '',
+}
+
+export interface BacktestStatus {
+  status: string;
+  running: boolean;
+  status_msg: string;
+  step: BacktestSteps;
+  progress: number;
+  trade_count?: number;
+  backtest_result?: BacktestResult;
+}
