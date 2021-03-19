@@ -1,16 +1,14 @@
 <template>
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-mb-2">
-        <b-checkbox v-model="historicView">HistoricData</b-checkbox>
-      </div>
+  <div class="d-flex flex-column h-100">
+    <div class="mr-auto ml-3">
+      <b-checkbox v-model="historicView">HistoricData</b-checkbox>
     </div>
-    <div v-if="historicView" class="mt-2 row">
+    <div v-if="historicView" class="mx-3 mt-2 d-flex">
       <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
-      <StrategyList v-model="strategy" class="col-md-2"></StrategyList>
+      <StrategyList v-model="strategy" class="col-md-3"></StrategyList>
     </div>
 
-    <div class="row chart-row">
+    <div class="flex-fill mx-2 mt-1">
       <CandleChartContainer
         :available-pairs="historicView ? pairlist : whitelist"
         :historic-view="historicView"
@@ -70,8 +68,4 @@ export default class Graphs extends Vue {
 }
 </script>
 
-<style scoped>
-.chart-row {
-  height: 820px;
-}
-</style>
+<style scoped></style>

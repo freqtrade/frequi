@@ -1,5 +1,5 @@
 <template>
-  <b-card class="row">
+  <b-card>
     <b-list-group class="col-mb-4" horizontal="md">
       <b-form-group label="Start date" label-for="dp_dateFrom">
         <b-input-group>

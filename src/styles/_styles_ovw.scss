@@ -17,6 +17,8 @@
     }
     .card {
         border-color: lighten($bg-dark, 10%);
+        background-color: $bg-dark;
+
     }
     .card-body {
         background: $bg-dark;
