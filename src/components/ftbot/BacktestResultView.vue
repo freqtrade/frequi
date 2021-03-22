@@ -245,6 +245,12 @@ export default class BacktestResultView extends Vue {
     return [
       { setting: 'Backtesting from', value: timestampms(this.backtestResult.backtest_start_ts) },
       { setting: 'Backtesting to', value: timestampms(this.backtestResult.backtest_end_ts) },
+      {
+        setting: 'BT execution time',
+        value: humanizeDurationFromSeconds(
+          this.backtestResult.backtest_run_end_ts - this.backtestResult.backtest_run_start_ts,
+        ),
+      },
       { setting: 'Max open trades', value: this.backtestResult.max_open_trades },
       { setting: 'Timeframe', value: this.backtestResult.timeframe },
       { setting: 'Timerange', value: this.backtestResult.timerange },
