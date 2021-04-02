@@ -7,6 +7,7 @@
       >
     </div>
     <div class="container">
+      <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
       <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4">
         <b-form-radio
           v-model="btFormMode"
@@ -175,7 +176,7 @@
         <div class="d-flex justify-content-center">
           <b-button
             variant="primary"
-            :disabled="backtestRunning"
+            :disabled="backtestRunning || !canRunBacktest"
             class="mx-1"
             @click="clickBacktest"
           >
@@ -183,13 +184,19 @@
           </b-button>
           <b-button
             variant="primary"
-            :disabled="backtestRunning"
+            :disabled="backtestRunning || !canRunBacktest"
             class="mx-1"
             @click="pollBacktest"
           >
             Load backtest result
           </b-button>
-          <b-button variant="primary" class="mx-1" @click="removeBacktest">Reset Backtest</b-button>
+          <b-button
+            variant="primary"
+            class="mx-1"
+            :disabled="backtestRunning || !canRunBacktest"
+            @click="removeBacktest"
+            >Reset Backtest</b-button
+          >
         </div>
       </div>
       <BacktestResultView
@@ -255,7 +262,14 @@ import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 
-import { BacktestPayload, PairHistoryPayload, PlotConfig, StrategyBacktestResult } from '@/types';
+import {
+  BacktestPayload,
+  BotState,
+  PairHistoryPayload,
+  PlotConfig,
+  RunModes,
+  StrategyBacktestResult,
+} from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
@@ -324,6 +338,8 @@ export default class Backtesting extends Vue {
 
   @ftbot.State backtestStep!: string;
 
+  @ftbot.State botState!: BotState;
+
   @ftbot.State backtestProgress!: number;
 
   @ftbot.State backtestHistory!: StrategyBacktestResult[];
@@ -335,10 +351,13 @@ export default class Backtesting extends Vue {
   @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
+  @ftbot.Action getPairHistory!: (payload: PairHistoryPayload) => void;
+
+  @ftbot.Action getState;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
+  @ftbot.Action
+  startBacktest!: (payload: BacktestPayload) => void;
 
   @ftbot.Action pollBacktest!: () => void;
 
@@ -350,8 +369,7 @@ export default class Backtesting extends Vue {
   formatPercent = formatPercent;
 
   get canRunBacktest() {
-    // TODO: Analyze if parameters and strategy has been selected.
-    return true;
+    return this.botState.runmode === RunModes.WEBSERVER;
   }
 
   get hasBacktestResult() {
@@ -364,6 +382,10 @@ export default class Backtesting extends Vue {
     } catch (err) {
       return '';
     }
+  }
+
+  mounted() {
+    this.getState();
   }
 
   setBacktestResult(key: string) {

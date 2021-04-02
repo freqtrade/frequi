@@ -335,7 +335,7 @@ export default {
         return api
           .get('/pair_history', {
             params: { ...payload },
-            timeout: 10000,
+            timeout: 50000,
           })
           .then((result) => {
             commit('updatePairHistory', {
