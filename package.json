@@ -30,7 +30,7 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
-    "@types/echarts": "^4.9.6",
+    "@types/echarts": "^4.9.7",
     "@types/jest": "^26.0.22",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^4.20.0",

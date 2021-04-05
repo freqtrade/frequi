@@ -1315,10 +1315,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/echarts@^4.9.6":
-  version "4.9.6"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.6.tgz#20c9875bf6911dc077728d800b15f2496131c904"
-  integrity sha512-QdTNGf5uvQouernGelP78De3ltnGUBUeVrgSk0F5prFHif5O85gYF48w4soEBzfM3TrWplWsfexBOhZdB1G7kg==
+"@types/echarts@^4.9.7":
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.7.tgz#4437fb503111f5b1ed7961e7b95c7ed09a4844a3"
+  integrity sha512-+klqEur0+bh1UjR6EpGE023vxpqzPSk58X5JwVEIBu0NOYMaMPKeM/TMnbL43BlDUZv4xttZFdeDdOtFk/YwzQ==
   dependencies:
     "@types/zrender" "*"
 
