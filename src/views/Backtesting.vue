@@ -193,6 +193,13 @@
           <b-button
             variant="primary"
             class="mx-1"
+            :disabled="!backtestRunning"
+            @click="stopBacktest"
+            >stop Backtest</b-button
+          >
+          <b-button
+            variant="primary"
+            class="mx-1"
             :disabled="backtestRunning || !canRunBacktest"
             @click="removeBacktest"
             >Reset Backtest</b-button
@@ -363,13 +370,15 @@ export default class Backtesting extends Vue {
 
   @ftbot.Action removeBacktest!: () => void;
 
+  @ftbot.Action stopBacktest!: () => void;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Mutation setBacktestResultKey!: (key: string) => void;
 
   formatPercent = formatPercent;
 
   get canRunBacktest() {
-    return this.botState.runmode === RunModes.WEBSERVER;
+    return this.botState?.runmode === RunModes.WEBSERVER;
   }
 
   get hasBacktestResult() {

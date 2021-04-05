@@ -622,7 +622,16 @@ export default {
       commit('resetBacktestHistory');
       try {
         const result = await api.delete('/backtest');
-        commit('updateBacktestRunning', result.data.running);
+        commit('updateBacktestRunning', result.data);
+        return Promise.resolve(result.data);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    },
+    async stopBacktest({ commit }) {
+      try {
+        const result = await api.get('/backtest/abort');
+        commit('updateBacktestRunning', result.data);
         return Promise.resolve(result.data);
       } catch (err) {
         return Promise.reject(err);
