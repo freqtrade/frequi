@@ -85,12 +85,12 @@ export default class DailyChart extends Vue {
           pieces: [
             {
               max: 0.0,
-              min: -2,
+              min: this.absoluteMin,
               color: 'red',
             },
             {
               min: 0.0,
-              max: 2,
+              max: this.absoluteMax,
               color: 'green',
             },
           ],
