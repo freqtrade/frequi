@@ -91,12 +91,18 @@ export default class CandleChart extends Vue {
     this.initializeChartOptions();
   }
 
+  get chartTitle() {
+    return `${this.strategy} - ${this.pair} - ${this.timeframe}`;
+  }
+
   initializeChartOptions() {
     this.chartOptions = {
-      title: {
-        text: `${this.strategy} - ${this.pair} - ${this.timeframe}`,
-        show: true,
-      },
+      title: [
+        {
+          text: this.chartTitle,
+          show: true,
+        },
+      ],
       // backgroundColor: '#1b1b1b',
       useUTC: this.useUTC,
       animation: false,
@@ -207,6 +213,9 @@ export default class CandleChart extends Vue {
   updateChart(initial = false) {
     if (!this.hasData) {
       return;
+    }
+    if (this.chartOptions?.title) {
+      this.chartOptions.title[0].text = this.chartTitle;
     }
     const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
     const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
