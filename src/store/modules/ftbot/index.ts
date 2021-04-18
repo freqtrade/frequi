@@ -198,17 +198,20 @@ export default {
     async getTrades({ commit }) {
       try {
         let totalTrades = 0;
+        const pageLength = 500;
         const fetchTrades = async (limit: number, offset: number) => {
           return api.get('/trades', { params: { limit, offset } });
         };
-        const res = await fetchTrades(500, 0);
+        const res = await fetchTrades(pageLength, 0);
         const result: TradeResponse = res.data;
         let { trades } = result;
         if (trades.length !== result.total_trades) {
           // Pagination necessary
+          // Don't use Promise.all - this would fire all requests at once, which can
+          // cause problems for big sqlite databases
           do {
             // eslint-disable-next-line no-await-in-loop
-            const res = await fetchTrades(500, trades.length);
+            const res = await fetchTrades(pageLength, trades.length);
 
             const result: TradeResponse = res.data;
             trades = trades.concat(result.trades);
