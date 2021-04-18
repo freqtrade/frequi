@@ -81,7 +81,8 @@ export default {
       return state.selectedPair;
     },
     [BotStoreGetters.closedTrades](state: FtbotStateType) {
-      return state.trades.filter((item) => !item.is_open);
+      // Sort by trade_id desc
+      return state.trades.filter((item) => !item.is_open).sort((a, b) => b.trade_id - a.trade_id);
     },
     [BotStoreGetters.timeframe](state: FtbotStateType): string {
       return state.botState?.timeframe || '';
