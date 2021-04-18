@@ -65,3 +65,11 @@ export interface ClosedTrade extends Trade {
   min_rate: number;
   max_rate: number;
 }
+
+export interface TradeResponse {
+  trades: ClosedTrade[];
+  /** Trades count for this response */
+  trades_count: number;
+  /** Total trade count */
+  total_trades: number;
+}

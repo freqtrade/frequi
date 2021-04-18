@@ -21,6 +21,7 @@ import {
   LockResponse,
   Lock,
   RunModes,
+  TradeResponse,
 } from '@/types';
 
 import {
@@ -101,9 +102,9 @@ export default {
     updateRefreshRequired(state: FtbotStateType, refreshRequired: boolean) {
       state.refreshRequired = refreshRequired;
     },
-    updateTrades(state: FtbotStateType, trades) {
-      state.trades = trades.trades;
-      state.tradeCount = trades.trades_count;
+    updateTrades(state: FtbotStateType, { trades, tradesCount }) {
+      state.trades = trades;
+      state.tradeCount = tradesCount;
     },
     updateOpenTrades(state: FtbotStateType, trades) {
       state.openTrades = trades;
@@ -194,11 +195,33 @@ export default {
     setSelectedPair({ commit }, pair: string) {
       commit('setSelectedPair', pair);
     },
-    getTrades({ commit }) {
-      return api
-        .get('/trades')
-        .then((result) => commit('updateTrades', result.data))
-        .catch(console.error);
+    async getTrades({ commit }) {
+      try {
+        let totalTrades = 0;
+        const fetchTrades = async (limit: number, offset: number) => {
+          return api.get('/trades', { params: { limit, offset } });
+        };
+        const res = await fetchTrades(500, 0);
+        const result: TradeResponse = res.data;
+        let { trades } = result;
+        if (trades.length !== result.total_trades) {
+          // Pagination necessary
+          do {
+            // eslint-disable-next-line no-await-in-loop
+            const res = await fetchTrades(500, trades.length);
+
+            const result: TradeResponse = res.data;
+            trades = trades.concat(result.trades);
+            totalTrades = res.data.total_trades;
+          } while (trades.length !== totalTrades);
+        }
+        const tradesCount = trades.length;
+        commit('updateTrades', { trades, tradesCount });
+        return Promise.resolve();
+      } catch (error) {
+        console.error(error.response);
+        return Promise.reject(error);
+      }
     },
     getLocks({ commit }) {
       return api
