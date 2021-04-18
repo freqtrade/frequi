@@ -117,8 +117,10 @@ export default new Vuex.Store({
         commit('ftbot/updateRefreshRequired', false);
       }
     },
-    refreshFrequent({ dispatch }) {
-      dispatch('refreshSlow', false);
+    refreshFrequent({ dispatch }, slow = true) {
+      if (slow) {
+        dispatch('refreshSlow', false);
+      }
       // Refresh data that's needed in near realtime
       dispatch('ftbot/getOpenTrades');
       dispatch('ftbot/getState');

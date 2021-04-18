@@ -33,7 +33,7 @@ export default class ReloadControl extends Vue {
   }
 
   mounted() {
-    this.startRefresh();
+    this.startRefresh(false);
   }
 
   beforeDestroy() {
@@ -63,19 +63,23 @@ export default class ReloadControl extends Vue {
     this.setAutoRefresh(newValue);
   }
 
-  startRefresh() {
+  startRefresh(runNow: boolean) {
     if (this.loggedIn !== true) {
       console.log('Not logged in.');
       return;
     }
     console.log('Starting automatic refresh.');
-    this.refreshFrequent();
+    if (runNow) {
+      this.refreshFrequent(false);
+    }
     if (this.autoRefresh) {
       this.refreshInterval = window.setInterval(() => {
         this.refreshFrequent();
       }, 5000);
     }
-    this.refreshSlow(true);
+    if (runNow) {
+      this.refreshSlow(true);
+    }
     if (this.autoRefresh) {
       this.refreshIntervalSlow = window.setInterval(() => {
         this.refreshSlow(false);
@@ -96,7 +100,7 @@ export default class ReloadControl extends Vue {
   @Watch('autoRefresh')
   watchAutoRefresh(val) {
     if (val) {
-      this.startRefresh();
+      this.startRefresh(true);
     } else {
       this.stopRefresh();
     }
