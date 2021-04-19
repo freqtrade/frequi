@@ -17,7 +17,7 @@
     "bootswatch": "^4.6.0",
     "core-js": "^3.10.1",
     "echarts": "^4.9.0",
-    "humanize-duration": "^3.25.1",
+    "humanize-duration": "^3.25.2",
     "moment": "^2.29.1",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.5",
