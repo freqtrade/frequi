@@ -47,7 +47,7 @@
     "@vue/test-utils": "^1.1.4",
     "eslint": "^6.7.2",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.8.0",
     "mutationobserver-shim": "^0.3.7",
     "popper.js": "^1.16.1",
