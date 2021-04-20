@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import userService from '@/shared/userService';
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
+import { AxiosInstance } from 'axios';
 import ftbotModule, { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   state: {
     ping: '',
     loggedIn: userService.loggedIn(),
+    refreshing: false,
     autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
     isBotOnline: false,
     currentTheme: initCurrentTheme,
@@ -49,6 +51,9 @@ export default new Vuex.Store({
     setAutoRefresh(state, newRefreshValue: boolean) {
       state.autoRefresh = newRefreshValue;
     },
+    setRefreshing(state, refreshing: boolean) {
+      state.refreshing = refreshing;
+    },
     setIsBotOnline(state, isBotOnline: boolean) {
       state.isBotOnline = isBotOnline;
     },
@@ -78,21 +83,37 @@ export default new Vuex.Store({
     refreshOnce({ dispatch }) {
       dispatch('ftbot/getVersion');
     },
-    refreshAll({ dispatch }, forceUpdate = false) {
-      dispatch('refreshFrequent');
-      dispatch('refreshSlow', forceUpdate);
-      dispatch('ftbot/getDaily');
-      dispatch('ftbot/getBalance');
-      /* white/blacklist might be refreshed more often as they are not expensive on the backend */
-      dispatch('ftbot/getWhitelist');
-      dispatch('ftbot/getBlacklist');
+    async refreshAll({ dispatch, state, commit }, forceUpdate = false) {
+      if (state.refreshing) {
+        return;
+      }
+      commit('setRefreshing', true);
+      try {
+        const updates: Promise<AxiosInstance>[] = [];
+        updates.push(dispatch('refreshFrequent', false));
+        updates.push(dispatch('refreshSlow', forceUpdate));
+        updates.push(dispatch('ftbot/getDaily'));
+        updates.push(dispatch('ftbot/getBalance'));
+        /* white/blacklist might be refreshed more often as they are not expensive on the backend */
+        updates.push(dispatch('ftbot/getWhitelist'));
+        updates.push(dispatch('ftbot/getBlacklist'));
+        await Promise.all(updates);
+        console.log('refreshing_end');
+      } finally {
+        commit('setRefreshing', false);
+      }
     },
-    refreshSlow({ dispatch, commit, getters }, forceUpdate = false) {
+    async refreshSlow({ dispatch, commit, getters, state }, forceUpdate = false) {
+      if (state.refreshing && !forceUpdate) {
+        return;
+      }
       // Refresh data only when needed
       if (forceUpdate || getters[`ftbot/${BotStoreGetters.refreshRequired}`]) {
-        dispatch('ftbot/getPerformance');
-        dispatch('ftbot/getProfit');
-        dispatch('ftbot/getTrades');
+        const updates: Promise<AxiosInstance>[] = [];
+        updates.push(dispatch('ftbot/getPerformance'));
+        updates.push(dispatch('ftbot/getProfit'));
+        updates.push(dispatch('ftbot/getTrades'));
+        await Promise.all(updates);
         commit('ftbot/updateRefreshRequired', false);
       }
     },
