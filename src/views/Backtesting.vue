@@ -8,7 +8,7 @@
     </div>
     <div class="container">
       <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
-      <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4">
+      <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4" :disabled="canRunBacktest">
         <b-form-radio
           v-model="btFormMode"
           name="bt-form-radios"
@@ -195,7 +195,7 @@
             class="mx-1"
             :disabled="!backtestRunning"
             @click="stopBacktest"
-            >stop Backtest</b-button
+            >Stop Backtest</b-button
           >
           <b-button
             variant="primary"
@@ -363,8 +363,7 @@ export default class Backtesting extends Vue {
   @ftbot.Action getState;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action
-  startBacktest!: (payload: BacktestPayload) => void;
+  @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
 
   @ftbot.Action pollBacktest!: () => void;
 
