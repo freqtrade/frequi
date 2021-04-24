@@ -19,34 +19,22 @@ const routes: Array<RouteConfig> = [
   {
     path: '/trade',
     name: 'Freqtrade Trading',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/Trading.vue'),
+    component: () => import(/* webpackChunkName: "trade" */ '@/views/Trading.vue'),
   },
   {
     path: '/graph',
     name: 'Freqtrade Graph',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/Graphs.vue'),
+    component: () => import(/* webpackChunkName: "graph" */ '@/views/Graphs.vue'),
   },
   {
     path: '/dashboard',
     name: 'Freqtrade Dashboard',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/Dashboard.vue'),
+    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/LoginView.vue'),
+    component: () => import(/* webpackChunkName: "login" */ '@/views/LoginView.vue'),
     meta: {
       allowAnonymous: true,
     },
