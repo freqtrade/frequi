@@ -51,6 +51,7 @@ export enum BotStoreGetters {
   isWebserverMode = 'isWebserverMode',
   refreshRequired = 'refreshRequired',
   selectedBacktestResult = 'selectedBacktestResult',
+  canRunBacktest = 'canRunBacktest',
 }
 
 export default {
@@ -115,6 +116,10 @@ export default {
     },
     [BotStoreGetters.selectedBacktestResult](state: FtbotStateType): StrategyBacktestResult {
       return state.backtestHistory[state.selectedBacktestResultKey];
+    },
+    [BotStoreGetters.canRunBacktest](state: FtbotStateType): boolean {
+      /** Determines if bot runs in webserver mode */
+      return state.botState?.runmode === RunModes.WEBSERVER;
     },
   },
   mutations: {

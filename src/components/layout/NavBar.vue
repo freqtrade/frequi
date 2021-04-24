@@ -10,10 +10,10 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/trade">Trade</b-nav-item>
+          <b-nav-item v-if="!canRunBacktest" to="/trade">Trade</b-nav-item>
           <!-- <b-nav-item to="/graph">Graph</b-nav-item> -->
-          <b-nav-item to="/dashboard">Dashboard</b-nav-item>
-          <b-nav-item to="/backtest">Backtest</b-nav-item>
+          <b-nav-item v-if="!canRunBacktest" to="/dashboard">Dashboard</b-nav-item>
+          <b-nav-item v-if="canRunBacktest" to="/backtest">Backtest</b-nav-item>
           <BootswatchThemeSelect />
         </b-navbar-nav>
         <!-- Right aligned nav items -->
@@ -76,9 +76,13 @@ export default class NavBar extends Vue {
 
   @ftbot.Action ping;
 
+  @ftbot.Action getState;
+
   @ftbot.Getter [BotStoreGetters.botName]: string;
 
   @ftbot.Getter [BotStoreGetters.openTradeCount]: number;
+
+  @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
 
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
@@ -95,6 +99,11 @@ export default class NavBar extends Vue {
   mounted() {
     this.ping();
     this.pingInterval = window.setInterval(this.ping, 60000);
+
+    if (this.loggedIn) {
+      // Query botstate - this will enable / disable certain modes
+      this.getState();
+    }
   }
 
   beforeDestroy() {

@@ -274,7 +274,6 @@ import {
   BotState,
   PairHistoryPayload,
   PlotConfig,
-  RunModes,
   StrategyBacktestResult,
 } from '@/types';
 
@@ -357,6 +356,8 @@ export default class Backtesting extends Vue {
 
   @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
 
+  @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action getPairHistory!: (payload: PairHistoryPayload) => void;
 
@@ -375,10 +376,6 @@ export default class Backtesting extends Vue {
   @ftbot.Mutation setBacktestResultKey!: (key: string) => void;
 
   formatPercent = formatPercent;
-
-  get canRunBacktest() {
-    return this.botState?.runmode === RunModes.WEBSERVER;
-  }
 
   get hasBacktestResult() {
     return this.backtestHistory ? Object.keys(this.backtestHistory).length !== 0 : false;
