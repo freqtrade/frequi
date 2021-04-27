@@ -1,4 +1,4 @@
-FROM node:15-slim as dev
+FROM node:16-slim as dev
 
 ENV DEBIAN_FRONTEND=noninteractive
 
