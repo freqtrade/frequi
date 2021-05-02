@@ -9,7 +9,9 @@ WORKDIR /app
 COPY package.json /app/package.json
 COPY yarn.lock /app/yarn.lock
 
-RUN yarn
+RUN apk add --update --no-cache python3 g++ make\
+    && yarn \
+    && apk del python3 g++ make
 
 RUN yarn global add @vue/cli
 
