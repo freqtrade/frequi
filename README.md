@@ -9,7 +9,7 @@ Freqtrade UI build with [Vue.js](https://vuejs.org/) and [boostrap-vue](https://
 This project is still in its early stages (consider it early-alpha), and is not yet stable nor recommended to be used for production usages.
 
 It will require [freqtrade](https://github.com/freqtrade/freqtrade) to be running on the same host with the API enabled under (`localhost:8081`). You can either use the webpack proxy (port can be changed in `vue.config.js`) - or connect directly to the API (recommended).
-FOr this, you will also have to have CORS configured correctly [freqtrade documentation](https://www.freqtrade.io/en/latest/rest-api/#cors).
+For this, you will also have to have CORS configured correctly [freqtrade documentation](https://www.freqtrade.io/en/latest/rest-api/#cors).
 Most likely, the correct entry will be `http://localhost:8080` or `http://127.0.0.1:8080` - but the URL must match the URL you use to access FreqUI.
 Ports can vary, so check the URL you're using.
 
