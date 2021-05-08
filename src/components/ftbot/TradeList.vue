@@ -53,7 +53,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { formatPercent, formatPrice } from '@/shared/formatters';
+import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
@@ -115,7 +115,7 @@ export default class TradeList extends Vue {
 
   // Added to table-fields for historic trades
   closedFields: Record<string, string | Function>[] = [
-    { key: 'close_date', label: 'Close date' },
+    { key: 'close_timestamp', label: 'Close date', formatter: timestampms },
     { key: 'sell_reason', label: 'Close Reason' },
   ];
 
@@ -135,7 +135,7 @@ export default class TradeList extends Vue {
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
       formatter: (value) => formatPercent(value, 3),
     },
-    { key: 'open_date', label: 'Open date' },
+    { key: 'open_timestamp', label: 'Open date', formatter: (value) => timestampms(value) },
     ...(this.activeTrades ? this.openFields : this.closedFields),
   ];
 
