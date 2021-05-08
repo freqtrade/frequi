@@ -39,7 +39,7 @@ function convertToDate(ts: number | Date): Date {
 }
 
 /**
- *
+ * Convert a timestamp / Date object to String
  * @param ts Timestamp as number or date (in utc!!)
  */
 export function timestampms(ts: number | Date): string {
