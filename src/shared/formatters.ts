@@ -29,7 +29,7 @@ export function setTimezone(tz: string) {
  * @param ts Convert timestamp or Date to datetime (in correct timezone)
  * @returns Date object (in timezone)
  */
-function converToTzDate(ts: number | Date): Date {
+function convertToDate(ts: number | Date): Date {
   const date = toDate(ts);
   const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   if (timezone === 'UTC') {
@@ -43,7 +43,7 @@ function converToTzDate(ts: number | Date): Date {
  * @param ts Timestamp as number or date (in utc!!)
  */
 export function timestampms(ts: number | Date): string {
-  return format(converToTzDate(ts), 'yyyy-MM-dd HH:mm:ss');
+  return format(convertToDate(ts), 'yyyy-MM-dd HH:mm:ss');
 }
 
 /**
@@ -51,7 +51,7 @@ export function timestampms(ts: number | Date): string {
  * @param ts
  */
 export function timestampToDateString(ts: number | Date): string {
-  return format(converToTzDate(ts), 'yyyy-MM-dd');
+  return format(convertToDate(ts), 'yyyy-MM-dd');
 }
 
 /**
@@ -63,7 +63,7 @@ export function dateStringToTimeRange(datestring: string): string {
 }
 
 export function timestampHour(ts: number): number {
-  return getHours(converToTzDate(ts));
+  return getHours(convertToDate(ts));
 }
 
 /**
