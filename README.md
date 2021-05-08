@@ -6,14 +6,21 @@ Freqtrade UI build with [Vue.js](https://vuejs.org/) and [boostrap-vue](https://
 
 ## WARNING
 
-This project is still in its early stages (consider it early-alpha), and is not yet stable nor recommended to be used for production usages.
+This project is still in its early stages (consider it alpha), and is not yet stable nor recommended to be used for production usages.
+
+## Run this project
+
+Using FreqUI, does require [freqtrade](https://github.com/freqtrade/freqtrade) to be setup and running.
+In newer versions (2021.2 and newer), freqUI is builtin to freqtrade, so manual setup of freqUI will no longer be necessary unless you want to modify freqUI.
+Instructions for this end-user setup can be found in the [freqtrade API documentation](https://www.freqtrade.io/en/stable/rest-api/).
+
+## Developer project setup
 
 It will require [freqtrade](https://github.com/freqtrade/freqtrade) to be running on the same host with the API enabled under (`localhost:8081`). You can either use the webpack proxy (port can be changed in `vue.config.js`) - or connect directly to the API (recommended).
-For this, you will also have to have CORS configured correctly [freqtrade documentation](https://www.freqtrade.io/en/latest/rest-api/#cors).
+
+You will also have to have CORS for freqtrade configured correctly based on the [freqtrade documentation](https://www.freqtrade.io/en/latest/rest-api/#cors).
 Most likely, the correct entry will be `http://localhost:8080` or `http://127.0.0.1:8080` - but the URL must match the URL you use to access FreqUI.
 Ports can vary, so check the URL you're using.
-
-## Project setup with node install locally
 
 ### Project setup
 
