@@ -49,6 +49,9 @@ export default class TradesLogChart extends Vue {
   }
 
   get chartOptions(): EChartOption {
+    const { chartData } = this;
+    // Show a maximum of 50 trades by default - allowing to zoom out further.
+    const datazoomStart = chartData.length > 0 ? (1 - 50 / chartData.length) * 100 : 100;
     return {
       title: {
         text: 'Trades log',
@@ -56,7 +59,7 @@ export default class TradesLogChart extends Vue {
       },
       dataset: {
         dimensions: ['date', 'profit'],
-        source: this.chartData,
+        source: chartData,
       },
       tooltip: {
         trigger: 'axis',
@@ -89,16 +92,14 @@ export default class TradesLogChart extends Vue {
       dataZoom: [
         {
           type: 'inside',
-          // xAxisIndex: [0],
-          start: 0,
+          start: datazoomStart,
           end: 100,
         },
         {
           show: true,
-          // xAxisIndex: [0],
           type: 'slider',
           bottom: 10,
-          start: 0,
+          start: datazoomStart,
           end: 100,
         },
       ],
