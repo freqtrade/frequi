@@ -102,8 +102,16 @@ export default class PairSummary extends Vue {
         if (a.trade && !b.trade) {
           return -1;
         }
+        if (a.trade && b.trade) {
+          // 2 open trade pairs
+          return a.trade.trade_id > b.trade.trade_id ? 1 : -1;
+        }
         if (!a.locks && b.locks) {
           return -1;
+        }
+        if (a.locks && b.locks) {
+          // Both have locks
+          return a.locks.lock_end_timestamp > b.locks.lock_end_timestamp ? 1 : -1;
         }
         return 1;
       });
