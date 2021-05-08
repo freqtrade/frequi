@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
 import { State, Action, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
@@ -104,6 +104,15 @@ export default class NavBar extends Vue {
         this.resetDashboardLayout();
         break;
       default:
+    }
+  }
+
+  @Watch(BotStoreGetters.botName)
+  botnameChanged() {
+    if (this.botName) {
+      document.title = `freqUI - ${this.botName}`;
+    } else {
+      document.title = 'freqUI';
     }
   }
 }
