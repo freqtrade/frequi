@@ -14,7 +14,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
-    "bootswatch": "^4.6.0",
+    "bootswatch": "^5.0.0",
     "core-js": "^3.11.0",
     "date-fns": "^2.21.3",
     "date-fns-tz": "^1.1.4",
