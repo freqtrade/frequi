@@ -322,6 +322,7 @@ export default class PlotConfigurator extends Vue {
   async loadPlotConfigFromStrategy() {
     await this.getStrategyPlotConfig();
     this.plotConfig = this.strategyPlotConfig;
+    this.emitPlotConfig();
   }
 }
 </script>

@@ -318,11 +318,19 @@ export default {
         reject(error);
       });
     },
-    getStrategyPlotConfig({ commit }) {
-      return api
-        .get('/plot_config')
-        .then((result) => commit('updatePlotConfig', result.data))
-        .catch(console.error);
+    async getStrategyPlotConfig({ commit }) {
+      try {
+        const result = await api.get('/plot_config');
+        const plotConfig = result.data;
+        if (plotConfig.subplots === null) {
+          // Subplots should not be null but an empty object
+          // TODO: Remove this fix when fix in freqtrade is populated further.
+          plotConfig.subplots = {};
+        }
+        return commit('updatePlotConfig', result.data);
+      } catch (data) {
+        return console.error(data);
+      }
     },
     setPlotConfigName({ commit }, plotConfigName: string) {
       commit('updatePlotConfigName', plotConfigName);
