@@ -457,44 +457,41 @@ export default class CandleChart extends Vue {
       this.chartOptions.grid[this.chartOptions.grid.length - 1].bottom = '50px';
       delete this.chartOptions.grid[this.chartOptions.grid.length - 1].top;
     }
-    if (this.filteredTrades.length > 0) {
-      // Show trades
-      const { trades, tradesClose } = this.getTradeEntries();
+    const { trades, tradesClose } = this.getTradeEntries();
 
-      const name = 'Trades';
-      const nameClose = 'Trades Close';
-      if (this.chartOptions.legend && this.chartOptions.legend.data) {
-        this.chartOptions.legend.data.push(name);
-      }
-      const sp: echarts.EChartOption.SeriesScatter = {
-        name,
-        type: 'scatter',
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: tradeBuyColor,
-        },
-        data: trades,
-      };
-      if (this.chartOptions.series) {
-        this.chartOptions.series.push(sp);
-      }
-      if (this.chartOptions.legend && this.chartOptions.legend.data) {
-        this.chartOptions.legend.data.push(nameClose);
-      }
-      const closeSeries: echarts.EChartOption.SeriesScatter = {
-        name: nameClose,
-        type: 'scatter',
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: tradeSellColor,
-        },
-        data: tradesClose,
-      };
-      if (this.chartOptions.series) {
-        this.chartOptions.series.push(closeSeries);
-      }
+    const name = 'Trades';
+    const nameClose = 'Trades Close';
+    if (this.chartOptions.legend && this.chartOptions.legend.data) {
+      this.chartOptions.legend.data.push(name);
+    }
+    const sp: echarts.EChartOption.SeriesScatter = {
+      name,
+      type: 'scatter',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      itemStyle: {
+        color: tradeBuyColor,
+      },
+      data: trades,
+    };
+    if (this.chartOptions.series) {
+      this.chartOptions.series.push(sp);
+    }
+    if (this.chartOptions.legend && this.chartOptions.legend.data) {
+      this.chartOptions.legend.data.push(nameClose);
+    }
+    const closeSeries: echarts.EChartOption.SeriesScatter = {
+      name: nameClose,
+      type: 'scatter',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      itemStyle: {
+        color: tradeSellColor,
+      },
+      data: tradesClose,
+    };
+    if (this.chartOptions.series) {
+      this.chartOptions.series.push(closeSeries);
     }
 
     console.log('chartOptions', this.chartOptions);
