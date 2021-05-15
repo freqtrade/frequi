@@ -10,7 +10,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { PerformanceEntry } from '@/types';
+import { BotState, PerformanceEntry } from '@/types';
+import { formatPrice } from '@/shared/formatters';
 
 const ftbot = namespace('ftbot');
 
@@ -18,10 +19,19 @@ const ftbot = namespace('ftbot');
 export default class Performance extends Vue {
   @ftbot.State performanceStats!: PerformanceEntry[];
 
-  private tableFields = [
-    { key: 'pair', label: 'Pair' },
-    { key: 'profit', label: 'Profit' },
-    { key: 'count', label: 'Count' },
-  ];
+  @ftbot.State botState?: BotState;
+
+  get tableFields() {
+    return [
+      { key: 'pair', label: 'Pair' },
+      { key: 'profit', label: 'Profit %' },
+      {
+        key: 'profit_abs',
+        label: `Profit ${this.botState?.stake_currency}`,
+        formatter: (v: number) => formatPrice(v, 5),
+      },
+      { key: 'count', label: 'Count' },
+    ];
+  }
 }
 </script>
