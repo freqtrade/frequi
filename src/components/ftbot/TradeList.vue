@@ -19,7 +19,7 @@
       >
         <template #cell(actions)="row">
           <b-button class="btn-xs" size="sm" title="Forcesell" @click="forcesellHandler(row.item)">
-            <ForceSellIcon :size="16" />
+            <ForceSellIcon :size="16" title="Forcesell" />
           </b-button>
           <b-button
             class="btn-xs ml-1"
@@ -27,7 +27,7 @@
             title="Delete trade"
             @click="removeTradeHandler(row.item)"
           >
-            <DeleteIcon :size="16" />
+            <DeleteIcon :size="16" title="Delete trade" />
           </b-button>
         </template>
         <template #cell(pair)="row">
