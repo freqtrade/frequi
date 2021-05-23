@@ -7,13 +7,14 @@
     <div v-if="historicView" class="mx-3 mt-2 d-flex">
       <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
       <StrategyList v-model="strategy" class="col-md-3"></StrategyList>
+      <TimeframeSelect v-model="selectedTimeframe" />
     </div>
 
     <div class="flex-fill mx-2 mt-1">
       <CandleChartContainer
         :available-pairs="historicView ? pairlist : whitelist"
         :historic-view="historicView"
-        :timeframe="timeframe"
+        :timeframe="historicView ? selectedTimeframe : timeframe"
         :trades="trades"
         :timerange="historicView ? timerange : ''"
         :strategy="historicView ? strategy : ''"
@@ -28,6 +29,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
+import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import StrategyList from '@/components/ftbot/StrategyList.vue';
 import { AvailablePairPayload, AvailablePairResult, WhitelistResponse } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
@@ -35,7 +37,7 @@ import { BotStoreGetters } from '@/store/modules/ftbot';
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { CandleChartContainer, StrategyList, TimeRangeSelect },
+  components: { CandleChartContainer, StrategyList, TimeRangeSelect, TimeframeSelect },
 })
 export default class Graphs extends Vue {
   historicView = true;
@@ -43,6 +45,8 @@ export default class Graphs extends Vue {
   strategy = '';
 
   timerange = '';
+
+  selectedTimeframe = '';
 
   @ftbot.State pairlist;
 
