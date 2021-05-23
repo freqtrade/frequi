@@ -60,10 +60,10 @@ export default class TimeRangeSelect extends Vue {
     } else {
       const tr = this.value.split('-');
       if (tr[0]) {
-        this.dateFrom = timestampToDateString(dateFromString(tr[0], 'YYYYMMDD'));
+        this.dateFrom = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
       }
       if (tr.length > 1 && tr[1]) {
-        this.dateTo = timestampToDateString(dateFromString(tr[1], 'YYYYMMDD'));
+        this.dateTo = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
       }
     }
     this.emitTimeRange();

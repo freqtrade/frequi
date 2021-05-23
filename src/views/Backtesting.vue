@@ -3,7 +3,7 @@
     <div class="mb-2">
       <h2 class="mt-3 d-inline">Backtesting</h2>
       <small v-show="backtestRunning" class="bt-running-label"
-        >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress) }}</small
+        >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress, 2) }}</small
       >
     </div>
     <div class="container">
@@ -47,12 +47,10 @@
         >
       </div>
     </div>
-    <div class="d-flex">
+    <div class="d-md-flex">
       <!-- Left bar -->
       <div
-        :class="`${
-          showLeftBar ? 'col-md-3' : ''
-        } sticky-top sticky-offset mr-3 d-flex flex-column bor`"
+        :class="`${showLeftBar ? 'col-md-3' : ''} sticky-top sticky-offset mr-3 d-flex flex-column`"
       >
         <b-button
           class="align-self-start"

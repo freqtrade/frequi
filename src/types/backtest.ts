@@ -94,6 +94,9 @@ export interface StrategyBacktestResult {
   use_sell_signal: boolean;
   sell_profit_only: boolean;
   sell_profit_offset: number;
+  zero_duration_trades: number;
+  rejected_signals: number;
+
   // Daily stats ...
   draw_days: number;
   drawdown_end: string;

@@ -205,6 +205,15 @@ export default class BacktestResultView extends Vue {
         metric: 'Avg. Duration Losers',
         value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
       },
+      {
+        metric: 'Zero duration trades',
+        value: `${formatPercent(
+          (1 / this.backtestResult.total_trades) * this.backtestResult.zero_duration_trades,
+          2,
+        )} (${this.backtestResult.zero_duration_trades})`,
+      },
+      { metric: 'Rejected buy signals', value: this.backtestResult.rejected_signals },
+
       { metric: '___', value: '___' },
       { metric: 'Max Drawdown', value: formatPercent(this.backtestResult.max_drawdown) },
       {
