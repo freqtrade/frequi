@@ -11,8 +11,8 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item v-if="!canRunBacktest" to="/trade">Trade</b-nav-item>
-          <!-- <b-nav-item to="/graph">Graph</b-nav-item> -->
           <b-nav-item v-if="!canRunBacktest" to="/dashboard">Dashboard</b-nav-item>
+          <b-nav-item v-if="canRunBacktest" to="/graph">Graph</b-nav-item>
           <b-nav-item v-if="canRunBacktest" to="/backtest">Backtest</b-nav-item>
           <BootswatchThemeSelect />
         </b-navbar-nav>

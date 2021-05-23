@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex flex-column h-100">
-    <div class="mr-auto ml-3">
+    <div v-if="false" class="mr-auto ml-3">
+      <!-- Currently only available in Webserver mode -->
       <b-checkbox v-model="historicView">HistoricData</b-checkbox>
     </div>
     <div v-if="historicView" class="mx-3 mt-2 d-flex">
@@ -37,7 +38,7 @@ const ftbot = namespace('ftbot');
   components: { CandleChartContainer, StrategyList, TimeRangeSelect },
 })
 export default class Graphs extends Vue {
-  historicView = false;
+  historicView = true;
 
   strategy = '';
 
