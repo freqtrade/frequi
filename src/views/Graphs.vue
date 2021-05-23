@@ -7,7 +7,10 @@
     <div v-if="historicView" class="mx-3 mt-2 d-flex">
       <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
       <StrategyList v-model="strategy" class="col-md-3"></StrategyList>
-      <TimeframeSelect v-model="selectedTimeframe" />
+      <div class="col-md-3">
+        <span class="mb-1">Timeframe</span>
+        <TimeframeSelect v-model="selectedTimeframe" />
+      </div>
     </div>
 
     <div class="flex-fill mx-2 mt-1">

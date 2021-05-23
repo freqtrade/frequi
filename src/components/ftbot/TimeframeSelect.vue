@@ -1,18 +1,11 @@
 <template>
-  <b-form-group
-    label-cols-sm="5"
-    label="Timeframe:"
-    label-align-sm="right"
-    label-for="timeframe-select"
-  >
-    <b-form-select
-      id="timeframe-select"
-      v-model="selectedTimeframe"
-      placeholder="Use strategy default"
-      :options="availableTimeframes"
-      @change="emitSelectedTimeframe"
-    ></b-form-select>
-  </b-form-group>
+  <b-form-select
+    id="timeframe-select"
+    v-model="selectedTimeframe"
+    placeholder="Use strategy default"
+    :options="availableTimeframes"
+    @change="emitSelectedTimeframe"
+  ></b-form-select>
 </template>
 
 <script lang="ts">

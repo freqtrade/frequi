@@ -81,7 +81,14 @@
             label-class="font-weight-bold pt-0"
             class="mb-0"
           >
-            <TimeframeSelect v-model="selectedTimeframe" />
+            <b-form-group
+              label-cols-sm="5"
+              label="Timeframe:"
+              label-align-sm="right"
+              label-for="timeframe-select"
+            >
+              <TimeframeSelect v-model="selectedTimeframe" />
+            </b-form-group>
 
             <b-form-group
               label-cols-sm="5"
