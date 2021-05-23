@@ -78,6 +78,12 @@
         color: $fg-color;
         background: $bg-dark;
     }
+    .text-dark {
+        color: $fg-color !important;
+    }
+    .dropdown-menu {
+        background-color: lighten($bg-dark, 5%);
+    }
     .custom-select{
         color: $fg-color;
         border-color: lighten($bg-dark, 20%);
