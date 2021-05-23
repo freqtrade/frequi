@@ -81,19 +81,7 @@
             label-class="font-weight-bold pt-0"
             class="mb-0"
           >
-            <b-form-group
-              label-cols-sm="5"
-              label="Timeframe:"
-              label-align-sm="right"
-              label-for="timeframe-select"
-            >
-              <b-form-select
-                id="timeframe-select"
-                v-model="selectedTimeframe"
-                placeholder="Use strategy default"
-                :options="availableTimeframes"
-              ></b-form-select>
-            </b-form-group>
+            <TimeframeSelect v-model="selectedTimeframe" />
 
             <b-form-group
               label-cols-sm="5"
@@ -266,6 +254,7 @@ import ValuePair from '@/components/general/ValuePair.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
+import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 
 import {
   BacktestPayload,
@@ -291,30 +280,11 @@ const ftbot = namespace('ftbot');
     StrategyList,
     ValuePair,
     PairSummary,
+    TimeframeSelect,
   },
 })
 export default class Backtesting extends Vue {
   pollInterval: number | null = null;
-
-  availableTimeframes = [
-    '1m',
-    '3m',
-    '5m',
-    '15m',
-    '30m',
-    '1h',
-    '2h',
-    '4h',
-    '6h',
-    '8h',
-    '12h',
-    '1d',
-    '3d',
-    '1w',
-    '2w',
-    '1M',
-    '1y',
-  ];
 
   showLeftBar = false;
 
