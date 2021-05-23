@@ -64,7 +64,6 @@ export default class TradesLogChart extends Vue {
       tooltip: {
         trigger: 'axis',
         formatter: (params) => {
-          console.log(params);
           return `Profit %<br>${params[0].data[1]} % ${params[0].data[2]}`;
         },
         axisPointer: {
