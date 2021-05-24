@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="dailyStats.data" :options="dailyChartOptions" :theme="getChartTheme" autoresize />
+  <v-chart v-if="dailyStats.data" :option="dailyChartOptions" :theme="getChartTheme" autoresize />
 </template>
 
 <script lang="ts">

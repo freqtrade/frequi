@@ -1,7 +1,7 @@
 <template>
   <v-chart
     v-if="trades.length > 0"
-    :options="hourlyChartOptions"
+    :option="hourlyChartOptions"
     autoresize
     :theme="getChartTheme"
   />

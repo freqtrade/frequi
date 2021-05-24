@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-grow-1 chart-wrapper">
-    <v-chart v-if="hasData" :theme="theme" autoresize :options="chartOptions" />
+    <v-chart v-if="hasData" :theme="theme" autoresize :option="chartOptions" />
   </div>
 </template>
 

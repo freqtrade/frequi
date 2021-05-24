@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="chartOptions" autoresize :theme="getChartTheme" />
+  <v-chart v-if="trades.length > 0" :option="chartOptions" autoresize :theme="getChartTheme" />
 </template>
 
 <script lang="ts">
