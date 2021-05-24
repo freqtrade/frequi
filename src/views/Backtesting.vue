@@ -161,10 +161,11 @@
                 step="0.01"
               ></b-form-input>
             </b-form-group> -->
+            <hr />
+            <TimeRangeSelect v-model="timerange" class="mt-2"></TimeRangeSelect>
           </b-form-group>
         </b-card>
 
-        <TimeRangeSelect v-model="timerange" class="mt-2"></TimeRangeSelect>
         <h3 class="mt-3">Backtesting summary</h3>
         <div class="d-flex justify-content-center">
           <b-button

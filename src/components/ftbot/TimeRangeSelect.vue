@@ -1,39 +1,37 @@
 <template>
-  <b-card>
-    <b-list-group class="col-mb-4" horizontal="md">
-      <b-form-group label="Start date" label-for="dp_dateFrom">
-        <b-input-group>
-          <b-input-group-prepend>
-            <b-form-datepicker v-model="dateFrom" class="mb-2" button-only></b-form-datepicker>
-          </b-input-group-prepend>
-          <b-form-input
-            id="dp_dateFrom"
-            v-model="dateFrom"
-            type="text"
-            placeholder="YYYY-MM-DD"
-            autocomplete="off"
-          ></b-form-input>
-        </b-input-group>
-      </b-form-group>
-      <b-form-group class="ml-2" label="End date" label-for="dp_dateTo">
-        <b-input-group>
-          <b-input-group-prepend>
-            <b-form-datepicker v-model="dateTo" class="mb-2" button-only></b-form-datepicker>
-          </b-input-group-prepend>
-          <b-form-input
-            id="dp_dateTo"
-            v-model="dateTo"
-            type="text"
-            placeholder="YYYY-MM-DD"
-            autocomplete="off"
-          ></b-form-input>
-        </b-input-group>
-      </b-form-group>
-      <label
-        >Timerange: <b>{{ timeRange }}</b></label
-      >
-    </b-list-group>
-  </b-card>
+  <b-list-group class="col-mb-4" horizontal="md">
+    <b-form-group label="Start date" label-for="dp_dateFrom">
+      <b-input-group>
+        <b-input-group-prepend>
+          <b-form-datepicker v-model="dateFrom" class="mb-2" button-only></b-form-datepicker>
+        </b-input-group-prepend>
+        <b-form-input
+          id="dp_dateFrom"
+          v-model="dateFrom"
+          type="text"
+          placeholder="YYYY-MM-DD"
+          autocomplete="off"
+        ></b-form-input>
+      </b-input-group>
+    </b-form-group>
+    <b-form-group class="ml-2" label="End date" label-for="dp_dateTo">
+      <b-input-group>
+        <b-input-group-prepend>
+          <b-form-datepicker v-model="dateTo" class="mb-2" button-only></b-form-datepicker>
+        </b-input-group-prepend>
+        <b-form-input
+          id="dp_dateTo"
+          v-model="dateTo"
+          type="text"
+          placeholder="YYYY-MM-DD"
+          autocomplete="off"
+        ></b-form-input>
+      </b-input-group>
+    </b-form-group>
+    <label
+      >Timerange: <b>{{ timeRange }}</b></label
+    >
+  </b-list-group>
 </template>
 
 <script lang="ts">
@@ -82,11 +80,4 @@ export default class TimeRangeSelect extends Vue {
 }
 </script>
 
-<style scoped>
-.card-body {
-  padding-bottom: 0.5rem;
-  padding-top: 0.8rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-</style>
+<style scoped></style>
