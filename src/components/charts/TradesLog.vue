@@ -7,7 +7,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
@@ -48,7 +48,7 @@ export default class TradesLogChart extends Vue {
     return res;
   }
 
-  get chartOptions(): EChartOption {
+  get chartOptions(): EChartsOption {
     const { chartData } = this;
     // Show a maximum of 50 trades by default - allowing to zoom out further.
     const datazoomStart = chartData.length > 0 ? (1 - 50 / chartData.length) * 100 : 100;

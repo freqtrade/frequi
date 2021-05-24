@@ -7,7 +7,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
@@ -56,7 +56,7 @@ export default class CumProfitChart extends Vue {
     return res;
   }
 
-  get chartOptions(): EChartOption {
+  get chartOptions(): EChartsOption {
     return {
       title: {
         text: 'Cumulative Profit',

@@ -6,7 +6,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import ECharts from 'vue-echarts';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
@@ -50,7 +50,7 @@ export default class DailyChart extends Vue {
     );
   }
 
-  get dailyChartOptions(): EChartOption {
+  get dailyChartOptions(): EChartsOption {
     return {
       title: {
         text: 'Daily profit',

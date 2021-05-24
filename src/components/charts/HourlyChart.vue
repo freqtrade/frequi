@@ -23,7 +23,7 @@ import 'echarts/lib/component/visualMapPiecewise';
 
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit %';
@@ -59,7 +59,7 @@ export default class HourlyChart extends Vue {
     return res;
   }
 
-  get hourlyChartOptions(): EChartOption {
+  get hourlyChartOptions(): EChartsOption {
     return {
       title: {
         text: 'Hourly Profit',

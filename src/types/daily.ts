@@ -11,7 +11,7 @@ export interface DailyRecord {
 }
 
 export interface DailyReturnValue {
-  data: Array<DailyRecord>;
+  data: DailyRecord[];
   fiat_display_currency: string;
   stake_currency: string;
 }
