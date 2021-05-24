@@ -20,27 +20,27 @@ const routes: Array<RouteConfig> = [
   {
     path: '/trade',
     name: 'Freqtrade Trading',
-    component: () => import(/* webpackChunkName: "trade" */ '@/views/Trading.vue'),
+    component: () => import('@/views/Trading.vue'),
   },
   {
     path: '/graph',
     name: 'Freqtrade Graph',
-    component: () => import(/* webpackChunkName: "graph" */ '@/views/Graphs.vue'),
+    component: () => import('@/views/Graphs.vue'),
   },
   {
     path: '/logs',
     name: 'Freqtrade Logs',
-    component: () => import(/* webpackChunkName: "graph" */ '@/views/LogView.vue'),
+    component: () => import('@/views/LogView.vue'),
   },
   {
     path: '/backtest',
     name: 'Freqtrade Backtest',
-    component: () => import(/* webpackChunkName: "backtest" */ '@/views/Backtesting.vue'),
+    component: () => import( '@/views/Backtesting.vue'),
   },
   {
     path: '/dashboard',
     name: 'Freqtrade Dashboard',
-    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
+    component: () => import('@/views/Dashboard.vue'),
   },
   {
     path: '/balance',
@@ -65,12 +65,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/settings',
     name: 'Freqtrade Settings',
-    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Settings.vue'),
+    component: () => import( '@/views/Settings.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "login" */ '@/views/LoginView.vue'),
+    component: () => import('@/views/LoginView.vue'),
     meta: {
       allowAnonymous: true,
     },
@@ -84,7 +84,7 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: import.meta.env.BASE_URL,
   routes,
 });
 

@@ -60,7 +60,7 @@ const store = new Vuex.Store({
       commit('setLoggedIn', loggedin);
     },
     async loadUIVersion({ commit }) {
-      if (process.env.NODE_ENV !== 'development') {
+      if (import.meta.env.PROD) {
         try {
           const result = await axios.get<UiVersion>('/ui_version');
           const { version } = result.data;
