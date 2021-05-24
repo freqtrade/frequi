@@ -8,13 +8,14 @@ import { Getter } from 'vuex-class';
 import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
 
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/title';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/legend';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart, BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
 
 import { DailyReturnValue } from '@/types';
+
+use([BarChart, LineChart, CanvasRenderer, TitleComponent, TooltipComponent, LegendComponent]);
 
 // Define Column labels here to avoid typos
 const CHART_ABS_PROFIT = 'Absolute profit';

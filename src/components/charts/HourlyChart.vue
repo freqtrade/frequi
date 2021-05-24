@@ -13,17 +13,31 @@ import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
 
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/title';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/legend';
-import 'echarts/lib/component/visualMap';
-import 'echarts/lib/component/visualMapPiecewise';
-
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
 import { EChartsOption } from 'echarts';
+
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart, BarChart } from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  VisualMapComponent,
+  VisualMapPiecewiseComponent,
+} from 'echarts/components';
+
+use([
+  BarChart,
+  LineChart,
+  CanvasRenderer,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  VisualMapComponent,
+  VisualMapPiecewiseComponent,
+]);
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit %';
