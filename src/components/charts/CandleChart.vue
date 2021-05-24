@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-grow-1 chart-wrapper">
-    <v-chart v-if="hasData" :theme="theme" autoresize :option="chartOptions" />
+    <v-chart v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>
 
@@ -33,6 +33,10 @@ const tradeSellColor = 'pink';
   components: { 'v-chart': ECharts },
 })
 export default class CandleChart extends Vue {
+  $refs!: {
+    candleChart: typeof ECharts;
+  };
+
   @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
 
   @Prop({ required: true }) readonly dataset!: PairHistory;
@@ -47,7 +51,7 @@ export default class CandleChart extends Vue {
 
   sellData = [] as Array<number>[];
 
-  chartOptions: echarts.EChartOption = {};
+  chartOptions: echarts.EChartsOption = {};
 
   @Watch('dataset')
   datasetChanged() {
@@ -248,7 +252,7 @@ export default class CandleChart extends Vue {
       }
     }
 
-    const options: echarts.EChartOption = {
+    const options: echarts.EChartsOption = {
       dataset: {
         source: this.dataset.data,
       },
@@ -343,7 +347,7 @@ export default class CandleChart extends Vue {
           if (this.chartOptions.legend && this.chartOptions.legend.data) {
             this.chartOptions.legend.data.push(key);
           }
-          const sp: echarts.EChartOption.Series = {
+          const sp: echarts.EChartsOption.Series = {
             name: key,
             type: value.type || 'line',
             xAxisIndex: 0,
@@ -421,7 +425,7 @@ export default class CandleChart extends Vue {
           // entries per subplot
           const col = this.dataset.columns.findIndex((el) => el === sk);
           if (col > 0) {
-            const sp: echarts.EChartOption.Series = {
+            const sp: echarts.EChartsOption.Series = {
               name: sk,
               type: sv.type || 'line',
               xAxisIndex: plotIndex,
@@ -464,7 +468,7 @@ export default class CandleChart extends Vue {
     if (this.chartOptions.legend && this.chartOptions.legend.data) {
       this.chartOptions.legend.data.push(name);
     }
-    const sp: echarts.EChartOption.SeriesScatter = {
+    const sp: echarts.EChartsOption.SeriesScatter = {
       name,
       type: 'scatter',
       xAxisIndex: 0,
@@ -480,7 +484,7 @@ export default class CandleChart extends Vue {
     if (this.chartOptions.legend && this.chartOptions.legend.data) {
       this.chartOptions.legend.data.push(nameClose);
     }
-    const closeSeries: echarts.EChartOption.SeriesScatter = {
+    const closeSeries: echarts.EChartsOption.SeriesScatter = {
       name: nameClose,
       type: 'scatter',
       xAxisIndex: 0,
@@ -490,11 +494,13 @@ export default class CandleChart extends Vue {
       },
       data: tradesClose,
     };
-    if (this.chartOptions.series) {
+    if (this.chartOptions.series && Array.isArray(this.chartOptions.series)) {
       this.chartOptions.series.push(closeSeries);
     }
 
     console.log('chartOptions', this.chartOptions);
+
+    this.$refs.candleChart.setOption(this.chartOptions);
   }
 
   /** Return trade entries for charting */
