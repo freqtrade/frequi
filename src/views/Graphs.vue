@@ -8,7 +8,7 @@
       <b-card>
         <div class="mx-3 mt-2 d-flex">
           <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
-          <StrategyList v-model="strategy" class="col-md-3"></StrategyList>
+          <StrategySelect v-model="strategy" class="col-md-3"></StrategySelect>
           <div class="col-md-3">
             <span class="mb-1">Timeframe</span>
             <TimeframeSelect v-model="selectedTimeframe" />
@@ -37,14 +37,14 @@ import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
-import StrategyList from '@/components/ftbot/StrategyList.vue';
+import StrategySelect from '@/components/ftbot/StrategySelect.vue';
 import { AvailablePairPayload, AvailablePairResult, WhitelistResponse } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { CandleChartContainer, StrategyList, TimeRangeSelect, TimeframeSelect },
+  components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },
 })
 export default class Graphs extends Vue {
   historicView = true;

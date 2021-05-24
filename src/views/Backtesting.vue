@@ -70,7 +70,7 @@
       <!-- End Left bar -->
 
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column">
-        <StrategyList v-model="strategy"></StrategyList>
+        <StrategySelect v-model="strategy"></StrategySelect>
 
         <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
           <!-- Backtesting parameters -->
@@ -257,7 +257,7 @@ import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
-import StrategyList from '@/components/ftbot/StrategyList.vue';
+import StrategySelect from '@/components/ftbot/StrategySelect.vue';
 import ValuePair from '@/components/general/ValuePair.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
@@ -285,7 +285,7 @@ const ftbot = namespace('ftbot');
     CandleChartContainer,
     CumProfitChart,
     TradesLogChart,
-    StrategyList,
+    StrategySelect,
     ValuePair,
     PairSummary,
     TimeframeSelect,

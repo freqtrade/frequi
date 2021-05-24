@@ -26,7 +26,7 @@ import { namespace } from 'vuex-class';
 const ftbot = namespace('ftbot');
 
 @Component({})
-export default class StrategyList extends Vue {
+export default class StrategySelect extends Vue {
   @Prop() value!: string;
 
   @Prop({ default: false, required: false }) showDetails!: boolean;
