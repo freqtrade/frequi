@@ -4,23 +4,21 @@
       <!-- Currently only available in Webserver mode -->
       <b-checkbox v-model="historicView">HistoricData</b-checkbox>
     </div>
-    <div v-if="historicView" class="mx-3 mt-2">
-      <b-card>
-        <div class="mx-3 mt-2 d-flex">
-          <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
-          <div class="col-md-3 text-left">
-            <span>Strategy</span>
-            <StrategySelect v-model="strategy" class="mt-1"></StrategySelect>
-          </div>
-          <div class="col-md-3 text-left">
-            <span>Timeframe</span>
-            <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
-          </div>
+    <div v-if="historicView" class="mx-md-3 mt-2">
+      <div class="d-flex flex-wrap">
+        <div class="col-md-3 text-left">
+          <span>Strategy</span>
+          <StrategySelect v-model="strategy" class="mt-1"></StrategySelect>
         </div>
-      </b-card>
+        <div class="col-md-3 text-left">
+          <span>Timeframe</span>
+          <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+        </div>
+        <TimeRangeSelect v-model="timerange" class="col-12 col-md-5 mr-md-2"></TimeRangeSelect>
+      </div>
     </div>
 
-    <div class="flex-fill mx-2 mt-1">
+    <div class="flex-fill mx-2 mt-2">
       <CandleChartContainer
         :available-pairs="historicView ? pairlist : whitelist"
         :historic-view="historicView"
