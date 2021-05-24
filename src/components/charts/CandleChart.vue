@@ -344,7 +344,7 @@ export default class CandleChart extends Vue {
       Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
         const col = this.dataset.columns.findIndex((el) => el === key);
         if (col > 1) {
-          if (this.chartOptions.legend && this.chartOptions.legend.data) {
+          if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
             this.chartOptions.legend.data.push(key);
           }
           const sp: echarts.EChartsOption.Series = {
@@ -361,7 +361,7 @@ export default class CandleChart extends Vue {
             },
             showSymbol: false,
           };
-          if (this.chartOptions.series) {
+          if (Array.isArray(this.chartOptions.series)) {
             this.chartOptions.series.push(sp);
           }
         } else {
@@ -375,7 +375,7 @@ export default class CandleChart extends Vue {
       let plotIndex = 2;
       Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
         // define yaxis
-        if (this.chartOptions.yAxis && Array.isArray(this.chartOptions.yAxis)) {
+        if (Array.isArray(this.chartOptions.yAxis)) {
           this.chartOptions.yAxis.push({
             scale: true,
             gridIndex: plotIndex,
@@ -388,7 +388,7 @@ export default class CandleChart extends Vue {
             splitLine: { show: false },
           });
         }
-        if (this.chartOptions.xAxis && Array.isArray(this.chartOptions.xAxis)) {
+        if (Array.isArray(this.chartOptions.xAxis)) {
           this.chartOptions.xAxis.push({
             type: 'time',
             scale: true,
@@ -401,7 +401,7 @@ export default class CandleChart extends Vue {
             splitNumber: 20,
           });
         }
-        if (this.chartOptions.dataZoom) {
+        if (Array.isArray(this.chartOptions.dataZoom)) {
           this.chartOptions.dataZoom.forEach((el) =>
             el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
           );
@@ -416,8 +416,8 @@ export default class CandleChart extends Vue {
         }
         Object.entries(value).forEach(([sk, sv]) => {
           if (
-            this.chartOptions.legend &&
-            this.chartOptions.legend.data &&
+            !Array.isArray(this.chartOptions.legend) &&
+            this.chartOptions.legend?.data &&
             Array.isArray(this.chartOptions.legend.data)
           ) {
             this.chartOptions.legend.data.push(sk);
@@ -465,7 +465,7 @@ export default class CandleChart extends Vue {
 
     const name = 'Trades';
     const nameClose = 'Trades Close';
-    if (this.chartOptions.legend && this.chartOptions.legend.data) {
+    if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
       this.chartOptions.legend.data.push(name);
     }
     const sp: echarts.EChartsOption.SeriesScatter = {
@@ -478,10 +478,14 @@ export default class CandleChart extends Vue {
       },
       data: trades,
     };
-    if (this.chartOptions.series) {
+    if (Array.isArray(this.chartOptions?.series)) {
       this.chartOptions.series.push(sp);
     }
-    if (this.chartOptions.legend && this.chartOptions.legend.data) {
+    if (
+      this.chartOptions.legend &&
+      !Array.isArray(this.chartOptions.legend) &&
+      this.chartOptions.legend.data
+    ) {
       this.chartOptions.legend.data.push(nameClose);
     }
     const closeSeries: echarts.EChartsOption.SeriesScatter = {
