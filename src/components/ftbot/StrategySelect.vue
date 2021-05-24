@@ -1,17 +1,10 @@
 <template>
   <div>
     <div class="w-100 d-flex">
-      <b-form-group
-        label="Strategy"
-        label-for="strategyName"
-        invalid-feedback="Strategy is required"
-        class="flex-grow-1"
-      >
-        <b-form-select v-model="locStrategy" :options="strategyList" @change="strategyChanged">
-        </b-form-select>
-      </b-form-group>
-      <div class="ml-2 d-flex align-items-center">
-        <b-button class="mt-2" @click="getStrategyList">&#x21bb;</b-button>
+      <b-form-select v-model="locStrategy" :options="strategyList" @change="strategyChanged">
+      </b-form-select>
+      <div class="ml-2">
+        <b-button @click="getStrategyList">&#x21bb;</b-button>
       </div>
     </div>
 

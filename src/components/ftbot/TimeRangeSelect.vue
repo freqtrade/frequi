@@ -1,37 +1,39 @@
 <template>
-  <b-list-group class="col-mb-4" horizontal="md">
-    <b-form-group label="Start date" label-for="dp_dateFrom">
-      <b-input-group>
-        <b-input-group-prepend>
-          <b-form-datepicker v-model="dateFrom" class="mb-2" button-only></b-form-datepicker>
-        </b-input-group-prepend>
-        <b-form-input
-          id="dp_dateFrom"
-          v-model="dateFrom"
-          type="text"
-          placeholder="YYYY-MM-DD"
-          autocomplete="off"
-        ></b-form-input>
-      </b-input-group>
-    </b-form-group>
-    <b-form-group class="ml-2" label="End date" label-for="dp_dateTo">
-      <b-input-group>
-        <b-input-group-prepend>
-          <b-form-datepicker v-model="dateTo" class="mb-2" button-only></b-form-datepicker>
-        </b-input-group-prepend>
-        <b-form-input
-          id="dp_dateTo"
-          v-model="dateTo"
-          type="text"
-          placeholder="YYYY-MM-DD"
-          autocomplete="off"
-        ></b-form-input>
-      </b-input-group>
-    </b-form-group>
-    <label
-      >Timerange: <b>{{ timeRange }}</b></label
-    >
-  </b-list-group>
+  <div>
+    <div class="d-flex">
+      <b-form-group class="col-md-6" label="Start date" label-for="dp_dateFrom">
+        <b-input-group>
+          <b-input-group-prepend>
+            <b-form-datepicker v-model="dateFrom" class="mb-1" button-only></b-form-datepicker>
+          </b-input-group-prepend>
+          <b-form-input
+            id="dp_dateFrom"
+            v-model="dateFrom"
+            type="text"
+            placeholder="YYYY-MM-DD"
+            autocomplete="off"
+          ></b-form-input>
+        </b-input-group>
+      </b-form-group>
+      <b-form-group class="ml-2 col-md-6" label="End date" label-for="dp_dateTo">
+        <b-input-group>
+          <b-input-group-prepend>
+            <b-form-datepicker v-model="dateTo" class="mb-1" button-only></b-form-datepicker>
+          </b-input-group-prepend>
+          <b-form-input
+            id="dp_dateTo"
+            v-model="dateTo"
+            type="text"
+            placeholder="YYYY-MM-DD"
+            autocomplete="off"
+          ></b-form-input>
+        </b-input-group>
+      </b-form-group>
+    </div>
+    <label class="text-left">
+      Timerange: <b>{{ timeRange }}</b>
+    </label>
+  </div>
 </template>
 
 <script lang="ts">

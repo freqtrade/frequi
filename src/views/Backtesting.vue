@@ -8,12 +8,15 @@
     </div>
     <div class="container">
       <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
-      <div class="row mx-5 d-flex flex-wrap justify-content-center mb-4" :disabled="canRunBacktest">
+      <div
+        class="row mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4"
+        :disabled="canRunBacktest"
+      >
         <b-form-radio
           v-model="btFormMode"
           name="bt-form-radios"
           button
-          class="mx-1"
+          class="mx-1 flex-samesize-items"
           value="run"
           :disabled="!canRunBacktest"
           >Run backtest</b-form-radio
@@ -22,7 +25,7 @@
           v-model="btFormMode"
           name="bt-form-radios"
           button
-          class="mx-1"
+          class="mx-1 flex-samesize-items"
           value="results"
           :disabled="!hasBacktestResult"
           >Analyze result</b-form-radio
@@ -31,7 +34,7 @@
           v-model="btFormMode"
           name="bt-form-radios"
           button
-          class="mx-1"
+          class="mx-1 flex-samesize-items"
           value="visualize-summary"
           :disabled="!hasBacktestResult"
           >Visualize summary</b-form-radio
@@ -40,7 +43,7 @@
           v-model="btFormMode"
           name="bt-form-radios"
           button
-          class="mx-1"
+          class="mx-1 flex-samesize-items"
           value="visualize"
           :disabled="!hasBacktestResult"
           >Visualize result</b-form-radio
@@ -70,8 +73,10 @@
       <!-- End Left bar -->
 
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column">
-        <StrategySelect v-model="strategy"></StrategySelect>
-
+        <div class="mb-2">
+          <span>Strategy</span>
+          <StrategySelect v-model="strategy"></StrategySelect>
+        </div>
         <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
           <!-- Backtesting parameters -->
           <b-form-group
@@ -167,7 +172,9 @@
         </b-card>
 
         <h3 class="mt-3">Backtesting summary</h3>
-        <div class="d-flex justify-content-center">
+        <div
+          class="d-flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center"
+        >
           <b-button
             variant="primary"
             :disabled="backtestRunning || !canRunBacktest"
@@ -426,7 +433,7 @@ export default class Backtesting extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .candle-chart-container {
   height: 640px !important;
 }
@@ -447,5 +454,11 @@ export default class Backtesting extends Vue {
 
 .sticky-offset {
   top: 2em;
+}
+.flex-samesize-items {
+  flex: 1 1 0;
+  @media md {
+    flex: unset;
+  }
 }
 </style>

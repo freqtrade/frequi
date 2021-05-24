@@ -8,10 +8,13 @@
       <b-card>
         <div class="mx-3 mt-2 d-flex">
           <TimeRangeSelect v-model="timerange" class="col-md-4 mr-2"></TimeRangeSelect>
-          <StrategySelect v-model="strategy" class="col-md-3"></StrategySelect>
-          <div class="col-md-3">
-            <span class="mb-1">Timeframe</span>
-            <TimeframeSelect v-model="selectedTimeframe" />
+          <div class="col-md-3 text-left">
+            <span>Strategy</span>
+            <StrategySelect v-model="strategy" class="mt-1"></StrategySelect>
+          </div>
+          <div class="col-md-3 text-left">
+            <span>Timeframe</span>
+            <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
           </div>
         </div>
       </b-card>
