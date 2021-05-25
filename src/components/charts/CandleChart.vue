@@ -144,6 +144,7 @@ export default class CandleChart extends Vue {
           show: true,
         },
       ],
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       useUTC: this.useUTC,
       animation: false,
       legend: {
@@ -257,9 +258,6 @@ export default class CandleChart extends Vue {
     }
     if (this.chartOptions?.title) {
       this.chartOptions.title[0].text = this.chartTitle;
-    }
-    if (this.theme === 'dark') {
-      this.chartOptions.backgroundColor = '#3c3c3c';
     }
     const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
     const colOpen = this.dataset.columns.findIndex((el) => el === 'open');

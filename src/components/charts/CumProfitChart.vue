@@ -58,6 +58,7 @@ export default class CumProfitChart extends Vue {
         text: 'Cumulative Profit',
         show: this.showTitle,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'profit'],
         source: this.cumulativeData,

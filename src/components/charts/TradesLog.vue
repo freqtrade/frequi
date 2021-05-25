@@ -70,6 +70,7 @@ export default class TradesLogChart extends Vue {
         text: 'Trades log',
         show: true,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'profit'],
         source: chartData,

@@ -57,6 +57,7 @@ export default class DailyChart extends Vue {
         text: 'Daily profit',
         show: this.showTitle,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'abs_profit', 'trade_count'],
         source: this.dailyStats.data,

@@ -79,6 +79,7 @@ export default class HourlyChart extends Vue {
         text: 'Hourly Profit',
         show: this.showTitle,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['hourDesc', 'profit', 'count'],
         source: this.hourlyData,
