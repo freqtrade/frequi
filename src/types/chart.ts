@@ -1,5 +1,4 @@
 export interface CumProfitData {
-  date: number;
+  [date: string]: number;
   profit: number;
-  raising: boolean;
 }
