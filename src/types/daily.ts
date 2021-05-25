@@ -4,6 +4,7 @@ export interface DailyPayload {
 
 export interface DailyRecord {
   /** Date in the format yyyy-mm-dd */
+  [key: string]: string | number;
   date: string;
   abs_profit: number;
   fiat_value: number;
