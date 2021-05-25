@@ -6,13 +6,50 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import ECharts from 'vue-echarts';
-import * as echarts from 'echarts';
 import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
+import ECharts from 'vue-echarts';
 
-import 'echarts';
+import { use } from 'echarts/core';
+import { EChartsOption, SeriesOption, ScatterSeriesOption } from 'echarts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { CandlestickChart, LineChart, BarChart, ScatterChart } from 'echarts/charts';
+import {
+  AxisPointerComponent,
+  CalendarComponent,
+  DatasetComponent,
+  DataZoomComponent,
+  GridComponent,
+  LegendComponent,
+  TimelineComponent,
+  TitleComponent,
+  TooltipComponent,
+  ToolboxComponent,
+  VisualMapComponent,
+  VisualMapPiecewiseComponent,
+} from 'echarts/components';
+
+use([
+  AxisPointerComponent,
+  CalendarComponent,
+  DatasetComponent,
+  DataZoomComponent,
+  GridComponent,
+  LegendComponent,
+  ToolboxComponent,
+  TimelineComponent,
+  TitleComponent,
+  TooltipComponent,
+  VisualMapComponent,
+  VisualMapPiecewiseComponent,
+
+  CandlestickChart,
+  BarChart,
+  LineChart,
+  ScatterChart,
+  CanvasRenderer,
+]);
 
 // Chart default options
 const MARGINLEFT = '4%';
@@ -51,7 +88,7 @@ export default class CandleChart extends Vue {
 
   sellData = [] as Array<number>[];
 
-  chartOptions: echarts.EChartsOption = {};
+  chartOptions: EChartsOption = {};
 
   @Watch('dataset')
   datasetChanged() {
@@ -255,7 +292,7 @@ export default class CandleChart extends Vue {
       }
     }
 
-    const options: echarts.EChartsOption = {
+    const options: EChartsOption = {
       dataset: {
         source: this.dataset.data,
       },
@@ -350,7 +387,7 @@ export default class CandleChart extends Vue {
           if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
             this.chartOptions.legend.data.push(key);
           }
-          const sp: echarts.EChartsOption.Series = {
+          const sp: SeriesOption = {
             name: key,
             type: value.type || 'line',
             xAxisIndex: 0,
@@ -428,7 +465,7 @@ export default class CandleChart extends Vue {
           // entries per subplot
           const col = this.dataset.columns.findIndex((el) => el === sk);
           if (col > 0) {
-            const sp: echarts.EChartsOption.Series = {
+            const sp: SeriesOption = {
               name: sk,
               type: sv.type || 'line',
               xAxisIndex: plotIndex,
@@ -471,7 +508,7 @@ export default class CandleChart extends Vue {
     if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
       this.chartOptions.legend.data.push(name);
     }
-    const sp: echarts.EChartsOption.SeriesScatter = {
+    const sp: ScatterSeriesOption = {
       name,
       type: 'scatter',
       xAxisIndex: 0,
@@ -491,7 +528,7 @@ export default class CandleChart extends Vue {
     ) {
       this.chartOptions.legend.data.push(nameClose);
     }
-    const closeSeries: echarts.EChartsOption.SeriesScatter = {
+    const closeSeries: ScatterSeriesOption = {
       name: nameClose,
       type: 'scatter',
       xAxisIndex: 0,
