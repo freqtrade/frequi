@@ -453,16 +453,12 @@ export default class CandleChart extends Vue {
           });
         }
         Object.entries(value).forEach(([sk, sv]) => {
-          if (
-            !Array.isArray(this.chartOptions.legend) &&
-            this.chartOptions.legend?.data &&
-            Array.isArray(this.chartOptions.legend.data)
-          ) {
-            this.chartOptions.legend.data.push(sk);
-          }
           // entries per subplot
           const col = this.dataset.columns.findIndex((el) => el === sk);
           if (col > 0) {
+            if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
+              this.chartOptions.legend.data.push(sk);
+            }
             const sp: SeriesOption = {
               name: sk,
               type: sv.type || 'line',
@@ -519,11 +515,7 @@ export default class CandleChart extends Vue {
     if (Array.isArray(this.chartOptions?.series)) {
       this.chartOptions.series.push(sp);
     }
-    if (
-      this.chartOptions.legend &&
-      !Array.isArray(this.chartOptions.legend) &&
-      this.chartOptions.legend.data
-    ) {
+    if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
       this.chartOptions.legend.data.push(nameClose);
     }
     const closeSeries: ScatterSeriesOption = {
