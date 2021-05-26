@@ -18,7 +18,7 @@ RUN yarn global add @vue/cli
 COPY . /app
 RUN yarn build
 
-FROM nginx:1.19.10-alpine
+FROM nginx:1.21.0-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
 COPY  --from=ui-builder /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
