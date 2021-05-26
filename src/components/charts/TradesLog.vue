@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="chartOptions" autoresize :theme="getChartTheme" />
+  <v-chart v-if="trades.length > 0" :option="chartOptions" autoresize :theme="getChartTheme" />
 </template>
 
 <script lang="ts">
@@ -7,18 +7,31 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/title';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/legend';
-import 'echarts/lib/component/dataZoom';
-import 'echarts/lib/component/visualMap';
-import 'echarts/lib/component/visualMapPiecewise';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart, BarChart } from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  VisualMapComponent,
+  VisualMapPiecewiseComponent,
+} from 'echarts/components';
 
 import { ClosedTrade } from '@/types';
+
+use([
+  BarChart,
+  LineChart,
+  CanvasRenderer,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  VisualMapComponent,
+  VisualMapPiecewiseComponent,
+]);
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit %';
@@ -48,7 +61,7 @@ export default class TradesLogChart extends Vue {
     return res;
   }
 
-  get chartOptions(): EChartOption {
+  get chartOptions(): EChartsOption {
     const { chartData } = this;
     // Show a maximum of 50 trades by default - allowing to zoom out further.
     const datazoomStart = chartData.length > 0 ? (1 - 50 / chartData.length) * 100 : 100;
@@ -57,6 +70,7 @@ export default class TradesLogChart extends Vue {
         text: 'Trades log',
         show: true,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'profit'],
         source: chartData,
@@ -126,7 +140,6 @@ export default class TradesLogChart extends Vue {
         {
           type: 'bar',
           name: CHART_PROFIT,
-          step: 'start',
           barGap: '0%',
           barCategoryGap: '0%',
           animation: false,
@@ -143,9 +156,6 @@ export default class TradesLogChart extends Vue {
             y: 1,
           },
 
-          areaStyle: {
-            // color: CHART_COLOR,
-          },
           itemStyle: {
             color: CHART_COLOR,
           },

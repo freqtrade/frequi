@@ -1,6 +1,12 @@
+export enum ChartType {
+  line = 'line',
+  bar = 'bar',
+  scatter = 'scatter',
+}
+
 export interface IndicatorConfig {
   color?: string;
-  type?: string;
+  type?: ChartType;
 }
 
 export interface PlotConfig {

@@ -20,13 +20,10 @@
           timestampms(trade.close_timestamp)
         }}</ValuePair>
         <ValuePair
-          v-if="trade.current_profit && trade.current_profit_abs"
-          description="Current Profit"
+          v-if="trade.profit_ratio && trade.profit_abs"
+          :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
         >
-          {{ formatPercent(trade.current_profit) }} | {{ trade.current_profit_abs }}
-        </ValuePair>
-        <ValuePair v-if="trade.close_profit" description="Close Profit">
-          {{ formatPercent(trade.close_profit) }} | {{ trade.close_profit_abs }}
+          {{ formatPercent(trade.profit_ratio) }} | {{ trade.profit_abs }}
         </ValuePair>
       </div>
       <div class="col-lg-7">

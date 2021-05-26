@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="trades.length > 0" :options="chartOptions" autoresize :theme="getChartTheme" />
+  <v-chart v-if="trades.length > 0" :option="chartOptions" autoresize :theme="getChartTheme" />
 </template>
 
 <script lang="ts">
@@ -7,18 +7,16 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 
 import ECharts from 'vue-echarts';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/title';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/legend';
-import 'echarts/lib/component/dataZoom';
-import 'echarts/lib/component/visualMap';
-import 'echarts/lib/component/visualMapPiecewise';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart, BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
 
 import { ClosedTrade, CumProfitData } from '@/types';
+
+use([BarChart, LineChart, CanvasRenderer, TitleComponent, TooltipComponent, LegendComponent]);
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
@@ -40,8 +38,6 @@ export default class CumProfitChart extends Vue {
 
   get cumulativeData() {
     const res: CumProfitData[] = [];
-    // const closedTrades = [...this.trades]; // .filter((t) => t.close_timestamp);
-
     const closedTrades = this.trades
       .slice()
       .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
@@ -50,18 +46,19 @@ export default class CumProfitChart extends Vue {
       const trade = closedTrades[i];
       if (trade.close_timestamp && trade[this.profitColumn]) {
         profit += trade[this.profitColumn];
-        res.push({ date: trade.close_timestamp, profit, raising: trade[this.profitColumn] > 0 });
+        res.push({ date: trade.close_timestamp, profit });
       }
     }
     return res;
   }
 
-  get chartOptions(): EChartOption {
+  get chartOptions(): EChartsOption {
     return {
       title: {
         text: 'Cumulative Profit',
         show: this.showTitle,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'profit'],
         source: this.cumulativeData,

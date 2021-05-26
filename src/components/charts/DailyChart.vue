@@ -1,20 +1,21 @@
 <template>
-  <v-chart v-if="dailyStats.data" :options="dailyChartOptions" :theme="getChartTheme" autoresize />
+  <v-chart v-if="dailyStats.data" :option="dailyChartOptions" :theme="getChartTheme" autoresize />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import ECharts from 'vue-echarts';
-import { EChartOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/title';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/legend';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart, BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
 
 import { DailyReturnValue } from '@/types';
+
+use([BarChart, LineChart, CanvasRenderer, TitleComponent, TooltipComponent, LegendComponent]);
 
 // Define Column labels here to avoid typos
 const CHART_ABS_PROFIT = 'Absolute profit';
@@ -50,12 +51,13 @@ export default class DailyChart extends Vue {
     );
   }
 
-  get dailyChartOptions(): EChartOption {
+  get dailyChartOptions(): EChartsOption {
     return {
       title: {
         text: 'Daily profit',
         show: this.showTitle,
       },
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'abs_profit', 'trade_count'],
         source: this.dailyStats.data,
