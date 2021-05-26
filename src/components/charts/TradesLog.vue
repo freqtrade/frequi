@@ -45,6 +45,8 @@ const CHART_COLOR = '#9be0a8';
 export default class TradesLogChart extends Vue {
   @Prop({ required: true }) trades!: ClosedTrade[];
 
+  @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+
   @Getter getChartTheme!: string;
 
   get chartData() {
@@ -68,7 +70,7 @@ export default class TradesLogChart extends Vue {
     return {
       title: {
         text: 'Trades log',
-        show: true,
+        show: this.showTitle,
       },
       backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
@@ -170,5 +172,6 @@ export default class TradesLogChart extends Vue {
 .echarts {
   width: 100%;
   height: 100%;
+  min-height: 150px;
 }
 </style>
