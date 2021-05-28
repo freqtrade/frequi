@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="primary">
+    <b-navbar toggleable="sm" type="dark" variant="primary">
       <b-navbar-brand exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="navbar-brand-title">Freqtrade UI</span>
+        <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
