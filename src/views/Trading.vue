@@ -5,6 +5,8 @@
     :layout="gridLayout"
     :vertical-compact="false"
     :margin="[5, 5]"
+    :is-resizable="!getLayoutLocked"
+    :is-draggable="!getLayoutLocked"
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
@@ -16,7 +18,7 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Bot Controls">
-        <ReloadControl class="mt-3" />
+        <ReloadControl class="mt-2" />
         <BotControls />
       </DraggableContainer>
     </GridItem>
@@ -205,6 +207,8 @@ export default class Trading extends Vue {
   @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
 
   @layoutNs.Action [LayoutActions.setTradingLayout];
+
+  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
   get gridLayout(): GridItemData[] {
     return this.getTradingLayout;

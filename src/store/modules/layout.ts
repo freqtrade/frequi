@@ -21,6 +21,7 @@ export enum DashboardLayout {
 export enum LayoutGetters {
   getDashboardLayout = 'getDashboardLayout',
   getTradingLayout = 'getTradingLayout',
+  getLayoutLocked = 'getLayoutLocked',
 }
 
 export enum LayoutActions {
@@ -28,11 +29,13 @@ export enum LayoutActions {
   setTradingLayout = 'setTradingLayout',
   resetDashboardLayout = 'resetDashboardLayout',
   resetTradingLayout = 'resetTradingLayout',
+  setLayoutLocked = 'setLayoutLocked',
 }
 
 export enum LayoutMutations {
   setDashboardLayout = 'setDashboardLayout',
   setTradingLayout = 'setTradingLayout',
+  setLayoutLocked = 'setLayoutLocked',
 }
 // Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
@@ -55,6 +58,15 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
 
 const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';
 const STORE_TRADING_LAYOUT = 'ftTradingLayout';
+const STORE_LAYOUT_LOCK = 'ftLayoutLocked';
+
+function getLayoutLocked() {
+  const fromStore = localStorage.getItem(STORE_LAYOUT_LOCK);
+  if (fromStore) {
+    return JSON.parse(fromStore);
+  }
+  return true;
+}
 
 function getLayout(storageString: string, defaultLayout: GridItemData[]) {
   const fromStore = localStorage.getItem(storageString);
@@ -83,6 +95,7 @@ export default {
   state: {
     dashboardLayout: getLayout(STORE_DASHBOARD_LAYOUT, DEFAULT_DASHBOARD_LAYOUT),
     tradingLayout: getLayout(STORE_TRADING_LAYOUT, DEFAULT_TRADING_LAYOUT),
+    layoutLocked: getLayoutLocked(),
   },
 
   getters: {
@@ -91,6 +104,9 @@ export default {
     },
     [LayoutGetters.getTradingLayout](state) {
       return state.tradingLayout;
+    },
+    [LayoutGetters.getLayoutLocked](state) {
+      return state.layoutLocked;
     },
   },
 
@@ -104,6 +120,10 @@ export default {
       state.tradingLayout = layout;
       localStorage.setItem(STORE_TRADING_LAYOUT, JSON.stringify(layout));
     },
+    [LayoutMutations.setLayoutLocked](state, locked: boolean) {
+      state.layoutLocked = locked;
+      localStorage.setItem(STORE_LAYOUT_LOCK, JSON.stringify(locked));
+    },
   },
 
   actions: {
@@ -112,6 +132,9 @@ export default {
     },
     [LayoutActions.setTradingLayout]({ commit }, layout) {
       commit(LayoutMutations.setTradingLayout, layout);
+    },
+    [LayoutActions.setLayoutLocked]({ commit }, locked: boolean) {
+      commit(LayoutMutations.setLayoutLocked, locked);
     },
     [LayoutActions.resetDashboardLayout]({ commit }) {
       commit(

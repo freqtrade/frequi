@@ -30,6 +30,7 @@
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
+              <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item to="/settings">Settings</b-dropdown-item>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <b-dropdown-item to="/" @click.native="logout()">Sign Out</b-dropdown-item>
@@ -51,7 +52,7 @@ import LoginModal from '@/views/LoginModal.vue';
 import { State, Action, namespace } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
-import { LayoutActions } from '@/store/modules/layout';
+import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
@@ -73,9 +74,13 @@ export default class NavBar extends Vue {
 
   @ftbot.Getter [BotStoreGetters.botName]: string;
 
+  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
+
   @layoutNs.Action [LayoutActions.resetDashboardLayout];
 
   @layoutNs.Action [LayoutActions.resetTradingLayout];
+
+  @layoutNs.Action [LayoutActions.setLayoutLocked];
 
   mounted() {
     this.ping();
@@ -91,6 +96,15 @@ export default class NavBar extends Vue {
   logout(): void {
     userService.logout();
     this.setLoggedIn(false);
+  }
+
+  get layoutLockedLocal() {
+    return this.getLayoutLocked;
+  }
+
+  set layoutLockedLocal(value: boolean) {
+    console.log(value);
+    this.setLayoutLocked(value);
   }
 
   resetDynamicLayout(): void {

@@ -5,6 +5,8 @@
     :layout="gridLayout"
     :vertical-compact="false"
     :margin="[5, 5]"
+    :is-resizable="!getLayoutLocked"
+    :is-draggable="!getLayoutLocked"
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
@@ -170,6 +172,8 @@ export default class Dashboard extends Vue {
   @layoutNs.Getter [LayoutGetters.getDashboardLayout]!: GridItemData[];
 
   @layoutNs.Action [LayoutActions.setDashboardLayout];
+
+  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
   @ftbot.Action getOpenTrades;
 
