@@ -155,6 +155,11 @@ export default class CandleChart extends Vue {
       tooltip: {
         show: true,
         trigger: 'axis',
+        backgroundColor: 'rgba(80,80,80,0.7)',
+        borderWidth: 0,
+        textStyle: {
+          color: '#fff',
+        },
         axisPointer: {
           type: 'cross',
           lineStyle: {
