@@ -33,7 +33,7 @@
         <template #cell(pair)="row">
           <ProfitSymbol :trade="row.item" />
           <span>
-            {{ row.item.pair }}
+            {{ `${row.item.pair}${row.item.open_order_id === null ? '' : '*'}` }}
           </span>
         </template>
       </b-table>
