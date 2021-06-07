@@ -19,7 +19,7 @@
     "date-fns": "^2.22.1",
     "date-fns-tz": "^1.1.4",
     "echarts": "^5.1.0",
-    "humanize-duration": "^3.26.0",
+    "humanize-duration": "^3.27.0",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.5",
     "vue-echarts": "^6.0.0-rc.5",
