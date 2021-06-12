@@ -35,6 +35,7 @@ import { showAlert } from '../alerts';
 export enum BotStoreGetters {
   botName = 'botName',
   openTrades = 'openTrades',
+  openTradeCount = 'openTradeCount',
   tradeDetail = 'tradeDetail',
   selectedPair = 'selectedPair',
   closedTrades = 'closedTrades',
@@ -63,6 +64,9 @@ export default {
     },
     [BotStoreGetters.openTrades](state: FtbotStateType): Trade[] {
       return state.openTrades;
+    },
+    [BotStoreGetters.openTradeCount](state: FtbotStateType): number {
+      return state.openTrades.length;
     },
     [BotStoreGetters.allTrades](state: FtbotStateType): Trade[] {
       return [...state.openTrades, ...state.trades];
@@ -115,6 +119,7 @@ export default {
       state.tradeCount = tradesCount;
     },
     updateOpenTrades(state: FtbotStateType, trades) {
+      console.log(`Update open trade length ${trades.length}`);
       state.openTrades = trades;
     },
     updateLocks(state: FtbotStateType, locks: LockResponse) {

@@ -54,9 +54,12 @@ import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import Favico from 'favico.js';
+import { SettingsGetters } from '@/store/modules/settings';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
+const uiSettingsNs = namespace('uiSettings');
 
 @Component({
   components: { LoginModal, BootswatchThemeSelect },
@@ -74,6 +77,8 @@ export default class NavBar extends Vue {
 
   @ftbot.Getter [BotStoreGetters.botName]: string;
 
+  @ftbot.Getter [BotStoreGetters.openTradeCount]: number;
+
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
   @layoutNs.Action [LayoutActions.resetDashboardLayout];
@@ -81,6 +86,10 @@ export default class NavBar extends Vue {
   @layoutNs.Action [LayoutActions.resetTradingLayout];
 
   @layoutNs.Action [LayoutActions.setLayoutLocked];
+
+  @uiSettingsNs.Getter [SettingsGetters.openTradesInTitle]: string;
+
+  favicon: Favico | undefined = undefined;
 
   mounted() {
     this.ping();
@@ -103,8 +112,26 @@ export default class NavBar extends Vue {
   }
 
   set layoutLockedLocal(value: boolean) {
-    console.log(value);
     this.setLayoutLocked(value);
+  }
+
+  setOpenTradesAsPill(tradeCount: number) {
+    console.log('setPill', tradeCount);
+    if (!this.favicon) {
+      this.favicon = new Favico({
+        animation: 'none',
+        // position: 'up',
+        // fontStyle: 'normal',
+        // bgColor: '#',
+        // textColor: '#FFFFFF',
+      });
+    }
+    if (tradeCount !== 0 && this.openTradesInTitle === 'showPill') {
+      this.favicon.badge(tradeCount);
+    } else {
+      this.favicon.reset();
+      console.log('reset');
+    }
   }
 
   resetDynamicLayout(): void {
@@ -121,13 +148,36 @@ export default class NavBar extends Vue {
     }
   }
 
+  setTitle() {
+    let title = 'freqUI';
+    if (this.openTradesInTitle === 'asTitle') {
+      title = `(${this.openTradeCount}) ${title}`;
+    }
+    if (this.botName) {
+      title = `${title} - ${this.botName}`;
+    }
+    document.title = title;
+  }
+
   @Watch(BotStoreGetters.botName)
   botnameChanged() {
-    if (this.botName) {
-      document.title = `freqUI - ${this.botName}`;
-    } else {
-      document.title = 'freqUI';
+    this.setTitle();
+  }
+
+  @Watch(BotStoreGetters.openTradeCount)
+  openTradeCountChanged() {
+    console.log('openTradeCount changed');
+    if (this.openTradesInTitle === 'showPill') {
+      this.setOpenTradesAsPill(this.openTradeCount);
+    } else if (this.openTradesInTitle === 'asTitle') {
+      this.setTitle();
     }
+  }
+
+  @Watch(SettingsGetters.openTradesInTitle)
+  openTradesSettingChanged() {
+    this.setTitle();
+    this.setOpenTradesAsPill(this.openTradeCount);
   }
 }
 </script>

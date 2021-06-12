@@ -7,6 +7,7 @@ import { AxiosInstance } from 'axios';
 import ftbotModule, { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
+import settingsModule from './modules/settings';
 
 const AUTO_REFRESH = 'ft_auto_refresh';
 
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     ftbot: ftbotModule,
     alerts: alertsModule,
     layout: layoutModule,
+    uiSettings: settingsModule,
   },
   mutations: {
     setPing(state, ping) {

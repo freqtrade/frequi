@@ -7,6 +7,8 @@
     :margin="[5, 5]"
     :is-resizable="!getLayoutLocked"
     :is-draggable="!getLayoutLocked"
+    responsive
+    prevent-collision
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem

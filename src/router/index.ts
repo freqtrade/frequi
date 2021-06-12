@@ -32,6 +32,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
   },
   {
+    path: '/settings',
+    name: 'Freqtrade Settings',
+    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Settings.vue'),
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '@/views/LoginView.vue'),
