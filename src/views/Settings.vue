@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
-import { SettingsActions, SettingsGetters } from '@/store/modules/settings';
+import { OpenTradeVizOptions, SettingsActions, SettingsGetters } from '@/store/modules/settings';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
@@ -41,9 +41,9 @@ export default class Template extends Vue {
   @uiSettingsNs.Action [SettingsActions.setOpenTradesInTitle];
 
   openTradesOptions = [
-    { value: 'showPill', text: 'Show pill in icon' },
-    { value: 'asTitle', text: 'Show in title' },
-    { value: 'noOpenTrades', text: "Don't show open trades in header" },
+    { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
+    { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
+    { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
   ];
 
   get openTradesVisualization() {

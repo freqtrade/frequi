@@ -55,7 +55,7 @@ import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
-import { SettingsGetters } from '@/store/modules/settings';
+import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -150,7 +150,7 @@ export default class NavBar extends Vue {
 
   setTitle() {
     let title = 'freqUI';
-    if (this.openTradesInTitle === 'asTitle') {
+    if (this.openTradesInTitle === OpenTradeVizOptions.asTitle) {
       title = `(${this.openTradeCount}) ${title}`;
     }
     if (this.botName) {
@@ -167,9 +167,9 @@ export default class NavBar extends Vue {
   @Watch(BotStoreGetters.openTradeCount)
   openTradeCountChanged() {
     console.log('openTradeCount changed');
-    if (this.openTradesInTitle === 'showPill') {
+    if (this.openTradesInTitle === OpenTradeVizOptions.showPill) {
       this.setOpenTradesAsPill(this.openTradeCount);
-    } else if (this.openTradesInTitle === 'asTitle') {
+    } else if (this.openTradesInTitle === OpenTradeVizOptions.asTitle) {
       this.setTitle();
     }
   }

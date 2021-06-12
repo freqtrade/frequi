@@ -1,5 +1,11 @@
 const STORE_UI_SETTINGS = 'ftUISettings';
 
+export enum OpenTradeVizOptions {
+  showPill = 'showPill',
+  asTitle = 'asTitle',
+  noOpenTrades = 'noOpenTrades',
+}
+
 export enum SettingsGetters {
   openTradesInTitle = 'openTradesInTitle',
 }
@@ -30,7 +36,7 @@ function updateSetting(key: string, value: string) {
 export default {
   namespaced: true,
   state: {
-    openTradesInTitle: storedSettings?.openTradesInTitle || 'showPill',
+    openTradesInTitle: storedSettings?.openTradesInTitle || OpenTradeVizOptions.showPill,
   },
   getters: {
     [SettingsGetters.openTradesInTitle](state) {
