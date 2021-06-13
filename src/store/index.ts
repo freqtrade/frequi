@@ -96,9 +96,7 @@ export default new Vuex.Store({
         updates.push(dispatch('refreshSlow', forceUpdate));
         updates.push(dispatch('ftbot/getDaily'));
         updates.push(dispatch('ftbot/getBalance'));
-        /* white/blacklist might be refreshed more often as they are not expensive on the backend */
-        updates.push(dispatch('ftbot/getWhitelist'));
-        updates.push(dispatch('ftbot/getBlacklist'));
+
         await Promise.all(updates);
         console.log('refreshing_end');
       } finally {
@@ -115,6 +113,10 @@ export default new Vuex.Store({
         updates.push(dispatch('ftbot/getPerformance'));
         updates.push(dispatch('ftbot/getProfit'));
         updates.push(dispatch('ftbot/getTrades'));
+        /* white/blacklist might be refreshed more often as they are not expensive on the backend */
+        updates.push(dispatch('ftbot/getWhitelist'));
+        updates.push(dispatch('ftbot/getBlacklist'));
+
         await Promise.all(updates);
         commit('ftbot/updateRefreshRequired', false);
       }
