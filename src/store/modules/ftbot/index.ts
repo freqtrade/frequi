@@ -424,7 +424,7 @@ export default {
           return Promise.resolve(result.data);
         })
         .catch((error) => {
-          console.error(error);
+          // console.error(error);
           return Promise.reject(error);
         });
     },
@@ -440,11 +440,13 @@ export default {
         .then((result) => commit('updateProfit', result.data))
         .catch(console.error);
     },
-    getBalance({ commit }) {
-      return api
-        .get('/balance')
-        .then((result) => commit('updateBalance', result.data))
-        .catch(console.error);
+    async getBalance({ commit }) {
+      try {
+        const result = await api.get('/balance');
+        return commit('updateBalance', result.data);
+      } catch (error) {
+        return console.error(error);
+      }
     },
     getDaily({ commit }, payload: DailyPayload = {}) {
       const { timescale = 20 } = payload;

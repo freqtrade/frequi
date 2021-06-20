@@ -29,7 +29,7 @@ export function init(store) {
   api.interceptors.response.use(
     (response) => response,
     (err) => {
-      console.log(err);
+      // console.log(err);
       if (err.response && err.response.status === 401) {
         console.log('Dispatching refresh_token...');
         return userService
@@ -58,9 +58,10 @@ export function init(store) {
         // maybe redirect to /login if needed !
       }
       if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
-        console.log('Bot seems to be offline...');
+        console.log('Bot not running...');
         store.dispatch('setIsBotOnline', false);
       }
+
       return new Promise((resolve, reject) => {
         reject(err);
       });
