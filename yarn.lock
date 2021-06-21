@@ -10735,18 +10735,18 @@ vue-cli-plugin-bootstrap-vue@~0.7.0:
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-bootstrap-vue/-/vue-cli-plugin-bootstrap-vue-0.7.0.tgz#b44ed7180e59aca2846e981fc67f59d7c77298e3"
   integrity sha512-KYP7CpwbM6Xw94LR2G6y8ZqqTDKlYTgLDwsxaNUj8NyuAo/mpo2y6Q67T9CXjiPgJYVbWH5IzkhE0gHc+9xZKA==
 
-vue-demi@^0.7.4:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.7.5.tgz#88dee7492fc99a0f911ff03fc02c658fa2a79af8"
-  integrity sha512-eFSQSvbQdY7C9ujOzvM6tn7XxwLjn0VQDXQsiYBLBwf28Na+2nTQR4BBBcomhmdP6mmHlBKAwarq6a0BPG87hQ==
+vue-demi@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.9.1.tgz#25d6e1ebd4d4010757ff3571e2bf6a1d7bf3de82"
+  integrity sha512-7s1lufRD2l369eFWPjgLvhqCRk0XzGWJsQc7K4q+0mZtixyGIvsK1Cg88P4NcaRIEiBuuN4q1NN4SZKFKwQswA==
 
-vue-echarts@^6.0.0-rc.5:
-  version "6.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/vue-echarts/-/vue-echarts-6.0.0-rc.5.tgz#4e06289927d03d289c368fa09b740d82e6ded528"
-  integrity sha512-qG7jM4tz2Ipygn5r88s2nHFftakQyWpoM2IXwpzWrQwl/UZIQ1bbqyyLHqMLtgzEU/QhD/maFG9tnMkjVR75sg==
+vue-echarts@^6.0.0-rc.6:
+  version "6.0.0-rc.6"
+  resolved "https://registry.yarnpkg.com/vue-echarts/-/vue-echarts-6.0.0-rc.6.tgz#c12afdbe2e858c941d434996e9bb9b7af3c8c631"
+  integrity sha512-wvgP77HkK2Cjm4CV/FDbnWQ9UiOvID4ayqpcED/e4MJ3UJO5E8hj8H23CMS7GiNdywBg5GQj1M4TU87zpAX9Qg==
   dependencies:
     resize-detector "^0.3.0"
-    vue-demi "^0.7.4"
+    vue-demi "^0.9.1"
 
 vue-eslint-parser@^7.0.0, vue-eslint-parser@^7.6.0:
   version "7.6.0"
