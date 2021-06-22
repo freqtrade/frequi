@@ -107,7 +107,7 @@ export default class CandleChartContainer extends Vue {
 
   plotConfigName = '';
 
-  showPlotConfig = false;
+  showPlotConfig = true;
 
   @Getter getChartTheme!: string;
 
