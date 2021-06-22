@@ -1,55 +1,63 @@
 <template>
-  <div class="container-fluid flex-column align-items-stretch d-flex h-100">
-    <b-modal
-      id="plotConfiguratorModal"
-      title="Plot Configurator"
-      ok-only
-      hide-backdrop
-      button-size="sm"
-    >
-      <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" />
-    </b-modal>
-
-    <div class="row mr-0">
-      <div class="col-mb-2 ml-2">
-        <b-select v-model="pair" :options="availablePairs" size="sm" @change="refresh"> </b-select>
-      </div>
-      <div class="col-mb-2 ml-2 mr-2">
-        <b-button :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
-      </div>
-      <div v-if="hasDataset" class="col-mb-2 ml-2 mr-2">
-        <small>Buysignals: {{ dataset.buy_signals }}</small>
-        <small class="ml-2">SellSignals: {{ dataset.sell_signals }}</small>
-      </div>
-      <div class="col-mb-2 ml-auto mr-2">
-        <b-select
-          v-model="plotConfigName"
-          :options="availablePlotConfigNames"
-          size="sm"
-          @change="plotConfigChanged"
-        >
-        </b-select>
-      </div>
-
-      <div class="col-mb-2 mr-2 d-flex align-items-center">
-        <b-checkbox v-model="useUTC" title="Use UTC for graph">useUTC</b-checkbox>
-      </div>
-      <div class="col-mb-2 mr-1">
-        <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
-      </div>
-    </div>
-    <div class="row mr-1 ml-1 h-100">
-      <CandleChart
-        v-if="hasDataset"
-        :dataset="dataset"
-        :trades="trades"
-        :plot-config="plotConfig"
-        :use-u-t-c="useUTC"
-        :theme="getChartTheme"
+  <div class="d-flex h-100">
+    <div class="flex-fill container-fluid flex-column align-items-stretch d-flex h-100">
+      <b-modal
+        id="plotConfiguratorModal"
+        title="Plot Configurator"
+        ok-only
+        hide-backdrop
+        button-size="sm"
       >
-      </CandleChart>
-      <label v-else style="margin: auto auto; font-size: 1.5rem">No data available</label>
+        <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" />
+      </b-modal>
+
+      <div class="row mr-0">
+        <div class="col-mb-2 ml-2">
+          <b-select v-model="pair" :options="availablePairs" size="sm" @change="refresh">
+          </b-select>
+        </div>
+        <div class="col-mb-2 ml-2 mr-2">
+          <b-button :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
+        </div>
+        <div v-if="hasDataset" class="col-mb-2 ml-2 mr-2">
+          <small>Buysignals: {{ dataset.buy_signals }}</small>
+          <small class="ml-2">SellSignals: {{ dataset.sell_signals }}</small>
+        </div>
+        <div class="col-mb-2 ml-auto mr-2">
+          <b-select
+            v-model="plotConfigName"
+            :options="availablePlotConfigNames"
+            size="sm"
+            @change="plotConfigChanged"
+          >
+          </b-select>
+        </div>
+
+        <div class="col-mb-2 mr-2 d-flex align-items-center">
+          <b-checkbox v-model="useUTC" title="Use UTC for graph">useUTC</b-checkbox>
+        </div>
+        <div class="col-mb-2 mr-1">
+          <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
+        </div>
+      </div>
+      <div class="row mr-1 ml-1 h-100">
+        <CandleChart
+          v-if="hasDataset"
+          :dataset="dataset"
+          :trades="trades"
+          :plot-config="plotConfig"
+          :use-u-t-c="useUTC"
+          :theme="getChartTheme"
+        >
+        </CandleChart>
+        <label v-else style="margin: auto auto; font-size: 1.5rem">No data available</label>
+      </div>
     </div>
+    <transition name="fade" mode="in-out">
+      <div v-show="showPlotConfig" class="w-25 config-sidebar">
+        <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -81,6 +89,8 @@ export default class CandleChartContainer extends Vue {
 
   @Prop({ required: false, default: false }) historicView!: boolean;
 
+  @Prop({ required: false, default: true }) plotConfigModal!: boolean;
+
   /** Only required if historicView is true */
   @Prop({ required: false, default: false }) timerange!: string;
 
@@ -96,6 +106,8 @@ export default class CandleChartContainer extends Vue {
   plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
   plotConfigName = '';
+
+  showPlotConfig = false;
 
   @Getter getChartTheme!: string;
 
@@ -131,6 +143,7 @@ export default class CandleChartContainer extends Vue {
   }
 
   mounted() {
+    this.pair = this.selectedPair;
     this.plotConfigName = getPlotConfigName();
     this.plotConfig = getCustomPlotConfig(this.plotConfigName);
   }
@@ -142,7 +155,11 @@ export default class CandleChartContainer extends Vue {
   }
 
   showConfigurator() {
-    this.$bvModal.show('plotConfiguratorModal');
+    if (this.plotConfigModal) {
+      this.$bvModal.show('plotConfiguratorModal');
+    } else {
+      this.showPlotConfig = !this.showPlotConfig;
+    }
   }
 
   refresh() {
@@ -176,4 +193,15 @@ export default class CandleChartContainer extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>
