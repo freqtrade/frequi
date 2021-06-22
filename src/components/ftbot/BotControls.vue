@@ -43,7 +43,7 @@
         <ForceBuyIcon />
       </button>
       <button
-        v-if="isWebserverMode"
+        v-if="isWebserverMode && false"
         :disabled="isTrading"
         class="btn btn-secondary btn-sm ml-1"
         title="Start Trading mode"

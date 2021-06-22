@@ -58,7 +58,7 @@ export default class Balance extends Vue {
       return this.balance.currencies;
     }
 
-    return this.balance.currencies.filter((v) => v.est_stake >= this.smallBalance);
+    return this.balance?.currencies?.filter((v) => v.est_stake >= this.smallBalance);
   }
 
   get tableFields() {
