@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column h-100">
-    <div v-if="false" class="mr-auto ml-3">
+    <div v-if="isWebserverMode" class="mr-auto ml-3">
       <!-- Currently only available in Webserver mode -->
       <b-checkbox v-model="historicView">HistoricData</b-checkbox>
     </div>
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="flex-fill mx-2 mt-2">
+    <div class="mx-2 mt-2 pb-1 h-100">
       <CandleChartContainer
         :available-pairs="historicView ? pairlist : whitelist"
         :historic-view="historicView"
@@ -26,6 +26,7 @@
         :trades="trades"
         :timerange="historicView ? timerange : ''"
         :strategy="historicView ? strategy : ''"
+        :plot-config-modal="false"
       >
       </CandleChartContainer>
     </div>
@@ -48,7 +49,7 @@ const ftbot = namespace('ftbot');
   components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },
 })
 export default class Graphs extends Vue {
-  historicView = true;
+  historicView = false;
 
   strategy = '';
 
@@ -58,11 +59,13 @@ export default class Graphs extends Vue {
 
   @ftbot.State pairlist;
 
-  @ftbot.State whitelist;
+  @ftbot.State whitelist!: string[];
 
   @ftbot.State trades;
 
   @ftbot.Getter [BotStoreGetters.timeframe]!: string;
+
+  @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
 
   @ftbot.Action public getWhitelist!: () => Promise<WhitelistResponse>;
 
@@ -72,10 +75,12 @@ export default class Graphs extends Vue {
   ) => Promise<AvailablePairResult>;
 
   mounted() {
-    this.getWhitelist();
+    if (!this.whitelist || this.whitelist.length === 0) {
+      this.getWhitelist();
+    }
     // this.refresh();
     this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
-      console.log(val);
+      // console.log(val);
     });
   }
 }

@@ -91,8 +91,8 @@
       <b-form-input id="idPlotConfigName" v-model="plotConfigName" :options="availableGraphTypes">
       </b-form-input>
     </b-form-group>
-    <div class="row">
-      <b-button class="ml-3" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
+    <div class="row px-2">
+      <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
         Load from strategy
       </b-button>
@@ -121,11 +121,20 @@
         variant="primary"
         size="sm"
         title="Load configuration from text box below"
+        @click="resetConfig"
+        >Reset</b-button
+      >
+      <b-button
+        v-if="showConfig"
+        class="ml-1"
+        variant="primary"
+        size="sm"
+        title="Load configuration from text box below"
         @click="loadConfigFromString"
         >Load from String</b-button
       >
     </div>
-    <div v-if="showConfig" class="col-mb-5 ml-2 mt-2">
+    <div v-if="showConfig" class="col-mb-5 ml-1 mt-2">
       <b-textarea
         id="TextArea"
         v-model="plotConfigJson"
@@ -317,6 +326,10 @@ export default class PlotConfigurator extends Vue {
       this.plotConfig = this.tempPlotConfig;
       this.emitPlotConfig();
     }
+  }
+
+  resetConfig() {
+    this.plotConfig = { ...EMPTY_PLOTCONFIG };
   }
 
   async loadPlotConfigFromStrategy() {
