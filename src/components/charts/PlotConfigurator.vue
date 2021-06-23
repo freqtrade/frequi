@@ -1,29 +1,28 @@
 <template>
   <div v-if="columns">
-    <div v-if="true" class="col-mb-3 ml-2">
-      <b-form-radio-group
-        v-model="plotOption"
-        class="w-100"
-        :options="plotOptions"
-        buttons
-        button-variant="outline-primary"
+    <b-form-group label="Plot config name" label-for="idPlotConfigName">
+      <b-form-input
+        id="idPlotConfigName"
+        v-model="plotConfigName"
+        size="sm"
+        :options="availableGraphTypes"
       >
-      </b-form-radio-group>
-    </div>
-    <div v-if="plotOption == 'subplots'" class="col-mb-3">
+      </b-form-input>
+    </b-form-group>
+    <div class="col-mb-3">
       <hr />
 
-      <b-form-group label="Subplot" label-for="FieldSel">
+      <b-form-group label="Target" label-for="FieldSel">
         <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="4">
         </b-form-select>
       </b-form-group>
     </div>
-    <b-form-group v-if="plotOption == 'subplots'" label="New subplot" label-for="newSubplot">
+    <b-form-group label="Add new plot" label-for="newSubPlot">
       <b-input-group size="sm">
-        <b-form-input id="newSubplot" v-model="newSubplotName" class="addPlot"></b-form-input>
+        <b-form-input id="newSubPlot" v-model="newSubplotName" class="addPlot"></b-form-input>
         <b-input-group-append>
           <b-button @click="addSubplot">+</b-button>
-          <b-button v-if="selSubPlot" @click="delSubplot">-</b-button>
+          <b-button v-if="selSubPlot && selSubPlot != 'main_plot'" @click="delSubplot">-</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
@@ -92,15 +91,7 @@
       </b-input-group>
     </b-form-group>
     <hr />
-    <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input
-        id="idPlotConfigName"
-        v-model="plotConfigName"
-        size="sm"
-        :options="availableGraphTypes"
-      >
-      </b-form-input>
-    </b-form-group>
+
     <div class="row px-2">
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
@@ -160,7 +151,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { PlotConfig, EMPTY_PLOTCONFIG } from '@/types';
+import { PlotConfig, EMPTY_PLOTCONFIG, ChartType } from '@/types';
 import randomColor from '@/shared/randomColor';
 import { getCustomPlotConfig } from '@/shared/storage';
 
@@ -190,8 +181,6 @@ export default class PlotConfigurator extends Vue {
     { text: 'Subplots', value: 'subplots' },
   ];
 
-  plotOption = 'main_plot';
-
   plotConfigName = 'default';
 
   newSubplotName = '';
@@ -200,13 +189,13 @@ export default class PlotConfigurator extends Vue {
 
   selIndicator = '';
 
-  graphType = 'line';
+  graphType: ChartType = ChartType.line;
 
-  availableGraphTypes = ['line', 'bar', 'scatter'];
+  availableGraphTypes = Object.keys(ChartType);
 
   showConfig = false;
 
-  selSubPlot = '';
+  selSubPlot = 'main_plot';
 
   tempPlotConfig?: PlotConfig = undefined;
 
@@ -244,14 +233,14 @@ export default class PlotConfigurator extends Vue {
     if (this.isMainPlot) {
       return Object.keys(this.plotConfig.main_plot);
     }
-    if (this.selSubPlot in this.plotConfig[this.plotOption]) {
-      return Object.keys(this.plotConfig[this.plotOption][this.selSubPlot]);
+    if (this.selSubPlot in this.plotConfig.subplots) {
+      return Object.keys(this.plotConfig.subplots[this.selSubPlot]);
     }
     return [];
   }
 
   get isMainPlot() {
-    return this.plotOption === 'main_plot';
+    return this.selSubPlot === 'main_plot';
   }
 
   mounted() {
@@ -269,13 +258,13 @@ export default class PlotConfigurator extends Vue {
     const { plotConfig } = this;
     if (this.isMainPlot) {
       console.log(`Adding ${this.selAvailableIndicator} to MainPlot`);
-      plotConfig[this.plotOption][this.selAvailableIndicator] = {
+      plotConfig.main_plot[this.selAvailableIndicator] = {
         color: this.selColor,
         type: this.graphType,
       };
     } else {
       console.log(`Adding ${this.selAvailableIndicator} to ${this.selSubPlot}`);
-      plotConfig[this.plotOption][this.selSubPlot][this.selAvailableIndicator] = {
+      plotConfig.subplots[this.selSubPlot][this.selAvailableIndicator] = {
         color: this.selColor,
         type: this.graphType,
       };
@@ -293,10 +282,10 @@ export default class PlotConfigurator extends Vue {
     const { plotConfig } = this;
     if (this.isMainPlot) {
       console.log(`Removing ${this.selIndicator} from MainPlot`);
-      delete plotConfig[this.plotOption][this.selIndicator];
+      delete plotConfig.main_plot[this.selIndicator];
     } else {
       console.log(`Removing ${this.selIndicator} from ${this.selSubPlot}`);
-      delete plotConfig[this.plotOption][this.selSubPlot][this.selIndicator];
+      delete plotConfig.subplots[this.selSubPlot][this.selIndicator];
     }
 
     this.plotConfig = { ...plotConfig };
@@ -312,6 +301,7 @@ export default class PlotConfigurator extends Vue {
     };
     this.selSubPlot = this.newSubplotName;
     this.newSubplotName = '';
+
     console.log(this.plotConfig);
     this.emitPlotConfig();
   }
