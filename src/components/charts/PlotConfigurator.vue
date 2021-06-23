@@ -1,19 +1,13 @@
 <template>
   <div v-if="columns">
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input
-        id="idPlotConfigName"
-        v-model="plotConfigName"
-        size="sm"
-        :options="availableGraphTypes"
-      >
-      </b-form-input>
+      <b-form-input id="idPlotConfigName" v-model="plotConfigName" size="sm"> </b-form-input>
     </b-form-group>
     <div class="col-mb-3">
       <hr />
 
       <b-form-group label="Target" label-for="FieldSel">
-        <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="4">
+        <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="3">
         </b-form-select>
       </b-form-group>
     </div>
@@ -28,68 +22,43 @@
     </b-form-group>
     <hr />
     <div class="row">
-      <b-form-group class="col" label="Add indicator" label-for="indicatorSelector">
-        <b-form-select
-          id="indicatorSelector"
-          v-model="selAvailableIndicator"
-          :options="columns"
-          :select-size="4"
-        >
-        </b-form-select>
-      </b-form-group>
-      <div class="col-1 px-0 text-center">
-        <b-button
-          class="mt-5"
-          variant="primary"
-          title="Add indicator to plot"
-          size="sm"
-          :disabled="!selAvailableIndicator"
-          @click="addIndicator"
-        >
-          &gt;
-        </b-button>
-        <b-button
-          variant="primary"
-          title="Remove indicator to plot"
-          size="sm"
-          :disabled="!selIndicator"
-          @click="removeIndicator"
-        >
-          &lt;
-        </b-button>
-      </div>
       <b-form-group class="col" label="Used indicators" label-for="selectedIndicators">
         <b-form-select
           id="selectedIndicators"
-          v-model="selIndicator"
+          v-model="selIndicatorName"
           :options="usedColumns"
           :select-size="4"
         >
         </b-form-select>
       </b-form-group>
     </div>
-    <b-form-group label="Type" label-for="plotTypeSelector">
-      <b-form-select
-        id="plotTypeSelector"
-        v-model="graphType"
+    <div>
+      <b-button
+        variant="primary"
+        title="Add indicator to plot"
         size="sm"
-        :options="availableGraphTypes"
+        @click="addNewIndicator = !addNewIndicator"
       >
-      </b-form-select>
-    </b-form-group>
-    <hr />
+        Add new indicator
+      </b-button>
+      <b-button
+        variant="primary"
+        title="Remove indicator to plot"
+        size="sm"
+        :disabled="!selIndicatorName"
+        class="ml-1"
+        @click="removeIndicator"
+      >
+        Remove indicator
+      </b-button>
+    </div>
 
-    <b-form-group label="Color" label-for="colsel" size="sm">
-      <b-input-group>
-        <b-input-group-prepend>
-          <div :style="{ 'background-color': selColor }" class="colorbox mr-2"></div>
-        </b-input-group-prepend>
-        <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
-        <b-input-group-append>
-          <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>
+    <PlotIndicator
+      v-model="selIndicator"
+      class="mt-1"
+      :columns="columns"
+      :add-new="addNewIndicator"
+    />
     <hr />
 
     <div class="row px-2">
@@ -149,21 +118,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { PlotConfig, EMPTY_PLOTCONFIG, ChartType } from '@/types';
-import randomColor from '@/shared/randomColor';
+import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import { getCustomPlotConfig } from '@/shared/storage';
+import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 
 const ftbot = namespace('ftbot');
 
-@Component({})
+@Component({
+  components: { PlotIndicator },
+})
 export default class PlotConfigurator extends Vue {
   @Prop({ required: true }) value!: PlotConfig;
 
   @Prop({ required: true }) columns!: Array<string>;
 
-  @Prop({ required: true }) asModal!: boolean;
+  @Prop({ required: false, default: true }) asModal!: boolean;
 
   @Emit('input')
   emitPlotConfig() {
@@ -173,6 +144,30 @@ export default class PlotConfigurator extends Vue {
   @ftbot.Action getStrategyPlotConfig;
 
   @ftbot.State strategyPlotConfig;
+
+  get selIndicator(): Record<string, IndicatorConfig> {
+    if (this.addNewIndicator) {
+      return {};
+    }
+    if (this.selIndicatorName) {
+      return {
+        [this.selIndicatorName]: this.currentPlotConfig[this.selIndicatorName],
+      };
+    }
+    return {};
+  }
+
+  set selIndicator(newValue: Record<string, IndicatorConfig>) {
+    console.log('newValue', newValue);
+    const name = Object.keys(newValue)[0];
+    // this.currentPlotConfig[this.selIndicatorName] = { ...newValue[name] };
+    // this.emitPlotConfig();
+    if (name && newValue) {
+      this.addIndicator(newValue);
+    } else {
+      this.addNewIndicator = false;
+    }
+  }
 
   plotConfig: PlotConfig = EMPTY_PLOTCONFIG;
 
@@ -187,11 +182,9 @@ export default class PlotConfigurator extends Vue {
 
   selAvailableIndicator = '';
 
-  selIndicator = '';
+  selIndicatorName = '';
 
-  graphType: ChartType = ChartType.line;
-
-  availableGraphTypes = Object.keys(ChartType);
+  addNewIndicator = false;
 
   showConfig = false;
 
@@ -200,8 +193,6 @@ export default class PlotConfigurator extends Vue {
   tempPlotConfig?: PlotConfig = undefined;
 
   tempPlotConfigValid = true;
-
-  selColor = randomColor();
 
   @ftbot.Mutation saveCustomPlotConfig;
 
@@ -243,37 +234,43 @@ export default class PlotConfigurator extends Vue {
     return this.selSubPlot === 'main_plot';
   }
 
+  get currentPlotConfig() {
+    if (this.isMainPlot) {
+      return this.plotConfig.main_plot;
+    }
+
+    return this.plotConfig.subplots[this.selSubPlot];
+  }
+
   mounted() {
+    console.log('Config Mounted', this.value);
     this.plotConfig = this.value;
     this.plotConfigName = this.usedPlotConfigName;
   }
 
-  newColor() {
-    this.selColor = randomColor();
+  @Watch('value')
+  watchValue() {
+    this.plotConfig = this.value;
+    this.plotConfigName = this.usedPlotConfigName;
   }
 
-  addIndicator() {
+  addIndicator(newIndicator: Record<string, IndicatorConfig>) {
     console.log(this.plotConfig);
 
     const { plotConfig } = this;
+    const name = Object.keys(newIndicator)[0];
+    const indicator = newIndicator[name];
     if (this.isMainPlot) {
-      console.log(`Adding ${this.selAvailableIndicator} to MainPlot`);
-      plotConfig.main_plot[this.selAvailableIndicator] = {
-        color: this.selColor,
-        type: this.graphType,
-      };
+      console.log(`Adding ${name} to MainPlot`);
+      plotConfig.main_plot[name] = { ...indicator };
     } else {
-      console.log(`Adding ${this.selAvailableIndicator} to ${this.selSubPlot}`);
-      plotConfig.subplots[this.selSubPlot][this.selAvailableIndicator] = {
-        color: this.selColor,
-        type: this.graphType,
-      };
+      console.log(`Adding ${name} to ${this.selSubPlot}`);
+      plotConfig.subplots[this.selSubPlot][name] = { ...indicator };
     }
 
     this.plotConfig = { ...plotConfig };
-    this.selAvailableIndicator = '';
     // Reset random color
-    this.newColor();
+    this.addNewIndicator = false;
     this.emitPlotConfig();
   }
 
@@ -281,16 +278,16 @@ export default class PlotConfigurator extends Vue {
     console.log(this.plotConfig);
     const { plotConfig } = this;
     if (this.isMainPlot) {
-      console.log(`Removing ${this.selIndicator} from MainPlot`);
-      delete plotConfig.main_plot[this.selIndicator];
+      console.log(`Removing ${this.selIndicatorName} from MainPlot`);
+      delete plotConfig.main_plot[this.selIndicatorName];
     } else {
-      console.log(`Removing ${this.selIndicator} from ${this.selSubPlot}`);
-      delete plotConfig.subplots[this.selSubPlot][this.selIndicator];
+      console.log(`Removing ${this.selIndicatorName} from ${this.selSubPlot}`);
+      delete plotConfig.subplots[this.selSubPlot][this.selIndicatorName];
     }
 
     this.plotConfig = { ...plotConfig };
     console.log(this.plotConfig);
-    this.selIndicator = '';
+    this.selIndicatorName = '';
     this.emitPlotConfig();
   }
 
@@ -346,14 +343,7 @@ export default class PlotConfigurator extends Vue {
 .textArea {
   min-height: 250px;
 }
-.colorbox {
-  border-radius: 50%;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 25px;
-  width: 25px;
-  vertical-align: center;
-}
+
 .form-group {
   margin-bottom: 0.5rem;
 }

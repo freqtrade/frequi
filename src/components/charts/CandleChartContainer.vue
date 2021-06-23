@@ -2,6 +2,7 @@
   <div class="d-flex h-100">
     <div class="flex-fill container-fluid flex-column align-items-stretch d-flex h-100">
       <b-modal
+        v-if="plotConfigModal"
         id="plotConfiguratorModal"
         title="Plot Configurator"
         ok-only
@@ -54,7 +55,7 @@
       </div>
     </div>
     <transition name="fade" mode="in-out">
-      <div v-show="showPlotConfig" class="w-25 config-sidebar">
+      <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25 config-sidebar">
         <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" :as-modal="false" />
       </div>
     </transition>
