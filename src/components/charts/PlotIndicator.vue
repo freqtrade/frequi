@@ -27,7 +27,17 @@
       <b-input-group>
         <b-input-group-prepend>
           <div :style="{ 'background-color': selColor }" class="colorbox mr-2"></div>
+          <!-- <b-form-input
+            id="colsel"
+            v-model="selColor"
+            size="sm"
+            class="colorbox"
+            type="color"
+            :style="{ 'background-color': selColor }"
+          >
+          </b-form-input> -->
         </b-input-group-prepend>
+
         <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
         <b-input-group-append>
           <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
