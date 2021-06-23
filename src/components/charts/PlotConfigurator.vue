@@ -1,6 +1,6 @@
 <template>
   <div v-if="columns">
-    <div class="col-mb-3 ml-2">
+    <div v-if="true" class="col-mb-3 ml-2">
       <b-form-radio-group
         v-model="plotOption"
         class="w-100"
@@ -69,8 +69,13 @@
         </b-form-select>
       </b-form-group>
     </div>
-    <b-form-group label="Choose type" label-for="plotTypeSelector">
-      <b-form-select id="plotTypeSelector" v-model="graphType" :options="availableGraphTypes">
+    <b-form-group label="Type" label-for="plotTypeSelector">
+      <b-form-select
+        id="plotTypeSelector"
+        v-model="graphType"
+        size="sm"
+        :options="availableGraphTypes"
+      >
       </b-form-select>
     </b-form-group>
     <hr />
@@ -88,7 +93,12 @@
     </b-form-group>
     <hr />
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input id="idPlotConfigName" v-model="plotConfigName" :options="availableGraphTypes">
+      <b-form-input
+        id="idPlotConfigName"
+        v-model="plotConfigName"
+        size="sm"
+        :options="availableGraphTypes"
+      >
       </b-form-input>
     </b-form-group>
     <div class="row px-2">
@@ -162,6 +172,8 @@ export default class PlotConfigurator extends Vue {
 
   @Prop({ required: true }) columns!: Array<string>;
 
+  @Prop({ required: true }) asModal!: boolean;
+
   @Emit('input')
   emitPlotConfig() {
     return this.plotConfig;
@@ -223,12 +235,12 @@ export default class PlotConfigurator extends Vue {
     }
   }
 
-  get subplots() {
+  get subplots(): string[] {
     // Subplot keys (for selection window)
-    return Object.keys(this.plotConfig.subplots);
+    return ['main_plot', ...Object.keys(this.plotConfig.subplots)];
   }
 
-  get usedColumns() {
+  get usedColumns(): string[] {
     if (this.isMainPlot) {
       return Object.keys(this.plotConfig.main_plot);
     }

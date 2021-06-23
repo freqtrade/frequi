@@ -55,7 +55,7 @@
     </div>
     <transition name="fade" mode="in-out">
       <div v-show="showPlotConfig" class="w-25 config-sidebar">
-        <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" />
+        <PlotConfigurator v-model="plotConfig" :columns="datasetColumns" :as-modal="false" />
       </div>
     </transition>
   </div>
@@ -107,7 +107,7 @@ export default class CandleChartContainer extends Vue {
 
   plotConfigName = '';
 
-  showPlotConfig = true;
+  showPlotConfig = !this.plotConfigModal;
 
   @Getter getChartTheme!: string;
 
