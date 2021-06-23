@@ -64,7 +64,7 @@
     <div class="row px-2">
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
-        Load from strategy
+        From strategy
       </b-button>
 
       <b-button
@@ -306,6 +306,7 @@ export default class PlotConfigurator extends Vue {
   delSubplot() {
     delete this.plotConfig.subplots[this.selSubPlot];
     this.plotConfig.subplots = { ...this.plotConfig.subplots };
+    this.selSubPlot = '';
   }
 
   savePlotConfig() {
