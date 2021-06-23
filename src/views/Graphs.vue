@@ -78,10 +78,12 @@ export default class Graphs extends Vue {
     if (!this.whitelist || this.whitelist.length === 0) {
       this.getWhitelist();
     }
-    // this.refresh();
-    this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
-      // console.log(val);
-    });
+    if (this.historicView) {
+      // this.refresh();
+      this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
+        // console.log(val);
+      });
+    }
   }
 }
 </script>

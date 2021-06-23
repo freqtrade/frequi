@@ -143,7 +143,11 @@ export default class CandleChartContainer extends Vue {
   }
 
   mounted() {
-    this.pair = this.selectedPair;
+    if (this.selectedPair) {
+      this.pair = this.selectedPair;
+    } else if (this.availablePairs.length > 0) {
+      [this.pair] = this.availablePairs;
+    }
     this.plotConfigName = getPlotConfigName();
     this.plotConfig = getCustomPlotConfig(this.plotConfigName);
   }
