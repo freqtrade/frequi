@@ -77,6 +77,14 @@
         >Save</b-button
       >
       <b-button
+        class="ml-1"
+        variant="primary"
+        size="sm"
+        title="Load configuration from text box below"
+        @click="resetConfig"
+        >Reset</b-button
+      >
+      <b-button
         id="showButton"
         class="ml-1"
         variant="primary"
@@ -85,15 +93,7 @@
         @click="showConfig = !showConfig"
         >Show</b-button
       >
-      <b-button
-        v-if="showConfig"
-        class="ml-1"
-        variant="primary"
-        size="sm"
-        title="Load configuration from text box below"
-        @click="resetConfig"
-        >Reset</b-button
-      >
+
       <b-button
         v-if="showConfig"
         class="ml-1"

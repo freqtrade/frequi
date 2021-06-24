@@ -154,7 +154,10 @@ export default class BacktestResultView extends Vue {
   get backtestResultStats() {
     // Transpose Result into readable format
     return [
-      { metric: 'Total trades', value: this.backtestResult.total_trades },
+      {
+        metric: 'Total trades / Daily Avg Trades',
+        value: `${this.backtestResult.total_trades} / ${this.backtestResult.trades_per_day}`,
+      },
       // { metric: 'First trade', value: this.backtestResult.backtest_fi },
       // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
       {
@@ -163,7 +166,6 @@ export default class BacktestResultView extends Vue {
           this.backtestResult.profit_total_abs,
         )}`,
       },
-      { metric: 'Trades per day', value: this.backtestResult.trades_per_day },
 
       {
         metric: 'Best day',
