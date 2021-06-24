@@ -21,8 +21,8 @@
       </b-input-group>
     </b-form-group>
     <hr />
-    <div class="row">
-      <b-form-group class="col" label="Used indicators" label-for="selectedIndicators">
+    <div>
+      <b-form-group label="Used indicators" label-for="selectedIndicators">
         <b-form-select
           id="selectedIndicators"
           v-model="selIndicatorName"
@@ -61,7 +61,7 @@
     />
     <hr />
 
-    <div class="row px-2">
+    <div>
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
       <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
         From strategy

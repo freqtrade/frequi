@@ -111,7 +111,7 @@ export default class PlotIndicator extends Vue {
   }
 
   get combinedIndicator() {
-    if (this.cancelled) {
+    if (this.cancelled || !this.selAvailableIndicator) {
       return {};
     }
     return {

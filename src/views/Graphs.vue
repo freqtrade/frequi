@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-column h-100">
-    <div v-if="isWebserverMode" class="mr-auto ml-3">
-      <!-- Currently only available in Webserver mode -->
-      <b-checkbox v-model="historicView">HistoricData</b-checkbox>
-    </div>
+    <!-- <div v-if="isWebserverMode" class="mr-auto ml-3"> -->
+    <!-- Currently only available in Webserver mode -->
+    <!-- <b-checkbox v-model="historicView">HistoricData</b-checkbox> -->
+    <!-- </div> -->
     <div v-if="historicView" class="mx-md-3 mt-2">
       <div class="d-flex flex-wrap">
         <div class="col-md-3 text-left">
@@ -75,6 +75,7 @@ export default class Graphs extends Vue {
   ) => Promise<AvailablePairResult>;
 
   mounted() {
+    this.historicView = this.isWebserverMode;
     if (!this.whitelist || this.whitelist.length === 0) {
       this.getWhitelist();
     }
