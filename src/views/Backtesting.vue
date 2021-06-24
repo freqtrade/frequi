@@ -62,13 +62,14 @@
           @click="showLeftBar = !showLeftBar"
           >{{ showLeftBar ? '&lt;' : '&gt;' }}</b-button
         >
-        <BacktestResultSelect
-          v-if="btFormMode !== 'visualize' && showLeftBar"
-          :backtest-history="backtestHistory"
-          :selected-backtest-result-key="selectedBacktestResultKey"
-          class=""
-          @selectionChange="setBacktestResult"
-        />
+        <transition name="fade" mode="in-out">
+          <BacktestResultSelect
+            v-if="btFormMode !== 'visualize' && showLeftBar"
+            :backtest-history="backtestHistory"
+            :selected-backtest-result-key="selectedBacktestResultKey"
+            @selectionChange="setBacktestResult"
+          />
+        </transition>
       </div>
       <!-- End Left bar -->
 
@@ -460,5 +461,15 @@ export default class Backtesting extends Vue {
   @media md {
     flex: unset;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
