@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
-    <div class="mb-2">
-      <h2 class="mt-3 d-inline">Backtesting</h2>
+    <div class="row mb-2">
+      <h2 class="pt-3 pl-5 d-inline">Backtesting</h2>
       <small v-show="backtestRunning" class="bt-running-label"
         >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress, 2) }}</small
       >
@@ -50,12 +50,14 @@
         >
       </div>
     </div>
+
     <div class="d-md-flex">
       <!-- Left bar -->
       <div
         :class="`${showLeftBar ? 'col-md-3' : ''} sticky-top sticky-offset mr-3 d-flex flex-column`"
       >
         <b-button
+          v-if="btFormMode !== 'visualize'"
           class="align-self-start"
           aria-label="Close"
           size="sm"
@@ -230,12 +232,12 @@
 
     <div
       v-if="hasBacktestResult && btFormMode == 'visualize'"
-      class="container-fluid row text-center w-100 mt-2"
+      class="container-fluid text-center w-100 mt-2"
     >
-      <p>
+      <p class="row">
         Graph will always show the latest values for the selected strategy. Strategy: {{ strategy }}
       </p>
-      <div class="container-fluid row text-center">
+      <div class="row text-center">
         <PairSummary
           class="col-md-2 overflow-auto vh-100"
           :pairlist="selectedBacktestResult.pairlist"
@@ -250,7 +252,7 @@
           :timerange="timerange"
           :strategy="strategy"
           :trades="selectedBacktestResult.trades"
-          class="col-md-10 candle-chart-container"
+          class="col-md-10 candle-chart-container px-0 w-100"
         >
         </CandleChartContainer>
       </div>

@@ -1,9 +1,9 @@
 <template>
-  <div class="container-fluid">
-    <div>
+  <div class="container-fluid px-0">
+    <div class="row d-flex justify-content-center">
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
-    <div class="container-fluid row text-left">
+    <div class="row text-left">
       <div class="col-md-6">
         <b-card header="Strategy settings">
           <!-- <ValuePair description="Backtesting from">{{

@@ -23,4 +23,8 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+
+/* * {
+  outline: 1px solid #f00 !important;
+} */
 </style>
