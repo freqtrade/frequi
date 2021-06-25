@@ -210,8 +210,9 @@ export default class NavBar extends Vue {
   padding: 0.2rem 1rem;
 }
 
+.router-link-active,
 .nav-link:active {
-  color: white;
+  color: white !important;
 }
 
 .verticalCenter {
