@@ -27,6 +27,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "graph" */ '@/views/Graphs.vue'),
   },
   {
+    path: '/logs',
+    name: 'Freqtrade Logs',
+    component: () => import(/* webpackChunkName: "graph" */ '@/views/LogView.vue'),
+  },
+  {
     path: '/backtest',
     name: 'Freqtrade Backtest',
     component: () => import(/* webpackChunkName: "backtest" */ '@/views/Backtesting.vue'),
