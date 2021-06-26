@@ -53,6 +53,7 @@ export interface BotState {
   minimal_roi: object;
   stake_amount: number;
   stake_currency: string;
+  stake_currency_decimals?: number;
   stoploss: number;
   strategy: string;
   /** Timeframe in readable form (e.g. 5m) */

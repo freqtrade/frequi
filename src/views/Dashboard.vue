@@ -45,12 +45,13 @@
           </b-card>
           <b-card header="Total Balance">
             <b-card-text
-              >{{ formatPrice(balance.total) }} {{ dailyStats.stake_currency }}</b-card-text
+              >{{ formatPrice(balance.total, botState.stake_currency_decimals || 8) }}
+              {{ dailyStats.stake_currency }}</b-card-text
             >
           </b-card>
           <b-card v-if="profit.profit_closed_fiat" header="Total profit">
             <b-card-text
-              >{{ formatPrice(profit.profit_closed_fiat) }}
+              >{{ formatPrice(profit.profit_closed_fiat, 2) }}
               {{ dailyStats.fiat_display_currency }}</b-card-text
             >
           </b-card>
@@ -135,7 +136,14 @@ import {
   LayoutActions,
   LayoutGetters,
 } from '@/store/modules/layout';
-import { Trade, DailyReturnValue, BalanceInterface, ProfitInterface, DailyPayload } from '@/types';
+import {
+  Trade,
+  DailyReturnValue,
+  BalanceInterface,
+  ProfitInterface,
+  DailyPayload,
+  BotState,
+} from '@/types';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -159,6 +167,8 @@ export default class Dashboard extends Vue {
   @ftbot.Getter openTrades!: Array<Trade>;
 
   @ftbot.State balance!: BalanceInterface;
+
+  @ftbot.State botState!: BotState;
 
   @ftbot.State profit!: ProfitInterface;
 
