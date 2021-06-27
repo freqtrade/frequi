@@ -83,6 +83,10 @@
     }
     .dropdown-menu {
         background-color: lighten($bg-dark, 5%);
+        color: $fg-color;
+    }
+    .dropdown-item {
+        color: $fg-color;
     }
     hr {
         border-top: 1px solid rgba(255, 255, 255, 0.2);
