@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
     // No login if already logged in
     next({ path: '/' });
   }
-  if (!to.meta.allowAnonymous && !userService.loggedIn()) {
+  if (!to.meta?.allowAnonymous && !userService.loggedIn()) {
     // Forward to login if login is required
     next({
       path: '/login',
