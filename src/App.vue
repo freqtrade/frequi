@@ -9,11 +9,22 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/layout/Header.vue';
 import Body from '@/components/layout/Body.vue';
+import { namespace } from 'vuex-class';
+import { SettingsGetters } from './store/modules/settings';
+import { setTimezone } from './shared/formatters';
+
+const uiSettingsNs = namespace('uiSettings');
 
 @Component({
   components: { Header, Body },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
+
+  mounted() {
+    setTimezone(this.timezone);
+  }
+}
 </script>
 
 <style scoped>
