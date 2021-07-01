@@ -36,6 +36,12 @@
             {{ `${row.item.pair}${row.item.open_order_id === null ? '' : '*'}` }}
           </span>
         </template>
+        <template #cell(open_timestamp)="row">
+          <DateTimeTZ :date="row.item.open_timestamp" />
+        </template>
+        <template #cell(close_timestamp)="row">
+          <DateTimeTZ :date="row.item.close_timestamp" />
+        </template>
       </b-table>
       <b-pagination
         v-if="!activeTrades"
@@ -53,16 +59,17 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 import { Trade } from '@/types';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
+import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import ProfitSymbol from './ProfitSymbol.vue';
 
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { ProfitSymbol, DeleteIcon, ForceSellIcon },
+  components: { ProfitSymbol, DeleteIcon, ForceSellIcon, DateTimeTZ },
 })
 export default class TradeList extends Vue {
   $refs!: {
@@ -117,7 +124,7 @@ export default class TradeList extends Vue {
 
   // Added to table-fields for historic trades
   closedFields: Record<string, string | Function>[] = [
-    { key: 'close_timestamp', label: 'Close date', formatter: timestampms },
+    { key: 'close_timestamp', label: 'Close date' },
     { key: 'sell_reason', label: 'Close Reason' },
   ];
 
@@ -137,7 +144,7 @@ export default class TradeList extends Vue {
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
       formatter: (value) => formatPercent(value, 3),
     },
-    { key: 'open_timestamp', label: 'Open date', formatter: (value) => timestampms(value) },
+    { key: 'open_timestamp', label: 'Open date' },
     ...(this.activeTrades ? this.openFields : this.closedFields),
   ];
 

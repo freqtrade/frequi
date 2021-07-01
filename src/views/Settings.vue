@@ -16,6 +16,12 @@
             :options="openTradesOptions"
           ></b-form-select>
         </b-form-group>
+        <b-form-group
+          label="UTC Timezone"
+          description="Select timezone (we recommend UTC is recommended as exchanges usually work in UTC)"
+        >
+          <b-form-select v-model="timezoneLoc" :options="timezoneOptions"></b-form-select>
+        </b-form-group>
       </div>
     </b-card>
   </div>
@@ -38,7 +44,11 @@ export default class Template extends Vue {
 
   @uiSettingsNs.Getter [SettingsGetters.openTradesInTitle]: string;
 
+  @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
+
   @uiSettingsNs.Action [SettingsActions.setOpenTradesInTitle];
+
+  @uiSettingsNs.Action [SettingsActions.setTimeZone];
 
   openTradesOptions = [
     { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
@@ -46,12 +56,22 @@ export default class Template extends Vue {
     { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
   ];
 
+  // Careful when adding new timezones here - eCharts only supports UTC or user timezone
+  timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
+
+  get timezoneLoc() {
+    return this.timezone;
+  }
+
+  set timezoneLoc(value: string) {
+    this[SettingsActions.setTimeZone](value);
+  }
+
   get openTradesVisualization() {
     return this.openTradesInTitle;
   }
 
   set openTradesVisualization(value: string) {
-    console.log('show_open_trades', value);
     this.setOpenTradesInTitle(value);
   }
 

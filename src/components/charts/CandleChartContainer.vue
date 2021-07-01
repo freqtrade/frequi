@@ -34,9 +34,6 @@
           </b-select>
         </div>
 
-        <div class="col-mb-2 mr-2 d-flex align-items-center">
-          <b-checkbox v-model="useUTC" title="Use UTC for graph">useUTC</b-checkbox>
-        </div>
         <div class="col-mb-2 mr-1">
           <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
         </div>
@@ -47,7 +44,7 @@
           :dataset="dataset"
           :trades="trades"
           :plot-config="plotConfig"
-          :use-u-t-c="useUTC"
+          :use-u-t-c="timezone === 'UTC'"
           :theme="getChartTheme"
         >
         </CandleChart>
@@ -77,8 +74,10 @@ import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import { SettingsGetters } from '@/store/modules/settings';
 
 const ftbot = namespace('ftbot');
+const uiSettingsNs = namespace('uiSettings');
 
 @Component({ components: { CandleChart, PlotConfigurator } })
 export default class CandleChartContainer extends Vue {
@@ -101,8 +100,6 @@ export default class CandleChartContainer extends Vue {
   @Prop({ required: false, default: false }) strategy!: string;
 
   pair = '';
-
-  useUTC = true;
 
   plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
 
@@ -127,6 +124,8 @@ export default class CandleChartContainer extends Vue {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
+
+  @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
 
   get dataset(): PairHistory {
     if (this.historicView) {

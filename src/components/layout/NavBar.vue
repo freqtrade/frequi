@@ -58,6 +58,7 @@ import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
 import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
+import { setTimezone } from '@/shared/formatters';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -95,6 +96,8 @@ export default class NavBar extends Vue {
 
   @uiSettingsNs.Getter [SettingsGetters.openTradesInTitle]: string;
 
+  @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
+
   favicon: Favico | undefined = undefined;
 
   mounted() {
@@ -105,6 +108,7 @@ export default class NavBar extends Vue {
       // Query botstate - this will enable / disable certain modes
       this.getState();
     }
+    setTimezone(this.timezone);
   }
 
   beforeDestroy() {

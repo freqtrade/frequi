@@ -593,6 +593,11 @@ export default class CandleChart extends Vue {
   //   this.signalsCalculated = true;
   // }
   // }
+
+  @Watch('useUTC')
+  useUTCChanged() {
+    this.initializeChartOptions();
+  }
 }
 </script>
 
