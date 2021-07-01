@@ -14,25 +14,30 @@ export function dateFromString(datestring: string, format: string): Date {
   return parse(datestring, format, 0);
 }
 
-let timezone = 'UTC';
+let locTimeZone = 'UTC';
 
 /**
  * Set global timezone to use by conversion functions
  * @param tz Timezone to set
  */
 export function setTimezone(tz: string) {
-  timezone = tz;
+  locTimeZone = tz;
+}
+
+function getTimeZone(tz?: string): string {
+  return tz || locTimeZone;
 }
 
 /**
  *
  * @param ts Convert timestamp or Date to datetime (in correct timezone)
+ * @param timezone timezone to use
  * @returns Date object (in timezone)
  */
-function convertToDate(ts: number | Date): Date {
+function convertToDate(ts: number | Date, timezone?: string): Date {
   const date = toDate(ts);
   const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if (timezone === 'UTC') {
+  if (getTimeZone(timezone) === 'UTC') {
     return utcToZonedTime(date, currentTz);
   }
   return date;
@@ -43,7 +48,19 @@ function convertToDate(ts: number | Date): Date {
  * @param ts Timestamp as number or date (in utc!!)
  */
 export function timestampms(ts: number | Date): string {
-  return format(convertToDate(ts), 'yyyy-MM-dd HH:mm:ss');
+  return format(convertToDate(ts), 'yyyy-MM-dd HH:mm:ss', { timeZone: locTimeZone });
+}
+
+/**
+ * Convert a timestamp / Date object to String
+ * @param ts Timestamp as number or date (in utc!!)
+ * @param timezone timezone to use
+ * @returns formatted date in desired timezone (or globally configured timezone)
+ */
+export function timestampmsWithTimezone(ts: number | Date, timezone?: string): string {
+  return format(convertToDate(ts, timezone), 'yyyy-MM-dd HH:mm:ss (z)', {
+    timeZone: getTimeZone(timezone),
+  });
 }
 
 /**
@@ -78,6 +95,7 @@ export default {
   formatPrice,
   formatPercent,
   timestampms,
+  timestampmsWithTimezone,
   timestampToDateString,
   dateStringToTimeRange,
   setTimezone,
