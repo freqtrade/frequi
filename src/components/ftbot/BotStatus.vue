@@ -10,9 +10,11 @@
     </p>
     <p v-if="profit.first_trade_timestamp">
       First trade opened:
-      <strong>{{ formatTimestamp(profit.first_trade_timestamp) }}</strong> <br />
+
+      <strong><DateTimeTZ :date="profit.first_trade_timestamp" show-timezone /></strong>
+      <br />
       Last trade opened:
-      <strong>{{ formatTimestamp(profit.latest_trade_timestamp) }}</strong>
+      <strong><DateTimeTZ :date="profit.latest_trade_timestamp" show-timezone /></strong>
     </p>
 
     <p>
@@ -40,10 +42,11 @@ import { namespace } from 'vuex-class';
 import { BotState } from '@/types';
 
 import { formatPercent } from '@/shared/formatters';
+import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
 const ftbot = namespace('ftbot');
 
-@Component({})
+@Component({ components: { DateTimeTZ } })
 export default class BotStatus extends Vue {
   @ftbot.State version;
 
@@ -52,9 +55,5 @@ export default class BotStatus extends Vue {
   @ftbot.State botState?: BotState;
 
   formatPercent = formatPercent;
-
-  formatTimestamp(timestamp) {
-    return new Date(timestamp).toUTCString();
-  }
 }
 </script>

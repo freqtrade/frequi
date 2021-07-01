@@ -1,5 +1,5 @@
 <template>
-  <span :title="timezoneTooltip">{{ timestampms(date) }}</span>
+  <span :title="timezoneTooltip">{{ formattedDate }}</span>
 </template>
 
 <script lang="ts">
@@ -10,7 +10,16 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class DateTimeTZ extends Vue {
   @Prop({ required: true, type: Number }) date!: number;
 
+  @Prop({ required: false, type: Boolean, default: false }) showTimezone!: boolean;
+
   timestampms = timestampms;
+
+  get formattedDate(): string {
+    if (this.showTimezone) {
+      return timestampmsWithTimezone(this.date);
+    }
+    return timestampms(this.date);
+  }
 
   get timezoneTooltip(): string {
     const time1 = timestampmsWithTimezone(this.date);
