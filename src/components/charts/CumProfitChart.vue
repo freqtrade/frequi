@@ -123,7 +123,7 @@ export default class CumProfitChart extends Vue {
           type: 'line',
           name: CHART_PROFIT,
           animation: true,
-          step: 'start',
+          step: 'end',
           lineStyle: {
             color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
           },
