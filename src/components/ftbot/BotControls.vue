@@ -13,7 +13,7 @@
         class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || !isRunning"
         title="Stop Trading - Also stops handling open trades."
-        @click="stopBot()"
+        @click="handleStopBot()"
       >
         <StopIcon />
       </button>
@@ -21,7 +21,7 @@
         class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading || !isRunning"
         title="StopBuy - Stops buying, but still handles open trades"
-        @click="stopBuy()"
+        @click="handleStopBuy()"
       >
         <PauseIcon />
       </button>
@@ -29,7 +29,7 @@
         class="btn btn-secondary btn-sm ml-1"
         :disabled="!isTrading"
         title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
-        @click="reloadConfig()"
+        @click="handleReloadConfig()"
       >
         <ReloadIcon />
       </button>
@@ -98,6 +98,32 @@ export default class BotControls extends Vue {
 
   initiateForcebuy() {
     this.$bvModal.show('forcebuy-modal');
+  }
+
+  handleStopBot() {
+    this.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
+      if (value) {
+        this.stopBot();
+      }
+    });
+  }
+
+  handleStopBuy() {
+    this.$bvModal
+      .msgBoxConfirm('Stop buying? Freqtrade will continue to handle open trades.')
+      .then((value: boolean) => {
+        if (value) {
+          this.stopBuy();
+        }
+      });
+  }
+
+  handleReloadConfig() {
+    this.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
+      if (value) {
+        this.handleReloadConfig();
+      }
+    });
   }
 }
 </script>
