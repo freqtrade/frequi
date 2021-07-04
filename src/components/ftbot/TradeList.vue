@@ -1,57 +1,55 @@
 <template>
-  <div class="h-100 d-flex overflow-auto">
-    <div>
-      <b-table
-        ref="tradesTable"
-        small
-        hover
-        :items="trades"
-        :fields="tableFields"
-        show-empty
-        :empty-text="emptyText"
-        :per-page="perPage"
-        :current-page="currentPage"
-        primary-key="trade_id"
-        selectable
-        select-mode="single"
-        @row-contextmenu="handleContextMenuEvent"
-        @row-clicked="onRowClicked"
-        @row-selected="onRowSelected"
-      >
-        <template #cell(actions)="row">
-          <b-button class="btn-xs" size="sm" title="Forcesell" @click="forcesellHandler(row.item)">
-            <ForceSellIcon :size="16" title="Forcesell" />
-          </b-button>
-          <b-button
-            class="btn-xs ml-1"
-            size="sm"
-            title="Delete trade"
-            @click="removeTradeHandler(row.item)"
-          >
-            <DeleteIcon :size="16" title="Delete trade" />
-          </b-button>
-        </template>
-        <template #cell(pair)="row">
-          <ProfitSymbol :trade="row.item" />
-          <span>
-            {{ `${row.item.pair}${row.item.open_order_id === null ? '' : '*'}` }}
-          </span>
-        </template>
-        <template #cell(open_timestamp)="row">
-          <DateTimeTZ :date="row.item.open_timestamp" />
-        </template>
-        <template #cell(close_timestamp)="row">
-          <DateTimeTZ :date="row.item.close_timestamp" />
-        </template>
-      </b-table>
-      <b-pagination
-        v-if="!activeTrades"
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
-      ></b-pagination>
-    </div>
+  <div class="h-100 d-flex overflow-auto w-100">
+    <b-table
+      ref="tradesTable"
+      small
+      hover
+      :items="trades"
+      :fields="tableFields"
+      show-empty
+      :empty-text="emptyText"
+      :per-page="perPage"
+      :current-page="currentPage"
+      primary-key="trade_id"
+      selectable
+      select-mode="single"
+      @row-contextmenu="handleContextMenuEvent"
+      @row-clicked="onRowClicked"
+      @row-selected="onRowSelected"
+    >
+      <template #cell(actions)="row">
+        <b-button class="btn-xs" size="sm" title="Forcesell" @click="forcesellHandler(row.item)">
+          <ForceSellIcon :size="16" title="Forcesell" />
+        </b-button>
+        <b-button
+          class="btn-xs ml-1"
+          size="sm"
+          title="Delete trade"
+          @click="removeTradeHandler(row.item)"
+        >
+          <DeleteIcon :size="16" title="Delete trade" />
+        </b-button>
+      </template>
+      <template #cell(pair)="row">
+        <ProfitSymbol :trade="row.item" />
+        <span>
+          {{ `${row.item.pair}${row.item.open_order_id === null ? '' : '*'}` }}
+        </span>
+      </template>
+      <template #cell(open_timestamp)="row">
+        <DateTimeTZ :date="row.item.open_timestamp" />
+      </template>
+      <template #cell(close_timestamp)="row">
+        <DateTimeTZ :date="row.item.close_timestamp" />
+      </template>
+    </b-table>
+    <b-pagination
+      v-if="!activeTrades"
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
   </div>
 </template>
 
