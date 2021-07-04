@@ -1,52 +1,59 @@
 <template>
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <h2 class="pt-3 pl-5 d-inline">Backtesting</h2>
-      <small v-show="backtestRunning" class="bt-running-label"
-        >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress, 2) }}</small
-      >
-    </div>
-    <div class="container">
+    <div class="container-fluid">
+      <div class="row mb-2"></div>
       <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
-      <div
-        class="row mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4"
-        :disabled="canRunBacktest"
-      >
-        <b-form-radio
-          v-model="btFormMode"
-          name="bt-form-radios"
-          button
-          class="mx-1 flex-samesize-items"
-          value="run"
-          :disabled="!canRunBacktest"
-          >Run backtest</b-form-radio
+      <div class="row w-100">
+        <h2 class="col-4 col-lg-3">Backtesting</h2>
+        <div
+          class="
+            col-12 col-lg-order-last col-lg-6
+            mx-md-5
+            d-flex
+            flex-wrap
+            justify-content-md-center justify-content-between
+            mb-4
+          "
+          :disabled="canRunBacktest"
         >
-        <b-form-radio
-          v-model="btFormMode"
-          name="bt-form-radios"
-          button
-          class="mx-1 flex-samesize-items"
-          value="results"
-          :disabled="!hasBacktestResult"
-          >Analyze result</b-form-radio
-        >
-        <b-form-radio
-          v-model="btFormMode"
-          name="bt-form-radios"
-          button
-          class="mx-1 flex-samesize-items"
-          value="visualize-summary"
-          :disabled="!hasBacktestResult"
-          >Visualize summary</b-form-radio
-        >
-        <b-form-radio
-          v-model="btFormMode"
-          name="bt-form-radios"
-          button
-          class="mx-1 flex-samesize-items"
-          value="visualize"
-          :disabled="!hasBacktestResult"
-          >Visualize result</b-form-radio
+          <b-form-radio
+            v-model="btFormMode"
+            name="bt-form-radios"
+            button
+            class="mx-1 flex-samesize-items"
+            value="run"
+            :disabled="!canRunBacktest"
+            >Run backtest</b-form-radio
+          >
+          <b-form-radio
+            v-model="btFormMode"
+            name="bt-form-radios"
+            button
+            class="mx-1 flex-samesize-items"
+            value="results"
+            :disabled="!hasBacktestResult"
+            >Analyze result</b-form-radio
+          >
+          <b-form-radio
+            v-model="btFormMode"
+            name="bt-form-radios"
+            button
+            class="mx-1 flex-samesize-items"
+            value="visualize-summary"
+            :disabled="!hasBacktestResult"
+            >Visualize summary</b-form-radio
+          >
+          <b-form-radio
+            v-model="btFormMode"
+            name="bt-form-radios"
+            button
+            class="mx-1 flex-samesize-items"
+            value="visualize"
+            :disabled="!hasBacktestResult"
+            >Visualize result</b-form-radio
+          >
+        </div>
+        <small v-show="backtestRunning" class="text-right bt-running-label col-8 col-lg-3"
+          >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress, 2) }}</small
         >
       </div>
     </div>
