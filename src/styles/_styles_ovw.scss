@@ -91,6 +91,10 @@
     hr {
         border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th{
+        color: $fg-color;
+        background: lighten($bg-dark, 5%);
+    }
     .custom-select{
         color: $fg-color;
         border-color: lighten($bg-dark, 20%);

@@ -56,37 +56,23 @@
             formatPriceStake(backtestResult.total_volume)
           }}</ValuePair> -->
 
-          <b-table
-            class="table-sm"
-            borderless
-            :items="backtestResultSettings"
-            :fields="backtestsettingFields"
-          >
+          <b-table small borderless :items="backtestResultSettings" :fields="backtestsettingFields">
           </b-table>
         </b-card>
       </div>
       <div class="col-md-6">
         <b-card header="Metrics">
-          <b-table
-            class="table-sm"
-            borderless
-            :items="backtestResultStats"
-            :fields="backtestResultFields"
-          >
+          <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
           </b-table>
         </b-card>
       </div>
 
       <b-card header="Results per Sell-reason" class="mt-2">
-        <b-table
-          class="table-sm"
-          :items="backtestResult.sell_reason_summary"
-          :fields="perSellReason"
-        >
+        <b-table small hover :items="backtestResult.sell_reason_summary" :fields="perSellReason">
         </b-table>
       </b-card>
       <b-card header="Results per pair" class="mt-2">
-        <b-table class="table-sm" :items="backtestResult.results_per_pair" :fields="perPairFields">
+        <b-table small hover :items="backtestResult.results_per_pair" :fields="perPairFields">
         </b-table>
       </b-card>
 

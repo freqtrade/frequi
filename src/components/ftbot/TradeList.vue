@@ -3,7 +3,8 @@
     <div>
       <b-table
         ref="tradesTable"
-        class="table-sm"
+        small
+        hover
         :items="trades"
         :fields="tableFields"
         show-empty
