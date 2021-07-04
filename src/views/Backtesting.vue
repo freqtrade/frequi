@@ -1,4 +1,5 @@
 <template>
+  <div class="container-fluid" style="max-height: calc(100vh - 60px)">
     <div class="container-fluid">
       <div class="row mb-2"></div>
       <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
@@ -246,7 +247,8 @@
       </p>
       <div class="row text-center">
         <PairSummary
-          class="col-md-2 overflow-auto vh-100"
+          class="col-md-2 overflow-auto"
+          style="max-height: calc(100vh - 200px)"
           :pairlist="selectedBacktestResult.pairlist"
           :trades="selectedBacktestResult.trades"
           sort-method="profit"
@@ -259,7 +261,7 @@
           :timerange="timerange"
           :strategy="strategy"
           :trades="selectedBacktestResult.trades"
-          class="col-md-10 candle-chart-container px-0 w-100"
+          class="col-md-10 candle-chart-container px-0 w-100 h-100"
         >
         </CandleChartContainer>
       </div>
@@ -445,7 +447,9 @@ export default class Backtesting extends Vue {
 
 <style lang="scss" scoped>
 .candle-chart-container {
-  height: 640px !important;
+  // TODO: Rough estimate - still to fix correctly
+  // Applies to all "calc" usages in this file.
+  height: calc(100vh - 250px) !important;
 }
 
 .cum-profit {

@@ -1,86 +1,45 @@
 <template>
-  <div class="container-fluid px-0">
+  <div class="container-fluid px-0 backtestresult-container">
     <div class="row d-flex justify-content-center">
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
-    <div class="row text-left">
-      <div class="col-md-6">
-        <b-card header="Strategy settings">
-          <!-- <ValuePair description="Backtesting from">{{
-            timestampms(backtestResult.backtest_start_ts)
-          }}</ValuePair>
-          <ValuePair description="Backtesting to">{{
-            timestampms(backtestResult.backtest_end_ts)
-          }}</ValuePair>
-          <ValuePair description="Max open trades">{{ backtestResult.max_open_trades }}</ValuePair>
-          <ValuePair description="Timeframe">{{ backtestResult.timeframe }} </ValuePair>
-          <ValuePair description="Timerange">{{ backtestResult.timerange }} </ValuePair>
-          <ValuePair description="Stoploss">{{
-            formatPercent(backtestResult.stoploss, 2)
-          }}</ValuePair>
-          <ValuePair description="Trailing Stoploss">{{ backtestResult.trailing_stop }} </ValuePair>
-          <ValuePair description="Trail only when offset is reached">{{
-            backtestResult.trailing_only_offset_is_reached
-          }}</ValuePair>
 
-          <ValuePair description="Trailing Stop positive"
-            >{{ backtestResult.trailing_stop_positive }}
-          </ValuePair>
-          <ValuePair description="Trailing stop positive offset">{{
-            backtestResult.trailing_stop_positive_offset
-          }}</ValuePair>
-          <ValuePair description="Custom Stoploss">{{
-            backtestResult.use_custom_stoploss
-          }}</ValuePair>
-          <ValuePair description="ROI">{{ backtestResult.minimal_roi }} </ValuePair>
-          <ValuePair description="Use Sell Signal">{{ backtestResult.use_sell_signal }} </ValuePair>
-          <ValuePair description="Sell profit only">{{
-            backtestResult.sell_profit_only
-          }}</ValuePair>
-          <ValuePair description="Sell profit offset">{{
-            backtestResult.sell_profit_offset
-          }}</ValuePair>
-          <ValuePair description="Enable protections">{{
-            backtestResult.enable_protections
-          }}</ValuePair>
-          <ValuePair description="Starting balance">{{
-            formatPriceStake(backtestResult.starting_balance)
-          }}</ValuePair>
-          <ValuePair description="Final balance">{{
-            formatPriceStake(backtestResult.final_balance)
-          }}</ValuePair>
-          <ValuePair description="Avg. stake amount">{{
-            formatPriceStake(backtestResult.avg_stake_amount)
-          }}</ValuePair>
-          <ValuePair description="Total trade volume">{{
-            formatPriceStake(backtestResult.total_volume)
-          }}</ValuePair> -->
-
-          <b-table small borderless :items="backtestResultSettings" :fields="backtestsettingFields">
-          </b-table>
-        </b-card>
+    <div class="row text-left ml-0">
+      <div class="row w-100">
+        <div class="col-12 col-xl-6 px-0 px-xl-0 pr-xl-1">
+          <b-card header="Strategy settings">
+            <b-table
+              small
+              borderless
+              :items="backtestResultSettings"
+              :fields="backtestsettingFields"
+            >
+            </b-table>
+          </b-card>
+        </div>
+        <div class="col-12 col-xl-6 px-0 px-xl-0 pt-2 pt-xl-0 pl-xl-1">
+          <b-card header="Metrics">
+            <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
+            </b-table>
+          </b-card>
+        </div>
       </div>
-      <div class="col-md-6">
-        <b-card header="Metrics">
-          <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
-          </b-table>
-        </b-card>
-      </div>
-
-      <b-card header="Results per Sell-reason" class="mt-2">
+      <b-card header="Results per Sell-reason" class="row mt-2 w-100">
         <b-table small hover :items="backtestResult.sell_reason_summary" :fields="perSellReason">
         </b-table>
       </b-card>
-      <b-card header="Results per pair" class="mt-2">
+      <b-card header="Results per pair" class="row mt-2 w-100">
         <b-table small hover :items="backtestResult.results_per_pair" :fields="perPairFields">
         </b-table>
       </b-card>
 
-      <TradeList
-        class="trade-history mt-2"
-        :trades="backtestResult.trades"
-        profit-column="profit_percent"
-      />
+      <b-card header="Single trades" class="row mt-2 w-100">
+        <TradeList
+          class="row trade-history mt-2 w-100"
+          :trades="backtestResult.trades"
+          profit-column="profit_percent"
+        />
+      </b-card>
     </div>
   </div>
 </template>
@@ -340,4 +299,10 @@ export default class BacktestResultView extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.backtestresult-container {
+  @media (min-width: 1200px) {
+    max-width: 1200px;
+  }
+}
+</style>
