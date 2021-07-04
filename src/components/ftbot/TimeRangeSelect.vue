@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
+import { Component, Vue, Emit, Prop, Watch } from 'vue-property-decorator';
 import { dateFromString, dateStringToTimeRange, timestampToDateString } from '@/shared/formatters';
 
 const now = new Date();
@@ -54,17 +54,26 @@ export default class TimeRangeSelect extends Vue {
     return this.timeRange;
   }
 
+  @Watch('value')
+  valueChanged() {
+    this.updateInput();
+  }
+
+  updateInput() {
+    const tr = this.value.split('-');
+    if (tr[0]) {
+      this.dateFrom = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
+    }
+    if (tr.length > 1 && tr[1]) {
+      this.dateTo = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
+    }
+  }
+
   created() {
     if (!this.value) {
       this.dateFrom = timestampToDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1));
     } else {
-      const tr = this.value.split('-');
-      if (tr[0]) {
-        this.dateFrom = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
-      }
-      if (tr.length > 1 && tr[1]) {
-        this.dateTo = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
-      }
+      this.updateInput();
     }
     this.emitTimeRange();
   }
