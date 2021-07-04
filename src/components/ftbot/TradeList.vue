@@ -33,7 +33,11 @@
       <template #cell(pair)="row">
         <ProfitSymbol :trade="row.item" />
         <span>
-          {{ `${row.item.pair}${row.item.open_order_id === null ? '' : '*'}` }}
+          {{
+            `${row.item.pair}${
+              row.item.open_order_id === undefined || row.item.open_order_id === null ? '' : '*'
+            }`
+          }}
         </span>
       </template>
       <template #cell(open_timestamp)="row">
