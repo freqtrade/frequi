@@ -100,18 +100,17 @@ export default class BacktestResultView extends Vue {
     // Transpose Result into readable format
     return [
       {
-        metric: 'Total trades / Daily Avg Trades',
-        value: `${this.backtestResult.total_trades} / ${this.backtestResult.trades_per_day}`,
-      },
-      // { metric: 'First trade', value: this.backtestResult.backtest_fi },
-      // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
-      {
         metric: 'Total Profit',
         value: `${formatPercent(this.backtestResult.profit_total)} | ${this.formatPriceStake(
           this.backtestResult.profit_total_abs,
         )}`,
       },
-
+      {
+        metric: 'Total trades / Daily Avg Trades',
+        value: `${this.backtestResult.total_trades} / ${this.backtestResult.trades_per_day}`,
+      },
+      // { metric: 'First trade', value: this.backtestResult.backtest_fi },
+      // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
       {
         metric: 'Best day',
         value: `${formatPercent(
@@ -151,13 +150,6 @@ export default class BacktestResultView extends Vue {
       {
         metric: 'Avg. Duration Losers',
         value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
-      },
-      {
-        metric: 'Zero duration trades',
-        value: `${formatPercent(
-          (1 / this.backtestResult.total_trades) * this.backtestResult.zero_duration_trades,
-          2,
-        )} (${this.backtestResult.zero_duration_trades})`,
       },
       { metric: 'Rejected buy signals', value: this.backtestResult.rejected_signals },
 
