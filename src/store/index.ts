@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import userService from '@/shared/userService';
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import ftbotModule, { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
@@ -22,6 +22,7 @@ export default new Vuex.Store({
     autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
     isBotOnline: false,
     currentTheme: initCurrentTheme,
+    uiVersion: 'dev',
   },
   getters: {
     isDarkTheme(state) {
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     },
     getChartTheme(state, getters) {
       return getters.isDarkTheme ? 'dark' : 'light';
+    },
+    getUiVersion(state) {
+      return state.uiVersion;
     },
   },
   modules: {
@@ -63,6 +67,9 @@ export default new Vuex.Store({
       storeCurrentTheme(newTheme);
       state.currentTheme = newTheme;
     },
+    setUIVersion(state, uiVersion: string) {
+      state.uiVersion = uiVersion;
+    },
   },
   actions: {
     setCurrentTheme({ commit }, newTheme: string) {
@@ -84,6 +91,18 @@ export default new Vuex.Store({
     },
     refreshOnce({ dispatch }) {
       dispatch('ftbot/getVersion');
+    },
+    async loadUIVersion({ commit }) {
+      if (process.env.NODE_ENV !== 'development') {
+        try {
+          const result = await axios.get('/ui_version');
+          const { version } = result.data;
+
+          commit('setUIVersion', version);
+        } catch (error) {
+          //
+        }
+      }
     },
     async refreshAll({ dispatch, state, commit }, forceUpdate = false) {
       if (state.refreshing) {

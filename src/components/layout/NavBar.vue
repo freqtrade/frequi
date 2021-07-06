@@ -29,6 +29,7 @@
           </li>
           <li v-if="loggedIn" class="nav-item">
             <b-nav-item-dropdown right>
+              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
@@ -51,7 +52,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { State, Action, namespace } from 'vuex-class';
+import { State, Action, namespace, Getter } from 'vuex-class';
 import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
@@ -74,6 +75,10 @@ export default class NavBar extends Vue {
   @State isBotOnline!: boolean;
 
   @Action setLoggedIn;
+
+  @Action loadUIVersion;
+
+  @Getter getUiVersion!: string;
 
   @ftbot.Action ping;
 
@@ -99,6 +104,7 @@ export default class NavBar extends Vue {
 
   mounted() {
     this.ping();
+    this.loadUIVersion();
     this.pingInterval = window.setInterval(this.ping, 60000);
 
     if (this.loggedIn) {
