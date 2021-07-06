@@ -83,12 +83,12 @@
       </div>
       <!-- End Left bar -->
 
-      <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column">
+      <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column bt-config">
         <div class="mb-2">
           <span>Strategy</span>
           <StrategySelect v-model="strategy"></StrategySelect>
         </div>
-        <b-card bg-variant="light" class="w-60" :disabled="backtestRunning">
+        <b-card bg-variant="light" :disabled="backtestRunning">
           <!-- Backtesting parameters -->
           <b-form-group
             label-cols-lg="2"
@@ -484,5 +484,13 @@ export default class Backtesting extends Vue {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.bt-config {
+  @media (min-width: 992px) {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 75vw;
+  }
 }
 </style>
