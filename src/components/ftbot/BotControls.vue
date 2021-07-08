@@ -121,7 +121,7 @@ export default class BotControls extends Vue {
   handleReloadConfig() {
     this.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
       if (value) {
-        this.handleReloadConfig();
+        this.reloadConfig();
       }
     });
   }
