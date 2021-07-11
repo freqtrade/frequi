@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 d-flex overflow-auto w-100">
+  <div class="h-100 overflow-auto w-100">
     <b-table
       ref="tradesTable"
       small
