@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/echarts": "^4.9.8",
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^4.28.1",
     "@vue/cli-plugin-babel": "~4.5.12",
