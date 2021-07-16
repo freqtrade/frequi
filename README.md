@@ -1,5 +1,5 @@
 # frequi
-
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/freqtrade/frequi)
 ![FreqUI CI](https://github.com/freqtrade/frequi/workflows/FreqUI%20CI/badge.svg)
 
 Freqtrade UI build with [Vue.js](https://vuejs.org/) and [boostrap-vue](https://bootstrap-vue.org/).
