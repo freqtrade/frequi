@@ -37,7 +37,7 @@
         <TradeList
           class="row trade-history mt-2 w-100"
           :trades="backtestResult.trades"
-          profit-column="profit_percent"
+          :stake-currency="backtestResult.stake_currency"
         />
       </b-card>
     </div>

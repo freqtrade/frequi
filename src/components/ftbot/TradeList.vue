@@ -40,6 +40,12 @@
           }}
         </span>
       </template>
+      <template #cell(profit)="row">
+        {{ formatPercent(row.item.profit_ratio, 2) }}
+        <small :title="row.item.stake_currency || stakeCurrency">
+          {{ `(${formatPriceWithDecimals(row.item.profit_abs)})` }}
+        </small>
+      </template>
       <template #cell(open_timestamp)="row">
         <DateTimeTZ :date="row.item.open_timestamp" />
       </template>
@@ -80,19 +86,19 @@ export default class TradeList extends Vue {
     tradesTable: HTMLFormElement;
   };
 
-  @Prop({ required: true })
-  trades!: Array<Trade>;
+  formatPercent = formatPercent;
 
-  @Prop({ default: 'Trades' })
-  title!: string;
+  formatPrice = formatPrice;
 
-  @Prop({ default: false })
-  activeTrades!: boolean;
+  @Prop({ required: true }) trades!: Array<Trade>;
 
-  @Prop({ default: 'No Trades to show.' })
-  emptyText!: string;
+  @Prop({ default: 'Trades' }) title!: string;
 
-  @Prop({ default: 'close_profit' }) profitColumn!: string;
+  @Prop({ required: false, default: '' }) stakeCurrency!: string;
+
+  @Prop({ default: false }) activeTrades!: boolean;
+
+  @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
   @ftbot.State detailTradeId?: number;
 
@@ -146,7 +152,7 @@ export default class TradeList extends Vue {
       formatter: (value) => formatPrice(value),
     },
     {
-      key: this.activeTrades ? 'current_profit' : this.profitColumn,
+      key: 'profit',
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
       formatter: (value, key, item: Trade) => {
         const percent = formatPercent(item.profit_ratio, 2);
