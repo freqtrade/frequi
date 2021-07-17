@@ -54,6 +54,7 @@ export interface BotState {
   stake_amount: number;
   stake_currency: string;
   stake_currency_decimals?: number;
+  available_balance?: number;
   stoploss: number;
   strategy: string;
   /** Timeframe in readable form (e.g. 5m) */

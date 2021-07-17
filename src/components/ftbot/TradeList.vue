@@ -67,6 +67,7 @@ import { Trade } from '@/types';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 import ProfitSymbol from './ProfitSymbol.vue';
 
 const ftbot = namespace('ftbot');
@@ -94,6 +95,8 @@ export default class TradeList extends Vue {
   @Prop({ default: 'close_profit' }) profitColumn!: string;
 
   @ftbot.State detailTradeId?: number;
+
+  @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
 
   @ftbot.Action setDetailTrade;
 
@@ -145,18 +148,26 @@ export default class TradeList extends Vue {
     {
       key: this.activeTrades ? 'current_profit' : this.profitColumn,
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
-      formatter: (value) => formatPercent(value, 3),
+      formatter: (value, key, item: Trade) => {
+        return `${formatPercent(item.profit_ratio, 3)} (${this.formatPriceWithDecimals(
+          item.profit_abs,
+        )})`;
+      },
     },
     { key: 'open_timestamp', label: 'Open date' },
     ...(this.activeTrades ? this.openFields : this.closedFields),
   ];
 
-  forcesellHandler(item) {
+  formatPriceWithDecimals(price) {
+    return formatPrice(price, this.stakeCurrencyDecimals);
+  }
+
+  forcesellHandler(item: Trade) {
     this.$bvModal
       .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
       .then((value: boolean) => {
         if (value) {
-          this.forcesell(item.trade_id)
+          this.forcesell(String(item.trade_id))
             .then((xxx) => console.log(xxx))
             .catch((error) => console.log(error.response));
         }

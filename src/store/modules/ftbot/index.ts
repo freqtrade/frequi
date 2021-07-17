@@ -52,6 +52,7 @@ export enum BotStoreGetters {
   refreshRequired = 'refreshRequired',
   selectedBacktestResult = 'selectedBacktestResult',
   canRunBacktest = 'canRunBacktest',
+  stakeCurrencyDecimals = 'stakeCurrencyDecimals',
 }
 
 export default {
@@ -120,6 +121,9 @@ export default {
     [BotStoreGetters.canRunBacktest](state: FtbotStateType): boolean {
       /** Determines if bot runs in webserver mode */
       return state.botState?.runmode === RunModes.WEBSERVER;
+    },
+    [BotStoreGetters.stakeCurrencyDecimals](state: FtbotStateType): number {
+      return state.botState?.stake_currency_decimals || 3;
     },
   },
   mutations: {
