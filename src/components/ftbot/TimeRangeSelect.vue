@@ -55,8 +55,11 @@ export default class TimeRangeSelect extends Vue {
   }
 
   @Watch('value')
-  valueChanged() {
-    this.updateInput();
+  valueChanged(val) {
+    console.log('TimeRange', val);
+    if (val !== this.value) {
+      this.updateInput();
+    }
   }
 
   updateInput() {
