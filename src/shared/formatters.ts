@@ -2,12 +2,16 @@ import { parse, toDate, getHours } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import humanizeDuration from 'humanize-duration';
 
+export function isUndefined(val): boolean {
+  return val === undefined || val === null;
+}
+
 export function formatPercent(value: number, decimals = 3): string {
-  return value ? `${(value * 100).toFixed(decimals)}%` : '';
+  return !isUndefined(value) ? `${(value * 100).toFixed(decimals)}%` : '';
 }
 
 export function formatPrice(value: number, decimals = 8): string {
-  return value ? value.toFixed(decimals) : '';
+  return !isUndefined(value) ? value.toFixed(decimals) : '';
 }
 
 export function dateFromString(datestring: string, format: string): Date {
