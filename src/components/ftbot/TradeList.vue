@@ -4,6 +4,7 @@
       ref="tradesTable"
       small
       hover
+      stacked="md"
       :items="trades"
       :fields="tableFields"
       show-empty
@@ -145,16 +146,20 @@ export default class TradeList extends Vue {
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },
     { key: 'stake_amount', label: 'Stake amount' },
-    { key: 'open_rate', label: 'Open rate', formatter: (value) => formatPrice(value) },
+    {
+      key: 'open_rate',
+      label: 'Open rate',
+      formatter: (value: number) => this.formatPriceWithDecimals(value),
+    },
     {
       key: this.activeTrades ? 'current_rate' : 'close_rate',
       label: this.activeTrades ? 'Current rate' : 'Close rate',
-      formatter: (value) => formatPrice(value),
+      formatter: (value: number) => this.formatPriceWithDecimals(value),
     },
     {
       key: 'profit',
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
-      formatter: (value, key, item: Trade) => {
+      formatter: (value: number, key, item: Trade) => {
         const percent = formatPercent(item.profit_ratio, 2);
         return `${percent} ${`(${this.formatPriceWithDecimals(item.profit_abs)})`}`;
       },

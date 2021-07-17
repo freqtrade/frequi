@@ -25,11 +25,23 @@
         </div>
       </div>
       <b-card header="Results per Sell-reason" class="row mt-2 w-100">
-        <b-table small hover :items="backtestResult.sell_reason_summary" :fields="perSellReason">
+        <b-table
+          small
+          hover
+          stacked="sm"
+          :items="backtestResult.sell_reason_summary"
+          :fields="perSellReason"
+        >
         </b-table>
       </b-card>
       <b-card header="Results per pair" class="row mt-2 w-100">
-        <b-table small hover :items="backtestResult.results_per_pair" :fields="perPairFields">
+        <b-table
+          small
+          hover
+          stacked="sm"
+          :items="backtestResult.results_per_pair"
+          :fields="perPairFields"
+        >
         </b-table>
       </b-card>
 
@@ -247,7 +259,7 @@ export default class BacktestResultView extends Vue {
       {
         key: 'profit_total_abs',
         label: `Tot Profit ${this.backtestResult.stake_currency}`,
-        formatter: (value) => formatPrice(value),
+        formatter: (value) => formatPrice(value, this.backtestResult.stake_currency_decimals),
       },
       {
         key: 'profit_total',
@@ -267,7 +279,12 @@ export default class BacktestResultView extends Vue {
       { key: 'trades', label: 'Buys' },
       { key: 'profit_mean', label: 'Avg Profit %', formatter: (value) => formatPercent(value, 2) },
       { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
-      { key: 'profit_total_abs', label: `Tot Profit ${this.backtestResult.stake_currency}` },
+      {
+        key: 'profit_total_abs',
+        label: `Tot Profit ${this.backtestResult.stake_currency}`,
+
+        formatter: (value) => formatPrice(value, this.backtestResult.stake_currency_decimals),
+      },
       {
         key: 'profit_total',
         label: 'Tot Profit %',
