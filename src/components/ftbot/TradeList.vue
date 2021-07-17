@@ -149,9 +149,8 @@ export default class TradeList extends Vue {
       key: this.activeTrades ? 'current_profit' : this.profitColumn,
       label: this.activeTrades ? 'Current profit %' : 'Profit %',
       formatter: (value, key, item: Trade) => {
-        return `${formatPercent(item.profit_ratio, 3)} (${this.formatPriceWithDecimals(
-          item.profit_abs,
-        )})`;
+        const percent = formatPercent(item.profit_ratio, 2);
+        return `${percent} ${`(${this.formatPriceWithDecimals(item.profit_abs)})`}`;
       },
     },
     { key: 'open_timestamp', label: 'Open date' },
