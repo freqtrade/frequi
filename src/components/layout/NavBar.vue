@@ -1,20 +1,29 @@
 <template>
   <div>
     <b-navbar toggleable="sm" type="dark" variant="primary">
-      <b-navbar-brand exact to="/">
+      <router-link class="navbar-brand" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
-      </b-navbar-brand>
+      </router-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item v-if="!canRunBacktest" to="/trade">Trade</b-nav-item>
-          <b-nav-item v-if="!canRunBacktest" to="/dashboard">Dashboard</b-nav-item>
-          <b-nav-item to="/graph">Graph</b-nav-item>
-          <b-nav-item to="/logs">Logs</b-nav-item>
-          <b-nav-item v-if="canRunBacktest" to="/backtest">Backtest</b-nav-item>
+          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav navbar-dark" to="/trade"
+            >Trade</router-link
+          >
+          <router-link
+            v-if="!canRunBacktest"
+            class="nav-link navbar-nav navbar-dark"
+            to="/dashboard"
+            >Dashboard</router-link
+          >
+          <router-link class="nav-link navbar-nav navbar-dark" to="/graph">Graph</router-link>
+          <router-link class="nav-link navbar-nav navbar-dark" to="/logs">Logs</router-link>
+          <router-link v-if="canRunBacktest" class="nav-link navbar-nav navbar-dark" to="/backtest"
+            >Backtest</router-link
+          >
           <BootswatchThemeSelect />
         </b-navbar-nav>
         <!-- Right aligned nav items -->
@@ -33,10 +42,12 @@
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
+              <router-link class="dropdown-item" to="/settings">Settings</router-link>
               <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
-              <b-dropdown-item to="/settings">Settings</b-dropdown-item>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
-              <b-dropdown-item to="/" @click.native="logout()">Sign Out</b-dropdown-item>
+              <router-link class="dropdown-item" to="/" @click.native="logout()"
+                >Sign Out</router-link
+              >
             </b-nav-item-dropdown>
           </li>
           <li v-else>
