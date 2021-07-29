@@ -10730,11 +10730,6 @@ vue-class-component@^7.2.5:
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.2.6.tgz#8471e037b8e4762f5a464686e19e5afc708502e4"
   integrity sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==
 
-vue-cli-plugin-bootstrap-vue@~0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-bootstrap-vue/-/vue-cli-plugin-bootstrap-vue-0.8.0.tgz#ac39ddce4d1b68b614766c09201693271da838dc"
-  integrity sha512-Dd0uRwyB2Ogju1cIPZriKbLvDDL1RCcOb7qUUrNiWso4AJKAS5huyav06w+5D7j09XrlNPsW4b5VJm4/OlGGXA==
-
 vue-demi@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.9.1.tgz#25d6e1ebd4d4010757ff3571e2bf6a1d7bf3de82"
