@@ -145,16 +145,18 @@ export default class TradeList extends Vue {
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },
-    { key: 'stake_amount', label: 'Stake amount' },
+    {
+      key: 'stake_amount',
+      label: 'Stake amount',
+      formatter: (value: number) => this.formatPriceWithDecimals(value),
+    },
     {
       key: 'open_rate',
       label: 'Open rate',
-      formatter: (value: number) => this.formatPriceWithDecimals(value),
     },
     {
       key: this.activeTrades ? 'current_rate' : 'close_rate',
       label: this.activeTrades ? 'Current rate' : 'Close rate',
-      formatter: (value: number) => this.formatPriceWithDecimals(value),
     },
     {
       key: 'profit',

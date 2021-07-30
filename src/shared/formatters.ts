@@ -10,8 +10,14 @@ export function formatPercent(value: number, decimals = 3): string {
   return !isUndefined(value) ? `${(value * 100).toFixed(decimals)}%` : '';
 }
 
+/**
+ * Format number to `decimals` without trailing zeros
+ * @param value Number to format
+ * @param decimals number of decimals (Defaults to 8)
+ * @returns Formatted string
+ */
 export function formatPrice(value: number, decimals = 8): string {
-  return !isUndefined(value) ? value.toFixed(decimals) : '';
+  return !isUndefined(value) ? parseFloat(value.toFixed(decimals)).toString() : '';
 }
 
 export function dateFromString(datestring: string, format: string): Date {
