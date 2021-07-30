@@ -3,6 +3,12 @@ export interface Trade {
   pair: string;
   is_open: boolean;
   amount: number;
+  amount_requested?: number;
+  stake_amount: number;
+  strategy?: string;
+  exchange?: string;
+  buy_tag?: string;
+
   timeframe: string;
   open_rate: number;
   /** Open date in the format Y-M-d HH:mm:ss */
