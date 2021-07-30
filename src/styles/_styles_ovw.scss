@@ -91,10 +91,20 @@
     hr {
         border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th{
-        color: $fg-color;
-        background: lighten($bg-dark, 5%);
+
+    .table.b-table > tbody > .table-active, .table.b-table > tbody > .table-active > th, .table.b-table > tbody > .table-active > td {
+        // Table selected cells
+        background: darken($bg-dark, 10%);
+
     }
+
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th,
+    .table.b-table.table-hover > tbody > tr.table-active:hover td, .table.b-table.table-hover > tbody > tr.table-active:hover th{
+        // Table selected cells hover
+        color: $fg-color;
+        background: lighten($bg-dark, 10%);
+    }
+
     .custom-select{
         color: $fg-color;
         border-color: lighten($bg-dark, 20%);
