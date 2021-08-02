@@ -17,7 +17,7 @@
     "bootswatch": "^5.0.2",
     "core-js": "^3.15.2",
     "date-fns": "^2.23.0",
-    "date-fns-tz": "^1.1.4",
+    "date-fns-tz": "^1.1.6",
     "echarts": "^5.1.2",
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.27.0",
