@@ -13,9 +13,11 @@ import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, BarChart } from 'echarts/charts';
 import {
+  DatasetComponent,
+  DataZoomComponent,
+  LegendComponent,
   TitleComponent,
   TooltipComponent,
-  LegendComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
@@ -25,10 +27,14 @@ import { ClosedTrade } from '@/types';
 use([
   BarChart,
   LineChart,
+
   CanvasRenderer,
+
+  DatasetComponent,
+  DataZoomComponent,
+  LegendComponent,
   TitleComponent,
   TooltipComponent,
-  LegendComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 ]);

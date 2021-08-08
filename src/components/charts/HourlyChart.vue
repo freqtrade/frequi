@@ -21,9 +21,10 @@ import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, BarChart } from 'echarts/charts';
 import {
+  DatasetComponent,
+  LegendComponent,
   TitleComponent,
   TooltipComponent,
-  LegendComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
@@ -32,9 +33,11 @@ use([
   BarChart,
   LineChart,
   CanvasRenderer,
+
+  DatasetComponent,
+  LegendComponent,
   TitleComponent,
   TooltipComponent,
-  LegendComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 ]);
