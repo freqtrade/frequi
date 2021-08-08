@@ -11,11 +11,28 @@ import { EChartsOption } from 'echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, BarChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import {
+  DatasetComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  VisualMapComponent,
+} from 'echarts/components';
 
 import { DailyReturnValue } from '@/types';
 
-use([BarChart, LineChart, CanvasRenderer, TitleComponent, TooltipComponent, LegendComponent]);
+use([
+  BarChart,
+  LineChart,
+  CanvasRenderer,
+  GridComponent,
+  DatasetComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  VisualMapComponent,
+]);
 
 // Define Column labels here to avoid typos
 const CHART_ABS_PROFIT = 'Absolute profit';
