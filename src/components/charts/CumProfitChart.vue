@@ -12,11 +12,28 @@ import { EChartsOption } from 'echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, BarChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import {
+  DatasetComponent,
+  DataZoomComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+} from 'echarts/components';
 
 import { ClosedTrade, CumProfitData } from '@/types';
 
-use([BarChart, LineChart, CanvasRenderer, TitleComponent, TooltipComponent, LegendComponent]);
+use([
+  BarChart,
+  LineChart,
+
+  CanvasRenderer,
+
+  DatasetComponent,
+  DataZoomComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+]);
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
