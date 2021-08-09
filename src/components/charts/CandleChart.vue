@@ -219,6 +219,7 @@ export default class CandleChart extends Vue {
           scale: true,
           gridIndex: 1,
           splitNumber: 2,
+          position: 'right',
           axisLabel: { show: false },
           axisLine: { show: false },
           axisTick: { show: false },
