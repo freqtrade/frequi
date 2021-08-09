@@ -14,6 +14,7 @@
       primary-key="trade_id"
       selectable
       select-mode="single"
+      :filter="filterText"
       @row-contextmenu="handleContextMenuEvent"
       @row-clicked="onRowClicked"
       @row-selected="onRowSelected"
@@ -54,13 +55,23 @@
         <DateTimeTZ :date="row.item.close_timestamp" />
       </template>
     </b-table>
-    <b-pagination
-      v-if="!activeTrades"
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="my-table"
-    ></b-pagination>
+    <div class="w-100 d-flex justify-content-between">
+      <b-pagination
+        v-if="!activeTrades"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-table"
+      ></b-pagination>
+      <b-input
+        v-if="showFilter"
+        v-model="filterText"
+        type="text"
+        placeholder="Filter"
+        size="sm"
+        style="width: unset"
+      />
+    </div>
   </div>
 </template>
 
@@ -99,6 +110,8 @@ export default class TradeList extends Vue {
 
   @Prop({ default: false }) activeTrades!: boolean;
 
+  @Prop({ default: false }) showFilter!: boolean;
+
   @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
   @ftbot.State detailTradeId?: number;
@@ -116,6 +129,8 @@ export default class TradeList extends Vue {
   currentPage = 1;
 
   selectedItemIndex? = undefined;
+
+  filterText = '';
 
   @Watch('detailTradeId')
   watchTradeDetail(val) {
