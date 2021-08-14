@@ -5,6 +5,7 @@ export interface BacktestPayload {
   strategy: string;
   timerange: string;
   timeframe?: string;
+  timeframe_detail?: string;
   max_open_trades?: number;
   // TODO: Should be number or unlimited
   stake_amount?: number | string;
@@ -81,6 +82,7 @@ export interface StrategyBacktestResult {
 
   max_open_trades: number;
   timeframe: string;
+  timeframe_detail?: string;
   timerange: string;
   strategy_name: string;
   enable_protections: boolean;

@@ -1,6 +1,5 @@
 <template>
   <b-form-select
-    id="timeframe-select"
     v-model="selectedTimeframe"
     placeholder="Use strategy default"
     :options="availableTimeframes"
@@ -17,6 +16,9 @@ export default class Template extends Vue {
 
   @Prop({ default: '' }) value!: string;
 
+  // Filter available timeframes to be lower than this timeframe.
+  @Prop({ default: '', required: false }) belowTimeframe!: string;
+
   @Emit('input')
   emitSelectedTimeframe() {
     return this.selectedTimeframe;
@@ -27,7 +29,17 @@ export default class Template extends Vue {
     this.selectedTimeframe = this.value;
   }
 
-  availableTimeframes = [
+  get availableTimeframes() {
+    if (!this.belowTimeframe) {
+      return this.availableTimeframesBase;
+    }
+    const idx = this.availableTimeframesBase.findIndex((v) => v === this.belowTimeframe);
+
+    return [...this.availableTimeframesBase].splice(0, idx);
+  }
+
+  // The below list must always remain sorted correctly!
+  availableTimeframesBase = [
     // Placeholder value
     { value: '', text: 'Use strategy default' },
     '1m',

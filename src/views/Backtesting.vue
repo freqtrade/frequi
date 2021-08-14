@@ -103,7 +103,20 @@
               label-align-sm="right"
               label-for="timeframe-select"
             >
-              <TimeframeSelect v-model="selectedTimeframe" />
+              <TimeframeSelect id="timeframe-select" v-model="selectedTimeframe" />
+            </b-form-group>
+            <b-form-group
+              label-cols-sm="5"
+              label="Detail Timeframe:"
+              label-align-sm="right"
+              label-for="timeframe-detail-select"
+              title="Detail timeframe, to simulate intra-candle results. Not setting this will not use this functionality."
+            >
+              <TimeframeSelect
+                id="timeframe-detail-select"
+                v-model="selectedDetailTimeframe"
+                :below-timeframe="selectedTimeframe"
+              />
             </b-form-group>
 
             <b-form-group
@@ -317,6 +330,8 @@ export default class Backtesting extends Vue {
 
   selectedTimeframe = '';
 
+  selectedDetailTimeframe = '';
+
   strategy = '';
 
   timerange = '';
@@ -394,6 +409,7 @@ export default class Backtesting extends Vue {
     // Set parameters for this result
     this.strategy = this.selectedBacktestResult.strategy_name;
     this.selectedTimeframe = this.selectedBacktestResult.timeframe;
+    this.selectedDetailTimeframe = this.selectedBacktestResult.timeframe_detail || '';
     this.timerange = this.selectedBacktestResult.timerange;
   }
 
@@ -428,6 +444,10 @@ export default class Backtesting extends Vue {
 
     if (this.selectedTimeframe) {
       btPayload.timeframe = this.selectedTimeframe;
+    }
+    if (this.selectedDetailTimeframe) {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      btPayload.timeframe_detail = this.selectedDetailTimeframe;
     }
 
     this.startBacktest(btPayload);
