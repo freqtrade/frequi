@@ -28,6 +28,8 @@ export default class Template extends Vue {
   }
 
   availableTimeframes = [
+    // Placeholder value
+    { value: '', text: 'Use strategy default' },
     '1m',
     '3m',
     '5m',
