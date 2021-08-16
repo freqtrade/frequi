@@ -1345,10 +1345,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/echarts@^4.9.9":
-  version "4.9.9"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.9.tgz#9c203acc5f700fe46fcf6bc1ec748fcb128d8ed0"
-  integrity sha512-6nQTxGG0ldOkJVE/4BSyGsThdNZIO5FYYiSeZQp75dSnVXW17J2d7ZQYm/ItGp32jDJEzzttt7JEcCJ4J9/phA==
+"@types/echarts@^4.9.10":
+  version "4.9.10"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.10.tgz#a3dd598fbb3b36e797f3ce771be3fa8dc18a7da6"
+  integrity sha512-8xNCE5d+hUU5hZJxmxvngkkODIh19jQXpZ4X9EgfXkyyejGitm7lYdAssJLtUUEtMDD6C08Z4QPmNoezg7Y97g==
   dependencies:
     "@types/zrender" "*"
 
