@@ -2,14 +2,16 @@
   <GridLayout
     class="h-100 w-100"
     :row-height="50"
-    :layout="gridLayout"
+    :layout.sync="gridLayout"
     :vertical-compact="false"
     :margin="[5, 5]"
-    :is-resizable="!getLayoutLocked"
-    :is-draggable="!getLayoutLocked"
-    responsive
-    prevent-collision
-    @layout-updated="layoutUpdatedEvent"
+    :responsive-layouts="responsiveGridLayouts"
+    :is-resizable="!isLayoutLocked"
+    :is-draggable="!isLayoutLocked"
+    :responsive="true"
+    :prevent-collision="true"
+    @layout-updated="layoutUpdated"
+    @breakpoint-changed="breakpointChanged"
   >
     <GridItem
       :i="gridLayoutKPI.i"
@@ -181,6 +183,8 @@ export default class Dashboard extends Vue {
 
   @ftbot.Action getTrades;
 
+  @layoutNs.Getter [LayoutGetters.getDashboardLayoutSm]!: GridItemData[];
+
   @layoutNs.Getter [LayoutGetters.getDashboardLayout]!: GridItemData[];
 
   @layoutNs.Action [LayoutActions.setDashboardLayout];
@@ -195,8 +199,36 @@ export default class Dashboard extends Vue {
 
   formatPrice = formatPrice;
 
+  localGridLayout: GridItemData[] = [];
+
+  currentBreakpoint = '';
+
+  get isLayoutLocked() {
+    return this.getLayoutLocked || !this.isResizableLayout;
+  }
+
+  get isResizableLayout() {
+    return ['', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
+  }
+
   get gridLayout() {
-    return this.getDashboardLayout;
+    if (this.isResizableLayout) {
+      return this.getDashboardLayout;
+    }
+    return this.localGridLayout;
+  }
+
+  set gridLayout(newLayout) {
+    // Dummy setter to make gridLayout happy. Updates happen through layoutUpdated.
+  }
+
+  layoutUpdated(newLayout) {
+    // Frozen layouts for small screen sizes.
+    if (this.isResizableLayout) {
+      console.log('newlayout', newLayout);
+      console.log('saving dashboard');
+      this.setDashboardLayout(newLayout);
+    }
   }
 
   get gridLayoutKPI(): GridItemData {
@@ -219,6 +251,12 @@ export default class Dashboard extends Vue {
     return findGridLayout(this.gridLayout, DashboardLayout.tradesLogChart);
   }
 
+  get responsiveGridLayouts() {
+    return {
+      sm: this.getDashboardLayoutSm,
+    };
+  }
+
   mounted() {
     this.getDaily({ timescale: 30 });
     this.getTrades();
@@ -226,10 +264,12 @@ export default class Dashboard extends Vue {
     this.getBalance();
     this.getPerformance();
     this.getProfit();
+    this.localGridLayout = [...this.getDashboardLayoutSm];
   }
 
-  layoutUpdatedEvent(newLayout) {
-    this.setDashboardLayout(newLayout);
+  breakpointChanged(newBreakpoint) {
+    // console.log('breakpoint:', newBreakpoint);
+    this.currentBreakpoint = newBreakpoint;
   }
 }
 </script>

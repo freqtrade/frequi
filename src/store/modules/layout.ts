@@ -19,6 +19,7 @@ export enum DashboardLayout {
 }
 
 export enum LayoutGetters {
+  getDashboardLayoutSm = 'getDashboardLayoutSm',
   getDashboardLayout = 'getDashboardLayout',
   getTradingLayout = 'getTradingLayout',
   getLayoutLocked = 'getLayoutLocked',
@@ -53,7 +54,15 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: DashboardLayout.dailyChart, x: 4, y: 0, w: 4, h: 6 },
   { i: DashboardLayout.hourlyChart, x: 4, y: 6, w: 4, h: 6 },
   { i: DashboardLayout.cumChartChart, x: 0, y: 6, w: 4, h: 6 },
-  { i: DashboardLayout.tradesLogChart, x: 0, y: 8, w: 12, h: 4 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 12, w: 12, h: 4 },
+];
+
+const DEFAULT_DASHBOARD_LAYOUT_SM: GridItemData[] = [
+  { i: DashboardLayout.KPI, x: 0, y: 0, w: 12, h: 6 },
+  { i: DashboardLayout.dailyChart, x: 0, y: 6, w: 12, h: 6 },
+  { i: DashboardLayout.hourlyChart, x: 0, y: 12, w: 12, h: 6 },
+  { i: DashboardLayout.cumChartChart, x: 0, y: 18, w: 12, h: 6 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 24, w: 12, h: 4 },
 ];
 
 const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';
@@ -99,6 +108,9 @@ export default {
   },
 
   getters: {
+    [LayoutGetters.getDashboardLayoutSm]() {
+      return [...DEFAULT_DASHBOARD_LAYOUT_SM];
+    },
     [LayoutGetters.getDashboardLayout](state) {
       return state.dashboardLayout;
     },
@@ -112,7 +124,6 @@ export default {
 
   mutations: {
     [LayoutMutations.setDashboardLayout](state, layout) {
-      console.log('set dashboard layout');
       state.dashboardLayout = layout;
       localStorage.setItem(STORE_DASHBOARD_LAYOUT, JSON.stringify(layout));
     },
