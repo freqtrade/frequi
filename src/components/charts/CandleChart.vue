@@ -56,10 +56,10 @@ const MARGINLEFT = '4%';
 const MARGINRIGHT = '1%';
 
 // Binance colors
-const upColor = '#2ed191';
-const upBorderColor = '#19d189';
-const downColor = '#f84960';
-const downBorderColor = '#e33249';
+const upColor = '#26A69A';
+const upBorderColor = '#26A69A';
+const downColor = '#EF5350';
+const downBorderColor = '#EF5350';
 
 const buySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
