@@ -6,7 +6,7 @@
         <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
-        <ValuePair description="Buy tag">{{ trade.buy_tag }}</ValuePair>
+        <ValuePair v-if="trade.buy_tag" description="Buy tag">{{ trade.buy_tag }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
         <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
           formatPrice(trade.close_rate)
