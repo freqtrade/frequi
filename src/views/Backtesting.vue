@@ -354,7 +354,7 @@ export default class Backtesting extends Vue {
 
   @ftbot.State backtestStep!: string;
 
-  @ftbot.State botState!: BotState;
+  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
   @ftbot.State backtestProgress!: number;
 

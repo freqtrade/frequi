@@ -39,7 +39,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BotState } from '@/types';
+import { BotState, ProfitInterface } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 import { formatPercent } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
@@ -48,11 +49,11 @@ const ftbot = namespace('ftbot');
 
 @Component({ components: { DateTimeTZ } })
 export default class BotStatus extends Vue {
-  @ftbot.State version;
+  @ftbot.Getter [BotStoreGetters.version]: string;
 
-  @ftbot.State profit;
+  @ftbot.Getter [BotStoreGetters.profit]: ProfitInterface | {};
 
-  @ftbot.State botState?: BotState;
+  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
   formatPercent = formatPercent;
 }

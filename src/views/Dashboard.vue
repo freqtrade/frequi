@@ -146,6 +146,7 @@ import {
   DailyPayload,
   BotState,
 } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -170,7 +171,7 @@ export default class Dashboard extends Vue {
 
   @ftbot.State balance!: BalanceInterface;
 
-  @ftbot.State botState!: BotState;
+  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
   @ftbot.State profit!: ProfitInterface;
 

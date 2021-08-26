@@ -25,6 +25,7 @@ import {
   TradeResponse,
   StrategyBacktestResult,
   BacktestStatus,
+  ProfitInterface,
 } from '@/types';
 
 import {
@@ -53,6 +54,10 @@ export enum BotStoreGetters {
   selectedBacktestResult = 'selectedBacktestResult',
   canRunBacktest = 'canRunBacktest',
   stakeCurrencyDecimals = 'stakeCurrencyDecimals',
+  strategyPlotConfig = 'strategyPlotConfig',
+  version = 'version',
+  profit = 'profit',
+  botState = 'botState',
 }
 
 export default {
@@ -124,6 +129,18 @@ export default {
     },
     [BotStoreGetters.stakeCurrencyDecimals](state: FtbotStateType): number {
       return state.botState?.stake_currency_decimals || 3;
+    },
+    [BotStoreGetters.strategyPlotConfig](state: FtbotStateType): PlotConfig | undefined {
+      return state.strategyPlotConfig;
+    },
+    [BotStoreGetters.version](state: FtbotStateType): string {
+      return state.version;
+    },
+    [BotStoreGetters.profit](state: FtbotStateType): ProfitInterface | {} {
+      return state.profit;
+    },
+    [BotStoreGetters.botState](state: FtbotStateType): BotState | {} {
+      return state.profit;
     },
   },
   mutations: {

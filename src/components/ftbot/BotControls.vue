@@ -76,7 +76,7 @@ const ftbot = namespace('ftbot');
 export default class BotControls extends Vue {
   forcebuyShow = false;
 
-  @ftbot.State botState?: BotState;
+  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
   @ftbot.Action startBot;
 

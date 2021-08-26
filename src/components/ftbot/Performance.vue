@@ -12,6 +12,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { BotState, PerformanceEntry } from '@/types';
 import { formatPrice } from '@/shared/formatters';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -19,7 +20,7 @@ const ftbot = namespace('ftbot');
 export default class Performance extends Vue {
   @ftbot.State performanceStats!: PerformanceEntry[];
 
-  @ftbot.State botState?: BotState;
+  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
   get tableFields() {
     return [

@@ -123,6 +123,7 @@ import { namespace } from 'vuex-class';
 import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -143,7 +144,7 @@ export default class PlotConfigurator extends Vue {
 
   @ftbot.Action getStrategyPlotConfig;
 
-  @ftbot.State strategyPlotConfig;
+  @ftbot.Getter [BotStoreGetters.strategyPlotConfig];
 
   get selIndicator(): Record<string, IndicatorConfig> {
     if (this.addNewIndicator) {
