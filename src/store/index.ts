@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import userService from '@/shared/userService';
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios, { AxiosInstance } from 'axios';
-import ftbotModule, { BotStoreGetters } from './modules/ftbot';
+import { createBotSubStore, BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
 import settingsModule from './modules/settings';
@@ -40,7 +40,7 @@ export default new Vuex.Store({
     },
   },
   modules: {
-    ftbot: ftbotModule,
+    ftbot: createBotSubStore(),
     alerts: alertsModule,
     layout: layoutModule,
     uiSettings: settingsModule,
