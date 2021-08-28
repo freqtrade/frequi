@@ -45,7 +45,7 @@
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
               <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
-              <router-link class="dropdown-item" to="/" @click.native="logout()"
+              <router-link class="dropdown-item" to="/" @click.native="clickLogout()"
                 >Sign Out</router-link
               >
             </b-nav-item-dropdown>
@@ -64,7 +64,6 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
 import { State, Action, namespace, Getter } from 'vuex-class';
-import userService from '@/shared/userService';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
@@ -94,6 +93,8 @@ export default class NavBar extends Vue {
   @ftbot.Action ping;
 
   @ftbot.Action getState;
+
+  @ftbot.Action logout;
 
   @ftbot.Getter [BotStoreGetters.botName]: string;
 
@@ -130,8 +131,8 @@ export default class NavBar extends Vue {
     }
   }
 
-  logout(): void {
-    userService.logout();
+  clickLogout(): void {
+    this.logout();
     this.setLoggedIn(false);
   }
 

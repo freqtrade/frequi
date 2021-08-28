@@ -1,5 +1,5 @@
 import { useApi } from '@/shared/apiService';
-import userService from '@/shared/userService';
+import { useUserService } from '@/shared/userService';
 
 import {
   BacktestResult,
@@ -123,9 +123,11 @@ export enum BotStoreActions {
   pollBacktest = 'pollBacktest',
   removeBacktest = 'removeBacktest',
   stopBacktest = 'stopBacktest',
+  logout = 'logout',
 }
 
-export function createBotSubStore() {
+export function createBotSubStore(botId: string) {
+  const userService = useUserService(botId);
   const { api } = useApi(userService);
 
   return {
@@ -389,8 +391,11 @@ export function createBotSubStore() {
             .catch(console.error);
         }
       },
+      [BotStoreActions.logout]() {
+        userService.logout();
+      },
       [BotStoreActions.setRefreshRequired]({ commit }, refreshRequired: boolean) {
-        commit('setRefreshRequired', refreshRequired);
+        commit('updateRefreshRequired', refreshRequired);
       },
       [BotStoreActions.setDetailTrade]({ commit }, trade: Trade) {
         commit('setDetailTrade', trade);

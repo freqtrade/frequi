@@ -53,7 +53,7 @@ export default function createBotStore() {
   return {
     namespaced: true,
     modules: {
-      'ftbot.0': createBotSubStore(),
+      'ftbot.0': createBotSubStore('ftbot.0'),
     },
     state,
     mutations,

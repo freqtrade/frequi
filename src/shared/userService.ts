@@ -6,6 +6,13 @@ const AUTH_LOGIN_INFO = 'auth_login_info';
 const APIBASE = '/api/v1';
 
 export class UserService {
+  private botId: string;
+
+  constructor(botId: string) {
+    console.log('botId', botId);
+    this.botId = botId;
+  }
+
   private storeLoginInfo(loginInfo: AuthStorage): void {
     localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(loginInfo));
   }
@@ -142,10 +149,10 @@ export class UserService {
   }
 }
 
-export function useUserService() {
-  const userservice = new UserService();
+export function useUserService(botId: string) {
+  const userservice = new UserService(botId);
   userservice.migrateLogin();
   return userservice;
 }
 
-export default useUserService();
+export default useUserService('ftbot.0');
