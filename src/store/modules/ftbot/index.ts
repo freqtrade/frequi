@@ -139,8 +139,8 @@ export default {
     [BotStoreGetters.profit](state: FtbotStateType): ProfitInterface | {} {
       return state.profit;
     },
-    [BotStoreGetters.botState](state: FtbotStateType): BotState | {} {
-      return state.profit;
+    [BotStoreGetters.botState](state: FtbotStateType): BotState | undefined {
+      return state.botState;
     },
   },
   mutations: {
