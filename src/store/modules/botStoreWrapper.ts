@@ -31,8 +31,15 @@ export default function createBotStore(store) {
   });
 
   const mutations = {
-    addBot(state: FTMultiBotState, botName: string) {
-      state.availableBots = [...state.availableBots, botName];
+    addBot(state: FTMultiBotState, botId: string) {
+      state.availableBots = [...state.availableBots, botId];
+    },
+    removeBot(state: FTMultiBotState, botId: string) {
+      const index = state.availableBots.indexOf(botId);
+      if (index > -1) {
+        state.availableBots.splice(index, 1);
+        state.availableBots = [...state.availableBots];
+      }
     },
   };
 
@@ -44,8 +51,16 @@ export default function createBotStore(store) {
         // TODO: handle error!
       }
       console.log('add bot', botId);
-      store.registerModule(`ftbot/${botId}`, createBotSubStore(botId));
+      store.registerModule(['ftbot', botId], createBotSubStore(botId));
       commit('addBot', botId);
+    },
+    removeBot({ commit, getters }, botId: string) {
+      if (getters.allAvailableBots.includes(botId)) {
+        store.unregisterModule(`ftbot/${botId}`);
+        commit('removeBot', botId);
+      } else {
+        console.warn(`bot ${botId} not found! could not remove`);
+      }
     },
   };
   // Autocreate Actions

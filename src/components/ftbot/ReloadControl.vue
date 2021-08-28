@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
 
 @Component({ components: { RefreshIcon } })
@@ -40,7 +40,7 @@ export default class ReloadControl extends Vue {
     this.stopRefresh();
   }
 
-  @State loggedIn;
+  @Getter loggedIn;
 
   @State autoRefresh!: boolean;
 
