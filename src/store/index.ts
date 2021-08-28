@@ -15,9 +15,8 @@ const AUTO_REFRESH = 'ft_auto_refresh';
 Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
-    ftbot: createBotStore(),
     alerts: alertsModule,
     layout: layoutModule,
     uiSettings: settingsModule,
@@ -152,3 +151,7 @@ export default new Vuex.Store({
     },
   },
 });
+
+store.registerModule('ftbot', createBotStore(store));
+store.dispatch('ftbot/addBot', 'ftbot.0');
+export default store;
