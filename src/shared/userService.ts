@@ -1,30 +1,52 @@
 import axios from 'axios';
 
-import { AuthPayload } from '@/types';
+import { AuthPayload, AuthStorage } from '@/types';
 
-const AUTH_REFRESH_TOKEN = 'auth_ref_token';
-const AUTH_ACCESS_TOKEN = 'auth_access_token';
-const AUTH_API_URL = 'auth_api_url';
+const AUTH_LOGIN_INFO = 'auth_login_info';
 const APIBASE = '/api/v1';
 
 export class UserService {
-  private setAPIUrl(apiurl: string): void {
-    localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
+  private storeLoginInfo(loginInfo: AuthStorage): void {
+    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(loginInfo));
   }
 
   private setAccessToken(token: string): void {
-    localStorage.setItem(AUTH_ACCESS_TOKEN, JSON.stringify(token));
+    const loginInfo = this.getLoginInfo();
+    loginInfo.accessToken = token;
+    this.storeLoginInfo(loginInfo);
   }
 
-  private setRefreshTokens(refreshToken: string): void {
-    localStorage.setItem(AUTH_REFRESH_TOKEN, JSON.stringify(refreshToken));
+  private getLoginInfo(): AuthStorage {
+    const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
+    if ('apiUrl' in info && 'refreshToken' in info) {
+      return info;
+    }
+    return {
+      apiUrl: '',
+      refreshToken: '',
+      accessToken: '',
+    };
+  }
+
+  public getAccessToken(): string {
+    return this.getLoginInfo().accessToken;
+  }
+
+  private getRefreshToken() {
+    return this.getLoginInfo().refreshToken;
+  }
+
+  public loggedIn() {
+    return this.getLoginInfo().refreshToken !== '';
+  }
+
+  private getAPIUrl(): string {
+    return this.getLoginInfo().apiUrl;
   }
 
   public logout(): void {
     console.log('Logging out');
-    localStorage.removeItem(AUTH_REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_ACCESS_TOKEN);
-    localStorage.removeItem(AUTH_API_URL);
+    localStorage.removeItem(AUTH_LOGIN_INFO);
   }
 
   public async login(auth: AuthPayload) {
@@ -36,19 +58,19 @@ export class UserService {
         auth: { ...auth },
       },
     );
-    console.log(result.data);
-    if (result.data.access_token) {
-      this.setAPIUrl(auth.url);
-      this.setAccessToken(result.data.access_token);
-    }
-    if (result.data.refresh_token) {
-      this.setRefreshTokens(result.data.refresh_token);
+    if (result.data.access_token && result.data.refresh_token) {
+      const obj: AuthStorage = {
+        apiUrl: auth.url,
+        accessToken: result.data.access_token || '',
+        refreshToken: result.data.refresh_token || '',
+      };
+      this.storeLoginInfo(obj);
     }
   }
 
   public refreshToken(): Promise<string> {
     console.log('Refreshing token...');
-    const token = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
+    const token = this.getRefreshToken();
     return new Promise((resolve, reject) => {
       axios
         .post(
@@ -78,15 +100,6 @@ export class UserService {
     });
   }
 
-  public loggedIn() {
-    return localStorage.getItem(AUTH_ACCESS_TOKEN) !== null;
-  }
-
-  private getAPIUrl(): string {
-    const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
-    return typeof apiUrl === 'object' ? '' : apiUrl;
-  }
-
   public getBaseUrl(): string {
     const baseURL = this.getAPIUrl();
     if (baseURL === null) {
@@ -99,17 +112,40 @@ export class UserService {
     return `${baseURL}${APIBASE}`;
   }
 
-  getAccessToken(): string {
-    return JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
-  }
+  /**
+   * Call on startup to migrate old login info to new login
+   */
+  public migrateLogin() {
+    const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
+    const AUTH_ACCESS_TOKEN = 'auth_access_token';
+    const AUTH_API_URL = 'auth_api_url';
 
-  getRefreshToken() {
-    return JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
+    const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
+    const refreshToken = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
+    const accessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
+    if (
+      typeof apiUrl === 'string' &&
+      typeof refreshToken === 'string' &&
+      typeof accessToken === 'string'
+    ) {
+      const loginInfo: AuthStorage = {
+        apiUrl,
+        refreshToken,
+        accessToken,
+      };
+      this.storeLoginInfo(loginInfo);
+    }
+
+    localStorage.removeItem(AUTH_REFRESH_TOKEN);
+    localStorage.removeItem(AUTH_ACCESS_TOKEN);
+    localStorage.removeItem(AUTH_API_URL);
   }
 }
 
 export function useUserService() {
-  return new UserService();
+  const userservice = new UserService();
+  userservice.migrateLogin();
+  return userservice;
 }
 
 export default useUserService();
