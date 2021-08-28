@@ -85,6 +85,45 @@ export enum BotStoreGetters {
   selectedBacktestResultKey = 'selectedBacktestResultKey',
 }
 
+export enum BotStoreActions {
+  ping = 'ping',
+  setDetailTrade = 'setDetailTrade',
+  setSelectedPair = 'setSelectedPair',
+  getTrades = 'getTrades',
+  getLocks = 'getLocks',
+  deleteLock = 'deleteLock',
+  getOpenTrades = 'getOpenTrades',
+  getPairCandles = 'getPairCandles',
+  getPairHistory = 'getPairHistory',
+  getStrategyPlotConfig = 'getStrategyPlotConfig',
+  setPlotConfigName = 'setPlotConfigName',
+  getStrategyList = 'getStrategyList',
+  getStrategy = 'getStrategy',
+  getAvailablePairs = 'getAvailablePairs',
+  getPerformance = 'getPerformance',
+  getWhitelist = 'getWhitelist',
+  getBlacklist = 'getBlacklist',
+  getProfit = 'getProfit',
+  getBalance = 'getBalance',
+  getDaily = 'getDaily',
+  getState = 'getState',
+  getVersion = 'getVersion',
+  getLogs = 'getLogs',
+  startBot = 'startBot',
+  stopBot = 'stopBot',
+  stopBuy = 'stopBuy',
+  reloadConfig = 'reloadConfig',
+  deleteTrade = 'deleteTrade',
+  startTrade = 'startTrade',
+  forcesell = 'forcesell',
+  forcebuy = 'forcebuy',
+  addBlacklist = 'addBlacklist',
+  startBacktest = 'startBacktest',
+  pollBacktest = 'pollBacktest',
+  removeBacktest = 'removeBacktest',
+  stopBacktest = 'stopBacktest',
+}
+
 export function createBotSubStore() {
   const { api } = useApi(userService);
 
@@ -338,7 +377,7 @@ export function createBotSubStore() {
       },
     },
     actions: {
-      ping({ commit, rootState }) {
+      [BotStoreActions.ping]({ commit, rootState }) {
         if (rootState.loggedIn) {
           api
             .get('/ping')
@@ -349,13 +388,13 @@ export function createBotSubStore() {
             .catch(console.error);
         }
       },
-      setDetailTrade({ commit }, trade: Trade) {
+      [BotStoreActions.setDetailTrade]({ commit }, trade: Trade) {
         commit('setDetailTrade', trade);
       },
-      setSelectedPair({ commit }, pair: string) {
+      [BotStoreActions.setSelectedPair]({ commit }, pair: string) {
         commit('setSelectedPair', pair);
       },
-      async getTrades({ commit }) {
+      async [BotStoreActions.getTrades]({ commit }) {
         try {
           let totalTrades = 0;
           const pageLength = 500;
@@ -388,13 +427,13 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      getLocks({ commit }) {
+      [BotStoreActions.getLocks]({ commit }) {
         return api
           .get('/locks')
           .then((result) => commit('updateLocks', result.data))
           .catch(console.error);
       },
-      async deleteLock({ dispatch, commit }, lockid: string) {
+      async [BotStoreActions.deleteLock]({ dispatch, commit }, lockid: string) {
         try {
           const res = await api.delete(`/locks/${lockid}`);
           showAlert(
@@ -411,7 +450,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      getOpenTrades({ commit, state }) {
+      [BotStoreActions.getOpenTrades]({ commit, state }) {
         return api
           .get('/status')
           .then((result) => {
@@ -433,7 +472,7 @@ export function createBotSubStore() {
           })
           .catch(console.error);
       },
-      getPairCandles({ commit }, payload: PairCandlePayload) {
+      [BotStoreActions.getPairCandles]({ commit }, payload: PairCandlePayload) {
         if (payload.pair && payload.timeframe && payload.limit) {
           return api
             .get('/pair_candles', {
@@ -455,7 +494,7 @@ export function createBotSubStore() {
           reject(error);
         });
       },
-      getPairHistory({ commit }, payload: PairHistoryPayload) {
+      [BotStoreActions.getPairHistory]({ commit }, payload: PairHistoryPayload) {
         if (payload.pair && payload.timeframe && payload.timerange) {
           return api
             .get('/pair_history', {
@@ -479,7 +518,7 @@ export function createBotSubStore() {
           reject(error);
         });
       },
-      async getStrategyPlotConfig({ commit }) {
+      async [BotStoreActions.getStrategyPlotConfig]({ commit }) {
         try {
           const result = await api.get('/plot_config');
           const plotConfig = result.data;
@@ -493,16 +532,16 @@ export function createBotSubStore() {
           return console.error(data);
         }
       },
-      setPlotConfigName({ commit }, plotConfigName: string) {
+      [BotStoreActions.setPlotConfigName]({ commit }, plotConfigName: string) {
         commit('updatePlotConfigName', plotConfigName);
       },
-      getStrategyList({ commit }) {
+      [BotStoreActions.getStrategyList]({ commit }) {
         return api
           .get('/strategies')
           .then((result) => commit('updateStrategyList', result.data))
           .catch(console.error);
       },
-      async getStrategy({ commit }, strategy: string) {
+      async [BotStoreActions.getStrategy]({ commit }, strategy: string) {
         try {
           const result = await api.get(`/strategy/${strategy}`, {});
           commit('updateStrategy', result.data);
@@ -512,7 +551,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async getAvailablePairs({ commit }, payload: AvailablePairPayload) {
+      async [BotStoreActions.getAvailablePairs]({ commit }, payload: AvailablePairPayload) {
         try {
           const result = await api.get('/available_pairs', {
             params: { ...payload },
@@ -526,7 +565,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async getPerformance({ commit }) {
+      async [BotStoreActions.getPerformance]({ commit }) {
         try {
           const result = await api.get('/performance');
           commit('updatePerformance', result.data);
@@ -536,7 +575,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      getWhitelist({ commit }) {
+      [BotStoreActions.getWhitelist]({ commit }) {
         return api
           .get('/whitelist')
           .then((result) => {
@@ -548,19 +587,19 @@ export function createBotSubStore() {
             return Promise.reject(error);
           });
       },
-      getBlacklist({ commit }) {
+      [BotStoreActions.getBlacklist]({ commit }) {
         return api
           .get('/blacklist')
           .then((result) => commit('updateBlacklist', result.data))
           .catch(console.error);
       },
-      getProfit({ commit }) {
+      [BotStoreActions.getProfit]({ commit }) {
         return api
           .get('/profit')
           .then((result) => commit('updateProfit', result.data))
           .catch(console.error);
       },
-      async getBalance({ commit }) {
+      async [BotStoreActions.getBalance]({ commit }) {
         try {
           const result = await api.get('/balance');
           return commit('updateBalance', result.data);
@@ -568,26 +607,26 @@ export function createBotSubStore() {
           return console.error(error);
         }
       },
-      getDaily({ commit }, payload: DailyPayload = {}) {
+      [BotStoreActions.getDaily]({ commit }, payload: DailyPayload = {}) {
         const { timescale = 20 } = payload;
         return api
           .get('/daily', { params: { timescale } })
           .then((result) => commit('updateDaily', result.data))
           .catch(console.error);
       },
-      getState({ commit }) {
+      [BotStoreActions.getState]({ commit }) {
         return api
           .get('/show_config')
           .then((result) => commit('updateState', result.data))
           .catch(console.error);
       },
-      getVersion({ commit }) {
+      [BotStoreActions.getVersion]({ commit }) {
         return api
           .get('/version')
           .then((result) => commit('updateVersion', result.data))
           .catch(console.error);
       },
-      getLogs({ commit }) {
+      [BotStoreActions.getLogs]({ commit }) {
         return api
           .get('/logs')
           .then((result) => commit('updateLogs', result.data))
@@ -595,7 +634,7 @@ export function createBotSubStore() {
       },
       // Post methods
       // TODO: Migrate calls to API to a seperate module unrelated to vuex?
-      async startBot({ dispatch }) {
+      async [BotStoreActions.startBot]({ dispatch }) {
         try {
           const res = await api.post('/start', {});
           console.log(res.data);
@@ -609,7 +648,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async stopBot({ dispatch }) {
+      async [BotStoreActions.stopBot]({ dispatch }) {
         try {
           const res = await api.post('/stop', {});
           showAlert(dispatch, res.data.status);
@@ -622,7 +661,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async stopBuy({ dispatch }) {
+      async [BotStoreActions.stopBuy]({ dispatch }) {
         try {
           const res = await api.post('/stopbuy', {});
           showAlert(dispatch, res.data.status);
@@ -635,7 +674,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async reloadConfig({ dispatch }) {
+      async [BotStoreActions.reloadConfig]({ dispatch }) {
         try {
           const res = await api.post('/reload_config', {});
           console.log(res.data);
@@ -649,7 +688,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async deleteTrade({ dispatch }, tradeid: string) {
+      async [BotStoreActions.deleteTrade]({ dispatch }, tradeid: string) {
         try {
           const res = await api.delete(`/trades/${tradeid}`);
           showAlert(
@@ -665,7 +704,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async startTrade() {
+      async [BotStoreActions.startTrade]() {
         try {
           const res = await api.post('/start_trade', {});
           return Promise.resolve(res);
@@ -673,7 +712,7 @@ export function createBotSubStore() {
           return Promise.reject(error);
         }
       },
-      async forcesell({ dispatch }, tradeid: string) {
+      async [BotStoreActions.forcesell]({ dispatch }, tradeid: string) {
         if (tradeid) {
           const payload = { tradeid };
           try {
@@ -693,7 +732,7 @@ export function createBotSubStore() {
         console.error(error);
         return Promise.reject(error);
       },
-      async forcebuy({ dispatch }, payload: ForcebuyPayload) {
+      async [BotStoreActions.forcebuy]({ dispatch }, payload: ForcebuyPayload) {
         if (payload && payload.pair) {
           try {
             const res = await api.post('/forcebuy', payload);
@@ -717,7 +756,7 @@ export function createBotSubStore() {
         console.error(error);
         return Promise.reject(error);
       },
-      async addBlacklist({ commit, dispatch }, payload: BlacklistPayload) {
+      async [BotStoreActions.addBlacklist]({ commit, dispatch }, payload: BlacklistPayload) {
         console.log(`Adding ${payload} to blacklist`);
         if (payload && payload.blacklist) {
           try {
@@ -753,7 +792,7 @@ export function createBotSubStore() {
         console.error(error);
         return Promise.reject(error);
       },
-      async startBacktest({ commit }, payload) {
+      async [BotStoreActions.startBacktest]({ commit }, payload) {
         try {
           const result = await api.post('/backtest', payload);
           commit('updateBacktestRunning', result.data);
@@ -761,14 +800,14 @@ export function createBotSubStore() {
           console.log(err);
         }
       },
-      async pollBacktest({ commit }) {
+      async [BotStoreActions.pollBacktest]({ commit }) {
         const result = await api.get('/backtest');
         commit('updateBacktestRunning', result.data);
         if (result.data.running === false && result.data.backtest_result) {
           commit('updateBacktestResult', result.data.backtest_result);
         }
       },
-      async removeBacktest({ commit }) {
+      async [BotStoreActions.removeBacktest]({ commit }) {
         commit('resetBacktestHistory');
         try {
           const result = await api.delete('/backtest');
@@ -778,7 +817,7 @@ export function createBotSubStore() {
           return Promise.reject(err);
         }
       },
-      async stopBacktest({ commit }) {
+      async [BotStoreActions.stopBacktest]({ commit }) {
         try {
           const result = await api.get('/backtest/abort');
           commit('updateBacktestRunning', result.data);
