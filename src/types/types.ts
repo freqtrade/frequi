@@ -11,13 +11,15 @@ export interface PerformanceEntry {
   profit_abs?: number;
 }
 
+export type LogLine = Array<[string, number, string, string, string]>;
+
 export interface Logs {
   /**
    * Array of Logs
    * Log format:
    * [Formatted datetime, timestamp, Module, LogLevel, Message]
    */
-  logs: Array<[string, number, string, string, string]>;
+  logs: LogLine[];
   log_count: number;
 }
 

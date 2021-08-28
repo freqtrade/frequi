@@ -13,11 +13,12 @@ import {
   BacktestResult,
   StrategyBacktestResult,
   BacktestSteps,
+  LogLine,
 } from '@/types';
 
 export interface FtbotStateType {
   version: string;
-  lastLogs: Array<[string, number, string, string, string]>;
+  lastLogs: LogLine[];
   refreshRequired: boolean;
   trades: Trade[];
   openTrades: Trade[];
