@@ -8,26 +8,26 @@ const AUTH_API_URL = 'auth_api_url';
 const APIBASE = '/api/v1';
 
 export class UserService {
-  setAPIUrl(apiurl: string): void {
+  private setAPIUrl(apiurl: string): void {
     localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
   }
 
-  setAccessToken(token: string): void {
+  private setAccessToken(token: string): void {
     localStorage.setItem(AUTH_ACCESS_TOKEN, JSON.stringify(token));
   }
 
-  setRefreshTokens(refreshToken: string): void {
+  private setRefreshTokens(refreshToken: string): void {
     localStorage.setItem(AUTH_REFRESH_TOKEN, JSON.stringify(refreshToken));
   }
 
-  logout(): void {
+  public logout(): void {
     console.log('Logging out');
     localStorage.removeItem(AUTH_REFRESH_TOKEN);
     localStorage.removeItem(AUTH_ACCESS_TOKEN);
     localStorage.removeItem(AUTH_API_URL);
   }
 
-  async login(auth: AuthPayload) {
+  public async login(auth: AuthPayload) {
     //  Login using username / password
     const result = await axios.post(
       `${auth.url}/api/v1/token/login`,
@@ -37,8 +37,8 @@ export class UserService {
       },
     );
     console.log(result.data);
-    this.setAPIUrl(auth.url);
     if (result.data.access_token) {
+      this.setAPIUrl(auth.url);
       this.setAccessToken(result.data.access_token);
     }
     if (result.data.refresh_token) {
@@ -46,7 +46,7 @@ export class UserService {
     }
   }
 
-  refreshToken(): Promise<string> {
+  public refreshToken(): Promise<string> {
     console.log('Refreshing token...');
     const token = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
     return new Promise((resolve, reject) => {
@@ -78,16 +78,16 @@ export class UserService {
     });
   }
 
-  loggedIn() {
+  public loggedIn() {
     return localStorage.getItem(AUTH_ACCESS_TOKEN) !== null;
   }
 
-  getAPIUrl(): string {
+  private getAPIUrl(): string {
     const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
     return typeof apiUrl === 'object' ? '' : apiUrl;
   }
 
-  getBaseUrl(): string {
+  public getBaseUrl(): string {
     const baseURL = this.getAPIUrl();
     if (baseURL === null) {
       // Relative url
