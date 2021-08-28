@@ -4,7 +4,8 @@ import Vuex from 'vuex';
 import userService from '@/shared/userService';
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios, { AxiosInstance } from 'axios';
-import { createBotSubStore, BotStoreGetters } from './modules/ftbot';
+import createBotStore from './modules/botStoreWrapper';
+import { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
 import settingsModule from './modules/settings';
@@ -16,7 +17,7 @@ const initCurrentTheme = getCurrentTheme();
 
 export default new Vuex.Store({
   modules: {
-    ftbot: createBotSubStore(),
+    ftbot: createBotStore(),
     alerts: alertsModule,
     layout: layoutModule,
     uiSettings: settingsModule,
@@ -122,7 +123,7 @@ export default new Vuex.Store({
         commit('setRefreshing', false);
       }
     },
-    async refreshSlow({ dispatch, commit, getters, state }, forceUpdate = false) {
+    async refreshSlow({ dispatch, getters, state }, forceUpdate = false) {
       if (state.refreshing && !forceUpdate) {
         return;
       }
@@ -137,7 +138,7 @@ export default new Vuex.Store({
         updates.push(dispatch('ftbot/getBlacklist'));
 
         await Promise.all(updates);
-        commit('ftbot/updateRefreshRequired', false);
+        dispatch('ftbot/setRefreshRequired', false);
       }
     },
     refreshFrequent({ dispatch }, slow = true) {

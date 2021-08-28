@@ -87,6 +87,7 @@ export enum BotStoreGetters {
 
 export enum BotStoreActions {
   ping = 'ping',
+  setRefreshRequired = 'setRefreshRequired',
   setDetailTrade = 'setDetailTrade',
   setSelectedPair = 'setSelectedPair',
   getTrades = 'getTrades',
@@ -387,6 +388,9 @@ export function createBotSubStore() {
             })
             .catch(console.error);
         }
+      },
+      [BotStoreActions.setRefreshRequired]({ commit }, refreshRequired: boolean) {
+        commit('setRefreshRequired', refreshRequired);
       },
       [BotStoreActions.setDetailTrade]({ commit }, trade: Trade) {
         commit('setDetailTrade', trade);
