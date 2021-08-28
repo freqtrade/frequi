@@ -11,7 +11,7 @@ export const api = axios.create({
  * Initialize api so store is accessible.
  * @param store Vuex store
  */
-export function init(store) {
+export function initApi(store) {
   api.interceptors.request.use(
     (config) => {
       const custconfig = config;
