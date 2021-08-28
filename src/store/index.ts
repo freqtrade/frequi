@@ -15,6 +15,12 @@ Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
 
 export default new Vuex.Store({
+  modules: {
+    ftbot: createBotSubStore(),
+    alerts: alertsModule,
+    layout: layoutModule,
+    uiSettings: settingsModule,
+  },
   state: {
     ping: '',
     loggedIn: userService.loggedIn(),
@@ -38,12 +44,6 @@ export default new Vuex.Store({
     getUiVersion(state) {
       return state.uiVersion;
     },
-  },
-  modules: {
-    ftbot: createBotSubStore(),
-    alerts: alertsModule,
-    layout: layoutModule,
-    uiSettings: settingsModule,
   },
   mutations: {
     setPing(state, ping) {

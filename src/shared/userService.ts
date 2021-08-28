@@ -5,29 +5,27 @@ import { AuthPayload } from '@/types';
 const AUTH_REFRESH_TOKEN = 'auth_ref_token';
 const AUTH_ACCESS_TOKEN = 'auth_access_token';
 const AUTH_API_URL = 'auth_api_url';
-const apiBase = '/api/v1';
+const APIBASE = '/api/v1';
 
-export default {
-  apiBase,
-  AUTH_API_URL,
+export class UserService {
   setAPIUrl(apiurl: string): void {
     localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
-  },
+  }
 
   setAccessToken(token: string): void {
     localStorage.setItem(AUTH_ACCESS_TOKEN, JSON.stringify(token));
-  },
+  }
 
   setRefreshTokens(refreshToken: string): void {
     localStorage.setItem(AUTH_REFRESH_TOKEN, JSON.stringify(refreshToken));
-  },
+  }
 
   logout(): void {
     console.log('Logging out');
     localStorage.removeItem(AUTH_REFRESH_TOKEN);
     localStorage.removeItem(AUTH_ACCESS_TOKEN);
     localStorage.removeItem(AUTH_API_URL);
-  },
+  }
 
   async login(auth: AuthPayload) {
     //  Login using username / password
@@ -46,7 +44,7 @@ export default {
     if (result.data.refresh_token) {
       this.setRefreshTokens(result.data.refresh_token);
     }
-  },
+  }
 
   refreshToken(): Promise<string> {
     console.log('Refreshing token...');
@@ -54,7 +52,7 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .post(
-          `${this.getAPIUrl()}${apiBase}/token/refresh`,
+          `${this.getAPIUrl()}${APIBASE}/token/refresh`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -78,22 +76,40 @@ export default {
           }
         });
     });
-  },
+  }
 
   loggedIn() {
     return localStorage.getItem(AUTH_ACCESS_TOKEN) !== null;
-  },
+  }
 
   getAPIUrl(): string {
     const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
     return typeof apiUrl === 'object' ? '' : apiUrl;
-  },
+  }
+
+  getBaseUrl(): string {
+    const baseURL = this.getAPIUrl();
+    if (baseURL === null) {
+      // Relative url
+      return APIBASE;
+    }
+    if (!baseURL.endsWith(APIBASE)) {
+      return `${baseURL}${APIBASE}`;
+    }
+    return `${baseURL}${APIBASE}`;
+  }
 
   getAccessToken(): string {
     return JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
-  },
+  }
 
   getRefreshToken() {
     return JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
-  },
-};
+  }
+}
+
+export function useUserService() {
+  return new UserService();
+}
+
+export default useUserService();
