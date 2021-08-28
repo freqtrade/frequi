@@ -1,4 +1,5 @@
-import { api } from '@/shared/apiService';
+import { useApi } from '@/shared/apiService';
+import userService from '@/shared/userService';
 
 import {
   BacktestResult,
@@ -85,6 +86,8 @@ export enum BotStoreGetters {
 }
 
 export function createBotSubStore() {
+  const { api } = useApi(userService);
+
   return {
     namespaced: true,
     state,

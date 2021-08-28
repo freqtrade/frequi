@@ -62,7 +62,6 @@
 import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import userService from '@/shared/userService';
-import { setBaseUrl } from '@/shared/apiService';
 
 import { AuthPayload } from '@/types';
 
@@ -132,7 +131,9 @@ export default class Login extends Vue {
       .login(this.auth)
       .then(() => {
         this.setLoggedIn(true);
-        setBaseUrl(userService.getAPIUrl());
+        // TODO: Investigate how this needs to be done properly
+        // setBaseUrl(userService.getAPIUrl());
+
         this.emitLoginResult(true);
         if (this.inModal === false) {
           if (typeof this.$route.query.redirect === 'string') {
