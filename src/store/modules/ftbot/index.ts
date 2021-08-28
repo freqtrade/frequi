@@ -51,7 +51,6 @@ export enum BotStoreGetters {
   currentLocks = 'currentLocks',
   plotConfig = 'plotConfig',
   availablePlotConfigNames = 'availablePlotConfigNames',
-  plotConfigNames = 'plotConfigNames',
   plotConfigName = 'plotConfigName',
   timeframe = 'timeframe',
   isTrading = 'isTrading',
@@ -96,10 +95,6 @@ export default {
     },
     [BotStoreGetters.availablePlotConfigNames](state: FtbotStateType): string[] {
       return state.availablePlotConfigNames;
-    },
-    // TODO: is the following even used?
-    [BotStoreGetters.plotConfigNames](state: FtbotStateType): string[] {
-      return Object.keys(state.customPlotConfig);
     },
     [BotStoreGetters.plotConfigName](state: FtbotStateType): string {
       return state.plotConfigName;
