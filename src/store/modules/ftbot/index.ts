@@ -28,6 +28,7 @@ import {
   ProfitInterface,
   PairHistory,
   LogLine,
+  BacktestSteps,
 } from '@/types';
 
 import {
@@ -76,6 +77,11 @@ export enum BotStoreGetters {
   strategy = 'strategy',
   strategyList = 'strategyList',
   candleData = 'candleData',
+  backtestRunning = 'backtestRunning',
+  backtestStep = 'backtestStep',
+  backtestProgress = 'backtestProgress',
+  backtestHistory = 'backtestHistory',
+  selectedBacktestResultKey = 'selectedBacktestResultKey',
 }
 
 export default {
@@ -209,6 +215,22 @@ export default {
     // TODO: Type me
     [BotStoreGetters.history](state: FtbotStateType) {
       return state.history;
+    },
+    [BotStoreGetters.backtestRunning](state: FtbotStateType): boolean {
+      return state.backtestRunning;
+    },
+    [BotStoreGetters.backtestStep](state: FtbotStateType): BacktestSteps {
+      return state.backtestStep;
+    },
+    [BotStoreGetters.backtestProgress](state: FtbotStateType): number {
+      return state.backtestProgress;
+    },
+    // TODO: type me
+    [BotStoreGetters.backtestHistory](state: FtbotStateType): {} {
+      return state.backtestHistory;
+    },
+    [BotStoreGetters.selectedBacktestResultKey](state: FtbotStateType): string {
+      return state.selectedBacktestResultKey;
     },
   },
   mutations: {
