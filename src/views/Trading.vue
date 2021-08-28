@@ -188,7 +188,7 @@ const layoutNs = namespace('layout');
   },
 })
 export default class Trading extends Vue {
-  @ftbot.State detailTradeId!: number;
+  @ftbot.Getter [BotStoreGetters.detailTradeId]!: number;
 
   @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
 
@@ -202,7 +202,7 @@ export default class Trading extends Vue {
 
   @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
 
-  @ftbot.State whitelist!: string[];
+  @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
 
   @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
 

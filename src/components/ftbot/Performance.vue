@@ -18,7 +18,8 @@ const ftbot = namespace('ftbot');
 
 @Component({})
 export default class Performance extends Vue {
-  @ftbot.State performanceStats!: PerformanceEntry[];
+  // TODO: Verify type of PerformanceStats!
+  @ftbot.Getter [BotStoreGetters.performanceStats]!: PerformanceEntry[];
 
   @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 

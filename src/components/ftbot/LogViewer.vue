@@ -8,13 +8,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { Logs } from '@/types';
+import { LogLine } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
 @Component({})
 export default class LogViewer extends Vue {
-  @ftbot.State lastLogs!: Logs[];
+  @ftbot.Getter [BotStoreGetters.lastLogs]!: LogLine[];
 
   @ftbot.Action getLogs;
 

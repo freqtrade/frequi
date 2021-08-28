@@ -38,6 +38,7 @@ import { namespace } from 'vuex-class';
 import { BalanceInterface } from '@/types';
 import HideIcon from 'vue-material-design-icons/EyeOff.vue';
 import ShowIcon from 'vue-material-design-icons/Eye.vue';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -47,7 +48,7 @@ const ftbot = namespace('ftbot');
 export default class Balance extends Vue {
   @ftbot.Action getBalance;
 
-  @ftbot.State balance!: BalanceInterface;
+  @ftbot.Getter [BotStoreGetters.balance]!: BalanceInterface;
 
   hideSmallBalances = true;
 

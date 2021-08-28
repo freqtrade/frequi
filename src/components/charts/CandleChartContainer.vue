@@ -109,13 +109,13 @@ export default class CandleChartContainer extends Vue {
 
   @Getter getChartTheme!: string;
 
-  @ftbot.State availablePlotConfigNames!: Array<string>;
+  @ftbot.Getter [BotStoreGetters.availablePlotConfigNames]!: string[];
 
   @ftbot.Action setPlotConfigName;
 
-  @ftbot.State candleData!: PairHistory;
+  @ftbot.Getter [BotStoreGetters.candleData]!: PairHistory;
 
-  @ftbot.State history!: PairHistory;
+  @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
 
   @ftbot.Getter [BotStoreGetters.selectedPair]!: string;
 

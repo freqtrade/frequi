@@ -26,6 +26,8 @@ import {
   StrategyBacktestResult,
   BacktestStatus,
   ProfitInterface,
+  PairHistory,
+  LogLine,
 } from '@/types';
 
 import {
@@ -42,11 +44,14 @@ export enum BotStoreGetters {
   openTradeCount = 'openTradeCount',
   tradeDetail = 'tradeDetail',
   selectedPair = 'selectedPair',
+  trades = 'trades',
   closedTrades = 'closedTrades',
   allTrades = 'allTrades',
   currentLocks = 'currentLocks',
   plotConfig = 'plotConfig',
+  availablePlotConfigNames = 'availablePlotConfigNames',
   plotConfigNames = 'plotConfigNames',
+  plotConfigName = 'plotConfigName',
   timeframe = 'timeframe',
   isTrading = 'isTrading',
   isWebserverMode = 'isWebserverMode',
@@ -58,6 +63,19 @@ export enum BotStoreGetters {
   version = 'version',
   profit = 'profit',
   botState = 'botState',
+  whitelist = 'whitelist',
+  blacklist = 'blacklist',
+  pairlistMethods = 'pairlistMethods',
+  pairlist = 'pairlist',
+  balance = 'balance',
+  detailTradeId = 'detailTradeId',
+  history = 'history',
+  lastLogs = 'lastLogs',
+  performanceStats = 'performanceStats',
+  dailyStats = 'dailyStats',
+  strategy = 'strategy',
+  strategyList = 'strategyList',
+  candleData = 'candleData',
 }
 
 export default {
@@ -70,8 +88,15 @@ export default {
     [BotStoreGetters.plotConfig](state: FtbotStateType) {
       return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
     },
+    [BotStoreGetters.availablePlotConfigNames](state: FtbotStateType): string[] {
+      return state.availablePlotConfigNames;
+    },
+    // TODO: is the following even used?
     [BotStoreGetters.plotConfigNames](state: FtbotStateType): string[] {
       return Object.keys(state.customPlotConfig);
+    },
+    [BotStoreGetters.plotConfigName](state: FtbotStateType): string {
+      return state.plotConfigName;
     },
     [BotStoreGetters.openTrades](state: FtbotStateType): Trade[] {
       return state.openTrades;
@@ -95,7 +120,10 @@ export default {
     [BotStoreGetters.selectedPair](state: FtbotStateType): string {
       return state.selectedPair;
     },
-    [BotStoreGetters.closedTrades](state: FtbotStateType) {
+    [BotStoreGetters.trades](state: FtbotStateType): Trade[] {
+      return state.trades;
+    },
+    [BotStoreGetters.closedTrades](state: FtbotStateType): Trade[] {
       // Sort by trade_id desc
       return state.trades
         .filter((item) => !item.is_open)
@@ -141,6 +169,46 @@ export default {
     },
     [BotStoreGetters.botState](state: FtbotStateType): BotState | undefined {
       return state.botState;
+    },
+    [BotStoreGetters.whitelist](state: FtbotStateType): string[] {
+      return state.whitelist;
+    },
+    [BotStoreGetters.blacklist](state: FtbotStateType): string[] {
+      return state.blacklist;
+    },
+    [BotStoreGetters.pairlistMethods](state: FtbotStateType): string[] {
+      return state.pairlistMethods;
+    },
+    [BotStoreGetters.pairlist](state: FtbotStateType): string[] {
+      return state.pairlist;
+    },
+    [BotStoreGetters.balance](state: FtbotStateType): BalanceInterface | {} {
+      return state.balance;
+    },
+    [BotStoreGetters.detailTradeId](state: FtbotStateType): number | undefined {
+      return state.detailTradeId;
+    },
+    [BotStoreGetters.lastLogs](state: FtbotStateType): LogLine[] {
+      return state.lastLogs;
+    },
+    [BotStoreGetters.performanceStats](state: FtbotStateType): Performance[] {
+      return state.performanceStats;
+    },
+    [BotStoreGetters.dailyStats](state: FtbotStateType): DailyReturnValue | {} {
+      return state.dailyStats;
+    },
+    [BotStoreGetters.strategy](state: FtbotStateType): StrategyResult | {} {
+      return state.strategy;
+    },
+    [BotStoreGetters.strategyList](state: FtbotStateType): string[] {
+      return state.strategyList;
+    },
+    [BotStoreGetters.candleData](state: FtbotStateType): PairHistory | {} {
+      return state.candleData;
+    },
+    // TODO: Type me
+    [BotStoreGetters.history](state: FtbotStateType) {
+      return state.history;
     },
   },
   mutations: {

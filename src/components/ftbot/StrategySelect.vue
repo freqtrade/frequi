@@ -13,6 +13,8 @@
 </template>
 
 <script lang="ts">
+import { BotStoreGetters } from '@/store/modules/ftbot';
+import { StrategyResult } from '@/types';
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
@@ -29,9 +31,9 @@ export default class StrategySelect extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action getStrategy!: (strategy: string) => void;
 
-  @ftbot.State strategyList!: string[];
+  @ftbot.Getter [BotStoreGetters.strategyList]!: string[];
 
-  @ftbot.State strategy;
+  @ftbot.Getter [BotStoreGetters.strategy]: StrategyResult;
 
   @Emit('input')
   emitStrategy(strategy: string) {

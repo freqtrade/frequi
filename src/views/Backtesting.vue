@@ -299,6 +299,7 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import {
   BacktestPayload,
   BotState,
+  PairHistory,
   PairHistoryPayload,
   PlotConfig,
   StrategyBacktestResult,
@@ -362,7 +363,7 @@ export default class Backtesting extends Vue {
 
   @ftbot.State selectedBacktestResultKey!: string;
 
-  @ftbot.State history;
+  @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
 
   @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
 

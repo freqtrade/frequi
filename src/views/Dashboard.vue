@@ -165,17 +165,17 @@ const layoutNs = namespace('layout');
 export default class Dashboard extends Vue {
   @ftbot.Getter closedTrades!: Trade[];
 
-  @ftbot.State dailyStats!: DailyReturnValue;
+  @ftbot.Getter [BotStoreGetters.dailyStats]!: DailyReturnValue;
 
-  @ftbot.Getter openTrades!: Array<Trade>;
+  @ftbot.Getter [BotStoreGetters.openTrades]!: Array<Trade>;
 
-  @ftbot.State balance!: BalanceInterface;
+  @ftbot.Getter [BotStoreGetters.balance]!: BalanceInterface;
 
   @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
-  @ftbot.State profit!: ProfitInterface;
+  @ftbot.Getter [BotStoreGetters.profit]!: ProfitInterface;
 
-  @ftbot.State performanceStats!: Array<PerformanceEntry>;
+  @ftbot.Getter [BotStoreGetters.performanceStats]!: PerformanceEntry[];
 
   @ftbot.Action getPerformance;
 

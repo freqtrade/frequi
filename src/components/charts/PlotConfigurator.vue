@@ -1,7 +1,7 @@
 <template>
   <div v-if="columns">
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input id="idPlotConfigName" v-model="plotConfigName" size="sm"> </b-form-input>
+      <b-form-input id="idPlotConfigName" v-model="plotConfigNameLoc" size="sm"> </b-form-input>
     </b-form-group>
     <div class="col-mb-3">
       <hr />
@@ -177,7 +177,7 @@ export default class PlotConfigurator extends Vue {
     { text: 'Subplots', value: 'subplots' },
   ];
 
-  plotConfigName = 'default';
+  plotConfigNameLoc = 'default';
 
   newSubplotName = '';
 
@@ -200,7 +200,7 @@ export default class PlotConfigurator extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Mutation updatePlotConfigName!: (plotConfigName: string) => void;
 
-  @ftbot.State('plotConfigName') usedPlotConfigName!: string;
+  @ftbot.Getter [BotStoreGetters.plotConfigName]!: string;
 
   get plotConfigJson() {
     return JSON.stringify(this.plotConfig, null, 2);
@@ -246,13 +246,13 @@ export default class PlotConfigurator extends Vue {
   mounted() {
     console.log('Config Mounted', this.value);
     this.plotConfig = this.value;
-    this.plotConfigName = this.usedPlotConfigName;
+    this.plotConfigNameLoc = this.plotConfigName;
   }
 
   @Watch('value')
   watchValue() {
     this.plotConfig = this.value;
-    this.plotConfigName = this.usedPlotConfigName;
+    this.plotConfigNameLoc = this.plotConfigName;
   }
 
   addIndicator(newIndicator: Record<string, IndicatorConfig>) {
@@ -315,7 +315,7 @@ export default class PlotConfigurator extends Vue {
   }
 
   loadPlotConfig() {
-    this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+    this.plotConfig = getCustomPlotConfig(this.plotConfigNameLoc);
     console.log(this.plotConfig);
     console.log('loading config');
     this.emitPlotConfig();

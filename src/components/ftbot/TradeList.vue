@@ -114,7 +114,7 @@ export default class TradeList extends Vue {
 
   @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
-  @ftbot.State detailTradeId?: number;
+  @ftbot.Getter [BotStoreGetters.detailTradeId]?: number;
 
   @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
 
