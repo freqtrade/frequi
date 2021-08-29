@@ -10,6 +10,8 @@ export enum MultiBotStoreGetters {
   hasBots = 'hasBots',
   selectedBot = 'selectedBot',
   allAvailableBots = 'allAvailableBots',
+  allAvailableBotsList = 'allAvailableBotsList',
+  allIsBotOnline = 'allIsBotOnline',
   nextBotId = 'nextBotId',
 }
 
@@ -29,6 +31,16 @@ export default function createBotStore(store) {
     },
     [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): BotDescriptors {
       return state.availableBots;
+    },
+    [MultiBotStoreGetters.allAvailableBotsList](state: FTMultiBotState): string[] {
+      return Object.keys(state.availableBots);
+    },
+    [MultiBotStoreGetters.allIsBotOnline](state: FTMultiBotState, getters): {} {
+      const result = {};
+      getters.allAvailableBotsList.forEach((e) => {
+        result[e] = getters[`${e}/isBotOnline`];
+      });
+      return result;
     },
     [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
       let botCount = Object.keys(state.availableBots).length;
@@ -95,6 +107,11 @@ export default function createBotStore(store) {
     },
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
+    },
+    pingAll({ getters, dispatch }) {
+      getters.allAvailableBotsList.forEach((e) => {
+        dispatch(`${e}/ping`);
+      });
     },
   };
   // Autocreate Actions from botstores

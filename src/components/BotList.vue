@@ -17,6 +17,7 @@
         <b-button class="btn-xs ml-1" size="sm" title="Delete bot" @click="clickRemoveBot(bot)">
           <DeleteIcon :size="16" title="Delete trade" />
         </b-button>
+        {{ allIsBotOnline[bot.botId] ? 'Online' : 'Offline' }}
       </b-list-group-item>
     </b-list-group>
     <LoginModal class="mt-2" login-text="Add new bot" />
@@ -37,6 +38,8 @@ const ftbot = namespace('ftbot');
 @Component({ components: { LoginModal, DeleteIcon, EditIcon } })
 export default class BotList extends Vue {
   @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
+
+  @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline];
 
   @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
 

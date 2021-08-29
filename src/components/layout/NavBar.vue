@@ -87,7 +87,7 @@ export default class NavBar extends Vue {
 
   @Getter getUiVersion!: string;
 
-  @ftbot.Action ping;
+  @ftbot.Action pingAll;
 
   @ftbot.Action getState;
 
@@ -116,9 +116,9 @@ export default class NavBar extends Vue {
   favicon: Favico | undefined = undefined;
 
   mounted() {
-    this.ping();
+    this.pingAll();
     this.loadUIVersion();
-    this.pingInterval = window.setInterval(this.ping, 60000);
+    this.pingInterval = window.setInterval(this.pingAll, 60000);
 
     if (this.hasBots) {
       // Query botstate - this will enable / disable certain modes
