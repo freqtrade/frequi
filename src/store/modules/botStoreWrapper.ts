@@ -71,8 +71,12 @@ export default function createBotStore(store) {
   };
   // Autocreate Actions
   Object.keys(BotStoreActions).forEach((e) => {
-    actions[e] = ({ state, dispatch }, ...args) => {
-      return dispatch(`${state.selectedBot}/${e}`, ...args);
+    actions[e] = ({ state, dispatch, getters }, ...args) => {
+      if (getters.hasBots) {
+        return dispatch(`${state.selectedBot}/${e}`, ...args);
+      }
+      console.warn(`bot ${state.selectedBot} is not registered.`);
+      return {};
     };
   });
 

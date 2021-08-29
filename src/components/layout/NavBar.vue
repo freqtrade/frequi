@@ -30,7 +30,7 @@
         <b-navbar-nav class="ml-auto">
           <li class="nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
-              {{ botName }}
+              {{ botName || 'No bot selected' }}
             </b-nav-text>
             <b-nav-text class="verticalCenter">
               {{ isBotOnline ? 'Online' : 'Offline' }}

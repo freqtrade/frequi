@@ -2,8 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Error404 from '@/views/Error404.vue';
-
-import userService from '@/shared/userService';
+import store from '@/store';
 
 Vue.use(VueRouter);
 
@@ -68,11 +67,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'Login' && userService.loggedIn()) {
-    // No login if already logged in
-    next({ path: '/' });
-  }
-  if (!to.meta?.allowAnonymous && !userService.loggedIn()) {
+  const hasBots = store.getters['ftbot/hasBots'];
+  if (!to.meta?.allowAnonymous && !hasBots) {
     // Forward to login if login is required
     next({
       path: '/login',
