@@ -6,6 +6,8 @@
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
       </router-link>
 
+      <!-- TODO: For XS breakpoint, this should be here...  -->
+      <!-- <ReloadControl class="mr-3" /> -->
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
@@ -26,8 +28,10 @@
           >
           <BootswatchThemeSelect />
         </b-navbar-nav>
+
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
+          <ReloadControl class="mr-3" />
           <li class="nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
               {{ botName || 'No bot selected' }}
@@ -81,13 +85,14 @@ import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
 import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
+import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
 const uiSettingsNs = namespace('uiSettings');
 
 @Component({
-  components: { LoginModal, BootswatchThemeSelect },
+  components: { LoginModal, BootswatchThemeSelect, ReloadControl },
 })
 export default class NavBar extends Vue {
   pingInterval: number | null = null;

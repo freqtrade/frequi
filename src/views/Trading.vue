@@ -18,8 +18,7 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Bot Controls">
-        <ReloadControl class="mt-2" />
-        <BotControls />
+        <!-- <ReloadControl class="mr-3" /> -->
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -31,7 +30,9 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Multi Pane">
-        <b-tabs content-class="mt-3" class="mt-3">
+        <BotControls class="mt-1" />
+
+        <b-tabs content-class="mt-3" class="mt-1">
           <b-tab title="Pairs combined" active>
             <PairSummary :pairlist="whitelist" :current-locks="currentLocks" :trades="openTrades" />
           </b-tab>

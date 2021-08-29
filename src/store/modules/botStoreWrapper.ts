@@ -9,6 +9,8 @@ interface FTMultiBotState {
   availableBots: BotDescriptors;
   autoRefresh: boolean;
   refreshing: boolean;
+  refreshInterval: number | null;
+  refreshIntervalSlow: number | null;
 }
 
 export enum MultiBotStoreGetters {
@@ -27,6 +29,8 @@ export default function createBotStore(store) {
     availableBots: {},
     autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
     refreshing: false,
+    refreshInterval: null,
+    refreshIntervalSlow: null,
   };
 
   // All getters working on all bots should be prefixed with all.
@@ -91,6 +95,12 @@ export default function createBotStore(store) {
         delete state.availableBots[botId];
       }
     },
+    setRefreshInterval(state: FTMultiBotState, interval: number | null) {
+      state.refreshInterval = interval;
+    },
+    setRefreshIntervalSlow(state: FTMultiBotState, interval: number | null) {
+      state.refreshIntervalSlow = interval;
+    },
   };
 
   const actions = {
@@ -125,8 +135,16 @@ export default function createBotStore(store) {
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
     },
-    setAutoRefresh({ commit }, newRefreshValue) {
+    setAutoRefresh({ dispatch, commit }, newRefreshValue) {
+      console.log('setAutoRefresh', newRefreshValue);
       commit('setAutoRefresh', newRefreshValue);
+      // TODO: Investigate this -
+      // this ONLY works if ReloadControl is only visible once,otherwise it triggers twice
+      if (newRefreshValue) {
+        dispatch('startRefresh', true);
+      } else {
+        dispatch('stopRefresh');
+      }
       localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
     },
     async refreshAll({ dispatch, state, commit }, forceUpdate = false) {
@@ -177,6 +195,46 @@ export default function createBotStore(store) {
     refreshOnce({ dispatch }) {
       dispatch('getVersion');
     },
+    startRefresh({ getters, state, dispatch, commit }, runNow: boolean) {
+      console.log('starting refresh');
+      // Start refresh timer
+      if (getters.hasBots !== true) {
+        console.log('Not logged in.');
+        return;
+      }
+      console.log('Starting automatic refresh.');
+      if (runNow) {
+        dispatch('refreshFrequent', false);
+      }
+      if (state.autoRefresh && !state.refreshInterval) {
+        // Set interval for refresh
+        const refreshInterval = window.setInterval(() => {
+          dispatch('refreshFrequent');
+        }, 5000);
+        commit('setRefreshInterval', refreshInterval);
+      }
+      if (runNow) {
+        dispatch('refreshSlow', true);
+      }
+      if (state.autoRefresh && !state.refreshIntervalSlow) {
+        const refreshIntervalSlow = window.setInterval(() => {
+          dispatch('refreshSlow', false);
+        }, 60000);
+        commit('setRefreshIntervalSlow', refreshIntervalSlow);
+      }
+    },
+    stopRefresh({ state, commit }: { state: FTMultiBotState; commit: any }) {
+      console.log('Stopping automatic refresh.');
+      if (state.refreshInterval) {
+        window.clearInterval(state.refreshInterval);
+        commit('setRefreshInterval', null);
+      }
+      if (state.refreshIntervalSlow) {
+        window.clearInterval(state.refreshIntervalSlow);
+        commit('setRefreshIntervalSlow', null);
+      }
+    },
+
     pingAll({ getters, dispatch }) {
       getters.allAvailableBotsList.forEach((e) => {
         dispatch(`${e}/ping`);

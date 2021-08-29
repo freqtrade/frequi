@@ -15,8 +15,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Getter, State, namespace } from 'vuex-class';
+import { Component, Vue } from 'vue-property-decorator';
+import { Getter, namespace } from 'vuex-class';
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
 
 const ftbot = namespace('ftbot');
@@ -50,13 +50,13 @@ export default class ReloadControl extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setAutoRefresh!: (newValue: boolean) => void;
 
-  @ftbot.Action refreshSlow;
-
-  @ftbot.Action refreshFrequent;
-
   @ftbot.Action refreshAll;
 
   @ftbot.Action refreshOnce;
+
+  @ftbot.Action startRefresh;
+
+  @ftbot.Action stopRefresh;
 
   get autoRefreshLoc() {
     return this.autoRefresh;
@@ -64,49 +64,6 @@ export default class ReloadControl extends Vue {
 
   set autoRefreshLoc(newValue: boolean) {
     this.setAutoRefresh(newValue);
-  }
-
-  startRefresh(runNow: boolean) {
-    if (this.loggedIn !== true) {
-      console.log('Not logged in.');
-      return;
-    }
-    console.log('Starting automatic refresh.');
-    if (runNow) {
-      this.refreshFrequent(false);
-    }
-    if (this.autoRefresh) {
-      this.refreshInterval = window.setInterval(() => {
-        this.refreshFrequent();
-      }, 5000);
-    }
-    if (runNow) {
-      this.refreshSlow(true);
-    }
-    if (this.autoRefresh) {
-      this.refreshIntervalSlow = window.setInterval(() => {
-        this.refreshSlow(false);
-      }, 60000);
-    }
-  }
-
-  stopRefresh() {
-    console.log('Stopping automatic refresh.');
-    if (this.refreshInterval) {
-      window.clearInterval(this.refreshInterval);
-    }
-    if (this.refreshIntervalSlow) {
-      window.clearInterval(this.refreshIntervalSlow);
-    }
-  }
-
-  @Watch('autoRefresh')
-  watchAutoRefresh(val) {
-    if (val) {
-      this.startRefresh(true);
-    } else {
-      this.stopRefresh();
-    }
   }
 }
 </script>
