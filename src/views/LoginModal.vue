@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button v-b-modal.modal-prevent-closing>{{ loginText }}</b-button>
-    <b-modal id="modal-prevent-closing" ref="modal" title="Submit Your Name" @ok="handleOk">
+    <b-modal id="modal-prevent-closing" ref="modal" title="Login to your bot" @ok="handleOk">
       <Login id="loginForm" ref="loginForm" in-modal />
     </b-modal>
   </div>

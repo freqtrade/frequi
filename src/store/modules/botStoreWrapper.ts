@@ -75,9 +75,10 @@ export default function createBotStore(store) {
       store.registerModule(['ftbot', botId], createBotSubStore(botId));
       commit('addBot', botId);
     },
-    removeBot({ commit, getters }, botId: string) {
+    removeBot({ commit, getters, dispatch }, botId: string) {
       if (getters.allAvailableBots.includes(botId)) {
-        store.unregisterModule(`ftbot/${botId}`);
+        dispatch(`${botId}/logout`);
+        store.unregisterModule([`ftbot`, botId]);
         commit('removeBot', botId);
       } else {
         console.warn(`bot ${botId} not found! could not remove`);
