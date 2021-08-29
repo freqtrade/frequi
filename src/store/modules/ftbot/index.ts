@@ -43,6 +43,7 @@ import { showAlert } from '../alerts';
 
 export enum BotStoreGetters {
   botName = 'botName',
+  isBotOnline = 'isBotOnline',
   openTrades = 'openTrades',
   openTradeCount = 'openTradeCount',
   tradeDetail = 'tradeDetail',
@@ -136,6 +137,9 @@ export function createBotSubStore(botId: string) {
     getters: {
       [BotStoreGetters.botName](state: FtbotStateType) {
         return state.botState?.bot_name || 'freqtrade';
+      },
+      [BotStoreGetters.isBotOnline](state: FtbotStateType): boolean {
+        return state.isBotOnline;
       },
       [BotStoreGetters.plotConfig](state: FtbotStateType) {
         return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
@@ -276,6 +280,13 @@ export function createBotSubStore(botId: string) {
       },
     },
     mutations: {
+      setPing(state: FtbotStateType, ping) {
+        const now = Date.now();
+        state.ping = `${ping.status} ${now.toString()}`;
+      },
+      setIsBotOnline(state: FtbotStateType, isBotOnline: boolean) {
+        state.isBotOnline = isBotOnline;
+      },
       updateRefreshRequired(state: FtbotStateType, refreshRequired: boolean) {
         state.refreshRequired = refreshRequired;
       },
@@ -380,16 +391,14 @@ export function createBotSubStore(botId: string) {
       },
     },
     actions: {
-      [BotStoreActions.ping]({ commit, rootState }) {
-        if (rootState.loggedIn) {
-          api
-            .get('/ping')
-            .then((result) => {
-              commit('setPing', result.data, { root: true });
-              commit('setIsBotOnline', result.data, { root: true });
-            })
-            .catch(console.error);
-        }
+      [BotStoreActions.ping]({ commit }) {
+        api
+          .get('/ping')
+          .then((result) => {
+            commit('setPing', result.data);
+            commit('setIsBotOnline', true);
+          })
+          .catch(console.error);
       },
       [BotStoreActions.logout]() {
         userService.logout();

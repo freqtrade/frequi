@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import userService from '@/shared/userService';
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios, { AxiosInstance } from 'axios';
 import createBotStore from './modules/botStoreWrapper';
@@ -22,11 +21,8 @@ const store = new Vuex.Store({
     uiSettings: settingsModule,
   },
   state: {
-    ping: '',
-    loggedIn: userService.loggedIn(),
     refreshing: false,
     autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
-    isBotOnline: false,
     currentTheme: initCurrentTheme,
     uiVersion: 'dev',
   },
@@ -44,25 +40,18 @@ const store = new Vuex.Store({
     getUiVersion(state) {
       return state.uiVersion;
     },
+    loggedIn(state, getters) {
+      return getters['ftbot/hasBots'];
+    },
   },
   mutations: {
-    setPing(state, ping) {
-      // console.log(ping);
-      const now = Date.now();
-      state.ping = `${ping.status} ${now.toString()}`;
-    },
-    setLoggedIn(state, loggedin: boolean) {
-      state.loggedIn = loggedin;
-    },
     setAutoRefresh(state, newRefreshValue: boolean) {
       state.autoRefresh = newRefreshValue;
     },
     setRefreshing(state, refreshing: boolean) {
       state.refreshing = refreshing;
     },
-    setIsBotOnline(state, isBotOnline: boolean) {
-      state.isBotOnline = isBotOnline;
-    },
+
     mutateCurrentTheme(state, newTheme: string) {
       storeCurrentTheme(newTheme);
       state.currentTheme = newTheme;

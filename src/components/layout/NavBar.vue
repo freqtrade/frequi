@@ -36,7 +36,7 @@
               {{ isBotOnline ? 'Online' : 'Offline' }}
             </b-nav-text>
           </li>
-          <li v-if="loggedIn" class="nav-item">
+          <li v-if="hasBots" class="nav-item">
             <b-nav-item-dropdown right>
               <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <template #button-content>
@@ -63,12 +63,13 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { State, Action, namespace, Getter } from 'vuex-class';
+import { Action, namespace, Getter } from 'vuex-class';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
 import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
+import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -79,10 +80,6 @@ const uiSettingsNs = namespace('uiSettings');
 })
 export default class NavBar extends Vue {
   pingInterval: number | null = null;
-
-  @State loggedIn!: boolean;
-
-  @State isBotOnline!: boolean;
 
   @Action setLoggedIn;
 
@@ -95,6 +92,10 @@ export default class NavBar extends Vue {
   @ftbot.Action getState;
 
   @ftbot.Action logout;
+
+  @ftbot.Getter [BotStoreGetters.isBotOnline]!: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.hasBots]: boolean;
 
   @ftbot.Getter [BotStoreGetters.botName]: string;
 
@@ -119,7 +120,7 @@ export default class NavBar extends Vue {
     this.loadUIVersion();
     this.pingInterval = window.setInterval(this.ping, 60000);
 
-    if (this.loggedIn) {
+    if (this.hasBots) {
       // Query botstate - this will enable / disable certain modes
       this.getState();
     }
@@ -133,6 +134,7 @@ export default class NavBar extends Vue {
 
   clickLogout(): void {
     this.logout();
+    // TODO: This should be per bot
     this.setLoggedIn(false);
   }
 

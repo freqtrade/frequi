@@ -40,6 +40,7 @@ export default class ReloadControl extends Vue {
     this.stopRefresh();
   }
 
+  // TODO-multi: This should be per bot!
   @Getter loggedIn;
 
   @State autoRefresh!: boolean;

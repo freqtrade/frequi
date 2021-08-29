@@ -5,6 +5,12 @@ interface FTMultiBotState {
   availableBots: string[];
 }
 
+export enum MultiBotStoreGetters {
+  hasBots = 'hasBots',
+  selectedBot = 'selectedBot',
+  allAvailableBots = 'allAvailableBots',
+}
+
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
     selectedBot: 'ftbot.0',
@@ -13,13 +19,13 @@ export default function createBotStore(store) {
 
   // All getters working on all bots should be prefixed with all.
   const getters = {
-    hasBots(state: FTMultiBotState): boolean {
+    [MultiBotStoreGetters.hasBots](state: FTMultiBotState): boolean {
       return state.availableBots.length > 0;
     },
-    selectedBot(state: FTMultiBotState): string {
+    [MultiBotStoreGetters.selectedBot](state: FTMultiBotState): string {
       return state.selectedBot;
     },
-    allAvailableBots(state: FTMultiBotState): string[] {
+    [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): string[] {
       return state.availableBots;
     },
   };
