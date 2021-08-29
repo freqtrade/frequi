@@ -19,6 +19,7 @@ export interface AuthStorageMulti {
 export interface BotDescriptor {
   botName: string;
   botId: string;
+  botUrl: string;
 }
 
 export interface BotDescriptors {

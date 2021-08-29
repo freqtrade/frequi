@@ -70,6 +70,7 @@ export class UserService {
       response[k] = {
         botId: k,
         botName: v.botName,
+        botUrl: v.apiUrl,
       };
     });
     return response;

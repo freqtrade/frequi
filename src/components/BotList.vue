@@ -7,6 +7,7 @@
         :key="bot.botId"
         button
         :active="bot.botId === selectedBot"
+        :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl}`"
         @click="selectBot(bot.botId)"
       >
         {{ bot.botName || bot.botId }}

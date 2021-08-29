@@ -152,6 +152,7 @@ export default class Login extends Vue {
         this.addBot({
           botName: this.auth.botName,
           botId: this.nextBotId,
+          botUrl: this.auth.url,
         });
         // TODO: Investigate how this needs to be done properly
         // setBaseUrl(userService.getAPIUrl());
