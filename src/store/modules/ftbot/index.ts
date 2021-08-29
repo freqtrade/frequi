@@ -37,7 +37,8 @@ import {
   getAllPlotConfigNames,
   storePlotConfigName,
 } from '@/shared/storage';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+
 import state, { FtbotStateType } from './state';
 import { showAlert } from '../alerts';
 
@@ -89,6 +90,9 @@ export enum BotStoreGetters {
 export enum BotStoreActions {
   ping = 'ping',
   setRefreshRequired = 'setRefreshRequired',
+  refreshSlow = 'refreshSlow',
+  refreshFrequent = 'refreshFrequent',
+  refreshOnce = 'refreshOnce',
   setDetailTrade = 'setDetailTrade',
   setSelectedPair = 'setSelectedPair',
   getTrades = 'getTrades',
@@ -406,6 +410,37 @@ export function createBotSubStore(botId: string) {
       [BotStoreActions.setRefreshRequired]({ commit }, refreshRequired: boolean) {
         commit('updateRefreshRequired', refreshRequired);
       },
+      [BotStoreActions.refreshOnce]({ dispatch }) {
+        dispatch('getVersion');
+      },
+      async [BotStoreActions.refreshSlow]({ dispatch, getters, state }, forceUpdate = false) {
+        if (state.refreshing && !forceUpdate) {
+          return;
+        }
+        // Refresh data only when needed
+        if (forceUpdate || getters[`${BotStoreGetters.refreshRequired}`]) {
+          const updates: Promise<AxiosInstance>[] = [];
+          updates.push(dispatch('getPerformance'));
+          updates.push(dispatch('getProfit'));
+          updates.push(dispatch('getTrades'));
+          /* white/blacklist might be refreshed more often as they are not expensive on the backend */
+          updates.push(dispatch('getWhitelist'));
+          updates.push(dispatch('getBlacklist'));
+
+          await Promise.all(updates);
+          dispatch('setRefreshRequired', false);
+        }
+      },
+      [BotStoreActions.refreshFrequent]({ dispatch }, slow = true) {
+        if (slow) {
+          dispatch('refreshSlow', false);
+        }
+        // Refresh data that's needed in near realtime
+        dispatch('getOpenTrades');
+        dispatch('getState');
+        dispatch('getLocks');
+      },
+
       [BotStoreActions.setDetailTrade]({ commit }, trade: Trade) {
         commit('setDetailTrade', trade);
       },
