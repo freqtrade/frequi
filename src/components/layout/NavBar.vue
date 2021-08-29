@@ -30,7 +30,13 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto" menu-class="w-100">
+          <b-dropdown size="sm" class="m-1" variant="outline-info">
+            <template #button-content>
+              <BotEntry class="d-inline" :bot="selectedBotObj" :no-buttons="true" />
+            </template>
+            <BotList :small="true" />
+          </b-dropdown>
           <ReloadControl class="mr-3" />
           <li class="nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
@@ -86,13 +92,16 @@ import Favico from 'favico.js';
 import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
+import BotEntry from '@/components/BotEntry.vue';
+import BotList from '@/components/BotList.vue';
+import { BotDescriptor } from '@/types';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
 const uiSettingsNs = namespace('uiSettings');
 
 @Component({
-  components: { LoginModal, BootswatchThemeSelect, ReloadControl },
+  components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
 })
 export default class NavBar extends Vue {
   pingInterval: number | null = null;
@@ -118,6 +127,8 @@ export default class NavBar extends Vue {
   @ftbot.Getter [BotStoreGetters.openTradeCount]: number;
 
   @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.selectedBotObj]!: BotDescriptor;
 
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 

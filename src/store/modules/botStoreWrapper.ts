@@ -16,6 +16,7 @@ interface FTMultiBotState {
 export enum MultiBotStoreGetters {
   hasBots = 'hasBots',
   selectedBot = 'selectedBot',
+  selectedBotObj = 'selectedBotObj',
   allAvailableBots = 'allAvailableBots',
   allAvailableBotsList = 'allAvailableBotsList',
   allIsBotOnline = 'allIsBotOnline',
@@ -40,6 +41,9 @@ export default function createBotStore(store) {
     },
     [MultiBotStoreGetters.selectedBot](state: FTMultiBotState): string {
       return state.selectedBot;
+    },
+    [MultiBotStoreGetters.selectedBotObj](state: FTMultiBotState): BotDescriptor {
+      return state.availableBots[state.selectedBot];
     },
     [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): BotDescriptors {
       return state.availableBots;
@@ -136,6 +140,7 @@ export default function createBotStore(store) {
       commit('selectBot', botId);
     },
     setAutoRefresh({ dispatch, commit }, newRefreshValue) {
+      // TODO: global autorefresh, or per subbot?
       console.log('setAutoRefresh', newRefreshValue);
       commit('setAutoRefresh', newRefreshValue);
       // TODO: Investigate this -

@@ -1,61 +1,42 @@
 <template>
   <div>
-    <h3>Available bots</h3>
+    <h3 v-if="!small">Available bots</h3>
     <b-list-group>
       <b-list-group-item
         v-for="bot in allAvailableBots"
         :key="bot.botId"
-        button
         :active="bot.botId === selectedBot"
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl}`"
         @click="selectBot(bot.botId)"
       >
-        {{ bot.botName || bot.botId }}
-        {{ allIsBotOnline[bot.botId] ? 'Online' : 'Offline' }}
-
-        <b-button class="btn-xs ml-1" size="sm" title="Delete trade" @click="clickRemoveBot(bot)">
-          <EditIcon :size="16" title="Delete trade" />
-        </b-button>
-        <b-button class="btn-xs ml-1" size="sm" title="Delete bot" @click="clickRemoveBot(bot)">
-          <DeleteIcon :size="16" title="Delete trade" />
-        </b-button>
+        <bot-entry :bot="bot" :no-buttons="small" />
       </b-list-group-item>
     </b-list-group>
-    <LoginModal class="mt-2" login-text="Add new bot" />
+    <LoginModal v-if="!small" class="mt-2" login-text="Add new bot" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import LoginModal from '@/views/LoginModal.vue';
-import EditIcon from 'vue-material-design-icons/Cog.vue';
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import { BotDescriptor, BotDescriptors } from '@/types';
+import BotEntry from '@/components/BotEntry.vue';
+import { BotDescriptors } from '@/types';
 
 const ftbot = namespace('ftbot');
 
-@Component({ components: { LoginModal, DeleteIcon, EditIcon } })
+@Component({ components: { LoginModal, BotEntry } })
 export default class BotList extends Vue {
+  @Prop({ default: false, type: Boolean }) small!: boolean;
+
   @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
 
   @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline];
 
   @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
 
-  @ftbot.Action removeBot;
-
   @ftbot.Action selectBot;
-
-  clickRemoveBot(botId: BotDescriptor) {
-    //
-    this.$bvModal.msgBoxConfirm(`Really remove (logout) from ${botId}?`).then((value: boolean) => {
-      if (value) {
-        this.removeBot(botId.botId);
-      }
-    });
-  }
 }
 </script>
 
