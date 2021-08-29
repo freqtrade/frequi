@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <bot-list />
+    <div class="container">
+      <bot-list />
+    </div>
     <hr />
     <!-- <img alt="Freqtrade logo" src="../assets/freqtrade-logo.png" width="450px" class="my-5" /> -->
     <div alt="Freqtrade logo" class="logo-svg my-5 mx-auto" />

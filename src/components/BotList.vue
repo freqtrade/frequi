@@ -11,13 +11,14 @@
         @click="selectBot(bot.botId)"
       >
         {{ bot.botName || bot.botId }}
+        {{ allIsBotOnline[bot.botId] ? 'Online' : 'Offline' }}
+
         <b-button class="btn-xs ml-1" size="sm" title="Delete trade" @click="clickRemoveBot(bot)">
           <EditIcon :size="16" title="Delete trade" />
         </b-button>
         <b-button class="btn-xs ml-1" size="sm" title="Delete bot" @click="clickRemoveBot(bot)">
           <DeleteIcon :size="16" title="Delete trade" />
         </b-button>
-        {{ allIsBotOnline[bot.botId] ? 'Online' : 'Offline' }}
       </b-list-group-item>
     </b-list-group>
     <LoginModal class="mt-2" login-text="Add new bot" />

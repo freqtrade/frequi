@@ -37,7 +37,8 @@
             </b-nav-text>
           </li>
           <li v-if="hasBots" class="nav-item">
-            <b-nav-item-dropdown right>
+            <!-- Hide dropdown on xs, instead show below  -->
+            <b-nav-item-dropdown right class="d-none d-sm-block">
               <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
@@ -49,6 +50,16 @@
                 >Sign Out</router-link
               >
             </b-nav-item-dropdown>
+            <div class="d-block d-sm-none">
+              <!-- Visible only on XS -->
+              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
+              <router-link class="dropdown-item" to="/settings">Settings</router-link>
+              <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
+              <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
+              <router-link class="dropdown-item" to="/" @click.native="clickLogout()"
+                >Sign Out</router-link
+              >
+            </div>
           </li>
           <li v-else>
             <!-- should open Modal window! -->
