@@ -15,6 +15,7 @@ interface FTMultiBotState {
 
 export enum MultiBotStoreGetters {
   hasBots = 'hasBots',
+  botCount = 'botCount',
   selectedBot = 'selectedBot',
   selectedBotObj = 'selectedBotObj',
   allAvailableBots = 'allAvailableBots',
@@ -38,6 +39,9 @@ export default function createBotStore(store) {
   const getters = {
     [MultiBotStoreGetters.hasBots](state: FTMultiBotState): boolean {
       return Object.keys(state.availableBots).length > 0;
+    },
+    [MultiBotStoreGetters.botCount](state: FTMultiBotState): number {
+      return Object.keys(state.availableBots).length;
     },
     [MultiBotStoreGetters.selectedBot](state: FTMultiBotState): string {
       return state.selectedBot;

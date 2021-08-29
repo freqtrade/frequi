@@ -31,7 +31,13 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" menu-class="w-100">
-          <b-dropdown size="sm" class="m-1" variant="outline-info">
+          <b-dropdown
+            v-if="botCount > 1"
+            size="sm"
+            class="m-1"
+            variant="info"
+            menu-class="my-0 py-0"
+          >
             <template #button-content>
               <BotEntry class="d-inline" :bot="selectedBotObj" :no-buttons="true" />
             </template>
@@ -49,14 +55,18 @@
           <li v-if="hasBots" class="nav-item">
             <!-- Hide dropdown on xs, instead show below  -->
             <b-nav-item-dropdown right class="d-none d-sm-block">
-              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
+              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
               <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
-              <router-link class="dropdown-item" to="/" @click.native="clickLogout()"
+              <router-link
+                v-if="botCount === 1"
+                class="dropdown-item"
+                to="/"
+                @click.native="clickLogout()"
                 >Sign Out</router-link
               >
             </b-nav-item-dropdown>
@@ -66,7 +76,11 @@
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
               <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
-              <router-link class="dropdown-item" to="/" @click.native="clickLogout()"
+              <router-link
+                v-if="botCount === 1"
+                class="dropdown-item"
+                to="/"
+                @click.native="clickLogout()"
                 >Sign Out</router-link
               >
             </div>
@@ -121,6 +135,8 @@ export default class NavBar extends Vue {
   @ftbot.Getter [BotStoreGetters.isBotOnline]!: boolean;
 
   @ftbot.Getter [MultiBotStoreGetters.hasBots]: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.botCount]: number;
 
   @ftbot.Getter [BotStoreGetters.botName]: string;
 

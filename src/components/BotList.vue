@@ -6,6 +6,7 @@
         v-for="bot in allAvailableBots"
         :key="bot.botId"
         :active="bot.botId === selectedBot"
+        button
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl}`"
         @click="selectBot(bot.botId)"
       >

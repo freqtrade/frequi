@@ -46,13 +46,15 @@ export default class BotList extends Vue {
 
   @ftbot.Action selectBot;
 
-  clickRemoveBot(botId: BotDescriptor) {
+  clickRemoveBot(bot: BotDescriptor) {
     //
-    this.$bvModal.msgBoxConfirm(`Really remove (logout) from ${botId}?`).then((value: boolean) => {
-      if (value) {
-        this.removeBot(botId.botId);
-      }
-    });
+    this.$bvModal
+      .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
+      .then((value: boolean) => {
+        if (value) {
+          this.removeBot(bot.botId);
+        }
+      });
   }
 }
 </script>
