@@ -2,15 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { UserService } from '@/shared/userService';
 import createBotStore from './modules/botStoreWrapper';
-import { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
 import settingsModule from './modules/settings';
-
-const AUTO_REFRESH = 'ft_auto_refresh';
 
 Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
@@ -22,8 +19,6 @@ const store = new Vuex.Store({
     uiSettings: settingsModule,
   },
   state: {
-    refreshing: false,
-    autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
     currentTheme: initCurrentTheme,
     uiVersion: 'dev',
   },
@@ -46,13 +41,6 @@ const store = new Vuex.Store({
     },
   },
   mutations: {
-    setAutoRefresh(state, newRefreshValue: boolean) {
-      state.autoRefresh = newRefreshValue;
-    },
-    setRefreshing(state, refreshing: boolean) {
-      state.refreshing = refreshing;
-    },
-
     mutateCurrentTheme(state, newTheme: string) {
       storeCurrentTheme(newTheme);
       state.currentTheme = newTheme;
@@ -65,10 +53,7 @@ const store = new Vuex.Store({
     setCurrentTheme({ commit }, newTheme: string) {
       commit('mutateCurrentTheme', newTheme);
     },
-    setAutoRefresh({ commit }, newRefreshValue) {
-      commit('setAutoRefresh', newRefreshValue);
-      localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
-    },
+
     setLoggedIn({ commit }, loggedin: boolean) {
       commit('setLoggedIn', loggedin);
     },
@@ -76,11 +61,8 @@ const store = new Vuex.Store({
       commit('setIsBotOnline', isOnline);
       if (isOnline === false) {
         console.log('disabling autorun');
-        dispatch('setAutoRefresh', false);
+        dispatch('ftbot/setAutoRefresh', false);
       }
-    },
-    refreshOnce({ dispatch }) {
-      dispatch('ftbot/getVersion');
     },
     async loadUIVersion({ commit }) {
       if (process.env.NODE_ENV !== 'development') {
@@ -93,51 +75,6 @@ const store = new Vuex.Store({
           //
         }
       }
-    },
-    async refreshAll({ dispatch, state, commit }, forceUpdate = false) {
-      if (state.refreshing) {
-        return;
-      }
-      commit('setRefreshing', true);
-      try {
-        const updates: Promise<AxiosInstance>[] = [];
-        updates.push(dispatch('refreshFrequent', false));
-        updates.push(dispatch('refreshSlow', forceUpdate));
-        updates.push(dispatch('ftbot/getDaily'));
-        updates.push(dispatch('ftbot/getBalance'));
-
-        await Promise.all(updates);
-        console.log('refreshing_end');
-      } finally {
-        commit('setRefreshing', false);
-      }
-    },
-    async refreshSlow({ dispatch, getters, state }, forceUpdate = false) {
-      if (state.refreshing && !forceUpdate) {
-        return;
-      }
-      // Refresh data only when needed
-      if (forceUpdate || getters[`ftbot/${BotStoreGetters.refreshRequired}`]) {
-        const updates: Promise<AxiosInstance>[] = [];
-        updates.push(dispatch('ftbot/getPerformance'));
-        updates.push(dispatch('ftbot/getProfit'));
-        updates.push(dispatch('ftbot/getTrades'));
-        /* white/blacklist might be refreshed more often as they are not expensive on the backend */
-        updates.push(dispatch('ftbot/getWhitelist'));
-        updates.push(dispatch('ftbot/getBlacklist'));
-
-        await Promise.all(updates);
-        dispatch('ftbot/setRefreshRequired', false);
-      }
-    },
-    refreshFrequent({ dispatch }, slow = true) {
-      if (slow) {
-        dispatch('refreshSlow', false);
-      }
-      // Refresh data that's needed in near realtime
-      dispatch('ftbot/getOpenTrades');
-      dispatch('ftbot/getState');
-      dispatch('ftbot/getLocks');
     },
   },
 });

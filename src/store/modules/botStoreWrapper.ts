@@ -1,9 +1,14 @@
 import { BotDescriptor, BotDescriptors } from '@/types';
+import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
+
+const AUTO_REFRESH = 'ft_auto_refresh';
 
 interface FTMultiBotState {
   selectedBot: string;
   availableBots: BotDescriptors;
+  autoRefresh: boolean;
+  refreshing: boolean;
 }
 
 export enum MultiBotStoreGetters {
@@ -13,12 +18,15 @@ export enum MultiBotStoreGetters {
   allAvailableBotsList = 'allAvailableBotsList',
   allIsBotOnline = 'allIsBotOnline',
   nextBotId = 'nextBotId',
+  autoRefresh = 'autoRefresh',
 }
 
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
     selectedBot: '',
     availableBots: {},
+    autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
+    refreshing: false,
   };
 
   // All getters working on all bots should be prefixed with all.
@@ -50,6 +58,9 @@ export default function createBotStore(store) {
       }
       return `ftbot.${botCount}`;
     },
+    [MultiBotStoreGetters.autoRefresh](state: FTMultiBotState): boolean {
+      return state.autoRefresh;
+    },
   };
   // Autocreate getters from botStores
   Object.keys(BotStoreGetters).forEach((e) => {
@@ -65,6 +76,12 @@ export default function createBotStore(store) {
       } else {
         console.warn(`Botid ${botId} not available, but selected.`);
       }
+    },
+    setAutoRefresh(state: FTMultiBotState, newRefreshValue: boolean) {
+      state.autoRefresh = newRefreshValue;
+    },
+    setRefreshing(state, refreshing: boolean) {
+      state.refreshing = refreshing;
     },
     addBot(state: FTMultiBotState, bot: BotDescriptor) {
       state.availableBots[bot.botId] = bot;
@@ -107,6 +124,58 @@ export default function createBotStore(store) {
     },
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
+    },
+    setAutoRefresh({ commit }, newRefreshValue) {
+      commit('setAutoRefresh', newRefreshValue);
+      localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
+    },
+    async refreshAll({ dispatch, state, commit }, forceUpdate = false) {
+      if (state.refreshing) {
+        return;
+      }
+      commit('setRefreshing', true);
+      try {
+        const updates: Promise<AxiosInstance>[] = [];
+        updates.push(dispatch('refreshFrequent', false));
+        updates.push(dispatch('refreshSlow', forceUpdate));
+        updates.push(dispatch('getDaily'));
+        updates.push(dispatch('getBalance'));
+
+        await Promise.all(updates);
+        console.log('refreshing_end');
+      } finally {
+        commit('setRefreshing', false);
+      }
+    },
+    async refreshSlow({ dispatch, getters, state }, forceUpdate = false) {
+      if (state.refreshing && !forceUpdate) {
+        return;
+      }
+      // Refresh data only when needed
+      if (forceUpdate || getters[`${BotStoreGetters.refreshRequired}`]) {
+        const updates: Promise<AxiosInstance>[] = [];
+        updates.push(dispatch('getPerformance'));
+        updates.push(dispatch('getProfit'));
+        updates.push(dispatch('getTrades'));
+        /* white/blacklist might be refreshed more often as they are not expensive on the backend */
+        updates.push(dispatch('getWhitelist'));
+        updates.push(dispatch('getBlacklist'));
+
+        await Promise.all(updates);
+        dispatch('setRefreshRequired', false);
+      }
+    },
+    refreshFrequent({ dispatch }, slow = true) {
+      if (slow) {
+        dispatch('refreshSlow', false);
+      }
+      // Refresh data that's needed in near realtime
+      dispatch('getOpenTrades');
+      dispatch('getState');
+      dispatch('getLocks');
+    },
+    refreshOnce({ dispatch }) {
+      dispatch('getVersion');
     },
     pingAll({ getters, dispatch }) {
       getters.allAvailableBotsList.forEach((e) => {

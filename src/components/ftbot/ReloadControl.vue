@@ -1,23 +1,25 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <button class="m-1 btn btn-primary" @click="refreshAll(true)"><RefreshIcon /></button>
+  <div class="d-flex flex-align-center">
+    <b-button class="m-1 mr-3" variant="secondary" size="sm" @click="refreshAll(true)">
+      <RefreshIcon :size="16" />
+    </b-button>
 
-      <b-form-checkbox
-        v-model="autoRefreshLoc"
-        class="ml-auto float-right mr-2 my-auto"
-        title="AutoRefresh"
-        switch
-        >AutoRefresh</b-form-checkbox
-      >
-    </div>
+    <b-form-checkbox
+      v-model="autoRefreshLoc"
+      class="ml-auto float-right mr-2 my-auto"
+      title="AutoRefresh"
+      variant="secondary"
+      >AutoRefresh</b-form-checkbox
+    >
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
+import { Getter, State, namespace } from 'vuex-class';
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
+
+const ftbot = namespace('ftbot');
 
 @Component({ components: { RefreshIcon } })
 export default class ReloadControl extends Vue {
@@ -43,18 +45,18 @@ export default class ReloadControl extends Vue {
   // TODO-multi: This should be per bot!
   @Getter loggedIn;
 
-  @State autoRefresh!: boolean;
+  @ftbot.Getter autoRefresh!: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Action setAutoRefresh!: (newValue: boolean) => void;
+  @ftbot.Action setAutoRefresh!: (newValue: boolean) => void;
 
-  @Action refreshSlow;
+  @ftbot.Action refreshSlow;
 
-  @Action refreshFrequent;
+  @ftbot.Action refreshFrequent;
 
-  @Action refreshAll;
+  @ftbot.Action refreshAll;
 
-  @Action refreshOnce;
+  @ftbot.Action refreshOnce;
 
   get autoRefreshLoc() {
     return this.autoRefresh;
