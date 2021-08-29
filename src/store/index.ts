@@ -146,4 +146,5 @@ store.registerModule('ftbot', createBotStore(store));
 UserService.getAvailableBotList().forEach((e) => {
   store.dispatch('ftbot/addBot', e);
 });
+store.dispatch('ftbot/selectFirstBot');
 export default store;

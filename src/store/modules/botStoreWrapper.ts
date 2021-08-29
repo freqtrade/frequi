@@ -14,7 +14,7 @@ export enum MultiBotStoreGetters {
 
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
-    selectedBot: 'ftbot.0',
+    selectedBot: '',
     availableBots: [],
   };
 
@@ -46,7 +46,7 @@ export default function createBotStore(store) {
 
   const mutations = {
     selectBot(state: FTMultiBotState, botId: string) {
-      if (botId in state.availableBots) {
+      if (state.availableBots.includes(botId)) {
         state.selectedBot = botId;
       } else {
         console.warn(`Botid ${botId} not available, but selected`);
@@ -82,6 +82,11 @@ export default function createBotStore(store) {
         commit('removeBot', botId);
       } else {
         console.warn(`bot ${botId} not found! could not remove`);
+      }
+    },
+    selectFirstBot({ commit, getters }) {
+      if (getters.hasBots) {
+        commit('selectBot', getters.allAvailableBots[0]);
       }
     },
   };
