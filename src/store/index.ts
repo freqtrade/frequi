@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios, { AxiosInstance } from 'axios';
+import { UserService } from '@/shared/userService';
 import createBotStore from './modules/botStoreWrapper';
 import { BotStoreGetters } from './modules/ftbot';
 import alertsModule from './modules/alerts';
@@ -142,5 +143,7 @@ const store = new Vuex.Store({
 });
 
 store.registerModule('ftbot', createBotStore(store));
-store.dispatch('ftbot/addBot', 'ftbot.0');
+UserService.getAvailableBotList().forEach((e) => {
+  store.dispatch('ftbot/addBot', e);
+});
 export default store;

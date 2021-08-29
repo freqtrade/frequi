@@ -60,16 +60,22 @@
 
 <script lang="ts">
 import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
-import userService from '@/shared/userService';
+import { Action, namespace } from 'vuex-class';
+import { useUserService } from '@/shared/userService';
 
 import { AuthPayload } from '@/types';
+import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
 const defaultURL = window.location.origin || 'http://localhost:8080';
+const ftbot = namespace('ftbot');
 
 @Component({})
 export default class Login extends Vue {
   @Action setLoggedIn;
+
+  @ftbot.Getter [MultiBotStoreGetters.nextBotId]: string;
+
+  @ftbot.Action addBot;
 
   @Prop({ default: false }) inModal!: boolean;
 
@@ -126,11 +132,12 @@ export default class Login extends Vue {
       return;
     }
     this.errorMessage = '';
+    const userService = useUserService(this.nextBotId);
     // Push the name to submitted names
     userService
       .login(this.auth)
       .then(() => {
-        this.setLoggedIn(true);
+        this.addBot(this.nextBotId);
         // TODO: Investigate how this needs to be done properly
         // setBaseUrl(userService.getAPIUrl());
 

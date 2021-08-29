@@ -17,7 +17,7 @@ export class UserService {
    * Stores info for current botId in the object of all bots.
    */
   private storeLoginInfo(loginInfo: AuthStorage): void {
-    const allInfo = this.getAllLoginInfos();
+    const allInfo = UserService.getAllLoginInfos();
     allInfo[this.botId] = loginInfo;
     localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(allInfo));
   }
@@ -26,7 +26,7 @@ export class UserService {
    * Logout - removing info for this particular bot.
    */
   private removeLoginInfo(): void {
-    const info = this.getAllLoginInfos();
+    const info = UserService.getAllLoginInfos();
     delete info[this.botId];
     localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
   }
@@ -41,7 +41,7 @@ export class UserService {
    * Retrieve full logininfo object (for all registered bots)
    * @returns
    */
-  private getAllLoginInfos(): AuthStorageMulti {
+  private static getAllLoginInfos(): AuthStorageMulti {
     const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
     return info;
   }
@@ -51,7 +51,7 @@ export class UserService {
    * @returns Login Info object
    */
   private getLoginInfo(): AuthStorage {
-    const info = this.getAllLoginInfos();
+    const info = UserService.getAllLoginInfos();
     if (this.botId in info && 'apiUrl' in info[this.botId] && 'refreshToken' in info[this.botId]) {
       return info[this.botId];
     }
@@ -60,6 +60,11 @@ export class UserService {
       refreshToken: '',
       accessToken: '',
     };
+  }
+
+  public static getAvailableBotList(): string[] {
+    const allInfo = UserService.getAllLoginInfos();
+    return Object.keys(allInfo);
   }
 
   public getAccessToken(): string {
@@ -183,4 +188,4 @@ export function useUserService(botId: string) {
   return userservice;
 }
 
-export default useUserService('ftbot.0');
+// export default useUserService('ftbot.0');

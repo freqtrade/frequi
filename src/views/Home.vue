@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <bot-list />
+    <hr />
     <!-- <img alt="Freqtrade logo" src="../assets/freqtrade-logo.png" width="450px" class="my-5" /> -->
     <div alt="Freqtrade logo" class="logo-svg my-5 mx-auto" />
     <div>
@@ -19,7 +21,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component
+import BotList from '@/components/BotList.vue';
+
+@Component({
+  components: { BotList },
+})
 export default class Home extends Vue {}
 </script>
 

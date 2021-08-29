@@ -9,6 +9,7 @@ export enum MultiBotStoreGetters {
   hasBots = 'hasBots',
   selectedBot = 'selectedBot',
   allAvailableBots = 'allAvailableBots',
+  nextBotId = 'nextBotId',
 }
 
 export default function createBotStore(store) {
@@ -28,6 +29,13 @@ export default function createBotStore(store) {
     [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): string[] {
       return state.availableBots;
     },
+    [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
+      let botCount = state.availableBots.length;
+      while (`ftbot.${botCount}` in state.availableBots) {
+        botCount += 1;
+      }
+      return `ftbot.${botCount}`;
+    },
   };
   // Autocreate getters
   Object.keys(BotStoreGetters).forEach((e) => {
@@ -37,6 +45,13 @@ export default function createBotStore(store) {
   });
 
   const mutations = {
+    selectBot(state: FTMultiBotState, botId: string) {
+      if (botId in state.availableBots) {
+        state.selectedBot = botId;
+      } else {
+        console.warn(`Botid ${botId} not available, but selected`);
+      }
+    },
     addBot(state: FTMultiBotState, botId: string) {
       state.availableBots = [...state.availableBots, botId];
     },
