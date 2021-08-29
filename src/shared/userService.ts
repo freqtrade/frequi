@@ -56,6 +56,7 @@ export class UserService {
       return info[this.botId];
     }
     return {
+      botName: '',
       apiUrl: '',
       refreshToken: '',
       accessToken: '',
@@ -100,6 +101,7 @@ export class UserService {
     );
     if (result.data.access_token && result.data.refresh_token) {
       const obj: AuthStorage = {
+        botName: auth.botName,
         apiUrl: auth.url,
         accessToken: result.data.access_token || '',
         refreshToken: result.data.refresh_token || '',
@@ -169,6 +171,7 @@ export class UserService {
       typeof accessToken === 'string'
     ) {
       const loginInfo: AuthStorage = {
+        botName: '',
         apiUrl,
         refreshToken,
         accessToken,

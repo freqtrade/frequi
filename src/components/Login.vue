@@ -1,6 +1,15 @@
 <template>
   <div>
     <form ref="form" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
+      <b-form-group label="Bot Name" label-for="name-input">
+        <b-form-input
+          id="name-input"
+          v-model="auth.botName"
+          required
+          placeholder="Bot Name"
+          @keydown.enter.native="handleOk"
+        ></b-form-input>
+      </b-form-group>
       <b-form-group
         :state="urlState"
         label="API Url"
@@ -26,6 +35,7 @@
           v-model="auth.username"
           :state="nameState"
           required
+          placeholder="Freqtrader"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -84,6 +94,7 @@ export default class Login extends Vue {
   };
 
   auth: AuthPayload = {
+    botName: '',
     url: defaultURL,
     username: '',
     password: '',

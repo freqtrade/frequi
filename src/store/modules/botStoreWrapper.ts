@@ -31,7 +31,7 @@ export default function createBotStore(store) {
     },
     [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
       let botCount = state.availableBots.length;
-      while (`ftbot.${botCount}` in state.availableBots) {
+      while (state.availableBots.includes(`ftbot.${botCount}`)) {
         botCount += 1;
       }
       return `ftbot.${botCount}`;
