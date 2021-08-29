@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AuthPayload, AuthStorage } from '@/types';
+import { AuthPayload, AuthStorage, AuthStorageMulti } from '@/types';
 
 const AUTH_LOGIN_INFO = 'auth_login_info';
 const APIBASE = '/api/v1';
@@ -13,8 +13,22 @@ export class UserService {
     this.botId = botId;
   }
 
+  /**
+   * Stores info for current botId in the object of all bots.
+   */
   private storeLoginInfo(loginInfo: AuthStorage): void {
-    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(loginInfo));
+    const allInfo = this.getAllLoginInfos();
+    allInfo[this.botId] = loginInfo;
+    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(allInfo));
+  }
+
+  /**
+   * Logout - removing info for this particular bot.
+   */
+  private removeLoginInfo(): void {
+    const info = this.getAllLoginInfos();
+    delete info[this.botId];
+    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
   }
 
   private setAccessToken(token: string): void {
@@ -23,10 +37,23 @@ export class UserService {
     this.storeLoginInfo(loginInfo);
   }
 
-  private getLoginInfo(): AuthStorage {
+  /**
+   * Retrieve full logininfo object (for all registered bots)
+   * @returns
+   */
+  private getAllLoginInfos(): AuthStorageMulti {
     const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
-    if ('apiUrl' in info && 'refreshToken' in info) {
-      return info;
+    return info;
+  }
+
+  /**
+   * Retrieve Login info object for the given bot
+   * @returns Login Info object
+   */
+  private getLoginInfo(): AuthStorage {
+    const info = this.getAllLoginInfos();
+    if (this.botId in info && 'apiUrl' in info[this.botId] && 'refreshToken' in info[this.botId]) {
+      return info[this.botId];
     }
     return {
       apiUrl: '',
@@ -53,7 +80,8 @@ export class UserService {
 
   public logout(): void {
     console.log('Logging out');
-    localStorage.removeItem(AUTH_LOGIN_INFO);
+
+    this.removeLoginInfo();
   }
 
   public async login(auth: AuthPayload) {

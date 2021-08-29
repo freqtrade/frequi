@@ -9,3 +9,7 @@ export interface AuthStorage {
   refreshToken: string;
   accessToken: string;
 }
+
+export interface AuthStorageMulti {
+  [key: string]: AuthStorage;
+}
