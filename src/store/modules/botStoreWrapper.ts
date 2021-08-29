@@ -89,6 +89,9 @@ export default function createBotStore(store) {
         commit('selectBot', getters.allAvailableBots[0]);
       }
     },
+    selectBot({ commit }, botId: string) {
+      commit('selectBot', botId);
+    },
   };
   // Autocreate Actions
   Object.keys(BotStoreActions).forEach((e) => {
