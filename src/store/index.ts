@@ -143,8 +143,8 @@ const store = new Vuex.Store({
 });
 
 store.registerModule('ftbot', createBotStore(store));
-UserService.getAvailableBotList().forEach((e) => {
-  store.dispatch('ftbot/addBot', e);
+Object.entries(UserService.getAvailableBots()).forEach(([k, v]) => {
+  store.dispatch('ftbot/addBot', v);
 });
 store.dispatch('ftbot/selectFirstBot');
 export default store;

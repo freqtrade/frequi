@@ -15,3 +15,12 @@ export interface AuthStorage {
 export interface AuthStorageMulti {
   [key: string]: AuthStorage;
 }
+
+export interface BotDescriptor {
+  botName: string;
+  botId: string;
+}
+
+export interface BotDescriptors {
+  [key: string]: BotDescriptor;
+}

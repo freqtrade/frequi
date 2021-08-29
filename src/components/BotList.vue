@@ -4,12 +4,12 @@
     <b-list-group>
       <b-list-group-item
         v-for="bot in allAvailableBots"
-        :key="bot"
+        :key="bot.botId"
         button
-        :active="bot === selectedBot"
-        @click="selectBot(bot)"
+        :active="bot.botId === selectedBot"
+        @click="selectBot(bot.botId)"
       >
-        {{ bot }}
+        {{ bot.botName || bot.botId }}
         <b-button class="btn-xs ml-1" size="sm" title="Delete trade" @click="clickRemoveBot(bot)">
           <EditIcon :size="16" title="Delete trade" />
         </b-button>
@@ -29,6 +29,7 @@ import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import LoginModal from '@/views/LoginModal.vue';
 import EditIcon from 'vue-material-design-icons/Cog.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
+import { BotDescriptor, BotDescriptors } from '@/types';
 
 const ftbot = namespace('ftbot');
 
@@ -36,17 +37,17 @@ const ftbot = namespace('ftbot');
 export default class BotList extends Vue {
   @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
 
-  @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: string[];
+  @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
 
   @ftbot.Action removeBot;
 
   @ftbot.Action selectBot;
 
-  clickRemoveBot(botId) {
+  clickRemoveBot(botId: BotDescriptor) {
     //
     this.$bvModal.msgBoxConfirm(`Really remove (logout) from ${botId}?`).then((value: boolean) => {
       if (value) {
-        this.removeBot(botId);
+        this.removeBot(botId.botId);
       }
     });
   }

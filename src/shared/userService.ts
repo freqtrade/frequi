@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AuthPayload, AuthStorage, AuthStorageMulti } from '@/types';
+import { AuthPayload, BotDescriptors, AuthStorage, AuthStorageMulti } from '@/types';
 
 const AUTH_LOGIN_INFO = 'auth_login_info';
 const APIBASE = '/api/v1';
@@ -61,6 +61,18 @@ export class UserService {
       refreshToken: '',
       accessToken: '',
     };
+  }
+
+  public static getAvailableBots(): BotDescriptors {
+    const allInfo = UserService.getAllLoginInfos();
+    const response: BotDescriptors = {};
+    Object.entries(allInfo).forEach(([k, v]) => {
+      response[k] = {
+        botId: k,
+        botName: v.botName,
+      };
+    });
+    return response;
   }
 
   public static getAvailableBotList(): string[] {
@@ -158,6 +170,7 @@ export class UserService {
    * Call on startup to migrate old login info to new login
    */
   public migrateLogin() {
+    // TODO: this is actually never called!
     const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
     const AUTH_ACCESS_TOKEN = 'auth_access_token';
     const AUTH_API_URL = 'auth_api_url';

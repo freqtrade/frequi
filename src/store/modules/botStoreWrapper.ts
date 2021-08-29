@@ -1,8 +1,9 @@
+import { BotDescriptor, BotDescriptors } from '@/types';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
 interface FTMultiBotState {
   selectedBot: string;
-  availableBots: string[];
+  availableBots: BotDescriptors;
 }
 
 export enum MultiBotStoreGetters {
@@ -15,29 +16,30 @@ export enum MultiBotStoreGetters {
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
     selectedBot: '',
-    availableBots: [],
+    availableBots: {},
   };
 
   // All getters working on all bots should be prefixed with all.
   const getters = {
     [MultiBotStoreGetters.hasBots](state: FTMultiBotState): boolean {
-      return state.availableBots.length > 0;
+      return Object.keys(state.availableBots).length > 0;
     },
     [MultiBotStoreGetters.selectedBot](state: FTMultiBotState): string {
       return state.selectedBot;
     },
-    [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): string[] {
+    [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): BotDescriptors {
       return state.availableBots;
     },
     [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
-      let botCount = state.availableBots.length;
-      while (state.availableBots.includes(`ftbot.${botCount}`)) {
+      let botCount = Object.keys(state.availableBots).length;
+
+      while (`ftbot.${botCount}` in state.availableBots) {
         botCount += 1;
       }
       return `ftbot.${botCount}`;
     },
   };
-  // Autocreate getters
+  // Autocreate getters from botStores
   Object.keys(BotStoreGetters).forEach((e) => {
     getters[e] = (state, getters) => {
       return getters[`${state.selectedBot}/${e}`];
@@ -46,37 +48,37 @@ export default function createBotStore(store) {
 
   const mutations = {
     selectBot(state: FTMultiBotState, botId: string) {
-      if (state.availableBots.includes(botId)) {
+      if (botId in state.availableBots) {
         state.selectedBot = botId;
       } else {
-        console.warn(`Botid ${botId} not available, but selected`);
+        console.warn(`Botid ${botId} not available, but selected.`);
       }
     },
-    addBot(state: FTMultiBotState, botId: string) {
-      state.availableBots = [...state.availableBots, botId];
+    addBot(state: FTMultiBotState, bot: BotDescriptor) {
+      state.availableBots[bot.botId] = bot;
     },
     removeBot(state: FTMultiBotState, botId: string) {
-      const index = state.availableBots.indexOf(botId);
-      if (index > -1) {
-        state.availableBots.splice(index, 1);
-        state.availableBots = [...state.availableBots];
+      if (botId in state.availableBots) {
+        delete state.availableBots[botId];
       }
     },
   };
 
   const actions = {
     // Actions automatically filled below
-    addBot({ getters, commit }, botId: string) {
-      if (getters.allAvailableBots.includes(botId)) {
+    addBot({ getters, commit }, bot: BotDescriptor) {
+      if (Object.keys(getters.allAvailableBots).includes(bot.botId)) {
         // throw 'Bot already present';
         // TODO: handle error!
+        console.log('Bot already present');
+        return;
       }
-      console.log('add bot', botId);
-      store.registerModule(['ftbot', botId], createBotSubStore(botId));
-      commit('addBot', botId);
+      console.log('add bot', bot);
+      store.registerModule(['ftbot', bot.botId], createBotSubStore(bot.botId));
+      commit('addBot', bot);
     },
     removeBot({ commit, getters, dispatch }, botId: string) {
-      if (getters.allAvailableBots.includes(botId)) {
+      if (Object.keys(getters.allAvailableBots).includes(botId)) {
         dispatch(`${botId}/logout`);
         store.unregisterModule([`ftbot`, botId]);
         commit('removeBot', botId);
@@ -86,14 +88,16 @@ export default function createBotStore(store) {
     },
     selectFirstBot({ commit, getters }) {
       if (getters.hasBots) {
-        commit('selectBot', getters.allAvailableBots[0]);
+        const firstBot = Object.keys(getters.allAvailableBots)[0];
+        console.log(firstBot);
+        commit('selectBot', getters.allAvailableBots[firstBot].botId);
       }
     },
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
     },
   };
-  // Autocreate Actions
+  // Autocreate Actions from botstores
   Object.keys(BotStoreActions).forEach((e) => {
     actions[e] = ({ state, dispatch, getters }, ...args) => {
       if (getters.hasBots) {

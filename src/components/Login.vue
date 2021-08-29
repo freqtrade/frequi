@@ -73,7 +73,7 @@ import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
 import { Action, namespace } from 'vuex-class';
 import { useUserService } from '@/shared/userService';
 
-import { AuthPayload } from '@/types';
+import { AuthPayload, BotDescriptor } from '@/types';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
 const defaultURL = window.location.origin || 'http://localhost:8080';
@@ -85,7 +85,8 @@ export default class Login extends Vue {
 
   @ftbot.Getter [MultiBotStoreGetters.nextBotId]: string;
 
-  @ftbot.Action addBot;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action addBot!: (payload: BotDescriptor) => void;
 
   @Prop({ default: false }) inModal!: boolean;
 
@@ -148,7 +149,10 @@ export default class Login extends Vue {
     userService
       .login(this.auth)
       .then(() => {
-        this.addBot(this.nextBotId);
+        this.addBot({
+          botName: this.auth.botName,
+          botId: this.nextBotId,
+        });
         // TODO: Investigate how this needs to be done properly
         // setBaseUrl(userService.getAPIUrl());
 
