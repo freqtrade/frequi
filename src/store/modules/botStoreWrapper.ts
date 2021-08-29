@@ -147,7 +147,7 @@ export default function createBotStore(store) {
       }
       localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
     },
-    async refreshAll({ dispatch, state, commit }, forceUpdate = false) {
+    async refreshFull({ dispatch, state, commit }, forceUpdate = false) {
       if (state.refreshing) {
         return;
       }

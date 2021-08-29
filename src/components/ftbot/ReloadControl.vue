@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-align-center">
-    <b-button class="m-1 mr-3" variant="secondary" size="sm" @click="refreshAll(true)">
+    <b-button class="m-1 mr-3" variant="secondary" size="sm" @click="refreshFull(true)">
       <RefreshIcon :size="16" />
     </b-button>
 
@@ -30,7 +30,7 @@ export default class ReloadControl extends Vue {
   created() {
     if (this.loggedIn) {
       this.refreshOnce();
-      this.refreshAll(true);
+      this.refreshFull(true);
     }
   }
 
@@ -50,7 +50,7 @@ export default class ReloadControl extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setAutoRefresh!: (newValue: boolean) => void;
 
-  @ftbot.Action refreshAll;
+  @ftbot.Action refreshFull;
 
   @ftbot.Action refreshOnce;
 
