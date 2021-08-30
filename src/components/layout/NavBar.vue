@@ -31,15 +31,18 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" menu-class="w-100">
+          <!-- TODO This should show outside of the dropdown in XS mode -->
           <b-dropdown
             v-if="botCount > 1"
             size="sm"
             class="m-1"
+            no-caret
             variant="info"
+            toggle-class="d-flex align-items-center "
             menu-class="my-0 py-0"
           >
             <template #button-content>
-              <BotEntry class="d-inline" :bot="selectedBotObj" :no-buttons="true" />
+              <BotEntry :bot="selectedBotObj" :no-buttons="true" />
             </template>
             <BotList :small="true" />
           </b-dropdown>
@@ -119,6 +122,8 @@ const uiSettingsNs = namespace('uiSettings');
 })
 export default class NavBar extends Vue {
   pingInterval: number | null = null;
+
+  botSelectOpen = false;
 
   @Action setLoggedIn;
 

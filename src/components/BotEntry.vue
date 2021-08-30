@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="flex-align-center justify-content-between w-100"
-    :class="noButtons ? 'd-inline' : 'd-flex'"
-  >
+  <div class="d-flex align-items-center justify-content-between w-100">
     <span class="mr-2">{{ bot.botName || bot.botId }}</span>
 
-    <div class="flex-align-center" :class="noButtons ? 'd-inline' : 'd-flex'">
+    <div class="align-items-center" :class="noButtons ? 'd-inline' : 'd-flex'">
       <span class="ml-2 align-middle">{{
         allIsBotOnline[bot.botId] ? '&#128994;' : '&#128308;'
       }}</span>
