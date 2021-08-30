@@ -36,6 +36,7 @@ import {
   getAllPlotConfigNames,
   storePlotConfigName,
 } from '@/shared/storage';
+import axios from 'axios';
 import state, { FtbotStateType } from './state';
 import { showAlert } from '../alerts';
 
@@ -377,7 +378,9 @@ export default {
         commit('updateTrades', { trades, tradesCount });
         return Promise.resolve();
       } catch (error) {
-        console.error(error.response);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         return Promise.reject(error);
       }
     },
@@ -394,7 +397,9 @@ export default {
         commit('updateLocks', res.data);
         return Promise.resolve(res);
       } catch (error) {
-        console.error(error.response);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         showAlert(dispatch, `Failed to delete lock ${lockid}`, 'danger');
         return Promise.reject(error);
       }
@@ -588,7 +593,9 @@ export default {
         showAlert(dispatch, res.data.status);
         return Promise.resolve(res);
       } catch (error) {
-        console.error(error.resposne);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         showAlert(dispatch, 'Error starting bot.');
         return Promise.reject(error);
       }
@@ -599,7 +606,9 @@ export default {
         showAlert(dispatch, res.data.status);
         return Promise.resolve(res);
       } catch (error) {
-        console.error(error.resposne);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         showAlert(dispatch, 'Error stopping bot.');
         return Promise.reject(error);
       }
@@ -610,7 +619,9 @@ export default {
         showAlert(dispatch, res.data.status);
         return Promise.resolve(res);
       } catch (error) {
-        console.error(error.resposne);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         showAlert(dispatch, 'Error calling stopbuy.');
         return Promise.reject(error);
       }
@@ -622,7 +633,9 @@ export default {
         showAlert(dispatch, res.data.status);
         return Promise.resolve(res);
       } catch (error) {
-        console.error(error.resposne);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         showAlert(dispatch, 'Error reloading.');
         return Promise.reject(error);
       }
@@ -633,7 +646,9 @@ export default {
         showAlert(dispatch, res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}`);
         return Promise.resolve(res);
       } catch (error) {
-        console.error(error.response);
+        if (axios.isAxiosError(error)) {
+          console.error(error.response);
+        }
         showAlert(dispatch, `Failed to delete trade ${tradeid}`, 'danger');
         return Promise.reject(error);
       }
@@ -654,7 +669,9 @@ export default {
           showAlert(dispatch, `Sell order for ${tradeid} created`);
           return Promise.resolve(res);
         } catch (error) {
-          console.error(error.response);
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+          }
           showAlert(dispatch, `Failed to create sell order for ${tradeid}`, 'danger');
           return Promise.reject(error);
         }
@@ -672,8 +689,10 @@ export default {
 
           return Promise.resolve(res);
         } catch (error) {
-          console.error(error.response);
-          showAlert(dispatch, `Error occured buying: '${error.response.data.error}'`, 'danger');
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+            showAlert(dispatch, `Error occured buying: '${error.response?.data?.error}'`, 'danger');
+          }
           return Promise.reject(error);
         }
       }
@@ -701,12 +720,14 @@ export default {
           }
           return Promise.resolve(result.data);
         } catch (error) {
-          console.error(error.response);
-          showAlert(
-            dispatch,
-            `Error occured while adding pairs to Blacklist: '${error.response.data.error}'`,
-            'danger',
-          );
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+            showAlert(
+              dispatch,
+              `Error occured while adding pairs to Blacklist: '${error.response?.data?.error}'`,
+              'danger',
+            );
+          }
 
           return Promise.reject(error);
         }
