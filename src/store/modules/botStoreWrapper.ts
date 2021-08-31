@@ -7,7 +7,6 @@ const AUTO_REFRESH = 'ft_auto_refresh';
 interface FTMultiBotState {
   selectedBot: string;
   availableBots: BotDescriptors;
-  autoRefresh: boolean;
   refreshing: boolean;
   refreshInterval: number | null;
   refreshIntervalSlow: number | null;
@@ -22,14 +21,13 @@ export enum MultiBotStoreGetters {
   allAvailableBotsList = 'allAvailableBotsList',
   allIsBotOnline = 'allIsBotOnline',
   nextBotId = 'nextBotId',
-  autoRefresh = 'autoRefresh',
+  allAutoRefresh = 'allAutoRefresh',
 }
 
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
     selectedBot: '',
     availableBots: {},
-    autoRefresh: JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}'),
     refreshing: false,
     refreshInterval: null,
     refreshIntervalSlow: null,
@@ -62,6 +60,13 @@ export default function createBotStore(store) {
       });
       return result;
     },
+    [MultiBotStoreGetters.allAutoRefresh](state: FTMultiBotState, getters): {} {
+      const result = {};
+      getters.allAvailableBotsList.forEach((e) => {
+        result[e] = getters[`${e}/autoRefresh`];
+      });
+      return result;
+    },
     [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
       let botCount = Object.keys(state.availableBots).length;
 
@@ -69,9 +74,6 @@ export default function createBotStore(store) {
         botCount += 1;
       }
       return `ftbot.${botCount}`;
-    },
-    [MultiBotStoreGetters.autoRefresh](state: FTMultiBotState): boolean {
-      return state.autoRefresh;
     },
   };
   // Autocreate getters from botStores
@@ -142,19 +144,6 @@ export default function createBotStore(store) {
     },
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
-    },
-    setAutoRefresh({ dispatch, commit }, newRefreshValue) {
-      // TODO: global autorefresh, or per subbot?
-      console.log('setAutoRefresh', newRefreshValue);
-      commit('setAutoRefresh', newRefreshValue);
-      // TODO: Investigate this -
-      // this ONLY works if ReloadControl is only visible once,otherwise it triggers twice
-      if (newRefreshValue) {
-        dispatch('startRefresh', true);
-      } else {
-        dispatch('stopRefresh');
-      }
-      localStorage.setItem(AUTO_REFRESH, JSON.stringify(newRefreshValue));
     },
     async refreshFull({ dispatch, state, commit }, forceUpdate = false) {
       if (state.refreshing) {

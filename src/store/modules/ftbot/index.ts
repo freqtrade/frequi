@@ -45,6 +45,7 @@ import { showAlert } from '../alerts';
 export enum BotStoreGetters {
   botName = 'botName',
   isBotOnline = 'isBotOnline',
+  autoRefresh = 'autoRefresh',
   openTrades = 'openTrades',
   openTradeCount = 'openTradeCount',
   tradeDetail = 'tradeDetail',
@@ -89,6 +90,8 @@ export enum BotStoreGetters {
 
 export enum BotStoreActions {
   ping = 'ping',
+  setIsBotOnline = 'setIsBotOnline',
+  setAutoRefresh = 'setAutoRefresh',
   setRefreshRequired = 'setRefreshRequired',
   refreshSlow = 'refreshSlow',
   refreshFrequent = 'refreshFrequent',
@@ -145,6 +148,9 @@ export function createBotSubStore(botId: string) {
       },
       [BotStoreGetters.isBotOnline](state: FtbotStateType): boolean {
         return state.isBotOnline;
+      },
+      [BotStoreGetters.autoRefresh](state: FtbotStateType): boolean {
+        return state.autoRefresh;
       },
       [BotStoreGetters.plotConfig](state: FtbotStateType) {
         return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
@@ -292,6 +298,9 @@ export function createBotSubStore(botId: string) {
       setIsBotOnline(state: FtbotStateType, isBotOnline: boolean) {
         state.isBotOnline = isBotOnline;
       },
+      setAutoRefresh(state: FtbotStateType, newRefreshValue: boolean) {
+        state.autoRefresh = newRefreshValue;
+      },
       updateRefreshRequired(state: FtbotStateType, refreshRequired: boolean) {
         state.refreshRequired = refreshRequired;
       },
@@ -410,6 +419,17 @@ export function createBotSubStore(botId: string) {
       },
       [BotStoreActions.setRefreshRequired]({ commit }, refreshRequired: boolean) {
         commit('updateRefreshRequired', refreshRequired);
+      },
+      [BotStoreActions.setAutoRefresh]({ dispatch, commit }, newRefreshValue) {
+        // commit('setAutoRefresh', newRefreshValue);
+        // TODO: Investigate this -
+        // this ONLY works if ReloadControl is only visible once,otherwise it triggers twice
+        if (newRefreshValue) {
+          // dispatch('startRefresh', true);
+        } else {
+          // dispatch('stopRefresh');
+        }
+        userService.setAutoRefresh(newRefreshValue);
       },
       [BotStoreActions.setIsBotOnline]({ commit }, refreshRequired: boolean) {
         commit('setIsBotOnline', refreshRequired);

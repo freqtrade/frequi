@@ -6,6 +6,15 @@
       <span class="ml-2 align-middle">{{
         allIsBotOnline[bot.botId] ? '&#128994;' : '&#128308;'
       }}</span>
+      <b-form-checkbox
+        v-model="autoRefreshLoc"
+        class="ml-auto float-right mr-2 my-auto"
+        title="AutoRefresh"
+        variant="secondary"
+        @change="changeEvent"
+      >
+        R
+      </b-form-checkbox>
       <div v-if="!noButtons" class="d-flex flex-align-cent">
         <b-button class="ml-1" size="sm" title="Edit bot" @click="clickRemoveBot(bot)">
           <EditIcon :size="16" title="Edit Button" />
@@ -37,11 +46,26 @@ export default class BotList extends Vue {
 
   @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline];
 
+  @ftbot.Getter [MultiBotStoreGetters.allAutoRefresh];
+
   @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
 
   @ftbot.Action removeBot;
 
   @ftbot.Action selectBot;
+
+  get autoRefreshLoc() {
+    return this.allAutoRefresh[this.bot.botId];
+  }
+
+  set autoRefreshLoc(v) {
+    // Dummy setter - Set via change event.
+  }
+
+  changeEvent(v) {
+    console.log('changeEvent', v);
+    this.$store.dispatch(`ftbot/${this.bot.botId}/setAutoRefresh`, v);
+  }
 
   clickRemoveBot(bot: BotDescriptor) {
     //
