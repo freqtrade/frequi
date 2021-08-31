@@ -57,13 +57,6 @@ const store = new Vuex.Store({
     setLoggedIn({ commit }, loggedin: boolean) {
       commit('setLoggedIn', loggedin);
     },
-    setIsBotOnline({ commit, dispatch }, isOnline) {
-      commit('setIsBotOnline', isOnline);
-      if (isOnline === false) {
-        console.log('disabling autorun');
-        dispatch('ftbot/setAutoRefresh', false);
-      }
-    },
     async loadUIVersion({ commit }) {
       if (process.env.NODE_ENV !== 'development') {
         try {

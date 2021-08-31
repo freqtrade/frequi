@@ -6,7 +6,7 @@ import { UserService } from './userService';
  */
 let globalStore;
 
-export function useApi(userService: UserService) {
+export function useApi(userService: UserService, botId: string) {
   const api = axios.create({
     baseURL: userService.getBaseUrl(),
     timeout: 10000,
@@ -60,7 +60,7 @@ export function useApi(userService: UserService) {
       }
       if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
         console.log('Bot not running...');
-        globalStore.dispatch('setIsBotOnline', false);
+        globalStore.dispatch(`ftbot/${botId}/setIsBotOnline`, false);
       }
 
       return new Promise((resolve, reject) => {

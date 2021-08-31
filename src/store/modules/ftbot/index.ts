@@ -133,7 +133,8 @@ export enum BotStoreActions {
 
 export function createBotSubStore(botId: string) {
   const userService = useUserService(botId);
-  const { api } = useApi(userService);
+  const { api } = useApi(userService, botId);
+
 
   return {
     namespaced: true,
@@ -409,6 +410,9 @@ export function createBotSubStore(botId: string) {
       },
       [BotStoreActions.setRefreshRequired]({ commit }, refreshRequired: boolean) {
         commit('updateRefreshRequired', refreshRequired);
+      },
+      [BotStoreActions.setIsBotOnline]({ commit }, refreshRequired: boolean) {
+        commit('setIsBotOnline', refreshRequired);
       },
       [BotStoreActions.refreshOnce]({ dispatch }) {
         dispatch('getVersion');
