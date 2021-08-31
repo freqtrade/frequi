@@ -38,6 +38,16 @@ export class UserService {
   }
 
   /**
+   * Store autorefresh preference for this bot instance
+   * @param autoRefresh new autoRefresh value
+   */
+  public setAutoRefresh(autoRefresh: boolean): void {
+    const loginInfo = this.getLoginInfo();
+    loginInfo.autoRefresh = autoRefresh;
+    this.storeLoginInfo(loginInfo);
+  }
+
+  /**
    * Retrieve full logininfo object (for all registered bots)
    * @returns
    */
@@ -60,6 +70,7 @@ export class UserService {
       apiUrl: '',
       refreshToken: '',
       accessToken: '',
+      autoRefresh: false,
     };
   }
 
@@ -79,6 +90,10 @@ export class UserService {
   public static getAvailableBotList(): string[] {
     const allInfo = UserService.getAllLoginInfos();
     return Object.keys(allInfo);
+  }
+
+  public getAutoRefresh(): boolean {
+    return this.getLoginInfo().autoRefresh;
   }
 
   public getAccessToken(): string {
@@ -118,6 +133,7 @@ export class UserService {
         apiUrl: auth.url,
         accessToken: result.data.access_token || '',
         refreshToken: result.data.refresh_token || '',
+        autoRefresh: true,
       };
       this.storeLoginInfo(obj);
     }
@@ -175,10 +191,12 @@ export class UserService {
     const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
     const AUTH_ACCESS_TOKEN = 'auth_access_token';
     const AUTH_API_URL = 'auth_api_url';
+    const AUTO_REFRESH = 'ft_auto_refresh';
 
     const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
     const refreshToken = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
     const accessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
+    const autoRefresh: boolean = JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}');
     if (
       typeof apiUrl === 'string' &&
       typeof refreshToken === 'string' &&
@@ -189,6 +207,7 @@ export class UserService {
         apiUrl,
         refreshToken,
         accessToken,
+        autoRefresh,
       };
       this.storeLoginInfo(loginInfo);
     }
@@ -204,5 +223,3 @@ export function useUserService(botId: string) {
   userservice.migrateLogin();
   return userservice;
 }
-
-// export default useUserService('ftbot.0');

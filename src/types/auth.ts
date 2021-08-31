@@ -10,6 +10,7 @@ export interface AuthStorage {
   apiUrl: string;
   refreshToken: string;
   accessToken: string;
+  autoRefresh: boolean;
 }
 
 export interface AuthStorageMulti {
