@@ -47,7 +47,9 @@
           </b-card>
           <b-card header="Total Balance">
             <b-card-text
-              >{{ formatPrice(balance.total, botState.stake_currency_decimals || 8) }}
+              >{{
+                formatPrice(balance.total, botState ? botState.stake_currency_decimals || 8 : 8)
+              }}
               {{ dailyStats.stake_currency }}</b-card-text
             >
           </b-card>
