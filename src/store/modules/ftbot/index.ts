@@ -93,6 +93,7 @@ export enum BotStoreGetters {
 }
 
 export enum BotStoreActions {
+  botAdded = 'botAdded',
   ping = 'ping',
   setIsBotOnline = 'setIsBotOnline',
   setAutoRefresh = 'setAutoRefresh',
@@ -141,7 +142,6 @@ export enum BotStoreActions {
 export function createBotSubStore(botId: string) {
   const userService = useUserService(botId);
   const { api } = useApi(userService, botId);
-
 
   return {
     namespaced: true,
@@ -421,6 +421,9 @@ export function createBotSubStore(botId: string) {
       },
     },
     actions: {
+      [BotStoreActions.botAdded]({ commit }) {
+        commit('setAutoRefresh', userService.getAutoRefresh());
+      },
       [BotStoreActions.ping]({ commit }) {
         api
           .get('/ping')

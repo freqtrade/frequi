@@ -111,7 +111,7 @@ export default function createBotStore(store) {
 
   const actions = {
     // Actions automatically filled below
-    addBot({ getters, commit }, bot: BotDescriptor) {
+    addBot({ dispatch, getters, commit }, bot: BotDescriptor) {
       if (Object.keys(getters.allAvailableBots).includes(bot.botId)) {
         // throw 'Bot already present';
         // TODO: handle error!
@@ -120,6 +120,7 @@ export default function createBotStore(store) {
       }
       console.log('add bot', bot);
       store.registerModule(['ftbot', bot.botId], createBotSubStore(bot.botId));
+      dispatch(`${bot.botId}/botAdded`);
       commit('addBot', bot);
     },
     removeBot({ commit, getters, dispatch }, botId: string) {
