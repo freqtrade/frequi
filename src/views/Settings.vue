@@ -22,6 +22,9 @@
         >
           <b-form-select v-model="timezoneLoc" :options="timezoneOptions"></b-form-select>
         </b-form-group>
+        <b-form-group description="Keep background sync running while other bots are selected.">
+          <b-checkbox v-model="backgroundSyncLocal">Background sync</b-checkbox>
+        </b-form-group>
       </div>
     </b-card>
   </div>
@@ -46,9 +49,13 @@ export default class Template extends Vue {
 
   @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
 
+  @uiSettingsNs.Getter [SettingsGetters.backgroundSync]: boolean;
+
   @uiSettingsNs.Action [SettingsActions.setOpenTradesInTitle];
 
   @uiSettingsNs.Action [SettingsActions.setTimeZone];
+
+  @uiSettingsNs.Action [SettingsActions.setBackgroundSync];
 
   openTradesOptions = [
     { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
@@ -81,6 +88,14 @@ export default class Template extends Vue {
 
   set layoutLockedLocal(value: boolean) {
     this.setLayoutLocked(value);
+  }
+
+  get backgroundSyncLocal(): boolean {
+    return this.backgroundSync;
+  }
+
+  set backgroundSyncLocal(value: boolean) {
+    this.setBackgroundSync(value);
   }
 }
 </script>
