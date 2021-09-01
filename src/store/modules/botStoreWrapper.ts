@@ -141,7 +141,24 @@ export default function createBotStore(store) {
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
     },
-    async refreshFull({ dispatch, state, commit }, forceUpdate = false) {
+    allRefreshFrequent({ dispatch, getters }) {
+      console.log('dispatching all frequent refreshes');
+      getters.allAvailableBotsList.forEach((e) => {
+        if (getters[`${e}/${BotStoreGetters.autoRefresh}`]) {
+          console.log('refreshing ', e);
+          dispatch(`${e}/${BotStoreActions.refreshFrequent}`);
+        }
+      });
+    },
+    allRefreshSlow({ dispatch, getters }) {
+      console.log('dispatching all slow refreshes');
+      getters.allAvailableBotsList.forEach((e) => {
+        if (getters[`${e}/${BotStoreGetters.autoRefresh}`]) {
+          dispatch(`${e}/${BotStoreActions.refreshSlow}`);
+        }
+      });
+    },
+    async refreshxxFull({ commit, dispatch, getters, state }, forceUpdate = false) {
       if (state.refreshing) {
         return;
       }
@@ -160,32 +177,23 @@ export default function createBotStore(store) {
       }
     },
 
-    startRefresh({ getters, state, dispatch, commit }, runNow: boolean) {
-      console.log('starting refresh');
-      // Start refresh timer
-      if (getters.hasBots !== true) {
-        console.log('Not logged in.');
-        return;
-      }
+    startRefresh({ state, dispatch, commit }) {
       console.log('Starting automatic refresh.');
-      if (runNow) {
-        dispatch('refreshFrequent', false);
-        dispatch('refreshSlow', true);
+      dispatch('allRefreshFrequent');
+
+      if (!state.refreshInterval) {
+        // Set interval for refresh
+        const refreshInterval = window.setInterval(() => {
+          dispatch('allRefreshFrequent');
+        }, 5000);
+        commit('setRefreshInterval', refreshInterval);
       }
-      if (state.autoRefresh) {
-        if (!state.refreshInterval) {
-          // Set interval for refresh
-          const refreshInterval = window.setInterval(() => {
-            dispatch('refreshFrequent');
-          }, 5000);
-          commit('setRefreshInterval', refreshInterval);
-        }
-        if (!state.refreshIntervalSlow) {
-          const refreshIntervalSlow = window.setInterval(() => {
-            dispatch('refreshSlow', false);
-          }, 60000);
-          commit('setRefreshIntervalSlow', refreshIntervalSlow);
-        }
+      dispatch('allRefreshSlow', false);
+      if (!state.refreshIntervalSlow) {
+        const refreshIntervalSlow = window.setInterval(() => {
+          dispatch('allRefreshSlow', false);
+        }, 60000);
+        commit('setRefreshIntervalSlow', refreshIntervalSlow);
       }
     },
     stopRefresh({ state, commit }: { state: FTMultiBotState; commit: any }) {

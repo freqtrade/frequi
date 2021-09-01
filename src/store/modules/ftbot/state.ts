@@ -20,6 +20,7 @@ export interface FtbotStateType {
   ping: string;
   isBotOnline: boolean;
   autoRefresh: boolean;
+  refreshing: boolean;
   version: string;
   lastLogs: LogLine[];
   refreshRequired: boolean;
@@ -62,6 +63,7 @@ const state = (): FtbotStateType => {
     ping: '',
     isBotOnline: false,
     autoRefresh: false,
+    refreshing: false,
     version: '',
     lastLogs: [],
     refreshRequired: true,
