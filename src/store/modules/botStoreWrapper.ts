@@ -142,12 +142,12 @@ export default function createBotStore(store) {
     selectBot({ commit }, botId: string) {
       commit('selectBot', botId);
     },
-    allRefreshFrequent({ dispatch, getters }) {
+    allRefreshFrequent({ dispatch, getters }, slow: boolean) {
       console.log('dispatching all frequent refreshes');
       getters.allAvailableBotsList.forEach((e) => {
         if (getters[`${e}/${BotStoreGetters.autoRefresh}`]) {
           console.log('refreshing ', e);
-          dispatch(`${e}/${BotStoreActions.refreshFrequent}`);
+          dispatch(`${e}/${BotStoreActions.refreshFrequent}`, slow);
         }
       });
     },
@@ -180,7 +180,7 @@ export default function createBotStore(store) {
 
     startRefresh({ state, dispatch, commit }) {
       console.log('Starting automatic refresh.');
-      dispatch('allRefreshFrequent');
+      dispatch('allRefreshFrequent', false);
 
       if (!state.refreshInterval) {
         // Set interval for refresh
