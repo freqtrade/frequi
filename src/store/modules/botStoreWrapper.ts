@@ -146,7 +146,7 @@ export default function createBotStore(store) {
       console.log('dispatching all frequent refreshes');
       getters.allAvailableBotsList.forEach((e) => {
         if (getters[`${e}/${BotStoreGetters.autoRefresh}`]) {
-          console.log('refreshing ', e);
+          // console.log('refreshing', e);
           dispatch(`${e}/${BotStoreActions.refreshFrequent}`, slow);
         }
       });

@@ -77,4 +77,5 @@ Object.entries(UserService.getAvailableBots()).forEach(([k, v]) => {
   store.dispatch('ftbot/addBot', v);
 });
 store.dispatch('ftbot/selectFirstBot');
+store.dispatch('ftbot/startRefresh');
 export default store;

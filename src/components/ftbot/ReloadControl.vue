@@ -4,13 +4,13 @@
       <RefreshIcon :size="16" />
     </b-button>
 
-    <b-form-checkbox
+    <!-- <b-form-checkbox
       v-model="autoRefreshLoc"
       class="ml-auto float-right mr-2 my-auto"
       title="AutoRefresh"
       variant="secondary"
       >AutoRefresh</b-form-checkbox
-    >
+    > -->
   </div>
 </template>
 
@@ -28,18 +28,18 @@ export default class ReloadControl extends Vue {
   refreshIntervalSlow: number | null = null;
 
   created() {
-    if (this.loggedIn) {
-      this.refreshOnce();
-      this.refreshFull(true);
-    }
+    // if (this.loggedIn) {
+    //   this.refreshOnce();
+    //   this.refreshFull(true);
+    // }
   }
 
   mounted() {
-    this.startRefresh(false);
+    // this.startRefresh(false);
   }
 
   beforeDestroy() {
-    this.stopRefresh();
+    // this.stopRefresh();
   }
 
   // TODO-multi: This should be per bot!

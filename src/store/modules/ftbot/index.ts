@@ -424,14 +424,14 @@ export function createBotSubStore(botId: string) {
       [BotStoreActions.botAdded]({ commit }) {
         commit('setAutoRefresh', userService.getAutoRefresh());
       },
-      [BotStoreActions.ping]({ commit }) {
-        api
-          .get('/ping')
-          .then((result) => {
-            commit('setPing', result.data);
-            commit('setIsBotOnline', true);
-          })
-          .catch(console.error);
+      async [BotStoreActions.ping]({ commit }) {
+        try {
+          const result = await api.get('/ping');
+          commit('setPing', result.data);
+          commit('setIsBotOnline', true);
+        } catch (error) {
+          //
+        }
       },
       [BotStoreActions.logout]() {
         userService.logout();
