@@ -25,7 +25,7 @@ Ports can vary, so check the URL you're using.
 ### Project setup
 
 ```
-yarn install
+yarn install 
 ```
 
 ### Compiles and hot-reloads for development
