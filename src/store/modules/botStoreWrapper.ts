@@ -2,8 +2,6 @@ import { BotDescriptor, BotDescriptors } from '@/types';
 import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
-const AUTO_REFRESH = 'ft_auto_refresh';
-
 interface FTMultiBotState {
   selectedBot: string;
   availableBots: BotDescriptors;
@@ -91,9 +89,7 @@ export default function createBotStore(store) {
         console.warn(`Botid ${botId} not available, but selected.`);
       }
     },
-    setAutoRefresh(state: FTMultiBotState, newRefreshValue: boolean) {
-      state.autoRefresh = newRefreshValue;
-    },
+
     setRefreshing(state, refreshing: boolean) {
       state.refreshing = refreshing;
     },

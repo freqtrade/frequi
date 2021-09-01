@@ -2,7 +2,7 @@
   <div class="d-flex align-items-center justify-content-between w-100">
     <span class="mr-2">{{ bot.botName || bot.botId }}</span>
 
-    <div class="align-items-center" :class="noButtons ? 'd-inline' : 'd-flex'">
+    <div class="align-items-center d-flex">
       <span class="ml-2 align-middle">{{
         allIsBotOnline[bot.botId] ? '&#128994;' : '&#128308;'
       }}</span>
@@ -16,7 +16,7 @@
         R
       </b-form-checkbox>
       <div v-if="!noButtons" class="d-flex flex-align-cent">
-        <b-button class="ml-1" size="sm" title="Edit bot" @click="clickRemoveBot(bot)">
+        <b-button class="ml-1" size="sm" title="Edit bot">
           <EditIcon :size="16" title="Edit Button" />
         </b-button>
         <b-button class="ml-1" size="sm" title="Delete bot" @click.prevent="clickRemoveBot(bot)">
@@ -59,11 +59,10 @@ export default class BotList extends Vue {
   }
 
   set autoRefreshLoc(v) {
-    // Dummy setter - Set via change event.
+    // Dummy setter - Set via change event to avoid bouncing
   }
 
   changeEvent(v) {
-    console.log('changeEvent', v);
     this.$store.dispatch(`ftbot/${this.bot.botId}/setAutoRefresh`, v);
   }
 
