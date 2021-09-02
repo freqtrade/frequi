@@ -1,4 +1,4 @@
-import { BotDescriptor, BotDescriptors } from '@/types';
+import { BotDescriptor, BotDescriptors, MultiClosedTrades } from '@/types';
 import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
@@ -13,13 +13,14 @@ interface FTMultiBotState {
 export enum MultiBotStoreGetters {
   hasBots = 'hasBots',
   botCount = 'botCount',
+  nextBotId = 'nextBotId',
   selectedBot = 'selectedBot',
   selectedBotObj = 'selectedBotObj',
   allAvailableBots = 'allAvailableBots',
   allAvailableBotsList = 'allAvailableBotsList',
   allIsBotOnline = 'allIsBotOnline',
-  nextBotId = 'nextBotId',
   allAutoRefresh = 'allAutoRefresh',
+  allClosedTrades = 'allClosedTrades',
 }
 
 export default function createBotStore(store) {
@@ -38,6 +39,14 @@ export default function createBotStore(store) {
     },
     [MultiBotStoreGetters.botCount](state: FTMultiBotState): number {
       return Object.keys(state.availableBots).length;
+    },
+    [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
+      let botCount = Object.keys(state.availableBots).length;
+
+      while (`ftbot.${botCount}` in state.availableBots) {
+        botCount += 1;
+      }
+      return `ftbot.${botCount}`;
     },
     [MultiBotStoreGetters.selectedBot](state: FTMultiBotState): string {
       return state.selectedBot;
@@ -65,13 +74,13 @@ export default function createBotStore(store) {
       });
       return result;
     },
-    [MultiBotStoreGetters.nextBotId](state: FTMultiBotState): string {
-      let botCount = Object.keys(state.availableBots).length;
+    [MultiBotStoreGetters.allClosedTrades](state: FTMultiBotState, getters): MultiClosedTrades {
+      const result = {};
 
-      while (`ftbot.${botCount}` in state.availableBots) {
-        botCount += 1;
-      }
-      return `ftbot.${botCount}`;
+      getters.allAvailableBotsList.forEach((e) => {
+        result[e] = getters[`${e}/closedTrades`];
+      });
+      return result;
     },
   };
   // Autocreate getters from botStores
