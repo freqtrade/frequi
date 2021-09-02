@@ -145,7 +145,10 @@ export default function createBotStore(store) {
     allRefreshFrequent({ dispatch, getters }, slow: boolean) {
       console.log('dispatching all frequent refreshes');
       getters.allAvailableBotsList.forEach((e) => {
-        if (getters[`${e}/${BotStoreGetters.autoRefresh}`]) {
+        if (
+          getters[`${e}/${BotStoreGetters.autoRefresh}`] &&
+          getters[`${e}/${BotStoreGetters.isBotOnline}`]
+        ) {
           // console.log('refreshing', e);
           dispatch(`${e}/${BotStoreActions.refreshFrequent}`, slow);
         }
@@ -154,7 +157,10 @@ export default function createBotStore(store) {
     allRefreshSlow({ dispatch, getters }) {
       console.log('dispatching all slow refreshes');
       getters.allAvailableBotsList.forEach((e) => {
-        if (getters[`${e}/${BotStoreGetters.autoRefresh}`]) {
+        if (
+          getters[`${e}/${BotStoreGetters.autoRefresh}`] &&
+          getters[`${e}/${BotStoreGetters.isBotOnline}`]
+        ) {
           dispatch(`${e}/${BotStoreActions.refreshSlow}`);
         }
       });
