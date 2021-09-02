@@ -145,10 +145,7 @@ export default function createBotStore(store) {
     allRefreshFrequent({ dispatch, getters }, slow: boolean) {
       console.log('dispatching all frequent refreshes');
       getters.allAvailableBotsList.forEach((e) => {
-        if (
-          getters[`${e}/${BotStoreGetters.autoRefresh}`] &&
-          getters[`${e}/${BotStoreGetters.isBotOnline}`]
-        ) {
+        if (getters[`${e}/${BotStoreGetters.refreshNow}`]) {
           // console.log('refreshing', e);
           dispatch(`${e}/${BotStoreActions.refreshFrequent}`, slow);
         }
@@ -157,25 +154,24 @@ export default function createBotStore(store) {
     allRefreshSlow({ dispatch, getters }) {
       console.log('dispatching all slow refreshes');
       getters.allAvailableBotsList.forEach((e) => {
-        if (
-          getters[`${e}/${BotStoreGetters.autoRefresh}`] &&
-          getters[`${e}/${BotStoreGetters.isBotOnline}`]
-        ) {
+        if (getters[`${e}/${BotStoreGetters.refreshNow}`]) {
           dispatch(`${e}/${BotStoreActions.refreshSlow}`);
         }
       });
     },
-    async refreshxxFull({ commit, dispatch, getters, state }, forceUpdate = false) {
+    async allRefreshFull({ commit, dispatch, state }, forceUpdate = false) {
       if (state.refreshing) {
         return;
       }
       commit('setRefreshing', true);
       try {
+        // Ensure all bots status is correct.
+        await dispatch('pingAll');
         const updates: Promise<AxiosInstance>[] = [];
-        updates.push(dispatch('refreshFrequent', false));
-        updates.push(dispatch('refreshSlow', forceUpdate));
-        updates.push(dispatch('getDaily'));
-        updates.push(dispatch('getBalance'));
+        updates.push(dispatch('allRefreshFrequent', false));
+        updates.push(dispatch('allRefreshSlow'));
+        // updates.push(dispatch('getDaily'));
+        // updates.push(dispatch('getBalance'));
 
         await Promise.all(updates);
         console.log('refreshing_end');

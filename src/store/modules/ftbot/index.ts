@@ -159,7 +159,7 @@ export function createBotSubStore(botId: string) {
       [BotStoreGetters.refreshNow](state, getters, rootState, rootGetters): boolean {
         const bgRefresh = rootGetters['uiSettings/backgroundSync'];
         const selectedBot = rootGetters['ftbot/selectedBot'];
-        if ((selectedBot === botId || bgRefresh) && getters.autoRefresh) {
+        if ((selectedBot === botId || bgRefresh) && getters.autoRefresh && getters.isBotOnline) {
           return true;
         }
         return false;
