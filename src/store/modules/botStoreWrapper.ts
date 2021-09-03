@@ -18,10 +18,14 @@ export enum MultiBotStoreGetters {
   selectedBotObj = 'selectedBotObj',
   allAvailableBots = 'allAvailableBots',
   allAvailableBotsList = 'allAvailableBotsList',
+  // Automatically created entries
   allIsBotOnline = 'allIsBotOnline',
   allAutoRefresh = 'allAutoRefresh',
   allClosedTrades = 'allClosedTrades',
+  allProfit = 'allProfit',
 }
+
+const createAllGetters = ['isBotOnline', 'autoRefresh', 'closedTrades', 'profit'];
 
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
@@ -60,33 +64,25 @@ export default function createBotStore(store) {
     [MultiBotStoreGetters.allAvailableBotsList](state: FTMultiBotState): string[] {
       return Object.keys(state.availableBots);
     },
-    [MultiBotStoreGetters.allIsBotOnline](state: FTMultiBotState, getters): {} {
-      const result = {};
-      getters.allAvailableBotsList.forEach((e) => {
-        result[e] = getters[`${e}/isBotOnline`];
-      });
-      return result;
-    },
-    [MultiBotStoreGetters.allAutoRefresh](state: FTMultiBotState, getters): {} {
-      const result = {};
-      getters.allAvailableBotsList.forEach((e) => {
-        result[e] = getters[`${e}/autoRefresh`];
-      });
-      return result;
-    },
-    [MultiBotStoreGetters.allClosedTrades](state: FTMultiBotState, getters): MultiClosedTrades {
-      const result = {};
-
-      getters.allAvailableBotsList.forEach((e) => {
-        result[e] = getters[`${e}/closedTrades`];
-      });
-      return result;
-    },
   };
   // Autocreate getters from botStores
   Object.keys(BotStoreGetters).forEach((e) => {
     getters[e] = (state, getters) => {
       return getters[`${state.selectedBot}/${e}`];
+    };
+  });
+
+  // Create selected getters
+  createAllGetters.forEach((e: string) => {
+    const getterName = `all${e.charAt(0).toUpperCase() + e.slice(1)}`;
+    console.log('creatin ', e, getterName);
+    getters[getterName] = (state, getters) => {
+      const result = {};
+
+      getters.allAvailableBotsList.forEach((botId) => {
+        result[botId] = getters[`${botId}/${e}`];
+      });
+      return result;
     };
   });
 
@@ -178,7 +174,7 @@ export default function createBotStore(store) {
         await dispatch('pingAll');
         const updates: Promise<AxiosInstance>[] = [];
         updates.push(dispatch('allRefreshFrequent', false));
-        updates.push(dispatch('allRefreshSlow'));
+        updates.push(dispatch('allRefreshSlow', true));
         // updates.push(dispatch('getDaily'));
         // updates.push(dispatch('getBalance'));
 
