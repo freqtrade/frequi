@@ -21,8 +21,11 @@ export enum MultiBotStoreGetters {
   // Automatically created entries
   allIsBotOnline = 'allIsBotOnline',
   allAutoRefresh = 'allAutoRefresh',
-  allClosedTrades = 'allClosedTrades',
   allProfit = 'allProfit',
+  allOpenTrades = 'allOpenTrades',
+  allOpenTradeCount = 'allOpenTradeCount',
+  allClosedTrades = 'allClosedTrades',
+  allBotState = 'allBotState',
 }
 
 const createAllGetters = [
@@ -31,7 +34,9 @@ const createAllGetters = [
   'closedTrades',
   'profit',
   'openTrades',
+  'openTradeCount',
   'closedTrades',
+  'botState',
 ];
 
 export default function createBotStore(store) {
