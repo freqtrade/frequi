@@ -25,7 +25,14 @@ export enum MultiBotStoreGetters {
   allProfit = 'allProfit',
 }
 
-const createAllGetters = ['isBotOnline', 'autoRefresh', 'closedTrades', 'profit'];
+const createAllGetters = [
+  'isBotOnline',
+  'autoRefresh',
+  'closedTrades',
+  'profit',
+  'openTrades',
+  'closedTrades',
+];
 
 export default function createBotStore(store) {
   const state: FTMultiBotState = {
