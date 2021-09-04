@@ -77,17 +77,31 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      :i="gridLayoutHourly.i"
-      :x="gridLayoutHourly.x"
-      :y="gridLayoutHourly.y"
-      :w="gridLayoutHourly.w"
-      :h="gridLayoutHourly.h"
+      :i="gridLayoutBotComparison.i"
+      :x="gridLayoutBotComparison.x"
+      :y="gridLayoutBotComparison.y"
+      :w="gridLayoutBotComparison.w"
+      :h="gridLayoutBotComparison.h"
       :min-w="3"
       :min-h="4"
       drag-allow-from=".drag-header"
     >
-      <DraggableContainer header="Hourly Profit">
-        <HourlyChart :trades="closedTrades" :show-title="false" />
+      <DraggableContainer header="Bot comparison">
+        <bot-comparison-list />
+      </DraggableContainer>
+    </GridItem>
+    <GridItem
+      :i="gridLayoutAllOpenTrades.i"
+      :x="gridLayoutAllOpenTrades.x"
+      :y="gridLayoutAllOpenTrades.y"
+      :w="gridLayoutAllOpenTrades.w"
+      :h="gridLayoutAllOpenTrades.h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
+    >
+      <DraggableContainer header="Open Trades">
+        <trade-list :active-trades="true" :trades="allOpenTradesAllBots" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -129,9 +143,10 @@ import { namespace } from 'vuex-class';
 import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import DailyChart from '@/components/charts/DailyChart.vue';
-import HourlyChart from '@/components/charts/HourlyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
+import BotComparisonList from '@/components/ftbot/BotComarisonList.vue';
+import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import {
@@ -160,14 +175,17 @@ const layoutNs = namespace('layout');
     GridLayout,
     GridItem,
     DailyChart,
-    HourlyChart,
     CumProfitChart,
     TradesLogChart,
+    BotComparisonList,
+    TradeList,
     DraggableContainer,
   },
 })
 export default class Dashboard extends Vue {
   @ftbot.Getter closedTrades!: Trade[];
+
+  @ftbot.Getter [MultiBotStoreGetters.allOpenTradesAllBots]!: Trade[];
 
   @ftbot.Getter [MultiBotStoreGetters.allTradesAllBots]!: ClosedTrade[];
 
@@ -246,8 +264,12 @@ export default class Dashboard extends Vue {
     return findGridLayout(this.gridLayout, DashboardLayout.dailyChart);
   }
 
-  get gridLayoutHourly(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.hourlyChart);
+  get gridLayoutBotComparison(): GridItemData {
+    return findGridLayout(this.gridLayout, DashboardLayout.botComparison);
+  }
+
+  get gridLayoutAllOpenTrades(): GridItemData {
+    return findGridLayout(this.gridLayout, DashboardLayout.allOpenTrades);
   }
 
   get gridLayoutCumChart(): GridItemData {

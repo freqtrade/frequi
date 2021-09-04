@@ -52,6 +52,7 @@ const CHART_TRADE_COUNT = 'Trade Count';
   },
 })
 export default class HourlyChart extends Vue {
+  // TODO: This chart is not used at the moment!
   @Prop({ required: true }) trades!: Trade[];
 
   @Prop({ default: true, type: Boolean }) showTitle!: boolean;
