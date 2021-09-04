@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts">
+// TODO: evaluate if this is still used
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Trade } from '@/types';
 
