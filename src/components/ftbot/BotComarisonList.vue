@@ -3,7 +3,6 @@
     ref="tradesTable"
     small
     hover
-    stacked="md"
     show-empty
     primary-key="botId"
     :items="tableItems"
