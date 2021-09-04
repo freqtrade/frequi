@@ -33,8 +33,8 @@
           </b-card>
           <b-card header="Won / lost trades">
             <b-card-text>
-              <span class="text-success">{{ profit.winning_trades }}</span> /
-              <span class="text-danger">{{ profit.losing_trades }}</span>
+              <span class="text-profit">{{ profit.winning_trades }}</span> /
+              <span class="text-loss">{{ profit.losing_trades }}</span>
             </b-card-text>
           </b-card>
           <b-card header="Last trade">

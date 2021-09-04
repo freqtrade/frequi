@@ -44,10 +44,10 @@ export default class ProfitPill extends Vue {
 
 <style scoped lang="scss">
 .profit-pill {
-  background: #ef5350;
+  background: $color-loss;
   border-radius: 6px;
 }
 .profit-pill-profit {
-  background: #12bb7b;
+  background: $color-profit;
 }
 </style>

@@ -4,6 +4,13 @@
     background-color: #000000;
 }
 
+.text-profit {
+    color: $color-profit;
+}
+.text-loss {
+    color: $color-loss;
+}
+
 [data-theme="dark"] {
     $bg-dark: #3c3c3c;
     $bg-darker: darken($bg-dark, 5%);

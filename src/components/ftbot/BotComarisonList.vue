@@ -25,6 +25,12 @@
         :stake-currency="row.item.stakeCurrency"
       />
     </template>
+    <template #cell(winVsLoss)="row">
+      <div v-if="row.item.losses !== undefined">
+        <span class="text-profit">{{ row.item.wins }}</span> /
+        <span class="text-loss">{{ row.item.losses }}</span>
+      </div>
+    </template>
   </b-table>
 </template>
 
@@ -58,20 +64,20 @@ export default class BotComparisonList extends Vue {
       stakeCurrency: 'USDT',
       wins: 0,
       losses: 0,
-      winVsLoss: '',
     };
 
     Object.entries(this.allProfit).forEach(([k, v]) => {
       // TODO: handle one inactive bot ...
       val.push({
         botId: this.allAvailableBots[k].botName,
-        trades: `${this.allOpenTradeCount[k]} / ${this.allBotState[k]?.max_open_trades}`,
+        trades: `${this.allOpenTradeCount[k]} / ${this.allBotState[k]?.max_open_trades || 'N/A'}`,
         profitClosed: v.profit_closed_coin,
         profitClosedRatio: v.profit_closed_ratio_sum || 0,
         stakeCurrency: this.allBotState[k]?.stake_currency || '',
         profitOpenRatio: v.profit_all_ratio_sum - v.profit_closed_ratio_sum,
         profitOpen: v.profit_all_coin - v.profit_closed_coin,
-        winVsLoss: `${v.winning_trades || 'N/A'} / ${v.losing_trades || 'N/A'}`,
+        wins: v.winning_trades,
+        losses: v.losing_trades,
       });
       if (v.profit_closed_coin !== undefined) {
         summary.profitClosed += v.profit_closed_coin;
@@ -81,7 +87,6 @@ export default class BotComparisonList extends Vue {
         // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
       }
     });
-    summary.winVsLoss = `${summary.wins} / ${summary.losses}`;
     val.push(summary);
     return val;
   }
