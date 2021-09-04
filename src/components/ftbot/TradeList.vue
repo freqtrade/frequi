@@ -168,10 +168,12 @@ export default class TradeList extends Vue {
     {
       key: 'open_rate',
       label: 'Open rate',
+      formatter: (value: number) => this.formatPrice(value, 8),
     },
     {
       key: this.activeTrades ? 'current_rate' : 'close_rate',
       label: this.activeTrades ? 'Current rate' : 'Close rate',
+      formatter: (value: number) => this.formatPrice(value, 8),
     },
     {
       key: 'profit',
