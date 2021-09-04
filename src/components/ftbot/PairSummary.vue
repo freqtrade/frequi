@@ -14,7 +14,7 @@
         {{ comb.pair }}
         <span v-if="comb.locks" :title="comb.lockReason"> &#128274; </span>
       </div>
-      <TradeProfit :trade="comb.trade" />
+      <TradeProfit v-if="comb.trade" :trade="comb.trade" />
     </b-list-group-item>
   </b-list-group>
 </template>
