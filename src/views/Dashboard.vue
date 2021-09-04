@@ -147,7 +147,7 @@ import {
   ProfitInterface,
   DailyPayload,
   BotState,
-  MultiClosedTrades,
+  ClosedTrade,
 } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
@@ -169,7 +169,7 @@ const layoutNs = namespace('layout');
 export default class Dashboard extends Vue {
   @ftbot.Getter closedTrades!: Trade[];
 
-  @ftbot.Getter [MultiBotStoreGetters.allClosedTrades]!: MultiClosedTrades;
+  @ftbot.Getter [MultiBotStoreGetters.allClosedTrades]!: Record<string, ClosedTrade>;
 
   @ftbot.Getter [BotStoreGetters.dailyStats]!: DailyReturnValue;
 

@@ -33,7 +33,7 @@ export default class BotList extends Vue {
 
   @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
 
-  @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline];
+  @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline]: Record<string, boolean>;
 
   @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
 

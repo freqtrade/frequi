@@ -1,4 +1,4 @@
-import { BotDescriptor, BotDescriptors, MultiClosedTrades } from '@/types';
+import { BotDescriptor, BotDescriptors } from '@/types';
 import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 

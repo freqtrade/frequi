@@ -79,7 +79,3 @@ export interface TradeResponse {
   /** Total trade count */
   total_trades: number;
 }
-
-export interface MultiClosedTrades {
-  [key: string]: ClosedTrade;
-}
