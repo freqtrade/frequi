@@ -1,12 +1,14 @@
 <template>
   <div
     class="profit-pill px-2"
-    :class="profitRatio > 0 ? 'profit-pill-profit' : ''"
+    :class="isProfitable ? 'profit-pill-profit' : ''"
     :title="profitDesc"
   >
     {{ formatPercent(profitRatio, 2) }}
     <small :title="stakeCurrency">
-      {{ `(${formatPrice(profitAbs, 3)} ${stakeCurrency})` }}
+      {{ profitRatio ? '(' : '' }}
+      {{ `${formatPrice(profitAbs, 3)} ${stakeCurrency}` }}
+      {{ profitRatio ? ')' : '' }}
     </small>
   </div>
 </template>
@@ -17,19 +19,26 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class ProfitPill extends Vue {
-  @Prop({ required: true, type: Number }) profitRatio!: number;
+  @Prop({ required: false, default: undefined, type: Number }) profitRatio?: number;
 
   @Prop({ required: true, type: Number }) profitAbs!: number;
 
   @Prop({ required: true, type: String }) stakeCurrency!: string;
 
-  @Prop({ required: true, type: String }) profitDesc!: string;
+  @Prop({ required: false, default: '', type: String }) profitDesc!: string;
 
   formatPercent = formatPercent;
 
   timestampms = timestampms;
 
   formatPrice = formatPrice;
+
+  get isProfitable() {
+    return (
+      (this.profitRatio !== undefined && this.profitRatio > 0) ||
+      (this.profitRatio === undefined && this.profitAbs > 0)
+    );
+  }
 }
 </script>
 
