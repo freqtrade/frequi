@@ -16,6 +16,7 @@ export enum DashboardLayout {
   hourlyChart = 'g-hourlyChart',
   cumChartChart = 'g-cumChartChart',
   tradesLogChart = 'g-TradesLogChart',
+  allOpenTrades = 'g-allOpenTrades',
 }
 
 export enum LayoutGetters {
@@ -52,17 +53,19 @@ const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: DashboardLayout.KPI, x: 0, y: 0, w: 4, h: 6 },
   { i: DashboardLayout.dailyChart, x: 4, y: 0, w: 4, h: 6 },
-  { i: DashboardLayout.hourlyChart, x: 4, y: 6, w: 4, h: 6 },
-  { i: DashboardLayout.cumChartChart, x: 0, y: 6, w: 4, h: 6 },
+  { i: DashboardLayout.hourlyChart, x: 0, y: 6, w: 6, h: 4 } /* Bot Comparison */,
+  { i: DashboardLayout.allOpenTrades, x: 6, y: 6, w: 6, h: 4 },
+  { i: DashboardLayout.cumChartChart, x: 8, y: 0, w: 4, h: 6 },
   { i: DashboardLayout.tradesLogChart, x: 0, y: 12, w: 12, h: 4 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT_SM: GridItemData[] = [
   { i: DashboardLayout.KPI, x: 0, y: 0, w: 12, h: 6 },
-  { i: DashboardLayout.dailyChart, x: 0, y: 6, w: 12, h: 6 },
-  { i: DashboardLayout.hourlyChart, x: 0, y: 12, w: 12, h: 6 },
-  { i: DashboardLayout.cumChartChart, x: 0, y: 18, w: 12, h: 6 },
-  { i: DashboardLayout.tradesLogChart, x: 0, y: 24, w: 12, h: 4 },
+  { i: DashboardLayout.hourlyChart, x: 0, y: 6, w: 12, h: 6 } /* Bot Comparison */,
+  { i: DashboardLayout.allOpenTrades, x: 0, y: 12, w: 12, h: 8 },
+  { i: DashboardLayout.dailyChart, x: 0, y: 20, w: 12, h: 6 },
+  { i: DashboardLayout.cumChartChart, x: 0, y: 26, w: 12, h: 6 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 32, w: 12, h: 4 },
 ];
 
 const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';

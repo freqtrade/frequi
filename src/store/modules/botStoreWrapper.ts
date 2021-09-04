@@ -19,6 +19,7 @@ export enum MultiBotStoreGetters {
   allAvailableBots = 'allAvailableBots',
   allAvailableBotsList = 'allAvailableBotsList',
   allTradesAllBots = 'allTradesAllBots',
+  allOpenTradesAllBots = 'allOpenTradesAllBots',
   // Automatically created entries
   allIsBotOnline = 'allIsBotOnline',
   allAutoRefresh = 'allAutoRefresh',
@@ -81,6 +82,18 @@ export default function createBotStore(store) {
       let resp: Trade[] = [];
       getters.allAvailableBotsList.forEach((botId) => {
         const trades = getters[`${botId}/${BotStoreGetters.trades}`].map((t) => ({ ...t, botId }));
+
+        resp = resp.concat(trades);
+      });
+      return resp;
+    },
+    [MultiBotStoreGetters.allOpenTradesAllBots](state: FTMultiBotState, getters): Trade[] {
+      let resp: Trade[] = [];
+      getters.allAvailableBotsList.forEach((botId) => {
+        const trades = getters[`${botId}/${BotStoreGetters.openTrades}`].map((t) => ({
+          ...t,
+          botId,
+        }));
 
         resp = resp.concat(trades);
       });
