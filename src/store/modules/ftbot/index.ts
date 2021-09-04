@@ -325,7 +325,7 @@ export function createBotSubStore(botId: string) {
         state.tradeCount = tradesCount;
       },
       updateOpenTrades(state: FtbotStateType, trades) {
-        console.log(`Update open trade length ${trades.length}`);
+        // console.log(`Update open trade length ${trades.length}`);
         state.openTrades = trades;
       },
       updateLocks(state: FtbotStateType, locks: LockResponse) {

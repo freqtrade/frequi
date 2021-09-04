@@ -1,4 +1,4 @@
-import { BotDescriptor, BotDescriptors } from '@/types';
+import { BotDescriptor, BotDescriptors, Trade } from '@/types';
 import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
@@ -18,6 +18,7 @@ export enum MultiBotStoreGetters {
   selectedBotObj = 'selectedBotObj',
   allAvailableBots = 'allAvailableBots',
   allAvailableBotsList = 'allAvailableBotsList',
+  allTradesAllBots = 'allTradesAllBots',
   // Automatically created entries
   allIsBotOnline = 'allIsBotOnline',
   allAutoRefresh = 'allAutoRefresh',
@@ -75,6 +76,15 @@ export default function createBotStore(store) {
     },
     [MultiBotStoreGetters.allAvailableBotsList](state: FTMultiBotState): string[] {
       return Object.keys(state.availableBots);
+    },
+    [MultiBotStoreGetters.allTradesAllBots](state: FTMultiBotState, getters): Trade[] {
+      let resp: Trade[] = [];
+      getters.allAvailableBotsList.forEach((botId) => {
+        const trades = getters[`${botId}/${BotStoreGetters.trades}`].map((t) => ({ ...t, botId }));
+
+        resp = resp.concat(trades);
+      });
+      return resp;
     },
   };
   // Autocreate getters from botStores
@@ -160,7 +170,6 @@ export default function createBotStore(store) {
       commit('selectBot', botId);
     },
     allRefreshFrequent({ dispatch, getters }, slow: boolean) {
-      console.log('dispatching all frequent refreshes');
       getters.allAvailableBotsList.forEach((e) => {
         if (getters[`${e}/${BotStoreGetters.refreshNow}`]) {
           // console.log('refreshing', e);
@@ -169,7 +178,6 @@ export default function createBotStore(store) {
       });
     },
     allRefreshSlow({ dispatch, getters }) {
-      console.log('dispatching all slow refreshes');
       getters.allAvailableBotsList.forEach((e) => {
         if (getters[`${e}/${BotStoreGetters.refreshNow}`]) {
           dispatch(`${e}/${BotStoreActions.refreshSlow}`);

@@ -1,5 +1,5 @@
 <template>
-  <v-chart v-if="trades.length > 0" :option="chartOptions" autoresize :theme="getChartTheme" />
+  <v-chart v-if="trades" :option="chartOptions" autoresize :theme="getChartTheme" />
 </template>
 
 <script lang="ts">
@@ -53,24 +53,54 @@ export default class CumProfitChart extends Vue {
 
   @Getter getChartTheme!: string;
 
+  botList: string[] = [];
+
   get cumulativeData() {
+    this.botList = [];
     const res: CumProfitData[] = [];
+    const resD = {};
     const closedTrades = this.trades
       .slice()
       .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
     let profit = 0.0;
+
     for (let i = 0, len = closedTrades.length; i < len; i += 1) {
       const trade = closedTrades[i];
+
       if (trade.close_timestamp && trade[this.profitColumn]) {
         profit += trade[this.profitColumn];
-        res.push({ date: trade.close_timestamp, profit });
+        if (!resD[trade.close_timestamp]) {
+          // New timestamp
+          resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
+        } else {
+          // Add to existing profit
+          resD[trade.close_timestamp].profit += profit;
+          if (resD[trade.close_timestamp][trade.botId]) {
+            resD[trade.close_timestamp][trade.botId] += profit;
+          } else {
+            resD[trade.close_timestamp][trade.botId] = profit;
+          }
+        }
+        res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
+        if (!this.botList.includes(trade.botId)) {
+          this.botList.push(trade.botId);
+        }
       }
     }
-    return res;
+    // console.log(resD);
+
+    return Object.entries(resD).map(([k, v]) => {
+      const obj = { date: parseInt(k, 10), profit: v.profit };
+      // TODO: The below could allow "lines" per bot"
+      // this.botList.forEach((botId) => {
+      // obj[botId] = v[botId];
+      // });
+      return obj;
+    });
   }
 
   get chartOptions(): EChartsOption {
-    return {
+    const chartOptionsLoc: EChartsOption = {
       title: {
         text: 'Cumulative Profit',
         show: this.showTitle,
@@ -151,6 +181,24 @@ export default class CumProfitChart extends Vue {
         },
       ],
     };
+    // TODO: maybe have profit lines per bot?
+    // this.botList.forEach((botId: string) => {
+    //   console.log('bot', botId);
+    //   chartOptionsLoc.series.push({
+    //     type: 'line',
+    //     name: botId,
+    //     animation: true,
+    //     step: 'end',
+    //     lineStyle: {
+    //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+    //     },
+    //     itemStyle: {
+    //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+    //     },
+    //     // symbol: 'none',
+    //   });
+    // });
+    return chartOptionsLoc;
   }
 }
 </script>

@@ -101,7 +101,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Cumulative Profit">
-        <CumProfitChart :trades="closedTrades" :show-title="false" />
+        <CumProfitChart :trades="allTradesAllBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -169,7 +169,7 @@ const layoutNs = namespace('layout');
 export default class Dashboard extends Vue {
   @ftbot.Getter closedTrades!: Trade[];
 
-  @ftbot.Getter [MultiBotStoreGetters.allClosedTrades]!: Record<string, ClosedTrade>;
+  @ftbot.Getter [MultiBotStoreGetters.allTradesAllBots]!: ClosedTrade[];
 
   @ftbot.Getter [BotStoreGetters.dailyStats]!: DailyReturnValue;
 
