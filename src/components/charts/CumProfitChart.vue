@@ -20,7 +20,7 @@ import {
   TooltipComponent,
 } from 'echarts/components';
 
-import { ClosedTrade, CumProfitData } from '@/types';
+import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
 
 use([
   BarChart,
@@ -58,7 +58,7 @@ export default class CumProfitChart extends Vue {
   get cumulativeData() {
     this.botList = [];
     const res: CumProfitData[] = [];
-    const resD = {};
+    const resD: CumProfitDataPerDate = {};
     const closedTrades = this.trades
       .slice()
       .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
