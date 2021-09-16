@@ -191,6 +191,9 @@ export default class CandleChart extends Vue {
           axisLine: { onZero: false },
           axisTick: { show: true },
           axisLabel: { show: true },
+          axisPointer: {
+            label: { show: false },
+          },
           position: 'top',
           splitLine: { show: false },
           splitNumber: 20,
@@ -205,6 +208,9 @@ export default class CandleChart extends Vue {
           axisLine: { onZero: false },
           axisTick: { show: false },
           axisLabel: { show: false },
+          axisPointer: {
+            label: { show: false },
+          },
           splitLine: { show: false },
           splitNumber: 20,
           min: 'dataMin',
@@ -449,6 +455,9 @@ export default class CandleChart extends Vue {
             axisLine: { onZero: false },
             axisTick: { show: false },
             axisLabel: { show: false },
+            axisPointer: {
+              label: { show: false },
+            },
             splitLine: { show: false },
             splitNumber: 20,
           });
