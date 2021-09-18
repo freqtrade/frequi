@@ -2,6 +2,8 @@ import { BotDescriptor, BotDescriptors, Trade } from '@/types';
 import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
+const AUTH_SELECTED_BOT = 'ftSelectedBot';
+
 interface FTMultiBotState {
   selectedBot: string;
   availableBots: BotDescriptors;
@@ -173,12 +175,17 @@ export default function createBotStore(store) {
     },
     selectFirstBot({ commit, getters }) {
       if (getters.hasBots) {
+        const selBotId = localStorage.getItem(AUTH_SELECTED_BOT);
         const firstBot = Object.keys(getters.allAvailableBots)[0];
-        console.log(firstBot);
-        commit('selectBot', getters.allAvailableBots[firstBot].botId);
+        let selBot: string | undefined = firstBot;
+        if (selBotId) {
+          selBot = Object.keys(getters.allAvailableBots).find((x) => x === selBotId);
+        }
+        commit('selectBot', getters.allAvailableBots[selBot || firstBot].botId);
       }
     },
     selectBot({ commit }, botId: string) {
+      localStorage.setItem(AUTH_SELECTED_BOT, botId);
       commit('selectBot', botId);
     },
     allRefreshFrequent({ dispatch, getters }, slow: boolean) {
