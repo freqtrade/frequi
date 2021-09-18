@@ -14,55 +14,6 @@
     @breakpoint-changed="breakpointChanged"
   >
     <GridItem
-      :i="gridLayoutKPI.i"
-      :x="gridLayoutKPI.x"
-      :y="gridLayoutKPI.y"
-      :w="gridLayoutKPI.w"
-      :h="gridLayoutKPI.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Bot KPI">
-        <b-card-group deck>
-          <b-card header="Open / Total trades">
-            <b-card-text>
-              <span class="text-primary">{{ openTrades.length }}</span> /
-              <span class="text">{{ profit.trade_count }}</span>
-            </b-card-text>
-          </b-card>
-          <b-card header="Won / lost trades">
-            <b-card-text>
-              <span class="text-profit">{{ profit.winning_trades }}</span> /
-              <span class="text-loss">{{ profit.losing_trades }}</span>
-            </b-card-text>
-          </b-card>
-          <b-card header="Last trade">
-            <b-card-text>{{ profit.latest_trade_date }}</b-card-text>
-          </b-card>
-        </b-card-group>
-        <b-card-group deck class="mt-2">
-          <b-card header="Best performing">
-            <b-card-text>{{ profit.best_pair }}</b-card-text>
-          </b-card>
-          <b-card header="Total Balance">
-            <b-card-text
-              >{{
-                formatPrice(balance.total, botState ? botState.stake_currency_decimals || 8 : 8)
-              }}
-              {{ dailyStats.stake_currency }}</b-card-text
-            >
-          </b-card>
-          <b-card v-if="profit.profit_closed_fiat" header="Total profit">
-            <b-card-text
-              >{{ formatPrice(profit.profit_closed_fiat, 2) }}
-              {{ dailyStats.fiat_display_currency }}</b-card-text
-            >
-          </b-card>
-        </b-card-group>
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
       :i="gridLayoutDaily.i"
       :x="gridLayoutDaily.x"
       :y="gridLayoutDaily.y"
@@ -218,8 +169,6 @@ export default class Dashboard extends Vue {
 
   @ftbot.Action getOpenTrades;
 
-  @ftbot.Action getBalance;
-
   @ftbot.Action getProfit;
 
   formatPrice = formatPrice;
@@ -254,10 +203,6 @@ export default class Dashboard extends Vue {
       console.log('saving dashboard');
       this.setDashboardLayout(newLayout);
     }
-  }
-
-  get gridLayoutKPI(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.KPI);
   }
 
   get gridLayoutDaily(): GridItemData {
