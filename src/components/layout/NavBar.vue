@@ -195,7 +195,6 @@ export default class NavBar extends Vue {
   }
 
   setOpenTradesAsPill(tradeCount: number) {
-    console.log('setPill', tradeCount);
     if (!this.favicon) {
       this.favicon = new Favico({
         animation: 'none',
