@@ -133,7 +133,7 @@ export default class NavBar extends Vue {
 
   @ftbot.Action pingAll;
 
-  @ftbot.Action getState;
+  @ftbot.Action allGetState;
 
   @ftbot.Action logout;
 
@@ -170,7 +170,7 @@ export default class NavBar extends Vue {
 
     if (this.hasBots) {
       // Query botstate - this will enable / disable certain modes
-      this.getState();
+      this.allGetState();
     }
   }
 

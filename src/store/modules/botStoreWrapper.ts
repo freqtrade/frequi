@@ -260,6 +260,11 @@ export default function createBotStore(store) {
         dispatch(`${e}/ping`);
       });
     },
+    allGetState({ getters, dispatch }) {
+      getters.allAvailableBotsList.forEach((e) => {
+        dispatch(`${e}/getState`);
+      });
+    },
   };
   // Autocreate Actions from botstores
   Object.keys(BotStoreActions).forEach((e) => {
