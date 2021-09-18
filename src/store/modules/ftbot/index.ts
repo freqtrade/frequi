@@ -522,6 +522,7 @@ export function createBotSubStore(botId: string) {
           // Add botId to all trades
           trades = trades.map((t) => ({
             ...t,
+            botId,
             botTradeId: `${botId}__${t.trade_id}`,
           }));
           commit('updateTrades', { trades, tradesCount });
@@ -576,6 +577,7 @@ export function createBotSubStore(botId: string) {
 
             const openTrades = result.data.map((t) => ({
               ...t,
+              botId,
               botTradeId: `${botId}__${t.trade_id}`,
             }));
 
