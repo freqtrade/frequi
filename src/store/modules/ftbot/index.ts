@@ -139,10 +139,9 @@ export enum BotStoreActions {
   logout = 'logout',
 }
 
-export function createBotSubStore(botId: string) {
+export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
   const { api } = useApi(userService, botId);
-
   return {
     namespaced: true,
     state,
@@ -524,6 +523,7 @@ export function createBotSubStore(botId: string) {
           trades = trades.map((t) => ({
             ...t,
             botId,
+            botName,
             botTradeId: `${botId}__${t.trade_id}`,
           }));
           commit('updateTrades', { trades, tradesCount });
@@ -579,6 +579,7 @@ export function createBotSubStore(botId: string) {
             const openTrades = result.data.map((t) => ({
               ...t,
               botId,
+              botName,
               botTradeId: `${botId}__${t.trade_id}`,
             }));
 

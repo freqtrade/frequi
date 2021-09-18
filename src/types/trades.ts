@@ -1,10 +1,16 @@
 export interface Trade {
   /**
-   * BotId - only available on "all" methods.
-   * corresponds to the UI (ftbot.1) - does NOT relate to the backend
+   * corresponds to the UI (ftbot.1) - does NOT relate to the backend!
    */
   botId: string;
+  /**
+   * Corresponds to the UI botID + tradeid. Does not relate to backend!
+   */
   botTradeId: string;
+  /**
+   * Given bot Name (in the UI). Does not relate to backend!
+   */
+  botName: string;
   trade_id: number;
   pair: string;
   is_open: boolean;

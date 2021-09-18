@@ -196,7 +196,7 @@ export default function createBotStore(store) {
         return;
       }
       console.log('add bot', bot);
-      store.registerModule(['ftbot', bot.botId], createBotSubStore(bot.botId));
+      store.registerModule(['ftbot', bot.botId], createBotSubStore(bot.botId, bot.botName));
       dispatch(`${bot.botId}/botAdded`);
       commit('addBot', bot);
     },
