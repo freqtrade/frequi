@@ -23,8 +23,12 @@
       :min-h="4"
       drag-allow-from=".drag-header"
     >
-      <DraggableContainer header="Daily Profit">
-        <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" :show-title="false" />
+      <DraggableContainer :header="`Daily Profit ${botCount > 1 ? 'combined' : ''}`">
+        <DailyChart
+          v-if="allDailyStatsAllBots"
+          :daily-stats="allDailyStatsAllBots"
+          :show-title="false"
+        />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -109,7 +113,6 @@ import {
 import {
   Trade,
   DailyReturnValue,
-  BalanceInterface,
   ProfitInterface,
   DailyPayload,
   BotState,
@@ -136,15 +139,15 @@ const layoutNs = namespace('layout');
 export default class Dashboard extends Vue {
   @ftbot.Getter closedTrades!: Trade[];
 
+  @ftbot.Getter [MultiBotStoreGetters.botCount]!: number;
+
   @ftbot.Getter [MultiBotStoreGetters.allOpenTradesAllBots]!: Trade[];
 
   @ftbot.Getter [MultiBotStoreGetters.allTradesAllBots]!: ClosedTrade[];
 
-  @ftbot.Getter [BotStoreGetters.dailyStats]!: DailyReturnValue;
+  @ftbot.Getter [MultiBotStoreGetters.allDailyStatsAllBots]!: Record<string, DailyReturnValue>;
 
   @ftbot.Getter [BotStoreGetters.openTrades]!: Array<Trade>;
-
-  @ftbot.Getter [BotStoreGetters.balance]!: BalanceInterface;
 
   @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
@@ -155,7 +158,7 @@ export default class Dashboard extends Vue {
   @ftbot.Action getPerformance;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action getDaily!: (payload?: DailyPayload) => void;
+  @ftbot.Action allGetDaily!: (payload?: DailyPayload) => void;
 
   @ftbot.Action getTrades;
 
@@ -232,10 +235,9 @@ export default class Dashboard extends Vue {
   }
 
   mounted() {
-    this.getDaily({ timescale: 30 });
+    this.allGetDaily({ timescale: 30 });
     this.getTrades();
     this.getOpenTrades();
-    this.getBalance();
     this.getPerformance();
     this.getProfit();
     this.localGridLayout = [...this.getDashboardLayoutSm];

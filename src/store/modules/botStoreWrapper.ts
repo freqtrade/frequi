@@ -1,4 +1,11 @@
-import { BotDescriptor, BotDescriptors, Trade } from '@/types';
+import {
+  BotDescriptor,
+  BotDescriptors,
+  DailyPayload,
+  DailyRecord,
+  DailyReturnValue,
+  Trade,
+} from '@/types';
 import { AxiosInstance } from 'axios';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
@@ -22,6 +29,7 @@ export enum MultiBotStoreGetters {
   allAvailableBotsList = 'allAvailableBotsList',
   allTradesAllBots = 'allTradesAllBots',
   allOpenTradesAllBots = 'allOpenTradesAllBots',
+  allDailyStatsAllBots = 'allDailyStatsAllBots',
   // Automatically created entries
   allIsBotOnline = 'allIsBotOnline',
   allAutoRefresh = 'allAutoRefresh',
@@ -102,6 +110,32 @@ export default function createBotStore(store) {
       });
       return resp;
     },
+    [MultiBotStoreGetters.allDailyStatsAllBots](state: FTMultiBotState, getters): DailyReturnValue {
+      const resp: Record<string, DailyRecord> = {};
+      getters.allAvailableBotsList.forEach((botId) => {
+        const x = getters[`${botId}/${BotStoreGetters.dailyStats}`]?.data?.forEach((d) => {
+          if (!resp[d.date]) {
+            resp[d.date] = { ...d };
+          } else {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            resp[d.date].abs_profit += d.abs_profit;
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            resp[d.date].fiat_value += d.fiat_value;
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            resp[d.date].trade_count += d.trade_count;
+          }
+        });
+      });
+
+      const dailyReturn: DailyReturnValue = {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        stake_currency: 'USDT',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        fiat_display_currency: 'USD',
+        data: Object.values(resp),
+      };
+      return dailyReturn;
+    },
   };
   // Autocreate getters from botStores
   Object.keys(BotStoreGetters).forEach((e) => {
@@ -113,7 +147,7 @@ export default function createBotStore(store) {
   // Create selected getters
   createAllGetters.forEach((e: string) => {
     const getterName = `all${e.charAt(0).toUpperCase() + e.slice(1)}`;
-    console.log('creatin ', e, getterName);
+    console.log('creating getter', e, getterName);
     getters[getterName] = (state, getters) => {
       const result = {};
 
@@ -265,6 +299,11 @@ export default function createBotStore(store) {
     allGetState({ getters, dispatch }) {
       getters.allAvailableBotsList.forEach((e) => {
         dispatch(`${e}/getState`);
+      });
+    },
+    allGetDaily({ getters, dispatch }, payload: DailyPayload) {
+      getters.allAvailableBotsList.forEach((e) => {
+        dispatch(`${e}/getDaily`, payload);
       });
     },
   };
