@@ -1,14 +1,14 @@
 <template>
   <div
-    class="d-flex justify-content-center align-items-center profit-pill px-1"
+    class="d-flex justify-content-center align-items-center profit-pill px-2"
     :class="isProfitable ? 'profit-pill-profit' : ''"
     :title="profitDesc"
   >
-    {{ formatPercent(profitRatio, 2) }}
-    <small class="ml-1" :title="stakeCurrency">
+    {{ profitRatio ? formatPercent(profitRatio, 2) : '' }}
+    <span class="ml-1" :class="profitRatio ? 'small' : ''" :title="stakeCurrency">
       {{ profitRatio ? '(' : '' }}{{ `${formatPrice(profitAbs, 3)}`
       }}{{ profitRatio ? ')' : ` ${stakeCurrency}` }}
-    </small>
+    </span>
   </div>
 </template>
 
