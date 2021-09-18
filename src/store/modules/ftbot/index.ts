@@ -159,7 +159,12 @@ export function createBotSubStore(botId: string) {
       [BotStoreGetters.refreshNow](state, getters, rootState, rootGetters): boolean {
         const bgRefresh = rootGetters['uiSettings/backgroundSync'];
         const selectedBot = rootGetters['ftbot/selectedBot'];
-        if ((selectedBot === botId || bgRefresh) && getters.autoRefresh && getters.isBotOnline) {
+        if (
+          (selectedBot === botId || bgRefresh) &&
+          getters.autoRefresh &&
+          getters.isBotOnline &&
+          !getters.isWebserverMode
+        ) {
           return true;
         }
         return false;
@@ -633,9 +638,11 @@ export function createBotSubStore(botId: string) {
             // TODO: Remove this fix when fix in freqtrade is populated further.
             plotConfig.subplots = {};
           }
-          return commit('updatePlotConfig', result.data);
+          commit('updatePlotConfig', result.data);
+          return Promise.resolve();
         } catch (data) {
-          return console.error(data);
+          console.error(data);
+          return Promise.reject(data);
         }
       },
       [BotStoreActions.setPlotConfigName]({ commit }, plotConfigName: string) {
