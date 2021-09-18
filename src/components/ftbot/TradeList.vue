@@ -109,6 +109,8 @@ export default class TradeList extends Vue {
 
   @Prop({ default: false }) showFilter!: boolean;
 
+  @Prop({ default: false, type: Boolean }) multiBotView!: boolean;
+
   @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
   @ftbot.Getter [BotStoreGetters.detailTradeId]?: number;
@@ -154,6 +156,7 @@ export default class TradeList extends Vue {
   ];
 
   tableFields: Record<string, string | Function>[] = [
+    this.multiBotView ? { key: 'botName', label: 'Bot' } : {},
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },

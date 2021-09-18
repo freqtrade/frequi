@@ -56,7 +56,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Open Trades">
-        <trade-list :active-trades="true" :trades="allOpenTradesAllBots" />
+        <trade-list :active-trades="true" :trades="allOpenTradesAllBots" multi-bot-view />
       </DraggableContainer>
     </GridItem>
     <GridItem
