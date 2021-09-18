@@ -92,7 +92,6 @@ export default function createBotStore(store) {
       getters.allAvailableBotsList.forEach((botId) => {
         const trades = getters[`${botId}/${BotStoreGetters.openTrades}`].map((t) => ({
           ...t,
-          botId,
         }));
 
         resp = resp.concat(trades);

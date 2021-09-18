@@ -53,8 +53,8 @@ const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: DashboardLayout.KPI, x: 0, y: 0, w: 4, h: 6 },
   { i: DashboardLayout.dailyChart, x: 4, y: 0, w: 4, h: 6 },
-  { i: DashboardLayout.botComparison, x: 0, y: 6, w: 6, h: 4 } /* Bot Comparison */,
-  { i: DashboardLayout.allOpenTrades, x: 6, y: 6, w: 6, h: 4 },
+  { i: DashboardLayout.botComparison, x: 0, y: 6, w: 6, h: 6 } /* Bot Comparison */,
+  { i: DashboardLayout.allOpenTrades, x: 6, y: 6, w: 6, h: 6 },
   { i: DashboardLayout.cumChartChart, x: 8, y: 0, w: 4, h: 6 },
   { i: DashboardLayout.tradesLogChart, x: 0, y: 12, w: 12, h: 4 },
 ];

@@ -514,6 +514,11 @@ export function createBotSubStore(botId: string) {
             } while (trades.length !== totalTrades);
           }
           const tradesCount = trades.length;
+          // Add botId to all trades
+          trades = trades.map((t) => ({
+            ...t,
+            botTradeId: `${botId}__${t.trade_id}`,
+          }));
           commit('updateTrades', { trades, tradesCount });
           return Promise.resolve();
         } catch (error) {
@@ -564,7 +569,12 @@ export function createBotSubStore(botId: string) {
               // dispatch('refreshSlow', null, { root: true });
             }
 
-            commit('updateOpenTrades', result.data);
+            const openTrades = result.data.map((t) => ({
+              ...t,
+              botTradeId: `${botId}__${t.trade_id}`,
+            }));
+
+            commit('updateOpenTrades', openTrades);
           })
           .catch(console.error);
       },

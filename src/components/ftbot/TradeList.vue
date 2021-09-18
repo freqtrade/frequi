@@ -11,7 +11,7 @@
       :empty-text="emptyText"
       :per-page="perPage"
       :current-page="currentPage"
-      primary-key="trade_id"
+      primary-key="botTradeId"
       selectable
       select-mode="single"
       :filter="filterText"
