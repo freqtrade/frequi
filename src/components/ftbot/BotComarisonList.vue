@@ -24,6 +24,14 @@
         :stake-currency="row.item.stakeCurrency"
       />
     </template>
+    <template #cell(balance)="row">
+      <div v-if="row.item.balance">
+        <span :title="row.item.stakeCurrency"
+          >{{ formatPrice(row.item.balance, row.item.stakeCurrencyDecimals) }}
+        </span>
+        <span clas="text-small">{{ row.item.stakeCurrency }}</span>
+      </div>
+    </template>
     <template #cell(winVsLoss)="row">
       <div v-if="row.item.losses !== undefined">
         <span class="text-profit">{{ row.item.wins }}</span> /
@@ -35,10 +43,11 @@
 
 <script lang="ts">
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import { BotDescriptors, BotState, ProfitInterface } from '@/types';
+import { BalanceInterface, BotDescriptors, BotState, ProfitInterface } from '@/types';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import ProfitPill from '@/components/general/ProfitPill.vue';
+import { formatPrice } from '@/shared/formatters';
 
 const ftbot = namespace('ftbot');
 
@@ -50,7 +59,11 @@ export default class BotComparisonList extends Vue {
 
   @ftbot.Getter [MultiBotStoreGetters.allBotState]!: Record<string, BotState>;
 
+  @ftbot.Getter [MultiBotStoreGetters.allBalance]!: Record<string, BalanceInterface>;
+
   @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]!: BotDescriptors;
+
+  formatPrice = formatPrice;
 
   get tableItems() {
     const val: any[] = [];
@@ -77,6 +90,8 @@ export default class BotComparisonList extends Vue {
         profitOpen: v.profit_all_coin - v.profit_closed_coin,
         wins: v.winning_trades,
         losses: v.losing_trades,
+        balance: this.allBalance[k]?.total,
+        stakeCurrencyDecimals: this.allBotState[k]?.stake_currency_decimals || 3,
       });
       if (v.profit_closed_coin !== undefined) {
         summary.profitClosed += v.profit_closed_coin;
@@ -95,6 +110,7 @@ export default class BotComparisonList extends Vue {
     { key: 'trades', label: 'Trades' },
     { key: 'profitOpen', label: 'Open Profit' },
     { key: 'profitClosed', label: 'Closed Profit' },
+    { key: 'balance', label: 'Balance' },
     { key: 'winVsLoss', label: 'W/L' },
   ];
 }

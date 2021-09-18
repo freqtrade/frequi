@@ -471,6 +471,7 @@ export function createBotSubStore(botId: string) {
           updates.push(dispatch('getPerformance'));
           updates.push(dispatch('getProfit'));
           updates.push(dispatch('getTrades'));
+          updates.push(dispatch('getBalance'));
           /* white/blacklist might be refreshed more often as they are not expensive on the backend */
           updates.push(dispatch('getWhitelist'));
           updates.push(dispatch('getBlacklist'));

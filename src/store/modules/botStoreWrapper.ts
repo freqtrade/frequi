@@ -30,6 +30,7 @@ export enum MultiBotStoreGetters {
   allOpenTradeCount = 'allOpenTradeCount',
   allClosedTrades = 'allClosedTrades',
   allBotState = 'allBotState',
+  allBalance = 'allBalance',
 }
 
 const createAllGetters = [
@@ -41,6 +42,7 @@ const createAllGetters = [
   'openTradeCount',
   'closedTrades',
   'botState',
+  'balance',
 ];
 
 export default function createBotStore(store) {
