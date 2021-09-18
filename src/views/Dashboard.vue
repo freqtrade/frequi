@@ -84,7 +84,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Trades Log">
-        <TradesLogChart :trades="closedTrades" :show-title="false" />
+        <TradesLogChart :trades="allTradesAllBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
   </GridLayout>
@@ -110,14 +110,7 @@ import {
   LayoutActions,
   LayoutGetters,
 } from '@/store/modules/layout';
-import {
-  Trade,
-  DailyReturnValue,
-  ProfitInterface,
-  DailyPayload,
-  BotState,
-  ClosedTrade,
-} from '@/types';
+import { Trade, DailyReturnValue, DailyPayload, ClosedTrade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
@@ -137,8 +130,6 @@ const layoutNs = namespace('layout');
   },
 })
 export default class Dashboard extends Vue {
-  @ftbot.Getter closedTrades!: Trade[];
-
   @ftbot.Getter [MultiBotStoreGetters.botCount]!: number;
 
   @ftbot.Getter [MultiBotStoreGetters.allOpenTradesAllBots]!: Trade[];
@@ -146,12 +137,6 @@ export default class Dashboard extends Vue {
   @ftbot.Getter [MultiBotStoreGetters.allTradesAllBots]!: ClosedTrade[];
 
   @ftbot.Getter [MultiBotStoreGetters.allDailyStatsAllBots]!: Record<string, DailyReturnValue>;
-
-  @ftbot.Getter [BotStoreGetters.openTrades]!: Array<Trade>;
-
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  @ftbot.Getter [BotStoreGetters.profit]!: ProfitInterface;
 
   @ftbot.Getter [BotStoreGetters.performanceStats]!: PerformanceEntry[];
 
@@ -162,6 +147,10 @@ export default class Dashboard extends Vue {
 
   @ftbot.Action getTrades;
 
+  @ftbot.Action getOpenTrades;
+
+  @ftbot.Action getProfit;
+
   @layoutNs.Getter [LayoutGetters.getDashboardLayoutSm]!: GridItemData[];
 
   @layoutNs.Getter [LayoutGetters.getDashboardLayout]!: GridItemData[];
@@ -169,10 +158,6 @@ export default class Dashboard extends Vue {
   @layoutNs.Action [LayoutActions.setDashboardLayout];
 
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
-
-  @ftbot.Action getOpenTrades;
-
-  @ftbot.Action getProfit;
 
   formatPrice = formatPrice;
 
