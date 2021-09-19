@@ -18,4 +18,14 @@ export interface BalanceInterface {
   total: number;
   /** Balance in FIAT currency */
   value: number;
+  /** Assumed starting capital */
+  starting_capital: number;
+  /** Change between starting capital and current value */
+  starting_capital_ratio: number;
+  starting_capital_pct: number;
+  /** Assumed starting capital in FIAT currency */
+  starting_capital_fiat: number;
+  /** Change between starting capital and current value in fiat */
+  starting_capital_fiat_ratio: number;
+  starting_capital_fiat_pct: number;
 }
