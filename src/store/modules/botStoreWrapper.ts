@@ -14,6 +14,7 @@ const AUTH_SELECTED_BOT = 'ftSelectedBot';
 interface FTMultiBotState {
   selectedBot: string;
   availableBots: BotDescriptors;
+  globalAutoRefresh: boolean;
   refreshing: boolean;
   refreshInterval: number | null;
   refreshIntervalSlow: number | null;
@@ -25,6 +26,7 @@ export enum MultiBotStoreGetters {
   nextBotId = 'nextBotId',
   selectedBot = 'selectedBot',
   selectedBotObj = 'selectedBotObj',
+  globalAutoRefresh = 'globalAutoRefresh',
   allAvailableBots = 'allAvailableBots',
   allAvailableBotsList = 'allAvailableBotsList',
   allTradesAllBots = 'allTradesAllBots',
@@ -57,6 +59,7 @@ export default function createBotStore(store) {
   const state: FTMultiBotState = {
     selectedBot: '',
     availableBots: {},
+    globalAutoRefresh: true,
     refreshing: false,
     refreshInterval: null,
     refreshIntervalSlow: null,
@@ -83,6 +86,9 @@ export default function createBotStore(store) {
     },
     [MultiBotStoreGetters.selectedBotObj](state: FTMultiBotState): BotDescriptor {
       return state.availableBots[state.selectedBot];
+    },
+    [MultiBotStoreGetters.globalAutoRefresh](state: FTMultiBotState): boolean {
+      return state.globalAutoRefresh;
     },
     [MultiBotStoreGetters.allAvailableBots](state: FTMultiBotState): BotDescriptors {
       return state.availableBots;
@@ -166,7 +172,9 @@ export default function createBotStore(store) {
         console.warn(`Botid ${botId} not available, but selected.`);
       }
     },
-
+    setGlobalAutoRefresh(state, value: boolean) {
+      state.globalAutoRefresh = value;
+    },
     setRefreshing(state, refreshing: boolean) {
       state.refreshing = refreshing;
     },
@@ -224,18 +232,27 @@ export default function createBotStore(store) {
       localStorage.setItem(AUTH_SELECTED_BOT, botId);
       commit('selectBot', botId);
     },
+    setGlobalAutoRefresh({ commit }, value: boolean) {
+      commit('setGlobalAutoRefresh', value);
+    },
     allRefreshFrequent({ dispatch, getters }, slow: boolean) {
       getters.allAvailableBotsList.forEach((e) => {
-        if (getters[`${e}/${BotStoreGetters.refreshNow}`]) {
+        if (
+          getters[`${e}/${BotStoreGetters.refreshNow}`] &&
+          getters[MultiBotStoreGetters.globalAutoRefresh]
+        ) {
           // console.log('refreshing', e);
           dispatch(`${e}/${BotStoreActions.refreshFrequent}`, slow);
         }
       });
     },
-    allRefreshSlow({ dispatch, getters }) {
+    allRefreshSlow({ dispatch, getters }, forceUpdate = false) {
       getters.allAvailableBotsList.forEach((e) => {
-        if (getters[`${e}/${BotStoreGetters.refreshNow}`]) {
-          dispatch(`${e}/${BotStoreActions.refreshSlow}`);
+        if (
+          getters[`${e}/${BotStoreGetters.refreshNow}`] &&
+          getters[MultiBotStoreGetters.globalAutoRefresh]
+        ) {
+          dispatch(`${e}/${BotStoreActions.refreshSlow}`, forceUpdate);
         }
       });
     },
