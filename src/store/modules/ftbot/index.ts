@@ -479,10 +479,7 @@ export function createBotSubStore(botId: string, botName: string) {
           dispatch('setRefreshRequired', false);
         }
       },
-      [BotStoreActions.refreshFrequent]({ dispatch }, slow = true) {
-        if (slow) {
-          dispatch('refreshSlow', false);
-        }
+      [BotStoreActions.refreshFrequent]({ dispatch }) {
         // Refresh data that's needed in near realtime
         dispatch('getOpenTrades');
         dispatch('getState');

@@ -10,7 +10,7 @@
       variant="secondary"
       size="sm"
       title="Auto Refresh All bots"
-      @click="allRefreshFull(true)"
+      @click="allRefreshFull"
     >
       <RefreshIcon :size="16" />
     </b-button>

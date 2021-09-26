@@ -235,14 +235,14 @@ export default function createBotStore(store) {
     setGlobalAutoRefresh({ commit }, value: boolean) {
       commit('setGlobalAutoRefresh', value);
     },
-    allRefreshFrequent({ dispatch, getters }, slow: boolean) {
+    allRefreshFrequent({ dispatch, getters }, forceUpdate = false) {
       getters.allAvailableBotsList.forEach((e) => {
         if (
           getters[`${e}/${BotStoreGetters.refreshNow}`] &&
-          getters[MultiBotStoreGetters.globalAutoRefresh]
+          (getters[MultiBotStoreGetters.globalAutoRefresh] || forceUpdate)
         ) {
           // console.log('refreshing', e);
-          dispatch(`${e}/${BotStoreActions.refreshFrequent}`, slow);
+          dispatch(`${e}/${BotStoreActions.refreshFrequent}`);
         }
       });
     },
@@ -250,13 +250,13 @@ export default function createBotStore(store) {
       getters.allAvailableBotsList.forEach((e) => {
         if (
           getters[`${e}/${BotStoreGetters.refreshNow}`] &&
-          getters[MultiBotStoreGetters.globalAutoRefresh]
+          (getters[MultiBotStoreGetters.globalAutoRefresh] || forceUpdate)
         ) {
           dispatch(`${e}/${BotStoreActions.refreshSlow}`, forceUpdate);
         }
       });
     },
-    async allRefreshFull({ commit, dispatch, state }, forceUpdate = false) {
+    async allRefreshFull({ commit, dispatch, state }) {
       if (state.refreshing) {
         return;
       }
