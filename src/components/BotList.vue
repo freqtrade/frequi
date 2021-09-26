@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="botCount > 0">
     <h3 v-if="!small">Available bots</h3>
     <b-list-group>
       <b-list-group-item
@@ -30,6 +30,8 @@ const ftbot = namespace('ftbot');
 @Component({ components: { LoginModal, BotEntry } })
 export default class BotList extends Vue {
   @Prop({ default: false, type: Boolean }) small!: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.botCount]: number;
 
   @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
 

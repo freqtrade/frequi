@@ -5,7 +5,6 @@
         <b-form-input
           id="name-input"
           v-model="auth.botName"
-          required
           placeholder="Bot Name"
           @keydown.enter.native="handleOk"
         ></b-form-input>
@@ -85,8 +84,13 @@ export default class Login extends Vue {
 
   @ftbot.Getter [MultiBotStoreGetters.nextBotId]: string;
 
+  @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action addBot!: (payload: BotDescriptor) => void;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action selectBot!: (botId: string) => void;
 
   @Prop({ default: false }) inModal!: boolean;
 
@@ -149,13 +153,16 @@ export default class Login extends Vue {
     userService
       .login(this.auth)
       .then(() => {
+        const botId = this.nextBotId;
         this.addBot({
           botName: this.auth.botName,
-          botId: this.nextBotId,
+          botId,
           botUrl: this.auth.url,
         });
-        // TODO: Investigate how this needs to be done properly
-        // setBaseUrl(userService.getAPIUrl());
+        if (this.selectedBot === '') {
+          console.log(`selecting bot ${botId}`);
+          this.selectBot(botId);
+        }
 
         this.emitLoginResult(true);
         if (this.inModal === false) {

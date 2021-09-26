@@ -90,8 +90,8 @@
                 <b-checkbox v-model="layoutLockedLocal" class="ml-2"> Lock layout</b-checkbox>
               </div>
 
-              <nav-item class="nav-link navbar-nav" @click="resetDynamicLayout"
-                >Reset Layout</nav-item
+              <b-nav-item class="nav-link navbar-nav" @click="resetDynamicLayout"
+                >Reset Layout</b-nav-item
               >
               <router-link
                 v-if="botCount === 1"
