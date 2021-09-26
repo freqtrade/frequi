@@ -10,20 +10,17 @@
       <!-- <ReloadControl class="mr-3" /> -->
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse id="nav-collapse" class="text-right text-md-center" is-nav>
         <b-navbar-nav>
-          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav navbar-dark" to="/trade"
+          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/trade"
             >Trade</router-link
           >
-          <router-link
-            v-if="!canRunBacktest"
-            class="nav-link navbar-nav navbar-dark"
-            to="/dashboard"
+          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/dashboard"
             >Dashboard</router-link
           >
-          <router-link class="nav-link navbar-nav navbar-dark" to="/graph">Graph</router-link>
-          <router-link class="nav-link navbar-nav navbar-dark" to="/logs">Logs</router-link>
-          <router-link v-if="canRunBacktest" class="nav-link navbar-nav navbar-dark" to="/backtest"
+          <router-link class="nav-link navbar-nav" to="/graph">Graph</router-link>
+          <router-link class="nav-link navbar-nav" to="/logs">Logs</router-link>
+          <router-link v-if="canRunBacktest" class="nav-link navbar-nav" to="/backtest"
             >Backtest</router-link
           >
           <BootswatchThemeSelect />
@@ -32,22 +29,24 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" menu-class="w-100">
           <!-- TODO This should show outside of the dropdown in XS mode -->
-          <b-dropdown
-            v-if="botCount > 1"
-            size="sm"
-            class="m-1"
-            no-caret
-            variant="info"
-            toggle-class="d-flex align-items-center "
-            menu-class="my-0 py-0"
-          >
-            <template #button-content>
-              <BotEntry :bot="selectedBotObj" :no-buttons="true" />
-            </template>
-            <BotList :small="true" />
-          </b-dropdown>
-          <ReloadControl class="mr-3" />
-          <li class="nav-item text-secondary mr-2">
+          <div class="d-flex justify-content-between">
+            <b-dropdown
+              v-if="botCount > 1"
+              size="sm"
+              class="m-1"
+              no-caret
+              variant="info"
+              toggle-class="d-flex align-items-center "
+              menu-class="my-0 py-0"
+            >
+              <template #button-content>
+                <BotEntry :bot="selectedBotObj" :no-buttons="true" />
+              </template>
+              <BotList :small="true" />
+            </b-dropdown>
+            <ReloadControl class="mr-3" />
+          </div>
+          <li class="d-none d-sm-block nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
               {{ botName || 'No bot selected' }}
             </b-nav-text>
@@ -75,13 +74,28 @@
             </b-nav-item-dropdown>
             <div class="d-block d-sm-none">
               <!-- Visible only on XS -->
-              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
-              <router-link class="dropdown-item" to="/settings">Settings</router-link>
-              <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
-              <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
+              <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
+                <span class="nav-link navbar-nav">V: {{ getUiVersion }}</span>
+                <div class="d-flex">
+                  <b-nav-text class="verticalCenter small mr-2">
+                    {{ botName || 'No bot selected' }}
+                  </b-nav-text>
+                  <b-nav-text class="verticalCenter">
+                    {{ isBotOnline ? 'Online' : 'Offline' }}
+                  </b-nav-text>
+                </div>
+              </li>
+              <router-link class="nav-link navbar-nav" to="/settings">Settings</router-link>
+              <div class="d-flex nav-link justify-content-end">
+                <b-checkbox v-model="layoutLockedLocal" class="ml-2"> Lock layout</b-checkbox>
+              </div>
+
+              <nav-item class="nav-link navbar-nav" @click="resetDynamicLayout"
+                >Reset Layout</nav-item
+              >
               <router-link
                 v-if="botCount === 1"
-                class="dropdown-item"
+                class="nav-link navbar-nav"
                 to="/"
                 @click.native="clickLogout()"
                 >Sign Out</router-link
