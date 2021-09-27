@@ -18,7 +18,7 @@
     "core-js": "^3.18.1",
     "date-fns": "^2.24.0",
     "date-fns-tz": "^1.1.6",
-    "echarts": "^5.2.0",
+    "echarts": "^5.2.1",
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.27.0",
     "vue": "^2.6.14",
