@@ -279,7 +279,7 @@ export default function createBotStore(store) {
 
     startRefresh({ state, dispatch, commit }) {
       console.log('Starting automatic refresh.');
-      dispatch('allRefreshFrequent', false);
+      dispatch('allRefreshFull');
 
       if (!state.refreshInterval) {
         // Set interval for refresh
@@ -288,7 +288,6 @@ export default function createBotStore(store) {
         }, 5000);
         commit('setRefreshInterval', refreshInterval);
       }
-      dispatch('allRefreshSlow', false);
       if (!state.refreshIntervalSlow) {
         const refreshIntervalSlow = window.setInterval(() => {
           dispatch('allRefreshSlow', false);
@@ -308,10 +307,12 @@ export default function createBotStore(store) {
       }
     },
 
-    pingAll({ getters, dispatch }) {
-      getters.allAvailableBotsList.forEach((e) => {
-        dispatch(`${e}/ping`);
-      });
+    async pingAll({ getters, dispatch }) {
+      await Promise.all(
+        getters.allAvailableBotsList.map(async (e) => {
+          await dispatch(`${e}/ping`);
+        }),
+      );
     },
     allGetState({ getters, dispatch }) {
       getters.allAvailableBotsList.forEach((e) => {

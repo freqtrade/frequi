@@ -433,8 +433,10 @@ export function createBotSubStore(botId: string, botName: string) {
           const result = await api.get('/ping');
           commit('setPing', result.data);
           commit('setIsBotOnline', true);
+          return Promise.resolve();
         } catch (error) {
           //
+          return Promise.reject();
         }
       },
       [BotStoreActions.logout]() {
