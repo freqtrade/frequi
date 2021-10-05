@@ -10,18 +10,6 @@
     @layout-updated="layoutUpdatedEvent"
   >
     <GridItem
-      :i="gridLayoutBotControls.i"
-      :x="gridLayoutBotControls.x"
-      :y="gridLayoutBotControls.y"
-      :w="gridLayoutBotControls.w"
-      :h="gridLayoutBotControls.h"
-      drag-allow-from=".card-header"
-    >
-      <DraggableContainer header="Bot Controls">
-        <!-- <ReloadControl class="mr-3" /> -->
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
       :i="gridLayoutMultiPane.i"
       :x="gridLayoutMultiPane.x"
       :y="gridLayoutMultiPane.y"
@@ -109,18 +97,6 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      :i="gridLayoutLogView.i"
-      :x="gridLayoutLogView.x"
-      :y="gridLayoutLogView.y"
-      :w="gridLayoutLogView.w"
-      :h="gridLayoutLogView.h"
-      drag-allow-from=".card-header"
-    >
-      <DraggableContainer header="Logs">
-        <LogViewer />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
       :i="gridLayoutChartView.i"
       :x="gridLayoutChartView.x"
       :y="gridLayoutChartView.y"
@@ -147,20 +123,18 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
-import TradeList from '@/components/ftbot/TradeList.vue';
-import Performance from '@/components/ftbot/Performance.vue';
+import Balance from '@/components/ftbot/Balance.vue';
 import BotControls from '@/components/ftbot/BotControls.vue';
 import BotStatus from '@/components/ftbot/BotStatus.vue';
-import Balance from '@/components/ftbot/Balance.vue';
+import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
+import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import PairLockList from '@/components/ftbot/PairLockList.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
+import Performance from '@/components/ftbot/Performance.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
-import ReloadControl from '@/components/ftbot/ReloadControl.vue';
-import LogViewer from '@/components/ftbot/LogViewer.vue';
-import DraggableContainer from '@/components/layout/DraggableContainer.vue';
-import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
+import TradeList from '@/components/ftbot/TradeList.vue';
 
 import { Lock, Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
@@ -171,22 +145,20 @@ const layoutNs = namespace('layout');
 
 @Component({
   components: {
-    GridLayout,
-    GridItem,
-    DraggableContainer,
-    TradeList,
-    Performance,
+    Balance,
     BotControls,
     BotStatus,
-    Balance,
+    CandleChartContainer,
     DailyStats,
+    DraggableContainer,
     FTBotAPIPairList,
+    GridItem,
+    GridLayout,
     PairLockList,
     PairSummary,
+    Performance,
     TradeDetail,
-    ReloadControl,
-    LogViewer,
-    CandleChartContainer,
+    TradeList,
   },
 })
 export default class Trading extends Vue {
@@ -216,10 +188,6 @@ export default class Trading extends Vue {
     return this.getTradingLayout;
   }
 
-  get gridLayoutBotControls(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.botControls);
-  }
-
   get gridLayoutMultiPane(): GridItemData {
     return findGridLayout(this.gridLayout, TradeLayout.multiPane);
   }
@@ -234,10 +202,6 @@ export default class Trading extends Vue {
 
   get gridLayoutTradeDetail(): GridItemData {
     return findGridLayout(this.gridLayout, TradeLayout.tradeDetail);
-  }
-
-  get gridLayoutLogView(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.logView);
   }
 
   get gridLayoutChartView(): GridItemData {

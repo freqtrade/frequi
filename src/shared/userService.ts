@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 
 import { AuthPayload, AuthResponse, BotDescriptors, AuthStorage, AuthStorageMulti } from '@/types';
 
-const AUTH_LOGIN_INFO = 'auth_login_info';
+const AUTH_LOGIN_INFO = 'ftAuthLoginInfo';
 const APIBASE = '/api/v1';
 
 export class UserService {
@@ -215,6 +215,7 @@ export class UserService {
     localStorage.removeItem(AUTH_REFRESH_TOKEN);
     localStorage.removeItem(AUTH_ACCESS_TOKEN);
     localStorage.removeItem(AUTH_API_URL);
+    localStorage.removeItem(AUTO_REFRESH);
   }
 }
 

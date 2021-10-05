@@ -1,12 +1,10 @@
 import { GridItemData } from 'vue-grid-layout';
 
 export enum TradeLayout {
-  botControls = 'g-botControls',
   multiPane = 'g-multiPane',
   openTrades = 'g-openTrades',
   tradeHistory = 'g-tradeHistory',
   tradeDetail = 'g-tradeDetail',
-  logView = 'g-logView',
   chartView = 'g-chartView',
 }
 
@@ -40,13 +38,11 @@ export enum LayoutMutations {
 }
 // Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
-  { i: TradeLayout.botControls, x: 0, y: 0, w: 3, h: 3 },
-  { i: TradeLayout.multiPane, x: 0, y: 3, w: 3, h: 32 },
+  { i: TradeLayout.multiPane, x: 0, y: 0, w: 3, h: 35 },
   { i: TradeLayout.chartView, x: 3, y: 0, w: 9, h: 14 },
   { i: TradeLayout.tradeDetail, x: 3, y: 19, w: 9, h: 6 },
   { i: TradeLayout.openTrades, x: 3, y: 14, w: 9, h: 5 },
   { i: TradeLayout.tradeHistory, x: 3, y: 25, w: 9, h: 10 },
-  { i: TradeLayout.logView, x: 0, y: 35, w: 12, h: 13 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
