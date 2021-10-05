@@ -5,6 +5,11 @@ export interface AuthPayload {
   password: string;
 }
 
+export interface AuthResponse {
+  access_token?: string;
+  refresh_token?: string;
+}
+
 export interface AuthStorage {
   botName: string;
   apiUrl: string;

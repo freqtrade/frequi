@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-import { AuthPayload, BotDescriptors, AuthStorage, AuthStorageMulti } from '@/types';
+import { AuthPayload, AuthResponse, BotDescriptors, AuthStorage, AuthStorageMulti } from '@/types';
 
 const AUTH_LOGIN_INFO = 'auth_login_info';
 const APIBASE = '/api/v1';
@@ -120,19 +120,19 @@ export class UserService {
 
   public async login(auth: AuthPayload) {
     //  Login using username / password
-    const result = await axios.post(
+    const { data } = await axios.post<{}, AxiosResponse<AuthResponse>>(
       `${auth.url}/api/v1/token/login`,
       {},
       {
         auth: { ...auth },
       },
     );
-    if (result.data.access_token && result.data.refresh_token) {
+    if (data.access_token && data.refresh_token) {
       const obj: AuthStorage = {
         botName: auth.botName,
         apiUrl: auth.url,
-        accessToken: result.data.access_token || '',
-        refreshToken: result.data.refresh_token || '',
+        accessToken: data.access_token || '',
+        refreshToken: data.refresh_token || '',
         autoRefresh: true,
       };
       this.storeLoginInfo(obj);
@@ -144,7 +144,7 @@ export class UserService {
     const token = this.getRefreshToken();
     return new Promise((resolve, reject) => {
       axios
-        .post(
+        .post<{}, AxiosResponse<AuthResponse>>(
           `${this.getAPIUrl()}${APIBASE}/token/refresh`,
           {},
           {
