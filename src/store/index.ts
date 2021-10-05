@@ -72,6 +72,8 @@ const store = new Vuex.Store({
   },
 });
 
+UserService.migrateLogin();
+
 store.registerModule('ftbot', createBotStore(store));
 Object.entries(UserService.getAvailableBots()).forEach(([k, v]) => {
   store.dispatch('ftbot/addBot', v);

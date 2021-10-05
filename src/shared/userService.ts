@@ -186,7 +186,7 @@ export class UserService {
   /**
    * Call on startup to migrate old login info to new login
    */
-  public migrateLogin() {
+  public static migrateLogin() {
     // TODO: this is actually never called!
     const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
     const AUTH_ACCESS_TOKEN = 'auth_access_token';
@@ -209,7 +209,8 @@ export class UserService {
         accessToken,
         autoRefresh,
       };
-      this.storeLoginInfo(loginInfo);
+      const x = new UserService('ftbot.0');
+      x.storeLoginInfo(loginInfo);
     }
 
     localStorage.removeItem(AUTH_REFRESH_TOKEN);
@@ -221,6 +222,5 @@ export class UserService {
 
 export function useUserService(botId: string) {
   const userservice = new UserService(botId);
-  userservice.migrateLogin();
   return userservice;
 }
