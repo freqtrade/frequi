@@ -1,17 +1,18 @@
 import axios from 'axios';
-import userService from './userService';
-
-export const api = axios.create({
-  baseURL: userService.apiBase,
-  timeout: 10000,
-  withCredentials: true,
-});
+import { UserService } from './userService';
 
 /**
- * Initialize api so store is accessible.
- * @param store Vuex store
+ * Global store variable - keep a reference here to be able to emmit alerts
  */
-export function init(store) {
+let globalStore;
+
+export function useApi(userService: UserService, botId: string) {
+  const api = axios.create({
+    baseURL: userService.getBaseUrl(),
+    timeout: 10000,
+    withCredentials: true,
+  });
+  // Sent auth headers interceptor
   api.interceptors.request.use(
     (config) => {
       const custconfig = config;
@@ -59,7 +60,7 @@ export function init(store) {
       }
       if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
         console.log('Bot not running...');
-        store.dispatch('setIsBotOnline', false);
+        globalStore.dispatch(`ftbot/${botId}/setIsBotOnline`, false);
       }
 
       return new Promise((resolve, reject) => {
@@ -67,17 +68,17 @@ export function init(store) {
       });
     },
   );
+
+  return {
+    api,
+  };
 }
 
-export function setBaseUrl(baseURL: string) {
-  if (baseURL === null) {
-    // Reset to "local" baseurl
-    api.defaults.baseURL = userService.apiBase;
-  } else if (!baseURL.endsWith(userService.apiBase)) {
-    api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
-  } else {
-    api.defaults.baseURL = `${baseURL}${userService.apiBase}`;
-  }
+/**
+ * Initialize api so store is accessible.
+ * @param store Vuex store
+ */
+export function initApi(store) {
+  globalStore = store;
+  //
 }
-
-setBaseUrl(userService.getAPIUrl());

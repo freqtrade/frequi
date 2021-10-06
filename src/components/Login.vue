@@ -1,6 +1,14 @@
 <template>
   <div>
     <form ref="form" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
+      <b-form-group label="Bot Name" label-for="name-input">
+        <b-form-input
+          id="name-input"
+          v-model="auth.botName"
+          placeholder="Bot Name"
+          @keydown.enter.native="handleOk"
+        ></b-form-input>
+      </b-form-group>
       <b-form-group
         :state="urlState"
         label="API Url"
@@ -26,6 +34,7 @@
           v-model="auth.username"
           :state="nameState"
           required
+          placeholder="Freqtrader"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -60,17 +69,28 @@
 
 <script lang="ts">
 import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
-import userService from '@/shared/userService';
-import { setBaseUrl } from '@/shared/apiService';
+import { Action, namespace } from 'vuex-class';
+import { useUserService } from '@/shared/userService';
 
-import { AuthPayload } from '@/types';
+import { AuthPayload, BotDescriptor } from '@/types';
+import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
 const defaultURL = window.location.origin || 'http://localhost:8080';
+const ftbot = namespace('ftbot');
 
 @Component({})
 export default class Login extends Vue {
   @Action setLoggedIn;
+
+  @ftbot.Getter [MultiBotStoreGetters.nextBotId]: string;
+
+  @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action addBot!: (payload: BotDescriptor) => void;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action selectBot!: (botId: string) => void;
 
   @Prop({ default: false }) inModal!: boolean;
 
@@ -79,6 +99,7 @@ export default class Login extends Vue {
   };
 
   auth: AuthPayload = {
+    botName: '',
     url: defaultURL,
     username: '',
     password: '',
@@ -127,12 +148,22 @@ export default class Login extends Vue {
       return;
     }
     this.errorMessage = '';
+    const userService = useUserService(this.nextBotId);
     // Push the name to submitted names
     userService
       .login(this.auth)
       .then(() => {
-        this.setLoggedIn(true);
-        setBaseUrl(userService.getAPIUrl());
+        const botId = this.nextBotId;
+        this.addBot({
+          botName: this.auth.botName,
+          botId,
+          botUrl: this.auth.url,
+        });
+        if (this.selectedBot === '') {
+          console.log(`selecting bot ${botId}`);
+          this.selectBot(botId);
+        }
+
         this.emitLoginResult(true);
         if (this.inModal === false) {
           if (typeof this.$route.query.redirect === 'string') {

@@ -11,21 +11,25 @@ export enum OpenTradeVizOptions {
 export enum SettingsGetters {
   openTradesInTitle = 'openTradesInTitle',
   timezone = 'timezone',
+  backgroundSync = 'backgroundSync',
 }
 
 export enum SettingsActions {
   setOpenTradesInTitle = 'setOpenTradesInTitle',
   setTimeZone = 'setTimeZone',
+  setBackgroundSync = 'setBackgroundSync',
 }
 
 export enum SettingsMutations {
   setOpenTrades = 'setOpenTrades',
   setTimeZone = 'setTimeZone',
+  setBackgroundSync = 'setBackgroundSync',
 }
 
 export interface SettingsType {
   openTradesInTitle: string;
   timezone: string;
+  backgroundSync: boolean;
 }
 
 function getSettings() {
@@ -37,7 +41,7 @@ function getSettings() {
 }
 const storedSettings = getSettings();
 
-function updateSetting(key: string, value: string) {
+function updateSetting(key: string, value: string | boolean) {
   const settings = getSettings() || {};
   settings[key] = value;
   localStorage.setItem(STORE_UI_SETTINGS, JSON.stringify(settings));
@@ -46,17 +50,21 @@ function updateSetting(key: string, value: string) {
 const state: SettingsType = {
   openTradesInTitle: storedSettings?.openTradesInTitle || OpenTradeVizOptions.showPill,
   timezone: storedSettings.timezone || 'UTC',
+  backgroundSync: storedSettings.backgroundSync || true,
 };
 
 export default {
   namespaced: true,
   state,
   getters: {
-    [SettingsGetters.openTradesInTitle](state) {
+    [SettingsGetters.openTradesInTitle](state): string {
       return state.openTradesInTitle;
     },
-    [SettingsGetters.timezone](state) {
+    [SettingsGetters.timezone](state): string {
       return state.timezone;
+    },
+    [SettingsGetters.backgroundSync](state): boolean {
+      return state.backgroundSync;
     },
   },
   mutations: {
@@ -68,6 +76,10 @@ export default {
       state.timezone = timezone;
       updateSetting('timezone', timezone);
     },
+    [SettingsMutations.setBackgroundSync](state, backgroundSync: boolean) {
+      state.backgroundSync = backgroundSync;
+      updateSetting('backgroundSync', backgroundSync);
+    },
   },
   actions: {
     [SettingsActions.setOpenTradesInTitle]({ commit }, locked: boolean) {
@@ -76,6 +88,9 @@ export default {
     [SettingsActions.setTimeZone]({ commit }, timezone: string) {
       setTimezone(timezone);
       commit(SettingsMutations.setTimeZone, timezone);
+    },
+    [SettingsActions.setBackgroundSync]({ commit }, timezone: string) {
+      commit(SettingsMutations.setBackgroundSync, timezone);
     },
   },
 };

@@ -6,49 +6,101 @@
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
       </router-link>
 
+      <!-- TODO: For XS breakpoint, this should be here...  -->
+      <!-- <ReloadControl class="mr-3" /> -->
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse id="nav-collapse" class="text-right text-md-center" is-nav>
         <b-navbar-nav>
-          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav navbar-dark" to="/trade"
+          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/trade"
             >Trade</router-link
           >
-          <router-link
-            v-if="!canRunBacktest"
-            class="nav-link navbar-nav navbar-dark"
-            to="/dashboard"
+          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/dashboard"
             >Dashboard</router-link
           >
-          <router-link class="nav-link navbar-nav navbar-dark" to="/graph">Graph</router-link>
-          <router-link class="nav-link navbar-nav navbar-dark" to="/logs">Logs</router-link>
-          <router-link v-if="canRunBacktest" class="nav-link navbar-nav navbar-dark" to="/backtest"
+          <router-link class="nav-link navbar-nav" to="/graph">Graph</router-link>
+          <router-link class="nav-link navbar-nav" to="/logs">Logs</router-link>
+          <router-link v-if="canRunBacktest" class="nav-link navbar-nav" to="/backtest"
             >Backtest</router-link
           >
           <BootswatchThemeSelect />
         </b-navbar-nav>
+
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <li class="nav-item text-secondary mr-2">
+        <b-navbar-nav class="ml-auto" menu-class="w-100">
+          <!-- TODO This should show outside of the dropdown in XS mode -->
+          <div class="d-flex justify-content-between">
+            <b-dropdown
+              v-if="botCount > 1"
+              size="sm"
+              class="m-1"
+              no-caret
+              variant="info"
+              toggle-class="d-flex align-items-center "
+              menu-class="my-0 py-0"
+            >
+              <template #button-content>
+                <BotEntry :bot="selectedBotObj" :no-buttons="true" />
+              </template>
+              <BotList :small="true" />
+            </b-dropdown>
+            <ReloadControl class="mr-3" />
+          </div>
+          <li class="d-none d-sm-block nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
-              {{ botName }}
+              {{ botName || 'No bot selected' }}
             </b-nav-text>
             <b-nav-text class="verticalCenter">
               {{ isBotOnline ? 'Online' : 'Offline' }}
             </b-nav-text>
           </li>
-          <li v-if="loggedIn" class="nav-item">
-            <b-nav-item-dropdown right>
-              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
+          <li v-if="hasBots" class="nav-item">
+            <!-- Hide dropdown on xs, instead show below  -->
+            <b-nav-item-dropdown right class="d-none d-sm-block">
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
+              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
               <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
-              <router-link class="dropdown-item" to="/" @click.native="logout()"
+              <router-link
+                v-if="botCount === 1"
+                class="dropdown-item"
+                to="/"
+                @click.native="clickLogout()"
                 >Sign Out</router-link
               >
             </b-nav-item-dropdown>
+            <div class="d-block d-sm-none">
+              <!-- Visible only on XS -->
+              <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
+                <span class="nav-link navbar-nav">V: {{ getUiVersion }}</span>
+                <div class="d-flex">
+                  <b-nav-text class="verticalCenter small mr-2">
+                    {{ botName || 'No bot selected' }}
+                  </b-nav-text>
+                  <b-nav-text class="verticalCenter">
+                    {{ isBotOnline ? 'Online' : 'Offline' }}
+                  </b-nav-text>
+                </div>
+              </li>
+              <router-link class="nav-link navbar-nav" to="/settings">Settings</router-link>
+              <div class="d-flex nav-link justify-content-end">
+                <b-checkbox v-model="layoutLockedLocal" class="ml-2"> Lock layout</b-checkbox>
+              </div>
+
+              <b-nav-item class="nav-link navbar-nav" @click="resetDynamicLayout"
+                >Reset Layout</b-nav-item
+              >
+              <router-link
+                v-if="botCount === 1"
+                class="nav-link navbar-nav"
+                to="/"
+                @click.native="clickLogout()"
+                >Sign Out</router-link
+              >
+            </div>
           </li>
           <li v-else>
             <!-- should open Modal window! -->
@@ -63,27 +115,29 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { State, Action, namespace, Getter } from 'vuex-class';
-import userService from '@/shared/userService';
+import { Action, namespace, Getter } from 'vuex-class';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
 import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
+import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
+import ReloadControl from '@/components/ftbot/ReloadControl.vue';
+import BotEntry from '@/components/BotEntry.vue';
+import BotList from '@/components/BotList.vue';
+import { BotDescriptor } from '@/types';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
 const uiSettingsNs = namespace('uiSettings');
 
 @Component({
-  components: { LoginModal, BootswatchThemeSelect },
+  components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
 })
 export default class NavBar extends Vue {
   pingInterval: number | null = null;
 
-  @State loggedIn!: boolean;
-
-  @State isBotOnline!: boolean;
+  botSelectOpen = false;
 
   @Action setLoggedIn;
 
@@ -91,15 +145,25 @@ export default class NavBar extends Vue {
 
   @Getter getUiVersion!: string;
 
-  @ftbot.Action ping;
+  @ftbot.Action pingAll;
 
-  @ftbot.Action getState;
+  @ftbot.Action allGetState;
+
+  @ftbot.Action logout;
+
+  @ftbot.Getter [BotStoreGetters.isBotOnline]!: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.hasBots]: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.botCount]: number;
 
   @ftbot.Getter [BotStoreGetters.botName]: string;
 
   @ftbot.Getter [BotStoreGetters.openTradeCount]: number;
 
   @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
+
+  @ftbot.Getter [MultiBotStoreGetters.selectedBotObj]!: BotDescriptor;
 
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
@@ -114,13 +178,13 @@ export default class NavBar extends Vue {
   favicon: Favico | undefined = undefined;
 
   mounted() {
-    this.ping();
+    this.pingAll();
     this.loadUIVersion();
-    this.pingInterval = window.setInterval(this.ping, 60000);
+    this.pingInterval = window.setInterval(this.pingAll, 60000);
 
-    if (this.loggedIn) {
+    if (this.hasBots) {
       // Query botstate - this will enable / disable certain modes
-      this.getState();
+      this.allGetState();
     }
   }
 
@@ -130,8 +194,9 @@ export default class NavBar extends Vue {
     }
   }
 
-  logout(): void {
-    userService.logout();
+  clickLogout(): void {
+    this.logout();
+    // TODO: This should be per bot
     this.setLoggedIn(false);
   }
 
@@ -144,7 +209,6 @@ export default class NavBar extends Vue {
   }
 
   setOpenTradesAsPill(tradeCount: number) {
-    console.log('setPill', tradeCount);
     if (!this.favicon) {
       this.favicon = new Favico({
         animation: 'none',

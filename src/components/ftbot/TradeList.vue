@@ -11,7 +11,7 @@
       :empty-text="emptyText"
       :per-page="perPage"
       :current-page="currentPage"
-      primary-key="trade_id"
+      primary-key="botTradeId"
       selectable
       select-mode="single"
       :filter="filterText"
@@ -33,7 +33,6 @@
         </b-button>
       </template>
       <template #cell(pair)="row">
-        <ProfitSymbol :trade="row.item" />
         <span>
           {{
             `${row.item.pair}${
@@ -43,10 +42,7 @@
         </span>
       </template>
       <template #cell(profit)="row">
-        {{ formatPercent(row.item.profit_ratio, 2) }}
-        <small :title="row.item.stake_currency || stakeCurrency">
-          {{ `(${formatPriceWithDecimals(row.item.profit_abs)})` }}
-        </small>
+        <trade-profit :trade="row.item" />
       </template>
       <template #cell(open_timestamp)="row">
         <DateTimeTZ :date="row.item.open_timestamp" />
@@ -87,11 +83,12 @@ import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import ProfitSymbol from './ProfitSymbol.vue';
+import TradeProfit from './TradeProfit.vue';
 
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { ProfitSymbol, DeleteIcon, ForceSellIcon, DateTimeTZ },
+  components: { ProfitSymbol, DeleteIcon, ForceSellIcon, DateTimeTZ, TradeProfit },
 })
 export default class TradeList extends Vue {
   $refs!: {
@@ -111,6 +108,8 @@ export default class TradeList extends Vue {
   @Prop({ default: false }) activeTrades!: boolean;
 
   @Prop({ default: false }) showFilter!: boolean;
+
+  @Prop({ default: false, type: Boolean }) multiBotView!: boolean;
 
   @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
@@ -157,6 +156,7 @@ export default class TradeList extends Vue {
   ];
 
   tableFields: Record<string, string | Function>[] = [
+    this.multiBotView ? { key: 'botName', label: 'Bot' } : {},
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },

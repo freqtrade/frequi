@@ -1,60 +1,151 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-import { AuthPayload } from '@/types';
+import { AuthPayload, AuthResponse, BotDescriptors, AuthStorage, AuthStorageMulti } from '@/types';
 
-const AUTH_REFRESH_TOKEN = 'auth_ref_token';
-const AUTH_ACCESS_TOKEN = 'auth_access_token';
-const AUTH_API_URL = 'auth_api_url';
-const apiBase = '/api/v1';
+const AUTH_LOGIN_INFO = 'ftAuthLoginInfo';
+const APIBASE = '/api/v1';
 
-export default {
-  apiBase,
-  AUTH_API_URL,
-  setAPIUrl(apiurl: string): void {
-    localStorage.setItem(AUTH_API_URL, JSON.stringify(apiurl));
-  },
+export class UserService {
+  private botId: string;
 
-  setAccessToken(token: string): void {
-    localStorage.setItem(AUTH_ACCESS_TOKEN, JSON.stringify(token));
-  },
+  constructor(botId: string) {
+    console.log('botId', botId);
+    this.botId = botId;
+  }
 
-  setRefreshTokens(refreshToken: string): void {
-    localStorage.setItem(AUTH_REFRESH_TOKEN, JSON.stringify(refreshToken));
-  },
+  /**
+   * Stores info for current botId in the object of all bots.
+   */
+  private storeLoginInfo(loginInfo: AuthStorage): void {
+    const allInfo = UserService.getAllLoginInfos();
+    allInfo[this.botId] = loginInfo;
+    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(allInfo));
+  }
 
-  logout(): void {
+  /**
+   * Logout - removing info for this particular bot.
+   */
+  private removeLoginInfo(): void {
+    const info = UserService.getAllLoginInfos();
+    delete info[this.botId];
+    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
+  }
+
+  private setAccessToken(token: string): void {
+    const loginInfo = this.getLoginInfo();
+    loginInfo.accessToken = token;
+    this.storeLoginInfo(loginInfo);
+  }
+
+  /**
+   * Store autorefresh preference for this bot instance
+   * @param autoRefresh new autoRefresh value
+   */
+  public setAutoRefresh(autoRefresh: boolean): void {
+    const loginInfo = this.getLoginInfo();
+    loginInfo.autoRefresh = autoRefresh;
+    this.storeLoginInfo(loginInfo);
+  }
+
+  /**
+   * Retrieve full logininfo object (for all registered bots)
+   * @returns
+   */
+  private static getAllLoginInfos(): AuthStorageMulti {
+    const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
+    return info;
+  }
+
+  /**
+   * Retrieve Login info object for the given bot
+   * @returns Login Info object
+   */
+  private getLoginInfo(): AuthStorage {
+    const info = UserService.getAllLoginInfos();
+    if (this.botId in info && 'apiUrl' in info[this.botId] && 'refreshToken' in info[this.botId]) {
+      return info[this.botId];
+    }
+    return {
+      botName: '',
+      apiUrl: '',
+      refreshToken: '',
+      accessToken: '',
+      autoRefresh: false,
+    };
+  }
+
+  public static getAvailableBots(): BotDescriptors {
+    const allInfo = UserService.getAllLoginInfos();
+    const response: BotDescriptors = {};
+    Object.entries(allInfo).forEach(([k, v]) => {
+      response[k] = {
+        botId: k,
+        botName: v.botName,
+        botUrl: v.apiUrl,
+      };
+    });
+    return response;
+  }
+
+  public static getAvailableBotList(): string[] {
+    const allInfo = UserService.getAllLoginInfos();
+    return Object.keys(allInfo);
+  }
+
+  public getAutoRefresh(): boolean {
+    return this.getLoginInfo().autoRefresh;
+  }
+
+  public getAccessToken(): string {
+    return this.getLoginInfo().accessToken;
+  }
+
+  private getRefreshToken() {
+    return this.getLoginInfo().refreshToken;
+  }
+
+  public loggedIn() {
+    return this.getLoginInfo().refreshToken !== '';
+  }
+
+  private getAPIUrl(): string {
+    return this.getLoginInfo().apiUrl;
+  }
+
+  public logout(): void {
     console.log('Logging out');
-    localStorage.removeItem(AUTH_REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_ACCESS_TOKEN);
-    localStorage.removeItem(AUTH_API_URL);
-  },
 
-  async login(auth: AuthPayload) {
+    this.removeLoginInfo();
+  }
+
+  public async login(auth: AuthPayload) {
     //  Login using username / password
-    const result = await axios.post(
+    const { data } = await axios.post<{}, AxiosResponse<AuthResponse>>(
       `${auth.url}/api/v1/token/login`,
       {},
       {
         auth: { ...auth },
       },
     );
-    console.log(result.data);
-    this.setAPIUrl(auth.url);
-    if (result.data.access_token) {
-      this.setAccessToken(result.data.access_token);
+    if (data.access_token && data.refresh_token) {
+      const obj: AuthStorage = {
+        botName: auth.botName,
+        apiUrl: auth.url,
+        accessToken: data.access_token || '',
+        refreshToken: data.refresh_token || '',
+        autoRefresh: true,
+      };
+      this.storeLoginInfo(obj);
     }
-    if (result.data.refresh_token) {
-      this.setRefreshTokens(result.data.refresh_token);
-    }
-  },
+  }
 
-  refreshToken(): Promise<string> {
+  public refreshToken(): Promise<string> {
     console.log('Refreshing token...');
-    const token = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
+    const token = this.getRefreshToken();
     return new Promise((resolve, reject) => {
       axios
-        .post(
-          `${this.getAPIUrl()}${apiBase}/token/refresh`,
+        .post<{}, AxiosResponse<AuthResponse>>(
+          `${this.getAPIUrl()}${APIBASE}/token/refresh`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -78,22 +169,58 @@ export default {
           }
         });
     });
-  },
+  }
 
-  loggedIn() {
-    return localStorage.getItem(AUTH_ACCESS_TOKEN) !== null;
-  },
+  public getBaseUrl(): string {
+    const baseURL = this.getAPIUrl();
+    if (baseURL === null) {
+      // Relative url
+      return APIBASE;
+    }
+    if (!baseURL.endsWith(APIBASE)) {
+      return `${baseURL}${APIBASE}`;
+    }
+    return `${baseURL}${APIBASE}`;
+  }
 
-  getAPIUrl(): string {
+  /**
+   * Call on startup to migrate old login info to new login
+   */
+  public static migrateLogin() {
+    // TODO: this is actually never called!
+    const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
+    const AUTH_ACCESS_TOKEN = 'auth_access_token';
+    const AUTH_API_URL = 'auth_api_url';
+    const AUTO_REFRESH = 'ft_auto_refresh';
+
     const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
-    return typeof apiUrl === 'object' ? '' : apiUrl;
-  },
+    const refreshToken = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
+    const accessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
+    const autoRefresh: boolean = JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}');
+    if (
+      typeof apiUrl === 'string' &&
+      typeof refreshToken === 'string' &&
+      typeof accessToken === 'string'
+    ) {
+      const loginInfo: AuthStorage = {
+        botName: '',
+        apiUrl,
+        refreshToken,
+        accessToken,
+        autoRefresh,
+      };
+      const x = new UserService('ftbot.0');
+      x.storeLoginInfo(loginInfo);
+    }
 
-  getAccessToken(): string {
-    return JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
-  },
+    localStorage.removeItem(AUTH_REFRESH_TOKEN);
+    localStorage.removeItem(AUTH_ACCESS_TOKEN);
+    localStorage.removeItem(AUTH_API_URL);
+    localStorage.removeItem(AUTO_REFRESH);
+  }
+}
 
-  getRefreshToken() {
-    return JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
-  },
-};
+export function useUserService(botId: string) {
+  const userservice = new UserService(botId);
+  return userservice;
+}

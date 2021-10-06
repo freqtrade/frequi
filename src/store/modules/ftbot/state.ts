@@ -17,6 +17,10 @@ import {
 } from '@/types';
 
 export interface FtbotStateType {
+  ping: string;
+  isBotOnline: boolean;
+  autoRefresh: boolean;
+  refreshing: boolean;
   version: string;
   lastLogs: LogLine[];
   refreshRequired: boolean;
@@ -54,41 +58,46 @@ export interface FtbotStateType {
   backtestHistory: Record<string, StrategyBacktestResult>;
 }
 
-const state: FtbotStateType = {
-  version: '',
-  lastLogs: [],
-  refreshRequired: true,
-  trades: [],
-  openTrades: [],
-  tradeCount: 0,
-  performanceStats: [],
-  whitelist: [],
-  blacklist: [],
-  profit: {},
-  botState: undefined,
-  balance: {},
-  dailyStats: {},
-  pairlistMethods: [],
-  detailTradeId: undefined,
-  selectedPair: '',
-  candleData: {},
-  history: {},
-  strategyPlotConfig: undefined,
-  customPlotConfig: {},
-  plotConfigName: getPlotConfigName(),
-  availablePlotConfigNames: getAllPlotConfigNames(),
-  strategyList: [],
-  strategy: {},
-  pairlist: [],
-  currentLocks: undefined,
-  // backtesting
-  backtestRunning: false,
-  backtestProgress: 0.0,
-  backtestStep: BacktestSteps.none,
-  backtestTradeCount: 0,
-  backtestResult: undefined,
-  selectedBacktestResultKey: '',
-  backtestHistory: {},
+const state = (): FtbotStateType => {
+  return {
+    ping: '',
+    isBotOnline: false,
+    autoRefresh: false,
+    refreshing: false,
+    version: '',
+    lastLogs: [],
+    refreshRequired: true,
+    trades: [],
+    openTrades: [],
+    tradeCount: 0,
+    performanceStats: [],
+    whitelist: [],
+    blacklist: [],
+    profit: {},
+    botState: undefined,
+    balance: {},
+    dailyStats: {},
+    pairlistMethods: [],
+    detailTradeId: undefined,
+    selectedPair: '',
+    candleData: {},
+    history: {},
+    strategyPlotConfig: undefined,
+    customPlotConfig: {},
+    plotConfigName: getPlotConfigName(),
+    availablePlotConfigNames: getAllPlotConfigNames(),
+    strategyList: [],
+    strategy: {},
+    pairlist: [],
+    currentLocks: undefined,
+    // backtesting
+    backtestRunning: false,
+    backtestProgress: 0.0,
+    backtestStep: BacktestSteps.none,
+    backtestTradeCount: 0,
+    backtestResult: undefined,
+    selectedBacktestResultKey: '',
+    backtestHistory: {},
+  };
 };
-
 export default state;

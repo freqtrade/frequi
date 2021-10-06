@@ -14,9 +14,7 @@
         {{ comb.pair }}
         <span v-if="comb.locks" :title="comb.lockReason"> &#128274; </span>
       </div>
-      <b-badge :variant="comb.profit > 0 ? 'success' : 'danger'" pill :title="comb.profitString">{{
-        comb.profit ? formatPercent(comb.profit) : ''
-      }}</b-badge>
+      <TradeProfit v-if="comb.trade" :trade="comb.trade" />
     </b-list-group-item>
   </b-list-group>
 </template>
@@ -27,6 +25,7 @@ import { BotStoreGetters } from '@/store/modules/ftbot';
 import { Lock, Trade } from '@/types';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 
 const ftbot = namespace('ftbot');
 
@@ -39,7 +38,7 @@ interface CombinedPairList {
   profit: number;
 }
 
-@Component({})
+@Component({ components: { TradeProfit } })
 export default class PairSummary extends Vue {
   @Prop({ required: true }) pairlist!: string[];
 

@@ -14,53 +14,6 @@
     @breakpoint-changed="breakpointChanged"
   >
     <GridItem
-      :i="gridLayoutKPI.i"
-      :x="gridLayoutKPI.x"
-      :y="gridLayoutKPI.y"
-      :w="gridLayoutKPI.w"
-      :h="gridLayoutKPI.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Bot KPI">
-        <b-card-group deck>
-          <b-card header="Open / Total trades">
-            <b-card-text>
-              <span class="text-primary">{{ openTrades.length }}</span> /
-              <span class="text">{{ profit.trade_count }}</span>
-            </b-card-text>
-          </b-card>
-          <b-card header="Won / lost trades">
-            <b-card-text>
-              <span class="text-success">{{ profit.winning_trades }}</span> /
-              <span class="text-danger">{{ profit.losing_trades }}</span>
-            </b-card-text>
-          </b-card>
-          <b-card header="Last trade">
-            <b-card-text>{{ profit.latest_trade_date }}</b-card-text>
-          </b-card>
-        </b-card-group>
-        <b-card-group deck class="mt-2">
-          <b-card header="Best performing">
-            <b-card-text>{{ profit.best_pair }}</b-card-text>
-          </b-card>
-          <b-card header="Total Balance">
-            <b-card-text
-              >{{ formatPrice(balance.total, botState.stake_currency_decimals || 8) }}
-              {{ dailyStats.stake_currency }}</b-card-text
-            >
-          </b-card>
-          <b-card v-if="profit.profit_closed_fiat" header="Total profit">
-            <b-card-text
-              >{{ formatPrice(profit.profit_closed_fiat, 2) }}
-              {{ dailyStats.fiat_display_currency }}</b-card-text
-            >
-          </b-card>
-        </b-card-group>
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
       :i="gridLayoutDaily.i"
       :x="gridLayoutDaily.x"
       :y="gridLayoutDaily.y"
@@ -70,22 +23,40 @@
       :min-h="4"
       drag-allow-from=".drag-header"
     >
-      <DraggableContainer header="Daily Profit">
-        <DailyChart v-if="dailyStats.data" :daily-stats="dailyStats" :show-title="false" />
+      <DraggableContainer :header="`Daily Profit ${botCount > 1 ? 'combined' : ''}`">
+        <DailyChart
+          v-if="allDailyStatsAllBots"
+          :daily-stats="allDailyStatsAllBots"
+          :show-title="false"
+        />
       </DraggableContainer>
     </GridItem>
     <GridItem
-      :i="gridLayoutHourly.i"
-      :x="gridLayoutHourly.x"
-      :y="gridLayoutHourly.y"
-      :w="gridLayoutHourly.w"
-      :h="gridLayoutHourly.h"
+      :i="gridLayoutBotComparison.i"
+      :x="gridLayoutBotComparison.x"
+      :y="gridLayoutBotComparison.y"
+      :w="gridLayoutBotComparison.w"
+      :h="gridLayoutBotComparison.h"
       :min-w="3"
       :min-h="4"
       drag-allow-from=".drag-header"
     >
-      <DraggableContainer header="Hourly Profit">
-        <HourlyChart :trades="closedTrades" :show-title="false" />
+      <DraggableContainer header="Bot comparison">
+        <bot-comparison-list />
+      </DraggableContainer>
+    </GridItem>
+    <GridItem
+      :i="gridLayoutAllOpenTrades.i"
+      :x="gridLayoutAllOpenTrades.x"
+      :y="gridLayoutAllOpenTrades.y"
+      :w="gridLayoutAllOpenTrades.w"
+      :h="gridLayoutAllOpenTrades.h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
+    >
+      <DraggableContainer header="Open Trades">
+        <trade-list :active-trades="true" :trades="allOpenTradesAllBots" multi-bot-view />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -99,7 +70,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Cumulative Profit">
-        <CumProfitChart :trades="closedTrades" :show-title="false" />
+        <CumProfitChart :trades="allTradesAllBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -113,7 +84,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Trades Log">
-        <TradesLogChart :trades="closedTrades" :show-title="false" />
+        <TradesLogChart :trades="allTradesAllBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
   </GridLayout>
@@ -127,9 +98,10 @@ import { namespace } from 'vuex-class';
 import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import DailyChart from '@/components/charts/DailyChart.vue';
-import HourlyChart from '@/components/charts/HourlyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
+import BotComparisonList from '@/components/ftbot/BotComarisonList.vue';
+import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
 import {
@@ -138,15 +110,9 @@ import {
   LayoutActions,
   LayoutGetters,
 } from '@/store/modules/layout';
-import {
-  Trade,
-  DailyReturnValue,
-  BalanceInterface,
-  ProfitInterface,
-  DailyPayload,
-  BotState,
-} from '@/types';
+import { Trade, DailyReturnValue, DailyPayload, ClosedTrade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
 const ftbot = namespace('ftbot');
 const layoutNs = namespace('layout');
@@ -156,33 +122,34 @@ const layoutNs = namespace('layout');
     GridLayout,
     GridItem,
     DailyChart,
-    HourlyChart,
     CumProfitChart,
     TradesLogChart,
+    BotComparisonList,
+    TradeList,
     DraggableContainer,
   },
 })
 export default class Dashboard extends Vue {
-  @ftbot.Getter closedTrades!: Trade[];
+  @ftbot.Getter [MultiBotStoreGetters.botCount]!: number;
 
-  @ftbot.Getter [BotStoreGetters.dailyStats]!: DailyReturnValue;
+  @ftbot.Getter [MultiBotStoreGetters.allOpenTradesAllBots]!: Trade[];
 
-  @ftbot.Getter [BotStoreGetters.openTrades]!: Array<Trade>;
+  @ftbot.Getter [MultiBotStoreGetters.allTradesAllBots]!: ClosedTrade[];
 
-  @ftbot.Getter [BotStoreGetters.balance]!: BalanceInterface;
-
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  @ftbot.Getter [BotStoreGetters.profit]!: ProfitInterface;
+  @ftbot.Getter [MultiBotStoreGetters.allDailyStatsAllBots]!: Record<string, DailyReturnValue>;
 
   @ftbot.Getter [BotStoreGetters.performanceStats]!: PerformanceEntry[];
 
   @ftbot.Action getPerformance;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action getDaily!: (payload?: DailyPayload) => void;
+  @ftbot.Action allGetDaily!: (payload?: DailyPayload) => void;
 
   @ftbot.Action getTrades;
+
+  @ftbot.Action getOpenTrades;
+
+  @ftbot.Action getProfit;
 
   @layoutNs.Getter [LayoutGetters.getDashboardLayoutSm]!: GridItemData[];
 
@@ -191,12 +158,6 @@ export default class Dashboard extends Vue {
   @layoutNs.Action [LayoutActions.setDashboardLayout];
 
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
-
-  @ftbot.Action getOpenTrades;
-
-  @ftbot.Action getBalance;
-
-  @ftbot.Action getProfit;
 
   formatPrice = formatPrice;
 
@@ -232,16 +193,16 @@ export default class Dashboard extends Vue {
     }
   }
 
-  get gridLayoutKPI(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.KPI);
-  }
-
   get gridLayoutDaily(): GridItemData {
     return findGridLayout(this.gridLayout, DashboardLayout.dailyChart);
   }
 
-  get gridLayoutHourly(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.hourlyChart);
+  get gridLayoutBotComparison(): GridItemData {
+    return findGridLayout(this.gridLayout, DashboardLayout.botComparison);
+  }
+
+  get gridLayoutAllOpenTrades(): GridItemData {
+    return findGridLayout(this.gridLayout, DashboardLayout.allOpenTrades);
   }
 
   get gridLayoutCumChart(): GridItemData {
@@ -259,10 +220,9 @@ export default class Dashboard extends Vue {
   }
 
   mounted() {
-    this.getDaily({ timescale: 30 });
+    this.allGetDaily({ timescale: 30 });
     this.getTrades();
     this.getOpenTrades();
-    this.getBalance();
     this.getPerformance();
     this.getProfit();
     this.localGridLayout = [...this.getDashboardLayoutSm];

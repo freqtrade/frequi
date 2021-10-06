@@ -1,19 +1,17 @@
 import { GridItemData } from 'vue-grid-layout';
 
 export enum TradeLayout {
-  botControls = 'g-botControls',
   multiPane = 'g-multiPane',
   openTrades = 'g-openTrades',
   tradeHistory = 'g-tradeHistory',
   tradeDetail = 'g-tradeDetail',
-  logView = 'g-logView',
   chartView = 'g-chartView',
 }
 
 export enum DashboardLayout {
-  KPI = 'g-kpi',
   dailyChart = 'g-dailyChart',
-  hourlyChart = 'g-hourlyChart',
+  botComparison = 'g-botComparison',
+  allOpenTrades = 'g-allOpenTrades',
   cumChartChart = 'g-cumChartChart',
   tradesLogChart = 'g-TradesLogChart',
 }
@@ -40,29 +38,27 @@ export enum LayoutMutations {
 }
 // Define default layouts
 const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
-  { i: TradeLayout.botControls, x: 0, y: 0, w: 3, h: 3 },
-  { i: TradeLayout.multiPane, x: 0, y: 3, w: 3, h: 32 },
+  { i: TradeLayout.multiPane, x: 0, y: 0, w: 3, h: 35 },
   { i: TradeLayout.chartView, x: 3, y: 0, w: 9, h: 14 },
   { i: TradeLayout.tradeDetail, x: 3, y: 19, w: 9, h: 6 },
   { i: TradeLayout.openTrades, x: 3, y: 14, w: 9, h: 5 },
   { i: TradeLayout.tradeHistory, x: 3, y: 25, w: 9, h: 10 },
-  { i: TradeLayout.logView, x: 0, y: 35, w: 12, h: 13 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
-  { i: DashboardLayout.KPI, x: 0, y: 0, w: 4, h: 6 },
-  { i: DashboardLayout.dailyChart, x: 4, y: 0, w: 4, h: 6 },
-  { i: DashboardLayout.hourlyChart, x: 4, y: 6, w: 4, h: 6 },
-  { i: DashboardLayout.cumChartChart, x: 0, y: 6, w: 4, h: 6 },
+  { i: DashboardLayout.botComparison, x: 0, y: 0, w: 8, h: 6 } /* Bot Comparison */,
+  { i: DashboardLayout.dailyChart, x: 8, y: 0, w: 4, h: 6 },
+  { i: DashboardLayout.allOpenTrades, x: 0, y: 6, w: 8, h: 6 },
+  { i: DashboardLayout.cumChartChart, x: 8, y: 6, w: 4, h: 6 },
   { i: DashboardLayout.tradesLogChart, x: 0, y: 12, w: 12, h: 4 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT_SM: GridItemData[] = [
-  { i: DashboardLayout.KPI, x: 0, y: 0, w: 12, h: 6 },
-  { i: DashboardLayout.dailyChart, x: 0, y: 6, w: 12, h: 6 },
-  { i: DashboardLayout.hourlyChart, x: 0, y: 12, w: 12, h: 6 },
-  { i: DashboardLayout.cumChartChart, x: 0, y: 18, w: 12, h: 6 },
-  { i: DashboardLayout.tradesLogChart, x: 0, y: 24, w: 12, h: 4 },
+  { i: DashboardLayout.botComparison, x: 0, y: 0, w: 12, h: 6 } /* Bot Comparison */,
+  { i: DashboardLayout.allOpenTrades, x: 0, y: 6, w: 12, h: 8 },
+  { i: DashboardLayout.dailyChart, x: 0, y: 14, w: 12, h: 6 },
+  { i: DashboardLayout.cumChartChart, x: 0, y: 20, w: 12, h: 6 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 26, w: 12, h: 4 },
 ];
 
 const STORE_DASHBOARD_LAYOUT = 'ftDashboardLayout';
