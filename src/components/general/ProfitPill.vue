@@ -4,10 +4,10 @@
     :class="isProfitable ? 'profit-pill-profit' : ''"
     :title="profitDesc"
   >
-    {{ profitRatio ? formatPercent(profitRatio, 2) : '' }}
+    {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
     <span class="ml-1" :class="profitRatio ? 'small' : ''" :title="stakeCurrency">
-      {{ profitRatio ? '(' : '' }}{{ `${formatPrice(profitAbs, 3)}`
-      }}{{ profitRatio ? ')' : ` ${stakeCurrency}` }}
+      {{ profitRatio !== undefined ? '(' : '' }}{{ `${formatPrice(profitAbs, 3)}`
+      }}{{ profitRatio !== undefined ? ')' : ` ${stakeCurrency}` }}
     </span>
   </div>
 </template>
