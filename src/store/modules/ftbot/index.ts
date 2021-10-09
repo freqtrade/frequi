@@ -30,6 +30,7 @@ import {
   PairHistory,
   LogLine,
   BacktestSteps,
+  SysInfoResponse,
 } from '@/types';
 
 import {
@@ -70,6 +71,7 @@ export enum BotStoreGetters {
   stakeCurrencyDecimals = 'stakeCurrencyDecimals',
   strategyPlotConfig = 'strategyPlotConfig',
   version = 'version',
+  sysinfo = 'sysinfo',
   profit = 'profit',
   botState = 'botState',
   whitelist = 'whitelist',
@@ -136,6 +138,7 @@ export enum BotStoreActions {
   pollBacktest = 'pollBacktest',
   removeBacktest = 'removeBacktest',
   stopBacktest = 'stopBacktest',
+  sysInfo = 'sysInfo',
   logout = 'logout',
 }
 
@@ -243,6 +246,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreGetters.version](state: FtbotStateType): string {
         return state.version;
+      },
+      [BotStoreGetters.version](state: FtbotStateType): SysInfoResponse | {} {
+        return state.sysinfo;
       },
       [BotStoreGetters.profit](state: FtbotStateType): ProfitInterface | {} {
         return state.profit;
@@ -422,6 +428,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       setBacktestResultKey(state: FtbotStateType, key: string) {
         state.selectedBacktestResultKey = key;
+      },
+      updateSysInfo(state, sysinfo: SysInfoResponse) {
+        state.sysinfo = sysinfo;
       },
     },
     actions: {
@@ -937,6 +946,15 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const result = await api.get('/backtest/abort');
           commit('updateBacktestRunning', result.data);
+          return Promise.resolve(result.data);
+        } catch (err) {
+          return Promise.reject(err);
+        }
+      },
+      async [BotStoreActions.sysInfo]({ commit }) {
+        try {
+          const result = await api.get('/sysinfo');
+          commit('updateSysInfo', result.data);
           return Promise.resolve(result.data);
         } catch (err) {
           return Promise.reject(err);

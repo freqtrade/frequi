@@ -134,3 +134,8 @@ export interface PairHistory {
   /** Data end date in as millisecond timestamp */
   data_stop_ts: number;
 }
+
+export interface SysInfoResponse {
+  cpu_pct: number[];
+  ram_pct: number;
+}

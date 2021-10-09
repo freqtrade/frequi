@@ -14,6 +14,7 @@ import {
   StrategyBacktestResult,
   BacktestSteps,
   LogLine,
+  SysInfoResponse,
 } from '@/types';
 
 export interface FtbotStateType {
@@ -56,6 +57,7 @@ export interface FtbotStateType {
   backtestResult?: BacktestResult;
   selectedBacktestResultKey: string;
   backtestHistory: Record<string, StrategyBacktestResult>;
+  sysinfo: SysInfoResponse | {};
 }
 
 const state = (): FtbotStateType => {
@@ -98,6 +100,7 @@ const state = (): FtbotStateType => {
     backtestResult: undefined,
     selectedBacktestResultKey: '',
     backtestHistory: {},
+    sysinfo: {},
   };
 };
 export default state;
