@@ -140,8 +140,8 @@ export default class CandleChart extends Vue {
     this.chartOptions = {
       title: [
         {
-          text: this.chartTitle,
-          show: true,
+          // text: this.chartTitle,
+          show: false,
         },
       ],
       backgroundColor: 'rgba(0, 0, 0, 0)',

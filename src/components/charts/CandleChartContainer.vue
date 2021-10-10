@@ -13,16 +13,20 @@
       </b-modal>
 
       <div class="row mr-0">
-        <div class="col-mb-2 ml-2">
-          <b-select v-model="pair" :options="availablePairs" size="sm" @change="refresh">
+        <div class="col-mb-2 ml-2 d-flex align-items-center">
+          <span class="ml-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+          <b-select
+            v-model="pair"
+            class="ml-2"
+            :options="availablePairs"
+            size="sm"
+            @change="refresh"
+          >
           </b-select>
-        </div>
-        <div class="col-mb-2 ml-2 mr-2">
-          <b-button :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
-        </div>
-        <div v-if="hasDataset" class="col-mb-2 ml-2 mr-2">
-          <small>Buysignals: {{ dataset.buy_signals }}</small>
-          <small class="ml-2">SellSignals: {{ dataset.sell_signals }}</small>
+
+          <b-button class="ml-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
+          <small class="ml-2 text-nowrap">Buysignals: {{ dataset.buy_signals }}</small>
+          <small class="ml-2 text-nowrap">SellSignals: {{ dataset.sell_signals }}</small>
         </div>
         <div class="col-mb-2 ml-auto mr-2">
           <b-select
@@ -132,6 +136,10 @@ export default class CandleChartContainer extends Vue {
       return this.history[`${this.pair}__${this.timeframe}`];
     }
     return this.candleData[`${this.pair}__${this.timeframe}`];
+  }
+
+  get strategyName() {
+    return this.strategy || this.dataset?.strategy || '';
   }
 
   get datasetColumns() {
