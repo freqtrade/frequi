@@ -2843,10 +2843,10 @@ bootstrap-vue@^2.21.2:
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.0.tgz#97b9f29ac98f98dfa43bf7468262d84392552fd7"
   integrity sha512-Io55IuQY3kydzHtbGvQya3H+KorS/M9rSNyfCGCg9WZ4pyT/lCxIlpJgG1GXW/PswzC84Tr2fBYi+7+jFVQQBw==
 
-bootswatch@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/bootswatch/-/bootswatch-5.1.1.tgz#3c9cd9dc418bffa5a5246d6c7a0b9af256b64dc7"
-  integrity sha512-RL27y1hKIi7y9N+4C1fqQb3po/s3QRMltuGYyX5GMT9RbpTJ6M0658uKOBIHUIigf2BxAlrwzkX0qMA+49bIHA==
+bootswatch@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/bootswatch/-/bootswatch-5.1.2.tgz#4c564f03b12bdd38703686c5155692c748cacf73"
+  integrity sha512-ibg1i79ph0lgcYaWf6TzNKiQoVbIQlJlyFFb7dF9s3sjfB/WXT3vxLV+5vMJekdeEd5Vn9r5zhJZo3IrRjMPOg==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
