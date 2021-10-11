@@ -25,8 +25,12 @@
           </b-select>
 
           <b-button class="ml-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
-          <small class="ml-2 text-nowrap">Buysignals: {{ dataset.buy_signals }}</small>
-          <small class="ml-2 text-nowrap">SellSignals: {{ dataset.sell_signals }}</small>
+          <small v-if="dataset" class="ml-2 text-nowrap"
+            >Buysignals: {{ dataset.buy_signals }}</small
+          >
+          <small v-if="dataset" class="ml-2 text-nowrap"
+            >SellSignals: {{ dataset.sell_signals }}</small
+          >
         </div>
         <div class="col-mb-2 ml-auto mr-2">
           <b-select
