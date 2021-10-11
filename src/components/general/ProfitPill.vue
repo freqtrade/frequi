@@ -5,10 +5,13 @@
     :title="profitDesc"
   >
     {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
-    <span class="ml-1" :class="profitRatio ? 'small' : ''" :title="stakeCurrency">
-      {{ profitRatio !== undefined ? '(' : '' }}{{ `${formatPrice(profitAbs, 3)}`
-      }}{{ profitRatio !== undefined ? ')' : ` ${stakeCurrency}` }}
-    </span>
+    <span
+      v-if="profitString"
+      class="ml-1"
+      :class="profitRatio ? 'small' : ''"
+      :title="stakeCurrency"
+      >{{ profitString }}</span
+    >
   </div>
 </template>
 
@@ -20,7 +23,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class ProfitPill extends Vue {
   @Prop({ required: false, default: undefined, type: Number }) profitRatio?: number;
 
-  @Prop({ required: true, type: Number }) profitAbs!: number;
+  @Prop({ required: false, default: undefined, type: Number }) profitAbs?: number;
 
   @Prop({ required: true, type: String }) stakeCurrency!: string;
 
@@ -35,8 +38,15 @@ export default class ProfitPill extends Vue {
   get isProfitable() {
     return (
       (this.profitRatio !== undefined && this.profitRatio > 0) ||
-      (this.profitRatio === undefined && this.profitAbs > 0)
+      (this.profitRatio === undefined && this.profitAbs !== undefined && this.profitAbs > 0)
     );
+  }
+
+  get profitString(): string {
+    if (this.profitRatio !== undefined && this.profitAbs !== undefined) {
+      return `(${formatPrice(this.profitAbs, 3)})`;
+    }
+    return '';
   }
 }
 </script>
