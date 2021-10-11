@@ -105,6 +105,8 @@ export enum BotStoreActions {
   refreshOnce = 'refreshOnce',
   setDetailTrade = 'setDetailTrade',
   setSelectedPair = 'setSelectedPair',
+  saveCustomPlotConfig = 'saveCustomPlotConfig',
+  updatePlotConfigName = 'updatePlotConfigName',
   getTrades = 'getTrades',
   getLocks = 'getLocks',
   deleteLock = 'deleteLock',
@@ -503,6 +505,12 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreActions.setSelectedPair]({ commit }, pair: string) {
         commit('setSelectedPair', pair);
+      },
+      [BotStoreActions.saveCustomPlotConfig]({ commit }, plotConfig: PlotConfigStorage) {
+        commit('saveCustomPlotConfig', plotConfig);
+      },
+      [BotStoreActions.updatePlotConfigName]({ commit }, plotConfigName: string) {
+        commit('updatePlotConfigName', plotConfigName);
       },
       async [BotStoreActions.getTrades]({ commit }) {
         try {
