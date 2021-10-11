@@ -138,6 +138,7 @@ export enum BotStoreActions {
   pollBacktest = 'pollBacktest',
   removeBacktest = 'removeBacktest',
   stopBacktest = 'stopBacktest',
+  setBacktestResultKey = 'setBacktestResultKey',
   sysInfo = 'sysInfo',
   logout = 'logout',
 }
@@ -950,6 +951,9 @@ export function createBotSubStore(botId: string, botName: string) {
         } catch (err) {
           return Promise.reject(err);
         }
+      },
+      [BotStoreActions.setBacktestResultKey]({ commit }, key: string) {
+        commit('setBacktestResultKey', key);
       },
       async [BotStoreActions.sysInfo]({ commit }) {
         try {

@@ -385,7 +385,7 @@ export default class Backtesting extends Vue {
   @ftbot.Action stopBacktest!: () => void;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Mutation setBacktestResultKey!: (key: string) => void;
+  @ftbot.Action setBacktestResultKey!: (key: string) => void;
 
   formatPercent = formatPercent;
 
