@@ -74,13 +74,14 @@ export default class CumProfitChart extends Vue {
           resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
         } else {
           // Add to existing profit
-          resD[trade.close_timestamp].profit += profit;
+          resD[trade.close_timestamp].profit += trade[this.profitColumn];
           if (resD[trade.close_timestamp][trade.botId]) {
-            resD[trade.close_timestamp][trade.botId] += profit;
+            resD[trade.close_timestamp][trade.botId] += trade[this.profitColumn];
           } else {
             resD[trade.close_timestamp][trade.botId] = profit;
           }
         }
+        console.log(trade.close_date, profit);
         res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
         if (!this.botList.includes(trade.botId)) {
           this.botList.push(trade.botId);
