@@ -265,6 +265,7 @@
           :pairlist="selectedBacktestResult.pairlist"
           :trades="selectedBacktestResult.trades"
           sort-method="profit"
+          :backtest-mode="true"
         />
         <CandleChartContainer
           :available-pairs="selectedBacktestResult.pairlist"
