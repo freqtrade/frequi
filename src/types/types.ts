@@ -150,3 +150,7 @@ export interface DeleteTradeResponse {
   result_msg: string;
   trade_id: number;
 }
+
+export interface UiVersion {
+  version: string;
+}

@@ -521,7 +521,7 @@ export function createBotSubStore(botId: string, botName: string) {
           let totalTrades = 0;
           const pageLength = 500;
           const fetchTrades = async (limit: number, offset: number) => {
-            return api.get<unknown, AxiosResponse<TradeResponse>>('/trades', {
+            return api.get<TradeResponse>('/trades', {
               params: { limit, offset },
             });
           };
@@ -566,11 +566,8 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.deleteLock]({ dispatch, commit }, lockid: string) {
         try {
-          const res = await api.delete(`/locks/${lockid}`);
-          showAlert(
-            dispatch,
-            res.data.result_msg ? res.data.result_msg : `Deleted Lock ${lockid}.`,
-          );
+          const res = await api.delete<LockResponse>(`/locks/${lockid}`);
+          showAlert(dispatch, `Deleted Lock ${lockid}.`);
           commit('updateLocks', res.data);
           return Promise.resolve(res);
         } catch (error) {
@@ -583,7 +580,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreActions.getOpenTrades]({ commit, state }) {
         return api
-          .get('/status')
+          .get<never, AxiosResponse<Trade[]>>('/status')
           .then((result) => {
             // Check if trade-id's are different in this call, then trigger a full refresh
             if (
@@ -658,7 +655,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.getStrategyPlotConfig]({ commit }) {
         try {
-          const result = await api.get<never, AxiosResponse<PlotConfig>>('/plot_config');
+          const result = await api.get<PlotConfig>('/plot_config');
           const plotConfig = result.data;
           if (plotConfig.subplots === null) {
             // Subplots should not be null but an empty object
@@ -693,12 +690,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.getAvailablePairs]({ commit }, payload: AvailablePairPayload) {
         try {
-          const result = await api.get<AvailablePairPayload, AxiosResponse<AvailablePairResult>>(
-            '/available_pairs',
-            {
-              params: { ...payload },
-            },
-          );
+          const result = await api.get<AvailablePairResult>('/available_pairs', {
+            params: { ...payload },
+          });
           // result is of type AvailablePairResult
           const { pairs } = result.data;
           commit('updatePairs', pairs);
@@ -732,7 +726,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreActions.getBlacklist]({ commit }) {
         return api
-          .get('/blacklist')
+          .get<BlacklistResponse>('/blacklist')
           .then((result) => commit('updateBlacklist', result.data))
           .catch(console.error);
       },
@@ -833,9 +827,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.deleteTrade]({ dispatch }, tradeid: string) {
         try {
-          const res = await api.delete<never, AxiosResponse<DeleteTradeResponse>>(
-            `/trades/${tradeid}`,
-          );
+          const res = await api.delete<DeleteTradeResponse>(`/trades/${tradeid}`);
           showAlert(
             dispatch,
             res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}`,
@@ -892,7 +884,7 @@ export function createBotSubStore(botId: string, botName: string) {
               console.error(error.response);
               showAlert(
                 dispatch,
-                `Error occured buying: '${error.response?.data?.error}'`,
+                `Error occured buying: '${(error as any).response?.data?.error}'`,
                 'danger',
               );
             }
@@ -930,7 +922,9 @@ export function createBotSubStore(botId: string, botName: string) {
               console.error(error.response);
               showAlert(
                 dispatch,
-                `Error occured while adding pairs to Blacklist: '${error.response?.data?.error}'`,
+                `Error occured while adding pairs to Blacklist: '${
+                  (error as any).response?.data?.error
+                }'`,
                 'danger',
               );
             }
@@ -952,7 +946,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async [BotStoreActions.pollBacktest]({ commit }) {
-        const result = await api.get<never, AxiosResponse<BacktestStatus>>('/backtest');
+        const result = await api.get<BacktestStatus>('/backtest');
         commit('updateBacktestRunning', result.data);
         if (result.data.running === false && result.data.backtest_result) {
           commit('updateBacktestResult', result.data.backtest_result);
@@ -961,7 +955,7 @@ export function createBotSubStore(botId: string, botName: string) {
       async [BotStoreActions.removeBacktest]({ commit }) {
         commit('resetBacktestHistory');
         try {
-          const { data } = await api.delete<never, AxiosResponse<BacktestStatus>>('/backtest');
+          const { data } = await api.delete<BacktestStatus>('/backtest');
           commit('updateBacktestRunning', data);
           return Promise.resolve(data);
         } catch (err) {
@@ -970,7 +964,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.stopBacktest]({ commit }) {
         try {
-          const { data } = await api.get<never, AxiosResponse<BacktestStatus>>('/backtest/abort');
+          const { data } = await api.get<BacktestStatus>('/backtest/abort');
           commit('updateBacktestRunning', data);
           return Promise.resolve(data);
         } catch (err) {
