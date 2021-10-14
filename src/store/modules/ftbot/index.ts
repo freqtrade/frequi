@@ -31,6 +31,10 @@ import {
   LogLine,
   BacktestSteps,
   SysInfoResponse,
+  AvailablePairResult,
+  StatusResponse,
+  DeleteTradeResponse,
+  BlacklistResponse,
 } from '@/types';
 
 import {
@@ -38,7 +42,7 @@ import {
   getAllPlotConfigNames,
   storePlotConfigName,
 } from '@/shared/storage';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import state, { FtbotStateType } from './state';
 import { showAlert } from '../alerts';
@@ -517,7 +521,9 @@ export function createBotSubStore(botId: string, botName: string) {
           let totalTrades = 0;
           const pageLength = 500;
           const fetchTrades = async (limit: number, offset: number) => {
-            return api.get('/trades', { params: { limit, offset } });
+            return api.get<unknown, AxiosResponse<TradeResponse>>('/trades', {
+              params: { limit, offset },
+            });
           };
           const res = await fetchTrades(pageLength, 0);
           const result: TradeResponse = res.data;
@@ -652,7 +658,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.getStrategyPlotConfig]({ commit }) {
         try {
-          const result = await api.get('/plot_config');
+          const result = await api.get<never, AxiosResponse<PlotConfig>>('/plot_config');
           const plotConfig = result.data;
           if (plotConfig.subplots === null) {
             // Subplots should not be null but an empty object
@@ -687,9 +693,12 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.getAvailablePairs]({ commit }, payload: AvailablePairPayload) {
         try {
-          const result = await api.get('/available_pairs', {
-            params: { ...payload },
-          });
+          const result = await api.get<AvailablePairPayload, AxiosResponse<AvailablePairResult>>(
+            '/available_pairs',
+            {
+              params: { ...payload },
+            },
+          );
           // result is of type AvailablePairResult
           const { pairs } = result.data;
           commit('updatePairs', pairs);
@@ -770,7 +779,7 @@ export function createBotSubStore(botId: string, botName: string) {
       // TODO: Migrate calls to API to a seperate module unrelated to vuex?
       async [BotStoreActions.startBot]({ dispatch }) {
         try {
-          const res = await api.post('/start', {});
+          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/start', {});
           console.log(res.data);
           showAlert(dispatch, res.data.status);
           return Promise.resolve(res);
@@ -784,7 +793,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.stopBot]({ dispatch }) {
         try {
-          const res = await api.post('/stop', {});
+          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/stop', {});
           showAlert(dispatch, res.data.status);
           return Promise.resolve(res);
         } catch (error) {
@@ -797,7 +806,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.stopBuy]({ dispatch }) {
         try {
-          const res = await api.post('/stopbuy', {});
+          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/stopbuy', {});
           showAlert(dispatch, res.data.status);
           return Promise.resolve(res);
         } catch (error) {
@@ -810,7 +819,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.reloadConfig]({ dispatch }) {
         try {
-          const res = await api.post('/reload_config', {});
+          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/reload_config', {});
           console.log(res.data);
           showAlert(dispatch, res.data.status);
           return Promise.resolve(res);
@@ -824,7 +833,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.deleteTrade]({ dispatch }, tradeid: string) {
         try {
-          const res = await api.delete(`/trades/${tradeid}`);
+          const res = await api.delete<never, AxiosResponse<DeleteTradeResponse>>(
+            `/trades/${tradeid}`,
+          );
           showAlert(
             dispatch,
             res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}`,
@@ -869,7 +880,10 @@ export function createBotSubStore(botId: string, botName: string) {
       async [BotStoreActions.forcebuy]({ dispatch }, payload: ForcebuyPayload) {
         if (payload && payload.pair) {
           try {
-            const res = await api.post('/forcebuy', payload);
+            const res = await api.post<
+              ForcebuyPayload,
+              AxiosResponse<StatusResponse | TradeResponse>
+            >('/forcebuy', payload);
             showAlert(dispatch, `Buy order for ${payload.pair} created.`);
 
             return Promise.resolve(res);
@@ -894,7 +908,10 @@ export function createBotSubStore(botId: string, botName: string) {
         console.log(`Adding ${payload} to blacklist`);
         if (payload && payload.blacklist) {
           try {
-            const result = await api.post('/blacklist', payload);
+            const result = await api.post<BlacklistPayload, AxiosResponse<BlacklistResponse>>(
+              '/blacklist',
+              payload,
+            );
             commit('updateBlacklist', result.data);
             if (result.data.errors && Object.keys(result.data.errors).length !== 0) {
               const { errors } = result.data;
@@ -935,7 +952,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async [BotStoreActions.pollBacktest]({ commit }) {
-        const result = await api.get('/backtest');
+        const result = await api.get<never, AxiosResponse<BacktestStatus>>('/backtest');
         commit('updateBacktestRunning', result.data);
         if (result.data.running === false && result.data.backtest_result) {
           commit('updateBacktestResult', result.data.backtest_result);
@@ -944,18 +961,18 @@ export function createBotSubStore(botId: string, botName: string) {
       async [BotStoreActions.removeBacktest]({ commit }) {
         commit('resetBacktestHistory');
         try {
-          const result = await api.delete('/backtest');
-          commit('updateBacktestRunning', result.data);
-          return Promise.resolve(result.data);
+          const { data } = await api.delete<never, AxiosResponse<BacktestStatus>>('/backtest');
+          commit('updateBacktestRunning', data);
+          return Promise.resolve(data);
         } catch (err) {
           return Promise.reject(err);
         }
       },
       async [BotStoreActions.stopBacktest]({ commit }) {
         try {
-          const result = await api.get('/backtest/abort');
-          commit('updateBacktestRunning', result.data);
-          return Promise.resolve(result.data);
+          const { data } = await api.get<never, AxiosResponse<BacktestStatus>>('/backtest/abort');
+          commit('updateBacktestRunning', data);
+          return Promise.resolve(data);
         } catch (err) {
           return Promise.reject(err);
         }
@@ -965,9 +982,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async [BotStoreActions.sysInfo]({ commit }) {
         try {
-          const result = await api.get('/sysinfo');
-          commit('updateSysInfo', result.data);
-          return Promise.resolve(result.data);
+          const { data } = await api.get('/sysinfo');
+          commit('updateSysInfo', data);
+          return Promise.resolve(data);
         } catch (err) {
           return Promise.reject(err);
         }
