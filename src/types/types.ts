@@ -139,3 +139,18 @@ export interface SysInfoResponse {
   cpu_pct: number[];
   ram_pct: number;
 }
+
+export interface StatusResponse {
+  status: string;
+}
+
+export interface DeleteTradeResponse {
+  cancel_order_count: number;
+  result: string;
+  result_msg: string;
+  trade_id: number;
+}
+
+export interface UiVersion {
+  version: string;
+}

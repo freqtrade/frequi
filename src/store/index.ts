@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UserService } from '@/shared/userService';
+import { UiVersion } from '@/types';
 import createBotStore from './modules/botStoreWrapper';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
@@ -60,7 +61,7 @@ const store = new Vuex.Store({
     async loadUIVersion({ commit }) {
       if (process.env.NODE_ENV !== 'development') {
         try {
-          const result = await axios.get('/ui_version');
+          const result = await axios.get<UiVersion>('/ui_version');
           const { version } = result.data;
 
           commit('setUIVersion', version);
