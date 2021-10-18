@@ -92,7 +92,6 @@ export default class PairSummary extends Vue {
       const trade = tradeCount ? trades[0] : undefined;
       if (trades.length > 0) {
         profitString = `Current profit: ${formatPercent(profit)}`;
-        console.log(`trades ${pair}`, trades);
       }
       if (trade) {
         profitString += `\nOpen since: ${timestampms(trade.open_timestamp)}`;
