@@ -18,5 +18,6 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
+    day: "wednesday"
   open-pull-requests-limit: 10
   target-branch: master
