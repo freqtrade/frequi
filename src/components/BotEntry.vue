@@ -3,7 +3,7 @@
     <span class="mr-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="align-items-center d-flex">
-      <span class="ml-2 align-middle">{{
+      <span class="ml-2 mr-1 align-middle">{{
         allIsBotOnline[bot.botId] ? '&#128994;' : '&#128308;'
       }}</span>
       <b-form-checkbox
