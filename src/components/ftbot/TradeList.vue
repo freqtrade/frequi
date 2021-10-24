@@ -82,13 +82,12 @@ import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
-import ProfitSymbol from './ProfitSymbol.vue';
 import TradeProfit from './TradeProfit.vue';
 
 const ftbot = namespace('ftbot');
 
 @Component({
-  components: { ProfitSymbol, DeleteIcon, ForceSellIcon, DateTimeTZ, TradeProfit },
+  components: { DeleteIcon, ForceSellIcon, DateTimeTZ, TradeProfit },
 })
 export default class TradeList extends Vue {
   $refs!: {

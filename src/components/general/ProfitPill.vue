@@ -1,17 +1,21 @@
 <template>
   <div
-    class="d-flex justify-content-center align-items-center profit-pill px-2"
+    class="d-flex justify-content-between align-items-center profit-pill pl-2 pr-1"
     :class="isProfitable ? 'profit-pill-profit' : ''"
     :title="profitDesc"
   >
-    {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
-    <span
-      v-if="profitString"
-      class="ml-1"
-      :class="profitRatio ? 'small' : ''"
-      :title="stakeCurrency"
-      >{{ profitString }}</span
-    >
+    <profit-symbol :profit="profitRatio || profitAbs" />
+
+    <div class="d-flex justify-content-center align-items-center flex-grow-1">
+      {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
+      <span
+        v-if="profitString"
+        class="ml-1"
+        :class="profitRatio ? 'small' : ''"
+        :title="stakeCurrency"
+        >{{ profitString }}</span
+      >
+    </div>
   </div>
 </template>
 
@@ -19,7 +23,9 @@
 import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component({})
+import ProfitSymbol from '@/components/ftbot/ProfitSymbol.vue';
+
+@Component({ components: { ProfitSymbol } })
 export default class ProfitPill extends Vue {
   @Prop({ required: false, default: undefined, type: Number }) profitRatio?: number;
 
@@ -57,7 +63,6 @@ export default class ProfitPill extends Vue {
   border-radius: 6px;
 }
 .profit-pill-profit {
-  background: $color-profit;
   border: 2px solid $color-profit;
 }
 </style>
