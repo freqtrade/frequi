@@ -16,7 +16,10 @@ RUN apk add --update --no-cache python3 g++ make\
 RUN yarn global add @vue/cli
 
 COPY . /app
-RUN yarn build
+
+# The below flag should be removed, it's an incompatibility between
+# webpack and node17
+RUN NODE_OPTIONS=--openssl-legacy-provider yarn build
 
 FROM nginx:1.21.3-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
