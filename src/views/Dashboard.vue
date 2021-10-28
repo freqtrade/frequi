@@ -100,7 +100,7 @@ import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
-import BotComparisonList from '@/components/ftbot/BotComarisonList.vue';
+import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 

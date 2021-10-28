@@ -8,22 +8,23 @@
     :items="tableItems"
     :fields="tableFields"
   >
-    <template #cell(profitClosed)="row">
-      <profit-pill
-        v-if="row.item.profitClosed"
-        :profit-ratio="row.item.profitClosedRatio"
-        :profit-abs="row.item.profitClosed"
-        :stake-currency="row.item.stakeCurrency"
-      />
-    </template>
     <template #cell(profitOpen)="row">
       <profit-pill
-        v-if="row.item.profitClosed"
+        v-if="row.item.profitOpen && row.item.botId != 'Summary'"
         :profit-ratio="row.item.profitOpenRatio"
         :profit-abs="row.item.profitOpen"
         :stake-currency="row.item.stakeCurrency"
       />
     </template>
+    <template #cell(profitClosed)="row">
+      <profit-pill
+        v-if="row.item.profitClosed && row.item.botId != 'Summary'"
+        :profit-ratio="row.item.profitClosedRatio"
+        :profit-abs="row.item.profitClosed"
+        :stake-currency="row.item.stakeCurrency"
+      />
+    </template>
+
     <template #cell(balance)="row">
       <div v-if="row.item.balance">
         <span :title="row.item.stakeCurrency"
@@ -43,7 +44,7 @@
 
 <script lang="ts">
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import { BalanceInterface, BotDescriptors, BotState, ProfitInterface } from '@/types';
+import { BalanceInterface, BotDescriptors, BotState, ProfitInterface, Trade } from '@/types';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import ProfitPill from '@/components/general/ProfitPill.vue';
@@ -57,6 +58,8 @@ export default class BotComparisonList extends Vue {
 
   @ftbot.Getter [MultiBotStoreGetters.allOpenTradeCount]!: Record<string, number>;
 
+  @ftbot.Getter [MultiBotStoreGetters.allOpenTrades]!: Record<string, Trade[]>;
+
   @ftbot.Getter [MultiBotStoreGetters.allBotState]!: Record<string, BotState>;
 
   @ftbot.Getter [MultiBotStoreGetters.allBalance]!: Record<string, BalanceInterface>;
@@ -66,19 +69,25 @@ export default class BotComparisonList extends Vue {
   formatPrice = formatPrice;
 
   get tableItems() {
+    console.log('tableItems called');
     const val: any[] = [];
     const summary = {
       botId: 'Summary',
       profitClosed: 0,
-      profitClosedRatio: undefined,
+      profitClosedRatio: 0,
       profitOpen: 0,
-      profitOpenRatio: undefined,
+      profitOpenRatio: 0,
       stakeCurrency: 'USDT',
       wins: 0,
       losses: 0,
     };
 
     Object.entries(this.allProfit).forEach(([k, v]) => {
+      const allStakes = this.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
+      const profitOpenRatio =
+        this.allOpenTrades[k].reduce((a, b) => a + b.profit_ratio * b.stake_amount, 0) / allStakes;
+      const profitOpen = this.allOpenTrades[k].reduce((a, b) => a + b.profit_abs, 0);
+
       // TODO: handle one inactive bot ...
       val.push({
         botId: this.allAvailableBots[k].botName,
@@ -86,8 +95,8 @@ export default class BotComparisonList extends Vue {
         profitClosed: v.profit_closed_coin,
         profitClosedRatio: v.profit_closed_ratio_sum || 0,
         stakeCurrency: this.allBotState[k]?.stake_currency || '',
-        profitOpenRatio: v.profit_all_ratio_sum - v.profit_closed_ratio_sum,
-        profitOpen: v.profit_all_coin - v.profit_closed_coin,
+        profitOpenRatio,
+        profitOpen,
         wins: v.winning_trades,
         losses: v.losing_trades,
         balance: this.allBalance[k]?.total,

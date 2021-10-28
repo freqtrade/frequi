@@ -54,7 +54,7 @@ export default class DailyChart extends Vue {
     return Number(
       this.dailyStats.data.reduce(
         (min, p) => (p.abs_profit < min ? p.abs_profit : min),
-        this.dailyStats.data[0].abs_profit,
+        this.dailyStats.data[0]?.abs_profit,
       ),
     );
   }
@@ -63,7 +63,7 @@ export default class DailyChart extends Vue {
     return Number(
       this.dailyStats.data.reduce(
         (max, p) => (p.abs_profit > max ? p.abs_profit : max),
-        this.dailyStats.data[0].abs_profit,
+        this.dailyStats.data[0]?.abs_profit,
       ),
     );
   }
