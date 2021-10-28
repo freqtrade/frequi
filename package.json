@@ -27,7 +27,7 @@
     "vue-grid-layout": "^2.3.12",
     "vue-material-design-icons": "^4.13.0",
     "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.5.2",
+    "vue-router": "^3.5.3",
     "vuex": "^3.6.2",
     "vuex-class": "^0.3.2"
   },
