@@ -45,12 +45,19 @@
       </b-input-group>
     </b-form-group>
     <div class="d-flex d-flex-columns d-flex">
-      <b-button v-if="addNew" variant="primary" title="Add " size="sm" @click="emitIndicator">
-        Add new indicator
+      <b-button
+        v-if="addNew"
+        class="flex-grow-1"
+        variant="primary"
+        title="Add "
+        size="sm"
+        @click="emitIndicator"
+      >
+        Save indicator
       </b-button>
       <b-button
         v-if="addNew"
-        class="ml-1"
+        class="ml-1 flex-grow-1"
         variant="primary"
         title="Add "
         size="sm"
@@ -102,7 +109,9 @@ export default class PlotIndicator extends Vue {
 
   @Watch('selColor')
   watchColor() {
-    this.emitIndicator();
+    if (!this.addNew) {
+      this.emitIndicator();
+    }
   }
 
   clickCancel() {

@@ -37,6 +37,7 @@
         variant="primary"
         title="Add indicator to plot"
         size="sm"
+        :disabled="addNewIndicator"
         @click="addNewIndicator = !addNewIndicator"
       >
         Add new indicator
@@ -54,6 +55,7 @@
     </div>
 
     <PlotIndicator
+      v-if="selIndicatorName || addNewIndicator"
       v-model="selIndicator"
       class="mt-1"
       :columns="columns"
@@ -162,7 +164,7 @@ export default class PlotConfigurator extends Vue {
   }
 
   set selIndicator(newValue: Record<string, IndicatorConfig>) {
-    console.log('newValue', newValue);
+    // console.log('newValue', newValue);
     const name = Object.keys(newValue)[0];
     // this.currentPlotConfig[this.selIndicatorName] = { ...newValue[name] };
     // this.emitPlotConfig();
@@ -316,7 +318,7 @@ export default class PlotConfigurator extends Vue {
   }
 
   savePlotConfig() {
-    this.saveCustomPlotConfig({ [this.plotConfigName]: this.plotConfig });
+    this.saveCustomPlotConfig({ [this.plotConfigNameLoc]: this.plotConfig });
   }
 
   loadPlotConfig() {
