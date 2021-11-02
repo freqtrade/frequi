@@ -13,12 +13,13 @@
       </b-modal>
 
       <div class="row mr-0">
-        <div class="col-mb-2 ml-2 d-flex align-items-center">
+        <div class="ml-2 d-flex flex-wrap flex-md-nowrap align-items-center">
           <span class="ml-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <b-select
             v-model="pair"
             class="ml-2"
             :options="availablePairs"
+            style="min-width: 7em"
             size="sm"
             @change="refresh"
           >
@@ -32,7 +33,7 @@
             >SellSignals: {{ dataset.sell_signals }}</small
           >
         </div>
-        <div class="col-mb-2 ml-auto mr-2">
+        <div class="ml-auto mr-2">
           <b-select
             v-model="plotConfigName"
             :options="availablePlotConfigNames"
@@ -42,7 +43,7 @@
           </b-select>
         </div>
 
-        <div class="col-mb-2 mr-1">
+        <div class="mr-0 mr-md-1">
           <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
         </div>
       </div>
