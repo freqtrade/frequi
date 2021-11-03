@@ -15,7 +15,7 @@
       <b-input-group size="sm">
         <b-form-input id="newSubPlot" v-model="newSubplotName" class="addPlot"></b-form-input>
         <b-input-group-append>
-          <b-button @click="addSubplot">+</b-button>
+          <b-button :disabled="!newSubplotName" @click="addSubplot">+</b-button>
           <b-button v-if="selSubPlot && selSubPlot != 'main_plot'" @click="delSubplot">-</b-button>
         </b-input-group-append>
       </b-input-group>
