@@ -254,7 +254,7 @@ export function createBotSubStore(botId: string, botName: string) {
       [BotStoreGetters.version](state: FtbotStateType): string {
         return state.version;
       },
-      [BotStoreGetters.version](state: FtbotStateType): SysInfoResponse | {} {
+      [BotStoreGetters.sysinfo](state: FtbotStateType): SysInfoResponse | {} {
         return state.sysinfo;
       },
       [BotStoreGetters.profit](state: FtbotStateType): ProfitInterface | {} {
