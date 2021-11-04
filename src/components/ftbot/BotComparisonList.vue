@@ -93,7 +93,7 @@ export default class BotComparisonList extends Vue {
         botId: this.allAvailableBots[k].botName,
         trades: `${this.allOpenTradeCount[k]} / ${this.allBotState[k]?.max_open_trades || 'N/A'}`,
         profitClosed: v.profit_closed_coin,
-        profitClosedRatio: v.profit_closed_ratio_sum || 0,
+        profitClosedRatio: v.profit_closed_ratio || 0,
         stakeCurrency: this.allBotState[k]?.stake_currency || '',
         profitOpenRatio,
         profitOpen,
