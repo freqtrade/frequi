@@ -43,11 +43,47 @@ export enum RunModes {
   OTHER = 'other',
 }
 
+export interface UnfilledTimeout {
+  buy: number;
+  sell: number;
+  unit: string;
+  exit_timeout_count: number;
+}
+
+export interface OrderTypes {
+  buy: string;
+  sell: string;
+  emergencysell?: string;
+  forcesell?: string;
+  forcebuy?: string;
+  stoploss: string;
+  stoploss_on_exchange: boolean;
+  stoploss_on_exchange_interval: number;
+}
+
+export interface PriceBase {
+  price_side: string;
+  use_order_book: boolean;
+  order_book_top: number;
+}
+
+export interface AskStrategy extends PriceBase {
+  bid_last_balance?: number;
+}
+
+export interface BidStrategy extends PriceBase {
+  ask_last_balance?: number;
+  check_depth_of_market: object;
+}
+
 export interface BotState {
+  version: string;
   state: BotStates;
   runmode: RunModes;
-  bid_strategy: object;
-  ask_strategy: object;
+  bid_strategy: BidStrategy;
+  ask_strategy: AskStrategy;
+  unfilledtimeout: UnfilledTimeout;
+  order_types: OrderTypes;
   dry_run: boolean;
   exchange: string;
   forcebuy_enabled: boolean;

@@ -106,7 +106,6 @@ export enum BotStoreActions {
   setRefreshRequired = 'setRefreshRequired',
   refreshSlow = 'refreshSlow',
   refreshFrequent = 'refreshFrequent',
-  refreshOnce = 'refreshOnce',
   setDetailTrade = 'setDetailTrade',
   setSelectedPair = 'setSelectedPair',
   saveCustomPlotConfig = 'saveCustomPlotConfig',
@@ -129,7 +128,6 @@ export enum BotStoreActions {
   getBalance = 'getBalance',
   getDaily = 'getDaily',
   getState = 'getState',
-  getVersion = 'getVersion',
   getLogs = 'getLogs',
   startBot = 'startBot',
   stopBot = 'stopBot',
@@ -252,7 +250,7 @@ export function createBotSubStore(botId: string, botName: string) {
         return state.strategyPlotConfig;
       },
       [BotStoreGetters.version](state: FtbotStateType): string {
-        return state.version;
+        return state.botState?.version || state.version;
       },
       [BotStoreGetters.sysinfo](state: FtbotStateType): SysInfoResponse | {} {
         return state.sysinfo;
@@ -474,9 +472,6 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreActions.setIsBotOnline]({ commit }, refreshRequired: boolean) {
         commit('setIsBotOnline', refreshRequired);
-      },
-      [BotStoreActions.refreshOnce]({ dispatch }) {
-        dispatch(BotStoreActions.getVersion);
       },
       async [BotStoreActions.refreshSlow]({ dispatch, getters, state }, forceUpdate = false) {
         if (state.refreshing && !forceUpdate) {
@@ -755,12 +750,6 @@ export function createBotSubStore(botId: string, botName: string) {
         return api
           .get('/show_config')
           .then((result) => commit('updateState', result.data))
-          .catch(console.error);
-      },
-      [BotStoreActions.getVersion]({ commit }) {
-        return api
-          .get('/version')
-          .then((result) => commit('updateVersion', result.data))
           .catch(console.error);
       },
       [BotStoreActions.getLogs]({ commit }) {
