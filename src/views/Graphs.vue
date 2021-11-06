@@ -81,9 +81,10 @@ export default class Graphs extends Vue {
     }
     if (this.historicView) {
       // this.refresh();
-      this.getAvailablePairs({ timeframe: this.timeframe }).then((val) => {
-        // console.log(val);
-      });
+      this.getAvailablePairs({ timeframe: this.timeframe });
+      // .then((val) => {
+      // console.log(val);
+      // });
     }
   }
 }
