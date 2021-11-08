@@ -24,15 +24,14 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-        :state="nameState"
+        :state="nameState && auth.username"
         label="Username"
         label-for="username-input"
-        invalid-feedback="Name is required"
+        invalid-feedback="Name and Password are required."
       >
         <b-form-input
           id="username-input"
           v-model="auth.username"
-          :state="nameState"
           required
           placeholder="Freqtrader"
           @keydown.enter.native="handleOk"
@@ -42,6 +41,7 @@
         <b-form-input
           id="password-input"
           v-model="auth.password"
+          :state="nameState && auth.password"
           required
           type="password"
           @keydown.enter.native="handleOk"
