@@ -24,7 +24,7 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-        :state="nameState && auth.username"
+        :state="nameState"
         label="Username"
         label-for="username-input"
         invalid-feedback="Name and Password are required."
@@ -37,11 +37,15 @@
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
-      <b-form-group label="Password" label-for="password-input" invalid-feedback="Invalid Password">
+      <b-form-group
+        label="Password"
+        label-for="password-input"
+        invalid-feedback="Invalid Password"
+        :state="pwdState"
+      >
         <b-form-input
           id="password-input"
           v-model="auth.password"
-          :state="nameState && auth.password"
           required
           type="password"
           @keydown.enter.native="handleOk"
@@ -112,6 +116,8 @@ export default class Login extends Vue {
 
   nameState: boolean | null = null;
 
+  pwdState: boolean | null = null;
+
   urlState: boolean | null = null;
 
   errorMessage = '';
@@ -120,7 +126,8 @@ export default class Login extends Vue {
 
   checkFormValidity() {
     const valid = this.$refs.form.checkValidity();
-    this.nameState = valid;
+    this.nameState = valid || this.auth.username !== '';
+    this.pwdState = valid || this.auth.password !== '';
     return valid;
   }
 
@@ -129,6 +136,7 @@ export default class Login extends Vue {
     this.auth.username = '';
     this.auth.password = '';
     this.nameState = null;
+    this.pwdState = null;
     this.errorMessage = '';
   }
 
@@ -184,6 +192,7 @@ export default class Login extends Vue {
         console.error(error.response);
         if (error.response && error.response.status === 401) {
           this.nameState = false;
+          this.pwdState = false;
           this.errorMessage = 'Connected to bot, however Login failed, Username or Password wrong.';
         } else {
           this.urlState = false;
