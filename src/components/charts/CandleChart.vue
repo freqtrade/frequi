@@ -225,6 +225,7 @@ export default class CandleChart extends Vue {
           scale: true,
           gridIndex: 1,
           splitNumber: 2,
+          name: 'volume',
           position: 'right',
           axisLabel: { show: false },
           axisLine: { show: false },
@@ -433,6 +434,7 @@ export default class CandleChart extends Vue {
       let plotIndex = 2;
       Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
         // define yaxis
+        console.log('subplot', key);
         if (Array.isArray(this.chartOptions.yAxis)) {
           this.chartOptions.yAxis.push({
             scale: true,
