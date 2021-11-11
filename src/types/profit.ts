@@ -31,7 +31,9 @@ export interface ProfitInterface {
   latest_trade_timestamp: number;
   avg_duration: string;
   best_pair: string;
+  /** DO NOT USE, this is rounded pct */
   best_rate: number;
+  best_pair_profit_ratio: number;
   winning_trades: number;
   losing_trades: number;
 }
