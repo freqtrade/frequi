@@ -52,8 +52,9 @@ use([
 ]);
 
 // Chart default options
-const MARGINLEFT = '4%';
+const MARGINLEFT = '5.5%';
 const MARGINRIGHT = '1%';
+const NAMEGAP = 55;
 
 // Binance colors
 const upColor = '#26A69A';
@@ -226,7 +227,9 @@ export default class CandleChart extends Vue {
           gridIndex: 1,
           splitNumber: 2,
           name: 'volume',
-          position: 'right',
+          nameLocation: 'middle',
+          // position: 'right',
+          nameGap: NAMEGAP,
           axisLabel: { show: false },
           axisLine: { show: false },
           axisTick: { show: false },
@@ -432,27 +435,31 @@ export default class CandleChart extends Vue {
     // START Subplots
     if ('subplots' in this.plotConfig) {
       let plotIndex = 2;
+      const totalSubplots = plotIndex + Object.keys(this.plotConfig.subplots).length;
       Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
         // define yaxis
-        console.log('subplot', key);
-        if (Array.isArray(this.chartOptions.yAxis)) {
+        console.log('subplot', key, plotIndex, totalSubplots);
+
+        // Subplots are added from bottom to top - only the "bottom-most" plot stays at the bottom.
+        const currGridIdx = totalSubplots - plotIndex > 1 ? totalSubplots - plotIndex : plotIndex;
+        if (Array.isArray(this.chartOptions.yAxis) && this.chartOptions.yAxis.length <= plotIndex) {
           this.chartOptions.yAxis.push({
             scale: true,
-            gridIndex: plotIndex,
+            gridIndex: currGridIdx,
             name: key,
             nameLocation: 'middle',
-            nameGap: 60,
+            nameGap: NAMEGAP,
             axisLabel: { show: true },
             axisLine: { show: false },
             axisTick: { show: false },
             splitLine: { show: false },
           });
         }
-        if (Array.isArray(this.chartOptions.xAxis)) {
+        if (Array.isArray(this.chartOptions.xAxis) && this.chartOptions.xAxis.length <= plotIndex) {
           this.chartOptions.xAxis.push({
             type: 'time',
             scale: true,
-            gridIndex: plotIndex,
+            gridIndex: currGridIdx,
             boundaryGap: false,
             axisLine: { onZero: false },
             axisTick: { show: false },
