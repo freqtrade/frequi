@@ -139,13 +139,6 @@ export default class CumProfitChart extends Vue {
           nameLocation: 'middle',
           nameGap: 40,
         },
-        {
-          type: 'value',
-          name: CHART_TRADE_COUNT,
-          nameRotate: 90,
-          nameLocation: 'middle',
-          nameGap: 30,
-        },
       ],
       grid: {
         bottom: 80,

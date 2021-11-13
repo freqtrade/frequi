@@ -124,7 +124,7 @@ export default class DailyChart extends Vue {
           },
           nameRotate: 90,
           nameLocation: 'middle',
-          nameGap: 50,
+          nameGap: 40,
         },
         {
           type: 'value',
