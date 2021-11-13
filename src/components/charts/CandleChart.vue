@@ -55,6 +55,7 @@ use([
 const MARGINLEFT = '5.5%';
 const MARGINRIGHT = '1%';
 const NAMEGAP = 55;
+const SUBPLOTHEIGHT = 8; // Value in %
 
 // Binance colors
 const upColor = '#26A69A';
@@ -292,7 +293,7 @@ export default class CandleChart extends Vue {
     const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
     const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
     const subplotCount =
-      'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length : 0;
+      'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length + 1 : 1;
 
     if (this.chartOptions?.dataZoom && Array.isArray(this.chartOptions?.dataZoom)) {
       // Only set zoom once ...
@@ -323,15 +324,15 @@ export default class CandleChart extends Vue {
           left: MARGINLEFT,
           right: MARGINRIGHT,
           // Grid Layout from bottom to top
-          bottom: `${subplotCount * 10 + 10}%`,
+          bottom: `${subplotCount * SUBPLOTHEIGHT + 2}%`,
         },
         {
           // Volume
           left: MARGINLEFT,
           right: MARGINRIGHT,
           // Grid Layout from bottom to top
-          bottom: `${subplotCount * 10 + 5}%`,
-          height: '10%',
+          bottom: `${subplotCount * SUBPLOTHEIGHT}%`,
+          height: `${SUBPLOTHEIGHT}%`,
         },
       ],
 
@@ -435,13 +436,12 @@ export default class CandleChart extends Vue {
     // START Subplots
     if ('subplots' in this.plotConfig) {
       let plotIndex = 2;
-      const totalSubplots = plotIndex + Object.keys(this.plotConfig.subplots).length;
       Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
         // define yaxis
-        console.log('subplot', key, plotIndex, totalSubplots);
 
         // Subplots are added from bottom to top - only the "bottom-most" plot stays at the bottom.
-        const currGridIdx = totalSubplots - plotIndex > 1 ? totalSubplots - plotIndex : plotIndex;
+        // const currGridIdx = totalSubplots - plotIndex > 1 ? totalSubplots - plotIndex : plotIndex;
+        const currGridIdx = plotIndex;
         if (Array.isArray(this.chartOptions.yAxis) && this.chartOptions.yAxis.length <= plotIndex) {
           this.chartOptions.yAxis.push({
             scale: true,
@@ -480,8 +480,8 @@ export default class CandleChart extends Vue {
           this.chartOptions.grid.push({
             left: MARGINLEFT,
             right: MARGINRIGHT,
-            bottom: `${plotIndex * 8}%`,
-            height: '8%',
+            bottom: `${(subplotCount - plotIndex + 1) * SUBPLOTHEIGHT}%`,
+            height: `${SUBPLOTHEIGHT}%`,
           });
         }
         Object.entries(value).forEach(([sk, sv]) => {
