@@ -290,8 +290,13 @@ export default class CandleChart extends Vue {
     const colLow = this.dataset.columns.findIndex((el) => el === 'low');
     const colClose = this.dataset.columns.findIndex((el) => el === 'close');
     const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
-    const colBuyData = this.dataset.columns.findIndex((el) => el === '_buy_signal_open');
-    const colSellData = this.dataset.columns.findIndex((el) => el === '_sell_signal_open');
+    // TODO: REmove below *signal_open after December 2021
+    const colBuyData = this.dataset.columns.findIndex(
+      (el) => el === '_buy_signal_open' || el === '_buy_signal_close',
+    );
+    const colSellData = this.dataset.columns.findIndex(
+      (el) => el === '_sell_signal_open' || el === '_sell_signal_close',
+    );
     const subplotCount =
       'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length + 1 : 1;
 
