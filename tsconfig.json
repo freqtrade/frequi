@@ -16,7 +16,8 @@
     "types": [
       // "webpack-env",
       // "jest",
-      "cypress"
+      "cypress",
+      "vite/client",
     ],
     "paths": {
       "@/*": [
