@@ -35,7 +35,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/backtest',
     name: 'Freqtrade Backtest',
-    component: () => import( '@/views/Backtesting.vue'),
+    component: () => import('@/views/Backtesting.vue'),
   },
   {
     path: '/dashboard',
@@ -45,27 +45,26 @@ const routes: Array<RouteConfig> = [
   {
     path: '/balance',
     name: 'Freqtrade Balance',
-    component: () => import(/* webpackChunkName: "balance" */ '@/components/ftbot/Balance.vue'),
+    component: () => import('@/components/ftbot/Balance.vue'),
   },
   {
     path: '/open_trades',
-    component: () => import(/* webpackChunkName: "trades" */ '@/views/TradesList.vue'),
+    component: () => import('@/views/TradesList.vue'),
   },
 
   {
     path: '/trade_history',
-    component: () => import(/* webpackChunkName: "trades" */ '@/views/TradesList.vue'),
+    component: () => import('@/views/TradesList.vue'),
     props: { history: true },
   },
   {
     path: '/pairlist',
-    component: () =>
-      import(/* webpackChunkName: "pairlist" */ '@/components/ftbot/FTBotAPIPairList.vue'),
+    component: () => import('@/components/ftbot/FTBotAPIPairList.vue'),
   },
   {
     path: '/settings',
     name: 'Freqtrade Settings',
-    component: () => import( '@/views/Settings.vue'),
+    component: () => import('@/views/Settings.vue'),
   },
   {
     path: '/login',

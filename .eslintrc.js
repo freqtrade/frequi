@@ -8,7 +8,6 @@ module.exports = {
   extends: [
     // vue/recommended includes all higher levels (vue/strongly-recommended, vue/essential)
     'plugin:vue/recommended',
-    '@vue/airbnb',
     '@vue/typescript/recommended',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint',

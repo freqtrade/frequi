@@ -122,7 +122,7 @@ export default function createBotStore(store) {
     [MultiBotStoreGetters.allDailyStatsAllBots](state: FTMultiBotState, getters): DailyReturnValue {
       const resp: Record<string, DailyRecord> = {};
       getters.allAvailableBotsList.forEach((botId) => {
-        const x = getters[`${botId}/${BotStoreGetters.dailyStats}`]?.data?.forEach((d) => {
+        getters[`${botId}/${BotStoreGetters.dailyStats}`]?.data?.forEach((d) => {
           if (!resp[d.date]) {
             resp[d.date] = { ...d };
           } else {
