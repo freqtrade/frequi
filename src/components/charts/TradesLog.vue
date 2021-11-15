@@ -155,7 +155,7 @@ export default class TradesLogChart extends Vue {
             show: true,
             position: 'top',
             rotate: 90,
-            offset: [7.5, -20],
+            offset: [7.5, 7.5],
             formatter: '{@[1]} %',
             color: this.getChartTheme === 'dark' ? '#c2c2c2' : '#3c3c3c',
           },
