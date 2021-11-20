@@ -32,6 +32,12 @@
           <small v-if="dataset" class="ml-2 text-nowrap"
             >SellSignals: {{ dataset.sell_signals }}</small
           >
+          <small v-if="dataset && dataset.enter_short_signals" class="ml-2 text-nowrap"
+            >Short entries: {{ dataset.enter_short_signals }}</small
+          >
+          <small v-if="dataset && dataset.exit_short_signals" class="ml-2 text-nowrap"
+            >Short exits: {{ dataset.exit_short_signals }}</small
+          >
         </div>
         <div class="ml-auto mr-2">
           <b-select

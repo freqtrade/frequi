@@ -78,13 +78,15 @@ export interface BidStrategy extends PriceBase {
 
 export interface BotState {
   version: string;
+  dry_run: boolean;
+  trading_mode?: string;
+  short_allowed?: boolean;
   state: BotStates;
   runmode: RunModes;
   bid_strategy: BidStrategy;
   ask_strategy: AskStrategy;
   unfilledtimeout: UnfilledTimeout;
   order_types: OrderTypes;
-  dry_run: boolean;
   exchange: string;
   forcebuy_enabled: boolean;
   max_open_trades: number;
@@ -160,6 +162,16 @@ export interface PairHistory {
   buy_signals: number;
   /** Number of sell signals in this response */
   sell_signals: number;
+
+  /** Number of long entry signals in this response */
+  enter_long_signals?: number;
+  /** Number of long exit signals in this response */
+  exit_long_signals?: number;
+  /** Number of short entry signals in this response */
+  enter_short_signals?: number;
+  /** Number of short exit signals in this response */
+  exit_short_signals?: number;
+
   last_analyzed: number;
   /** Data start date in as millisecond timestamp */
   data_start_ts: number;

@@ -64,7 +64,9 @@ const downColor = '#EF5350';
 const downBorderColor = '#EF5350';
 
 const buySignalColor = '#00ff26';
+const shortEntrySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
+const shortexitSignalColor = '#faba25';
 const tradeBuyColor = 'cyan';
 const tradeSellColor = 'pink';
 
@@ -290,13 +292,33 @@ export default class CandleChart extends Vue {
     const colLow = this.dataset.columns.findIndex((el) => el === 'low');
     const colClose = this.dataset.columns.findIndex((el) => el === 'close');
     const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
-    // TODO: REmove below *signal_open after December 2021
+    // TODO: Remove below *signal_open after December 2021
     const colBuyData = this.dataset.columns.findIndex(
-      (el) => el === '_buy_signal_open' || el === '_buy_signal_close',
+      (el) =>
+        el === '_buy_signal_open' ||
+        el === '_buy_signal_close' ||
+        el === '_enter_long_signal_close',
     );
     const colSellData = this.dataset.columns.findIndex(
-      (el) => el === '_sell_signal_open' || el === '_sell_signal_close',
+      (el) =>
+        el === '_sell_signal_open' ||
+        el === '_sell_signal_close' ||
+        el === '_exit_long_signal_close',
     );
+
+    const hasShorts =
+      this.dataset.enter_short_signals &&
+      this.dataset.enter_short_signals > 0 &&
+      this.dataset.exit_short_signals &&
+      this.dataset.exit_short_signals > 0;
+    const colShortEntryData = this.dataset.columns.findIndex(
+      (el) => el === '_enter_short_signal_close',
+    );
+    const colShortExitData = this.dataset.columns.findIndex(
+      (el) => el === '_exit_short_signal_close',
+    );
+    console.log('short_exit', colShortExitData);
+
     const subplotCount =
       'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length + 1 : 1;
 
@@ -404,6 +426,46 @@ export default class CandleChart extends Vue {
         },
       ],
     };
+
+    if (hasShorts) {
+      // Add short support
+      if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
+        this.chartOptions.legend.data.push('Short');
+        this.chartOptions.legend.data.push('Short exit');
+      }
+      if (Array.isArray(options.series)) {
+        options.series.push({
+          name: 'Short',
+          type: 'scatter',
+          symbol: 'pin',
+          symbolSize: 10,
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          itemStyle: {
+            color: shortEntrySignalColor,
+          },
+          encode: {
+            x: colDate,
+            y: colShortEntryData,
+          },
+        });
+        options.series.push({
+          name: 'Short exit',
+          type: 'scatter',
+          symbol: 'pin',
+          symbolSize: 8,
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          itemStyle: {
+            color: shortexitSignalColor,
+          },
+          encode: {
+            x: colDate,
+            y: colShortExitData,
+          },
+        });
+      }
+    }
 
     // Merge this into original data
     Object.assign(this.chartOptions, options);
