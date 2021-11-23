@@ -78,6 +78,8 @@ export interface BidStrategy extends PriceBase {
 
 export interface BotState {
   version: string;
+  /** Api version - was not provided prior to 1.1 (or 2021.11) */
+  api_version?: number;
   dry_run: boolean;
   trading_mode?: string;
   short_allowed?: boolean;

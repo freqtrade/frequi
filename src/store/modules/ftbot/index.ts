@@ -75,6 +75,7 @@ export enum BotStoreGetters {
   stakeCurrencyDecimals = 'stakeCurrencyDecimals',
   strategyPlotConfig = 'strategyPlotConfig',
   version = 'version',
+  botApiVersion = 'botApiVersion',
   sysinfo = 'sysinfo',
   profit = 'profit',
   botState = 'botState',
@@ -251,6 +252,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreGetters.version](state: FtbotStateType): string {
         return state.botState?.version || state.version;
+      },
+      [BotStoreGetters.botApiVersion](state: FtbotStateType): number {
+        return state.botState?.api_version || 1.0;
       },
       [BotStoreGetters.sysinfo](state: FtbotStateType): SysInfoResponse | {} {
         return state.sysinfo;
