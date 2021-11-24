@@ -1,6 +1,7 @@
 export interface ForcebuyPayload {
   pair: string;
   price?: number;
+  ordertype?: string;
 }
 
 export interface PerformanceEntry {

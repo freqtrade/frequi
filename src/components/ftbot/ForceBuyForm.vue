@@ -30,6 +30,21 @@
             @keydown.enter.native="handleBuy"
           ></b-form-input>
         </b-form-group>
+        <b-form-group
+          v-if="botApiVersion > 1.1"
+          label="*OrderType"
+          label-for="ordertype-input"
+          invalid-feedback="OrderType"
+        >
+          <b-select
+            v-model="ordertype"
+            class="ml-2"
+            :options="['market', 'limit']"
+            style="min-width: 7em"
+            size="sm"
+          >
+          </b-select>
+        </b-form-group>
       </form>
     </b-modal>
   </div>
@@ -38,7 +53,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { ForcebuyPayload } from '@/types';
+import { BotState, ForcebuyPayload } from '@/types';
+import { BotStoreGetters } from '@/store/modules/ftbot';
 
 const ftbot = namespace('ftbot');
 
@@ -48,9 +64,15 @@ export default class ForceBuyForm extends Vue {
 
   price = null;
 
+  ordertype?: string = '';
+
   $refs!: {
     form: HTMLFormElement;
   };
+
+  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
+
+  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
@@ -77,8 +99,12 @@ export default class ForceBuyForm extends Vue {
   }
 
   resetForm() {
+    console.log('resetForm');
     this.pair = '';
     this.price = null;
+    if (this.botApiVersion > 1.1) {
+      this.ordertype = this.botState?.order_types?.forcebuy || this.botState?.order_types?.buy;
+    }
   }
 
   handleSubmit() {
@@ -90,6 +116,9 @@ export default class ForceBuyForm extends Vue {
     const payload: ForcebuyPayload = { pair: this.pair };
     if (this.price) {
       payload.price = Number(this.price);
+    }
+    if (this.ordertype) {
+      payload.ordertype = this.ordertype;
     }
     this.forcebuy(payload);
     this.$nextTick(() => {
