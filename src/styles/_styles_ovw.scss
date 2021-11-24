@@ -73,6 +73,10 @@
     }
     .popover {
         background: $bg-dark;
+        border-color:  lighten($bg-dark, 20%);
+    }
+    .popover-header {
+        background: $bg-darker;
     }
     .popover-body {
         color: $fg-color;
