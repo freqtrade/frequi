@@ -4,6 +4,21 @@ export interface ForcebuyPayload {
   ordertype?: string;
 }
 
+export interface ForceSellPayload {
+  tradeid: string;
+}
+
+/** Interface only used internally to ensure the right bot is being called in a multibot environment. */
+export interface MultiForcesellPayload extends ForceSellPayload {
+  botId: string;
+}
+
+/** Interface only used internally to ensure the right bot is being called in a multibot environment. */
+export interface MultiDeletePayload {
+  tradeid: string;
+  botId: string;
+}
+
 export interface PerformanceEntry {
   count: number;
   pair: string;

@@ -4,6 +4,8 @@ import {
   DailyPayload,
   DailyRecord,
   DailyReturnValue,
+  MultiDeletePayload,
+  MultiForcesellPayload,
   Trade,
 } from '@/types';
 import { AxiosInstance } from 'axios';
@@ -323,6 +325,15 @@ export default function createBotStore(store) {
       getters.allAvailableBotsList.forEach((e) => {
         dispatch(`${e}/getDaily`, payload);
       });
+    },
+    async forceSellMulti({ dispatch }, forcesellPayload: MultiForcesellPayload) {
+      return dispatch(`${forcesellPayload.botId}/${[BotStoreActions.forcesell]}`, forcesellPayload);
+    },
+    async deleteTradeMulti({ dispatch }, deletePayload: MultiDeletePayload) {
+      return dispatch(
+        `${deletePayload.botId}/${[BotStoreActions.deleteTrade]}`,
+        deletePayload.tradeid,
+      );
     },
   };
   // Autocreate Actions from botstores

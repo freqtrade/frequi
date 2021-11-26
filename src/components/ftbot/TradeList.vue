@@ -77,7 +77,7 @@ import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
-import { Trade } from '@/types';
+import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
@@ -119,10 +119,10 @@ export default class TradeList extends Vue {
   @ftbot.Action setDetailTrade;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action forcesell!: (tradeid: string) => Promise<string>;
+  @ftbot.Action forceSellMulti!: (payload: MultiForcesellPayload) => Promise<string>;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action deleteTrade!: (tradeid: string) => Promise<string>;
+  @ftbot.Action deleteTradeMulti!: (payload: MultiDeletePayload) => Promise<string>;
 
   currentPage = 1;
 
@@ -195,7 +195,11 @@ export default class TradeList extends Vue {
       .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
       .then((value: boolean) => {
         if (value) {
-          this.forcesell(String(item.trade_id))
+          const payload: MultiForcesellPayload = {
+            tradeid: String(item.trade_id),
+            botId: item.botId,
+          };
+          this.forceSellMulti(payload)
             .then((xxx) => console.log(xxx))
             .catch((error) => console.log(error.response));
         }
@@ -218,7 +222,11 @@ export default class TradeList extends Vue {
       .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
       .then((value: boolean) => {
         if (value) {
-          this.deleteTrade(item.trade_id).catch((error) => console.log(error.response));
+          const payload: MultiDeletePayload = {
+            tradeid: String(item.trade_id),
+            botId: item.botId,
+          };
+          this.deleteTradeMulti(payload).catch((error) => console.log(error.response));
         }
       });
   }

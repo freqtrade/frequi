@@ -35,6 +35,7 @@ import {
   StatusResponse,
   DeleteTradeResponse,
   BlacklistResponse,
+  ForceSellPayload,
 } from '@/types';
 
 import {
@@ -842,25 +843,21 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.forcesell]({ dispatch }, tradeid: string) {
-        if (tradeid) {
-          const payload = { tradeid };
-          try {
-            const res = await api.post('/forcesell', payload);
-            showAlert(dispatch, `Sell order for ${tradeid} created`);
-            return Promise.resolve(res);
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              console.error(error.response);
-            }
-            showAlert(dispatch, `Failed to create sell order for ${tradeid}`, 'danger');
-            return Promise.reject(error);
+      async [BotStoreActions.forcesell]({ dispatch }, payload: ForceSellPayload) {
+        try {
+          const res = await api.post<ForceSellPayload, AxiosResponse<StatusResponse>>(
+            '/forcesell',
+            payload,
+          );
+          showAlert(dispatch, `Sell order for ${payload.tradeid} created`);
+          return Promise.resolve(res);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
           }
+          showAlert(dispatch, `Failed to create sell order for ${payload.tradeid}`, 'danger');
+          return Promise.reject(error);
         }
-        // Error branchs
-        const error = 'Tradeid is empty';
-        console.error(error);
-        return Promise.reject(error);
       },
       async [BotStoreActions.forcebuy]({ dispatch }, payload: ForcebuyPayload) {
         if (payload && payload.pair) {
