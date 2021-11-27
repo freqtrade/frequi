@@ -6,6 +6,7 @@ export interface ForcebuyPayload {
 
 export interface ForceSellPayload {
   tradeid: string;
+  ordertype?: string;
 }
 
 /** Interface only used internally to ensure the right bot is being called in a multibot environment. */
