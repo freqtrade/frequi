@@ -6,14 +6,7 @@
       <div class="row w-100">
         <h2 class="col-4 col-lg-3">Backtesting</h2>
         <div
-          class="
-            col-12 col-lg-order-last col-lg-6
-            mx-md-5
-            d-flex
-            flex-wrap
-            justify-content-md-center justify-content-between
-            mb-4
-          "
+          class="col-12 col-lg-order-last col-lg-6 mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4"
           :disabled="canRunBacktest"
         >
           <b-form-radio
