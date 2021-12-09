@@ -3,7 +3,7 @@
     <b-card header="FreqUI Settings">
       <div class="text-left">
         <b-form-group
-          description="Lock dynamic layouts, so they cannot move anymore.\nCan also be set from the navbar at the top."
+          description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
         >
           <b-checkbox v-model="layoutLockedLocal">Lock layout</b-checkbox>
         </b-form-group>
