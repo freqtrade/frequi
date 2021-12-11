@@ -14,7 +14,7 @@
     <h3>Whitelist</h3>
     <div v-if="whitelist.length" class="list">
       <b-list-group v-for="(pair, key) in whitelist" :key="key">
-        <b-list-group-item href="#" class="pair white">{{ pair }}</b-list-group-item>
+        <b-list-group-item class="pair white">{{ pair }}</b-list-group-item>
       </b-list-group>
     </div>
     <p v-else>List Unavailable. Please Login and make sure server is running.</p>
@@ -22,12 +22,27 @@
 
     <!-- Blacklsit -->
     <div>
-      <label class="mr-auto h3">Blacklist</label>
-      <b-button id="blacklist-add-btn" class="float-right" size="sm">+</b-button>
+      <label
+        class="mr-auto h3"
+        title="Blacklist - Select (followed by a click on '-') to remove pairs"
+        >Blacklist</label
+      >
+      <div class="float-right d-flex d-flex-columns pr-1">
+        <b-button id="blacklist-add-btn" class="col-6 mr-1" size="sm">+</b-button>
+        <b-button
+          size="sm"
+          class="col-6"
+          title="Select pairs to delete pairs from your blacklist."
+          :disabled="blacklistSelect.length === 0"
+          @click="deletePairs"
+        >
+          <DeleteIcon :size="16" title="Delete Bot" />
+        </b-button>
+      </div>
       <b-popover
         title="Add to blacklist"
         target="blacklist-add-btn"
-        triggers="click"
+        triggers="click blur"
         :show.sync="blackListShow"
       >
         <form ref="form" @submit.prevent>
@@ -54,7 +69,12 @@
     </div>
     <div v-if="blacklist.length" class="list">
       <b-list-group v-for="(pair, key) in blacklist" :key="key">
-        <b-list-group-item href="#" class="pair black">{{ pair }}</b-list-group-item>
+        <b-list-group-item
+          class="pair black"
+          :active="blacklistSelect.indexOf(key) > -1"
+          @click="blacklistSelectClick(key)"
+          >{{ pair }}</b-list-group-item
+        >
       </b-list-group>
     </div>
     <p v-else>BlackList Unavailable. Please Login and make sure server is running.</p>
@@ -68,14 +88,17 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { BlacklistPayload, BlacklistResponse } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 
 const ftbot = namespace('ftbot');
 
-@Component({})
+@Component({ components: { DeleteIcon } })
 export default class FTBotAPIPairList extends Vue {
   newblacklistpair = '';
 
   blackListShow = false;
+
+  blacklistSelect: number[] = [];
 
   @ftbot.Action getWhitelist;
 
@@ -83,6 +106,9 @@ export default class FTBotAPIPairList extends Vue {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action addBlacklist!: (payload: BlacklistPayload) => Promise<BlacklistResponse>;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action deleteBlacklist!: (payload: string[]) => Promise<BlacklistResponse>;
 
   @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
 
@@ -111,10 +137,37 @@ export default class FTBotAPIPairList extends Vue {
       this.newblacklistpair = '';
     }
   }
+
+  blacklistSelectClick(key) {
+    console.log(key);
+    const index = this.blacklistSelect.indexOf(key);
+    if (index > -1) {
+      this.blacklistSelect.splice(index, 1);
+    } else {
+      this.blacklistSelect.push(key);
+    }
+  }
+
+  deletePairs() {
+    if (this.blacklistSelect.length === 0) {
+      console.log('nothing to delete');
+      return;
+    }
+    // const pairlist = this.blacklistSelect;
+    const pairlist = this.blacklist.filter(
+      (value, index) => this.blacklistSelect.indexOf(index) > -1,
+    );
+    console.log('Deleting pairs: ', pairlist);
+    this.deleteBlacklist(pairlist);
+    this.blacklistSelect = [];
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.list-group-item.active {
+  background: #41b883;
+}
 .list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));

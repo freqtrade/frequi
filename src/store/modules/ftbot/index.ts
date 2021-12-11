@@ -45,6 +45,7 @@ import {
 } from '@/shared/storage';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
+import { parseParams } from '@/shared/apiParamParser';
 import state, { FtbotStateType } from './state';
 import { showAlert } from '../alerts';
 
@@ -140,6 +141,7 @@ export enum BotStoreActions {
   forcesell = 'forcesell',
   forcebuy = 'forcebuy',
   addBlacklist = 'addBlacklist',
+  deleteBlacklist = 'deleteBlacklist',
   startBacktest = 'startBacktest',
   pollBacktest = 'pollBacktest',
   removeBacktest = 'removeBacktest',
@@ -913,6 +915,54 @@ export function createBotSubStore(botId: string, botName: string) {
               showAlert(
                 dispatch,
                 `Error occured while adding pairs to Blacklist: '${
+                  (error as any).response?.data?.error
+                }'`,
+                'danger',
+              );
+            }
+
+            return Promise.reject(error);
+          }
+        }
+        // Error branchs
+        const error = 'Pair is empty';
+        console.error(error);
+        return Promise.reject(error);
+      },
+      async [BotStoreActions.deleteBlacklist]({ commit, dispatch }, blacklistPairs: Array<string>) {
+        console.log(`Deleting ${blacklistPairs} from blacklist.`);
+
+        if (blacklistPairs) {
+          try {
+            const result = await api.delete<BlacklistPayload, AxiosResponse<BlacklistResponse>>(
+              '/blacklist',
+              {
+                params: {
+                  // eslint-disable-next-line @typescript-eslint/camelcase
+                  pairs_to_delete: blacklistPairs,
+                },
+                paramsSerializer: (params) => parseParams(params),
+              },
+            );
+            commit('updateBlacklist', result.data);
+            if (result.data.errors && Object.keys(result.data.errors).length !== 0) {
+              const { errors } = result.data;
+              Object.keys(errors).forEach((pair) => {
+                showAlert(
+                  dispatch,
+                  `Error while removing pair ${pair} from Blacklist: ${errors[pair].error_msg}`,
+                );
+              });
+            } else {
+              showAlert(dispatch, `Pair ${blacklistPairs} removed.`);
+            }
+            return Promise.resolve(result.data);
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.error(error.response);
+              showAlert(
+                dispatch,
+                `Error occured while removing pairs from Blacklist: '${
                   (error as any).response?.data?.error
                 }'`,
                 'danger',
