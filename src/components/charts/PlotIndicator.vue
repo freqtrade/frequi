@@ -44,7 +44,7 @@
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <div class="d-flex d-flex-columns d-flex">
+    <div class="d-flex d-flex-columns">
       <b-button
         v-if="addNew"
         class="flex-grow-1"
