@@ -28,8 +28,15 @@
         >Blacklist</label
       >
       <div class="float-right d-flex d-flex-columns pr-1">
-        <b-button id="blacklist-add-btn" class="col-6 mr-1" size="sm">+</b-button>
         <b-button
+          id="blacklist-add-btn"
+          class="mr-1"
+          :class="botApiVersion >= 1.12 ? 'col-6' : ''"
+          size="sm"
+          >+</b-button
+        >
+        <b-button
+          v-if="botApiVersion >= 1.12"
           size="sm"
           class="col-6"
           title="Select pairs to delete pairs from your blacklist."
@@ -73,7 +80,7 @@
           class="pair black"
           :active="blacklistSelect.indexOf(key) > -1"
           @click="blacklistSelectClick(key)"
-          >{{ pair }}</b-list-group-item
+          ><span class="check">&#x2714;</span>{{ pair }}</b-list-group-item
         >
       </b-list-group>
     </div>
@@ -115,6 +122,8 @@ export default class FTBotAPIPairList extends Vue {
   @ftbot.Getter [BotStoreGetters.blacklist]!: string[];
 
   @ftbot.Getter [BotStoreGetters.pairlistMethods]!: string[];
+
+  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
 
   created() {
     this.initBlacklist();
@@ -165,8 +174,21 @@ export default class FTBotAPIPairList extends Vue {
 </script>
 
 <style scoped lang="scss">
-.list-group-item.active {
+.check {
+  // Hidden checkbox on blacklist selection
   background: #41b883;
+  opacity: 0;
+  border-radius: 50%;
+  z-index: 5;
+  width: 1.3em;
+  height: 1.3em;
+  top: -0.2em;
+  left: -0.2em;
+  position: absolute;
+  transition: opacity 0.2s;
+}
+.list-group-item.active .check {
+  opacity: 1;
 }
 .list {
   display: grid;
