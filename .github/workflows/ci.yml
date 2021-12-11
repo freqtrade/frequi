@@ -55,7 +55,7 @@ jobs:
 
 
     - name: Upload release binaries
-      uses: alexellis/upload-assets@0.2.2
+      uses: alexellis/upload-assets@0.3.0
       if: github.event_name == 'release'
       env:
         GITHUB_TOKEN: ${{ github.token }}
