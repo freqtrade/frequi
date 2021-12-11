@@ -21,3 +21,11 @@ updates:
     day: "wednesday"
   open-pull-requests-limit: 10
   target-branch: main
+
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "weekly"
+    day: "wednesday"
+  open-pull-requests-limit: 10
+  target-branch: main
