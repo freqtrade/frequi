@@ -28,6 +28,7 @@
     "vue-material-design-icons": "^5.0.0",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.3",
+    "vue-select": "^3.16.0",
     "vuex": "^3.6.2",
     "vuex-class": "^0.3.2"
   },

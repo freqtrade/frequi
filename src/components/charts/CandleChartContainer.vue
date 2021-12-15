@@ -15,15 +15,16 @@
       <div class="row mr-0">
         <div class="ml-2 d-flex flex-wrap flex-md-nowrap align-items-center">
           <span class="ml-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-          <b-select
+          <v-select
             v-model="pair"
             class="ml-2"
             :options="availablePairs"
             style="min-width: 7em"
             size="sm"
+            :clearable="false"
             @change="refresh"
           >
-          </b-select>
+          </v-select>
 
           <b-button class="ml-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
           <small v-if="dataset" class="ml-2 text-nowrap"
@@ -90,11 +91,12 @@ import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { SettingsGetters } from '@/store/modules/settings';
+import vSelect from 'vue-select';
 
 const ftbot = namespace('ftbot');
 const uiSettingsNs = namespace('uiSettings');
 
-@Component({ components: { CandleChart, PlotConfigurator } })
+@Component({ components: { CandleChart, PlotConfigurator, vSelect } })
 export default class CandleChartContainer extends Vue {
   @Prop({ required: true }) readonly availablePairs!: string[];
 
