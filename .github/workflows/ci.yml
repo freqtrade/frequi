@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ci/**
   pull_request:
     branches:
       - main
@@ -29,6 +30,14 @@ jobs:
 
     - name: Run type check
       run: yarn check-types
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+    - name: Cypress run
+      uses: cypress-io/github-action@v2
+      with:
+        build: yarn build
+        start: yarn start
 
     - name: Run Tests
       run: yarn test:unit

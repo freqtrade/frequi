@@ -23,7 +23,7 @@
 import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-import ProfitSymbol from '@/components/ftbot/ProfitSymbol.vue';
+import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
 
 @Component({ components: { ProfitSymbol } })
 export default class ProfitPill extends Vue {

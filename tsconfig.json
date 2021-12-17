@@ -15,7 +15,8 @@
     "baseUrl": "src",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+      "cypress"
     ],
     "paths": {
       "@/*": [
