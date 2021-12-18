@@ -15,7 +15,7 @@
     "baseUrl": "src",
     "types": [
       "webpack-env",
-      "jest",
+      // "jest",
       "cypress"
     ],
     "paths": {
@@ -28,10 +28,9 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
   ],
-    "exclude": [
-      "node_modules"
+  "exclude": [
+      "node_modules",
+      // "tests"
   ]
 }

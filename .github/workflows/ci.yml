@@ -31,8 +31,8 @@ jobs:
     - name: Run type check
       run: yarn check-types
 
-    # - name: Run Tests
-    #   run: yarn test:unit
+    - name: Run Tests
+      run: yarn test:unit
 
     # - name: Cypress run
     #   uses: cypress-io/github-action@v2
@@ -40,7 +40,7 @@ jobs:
     #     build: yarn build
     #     start: yarn start
 
-    - name: Run Component tests 🧪
+    - name: Run Component tests
       uses: cypress-io/github-action@v2
       with:
         # we have already installed everything

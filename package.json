@@ -9,8 +9,9 @@
     "lint": "vue-cli-service lint",
     "check-types": "tsc --noemit",
     "lint-ci": "vue-cli-service lint --no-fix",
-    "cypress:open": "cypress open",
-    "cypress:run-ct": "cypress run-ct"
+    "cy:open": "cypress open",
+    "cy:open-ct": "cypress open-ct",
+    "cy:run-ct": "cypress run-ct"
   },
   "dependencies": {
     "@cypress/vue": "^2.2.3",
