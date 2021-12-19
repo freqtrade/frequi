@@ -43,6 +43,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
   },
   {
+    path: '/balance',
+    name: 'Freqtrade Balance',
+    component: () => import(/* webpackChunkName: "balance" */ '@/components/ftbot/Balance.vue'),
+  },
+  {
     path: '/settings',
     name: 'Freqtrade Settings',
     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Settings.vue'),
