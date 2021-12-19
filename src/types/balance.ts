@@ -1,4 +1,5 @@
 export interface BalanceRecords {
+  [key: string]: string | number;
   balance: number;
   currency: string;
   est_stake: number;
