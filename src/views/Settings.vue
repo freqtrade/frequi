@@ -2,6 +2,7 @@
   <div class="container mt-3">
     <b-card header="FreqUI Settings">
       <div class="text-left">
+        <p>UI Version: {{ getUiVersion }}</p>
         <b-form-group
           description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
         >
@@ -38,7 +39,7 @@ import { AlertActions } from '@/store/modules/alerts';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { OpenTradeVizOptions, SettingsActions, SettingsGetters } from '@/store/modules/settings';
 import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { namespace, Getter } from 'vuex-class';
 
 const layoutNs = namespace('layout');
 const uiSettingsNs = namespace('uiSettings');
@@ -46,6 +47,8 @@ const alerts = namespace('alerts');
 
 @Component({})
 export default class Settings extends Vue {
+  @Getter getUiVersion!: string;
+
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
   @layoutNs.Action [LayoutActions.setLayoutLocked];
