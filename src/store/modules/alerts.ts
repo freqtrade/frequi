@@ -1,3 +1,5 @@
+import { AlertType } from '@/types/alertTypes';
+
 export enum AlertActions {
   addAlert = 'addAlert',
   removeAlert = 'removeAlert',
@@ -14,7 +16,7 @@ export default {
     activeMessages: [],
   },
   mutations: {
-    [AlertMutations.addAlert](state, message) {
+    [AlertMutations.addAlert](state, message: AlertType) {
       console.log(`adding message '${message.message}' to message queue`);
       state.activeMessages.push(message);
     },
@@ -23,7 +25,7 @@ export default {
     },
   },
   actions: {
-    [AlertActions.addAlert]({ commit }, message) {
+    [AlertActions.addAlert]({ commit }, message: AlertType) {
       commit(AlertMutations.addAlert, message);
     },
     [AlertActions.removeAlert]({ commit }) {
