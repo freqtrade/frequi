@@ -75,7 +75,6 @@
             <div class="d-block d-sm-none">
               <!-- Visible only on XS -->
               <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
-                <span class="nav-link navbar-nav">V: {{ getUiVersion }}</span>
                 <div class="d-flex">
                   <b-nav-text class="verticalCenter small mr-2">
                     {{ botName || 'No bot selected' }}
@@ -86,13 +85,6 @@
                 </div>
               </li>
               <router-link class="nav-link navbar-nav" to="/settings">Settings</router-link>
-              <div class="d-flex nav-link justify-content-end">
-                <b-checkbox v-model="layoutLockedLocal" class="ml-2"> Lock layout</b-checkbox>
-              </div>
-
-              <b-nav-item class="nav-link navbar-nav" @click="resetDynamicLayout"
-                >Reset Layout</b-nav-item
-              >
               <router-link
                 v-if="botCount === 1"
                 class="nav-link navbar-nav"
