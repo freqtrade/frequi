@@ -30,8 +30,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 interface CombinedPairList {
   pair: string;

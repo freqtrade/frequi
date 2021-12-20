@@ -38,12 +38,13 @@
 import { AlertActions } from '@/store/modules/alerts';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { OpenTradeVizOptions, SettingsActions, SettingsGetters } from '@/store/modules/settings';
+import StoreModules from '@/store/storeSubModules';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace, Getter } from 'vuex-class';
 
-const layoutNs = namespace('layout');
-const uiSettingsNs = namespace('uiSettings');
-const alerts = namespace('alerts');
+const layoutNs = namespace(StoreModules.layout);
+const uiSettingsNs = namespace(StoreModules.uiSettings);
+const alerts = namespace(StoreModules.alerts);
 
 @Component({})
 export default class Settings extends Vue {

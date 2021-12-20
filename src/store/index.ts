@@ -5,7 +5,8 @@ import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UserService } from '@/shared/userService';
 import { UiVersion } from '@/types';
-import createBotStore from './modules/botStoreWrapper';
+import StoreModules from '@/store/storeSubModules';
+import createBotStore, { MultiBotStoreGetters } from './modules/botStoreWrapper';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
 import settingsModule from './modules/settings';
@@ -15,9 +16,9 @@ const initCurrentTheme = getCurrentTheme();
 
 const store = new Vuex.Store({
   modules: {
-    alerts: alertsModule,
-    layout: layoutModule,
-    uiSettings: settingsModule,
+    [StoreModules.alerts]: alertsModule,
+    [StoreModules.layout]: layoutModule,
+    [StoreModules.uiSettings]: settingsModule,
   },
   state: {
     currentTheme: initCurrentTheme,
@@ -38,7 +39,7 @@ const store = new Vuex.Store({
       return state.uiVersion;
     },
     loggedIn(state, getters) {
-      return getters['ftbot/hasBots'];
+      return getters[`${StoreModules.ftbot}/${MultiBotStoreGetters.hasBots}`];
     },
   },
   mutations: {
@@ -75,10 +76,10 @@ const store = new Vuex.Store({
 
 UserService.migrateLogin();
 
-store.registerModule('ftbot', createBotStore(store));
+store.registerModule(StoreModules.ftbot, createBotStore(store));
 Object.entries(UserService.getAvailableBots()).forEach(([k, v]) => {
-  store.dispatch('ftbot/addBot', v);
+  store.dispatch(`${StoreModules.ftbot}/addBot`, v);
 });
-store.dispatch('ftbot/selectFirstBot');
-store.dispatch('ftbot/startRefresh');
+store.dispatch(`${StoreModules.ftbot}/selectFirstBot`);
+store.dispatch(`${StoreModules.ftbot}/startRefresh`);
 export default store;

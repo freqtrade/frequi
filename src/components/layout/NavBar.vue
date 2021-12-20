@@ -126,10 +126,11 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
 import { BotDescriptor } from '@/types';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
-const layoutNs = namespace('layout');
-const uiSettingsNs = namespace('uiSettings');
+const ftbot = namespace(StoreModules.ftbot);
+const layoutNs = namespace(StoreModules.layout);
+const uiSettingsNs = namespace(StoreModules.uiSettings);
 
 @Component({
   components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },

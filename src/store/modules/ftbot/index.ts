@@ -46,6 +46,7 @@ import {
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { parseParams } from '@/shared/apiParamParser';
+import StoreModules from '@/store/storeSubModules';
 import state, { FtbotStateType } from './state';
 import { showAlert } from '../alerts';
 
@@ -169,7 +170,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreGetters.refreshNow](state, getters, rootState, rootGetters): boolean {
         const bgRefresh = rootGetters['uiSettings/backgroundSync'];
-        const selectedBot = rootGetters['ftbot/selectedBot'];
+        const selectedBot = rootGetters[`${StoreModules.ftbot}/selectedBot`];
         if (
           (selectedBot === botId || bgRefresh) &&
           getters.autoRefresh &&

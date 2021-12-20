@@ -13,8 +13,9 @@ import { namespace } from 'vuex-class';
 import { BotState, PerformanceEntry } from '@/types';
 import { formatPrice } from '@/shared/formatters';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({})
 export default class Performance extends Vue {

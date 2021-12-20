@@ -139,9 +139,10 @@ import TradeList from '@/components/ftbot/TradeList.vue';
 import { Lock, Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { TradeLayout, findGridLayout, LayoutGetters, LayoutActions } from '@/store/modules/layout';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
-const layoutNs = namespace('layout');
+const ftbot = namespace(StoreModules.ftbot);
+const layoutNs = namespace(StoreModules.layout);
 
 @Component({
   components: {

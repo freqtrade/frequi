@@ -116,9 +116,10 @@ import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 import TradeProfit from './TradeProfit.vue';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({
   components: { DeleteIcon, ForceSellIcon, ActionIcon, DateTimeTZ, TradeProfit },

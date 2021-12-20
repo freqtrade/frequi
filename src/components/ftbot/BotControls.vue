@@ -64,9 +64,10 @@ import StopIcon from 'vue-material-design-icons/Stop.vue';
 import PauseIcon from 'vue-material-design-icons/Pause.vue';
 import ReloadIcon from 'vue-material-design-icons/Reload.vue';
 import ForceBuyIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
+import StoreModules from '@/store/storeSubModules';
 import ForceBuyForm from './ForceBuyForm.vue';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({
   components: { ForceBuyForm, PlayIcon, StopIcon, PauseIcon, ReloadIcon, ForceBuyIcon },

@@ -12,8 +12,9 @@ import Body from '@/components/layout/Body.vue';
 import { namespace } from 'vuex-class';
 import { SettingsGetters } from './store/modules/settings';
 import { setTimezone } from './shared/formatters';
+import StoreModules from './store/storeSubModules';
 
-const uiSettingsNs = namespace('uiSettings');
+const uiSettingsNs = namespace(StoreModules.uiSettings);
 
 @Component({
   components: { NavBar, Body },

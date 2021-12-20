@@ -96,8 +96,9 @@ import { namespace } from 'vuex-class';
 import { BlacklistPayload, BlacklistResponse } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({ components: { DeleteIcon } })
 export default class FTBotAPIPairList extends Vue {

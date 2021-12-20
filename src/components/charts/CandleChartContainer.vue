@@ -92,9 +92,10 @@ import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { SettingsGetters } from '@/store/modules/settings';
 import vSelect from 'vue-select';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
-const uiSettingsNs = namespace('uiSettings');
+const ftbot = namespace(StoreModules.ftbot);
+const uiSettingsNs = namespace(StoreModules.uiSettings);
 
 @Component({ components: { CandleChart, PlotConfigurator, vSelect } })
 export default class CandleChartContainer extends Vue {

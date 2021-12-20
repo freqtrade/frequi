@@ -35,8 +35,9 @@ import LoginModal from '@/views/LoginModal.vue';
 import EditIcon from 'vue-material-design-icons/Cog.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { BotDescriptor, BotDescriptors } from '@/types';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({ components: { LoginModal, DeleteIcon, EditIcon } })
 export default class BotList extends Vue {

@@ -113,9 +113,10 @@ import {
 import { Trade, DailyReturnValue, DailyPayload, ClosedTrade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
-const layoutNs = namespace('layout');
+const ftbot = namespace(StoreModules.ftbot);
+const layoutNs = namespace(StoreModules.layout);
 
 @Component({
   components: {

@@ -303,8 +303,9 @@ import {
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 @Component({
   components: {
     BacktestResultView,

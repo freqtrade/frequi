@@ -127,10 +127,11 @@ import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { AlertActions } from '@/store/modules/alerts';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
-const alerts = namespace('alerts');
+const alerts = namespace(StoreModules.alerts);
 
 @Component({
   components: { PlotIndicator },

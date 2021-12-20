@@ -18,8 +18,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { AlertActions } from '@/store/modules/alerts';
+import StoreModules from '@/store/storeSubModules';
 
-const alerts = namespace('alerts');
+const alerts = namespace(StoreModules.alerts);
 
 @Component({})
 export default class BotAlerts extends Vue {

@@ -9,6 +9,7 @@ import {
   Trade,
 } from '@/types';
 import { AxiosInstance } from 'axios';
+import StoreModules from '../storeSubModules';
 import { BotStoreActions, BotStoreGetters, createBotSubStore } from './ftbot';
 
 const AUTH_SELECTED_BOT = 'ftSelectedBot';
@@ -206,14 +207,17 @@ export default function createBotStore(store) {
         return;
       }
       console.log('add bot', bot);
-      store.registerModule(['ftbot', bot.botId], createBotSubStore(bot.botId, bot.botName));
+      store.registerModule(
+        [StoreModules.ftbot, bot.botId],
+        createBotSubStore(bot.botId, bot.botName),
+      );
       dispatch(`${bot.botId}/botAdded`);
       commit('addBot', bot);
     },
     removeBot({ commit, getters, dispatch }, botId: string) {
       if (Object.keys(getters.allAvailableBots).includes(botId)) {
         dispatch(`${botId}/logout`);
-        store.unregisterModule([`ftbot`, botId]);
+        store.unregisterModule([StoreModules.ftbot, botId]);
         commit('removeBot', botId);
       } else {
         console.warn(`bot ${botId} not found! could not remove`);

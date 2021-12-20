@@ -42,8 +42,9 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
 import { AvailablePairPayload, AvailablePairResult, Trade, WhitelistResponse } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({
   components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },

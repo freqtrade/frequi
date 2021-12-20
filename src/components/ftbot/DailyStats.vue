@@ -19,6 +19,7 @@ import { mapActions, mapGetters } from 'vuex';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import { formatPrice } from '@/shared/formatters';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 
 export default Vue.extend({
   name: 'DailyStats',
@@ -26,7 +27,7 @@ export default Vue.extend({
     DailyChart,
   },
   computed: {
-    ...mapGetters('ftbot', [BotStoreGetters.dailyStats]),
+    ...mapGetters(StoreModules.ftbot, [BotStoreGetters.dailyStats]),
     dailyFields() {
       return [
         { key: 'date', label: 'Day' },
@@ -44,7 +45,7 @@ export default Vue.extend({
     this.getDaily();
   },
   methods: {
-    ...mapActions('ftbot', ['getDaily']),
+    ...mapActions(StoreModules.ftbot, ['getDaily']),
   },
 });
 </script>

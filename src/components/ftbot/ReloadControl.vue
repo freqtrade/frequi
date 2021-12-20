@@ -22,8 +22,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({ components: { RefreshIcon } })
 export default class ReloadControl extends Vue {

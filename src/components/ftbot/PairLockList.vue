@@ -29,9 +29,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { AlertActions } from '@/store/modules/alerts';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
-const alerts = namespace('alerts');
+const ftbot = namespace(StoreModules.ftbot);
+const alerts = namespace(StoreModules.alerts);
 
 @Component({
   components: { DeleteIcon },

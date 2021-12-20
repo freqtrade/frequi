@@ -78,9 +78,10 @@ import { useUserService } from '@/shared/userService';
 
 import { AuthPayload, BotDescriptor } from '@/types';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
+import StoreModules from '@/store/storeSubModules';
 
 const defaultURL = window.location.origin || 'http://localhost:8080';
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({})
 export default class Login extends Vue {

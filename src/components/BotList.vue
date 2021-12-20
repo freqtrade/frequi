@@ -24,8 +24,9 @@ import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import { BotDescriptors } from '@/types';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({ components: { LoginModal, BotEntry } })
 export default class BotList extends Vue {

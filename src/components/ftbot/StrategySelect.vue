@@ -14,11 +14,12 @@
 
 <script lang="ts">
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 import { StrategyResult } from '@/types';
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({})
 export default class StrategySelect extends Vue {

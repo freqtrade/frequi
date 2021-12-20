@@ -44,8 +44,9 @@ import { BotStoreGetters } from '@/store/modules/ftbot';
 
 import { formatPercent } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({ components: { DateTimeTZ } })
 export default class BotStatus extends Vue {

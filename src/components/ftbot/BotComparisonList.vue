@@ -49,8 +49,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import ProfitPill from '@/components/general/ProfitPill.vue';
 import { formatPrice } from '@/shared/formatters';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
+const ftbot = namespace(StoreModules.ftbot);
 
 @Component({ components: { ProfitPill } })
 export default class BotComparisonList extends Vue {

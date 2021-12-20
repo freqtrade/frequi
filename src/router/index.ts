@@ -3,6 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Error404 from '@/views/Error404.vue';
 import store from '@/store';
+import StoreModules from '@/store/storeSubModules';
+import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 
 Vue.use(VueRouter);
 
@@ -67,7 +69,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const hasBots = store.getters['ftbot/hasBots'];
+  const hasBots = store.getters[`${StoreModules.ftbot}/${MultiBotStoreGetters.hasBots}`];
   if (!to.meta?.allowAnonymous && !hasBots) {
     // Forward to login if login is required
     next({
