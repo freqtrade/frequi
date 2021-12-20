@@ -7,6 +7,9 @@
         >
           <b-checkbox v-model="layoutLockedLocal">Lock layout</b-checkbox>
         </b-form-group>
+        <b-form-group description="Reset dynamic layouts to how they were.">
+          <b-button size="sm" @click="resetDynamicLayout">Reset layout</b-button>
+        </b-form-group>
         <b-form-group
           label="Show open trades in header"
           description="Decide if open trades should be visualized"
@@ -31,6 +34,7 @@
 </template>
 
 <script lang="ts">
+import { AlertActions } from '@/store/modules/alerts';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { OpenTradeVizOptions, SettingsActions, SettingsGetters } from '@/store/modules/settings';
 import { Component, Vue } from 'vue-property-decorator';
@@ -38,12 +42,19 @@ import { namespace } from 'vuex-class';
 
 const layoutNs = namespace('layout');
 const uiSettingsNs = namespace('uiSettings');
+const alerts = namespace('alerts');
 
 @Component({})
-export default class Template extends Vue {
+export default class Settings extends Vue {
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
   @layoutNs.Action [LayoutActions.setLayoutLocked];
+
+  @layoutNs.Action [LayoutActions.resetTradingLayout];
+
+  @layoutNs.Action [LayoutActions.resetDashboardLayout];
+
+  @alerts.Action [AlertActions.addAlert];
 
   @uiSettingsNs.Getter [SettingsGetters.openTradesInTitle]: string;
 
@@ -96,6 +107,12 @@ export default class Template extends Vue {
 
   set backgroundSyncLocal(value: boolean) {
     this.setBackgroundSync(value);
+  }
+
+  resetDynamicLayout(): void {
+    this.resetTradingLayout();
+    this.resetDashboardLayout();
+    this.addAlert({ message: 'Layouts have been reset.' });
   }
 }
 </script>
