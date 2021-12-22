@@ -5,6 +5,9 @@
       <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/balance">
         Balance
       </router-link>
+      <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/trades">
+        Trades
+      </router-link>
       <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/dashboard">
         Dashboard
       </router-link>
