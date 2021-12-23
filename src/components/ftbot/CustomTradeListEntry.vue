@@ -11,9 +11,12 @@
       <ValuePair v-if="trade.close_rate || trade.current_rate" description="Close Rate">{{
         formatPrice(trade.close_rate || trade.current_rate || 0)
       }}</ValuePair>
-      <DateTimeTZ :date="trade.open_timestamp" />
-      <DateTimeTZ :date="trade.close_timestamp" />
-      <trade-profit :trade="trade" class="align-self-end" />
+      <ValuePair description="Open date"><DateTimeTZ :date="trade.open_timestamp" /></ValuePair>
+      <ValuePair v-if="trade.close_timestamp" description="Close date"
+        ><DateTimeTZ :date="trade.close_timestamp"
+      /></ValuePair>
+
+      <trade-profit :trade="trade" />
     </div>
   </div>
 </template>
