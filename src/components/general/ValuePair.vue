@@ -19,7 +19,7 @@ export default Vue.extend({
     },
     classLabel: {
       type: String,
-      default: 'col-4 font-weight-bold',
+      default: 'col-4 font-weight-bold mb-0',
     },
     classValue: {
       type: String,
