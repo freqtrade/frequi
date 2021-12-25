@@ -18,7 +18,7 @@
           <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/dashboard"
             >Dashboard</router-link
           >
-          <router-link class="nav-link navbar-nav" to="/graph">Graph</router-link>
+          <router-link class="nav-link navbar-nav" to="/graph">Chart</router-link>
           <router-link class="nav-link navbar-nav" to="/logs">Logs</router-link>
           <router-link v-if="canRunBacktest" class="nav-link navbar-nav" to="/backtest"
             >Backtest</router-link

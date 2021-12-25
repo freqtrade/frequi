@@ -49,12 +49,18 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/open_trades',
-    component: () => import(/* webpackChunkName: "balance" */ '@/views/TradesList.vue'),
+    component: () => import(/* webpackChunkName: "trades" */ '@/views/TradesList.vue'),
   },
+
   {
     path: '/trade_history',
-    component: () => import(/* webpackChunkName: "balance" */ '@/views/TradesList.vue'),
+    component: () => import(/* webpackChunkName: "trades" */ '@/views/TradesList.vue'),
     props: { history: true },
+  },
+  {
+    path: '/pairlist',
+    component: () =>
+      import(/* webpackChunkName: "pairlist" */ '@/components/ftbot/FTBotAPIPairList.vue'),
   },
   {
     path: '/settings',
