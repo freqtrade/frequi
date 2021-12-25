@@ -1,10 +1,16 @@
 <template>
-  <div class="h-100 overflow-auto w-100">
+  <div class="h-100 overflow-auto w-100 m-1">
     <b-list-group>
-      <b-list-group-item v-for="trade in trades" :key="trade.trade_id">
+      <b-list-group-item
+        v-for="trade in trades"
+        :key="trade.trade_id"
+        class="border border-secondary rounded my-05 px-2"
+      >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
       </b-list-group-item>
     </b-list-group>
+
+    <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
     <div class="w-100 d-flex justify-content-between">
       <b-pagination
@@ -230,6 +236,10 @@ export default class CustomTradeList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.my-05 {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+}
 .card-body {
   padding: 0 0.2em;
 }
