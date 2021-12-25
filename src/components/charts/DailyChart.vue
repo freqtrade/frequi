@@ -3,10 +3,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { useGetters } from 'vuex-composition-helpers';
+import { ref, defineComponent, computed, ComputedRef } from '@vue/composition-api';
 import ECharts from 'vue-echarts';
-import { EChartsOption } from 'echarts';
+// import { EChartsOption } from 'echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -38,46 +38,46 @@ use([
 const CHART_ABS_PROFIT = 'Absolute profit';
 const CHART_TRADE_COUNT = 'Trade Count';
 
-@Component({
+export default defineComponent({
   components: {
     'v-chart': ECharts,
   },
-})
-export default class DailyChart extends Vue {
-  @Prop({ required: true }) dailyStats!: DailyReturnValue;
+  props: {
+    dailyStats: {
+      type: Object as () => DailyReturnValue,
+      required: true,
+    },
+    showTitle: {
+      type: Boolean,
+      default: true,
+    },
+  },
 
-  @Prop({ default: true, type: Boolean }) showTitle!: boolean;
-
-  @Getter getChartTheme!: string;
-
-  get absoluteMin() {
-    return Number(
-      this.dailyStats.data.reduce(
+  setup(props) {
+    const { getChartTheme } = useGetters(['getChartTheme']);
+    const absoluteMin: ComputedRef<number> = computed(() =>
+      props.dailyStats.data.reduce(
         (min, p) => (p.abs_profit < min ? p.abs_profit : min),
-        this.dailyStats.data[0]?.abs_profit,
+        props.dailyStats.data[0]?.abs_profit,
       ),
     );
-  }
 
-  get absoluteMax() {
-    return Number(
-      this.dailyStats.data.reduce(
+    const absoluteMax: ComputedRef<number> = computed(() =>
+      props.dailyStats.data.reduce(
         (max, p) => (p.abs_profit > max ? p.abs_profit : max),
-        this.dailyStats.data[0]?.abs_profit,
+        props.dailyStats.data[0]?.abs_profit,
       ),
     );
-  }
-
-  get dailyChartOptions(): EChartsOption {
-    return {
+    // : Ref<EChartsOption>
+    const dailyChartOptions = ref({
       title: {
         text: 'Daily profit',
-        show: this.showTitle,
+        show: props.showTitle,
       },
       backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['date', 'abs_profit', 'trade_count'],
-        source: this.dailyStats.data,
+        source: props.dailyStats.data,
       },
       tooltip: {
         trigger: 'axis',
@@ -92,10 +92,12 @@ export default class DailyChart extends Vue {
         data: [CHART_ABS_PROFIT, CHART_TRADE_COUNT],
         right: '5%',
       },
-      xAxis: {
-        type: 'category',
-        inverse: true,
-      },
+      xAxis: [
+        {
+          type: 'category',
+          inverse: true,
+        },
+      ],
       visualMap: [
         {
           dimension: 1,
@@ -104,12 +106,12 @@ export default class DailyChart extends Vue {
           pieces: [
             {
               max: 0.0,
-              min: this.absoluteMin,
+              min: absoluteMin.value,
               color: 'red',
             },
             {
               min: 0.0,
-              max: this.absoluteMax,
+              max: absoluteMax.value,
               color: 'green',
             },
           ],
@@ -149,9 +151,14 @@ export default class DailyChart extends Vue {
           yAxisIndex: 1,
         },
       ],
+    });
+
+    return {
+      dailyChartOptions,
+      getChartTheme,
     };
-  }
-}
+  },
+});
 </script>
 
 <style lang="scss" scoped>
