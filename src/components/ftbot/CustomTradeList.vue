@@ -2,7 +2,7 @@
   <div class="h-100 overflow-auto w-100 m-1">
     <b-list-group>
       <b-list-group-item
-        v-for="trade in trades"
+        v-for="trade in filteredTrades"
         :key="trade.trade_id"
         class="border border-secondary rounded my-05 px-2"
       >
@@ -105,7 +105,14 @@ export default class CustomTradeList extends Vue {
     return this.trades.length;
   }
 
-  perPage = this.activeTrades ? 200 : 15;
+  perPage = this.activeTrades ? 200 : 25;
+
+  get filteredTrades() {
+    return this.trades.slice(
+      (this.currentPage - 1) * this.perPage,
+      this.currentPage * this.perPage,
+    );
+  }
 
   formatPriceWithDecimals(price) {
     return formatPrice(price, this.stakeCurrencyDecimals);
@@ -187,15 +194,5 @@ export default class CustomTradeList extends Vue {
 .my-05 {
   margin-top: 0.125rem;
   margin-bottom: 0.125rem;
-}
-.card-body {
-  padding: 0 0.2em;
-}
-.table-sm {
-  font-size: $fontsize-small;
-}
-.btn-xs {
-  padding: 0.1rem 0.25rem;
-  font-size: 0.75rem;
 }
 </style>
