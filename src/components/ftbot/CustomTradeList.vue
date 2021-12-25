@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,11 +83,9 @@ export default class CustomTradeList extends Vue {
 
   @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
+  @Prop({ default: 3, type: Number }) stakeCurrencyDecimals!: number;
+
   @ftbot.Getter [BotStoreGetters.detailTradeId]?: number;
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
-
-  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
 
   @ftbot.Action setDetailTrade;
 
@@ -103,61 +101,11 @@ export default class CustomTradeList extends Vue {
 
   filterText = '';
 
-  @Watch('detailTradeId')
-  watchTradeDetail(val) {
-    const index = this.trades.findIndex((v) => v.trade_id === val);
-    // Unselect when another tradeTable is selected!
-    if (index < 0) {
-      this.$refs.tradesTable.clearSelected();
-    }
-  }
-
   get rows(): number {
     return this.trades.length;
   }
 
   perPage = this.activeTrades ? 200 : 15;
-
-  // Added to table-fields for current trades
-  openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
-
-  // Added to table-fields for historic trades
-  closedFields: Record<string, string | Function>[] = [
-    { key: 'close_timestamp', label: 'Close date' },
-    { key: 'sell_reason', label: 'Close Reason' },
-  ];
-
-  tableFields: Record<string, string | Function>[] = [
-    this.multiBotView ? { key: 'botName', label: 'Bot' } : {},
-    { key: 'trade_id', label: 'ID' },
-    { key: 'pair', label: 'Pair' },
-    { key: 'amount', label: 'Amount' },
-    {
-      key: 'stake_amount',
-      label: 'Stake amount',
-      formatter: (value: number) => this.formatPriceWithDecimals(value),
-    },
-    {
-      key: 'open_rate',
-      label: 'Open rate',
-      formatter: (value: number) => this.formatPrice(value),
-    },
-    {
-      key: this.activeTrades ? 'current_rate' : 'close_rate',
-      label: this.activeTrades ? 'Current rate' : 'Close rate',
-      formatter: (value: number) => this.formatPrice(value),
-    },
-    {
-      key: 'profit',
-      label: this.activeTrades ? 'Current profit %' : 'Profit %',
-      formatter: (value: number, key, item: Trade) => {
-        const percent = formatPercent(item.profit_ratio, 2);
-        return `${percent} ${`(${this.formatPriceWithDecimals(item.profit_abs)})`}`;
-      },
-    },
-    { key: 'open_timestamp', label: 'Open date' },
-    ...(this.activeTrades ? this.openFields : this.closedFields),
-  ];
 
   formatPriceWithDecimals(price) {
     return formatPrice(price, this.stakeCurrencyDecimals);

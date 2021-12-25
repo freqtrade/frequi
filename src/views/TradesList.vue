@@ -12,12 +12,14 @@
       :trades="openTrades"
       title="Open trades"
       :active-trades="true"
+      :stake-currency-decimals="stakeCurrencyDecimals"
       empty-text="No open Trades."
     />
     <CustomTradeList
       v-if="history"
       :trades="closedTrades"
       title="Trade history"
+      :stake-currency-decimals="stakeCurrencyDecimals"
       empty-text="No closed trades so far."
     />
   </div>
