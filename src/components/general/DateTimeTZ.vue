@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { timestampms, timestampmsWithTimezone } from '@/shared/formatters';
+import { timestampms, timestampmsWithTimezone, timestampToDateString } from '@/shared/formatters';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({})
@@ -12,9 +12,14 @@ export default class DateTimeTZ extends Vue {
 
   @Prop({ required: false, type: Boolean, default: false }) showTimezone!: boolean;
 
+  @Prop({ required: false, type: Boolean, default: false }) dateOnly!: boolean;
+
   timestampms = timestampms;
 
   get formattedDate(): string {
+    if (this.dateOnly) {
+      return timestampToDateString(this.date);
+    }
     if (this.showTimezone) {
       return timestampmsWithTimezone(this.date);
     }
