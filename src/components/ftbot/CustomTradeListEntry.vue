@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex">
     <div
-      class="col-8 px-1 d-flex flex-row flex-fill text-left justify-content-between align-items-center"
+      class="col-7 px-1 d-flex flex-row flex-fill text-left justify-content-between align-items-center"
     >
       <span>
-        <span class="mr-2 font-weight-bold">{{ trade.pair }}</span>
+        <span class="mr-1 font-weight-bold">{{ trade.pair }}</span>
         <small class="text-secondary">(#{{ trade.trade_id }})</small>
       </span>
       <!-- <ValuePair description="Amount">{{ trade.amount }}</ValuePair> -->
@@ -24,7 +24,7 @@
         ><DateTimeTZ :date="trade.close_timestamp"
       /></ValuePair>
     </div>
-    <trade-profit class="col-4" :trade="trade" />
+    <trade-profit class="col-5" :trade="trade" />
   </div>
 </template>
 
