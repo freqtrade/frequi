@@ -78,6 +78,7 @@
           class="trade-history"
           :trades="closedTrades"
           title="Trade history"
+          :show-filter="true"
           empty-text="No closed trades so far."
         />
       </DraggableContainer>
