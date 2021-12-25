@@ -8,7 +8,14 @@
       empty-text="Currently no open trades."
     /> -->
     <CustomTradeList
-      class="trade-history"
+      v-if="!history"
+      :trades="openTrades"
+      title="Open trades"
+      :active-trades="true"
+      empty-text="No open Trades."
+    />
+    <CustomTradeList
+      v-if="history"
       :trades="closedTrades"
       title="Trade history"
       empty-text="No closed trades so far."
@@ -17,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 
@@ -33,6 +40,8 @@ const ftbot = namespace(StoreModules.ftbot);
   },
 })
 export default class Trading extends Vue {
+  @Prop({ default: false }) history!: boolean;
+
   @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
 
   @ftbot.Getter [BotStoreGetters.closedTrades]!: Trade[];

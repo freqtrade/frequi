@@ -48,9 +48,13 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "balance" */ '@/components/ftbot/Balance.vue'),
   },
   {
-    path: '/trades',
-    name: 'Freqtrade trade',
+    path: '/open_trades',
     component: () => import(/* webpackChunkName: "balance" */ '@/views/TradesList.vue'),
+  },
+  {
+    path: '/trade_history',
+    component: () => import(/* webpackChunkName: "balance" */ '@/views/TradesList.vue'),
+    props: { history: true },
   },
   {
     path: '/settings',
