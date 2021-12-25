@@ -24,45 +24,12 @@
           <ActionIcon :size="16" title="Actions" />
         </b-button>
         <b-popover :target="`btn-actions_${row.index}`" triggers="focus" placement="left">
-          <div class="d-flex flex-column">
-            <b-button
-              v-if="botApiVersion <= 1.1"
-              class="btn-xs text-left"
-              size="sm"
-              title="Forcesell"
-              @click="forcesellHandler(row.item)"
-            >
-              <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell
-            </b-button>
-            <b-button
-              v-if="botApiVersion > 1.1"
-              class="btn-xs text-left"
-              size="sm"
-              title="Forcesell limit"
-              @click="forcesellHandler(row.item, 'limit')"
-            >
-              <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell limit
-            </b-button>
-            <b-button
-              v-if="botApiVersion > 1.1"
-              class="btn-xs text-left mt-1"
-              size="sm"
-              title="Forcesell market"
-              @click="forcesellHandler(row.item, 'market')"
-            >
-              <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell market
-            </b-button>
-
-            <b-button
-              class="btn-xs text-left mt-1"
-              size="sm"
-              title="Delete trade"
-              @click="removeTradeHandler(row.item)"
-            >
-              <DeleteIcon :size="16" title="Delete trade" class="mr-1" />
-              Delete
-            </b-button>
-          </div>
+          <trade-actions
+            :trade="row.item"
+            :bot-api-version="botApiVersion"
+            @deleteTrade="removeTradeHandler"
+            @forceSell="forcesellHandler"
+          />
         </b-popover>
       </template>
       <template #cell(pair)="row">
@@ -118,11 +85,12 @@ import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
 import TradeProfit from './TradeProfit.vue';
+import TradeActions from './TradeActions.vue';
 
 const ftbot = namespace(StoreModules.ftbot);
 
 @Component({
-  components: { DeleteIcon, ForceSellIcon, ActionIcon, DateTimeTZ, TradeProfit },
+  components: { DeleteIcon, ForceSellIcon, ActionIcon, DateTimeTZ, TradeProfit, TradeActions },
 })
 export default class TradeList extends Vue {
   $refs!: {
@@ -227,7 +195,12 @@ export default class TradeList extends Vue {
     return formatPrice(price, this.stakeCurrencyDecimals);
   }
 
-  forcesellHandler(item: Trade, ordertype: string | undefined = undefined) {
+  forcesellHandler(item: Trade) {
+    console.log(item);
+  }
+
+  forcesellHandler2(item: Trade, ordertype: string | undefined = undefined) {
+    console.log('forcesell parent');
     this.$bvModal
       .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
       .then((value: boolean) => {
