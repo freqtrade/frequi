@@ -13,7 +13,7 @@
       }}</ValuePair>
       <!-- <span>Open rate {{ formatPrice(trade.open_rate) }} </span> -->
       <ValuePair
-        v-if="show_details && (trade.close_rate || trade.current_rate)"
+        v-if="showDetails && (trade.close_rate || trade.current_rate)"
         description="Close Rate"
         >{{ formatPrice(trade.close_rate || trade.current_rate || 0) }}</ValuePair
       >

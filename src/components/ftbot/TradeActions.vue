@@ -5,7 +5,7 @@
       class="btn-xs text-left"
       size="sm"
       title="Forcesell"
-      @click="forcesellHandler(trade)"
+      @click="$emit('forceSell', trade)"
     >
       <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell
     </b-button>
@@ -14,7 +14,7 @@
       class="btn-xs text-left"
       size="sm"
       title="Forcesell limit"
-      @click="forcesellHandler(trade, 'limit')"
+      @click="$emit('forceSell', trade, 'limit')"
     >
       <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell limit
     </b-button>
@@ -23,7 +23,7 @@
       class="btn-xs text-left mt-1"
       size="sm"
       title="Forcesell market"
-      @click="forcesellHandler(trade, 'market')"
+      @click="$emit('forceSell', trade, 'market')"
     >
       <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell market
     </b-button>
@@ -60,23 +60,8 @@ export default defineComponent({
     },
   },
   emits: ['forceSell', 'deleteTrade'],
-  setup(props, { emit, root }) {
-    const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
-      root.$bvModal
-        .msgBoxConfirm(`Really222 forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
-        .then((value: boolean) => {
-          if (value) {
-            console.log('emitting');
-            emit('forceSell', item);
-            emit('forceSell', { item, ordertype });
-            console.log('emittin2g');
-          }
-        });
-    };
-
-    return {
-      forcesellHandler,
-    };
+  setup() {
+    return {};
   },
 });
 </script>

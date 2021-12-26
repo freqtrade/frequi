@@ -195,12 +195,7 @@ export default class TradeList extends Vue {
     return formatPrice(price, this.stakeCurrencyDecimals);
   }
 
-  forcesellHandler(item: Trade) {
-    console.log(item);
-  }
-
-  forcesellHandler2(item: Trade, ordertype: string | undefined = undefined) {
-    console.log('forcesell parent');
+  forcesellHandler(item: Trade, ordertype: string | undefined = undefined) {
     this.$bvModal
       .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
       .then((value: boolean) => {
