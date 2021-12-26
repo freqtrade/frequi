@@ -5,11 +5,15 @@
     :layout="gridLayout"
     :vertical-compact="false"
     :margin="[5, 5]"
-    :is-resizable="!getLayoutLocked"
-    :is-draggable="!getLayoutLocked"
+    :responsive-layouts="responsiveGridLayouts"
+    :is-resizable="!isLayoutLocked"
+    :is-draggable="!isLayoutLocked"
+    :responsive="true"
     @layout-updated="layoutUpdatedEvent"
+    @breakpoint-changed="breakpointChanged"
   >
     <GridItem
+      v-if="gridLayoutMultiPane.h != 0"
       :i="gridLayoutMultiPane.i"
       :x="gridLayoutMultiPane.x"
       :y="gridLayoutMultiPane.y"
@@ -48,6 +52,7 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
+      v-if="gridLayoutOpenTrades.h != 0"
       :i="gridLayoutOpenTrades.i"
       :x="gridLayoutOpenTrades.x"
       :y="gridLayoutOpenTrades.y"
@@ -66,6 +71,7 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
+      v-if="gridLayoutTradeHistory.h != 0"
       :i="gridLayoutTradeHistory.i"
       :x="gridLayoutTradeHistory.x"
       :y="gridLayoutTradeHistory.y"
@@ -84,7 +90,7 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      v-if="detailTradeId"
+      v-if="detailTradeId && gridLayoutTradeDetail.h != 0"
       :i="gridLayoutTradeDetail.i"
       :x="gridLayoutTradeDetail.x"
       :y="gridLayoutTradeDetail.y"
@@ -98,6 +104,7 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
+      v-if="gridLayoutTradeDetail.h != 0"
       :i="gridLayoutChartView.i"
       :x="gridLayoutChartView.x"
       :y="gridLayoutChartView.y"
@@ -182,12 +189,33 @@ export default class Trading extends Vue {
 
   @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
 
+  @layoutNs.Getter [LayoutGetters.getTradingLayoutSm]!: GridItemData[];
+
   @layoutNs.Action [LayoutActions.setTradingLayout];
 
   @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
 
+  currentBreakpoint = '';
+
+  localGridLayout: GridItemData[] = [];
+
+  get isLayoutLocked() {
+    return this.getLayoutLocked || !this.isResizableLayout;
+  }
+
+  get isResizableLayout() {
+    return ['', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
+  }
+
   get gridLayout(): GridItemData[] {
-    return this.getTradingLayout;
+    if (this.isResizableLayout) {
+      return this.getTradingLayout;
+    }
+    return this.localGridLayout;
+  }
+
+  set gridLayout(newLayout) {
+    // Dummy setter to make gridLayout happy. Updates happen through layoutUpdated.
   }
 
   get gridLayoutMultiPane(): GridItemData {
@@ -210,8 +238,25 @@ export default class Trading extends Vue {
     return findGridLayout(this.gridLayout, TradeLayout.chartView);
   }
 
+  mounted() {
+    this.localGridLayout = [...this.getTradingLayoutSm];
+  }
+
   layoutUpdatedEvent(newLayout) {
-    this.setTradingLayout(newLayout);
+    if (this.isResizableLayout) {
+      this.setTradingLayout(newLayout);
+    }
+  }
+
+  get responsiveGridLayouts() {
+    return {
+      sm: this[LayoutGetters.getTradingLayoutSm],
+    };
+  }
+
+  breakpointChanged(newBreakpoint) {
+    // console.log('breakpoint:', newBreakpoint);
+    this.currentBreakpoint = newBreakpoint;
   }
 }
 </script>

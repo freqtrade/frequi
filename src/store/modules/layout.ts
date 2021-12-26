@@ -19,6 +19,7 @@ export enum DashboardLayout {
 export enum LayoutGetters {
   getDashboardLayoutSm = 'getDashboardLayoutSm',
   getDashboardLayout = 'getDashboardLayout',
+  getTradingLayoutSm = 'getTradingLayoutSm',
   getTradingLayout = 'getTradingLayout',
   getLayoutLocked = 'getLayoutLocked',
 }
@@ -43,6 +44,15 @@ const DEFAULT_TRADING_LAYOUT: GridItemData[] = [
   { i: TradeLayout.tradeDetail, x: 3, y: 19, w: 9, h: 6 },
   { i: TradeLayout.openTrades, x: 3, y: 14, w: 9, h: 5 },
   { i: TradeLayout.tradeHistory, x: 3, y: 25, w: 9, h: 10 },
+];
+
+// Currently only multiPane is visible
+const DEFAULT_TRADING_LAYOUT_SM: GridItemData[] = [
+  { i: TradeLayout.multiPane, x: 0, y: 0, w: 12, h: 10 },
+  { i: TradeLayout.chartView, x: 0, y: 10, w: 12, h: 0 },
+  { i: TradeLayout.tradeDetail, x: 0, y: 19, w: 12, h: 0 },
+  { i: TradeLayout.openTrades, x: 0, y: 8, w: 12, h: 0 },
+  { i: TradeLayout.tradeHistory, x: 0, y: 25, w: 12, h: 0 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
@@ -109,6 +119,9 @@ export default {
     },
     [LayoutGetters.getDashboardLayout](state) {
       return state.dashboardLayout;
+    },
+    [LayoutGetters.getTradingLayoutSm]() {
+      return [...DEFAULT_TRADING_LAYOUT_SM];
     },
     [LayoutGetters.getTradingLayout](state) {
       return state.tradingLayout;
