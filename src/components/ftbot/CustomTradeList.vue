@@ -5,6 +5,7 @@
         v-for="trade in filteredTrades"
         :key="trade.trade_id"
         class="border border-secondary rounded my-05 px-2"
+        @click="tradeClick(trade)"
       >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
       </b-list-group-item>
@@ -43,7 +44,6 @@ import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
-import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
 import TradeProfit from './TradeProfit.vue';
@@ -84,8 +84,6 @@ export default class CustomTradeList extends Vue {
   @Prop({ default: 'No Trades to show.' }) emptyText!: string;
 
   @Prop({ default: 3, type: Number }) stakeCurrencyDecimals!: number;
-
-  @ftbot.Getter [BotStoreGetters.detailTradeId]?: number;
 
   @ftbot.Action setDetailTrade;
 
@@ -162,30 +160,8 @@ export default class CustomTradeList extends Vue {
       });
   }
 
-  onRowClicked(item, index) {
-    // Only allow single selection mode!
-    if (
-      item &&
-      item.trade_id !== this.detailTradeId &&
-      !this.$refs.tradesTable.isRowSelected(index)
-    ) {
-      this.setDetailTrade(item);
-    } else {
-      console.log('unsetting item');
-      this.setDetailTrade(null);
-    }
-  }
-
-  onRowSelected() {
-    if (this.detailTradeId) {
-      const itemIndex = this.trades.findIndex((v) => v.trade_id === this.detailTradeId);
-      if (itemIndex >= 0) {
-        this.$refs.tradesTable.selectRow(itemIndex);
-      } else {
-        console.log(`Unsetting item for tradeid ${this.selectedItemIndex}`);
-        this.selectedItemIndex = undefined;
-      }
-    }
+  tradeClick(trade) {
+    this.setDetailTrade(trade);
   }
 }
 </script>
