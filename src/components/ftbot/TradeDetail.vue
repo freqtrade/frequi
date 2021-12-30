@@ -30,7 +30,7 @@
           <trade-profit class="ml-2" :trade="trade" />
         </ValuePair>
       </div>
-      <div class="col-lg-7">
+      <div class="mt-2 mt-lg-0 col-lg-7">
         <h5 class="detail-header">Stoploss</h5>
         <ValuePair description="Stoploss">
           {{ formatPercent(trade.stop_loss_pct / 100) }} |
