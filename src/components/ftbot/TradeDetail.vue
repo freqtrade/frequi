@@ -27,7 +27,7 @@
           v-if="trade.profit_ratio && trade.profit_abs"
           :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
         >
-          {{ formatPercent(trade.profit_ratio) }} | {{ trade.profit_abs }}
+          <trade-profit class="ml-2" :trade="trade" />
         </ValuePair>
       </div>
       <div class="col-lg-7">
@@ -62,10 +62,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/general/ValuePair.vue';
+import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import { Trade } from '@/types';
 
 @Component({
-  components: { ValuePair },
+  components: { ValuePair, TradeProfit },
 })
 export default class TradeDetail extends Vue {
   @Prop({ type: Object, required: true }) trade!: Trade;
