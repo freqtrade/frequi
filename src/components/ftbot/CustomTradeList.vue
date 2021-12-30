@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 overflow-auto w-100 m-1">
+  <div class="h-100 overflow-auto w-100 p-1">
     <b-list-group>
       <b-list-group-item
         v-for="trade in filteredTrades"
