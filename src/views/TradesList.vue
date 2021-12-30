@@ -24,7 +24,7 @@
     />
     <div v-if="detailTradeId" class="d-flex flex-column">
       <b-button size="sm" class="align-self-start mt-1 ml-1" @click="setDetailTrade(null)"
-        >Back</b-button
+        ><BackIcon /> Back</b-button
       >
       <TradeDetail :trade="tradeDetail" :stake-currency="stakeCurrency" />
     </div>
@@ -36,17 +36,19 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
+import BackIcon from 'vue-material-design-icons/ArrowLeft.vue';
 
 import { Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
 
 const ftbot = namespace(StoreModules.ftbot);
-
+// TODO: TradeDetail could be extracted into a sub-route to allow direct access
 @Component({
   components: {
     CustomTradeList,
     TradeDetail,
+    BackIcon,
   },
 })
 export default class Trading extends Vue {
