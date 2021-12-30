@@ -5,6 +5,9 @@
         <h5 class="detail-header">General</h5>
         <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
+        <ValuePair description="Stake">{{
+          formatPriceCurrency(trade.stake_amount, stakeCurrency)
+        }}</ValuePair>
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
         <ValuePair v-if="trade.buy_tag" description="Buy tag">{{ trade.buy_tag }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
@@ -57,7 +60,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
+import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/general/ValuePair.vue';
 import { Trade } from '@/types';
 
@@ -67,11 +70,15 @@ import { Trade } from '@/types';
 export default class TradeDetail extends Vue {
   @Prop({ type: Object, required: true }) trade!: Trade;
 
+  @Prop({ type: String, required: true }) stakeCurrency!: string;
+
   timestampms = timestampms;
 
   formatPercent = formatPercent;
 
   formatPrice = formatPrice;
+
+  formatPriceCurrency = formatPriceCurrency;
 }
 </script>
 <style scoped>

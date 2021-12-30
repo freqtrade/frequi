@@ -100,7 +100,7 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Trade Detail">
-        <TradeDetail :trade="tradeDetail"> </TradeDetail>
+        <TradeDetail :trade="tradeDetail" :stake-currency="stakeCurrency" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -186,6 +186,8 @@ export default class Trading extends Vue {
   @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
 
   @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
+
+  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
 
   @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
 

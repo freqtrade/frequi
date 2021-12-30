@@ -76,6 +76,7 @@ export enum BotStoreGetters {
   selectedBacktestResult = 'selectedBacktestResult',
   canRunBacktest = 'canRunBacktest',
   stakeCurrencyDecimals = 'stakeCurrencyDecimals',
+  stakeCurrency = 'stakeCurrency',
   strategyPlotConfig = 'strategyPlotConfig',
   version = 'version',
   botApiVersion = 'botApiVersion',
@@ -250,6 +251,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreGetters.stakeCurrencyDecimals](state: FtbotStateType): number {
         return state.botState?.stake_currency_decimals || 3;
+      },
+      [BotStoreGetters.stakeCurrency](state: FtbotStateType): string {
+        return state.botState?.stake_currency || '';
       },
       [BotStoreGetters.strategyPlotConfig](state: FtbotStateType): PlotConfig | undefined {
         return state.strategyPlotConfig;
