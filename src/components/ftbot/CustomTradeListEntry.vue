@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <div
-      class="col-7 px-1 d-flex flex-row flex-fill text-left justify-content-between align-items-center"
+      class="px-1 d-flex flex-row flex-fill text-left justify-content-between align-items-center"
     >
       <span>
         <span class="mr-1 font-weight-bold">{{ trade.pair }}</span>

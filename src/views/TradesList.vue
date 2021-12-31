@@ -51,7 +51,7 @@ const ftbot = namespace(StoreModules.ftbot);
     BackIcon,
   },
 })
-export default class Trading extends Vue {
+export default class TradesList extends Vue {
   @Prop({ default: false }) history!: boolean;
 
   @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];

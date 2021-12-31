@@ -1,10 +1,10 @@
 <template>
-  <div class="h-100 overflow-auto w-100 p-1">
-    <b-list-group>
+  <div class="h-100 overflow-auto p-1">
+    <b-list-group id="tradeList">
       <b-list-group-item
         v-for="trade in filteredTrades"
         :key="trade.trade_id"
-        class="border border-secondary rounded my-05 px-2"
+        class="border border-secondary rounded my-05 px-1"
         @click="tradeClick(trade)"
       >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
@@ -13,13 +13,13 @@
 
     <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
-    <div class="w-100 d-flex justify-content-between">
+    <div class="w-100 d-flex justify-content-between mt-1">
       <b-pagination
         v-if="!activeTrades"
         v-model="currentPage"
         :total-rows="rows"
         :per-page="perPage"
-        aria-controls="my-table"
+        aria-controls="tradeList"
       ></b-pagination>
       <b-input
         v-if="showFilter"
