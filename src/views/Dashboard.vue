@@ -10,6 +10,7 @@
     :is-draggable="!isLayoutLocked"
     :responsive="true"
     :prevent-collision="true"
+    :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
     @layout-updated="layoutUpdated"
     @breakpoint-changed="breakpointChanged"
   >
@@ -171,7 +172,7 @@ export default class Dashboard extends Vue {
   }
 
   get isResizableLayout() {
-    return ['', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
+    return ['', 'sm', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
   }
 
   get gridLayout() {

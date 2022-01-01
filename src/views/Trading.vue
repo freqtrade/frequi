@@ -9,6 +9,7 @@
     :is-resizable="!isLayoutLocked"
     :is-draggable="!isLayoutLocked"
     :responsive="true"
+    :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
     @layout-updated="layoutUpdatedEvent"
     @breakpoint-changed="breakpointChanged"
   >
@@ -206,7 +207,7 @@ export default class Trading extends Vue {
   }
 
   get isResizableLayout() {
-    return ['', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
+    return ['', 'sm', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
   }
 
   get gridLayout(): GridItemData[] {
@@ -257,7 +258,7 @@ export default class Trading extends Vue {
   }
 
   breakpointChanged(newBreakpoint) {
-    // console.log('breakpoint:', newBreakpoint);
+    console.log('breakpoint:', newBreakpoint);
     this.currentBreakpoint = newBreakpoint;
   }
 }
