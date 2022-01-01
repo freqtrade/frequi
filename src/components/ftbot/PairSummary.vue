@@ -17,7 +17,11 @@
       </div>
 
       <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />
-      <ProfitPill v-if="backtestMode && comb.tradeCount > 0" :profit-ratio="comb.profit" />
+      <ProfitPill
+        v-if="backtestMode && comb.tradeCount > 0"
+        :profit-ratio="comb.profit"
+        :stake-currency="stakeCurrency"
+      />
     </b-list-group-item>
   </b-list-group>
 </template>
@@ -62,6 +66,8 @@ export default class PairSummary extends Vue {
   @ftbot.Action setSelectedPair!: (pair: string) => void;
 
   @ftbot.Getter [BotStoreGetters.selectedPair]!: string;
+
+  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
 
   timestampms = timestampms;
 
