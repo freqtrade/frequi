@@ -13,8 +13,12 @@
     "cy:open-ct": "cypress open-ct",
     "cy:run-ct": "cypress run-ct"
   },
+  "resolutions": {
+      "vue-demi": "0.12.1"
+  },
   "dependencies": {
     "@cypress/vue": "^2.2.3",
+    "@vue/composition-api": "^1.4.3",
     "axios": "^0.24.0",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
@@ -27,6 +31,7 @@
     "humanize-duration": "^3.27.1",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.5",
+    "vue-demi": "0.12.1",
     "vue-echarts": "^6.0.0",
     "vue-grid-layout": "^2.3.12",
     "vue-material-design-icons": "^5.0.0",
@@ -34,7 +39,8 @@
     "vue-router": "^3.5.3",
     "vue-select": "^3.16.0",
     "vuex": "^3.6.2",
-    "vuex-class": "^0.3.2"
+    "vuex-class": "^0.3.2",
+    "vuex-composition-helpers": "^1.1.0"
   },
   "devDependencies": {
     "@cypress/webpack-dev-server": "^1.8.0",
@@ -49,7 +55,6 @@
     "@vue/cli-plugin-unit-jest": "~4.5.15",
     "@vue/cli-plugin-vuex": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
-    "@vue/composition-api": "^1.4.3",
     "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.1.0",

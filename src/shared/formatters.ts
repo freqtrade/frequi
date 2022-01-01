@@ -20,6 +20,17 @@ export function formatPrice(value: number, decimals = 8): string {
   return !isUndefined(value) ? parseFloat(value.toFixed(decimals)).toString() : '';
 }
 
+/**
+ * Formats price in the format "<price> <StakeCurrency>" using "deciaml" decimals
+ * @param price Price to format
+ * @param currency currency to use
+ * @param decimals Decimals
+ * @returns
+ */
+export function formatPriceCurrency(price, currency: string, decimals = 3) {
+  return `${formatPrice(price, decimals)} ${currency}`;
+}
+
 export function dateFromString(datestring: string, format: string): Date {
   return parse(datestring, format, 0);
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 d-inline-block">
+  <div class="d-inline-block">
     <div :class="isProfitable ? 'triangle-up' : 'triangle-down'"></div>
   </div>
 </template>

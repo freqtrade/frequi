@@ -11370,10 +11370,10 @@ vue-class-component@^7.2.5:
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.2.6.tgz#8471e037b8e4762f5a464686e19e5afc708502e4"
   integrity sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==
 
-vue-demi@^0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.11.2.tgz#faa06da53887c493a695b997f4fcb4784a667990"
-  integrity sha512-J+X8Au6BhQdcej6LY4O986634hZLu55L0ewU2j8my7WIKlu8cK0dqmdUxqVHHMd/cMrKKZ9SywB/id6aLhwCtA==
+vue-demi@0.12.1, vue-demi@^0.11.2:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
+  integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
 
 vue-echarts@^6.0.0:
   version "6.0.0"
@@ -11505,6 +11505,11 @@ vuex-class@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/vuex-class/-/vuex-class-0.3.2.tgz#c7e96a076c1682137d4d23a8dcfdc63f220e17a8"
   integrity sha512-m0w7/FMsNcwJgunJeM+wcNaHzK2KX1K1rw2WUQf7Q16ndXHo7pflRyOV/E8795JO/7fstyjH3EgqBI4h4n4qXQ==
+
+vuex-composition-helpers@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vuex-composition-helpers/-/vuex-composition-helpers-1.1.0.tgz#a18d00192fbb0205630202aade1ec6d5f05d4c28"
+  integrity sha512-36f3MWRCW6QqtP3NLyLbtTPv8qWwbac7gAK9fM4ZtDWTCWuAeBoZEiM+bmPQweAQoMM7GRSXmw/90Egiqg0DCA==
 
 vuex@^3.6.2:
   version "3.6.2"

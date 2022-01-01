@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import './plugins/bootstrap-vue';
+import './plugins/composition_api';
 import App from './App.vue';
 import store from './store';
 import router from './router';
