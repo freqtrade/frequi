@@ -2,8 +2,6 @@ import { mount } from '@cypress/vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
 
 describe('ProfitPill.vue', () => {
-  let cmp;
-
   it('Shows a Green pill with positive profits', async () => {
     mount(ProfitPill, {
       propsData: {
