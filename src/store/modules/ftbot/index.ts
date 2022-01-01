@@ -462,6 +462,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve();
         } catch (error) {
           //
+          commit('setIsBotOnline', false);
           return Promise.reject();
         }
       },

@@ -316,7 +316,11 @@ export default function createBotStore(store) {
     async pingAll({ getters, dispatch }) {
       await Promise.all(
         getters.allAvailableBotsList.map(async (e) => {
-          await dispatch(`${e}/ping`);
+          try {
+            await dispatch(`${e}/ping`);
+          } catch {
+            // pass
+          }
         }),
       );
     },
