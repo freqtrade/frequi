@@ -2,8 +2,6 @@ import { mount } from '@cypress/vue';
 import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
 
 describe('ProfitSymbol.vue', () => {
-  let cmp;
-
   it('calculates isProfitable with negative profit', async () => {
     mount(ProfitSymbol, { propsData: { profit: -0.5 } });
 

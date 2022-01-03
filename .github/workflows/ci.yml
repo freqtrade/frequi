@@ -34,12 +34,6 @@ jobs:
     - name: Run Tests
       run: yarn test:unit
 
-    # - name: Cypress run
-    #   uses: cypress-io/github-action@v2
-    #   with:
-    #     build: yarn build
-    #     start: yarn start
-
     - name: Run Component tests
       uses: cypress-io/github-action@v2
       with:
@@ -47,6 +41,13 @@ jobs:
         install: false
         # to run component tests we need to use "cypress run-ct"
         command: yarn cypress run-ct
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v2
+      with:
+        # build: yarn build
+        start: yarn serve
+        wait-on: 'http://localhost:8080'
 
     - name: Build build
       run: yarn build
