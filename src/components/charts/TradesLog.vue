@@ -62,10 +62,18 @@ export default class TradesLogChart extends Vue {
       .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
     for (let i = 0, len = sortedTrades.length; i < len; i += 1) {
       const trade = sortedTrades[i];
-      const entry = [i, (trade.profit_ratio * 100).toFixed(2), trade.pair, trade.botName];
+      const closeDate = trade.close_date
+        .substring(0, trade.close_date.length - 6)
+        .replace('T', ' ');
+      const entry = [
+        i,
+        (trade.profit_ratio * 100).toFixed(2),
+        trade.pair,
+        trade.botName,
+        closeDate,
+      ];
       res.push(entry);
     }
-
     return res;
   }
 
@@ -86,7 +94,10 @@ export default class TradesLogChart extends Vue {
       tooltip: {
         trigger: 'axis',
         formatter: (params) => {
-          return `Profit %<br>${params[0].data[1]} % ${params[0].data[2]} | ${params[0].data[3]}`;
+          if (params[0].data[3]) {
+            return `${params[0].data[2]} | ${params[0].data[3]}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
+          }
+          return `${params[0].data[2]}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
         },
         axisPointer: {
           type: 'line',
