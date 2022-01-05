@@ -24,6 +24,8 @@ import {
 
 import { ClosedTrade } from '@/types';
 
+import { timestampms } from '@/shared/formatters';
+
 use([
   BarChart,
   LineChart,
@@ -62,10 +64,15 @@ export default class TradesLogChart extends Vue {
       .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
     for (let i = 0, len = sortedTrades.length; i < len; i += 1) {
       const trade = sortedTrades[i];
-      const entry = [i, (trade.profit_ratio * 100).toFixed(2), trade.pair, trade.botName];
+      const entry = [
+        i,
+        (trade.profit_ratio * 100).toFixed(2),
+        trade.pair,
+        trade.botName,
+        timestampms(trade.close_timestamp),
+      ];
       res.push(entry);
     }
-
     return res;
   }
 
@@ -86,7 +93,10 @@ export default class TradesLogChart extends Vue {
       tooltip: {
         trigger: 'axis',
         formatter: (params) => {
-          return `Profit %<br>${params[0].data[1]} % ${params[0].data[2]} | ${params[0].data[3]}`;
+          if (params[0].data[3]) {
+            return `${params[0].data[2]} | ${params[0].data[3]}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
+          }
+          return `${params[0].data[2]}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
         },
         axisPointer: {
           type: 'line',
