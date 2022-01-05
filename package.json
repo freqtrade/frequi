@@ -45,7 +45,7 @@
   "devDependencies": {
     "@cypress/webpack-dev-server": "^1.8.0",
     "@types/echarts": "^4.9.12",
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^27.4.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^5.9.0",
     "@vue/cli-plugin-babel": "~4.5.15",
