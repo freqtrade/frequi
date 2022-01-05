@@ -10,6 +10,7 @@
     "check-types": "tsc --noemit",
     "lint-ci": "vue-cli-service lint --no-fix",
     "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "cy:open-ct": "cypress open-ct",
     "cy:run-ct": "cypress run-ct"
   },
