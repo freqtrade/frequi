@@ -25,6 +25,7 @@ import {
 } from 'echarts/components';
 
 import { BalanceInterface } from '@/types';
+import { formatPriceCurrency } from '@/shared/formatters';
 
 use([
   PieChart,
@@ -62,6 +63,12 @@ export default class BalanceChart extends Vue {
       },
       tooltip: {
         trigger: 'item',
+        formatter: (params) => {
+          console.log(params);
+          return `${formatPriceCurrency(params.value.balance, params.value.currency, 8)}<br />${
+            params.percent
+          }% (${formatPriceCurrency(params.value.est_stake, params.value.stake)})`;
+        },
       },
       // legend: {
       //   orient: 'vertical',
@@ -73,9 +80,10 @@ export default class BalanceChart extends Vue {
         {
           type: 'pie',
           radius: ['40%', '70%'],
+
           encode: {
-            x: 'est_stake',
-            itemName: ['currency'],
+            value: 'est_stake',
+            itemName: 'currency',
             tooltip: ['balance', 'currency'],
           },
           label: {
