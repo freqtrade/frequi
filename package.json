@@ -20,7 +20,7 @@
   "dependencies": {
     "@cypress/vue": "^2.2.3",
     "@vue/composition-api": "^1.4.3",
-    "axios": "^0.24.0",
+    "axios": "^0.25.0",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "bootswatch": "^5.1.3",
