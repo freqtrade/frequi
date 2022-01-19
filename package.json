@@ -14,9 +14,6 @@
     "cy:open-ct": "cypress open-ct",
     "cy:run-ct": "cypress run-ct"
   },
-  "resolutions": {
-      "vue-demi": "0.12.1"
-  },
   "dependencies": {
     "@cypress/vue": "^2.2.3",
     "@vue/composition-api": "^1.4.3",
