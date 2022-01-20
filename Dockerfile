@@ -1,4 +1,4 @@
-FROM node:17.3.1-alpine as ui-builder
+FROM node:17.4.0-alpine as ui-builder
 
 RUN mkdir /app
 
