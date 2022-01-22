@@ -146,13 +146,14 @@ export default class BotControls extends Vue {
   }
 
   handleForceSell() {
-    this.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value) => {
-      console.log(value);
-      const payload: ForceSellPayload = {
-        tradeid: 'all',
-        // TODO: support ordertype (?)
-      };
-      this.forcesell(payload);
+    this.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
+      if (value) {
+        const payload: ForceSellPayload = {
+          tradeid: 'all',
+          // TODO: support ordertype (?)
+        };
+        this.forcesell(payload);
+      }
     });
   }
 }
