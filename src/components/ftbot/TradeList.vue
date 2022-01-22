@@ -78,8 +78,6 @@ import { namespace } from 'vuex-class';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
@@ -90,7 +88,7 @@ import TradeActions from './TradeActions.vue';
 const ftbot = namespace(StoreModules.ftbot);
 
 @Component({
-  components: { DeleteIcon, ForceSellIcon, ActionIcon, DateTimeTZ, TradeProfit, TradeActions },
+  components: { ActionIcon, DateTimeTZ, TradeProfit, TradeActions },
 })
 export default class TradeList extends Vue {
   $refs!: {
