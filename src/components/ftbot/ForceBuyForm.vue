@@ -31,6 +31,20 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group
+          v-if="botApiVersion > 1.12"
+          :label="`*Stake-amount in ${stakeCurrency} [optional]`"
+          label-for="stake-input"
+          invalid-feedback="Stake-amount must be empty or a positive number"
+        >
+          <b-form-input
+            id="stake-input"
+            v-model="stakeAmount"
+            type="number"
+            step="0.000001"
+            @keydown.enter.native="handleBuy"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
           v-if="botApiVersion > 1.1"
           label="*OrderType"
           label-for="ordertype-input"
@@ -65,6 +79,8 @@ export default class ForceBuyForm extends Vue {
 
   price = null;
 
+  stakeAmount = null;
+
   ordertype?: string = '';
 
   $refs!: {
@@ -74,6 +90,8 @@ export default class ForceBuyForm extends Vue {
   @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
   @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
+
+  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
@@ -103,6 +121,7 @@ export default class ForceBuyForm extends Vue {
     console.log('resetForm');
     this.pair = '';
     this.price = null;
+    this.stakeAmount = null;
     if (this.botApiVersion > 1.1) {
       this.ordertype = this.botState?.order_types?.forcebuy || this.botState?.order_types?.buy;
     }
@@ -120,6 +139,9 @@ export default class ForceBuyForm extends Vue {
     }
     if (this.ordertype) {
       payload.ordertype = this.ordertype;
+    }
+    if (this.stakeAmount) {
+      payload.stakeamount = this.stakeAmount;
     }
     this.forcebuy(payload);
     this.$nextTick(() => {

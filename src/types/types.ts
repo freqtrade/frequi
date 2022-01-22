@@ -2,6 +2,7 @@ export interface ForcebuyPayload {
   pair: string;
   price?: number;
   ordertype?: string;
+  stakeamount?: number;
 }
 
 export interface ForceSellPayload {
