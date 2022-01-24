@@ -9,7 +9,7 @@ export interface BalanceRecords {
 }
 
 export interface BalanceInterface {
-  currencies: Array<BalanceRecords>;
+  currencies: BalanceRecords[];
   note: string;
   /** Stake currency used */
   stake: string;

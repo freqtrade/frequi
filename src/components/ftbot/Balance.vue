@@ -14,7 +14,7 @@
         <ShowIcon v-else :size="16" />
       </b-form-checkbox>
     </div>
-    <BalanceChart :balance="balance" />
+    <BalanceChart v-if="balanceCurrencies" :currencies="balanceCurrencies" />
     <div>
       <p v-if="balance.note">
         <strong>{{ balance.note }}</strong>

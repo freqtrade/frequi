@@ -1,10 +1,5 @@
 <template>
-  <v-chart
-    v-if="balance.currencies"
-    :option="balanceChartOptions"
-    :theme="getChartTheme"
-    autoresize
-  />
+  <v-chart v-if="currencies" :option="balanceChartOptions" :theme="getChartTheme" autoresize />
 </template>
 
 <script lang="ts">
@@ -24,7 +19,7 @@ import {
   TooltipComponent,
 } from 'echarts/components';
 
-import { BalanceInterface } from '@/types';
+import { BalanceRecords } from '@/types';
 import { formatPriceCurrency } from '@/shared/formatters';
 
 use([
@@ -43,7 +38,7 @@ use([
   },
 })
 export default class BalanceChart extends Vue {
-  @Prop({ required: true }) balance!: BalanceInterface;
+  @Prop({ required: true }) currencies!: BalanceRecords[];
 
   @Prop({ default: false, type: Boolean }) showTitle!: boolean;
 
@@ -59,7 +54,7 @@ export default class BalanceChart extends Vue {
       backgroundColor: 'rgba(0, 0, 0, 0)',
       dataset: {
         dimensions: ['balance', 'currency', 'est_stake', 'free', 'used', 'stake'],
-        source: this.balance.currencies,
+        source: this.currencies,
       },
       tooltip: {
         trigger: 'item',
