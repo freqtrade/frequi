@@ -97,6 +97,8 @@ export default class Login extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action selectBot!: (botId: string) => void;
 
+  @ftbot.Action allRefreshFull;
+
   @Prop({ default: false }) inModal!: boolean;
 
   $refs!: {
@@ -174,6 +176,7 @@ export default class Login extends Vue {
         }
 
         this.emitLoginResult(true);
+        this.allRefreshFull();
         if (this.inModal === false) {
           if (typeof this.$route.query.redirect === 'string') {
             const resolved = this.$router.resolve({ path: this.$route.query.redirect });
