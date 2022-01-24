@@ -27,12 +27,26 @@ describe('Login', () => {
     cy.get('button[type=submit]').should('exist');
   });
 
-  it('Test Login', () => {
+  it('Redirect when not logged in', () => {
+    cy.visit('/trade');
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq('/login');
+      expect(loc.search).to.eq('?redirect=%2Ftrade');
+    });
+  });
+
+  it.only('Test Login', () => {
     cy.visit('/login');
     cy.get('input[id=name-input]').type('TestBot');
     cy.get('input[id=username-input]').type('Freqtrader');
     cy.get('input[id=password-input]').type('SuperDuperBot');
 
+    cy.intercept('**/api/v1/**', {
+      statusCode: 200,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+      headers: { 'access-control-allow-origin': '*' },
+    }).as('RandomAPICall');
     cy.intercept(
       {
         method: 'Post',
@@ -45,21 +59,13 @@ describe('Login', () => {
         headers: { 'access-control-allow-origin': '*' },
       },
     ).as('login');
+
     cy.get('button[type=submit]')
       .click()
       .should(() => {
         const loginInfo = JSON.parse(localStorage.getItem('ftAuthLoginInfo') || '{}');
-        console.log('logininfo', loginInfo);
         const bot1 = 'ftbot.0';
-        const resp = {
-          'ftbot.0': {
-            botName: 'TestBot',
-            apiUrl: 'http://localhost:8080',
-            accessToken: 'access_token_tesst',
-            refreshToken: 'refresh_test',
-            autoRefresh: true,
-          },
-        };
+
         expect(loginInfo[bot1].botName).to.eq('TestBot');
         expect(loginInfo[bot1].botName).to.eq('TestBot');
         expect(loginInfo[bot1].apiUrl).to.eq('http://localhost:8080');
@@ -73,13 +79,7 @@ describe('Login', () => {
     });
     cy.get('button').should('contain', 'Add new bot');
     cy.get('span').should('contain', 'TestBot');
-  });
-
-  it('Redirect when not logged in', () => {
-    cy.visit('/trade');
-    cy.location().should((loc) => {
-      expect(loc.pathname).to.eq('/login');
-      expect(loc.search).to.eq('?redirect=%2Ftrade');
-    });
+    // Check API calls have been made.
+    cy.wait('@RandomAPICall');
   });
 });
