@@ -5,7 +5,7 @@ import {
   BacktestResult,
   BotState,
   BlacklistPayload,
-  ForcebuyPayload,
+  ForceEnterPayload,
   Logs,
   DailyPayload,
   Trade,
@@ -72,6 +72,7 @@ export enum BotStoreGetters {
   timeframe = 'timeframe',
   isTrading = 'isTrading',
   isWebserverMode = 'isWebserverMode',
+  shortAllowed = 'shortAllowed',
   refreshRequired = 'refreshRequired',
   selectedBacktestResult = 'selectedBacktestResult',
   canRunBacktest = 'canRunBacktest',
@@ -238,6 +239,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreGetters.isWebserverMode](state: FtbotStateType): boolean {
         return state.botState?.runmode === RunModes.WEBSERVER;
+      },
+      [BotStoreGetters.shortAllowed](state: FtbotStateType): boolean {
+        return state.botState?.short_allowed || false;
       },
       [BotStoreGetters.refreshRequired](state: FtbotStateType): boolean {
         return state.refreshRequired;
@@ -867,14 +871,15 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.forcebuy]({ dispatch }, payload: ForcebuyPayload) {
+      async [BotStoreActions.forcebuy]({ dispatch }, payload: ForceEnterPayload) {
         if (payload && payload.pair) {
           try {
+            // TODO: Update forcebuy to forceenter ...
             const res = await api.post<
-              ForcebuyPayload,
+              ForceEnterPayload,
               AxiosResponse<StatusResponse | TradeResponse>
             >('/forcebuy', payload);
-            showAlert(dispatch, `Buy order for ${payload.pair} created.`);
+            showAlert(dispatch, `Order for ${payload.pair} created.`);
 
             return Promise.resolve(res);
           } catch (error) {
@@ -882,7 +887,7 @@ export function createBotSubStore(botId: string, botName: string) {
               console.error(error.response);
               showAlert(
                 dispatch,
-                `Error occured buying: '${(error as any).response?.data?.error}'`,
+                `Error occured entering: '${(error as any).response?.data?.error}'`,
                 'danger',
               );
             }

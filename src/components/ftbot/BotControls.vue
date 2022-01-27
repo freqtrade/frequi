@@ -44,8 +44,8 @@
       v-if="botState && botState.forcebuy_enabled"
       class="btn btn-secondary btn-sm ml-1"
       :disabled="!isTrading || !isRunning"
-      title="Force Buy - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
-      @click="initiateForcebuy"
+      title="Force enter - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
+      @click="initiateForceenter"
     >
       <ForceBuyIcon />
     </button>
@@ -115,7 +115,7 @@ export default class BotControls extends Vue {
     return this.botState?.state === 'running';
   }
 
-  initiateForcebuy() {
+  initiateForceenter() {
     this.$bvModal.show('forcebuy-modal');
   }
 

@@ -1,5 +1,11 @@
-export interface ForcebuyPayload {
+export enum OrderSides {
+  long = 'long',
+  short = 'short',
+}
+
+export interface ForceEnterPayload {
   pair: string;
+  orderside?: OrderSides;
   price?: number;
   ordertype?: string;
   stakeamount?: number;

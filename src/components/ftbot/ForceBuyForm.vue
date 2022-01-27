@@ -3,12 +3,26 @@
     <b-modal
       id="forcebuy-modal"
       ref="modal"
-      title="Force buying a pair"
+      title="Force entering a trade"
       @show="resetForm"
       @hidden="resetForm"
       @ok="handleBuy"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          v-if="botApiVersion >= 2.13 && shortAllowed"
+          label="Order direction (Long or Short)"
+          label-for="order-direction"
+          invalid-feedback="Stake-amount must be empty or a positive number"
+        >
+          <b-select
+            v-model="orderSide"
+            class="ml-2"
+            :options="['long', 'short']"
+            style="min-width: 7em"
+          >
+          </b-select>
+        </b-form-group>
         <b-form-group label="Pair" label-for="pair-input" invalid-feedback="Pair is required">
           <b-form-input
             id="pair-input"
@@ -67,7 +81,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { BotState, ForcebuyPayload } from '@/types';
+import { BotState, ForceEnterPayload, OrderSides } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
 
@@ -83,18 +97,22 @@ export default class ForceBuyForm extends Vue {
 
   ordertype?: string = '';
 
+  orderSide: OrderSides = OrderSides.long;
+
   $refs!: {
     form: HTMLFormElement;
   };
 
   @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
+  @ftbot.Getter [BotStoreGetters.shortAllowed]?: boolean;
+
   @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
 
   @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action forcebuy!: (payload: ForcebuyPayload) => Promise<string>;
+  @ftbot.Action forcebuy!: (payload: ForceEnterPayload) => Promise<string>;
 
   created() {
     this.$bvModal.show('forcebuy-modal');
@@ -133,7 +151,7 @@ export default class ForceBuyForm extends Vue {
       return;
     }
     // call forcebuy
-    const payload: ForcebuyPayload = { pair: this.pair };
+    const payload: ForceEnterPayload = { pair: this.pair };
     if (this.price) {
       payload.price = Number(this.price);
     }
@@ -142,6 +160,9 @@ export default class ForceBuyForm extends Vue {
     }
     if (this.stakeAmount) {
       payload.stakeamount = this.stakeAmount;
+    }
+    if (this.botApiVersion >= 2.13) {
+      payload.orderside = this.orderSide;
     }
     this.forcebuy(payload);
     this.$nextTick(() => {
