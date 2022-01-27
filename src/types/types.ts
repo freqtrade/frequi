@@ -137,6 +137,9 @@ export interface BotState {
   trailing_stop: boolean;
   trailing_stop_positive: number;
   trailing_stop_positive_offset: number;
+
+  position_adjustment_enable?: boolean;
+  max_entry_position_adjustment?: number;
 }
 
 export interface StrategyListResult {
