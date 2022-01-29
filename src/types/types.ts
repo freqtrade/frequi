@@ -170,7 +170,7 @@ export interface AvailablePairResult {
 export interface PairCandlePayload {
   pair: string;
   timeframe: string;
-  limit: number;
+  limit?: number;
 }
 
 export interface PairHistoryPayload {

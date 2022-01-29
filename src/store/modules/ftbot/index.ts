@@ -620,7 +620,7 @@ export function createBotSubStore(botId: string, botName: string) {
           .catch(console.error);
       },
       [BotStoreActions.getPairCandles]({ commit }, payload: PairCandlePayload) {
-        if (payload.pair && payload.timeframe && payload.limit) {
+        if (payload.pair && payload.timeframe) {
           return api
             .get('/pair_candles', {
               params: { ...payload },
