@@ -59,7 +59,6 @@ export default class BalanceChart extends Vue {
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          console.log(params);
           return `${formatPriceCurrency(params.value.balance, params.value.currency, 8)}<br />${
             params.percent
           }% (${formatPriceCurrency(params.value.est_stake, params.value.stake)})`;
