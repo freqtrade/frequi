@@ -5,9 +5,10 @@
         <h5 class="detail-header">General</h5>
         <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
-        <ValuePair description="Stake">{{
-          formatPriceCurrency(trade.stake_amount, stakeCurrency)
-        }}</ValuePair>
+        <ValuePair description="Stake"
+          >{{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
+          {{ trade.leverage ? `(${trade.leverage}x)` : '' }}</ValuePair
+        >
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
         <ValuePair v-if="trade.buy_tag" description="Buy tag">{{ trade.buy_tag }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
@@ -53,6 +54,17 @@
         <ValuePair v-if="trade.stoploss_last_update_timestamp" description="Stoploss last updated">
           {{ timestampms(trade.stoploss_last_update_timestamp) }}
         </ValuePair>
+        <div v-if="trade.trading_mode !== undefined && trade.trading_mode !== 'SPOT'">
+          <h5 class="detail-header">Futures/Margin</h5>
+          <ValuePair description="Short"> {{ trade.is_short ? 'short' : 'long' }} </ValuePair>
+          <ValuePair description="Leverage"> {{ trade.leverage }} </ValuePair>
+          <ValuePair v-if="trade.funding_fees !== undefined" description="Funding fees">
+            {{ formatPrice(trade.funding_fees) }}
+          </ValuePair>
+          <ValuePair v-if="trade.interest_rate !== undefined" description="Interest rate">
+            {{ formatPrice(trade.interest_rate) }}
+          </ValuePair>
+        </div>
       </div>
     </div>
   </div>

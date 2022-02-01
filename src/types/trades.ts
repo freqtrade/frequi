@@ -1,3 +1,9 @@
+export enum TradingMode {
+  SPOT = 'SPOT',
+  MARGIN = 'MARGIN',
+  FUTURES = 'FUTURES',
+}
+
 export interface Trade {
   /**
    * corresponds to the UI (ftbot.1) - does NOT relate to the backend!
@@ -64,6 +70,12 @@ export interface Trade {
   stoploss_current_dist_ratio?: number;
   stoploss_current_dist_pct?: number;
   open_order_id?: string;
+  /** Short properties - only available in API versions 2.x and up */
+  is_short?: boolean;
+  leverage?: number;
+  interest_rate?: number;
+  funding_fees?: number;
+  trading_mode?: string;
 }
 
 export interface ClosedTrade extends Trade {
