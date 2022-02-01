@@ -5,7 +5,7 @@ export enum OrderSides {
 
 export interface ForceEnterPayload {
   pair: string;
-  orderside?: OrderSides;
+  side?: OrderSides;
   price?: number;
   ordertype?: string;
   stakeamount?: number;

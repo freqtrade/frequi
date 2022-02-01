@@ -162,7 +162,7 @@ export default class ForceBuyForm extends Vue {
       payload.stakeamount = this.stakeAmount;
     }
     if (this.botApiVersion >= 2.13) {
-      payload.orderside = this.orderSide;
+      payload.side = this.orderSide;
     }
     this.forcebuy(payload);
     this.$nextTick(() => {
