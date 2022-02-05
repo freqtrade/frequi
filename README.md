@@ -16,10 +16,10 @@ Instructions for this end-user setup can be found in the [freqtrade API document
 
 ## Developer project setup
 
-It will require [freqtrade](https://github.com/freqtrade/freqtrade) to be running on the same host with the API enabled under (`localhost:8081`). You can either use the webpack proxy (port can be changed in `vue.config.js`) - or connect directly to the API (recommended).
+It will require [freqtrade](https://github.com/freqtrade/freqtrade) to be running on the same host with the API enabled under (`localhost:8080`). You can either use the webpack proxy (port can be changed in `vue.config.js`) - or connect directly to the API (recommended).
 
 You will also have to have CORS for freqtrade configured correctly based on the [freqtrade documentation](https://www.freqtrade.io/en/latest/rest-api/#cors).
-Most likely, the correct entry will be `http://localhost:8080` or `http://127.0.0.1:8080` - but the URL must match the URL you use to access FreqUI.
+Most likely, the correct entry will be `http://localhost:3000` or `http://127.0.0.1:3000` - but the URL must match the URL you use to access FreqUI.
 Ports can vary, so check the URL you're using.
 
 ### Project setup
@@ -52,7 +52,7 @@ yarn lint
 docker-compose build
 docker-compose up -d
 
-# Access using http://localhost:8080/
+# Access using http://localhost:3000/
 ```
 
 
