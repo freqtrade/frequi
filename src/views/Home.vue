@@ -31,12 +31,13 @@ import BotList from '@/components/BotList.vue';
 export default class Home extends Vue {}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home {
   margin-top: 1.5em;
 }
 .logo-svg {
   -webkit-mask: url(../assets/freqtrade-logo-mask.png) no-repeat center;
+  -webkit-mask-size: 240px 240px;
   mask: url(../assets/freqtrade-logo-mask.png) no-repeat center;
   mask-size: contain;
   width: 250px;

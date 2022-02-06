@@ -198,7 +198,7 @@ export default class CandleChartContainer extends Vue {
           strategy: this.strategy,
         });
       } else {
-        this.getPairCandles({ pair: this.pair, timeframe: this.timeframe });
+        this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
       }
     }
   }

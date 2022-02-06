@@ -60,7 +60,7 @@ const store = new Vuex.Store({
       commit('setLoggedIn', loggedin);
     },
     async loadUIVersion({ commit }) {
-      if (process.env.NODE_ENV !== 'development') {
+      if (import.meta.env.PROD) {
         try {
           const result = await axios.get<UiVersion>('/ui_version');
           const { version } = result.data;
@@ -77,7 +77,7 @@ const store = new Vuex.Store({
 UserService.migrateLogin();
 
 store.registerModule(StoreModules.ftbot, createBotStore(store));
-Object.entries(UserService.getAvailableBots()).forEach(([k, v]) => {
+Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {
   store.dispatch(`${StoreModules.ftbot}/addBot`, v);
 });
 store.dispatch(`${StoreModules.ftbot}/selectFirstBot`);

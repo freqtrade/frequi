@@ -16,4 +16,4 @@ RUN mkdir -p ${HOME}/commandhistory \
     && echo "export PROMPT_COMMAND='history -a'" >> ${HOME}/.bashrc \
     && echo "export HISTFILE=~/commandhistory/.bash_history" >> ${HOME}/.bashrc
 
-EXPOSE 8080
+EXPOSE 3000

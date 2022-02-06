@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 /** Parse api Query parameters
  * so that an array is correctly exploded into seperate items.
  */

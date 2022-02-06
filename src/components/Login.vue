@@ -80,7 +80,7 @@ import { AuthPayload, BotDescriptor } from '@/types';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import StoreModules from '@/store/storeSubModules';
 
-const defaultURL = window.location.origin || 'http://localhost:8080';
+const defaultURL = window.location.origin || 'http://localhost:3000';
 const ftbot = namespace(StoreModules.ftbot);
 
 @Component({})

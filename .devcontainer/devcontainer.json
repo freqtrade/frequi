@@ -5,7 +5,7 @@
 		"dockerfile": "Dockerfile"
 	},
 	"forwardPorts": [
-		8080
+		3000
 	],
 	"mounts": [
 		"source=frequi-bashhistory,target=/home/node/commandhistory,type=volume"

@@ -37,7 +37,6 @@ use([
 
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
-const CHART_TRADE_COUNT = 'Trade Count';
 
 @Component({
   components: {

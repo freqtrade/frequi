@@ -20,57 +20,56 @@ const routes: Array<RouteConfig> = [
   {
     path: '/trade',
     name: 'Freqtrade Trading',
-    component: () => import(/* webpackChunkName: "trade" */ '@/views/Trading.vue'),
+    component: () => import('@/views/Trading.vue'),
   },
   {
     path: '/graph',
     name: 'Freqtrade Graph',
-    component: () => import(/* webpackChunkName: "graph" */ '@/views/Graphs.vue'),
+    component: () => import('@/views/Graphs.vue'),
   },
   {
     path: '/logs',
     name: 'Freqtrade Logs',
-    component: () => import(/* webpackChunkName: "graph" */ '@/views/LogView.vue'),
+    component: () => import('@/views/LogView.vue'),
   },
   {
     path: '/backtest',
     name: 'Freqtrade Backtest',
-    component: () => import(/* webpackChunkName: "backtest" */ '@/views/Backtesting.vue'),
+    component: () => import('@/views/Backtesting.vue'),
   },
   {
     path: '/dashboard',
     name: 'Freqtrade Dashboard',
-    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
+    component: () => import('@/views/Dashboard.vue'),
   },
   {
     path: '/balance',
     name: 'Freqtrade Balance',
-    component: () => import(/* webpackChunkName: "balance" */ '@/components/ftbot/Balance.vue'),
+    component: () => import('@/components/ftbot/Balance.vue'),
   },
   {
     path: '/open_trades',
-    component: () => import(/* webpackChunkName: "trades" */ '@/views/TradesList.vue'),
+    component: () => import('@/views/TradesList.vue'),
   },
 
   {
     path: '/trade_history',
-    component: () => import(/* webpackChunkName: "trades" */ '@/views/TradesList.vue'),
+    component: () => import('@/views/TradesList.vue'),
     props: { history: true },
   },
   {
     path: '/pairlist',
-    component: () =>
-      import(/* webpackChunkName: "pairlist" */ '@/components/ftbot/FTBotAPIPairList.vue'),
+    component: () => import('@/components/ftbot/FTBotAPIPairList.vue'),
   },
   {
     path: '/settings',
     name: 'Freqtrade Settings',
-    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Settings.vue'),
+    component: () => import('@/views/Settings.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "login" */ '@/views/LoginView.vue'),
+    component: () => import('@/views/LoginView.vue'),
     meta: {
       allowAnonymous: true,
     },
@@ -84,7 +83,7 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: import.meta.env.BASE_URL,
   routes,
 });
 

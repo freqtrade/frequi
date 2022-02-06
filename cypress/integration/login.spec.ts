@@ -6,7 +6,7 @@ describe('Login', () => {
     cy.get('button').contains('Login').click();
     cy.get('.modal-title').contains('Login to your bot');
     // Test prefilled URL
-    cy.get('input[id=url-input]').should('have.value', 'http://localhost:8080');
+    cy.get('input[id=url-input]').should('have.value', 'http://localhost:3000');
     cy.get('#name-input').should('exist');
     cy.get('#username-input').should('exist');
     cy.get('#password-input').should('exist');
@@ -20,7 +20,7 @@ describe('Login', () => {
     cy.get('li').should('contain', 'No bot selected');
     cy.get('.card-header').contains('Freqtrade bot Login');
     // Test prefilled URL
-    cy.get('input[id=url-input]').should('have.value', 'http://localhost:8080');
+    cy.get('input[id=url-input]').should('have.value', 'http://localhost:3000');
     cy.get('input[id=name-input]').should('exist');
     cy.get('input[id=username-input]').should('exist');
     cy.get('input[id=password-input]').should('exist');
@@ -68,7 +68,7 @@ describe('Login', () => {
 
         expect(loginInfo[bot1].botName).to.eq('TestBot');
         expect(loginInfo[bot1].botName).to.eq('TestBot');
-        expect(loginInfo[bot1].apiUrl).to.eq('http://localhost:8080');
+        expect(loginInfo[bot1].apiUrl).to.eq('http://localhost:3000');
         expect(loginInfo[bot1].accessToken).to.eq('access_token_tesst');
         expect(loginInfo[bot1].refreshToken).to.eq('refresh_test');
       });
