@@ -22,7 +22,11 @@
       <b-table class="table-sm" :items="balanceCurrencies" :fields="tableFields">
         <template slot="bottom-row">
           <td><strong>Total</strong></td>
-          <td></td>
+          <td>
+            <span class="font-italic" title="Increase over initial capital">{{
+              formatPercent(balance.starting_capital_ratio)
+            }}</span>
+          </td>
           <!-- this is a computed prop that adds up all the expenses in the visible rows -->
           <td>
             <strong>{{ formatCurrency(balance.total) }}</strong>
@@ -42,7 +46,7 @@ import ShowIcon from 'vue-material-design-icons/Eye.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
-
+import { formatPercent } from '@/shared/formatters';
 const ftbot = namespace(StoreModules.ftbot);
 
 @Component({
@@ -56,6 +60,7 @@ export default class Balance extends Vue {
   @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
 
   hideSmallBalances = true;
+  formatPercent = formatPercent;
 
   get smallBalance(): number {
     return Number((0.1 ** this.stakeCurrencyDecimals).toFixed(8));
