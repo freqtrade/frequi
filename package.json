@@ -53,7 +53,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-vue": "^7.20.0",
-    "jest": "^27.3.1",
+    "jest": "^27.5.1",
     "mutationobserver-shim": "^0.3.7",
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
