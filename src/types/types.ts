@@ -218,6 +218,11 @@ export interface SysInfoResponse {
   ram_pct: number;
 }
 
+export interface HealthResponse {
+  last_process: string;
+  last_process_ts: number;
+}
+
 export interface StatusResponse {
   status: string;
 }
