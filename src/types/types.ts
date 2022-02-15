@@ -118,7 +118,7 @@ export interface BotState {
   forcebuy_enabled: boolean;
   max_open_trades: number;
   minimal_roi: object;
-  stake_amount: number;
+  stake_amount: string;
   stake_currency: string;
   stake_currency_decimals?: number;
   available_balance?: number;
