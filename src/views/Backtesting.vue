@@ -429,7 +429,7 @@ export default class Backtesting extends Vue {
       const stakeAmount = Number(this.stakeAmount);
       if (stakeAmount) {
         // eslint-disable-next-line @typescript-eslint/camelcase
-        btPayload.stake_amount = stakeAmount;
+        btPayload.stake_amount = stakeAmount.toString();
       }
     }
 
