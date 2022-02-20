@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container text-left">
     <div class="row">
       <div class="col-lg-5">
         <h5 class="detail-header">General</h5>
@@ -15,12 +15,7 @@
         <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
           formatPrice(trade.close_rate)
         }}</ValuePair>
-        <ValuePair v-if="trade.min_rate" description="Min Rate">{{
-          formatPrice(trade.min_rate)
-        }}</ValuePair>
-        <ValuePair v-if="trade.max_rate" description="Max Rate">{{
-          formatPrice(trade.max_rate)
-        }}</ValuePair>
+
         <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
@@ -30,6 +25,25 @@
         >
           <trade-profit class="ml-2" :trade="trade" />
         </ValuePair>
+        <details>
+          <summary>Details</summary>
+          <ValuePair v-if="trade.min_rate" description="Min Rate">{{
+            formatPrice(trade.min_rate)
+          }}</ValuePair>
+          <ValuePair v-if="trade.max_rate" description="Max Rate">{{
+            formatPrice(trade.max_rate)
+          }}</ValuePair>
+          <ValuePair description="Open-Fees">
+            {{ trade.fee_open_cost }} {{ trade.fee_open_currency }} ({{
+              formatPercent(trade.fee_open)
+            }})
+          </ValuePair>
+          <ValuePair v-if="trade.fee_close_cost && trade.fee_close" description="Fees close">
+            {{ trade.fee_close_cost }} {{ trade.fee_close_currency }} ({{
+              formatPercent(trade.fee_close)
+            }})
+          </ValuePair>
+        </details>
       </div>
       <div class="mt-2 mt-lg-0 col-lg-7">
         <h5 class="detail-header">Stoploss</h5>
