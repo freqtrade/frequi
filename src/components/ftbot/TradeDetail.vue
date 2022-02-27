@@ -70,8 +70,9 @@
         </ValuePair>
         <div v-if="trade.trading_mode !== undefined && trade.trading_mode !== 'SPOT'">
           <h5 class="detail-header">Futures/Margin</h5>
-          <ValuePair description="Short"> {{ trade.is_short ? 'short' : 'long' }} </ValuePair>
-          <ValuePair description="Leverage"> {{ trade.leverage }} </ValuePair>
+          <ValuePair description="Direction">
+            {{ trade.is_short ? 'short' : 'long' }} - {{ trade.leverage }}x
+          </ValuePair>
           <ValuePair v-if="trade.funding_fees !== undefined" description="Funding fees">
             {{ formatPrice(trade.funding_fees) }}
           </ValuePair>

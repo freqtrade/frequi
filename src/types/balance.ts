@@ -1,11 +1,16 @@
 export interface BalanceRecords {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean | undefined;
   balance: number;
   currency: string;
   est_stake: number;
   free: number;
   used: number;
   stake: string;
+  // Properties added in v 2.x
+  side?: string;
+  leverage?: number;
+  is_position: boolean;
+  position?: number;
 }
 
 export interface BalanceInterface {
