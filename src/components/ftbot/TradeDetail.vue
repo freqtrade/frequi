@@ -80,6 +80,17 @@
             {{ formatPrice(trade.interest_rate) }}
           </ValuePair>
         </div>
+        <details v-if="trade.orders">
+          <summary>Orders</summary>
+          <div v-for="(order, key) in trade.orders" :key="key">
+            <span>
+              (#{{ key + 1 }}) <DateTimeTZ :date="order.order_timestamp" show-timezone />
+              <b class="ml-1">{{ order.ft_order_side }}</b> for
+              <b>{{ formatPrice(order.safe_price) }}</b> | {{ order.remaining }} /
+              {{ order.filled }}</span
+            >
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -90,10 +101,11 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/general/ValuePair.vue';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
+import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { Trade } from '@/types';
 
 @Component({
-  components: { ValuePair, TradeProfit },
+  components: { ValuePair, TradeProfit, DateTimeTZ },
 })
 export default class TradeDetail extends Vue {
   @Prop({ type: Object, required: true }) trade!: Trade;

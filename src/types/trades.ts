@@ -4,6 +4,22 @@ export enum TradingMode {
   FUTURES = 'FUTURES',
 }
 
+export interface Order {
+  pair: string;
+  order_id: string;
+  status: string;
+  remaining: number;
+  amount: number;
+  safe_price: number;
+  cost: number;
+  filled: number;
+  ft_order_side: string;
+  order_type: string;
+  is_open: boolean;
+  order_timestamp?: number;
+  order_filled_timestamp?: number;
+}
+
 export interface Trade {
   /**
    * corresponds to the UI (ftbot.1) - does NOT relate to the backend!
@@ -76,6 +92,7 @@ export interface Trade {
   interest_rate?: number;
   funding_fees?: number;
   trading_mode?: string;
+  orders?: Order[];
 }
 
 export interface ClosedTrade extends Trade {
