@@ -65,15 +65,9 @@
         >
         </CandleChart>
         <div v-else class="m-auto">
-          <b-spinner
-            v-if="isLoadingDataset"
-            label="Spinning"
-          />
+          <b-spinner v-if="isLoadingDataset" label="Spinning" />
 
-          <div
-            v-else
-            style="font-size: 1.5rem"
-          >
+          <div v-else style="font-size: 1.5rem">
             {{ noDatasetText }}
           </div>
         </div>
