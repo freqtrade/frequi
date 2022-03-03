@@ -40,8 +40,10 @@ export interface FtbotStateType {
   selectedPair: string;
   // TODO: type me
   candleData: {};
+  candleDataStatus: 'loading' | 'success' | 'error';
   // TODO: type me
   history: {};
+  historyStatus: 'loading' | 'success' | 'error';
   strategyPlotConfig?: PlotConfig;
   customPlotConfig: PlotConfigStorage;
   plotConfigName: string;
@@ -83,7 +85,9 @@ const state = (): FtbotStateType => {
     detailTradeId: undefined,
     selectedPair: '',
     candleData: {},
+    candleDataStatus: 'loading',
     history: {},
+    historyStatus: 'loading',
     strategyPlotConfig: undefined,
     customPlotConfig: {},
     plotConfigName: getPlotConfigName(),

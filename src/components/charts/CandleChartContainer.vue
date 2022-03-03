@@ -64,7 +64,19 @@
           :theme="getChartTheme"
         >
         </CandleChart>
-        <label v-else style="margin: auto auto; font-size: 1.5rem">No data available</label>
+        <div v-else class="m-auto">
+          <b-spinner
+            v-if="isLoadingDataset"
+            label="Spinning"
+          />
+
+          <div
+            v-else
+            style="font-size: 1.5rem"
+          >
+            {{ noDatasetText }}
+          </div>
+        </div>
       </div>
     </div>
     <transition name="fade" mode="in-out">
@@ -131,7 +143,11 @@ export default class CandleChartContainer extends Vue {
 
   @ftbot.Action setPlotConfigName;
 
+  @ftbot.Getter [BotStoreGetters.candleDataStatus]!: 'loading' | 'success' | 'error';
+
   @ftbot.Getter [BotStoreGetters.candleData]!: PairHistory;
+
+  @ftbot.Getter [BotStoreGetters.historyStatus]!: 'loading' | 'success' | 'error';
 
   @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
 
@@ -158,6 +174,32 @@ export default class CandleChartContainer extends Vue {
 
   get datasetColumns() {
     return this.dataset ? this.dataset.columns : [];
+  }
+
+  get isLoadingDataset(): boolean {
+    if (this.historicView) {
+      return this.historyStatus === 'loading';
+    }
+
+    return this.candleDataStatus === 'loading';
+  }
+
+  get noDatasetText(): string {
+    const status = this.historicView ? this.historyStatus : this.candleDataStatus;
+
+    switch (status) {
+      case 'loading':
+        return 'Loading...';
+
+      case 'success':
+        return 'No data available';
+
+      case 'error':
+        return 'Failed to load data';
+
+      default:
+        return 'Unknown';
+    }
   }
 
   get hasDataset(): boolean {
