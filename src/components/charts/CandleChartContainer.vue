@@ -208,6 +208,10 @@ export default class CandleChartContainer extends Vue {
     }
     this.plotConfigName = getPlotConfigName();
     this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+
+    if (!this.hasDataset) {
+      this.refresh();
+    }
   }
 
   plotConfigChanged() {
