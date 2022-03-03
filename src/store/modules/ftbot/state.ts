@@ -15,6 +15,7 @@ import {
   BacktestSteps,
   LogLine,
   SysInfoResponse,
+  LoadingStatus,
 } from '@/types';
 
 export interface FtbotStateType {
@@ -40,10 +41,10 @@ export interface FtbotStateType {
   selectedPair: string;
   // TODO: type me
   candleData: {};
-  candleDataStatus: 'loading' | 'success' | 'error';
+  candleDataStatus: LoadingStatus;
   // TODO: type me
   history: {};
-  historyStatus: 'loading' | 'success' | 'error';
+  historyStatus: LoadingStatus;
   strategyPlotConfig?: PlotConfig;
   customPlotConfig: PlotConfigStorage;
   plotConfigName: string;

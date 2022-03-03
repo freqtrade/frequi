@@ -36,6 +36,7 @@ import {
   DeleteTradeResponse,
   BlacklistResponse,
   ForceSellPayload,
+  LoadingStatus,
 } from '@/types';
 
 import {
@@ -312,13 +313,13 @@ export function createBotSubStore(botId: string, botName: string) {
       [BotStoreGetters.strategyList](state: FtbotStateType): string[] {
         return state.strategyList;
       },
-      [BotStoreGetters.candleDataStatus](state: FtbotStateType): 'loading' | 'success' | 'error' {
+      [BotStoreGetters.candleDataStatus](state: FtbotStateType): LoadingStatus {
         return state.candleDataStatus;
       },
       [BotStoreGetters.candleData](state: FtbotStateType): PairHistory | {} {
         return state.candleData;
       },
-      [BotStoreGetters.historyStatus](state: FtbotStateType): 'loading' | 'success' | 'error' {
+      [BotStoreGetters.historyStatus](state: FtbotStateType): LoadingStatus {
         return state.historyStatus;
       },
       // TODO: Type me
@@ -414,13 +415,13 @@ export function createBotSubStore(botId: string, botName: string) {
       updatePairs(state: FtbotStateType, pairlist: string[]) {
         state.pairlist = pairlist;
       },
-      setCandleDataStatus(state: FtbotStateType, loading: 'loading' | 'success' | 'error') {
+      setCandleDataStatus(state: FtbotStateType, loading: LoadingStatus) {
         state.candleDataStatus = loading;
       },
       updatePairCandles(state: FtbotStateType, { pair, timeframe, data }) {
         state.candleData = { ...state.candleData, [`${pair}__${timeframe}`]: data };
       },
-      setHistoryStatus(state: FtbotStateType, loading: 'loading' | 'success' | 'error') {
+      setHistoryStatus(state: FtbotStateType, loading: LoadingStatus) {
         state.historyStatus = loading;
       },
       updatePairHistory(state: FtbotStateType, { pair, timeframe, data }) {

@@ -237,3 +237,5 @@ export interface DeleteTradeResponse {
 export interface UiVersion {
   version: string;
 }
+
+export type LoadingStatus = 'loading' | 'success' | 'error';

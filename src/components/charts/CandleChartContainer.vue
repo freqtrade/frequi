@@ -91,6 +91,7 @@ import {
   PlotConfig,
   PairCandlePayload,
   PairHistoryPayload,
+  LoadingStatus,
 } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
@@ -137,11 +138,11 @@ export default class CandleChartContainer extends Vue {
 
   @ftbot.Action setPlotConfigName;
 
-  @ftbot.Getter [BotStoreGetters.candleDataStatus]!: 'loading' | 'success' | 'error';
+  @ftbot.Getter [BotStoreGetters.candleDataStatus]!: LoadingStatus;
 
   @ftbot.Getter [BotStoreGetters.candleData]!: PairHistory;
 
-  @ftbot.Getter [BotStoreGetters.historyStatus]!: 'loading' | 'success' | 'error';
+  @ftbot.Getter [BotStoreGetters.historyStatus]!: LoadingStatus;
 
   @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
 
