@@ -64,7 +64,13 @@
           :theme="getChartTheme"
         >
         </CandleChart>
-        <label v-else style="margin: auto auto; font-size: 1.5rem">No data available</label>
+        <div v-else class="m-auto">
+          <b-spinner v-if="isLoadingDataset" label="Spinning" />
+
+          <div v-else style="font-size: 1.5rem">
+            {{ noDatasetText }}
+          </div>
+        </div>
       </div>
     </div>
     <transition name="fade" mode="in-out">
@@ -85,6 +91,7 @@ import {
   PlotConfig,
   PairCandlePayload,
   PairHistoryPayload,
+  LoadingStatus,
 } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
@@ -131,7 +138,11 @@ export default class CandleChartContainer extends Vue {
 
   @ftbot.Action setPlotConfigName;
 
+  @ftbot.Getter [BotStoreGetters.candleDataStatus]!: LoadingStatus;
+
   @ftbot.Getter [BotStoreGetters.candleData]!: PairHistory;
+
+  @ftbot.Getter [BotStoreGetters.historyStatus]!: LoadingStatus;
 
   @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
 
@@ -160,6 +171,32 @@ export default class CandleChartContainer extends Vue {
     return this.dataset ? this.dataset.columns : [];
   }
 
+  get isLoadingDataset(): boolean {
+    if (this.historicView) {
+      return this.historyStatus === 'loading';
+    }
+
+    return this.candleDataStatus === 'loading';
+  }
+
+  get noDatasetText(): string {
+    const status = this.historicView ? this.historyStatus : this.candleDataStatus;
+
+    switch (status) {
+      case 'loading':
+        return 'Loading...';
+
+      case 'success':
+        return 'No data available';
+
+      case 'error':
+        return 'Failed to load data';
+
+      default:
+        return 'Unknown';
+    }
+  }
+
   get hasDataset(): boolean {
     return !!this.dataset;
   }
@@ -172,6 +209,10 @@ export default class CandleChartContainer extends Vue {
     }
     this.plotConfigName = getPlotConfigName();
     this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+
+    if (!this.hasDataset) {
+      this.refresh();
+    }
   }
 
   plotConfigChanged() {
