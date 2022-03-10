@@ -10,7 +10,14 @@
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl}`"
         @click="selectBot(bot.botId)"
       >
-        <bot-entry :bot="bot" :no-buttons="small" />
+        <bot-rename
+          v-if="editingBots.includes(bot.botId)"
+          :bot="bot"
+          @saved="stopEditBot(bot.botId)"
+          @cancelled="stopEditBot(bot.botId)"
+        />
+
+        <bot-entry v-else :bot="bot" :no-buttons="small" @edit="editBot(bot.botId)" />
       </b-list-group-item>
     </b-list-group>
     <LoginModal v-if="!small" class="mt-2" login-text="Add new bot" />
@@ -23,12 +30,19 @@ import { namespace } from 'vuex-class';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
+import BotRename from '@/components/BotRename.vue';
 import { BotDescriptors } from '@/types';
 import StoreModules from '@/store/storeSubModules';
 
 const ftbot = namespace(StoreModules.ftbot);
 
-@Component({ components: { LoginModal, BotEntry } })
+@Component({
+  components: {
+    LoginModal,
+    BotEntry,
+    BotRename,
+  },
+})
 export default class BotList extends Vue {
   @Prop({ default: false, type: Boolean }) small!: boolean;
 
@@ -41,7 +55,21 @@ export default class BotList extends Vue {
   @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
 
   @ftbot.Action selectBot;
+
+  editingBots: string[] = [];
+
+  editBot(botId: string) {
+    if (!this.editingBots.includes(botId)) {
+      this.editingBots.push(botId);
+    }
+  }
+
+  stopEditBot(botId: string) {
+    if (!this.editingBots.includes(botId)) {
+      return;
+    }
+
+    this.editingBots.splice(this.editingBots.indexOf(botId), 1);
+  }
 }
 </script>
-
-<style scoped></style>

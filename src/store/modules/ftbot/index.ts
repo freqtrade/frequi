@@ -155,6 +155,7 @@ export enum BotStoreActions {
   setBacktestResultKey = 'setBacktestResultKey',
   sysInfo = 'sysInfo',
   logout = 'logout',
+  rename = 'rename',
 }
 
 export function createBotSubStore(botId: string, botName: string) {
@@ -487,6 +488,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       [BotStoreActions.logout]() {
         userService.logout();
+      },
+      [BotStoreActions.rename](ctx, name) {
+        userService.renameBot(name);
       },
       [BotStoreActions.setRefreshRequired]({ commit }, refreshRequired: boolean) {
         commit('updateRefreshRequired', refreshRequired);

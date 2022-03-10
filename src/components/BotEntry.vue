@@ -16,9 +16,10 @@
         R
       </b-form-checkbox>
       <div v-if="!noButtons" class="d-flex flex-align-cent">
-        <!-- <b-button class="ml-1" size="sm" title="Edit bot">
-          <EditIcon :size="16" title="Edit Button" />
-        </b-button> -->
+        <b-button class="ml-1" size="sm" title="Delete bot" @click="$emit('edit')">
+          <EditIcon :size="16" />
+        </b-button>
+
         <b-button class="ml-1" size="sm" title="Delete bot" @click.prevent="clickRemoveBot(bot)">
           <DeleteIcon :size="16" title="Delete Bot" />
         </b-button>
@@ -31,15 +32,19 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import LoginModal from '@/views/LoginModal.vue';
-import EditIcon from 'vue-material-design-icons/Cog.vue';
+import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { BotDescriptor, BotDescriptors } from '@/types';
 import StoreModules from '@/store/storeSubModules';
 
 const ftbot = namespace(StoreModules.ftbot);
 
-@Component({ components: { LoginModal, DeleteIcon, EditIcon } })
+@Component({
+  components: {
+    DeleteIcon,
+    EditIcon,
+  },
+})
 export default class BotList extends Vue {
   @Prop({ default: false, type: Object }) bot!: BotDescriptor;
 
@@ -79,5 +84,3 @@ export default class BotList extends Vue {
   }
 }
 </script>
-
-<style scoped></style>
