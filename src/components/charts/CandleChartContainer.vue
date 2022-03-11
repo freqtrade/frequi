@@ -40,18 +40,24 @@
             >Short exits: {{ dataset.exit_short_signals }}</small
           >
         </div>
-        <div class="ml-auto mr-2">
-          <b-select
-            v-model="plotConfigName"
-            :options="availablePlotConfigNames"
-            size="sm"
-            @change="plotConfigChanged"
-          >
-          </b-select>
-        </div>
+        <div class="ml-auto d-flex align-items-center">
+          <b-form-checkbox v-model="heikinAshi">Heikin Ashi</b-form-checkbox>
 
-        <div class="mr-0 mr-md-1">
-          <b-button size="sm" title="Plot configurator" @click="showConfigurator">&#9881;</b-button>
+          <div class="ml-2">
+            <b-select
+              v-model="plotConfigName"
+              :options="availablePlotConfigNames"
+              size="sm"
+              @change="plotConfigChanged"
+            >
+            </b-select>
+          </div>
+
+          <div class="ml-2 mr-0 mr-md-1">
+            <b-button size="sm" title="Plot configurator" @click="showConfigurator">
+              &#9881;
+            </b-button>
+          </div>
         </div>
       </div>
       <div class="row mr-1 ml-1 h-100">
@@ -60,6 +66,7 @@
           :dataset="dataset"
           :trades="trades"
           :plot-config="plotConfig"
+          :heikin-ashi="heikinAshi"
           :use-u-t-c="timezone === 'UTC'"
           :theme="getChartTheme"
         >
@@ -131,6 +138,8 @@ export default class CandleChartContainer extends Vue {
   plotConfigName = '';
 
   showPlotConfig = this.plotConfigModal;
+
+  heikinAshi: boolean = false;
 
   @Getter getChartTheme!: string;
 
