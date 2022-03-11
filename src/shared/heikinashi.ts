@@ -4,10 +4,10 @@ export default function heikinAshiDataset(columns: string[], data: Array<number[
   const highIdx = columns.indexOf('high');
   const lowIdx = columns.indexOf('low');
 
-  // Prevent mutation of original data
-  const dataCopy = data.map((original) => original.slice());
+  return data.map((original, idx, candles) => {
+    // Prevent mutation of original data
+    const candle = original.slice();
 
-  return dataCopy.map((candle, idx, candles) => {
     if (idx === 0) {
       const close = (candle[openIdx] + candle[highIdx] + candle[lowIdx] + candle[closeIdx]) / 4;
       const open = (candle[openIdx] + candle[closeIdx]) / 2;
