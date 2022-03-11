@@ -9,7 +9,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
-import { heikinAshiDataset } from '@/shared/formatters';
+import heikinashi from '@/shared/heikinashi';
 import ECharts from 'vue-echarts';
 
 import { use } from 'echarts/core';
@@ -353,7 +353,7 @@ export default class CandleChart extends Vue {
     const options: EChartsOption = {
       dataset: {
         source: this.heikinAshi
-          ? heikinAshiDataset(this.datasetColumns, this.dataset.data)
+          ? heikinashi(this.datasetColumns, this.dataset.data)
           : this.dataset.data,
       },
       grid: [
