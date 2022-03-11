@@ -9,6 +9,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
+import heikinashi from '@/shared/heikinashi';
 import ECharts from 'vue-echarts';
 
 import { use } from 'echarts/core';
@@ -82,6 +83,8 @@ export default class CandleChart extends Vue {
 
   @Prop({ required: true }) readonly dataset!: PairHistory;
 
+  @Prop({ type: Boolean, default: false }) heikinAshi!: boolean;
+
   @Prop({ default: true }) readonly useUTC!: boolean;
 
   @Prop({ required: true }) plotConfig!: PlotConfig;
@@ -102,6 +105,11 @@ export default class CandleChart extends Vue {
   @Watch('plotConfig')
   plotConfigChanged() {
     this.initializeChartOptions();
+  }
+
+  @Watch('heikinAshi')
+  heikinAshiChanged() {
+    this.updateChart();
   }
 
   get strategy() {
@@ -344,7 +352,9 @@ export default class CandleChart extends Vue {
 
     const options: EChartsOption = {
       dataset: {
-        source: this.dataset.data,
+        source: this.heikinAshi
+          ? heikinashi(this.datasetColumns, this.dataset.data)
+          : this.dataset.data,
       },
       grid: [
         {
