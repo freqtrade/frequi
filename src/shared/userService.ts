@@ -13,6 +13,12 @@ export class UserService {
     this.botId = botId;
   }
 
+  public renameBot(newName: string): void {
+    const newInfo = this.getLoginInfo();
+    newInfo.botName = newName;
+    this.storeLoginInfo(newInfo);
+  }
+
   /**
    * Stores info for current botId in the object of all bots.
    */
