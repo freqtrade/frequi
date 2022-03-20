@@ -10,7 +10,7 @@
           {{ trade.leverage ? `(${trade.leverage}x)` : '' }}</ValuePair
         >
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
-        <ValuePair v-if="trade.buy_tag" description="Buy tag">{{ trade.buy_tag }}</ValuePair>
+        <ValuePair v-if="trade.buy_tag" description="Entry tag">{{ trade.buy_tag }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
         <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
           formatPrice(trade.close_rate)
