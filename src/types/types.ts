@@ -75,11 +75,17 @@ export interface UnfilledTimeout {
 }
 
 export interface OrderTypes {
-  buy: string;
-  sell: string;
-  emergencysell?: string;
+  buy?: string;
+  sell?: string;
   forcesell?: string;
   forcebuy?: string;
+  emergencysell?: string;
+  // TODO: this will need updating for futures, removal of the above, and mandatory of certain values.
+  entry?: string;
+  exit?: string;
+  emergencyexit?: string;
+  forcesexit?: string;
+  forceentry?: string;
   stoploss: string;
   stoploss_on_exchange: boolean;
   stoploss_on_exchange_interval: number;
@@ -106,7 +112,8 @@ export interface BotState {
   /** Api version - was not provided prior to 1.1 (or 2021.11) */
   api_version?: number;
   dry_run: boolean;
-  trading_mode?: string;
+  /** Futures, margin or spot */
+  trading_mode?: 'futures' | 'margin' | 'spot';
   short_allowed?: boolean;
   state: BotStates;
   runmode: RunModes;

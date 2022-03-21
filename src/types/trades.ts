@@ -41,7 +41,10 @@ export interface Trade {
   stake_amount: number;
   strategy?: string;
   exchange?: string;
+  /** @deprecated - Replaced by enter_tag with 2.x */
   buy_tag?: string;
+  /** Replaces buy_tag with version 2.x */
+  enter_tag?: string;
 
   timeframe: string;
   open_rate: number;
