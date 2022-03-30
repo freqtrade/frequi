@@ -276,7 +276,7 @@ export default class BacktestResultView extends Vue {
 
   get perSellReason() {
     return [
-      { key: 'sell_reason', label: 'Sell Reason' },
+      { key: 'sell_reason', label: 'Exit Reason' },
       { key: 'trades', label: 'Buys' },
       { key: 'profit_mean', label: 'Avg Profit %', formatter: (value) => formatPercent(value, 2) },
       { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },

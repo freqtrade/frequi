@@ -68,8 +68,10 @@ export enum RunModes {
 }
 
 export interface UnfilledTimeout {
-  buy: number;
-  sell: number;
+  buy?: number; // Deprecated
+  entry?: number;
+  sell?: number; // Deprecated
+  exit?: number;
   unit: string;
   exit_timeout_count: number;
 }
@@ -95,14 +97,12 @@ export interface PriceBase {
   price_side: string;
   use_order_book: boolean;
   order_book_top: number;
+  price_last_balance?: number;
 }
 
-export interface AskStrategy extends PriceBase {
-  bid_last_balance?: number;
-}
+export type ExitPricing = PriceBase;
 
-export interface BidStrategy extends PriceBase {
-  ask_last_balance?: number;
+export interface EntryPricing extends PriceBase {
   check_depth_of_market: object;
 }
 
@@ -117,8 +117,10 @@ export interface BotState {
   short_allowed?: boolean;
   state: BotStates;
   runmode: RunModes;
-  bid_strategy: BidStrategy;
-  ask_strategy: AskStrategy;
+  bid_strategy?: EntryPricing;
+  ask_strategy?: ExitPricing;
+  entry_pricing?: EntryPricing;
+  exit_pricing?: ExitPricing;
   unfilledtimeout: UnfilledTimeout;
   order_types: OrderTypes;
   exchange: string;

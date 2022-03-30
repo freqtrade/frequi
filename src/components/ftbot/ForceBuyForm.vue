@@ -141,7 +141,11 @@ export default class ForceBuyForm extends Vue {
     this.price = null;
     this.stakeAmount = null;
     if (this.botApiVersion > 1.1) {
-      this.ordertype = this.botState?.order_types?.forcebuy || this.botState?.order_types?.buy;
+      this.ordertype =
+        this.botState?.order_types?.forcebuy ||
+        this.botState?.order_types?.forceentry ||
+        this.botState?.order_types?.buy ||
+        this.botState?.order_types?.entry;
     }
   }
 
