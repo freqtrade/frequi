@@ -27,11 +27,11 @@
           </v-select>
 
           <b-button class="ml-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
-          <small v-if="dataset" class="ml-2 text-nowrap"
-            >Buysignals: {{ dataset.buy_signals }}</small
+          <small v-if="dataset" class="ml-2 text-nowrap" title="Long entry signals"
+            >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
           >
-          <small v-if="dataset" class="ml-2 text-nowrap"
-            >SellSignals: {{ dataset.sell_signals }}</small
+          <small v-if="dataset" class="ml-2 text-nowrap" title="Long exit signals"
+            >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
           >
           <small v-if="dataset && dataset.enter_short_signals" class="ml-2 text-nowrap"
             >Short entries: {{ dataset.enter_short_signals }}</small
