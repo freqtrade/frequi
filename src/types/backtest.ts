@@ -93,9 +93,13 @@ export interface StrategyBacktestResult {
   trailing_only_offset_is_reached: boolean;
   use_custom_stoploss: boolean;
   minimal_roi: Record<string, number>;
-  use_sell_signal: boolean;
-  sell_profit_only: boolean;
-  sell_profit_offset: number;
+
+  use_sell_signal?: boolean; // Deprecated
+  sell_profit_only?: boolean; // Deprecated
+  sell_profit_offset?: number; // Deprecated
+  use_exit_signal?: boolean;
+  exit_profit_only?: boolean;
+  exit_profit_offset?: number;
   rejected_signals: number;
 
   // Daily stats ...

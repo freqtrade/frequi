@@ -71,7 +71,9 @@ export interface Trade {
   /** Current absolute profit */
   profit_abs: number;
 
-  sell_reason?: string;
+  sell_reason?: string; // Deprecated, replaced by exit reason
+  exit_reason?: string;
+  exit_order_status?: string;
   min_rate?: number;
   max_rate?: number;
 

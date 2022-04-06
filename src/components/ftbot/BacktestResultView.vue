@@ -30,7 +30,7 @@
           hover
           stacked="sm"
           :items="backtestResult.sell_reason_summary"
-          :fields="perSellReason"
+          :fields="perExitReason"
         >
         </b-table>
       </b-card>
@@ -228,9 +228,18 @@ export default class BacktestResultView extends Vue {
       },
       { setting: 'Custom Stoploss', value: this.backtestResult.use_custom_stoploss },
       { setting: 'ROI', value: this.backtestResult.minimal_roi },
-      { setting: 'Use Sell Signal', value: this.backtestResult.use_sell_signal },
-      { setting: 'Sell profit only', value: this.backtestResult.sell_profit_only },
-      { setting: 'Sell profit offset', value: this.backtestResult.sell_profit_offset },
+      {
+        setting: 'Use Exit Signal',
+        value: this.backtestResult.use_exit_signal || this.backtestResult.use_sell_signal,
+      },
+      {
+        setting: 'Exit profit only',
+        value: this.backtestResult.exit_profit_only || this.backtestResult.sell_profit_only,
+      },
+      {
+        setting: 'Exit profit offset',
+        value: this.backtestResult.exit_profit_offset || this.backtestResult.sell_profit_offset,
+      },
       { setting: 'Enable protections', value: this.backtestResult.enable_protections },
       {
         setting: 'Starting balance',
@@ -274,7 +283,7 @@ export default class BacktestResultView extends Vue {
     ];
   }
 
-  get perSellReason() {
+  get perExitReason() {
     return [
       { key: 'sell_reason', label: 'Exit Reason' },
       { key: 'trades', label: 'Buys' },
