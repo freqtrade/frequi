@@ -24,12 +24,12 @@
           </b-card>
         </div>
       </div>
-      <b-card header="Results per Sell-reason" class="row mt-2 w-100">
+      <b-card header="Results per Exit-reason" class="row mt-2 w-100">
         <b-table
           small
           hover
           stacked="sm"
-          :items="backtestResult.sell_reason_summary"
+          :items="backtestResult.exit_reason_summary || backtestResult.sell_reason_summary"
           :fields="perExitReason"
         >
         </b-table>
@@ -230,15 +230,24 @@ export default class BacktestResultView extends Vue {
       { setting: 'ROI', value: this.backtestResult.minimal_roi },
       {
         setting: 'Use Exit Signal',
-        value: this.backtestResult.use_exit_signal || this.backtestResult.use_sell_signal,
+        value:
+          this.backtestResult.use_exit_signal !== undefined
+            ? this.backtestResult.use_exit_signal
+            : this.backtestResult.use_sell_signal,
       },
       {
         setting: 'Exit profit only',
-        value: this.backtestResult.exit_profit_only || this.backtestResult.sell_profit_only,
+        value:
+          this.backtestResult.exit_profit_only !== undefined
+            ? this.backtestResult.exit_profit_only
+            : this.backtestResult.sell_profit_only,
       },
       {
         setting: 'Exit profit offset',
-        value: this.backtestResult.exit_profit_offset || this.backtestResult.sell_profit_offset,
+        value:
+          this.backtestResult.exit_profit_offset !== undefined
+            ? this.backtestResult.exit_profit_offset
+            : this.backtestResult.sell_profit_offset,
       },
       { setting: 'Enable protections', value: this.backtestResult.enable_protections },
       {
@@ -285,7 +294,7 @@ export default class BacktestResultView extends Vue {
 
   get perExitReason() {
     return [
-      { key: 'sell_reason', label: 'Exit Reason' },
+      { key: 'exit_reason', label: 'Exit Reason' },
       { key: 'trades', label: 'Buys' },
       { key: 'profit_mean', label: 'Avg Profit %', formatter: (value) => formatPercent(value, 2) },
       { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },

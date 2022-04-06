@@ -158,7 +158,7 @@ export default class TradeList extends Vue {
   // Added to table-fields for historic trades
   closedFields: Record<string, string | Function>[] = [
     { key: 'close_timestamp', label: 'Close date' },
-    { key: 'sell_reason', label: 'Close Reason' },
+    { key: 'exit_reason', label: 'Close Reason' },
   ];
 
   tableFields: Record<string, string | Function>[] = [

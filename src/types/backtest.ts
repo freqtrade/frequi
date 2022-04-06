@@ -29,7 +29,7 @@ export interface PairResult {
   wins: number;
 }
 
-export interface SellReasonResults {
+export interface ExitReasonResults {
   draws: number;
   losses: number;
   profit_mean: number;
@@ -51,7 +51,8 @@ export interface StrategyBacktestResult {
   best_pair: PairResult;
   worst_pair: PairResult;
   results_per_pair: Array<PairResult>;
-  sell_reason_summary: Array<SellReasonResults>;
+  sell_reason_summary?: Array<ExitReasonResults>;
+  exit_reason_summary?: Array<ExitReasonResults>;
   left_open_trades: Trade[];
   total_trades: number;
   total_volume: number;
