@@ -70,6 +70,7 @@ export default class TradesLogChart extends Vue {
         trade.pair,
         trade.botName,
         timestampms(trade.close_timestamp),
+        trade.is_short === undefined || !trade.is_short ? 'Long' : 'Short',
       ];
       res.push(entry);
     }
@@ -93,10 +94,8 @@ export default class TradesLogChart extends Vue {
       tooltip: {
         trigger: 'axis',
         formatter: (params) => {
-          if (params[0].data[3]) {
-            return `${params[0].data[2]} | ${params[0].data[3]}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
-          }
-          return `${params[0].data[2]}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
+          const botName = params[0].data[3] ? ` | ${params[0].data[3]}` : '';
+          return `${params[0].data[2]} | ${params[0].data[5]} ${botName}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
         },
         axisPointer: {
           type: 'line',
