@@ -103,6 +103,9 @@ export interface StrategyBacktestResult {
   exit_profit_offset?: number;
   rejected_signals: number;
 
+  timedout_entry_orders: number;
+  timedout_exit_orders: number;
+
   // Daily stats ...
   draw_days: number;
   drawdown_end: string;
@@ -112,6 +115,7 @@ export interface StrategyBacktestResult {
   loser_holding_avg: number;
   losing_days: number;
   max_drawdown: number;
+  max_drawdown_account: number;
   /** Absolute max drawdown */
   max_drawdown_abs: number;
   max_drawdown_low: number;

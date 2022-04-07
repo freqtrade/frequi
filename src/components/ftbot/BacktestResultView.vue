@@ -164,20 +164,33 @@ export default class BacktestResultView extends Vue {
         metric: 'Avg. Duration Losers',
         value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
       },
-      { metric: 'Rejected buy signals', value: this.backtestResult.rejected_signals },
-
-      { metric: '___', value: '___' },
-      { metric: 'Max Drawdown', value: formatPercent(this.backtestResult.max_drawdown) },
+      { metric: 'Rejected entry signals', value: this.backtestResult.rejected_signals },
       {
-        metric: 'Max Drawdown ABS',
-        value: this.formatPriceStake(this.backtestResult.max_drawdown_abs),
+        metric: 'Entry/Exit timeouts',
+        value: `${this.backtestResult.timedout_entry_orders} / ${this.backtestResult.timedout_exit_orders}`,
       },
-      { metric: 'Drawdown start', value: timestampms(this.backtestResult.drawdown_start_ts) },
-      { metric: 'Drawdown end', value: timestampms(this.backtestResult.drawdown_end_ts) },
+
       { metric: '___', value: '___' },
       { metric: 'Min balance', value: this.formatPriceStake(this.backtestResult.csum_min) },
       { metric: 'Max balance', value: this.formatPriceStake(this.backtestResult.csum_max) },
       { metric: 'Market change', value: formatPercent(this.backtestResult.market_change) },
+      { metric: '___', value: '___' },
+      {
+        metric: 'Max Drawdown (Account)',
+        value: formatPercent(this.backtestResult.max_drawdown_account),
+      },
+      {
+        metric: 'Max Drawdown ABS',
+        value: this.formatPriceStake(this.backtestResult.max_drawdown_abs),
+      },
+      {
+        metric: 'Drawdown high | low',
+        value: `${this.formatPriceStake(
+          this.backtestResult.max_drawdown_high,
+        )} | ${this.formatPriceStake(this.backtestResult.max_drawdown_low)}`,
+      },
+      { metric: 'Drawdown start', value: timestampms(this.backtestResult.drawdown_start_ts) },
+      { metric: 'Drawdown end', value: timestampms(this.backtestResult.drawdown_end_ts) },
       { metric: '___', value: '___' },
 
       {
