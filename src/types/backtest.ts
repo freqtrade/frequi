@@ -127,6 +127,13 @@ export interface StrategyBacktestResult {
   winner_holding_avg: number;
   winning_days: number;
 
+  trade_count_long?: number;
+  trade_count_short?: number;
+  profit_total_long?: number;
+  profit_total_short?: number;
+  profit_total_long_abs?: number;
+  profit_total_short_abs?: number;
+
   /** Start time of the backtest run */
   backtest_run_start_ts: number;
   /** End time of the backtest run */

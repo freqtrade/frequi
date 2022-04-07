@@ -111,6 +111,29 @@ export default class BacktestResultView extends Vue {
 
   get backtestResultStats() {
     // Transpose Result into readable format
+    const shortMetrics =
+      this.backtestResult?.trade_count_short && this.backtestResult?.trade_count_short > 0
+        ? [
+            { metric: '___', value: '___' },
+            {
+              metric: 'Long / Short',
+              value: `${this.backtestResult.trade_count_long} / ${this.backtestResult.trade_count_short}`,
+            },
+            {
+              metric: 'Total profit Long',
+              value: `${formatPercent(
+                this.backtestResult.profit_total_long || 0,
+              )} | ${this.formatPriceStake(this.backtestResult.profit_total_long_abs)}`,
+            },
+            {
+              metric: 'Total profit Short',
+              value: `${formatPercent(
+                this.backtestResult.profit_total_short || 0,
+              )} | ${this.formatPriceStake(this.backtestResult.profit_total_short_abs)}`,
+            },
+          ]
+        : [];
+
     return [
       {
         metric: 'Total Profit',
@@ -169,6 +192,8 @@ export default class BacktestResultView extends Vue {
         metric: 'Entry/Exit timeouts',
         value: `${this.backtestResult.timedout_entry_orders} / ${this.backtestResult.timedout_exit_orders}`,
       },
+
+      ...shortMetrics,
 
       { metric: '___', value: '___' },
       { metric: 'Min balance', value: this.formatPriceStake(this.backtestResult.csum_min) },
