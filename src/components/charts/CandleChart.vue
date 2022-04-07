@@ -161,7 +161,7 @@ export default class CandleChart extends Vue {
       animation: false,
       legend: {
         // Initial legend, further entries are pushed to the below list
-        data: ['Candles', 'Volume', 'Buy', 'Sell'],
+        data: ['Candles', 'Volume', 'Long', 'Long exit'],
         right: '1%',
       },
       tooltip: {
@@ -405,7 +405,7 @@ export default class CandleChart extends Vue {
           },
         },
         {
-          name: 'Buy',
+          name: 'Long',
           type: 'scatter',
           symbol: 'triangle',
           symbolSize: 10,
@@ -420,7 +420,7 @@ export default class CandleChart extends Vue {
           },
         },
         {
-          name: 'Sell',
+          name: 'Long exit',
           type: 'scatter',
           symbol: 'diamond',
           symbolSize: 8,
