@@ -28,7 +28,8 @@
     </p>
     <p>
       Currently <strong>{{ botState.state }}</strong
-      >, <strong>forcebuy: {{ botState.forcebuy_enabled }}</strong>
+      >,
+      <strong>force entry: {{ botState.force_entry_enable || botState.forcebuy_enabled }}</strong>
     </p>
     <p>
       <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>

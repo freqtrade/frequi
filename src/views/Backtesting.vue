@@ -272,6 +272,14 @@
         >
         </CandleChartContainer>
       </div>
+      <b-card header="Single trades" class="row mt-2 w-100">
+        <TradeList
+          class="row trade-history mt-2 w-100"
+          :trades="selectedBacktestResult.trades"
+          :show-filter="true"
+          :stake-currency="selectedBacktestResult.stake_currency"
+        />
+      </b-card>
     </div>
   </div>
 </template>
@@ -289,6 +297,7 @@ import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
+import TradeList from '@/components/ftbot/TradeList.vue';
 
 import {
   BacktestPayload,
@@ -318,6 +327,7 @@ const ftbot = namespace(StoreModules.ftbot);
     ValuePair,
     PairSummary,
     TimeframeSelect,
+    TradeList,
   },
 })
 export default class Backtesting extends Vue {

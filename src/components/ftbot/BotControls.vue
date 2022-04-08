@@ -41,7 +41,7 @@
       <ForceSellIcon />
     </button>
     <button
-      v-if="botState && botState.forcebuy_enabled"
+      v-if="botState && (botState.force_entry_enable || botState.forcebuy_enabled)"
       class="btn btn-secondary btn-sm ml-1"
       :disabled="!isTrading || !isRunning"
       title="Force enter - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."

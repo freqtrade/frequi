@@ -124,7 +124,8 @@ export interface BotState {
   unfilledtimeout: UnfilledTimeout;
   order_types: OrderTypes;
   exchange: string;
-  forcebuy_enabled: boolean;
+  forcebuy_enabled?: boolean; // Deprecated
+  force_entry_enable?: boolean;
   max_open_trades: number;
   minimal_roi: object;
   stake_amount: string;
