@@ -43,7 +43,11 @@
       </template>
       <template #cell(trade_id)="row">
         {{ row.item.trade_id }}
-        {{ botApiVersion > 2.0 ? '| ' + (row.item.is_short ? 'Short' : 'Long') : '' }}
+        {{
+          botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
+            ? '| ' + (row.item.is_short ? 'Short' : 'Long')
+            : ''
+        }}
       </template>
       <template #cell(profit)="row">
         <trade-profit :trade="row.item" />
