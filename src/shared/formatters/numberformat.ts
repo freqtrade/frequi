@@ -9,11 +9,18 @@ export function formatPercent(value: number, decimals = 3): string {
 /**
  * Format number to `decimals` without trailing zeros
  * @param value Number to format
- * @param decimals number of decimals (Defaults to 8)
+ * @param decimals number of decimals (Defaults to 15)
  * @returns Formatted string
  */
-export function formatPrice(value: number, decimals = 8): string {
-  return !isUndefined(value) ? parseFloat(value.toFixed(decimals)).toString() : '';
+export function formatPrice(value: number, decimals = 15): string {
+  // const format = new Intl.NumberFormat('', {maximumFractionDigits: decimals}
+  // return !isUndefined(value) ? parseFloat(value.toFixed(decimals)).toString() : '';
+  return !isUndefined(value)
+    ? value.toLocaleString('fullwide', {
+        useGrouping: false,
+        maximumFractionDigits: decimals,
+      })
+    : '';
 }
 
 /**
