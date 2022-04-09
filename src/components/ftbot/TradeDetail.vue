@@ -10,7 +10,7 @@
         <ValuePair v-if="trade.buy_tag" description="Entry tag">{{ trade.buy_tag }}</ValuePair>
         <ValuePair description="Stake"
           >{{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
-          {{ trade.leverage ? `(${trade.leverage}x)` : '' }}</ValuePair
+          {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
         >
         <ValuePair description="Amount">{{ trade.amount }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
@@ -70,7 +70,7 @@
         <ValuePair v-if="trade.stoploss_last_update_timestamp" description="Stoploss last updated">
           {{ timestampms(trade.stoploss_last_update_timestamp) }}
         </ValuePair>
-        <div v-if="trade.trading_mode !== undefined && trade.trading_mode !== 'SPOT'">
+        <div v-if="trade.trading_mode !== undefined && trade.trading_mode !== 'spot'">
           <h5 class="detail-header">Futures/Margin</h5>
           <ValuePair description="Direction">
             {{ trade.is_short ? 'short' : 'long' }} - {{ trade.leverage }}x

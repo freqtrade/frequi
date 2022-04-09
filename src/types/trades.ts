@@ -1,7 +1,7 @@
 export enum TradingMode {
-  SPOT = 'SPOT',
-  MARGIN = 'MARGIN',
-  FUTURES = 'FUTURES',
+  SPOT = 'spot',
+  MARGIN = 'margin',
+  FUTURES = 'futures',
 }
 
 export interface Order {
@@ -96,7 +96,7 @@ export interface Trade {
   leverage?: number;
   interest_rate?: number;
   funding_fees?: number;
-  trading_mode?: string;
+  trading_mode?: TradingMode;
   orders?: Order[];
 }
 
