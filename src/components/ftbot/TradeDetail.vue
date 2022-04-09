@@ -5,12 +5,14 @@
         <h5 class="detail-header">General</h5>
         <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
+
+        <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
+        <ValuePair v-if="trade.buy_tag" description="Entry tag">{{ trade.buy_tag }}</ValuePair>
         <ValuePair description="Stake"
           >{{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
           {{ trade.leverage ? `(${trade.leverage}x)` : '' }}</ValuePair
         >
-        <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
-        <ValuePair v-if="trade.buy_tag" description="Entry tag">{{ trade.buy_tag }}</ValuePair>
+        <ValuePair description="Amount">{{ trade.amount }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
         <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
           formatPrice(trade.close_rate)
