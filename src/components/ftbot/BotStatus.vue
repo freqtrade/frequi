@@ -4,6 +4,25 @@
       Running Freqtrade <strong>{{ version }}</strong>
     </p>
     <p>
+      Running with
+      <strong>
+        {{ botState.max_open_trades }}x{{ botState.stake_amount }} {{ botState.stake_currency }}
+      </strong>
+      on
+      <strong>{{ botState.exchange }}</strong> in
+      <strong>{{ botState.trading_mode || 'spot' }}</strong> markets, with Strategy
+      <strong>{{ botState.strategy }}</strong>
+    </p>
+    <p>
+      Currently <strong>{{ botState.state }}</strong
+      >,
+      <strong>force entry: {{ botState.force_entry_enable || botState.forcebuy_enabled }}</strong>
+    </p>
+    <p>
+      <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
+    </p>
+    <hr />
+    <p>
       Avg Profit {{ formatPercent(profit.profit_all_ratio_mean) }} (&sum;
       {{ formatPercent(profit.profit_all_ratio_sum) }}) in {{ profit.trade_count }} Trades, with an
       average duration of {{ profit.avg_duration }}. Best pair: {{ profit.best_pair }}.
@@ -15,24 +34,6 @@
       <br />
       Last trade opened:
       <strong><DateTimeTZ :date="profit.latest_trade_timestamp" show-timezone /></strong>
-    </p>
-
-    <p>
-      Running with
-      <strong>
-        {{ botState.max_open_trades }}x{{ botState.stake_amount }} {{ botState.stake_currency }}
-      </strong>
-      on
-      <strong>{{ botState.exchange }}</strong
-      >, with Strategy <strong>{{ botState.strategy }}</strong>
-    </p>
-    <p>
-      Currently <strong>{{ botState.state }}</strong
-      >,
-      <strong>force entry: {{ botState.force_entry_enable || botState.forcebuy_enabled }}</strong>
-    </p>
-    <p>
-      <strong>{{ botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
     </p>
   </div>
 </template>
