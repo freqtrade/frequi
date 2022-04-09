@@ -95,9 +95,12 @@ export interface StrategyBacktestResult {
   use_custom_stoploss: boolean;
   minimal_roi: Record<string, number>;
 
-  use_sell_signal?: boolean; // Deprecated
-  sell_profit_only?: boolean; // Deprecated
-  sell_profit_offset?: number; // Deprecated
+  /** @deprecated - replaced by use_exit_signal 2.x */
+  use_sell_signal?: boolean;
+  /** @deprecated - replaced by exit_profit_only 2.x */
+  sell_profit_only?: boolean;
+  /** @deprecated - replaced by exit_profit_offset 2.x */
+  sell_profit_offset?: number;
   use_exit_signal?: boolean;
   exit_profit_only?: boolean;
   exit_profit_offset?: number;

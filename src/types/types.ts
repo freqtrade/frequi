@@ -67,27 +67,36 @@ export enum RunModes {
   OTHER = 'other',
 }
 
+export enum TradingMode {
+  SPOT = 'spot',
+  MARGIN = 'margin',
+  FUTURES = 'futures',
+}
+
 export interface UnfilledTimeout {
-  buy?: number; // Deprecated
+  /** @deprecated replaced by entry in 2.x */
+  buy?: number;
   entry?: number;
-  sell?: number; // Deprecated
+  /** @deprecated replaced by exit in 2.x */
+  sell?: number;
   exit?: number;
   unit: string;
   exit_timeout_count: number;
 }
 
 export interface OrderTypes {
+  /** @deprecated Replaced by entry in 2.x */
   buy?: string;
+  /** @deprecated Replaced by exit in 2.x */
   sell?: string;
   forcesell?: string;
   forcebuy?: string;
   emergencysell?: string;
-  // TODO: this will need updating for futures, removal of the above, and mandatory of certain values.
   entry?: string;
   exit?: string;
-  emergencyexit?: string;
-  forcesexit?: string;
-  forceentry?: string;
+  emergency_exit?: string;
+  force_exit?: string;
+  force_entry?: string;
   stoploss: string;
   stoploss_on_exchange: boolean;
   stoploss_on_exchange_interval: number;
@@ -113,7 +122,7 @@ export interface BotState {
   api_version?: number;
   dry_run: boolean;
   /** Futures, margin or spot */
-  trading_mode?: 'futures' | 'margin' | 'spot';
+  trading_mode?: TradingMode;
   short_allowed?: boolean;
   state: BotStates;
   runmode: RunModes;
@@ -124,7 +133,8 @@ export interface BotState {
   unfilledtimeout: UnfilledTimeout;
   order_types: OrderTypes;
   exchange: string;
-  forcebuy_enabled?: boolean; // Deprecated
+  /** @deprecated replaced by force_entry_enable in 2.x */
+  forcebuy_enabled?: boolean;
   force_entry_enable?: boolean;
   max_open_trades: number;
   minimal_roi: object;

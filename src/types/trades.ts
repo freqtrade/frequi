@@ -1,8 +1,4 @@
-export enum TradingMode {
-  SPOT = 'spot',
-  MARGIN = 'margin',
-  FUTURES = 'futures',
-}
+import { TradingMode } from './types';
 
 export interface Order {
   pair: string;
@@ -71,7 +67,8 @@ export interface Trade {
   /** Current absolute profit */
   profit_abs: number;
 
-  sell_reason?: string; // Deprecated, replaced by exit reason
+  /** @deprecated - replaced by exit reason 2.x */
+  sell_reason?: string;
   exit_reason?: string;
   exit_order_status?: string;
   min_rate?: number;
