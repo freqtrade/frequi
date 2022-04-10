@@ -31,6 +31,8 @@ export interface Trade {
   botName: string;
   trade_id: number;
   pair: string;
+  base_currency?: string;
+  quote_currency?: string;
   is_open: boolean;
   amount: number;
   amount_requested?: number;
