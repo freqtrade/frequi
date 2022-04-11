@@ -37,6 +37,7 @@ import {
   BlacklistResponse,
   ForceSellPayload,
   LoadingStatus,
+  BacktestHistoryEntry,
 } from '@/types';
 
 import {
@@ -104,6 +105,7 @@ export enum BotStoreGetters {
   backtestStep = 'backtestStep',
   backtestProgress = 'backtestProgress',
   backtestHistory = 'backtestHistory',
+  backtestHistoryList = 'backtestHistoryList',
   selectedBacktestResultKey = 'selectedBacktestResultKey',
 }
 
@@ -150,6 +152,8 @@ export enum BotStoreActions {
   deleteBlacklist = 'deleteBlacklist',
   startBacktest = 'startBacktest',
   pollBacktest = 'pollBacktest',
+  getBacktestHistory = 'getBacktestHistory',
+  getBacktestHistoryResult = 'getBacktestHistoryResult',
   removeBacktest = 'removeBacktest',
   stopBacktest = 'stopBacktest',
   setBacktestResultKey = 'setBacktestResultKey',
@@ -341,6 +345,9 @@ export function createBotSubStore(botId: string, botName: string) {
       [BotStoreGetters.backtestHistory](state: FtbotStateType): {} {
         return state.backtestHistory;
       },
+      [BotStoreGetters.backtestHistoryList](state: FtbotStateType): BacktestHistoryEntry[] {
+        return state.backtestHistoryList;
+      },
       [BotStoreGetters.selectedBacktestResultKey](state: FtbotStateType): string {
         return state.selectedBacktestResultKey;
       },
@@ -467,6 +474,9 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       setBacktestResultKey(state: FtbotStateType, key: string) {
         state.selectedBacktestResultKey = key;
+      },
+      setBacktestHistory(state: FtbotStateType, backtestList) {
+        state.backtestHistoryList = backtestList;
       },
       updateSysInfo(state, sysinfo: SysInfoResponse) {
         state.sysinfo = sysinfo;
@@ -1051,6 +1061,18 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve(data);
         } catch (err) {
           return Promise.reject(err);
+        }
+      },
+      async [BotStoreActions.getBacktestHistory]({ commit }) {
+        const result = await api.get<BacktestHistoryEntry[]>('/backtest/history');
+        commit('setBacktestHistory', result.data);
+      },
+      async [BotStoreActions.getBacktestHistoryResult]({ commit }, filename: string) {
+        const result = await api.get<BacktestStatus>('/backtest/history/result', {
+          params: { filename: filename },
+        });
+        if (result.data.backtest_result) {
+          commit('updateBacktestResult', result.data.backtest_result);
         }
       },
       [BotStoreActions.setBacktestResultKey]({ commit }, key: string) {

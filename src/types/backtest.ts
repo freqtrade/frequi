@@ -166,3 +166,10 @@ export interface BacktestStatus {
   trade_count?: number;
   backtest_result?: BacktestResult;
 }
+
+export interface BacktestHistoryEntry {
+  filename: string;
+  strategy: string;
+  run_id: string;
+  backtest_start_time: number;
+}

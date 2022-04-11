@@ -77,6 +77,15 @@
       <!-- End Left bar -->
 
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column bt-config">
+        <button class="btn btn-secondary" @click="getBacktestHistory">Get historic results</button>
+        <div v-if="backtestHistoryList">
+          <div v-for="(res, idx) in backtestHistoryList" :key="idx">
+            <button class="btn btn-secondary" @click="getBacktestHistoryResult(res.filename)">
+              {{ res.filename }} {{ res.strategy }}
+            </button>
+          </div>
+        </div>
+
         <div class="mb-2">
           <span>Strategy</span>
           <StrategySelect v-model="strategy"></StrategySelect>
@@ -308,6 +317,7 @@ import {
   PairHistoryPayload,
   PlotConfig,
   StrategyBacktestResult,
+  BacktestHistoryEntry,
 } from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
@@ -376,6 +386,8 @@ export default class Backtesting extends Vue {
 
   @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
 
+  @ftbot.Getter [BotStoreGetters.backtestHistoryList]!: BacktestHistoryEntry[];
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action getPairHistory!: (payload: PairHistoryPayload) => void;
 
@@ -386,9 +398,14 @@ export default class Backtesting extends Vue {
 
   @ftbot.Action pollBacktest!: () => void;
 
+  @ftbot.Action getBacktestHistory!: () => void;
+
   @ftbot.Action removeBacktest!: () => void;
 
   @ftbot.Action stopBacktest!: () => void;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ftbot.Action getBacktestHistoryResult!: (filename: string) => void;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action setBacktestResultKey!: (key: string) => void;
