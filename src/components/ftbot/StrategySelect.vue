@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="w-100 d-flex">
-      <b-form-select v-model="locStrategy" :options="strategyList" @change="strategyChanged">
+      <b-form-select
+        id="strategy-select"
+        v-model="locStrategy"
+        :options="strategyList"
+        @change="strategyChanged"
+      >
       </b-form-select>
       <div class="ml-2">
         <b-button @click="getStrategyList">&#x21bb;</b-button>

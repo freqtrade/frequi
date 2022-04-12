@@ -193,6 +193,7 @@
           class="d-flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center"
         >
           <b-button
+            id="start-backtest"
             variant="primary"
             :disabled="backtestRunning || !canRunBacktest"
             class="mx-1"

@@ -1,0 +1,7 @@
+{
+    "strategies": [
+        "AdvancedTest",
+        "AverageStrategy",
+        "SampleStrategy"
+    ]
+}

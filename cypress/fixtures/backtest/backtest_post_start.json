@@ -1,0 +1,9 @@
+{
+    "status": "running",
+    "running": true,
+    "status_msg": "Backtest started",
+    "step": "startup",
+    "progress": 0.0,
+    "trade_count": null,
+    "backtest_result": null
+}
