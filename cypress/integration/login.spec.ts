@@ -35,7 +35,7 @@ describe('Login', () => {
     });
   });
 
-  it.only('Test Login', () => {
+  it('Test Login', () => {
     cy.visit('/login');
     cy.get('input[id=name-input]').type('TestBot');
     cy.get('input[id=username-input]').type('Freqtrader');
@@ -81,5 +81,65 @@ describe('Login', () => {
     cy.get('span').should('contain', 'TestBot');
     // Check API calls have been made.
     cy.wait('@RandomAPICall');
+  });
+
+  it('Test Login failed - wrong api url', () => {
+    cy.visit('/login');
+    cy.get('input[id=name-input]').type('TestBot');
+    cy.get('input[id=username-input]').type('Freqtrader');
+    cy.get('input[id=password-input]').type('SuperDuperBot');
+
+    cy.intercept('**/api/v1/**', {
+      statusCode: 200,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+      headers: { 'access-control-allow-origin': '*' },
+    }).as('RandomAPICall');
+    cy.intercept(
+      {
+        method: 'Post',
+        url: '**/api/v1/token/login',
+      },
+      {
+        statusCode: 404,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+        headers: { 'access-control-allow-origin': '*' },
+      },
+    ).as('login');
+    cy.get('button[type=submit]').click();
+    cy.get('div').should('contain', 'Login failed.');
+
+    cy.get('div').should('contain', 'API Url required');
+  });
+
+  it('Test Login failed - wrong password url', () => {
+    cy.visit('/login');
+    cy.get('input[id=name-input]').type('TestBot');
+    cy.get('input[id=username-input]').type('Freqtrader');
+    cy.get('input[id=password-input]').type('SuperDuperBot');
+
+    cy.intercept('**/api/v1/**', {
+      statusCode: 200,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+      headers: { 'access-control-allow-origin': '*' },
+    }).as('RandomAPICall');
+    cy.intercept(
+      {
+        method: 'Post',
+        url: '**/api/v1/token/login',
+      },
+      {
+        statusCode: 401,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+        headers: { 'access-control-allow-origin': '*' },
+      },
+    ).as('login');
+    cy.get('button[type=submit]').click();
+    cy.get('div').should('contain', 'Connected to bot, however Login');
+
+    cy.get('div').should('contain', 'Name and Password are required.');
   });
 });
