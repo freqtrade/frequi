@@ -181,6 +181,7 @@ export function createBotSubStore(botId: string, botName: string) {
           (selectedBot === botId || bgRefresh) &&
           getters.autoRefresh &&
           getters.isBotOnline &&
+          state.botStatusAvailable &&
           !getters.isWebserverMode
         ) {
           return true;
@@ -393,6 +394,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       updateState(state: FtbotStateType, botState: BotState) {
         state.botState = botState;
+        state.botStatusAvailable = true;
       },
       updateVersion(state: FtbotStateType, version) {
         state.version = version.version;
