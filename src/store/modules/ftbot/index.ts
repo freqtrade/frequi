@@ -59,6 +59,7 @@ export enum BotStoreGetters {
   autoRefresh = 'autoRefresh',
   refreshNow = 'refreshNow',
   refreshing = 'refreshing',
+  botStatusAvailable = 'botStatusAvailable',
 
   openTrades = 'openTrades',
   openTradeCount = 'openTradeCount',
@@ -185,14 +186,16 @@ export function createBotSubStore(botId: string, botName: string) {
           (selectedBot === botId || bgRefresh) &&
           getters.autoRefresh &&
           getters.isBotOnline &&
-          state.botStatusAvailable &&
+          getters.botStatusAvailable &&
           !getters.isWebserverMode
         ) {
           return true;
         }
         return false;
       },
-
+      [BotStoreGetters.botStatusAvailable](state: FtbotStateType) {
+        return state.botStatusAvailable;
+      },
       [BotStoreGetters.plotConfig](state: FtbotStateType) {
         return state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG };
       },
