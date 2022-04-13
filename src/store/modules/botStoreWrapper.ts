@@ -282,7 +282,7 @@ export default function createBotStore(store) {
         }
       });
     },
-    async allRefreshFull({ commit, dispatch, state }) {
+    async allRefreshFull({ commit, dispatch, state, getters }) {
       if (state.refreshing) {
         return;
       }
@@ -290,6 +290,14 @@ export default function createBotStore(store) {
       try {
         // Ensure all bots status is correct.
         await dispatch('pingAll');
+        getters.allAvailableBotsList.forEach(async (e) => {
+          if (
+            getters[`${e}/${BotStoreGetters.isBotOnline}`] &&
+            !getters[`${e}/${BotStoreGetters.botStatusAvailable}`]
+          ) {
+            await dispatch('allGetState');
+          }
+        });
         const updates: Promise<AxiosInstance>[] = [];
         updates.push(dispatch('allRefreshFrequent', false));
         updates.push(dispatch('allRefreshSlow', true));
