@@ -18,7 +18,7 @@
         :key="idx"
         class="d-flex justify-content-between align-items-center py-1 mb-1"
         button
-        @click="getBacktestHistoryResult(res.filename)"
+        @click="getBacktestHistoryResult(res)"
       >
         <strong>{{ res.strategy }}</strong>
         backtested on: {{ timestampms(res.backtest_start_time * 1000) }}

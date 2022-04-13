@@ -1067,9 +1067,9 @@ export function createBotSubStore(botId: string, botName: string) {
         const result = await api.get<BacktestHistoryEntry[]>('/backtest/history');
         commit('setBacktestHistory', result.data);
       },
-      async [BotStoreActions.getBacktestHistoryResult]({ commit }, filename: string) {
+      async [BotStoreActions.getBacktestHistoryResult]({ commit }, payload: BacktestHistoryEntry) {
         const result = await api.get<BacktestStatus>('/backtest/history/result', {
-          params: { filename: filename },
+          params: { filename: payload.filename, strategy: payload.strategy },
         });
         if (result.data.backtest_result) {
           commit('updateBacktestResult', result.data.backtest_result);
