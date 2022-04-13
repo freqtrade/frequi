@@ -122,7 +122,7 @@ import StoreModules from '@/store/storeSubModules';
 
 const ftbot = namespace(StoreModules.ftbot);
 const layoutNs = namespace(StoreModules.layout);
-const uiSettingsNs = namespace(StoreModules.uiSettings);
+import { useSettingsStore } from '@/stores/settings';
 
 @Component({
   components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
@@ -166,11 +166,17 @@ export default class NavBar extends Vue {
 
   @layoutNs.Action [LayoutActions.setLayoutLocked];
 
-  @uiSettingsNs.Getter [SettingsGetters.openTradesInTitle]: string;
+  openTradesInTitle: string = OpenTradeVizOptions.showPill;
 
   favicon: Favico | undefined = undefined;
 
   mounted() {
+    const settingsStore = useSettingsStore();
+    this.openTradesInTitle = settingsStore.openTradesInTitle;
+    settingsStore.$subscribe((_, state) => {
+      this.openTradesInTitle = state.openTradesInTitle;
+    });
+
     this.pingAll();
     this.loadUIVersion();
     this.pingInterval = window.setInterval(this.pingAll, 60000);

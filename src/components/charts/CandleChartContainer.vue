@@ -104,12 +104,11 @@ import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { BotStoreGetters } from '@/store/modules/ftbot';
-import { SettingsGetters } from '@/store/modules/settings';
 import vSelect from 'vue-select';
 import StoreModules from '@/store/storeSubModules';
+import { useSettingsStore } from '@/stores/settings';
 
 const ftbot = namespace(StoreModules.ftbot);
-const uiSettingsNs = namespace(StoreModules.uiSettings);
 
 @Component({ components: { CandleChart, PlotConfigurator, vSelect } })
 export default class CandleChartContainer extends Vue {
@@ -163,8 +162,6 @@ export default class CandleChartContainer extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
 
-  @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
-
   get dataset(): PairHistory {
     if (this.historicView) {
       return this.history[`${this.pair}__${this.timeframe}`];
@@ -210,7 +207,15 @@ export default class CandleChartContainer extends Vue {
     return !!this.dataset;
   }
 
+  timezone: string = 'UTC';
+
   mounted() {
+    const settingsStore = useSettingsStore();
+    this.timezone = settingsStore.timezone;
+    settingsStore.$subscribe((_, state) => {
+      this.timezone = state.timezone;
+    });
+
     if (this.selectedPair) {
       this.pair = this.selectedPair;
     } else if (this.availablePairs.length > 0) {
