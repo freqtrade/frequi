@@ -29,6 +29,7 @@
             >Run backtest</b-form-radio
           >
           <b-form-radio
+            id="bt-analyze-btn"
             v-model="btFormMode"
             name="bt-form-radios"
             button

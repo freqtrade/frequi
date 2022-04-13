@@ -1,0 +1,671 @@
+{
+    "status": "ended",
+    "running": false,
+    "status_msg": "Backtest ended",
+    "step": "finished",
+    "progress": 1.0,
+    "trade_count": null,
+    "backtest_result": {
+        "strategy": {
+            "SampleStrategy": {
+                "trades": [
+                    {
+                        "pair": "XRP/USDT",
+                        "stake_amount": 330.0,
+                        "amount": 526.81992337,
+                        "open_date": "2022-02-01T04:00:00+00:00",
+                        "close_date": "2022-02-03T09:00:00+00:00",
+                        "open_rate": 0.6264,
+                        "close_rate": 0.5950799999999999,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 3180,
+                        "profit_ratio": -0.0518981,
+                        "profit_abs": -17.1435,
+                        "exit_reason": "stop_loss",
+                        "initial_stop_loss_abs": 0.5950799999999999,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 0.5950799999999999,
+                        "stop_loss_ratio": -0.05,
+                        "min_rate": 0.5923,
+                        "max_rate": 0.6314,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1643688000000.0,
+                        "close_timestamp": 1643878800000.0
+                    },
+                    {
+                        "pair": "DOT/USDT",
+                        "stake_amount": 324.34264497,
+                        "amount": 14.89176515,
+                        "open_date": "2022-02-05T04:00:00+00:00",
+                        "close_date": "2022-02-10T14:00:00+00:00",
+                        "open_rate": 21.78,
+                        "close_rate": 21.02,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 7800,
+                        "profit_ratio": -0.03682268,
+                        "profit_abs": -11.95510906,
+                        "exit_reason": "SL: bbaadd",
+                        "initial_stop_loss_abs": 20.691,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 20.691,
+                        "stop_loss_ratio": -0.05,
+                        "min_rate": 20.57,
+                        "max_rate": 23.19,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1644033600000.0,
+                        "close_timestamp": 1644501600000.0
+                    },
+                    {
+                        "pair": "XRP/USDT",
+                        "stake_amount": 324.342645,
+                        "amount": 510.4542729,
+                        "open_date": "2022-02-04T17:00:00+00:00",
+                        "close_date": "2022-02-11T21:00:00+00:00",
+                        "open_rate": 0.6354,
+                        "close_rate": 0.7713,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 10320,
+                        "profit_ratio": 0.21145568,
+                        "profit_abs": 68.65267966,
+                        "exit_reason": "SL: bbaadd",
+                        "initial_stop_loss_abs": 0.6036299999999999,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 0.764915,
+                        "stop_loss_ratio": -0.15,
+                        "min_rate": 0.6333,
+                        "max_rate": 0.9168,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1643994000000.0,
+                        "close_timestamp": 1644613200000.0
+                    },
+                    {
+                        "pair": "DOT/USDT",
+                        "stake_amount": 343.0528433,
+                        "amount": 17.00807354,
+                        "open_date": "2022-02-16T00:00:00+00:00",
+                        "close_date": "2022-02-16T13:00:00+00:00",
+                        "open_rate": 20.17,
+                        "close_rate": 19.1615,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 780,
+                        "profit_ratio": -0.0518981,
+                        "profit_abs": -17.82159521,
+                        "exit_reason": "stop_loss",
+                        "initial_stop_loss_abs": 19.1615,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 19.1615,
+                        "stop_loss_ratio": -0.05,
+                        "min_rate": 19.12,
+                        "max_rate": 20.18,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1644969600000.0,
+                        "close_timestamp": 1645016400000.0
+                    },
+                    {
+                        "pair": "XRP/USDT",
+                        "stake_amount": 337.17171688,
+                        "amount": 437.9991126,
+                        "open_date": "2022-02-26T00:00:00+00:00",
+                        "close_date": "2022-02-27T00:00:00+00:00",
+                        "open_rate": 0.7698,
+                        "close_rate": 0.73131,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 1440,
+                        "profit_ratio": -0.0518981,
+                        "profit_abs": -17.51607069,
+                        "exit_reason": "stop_loss",
+                        "initial_stop_loss_abs": 0.73131,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 0.73131,
+                        "stop_loss_ratio": -0.05,
+                        "min_rate": 0.7256,
+                        "max_rate": 0.7955,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1645833600000.0,
+                        "close_timestamp": 1645920000000.0
+                    },
+                    {
+                        "pair": "XRP/USDT",
+                        "stake_amount": 331.39141355,
+                        "amount": 409.78287814,
+                        "open_date": "2022-03-11T22:00:00+00:00",
+                        "close_date": "2022-03-13T22:00:00+00:00",
+                        "open_rate": 0.8087,
+                        "close_rate": 0.768265,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 2880,
+                        "profit_ratio": -0.0518981,
+                        "profit_abs": -17.21578393,
+                        "exit_reason": "stop_loss",
+                        "initial_stop_loss_abs": 0.768265,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 0.768265,
+                        "stop_loss_ratio": -0.05,
+                        "min_rate": 0.7508,
+                        "max_rate": 0.849,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1647036000000.0,
+                        "close_timestamp": 1647208800000.0
+                    },
+                    {
+                        "pair": "XRP/USDT",
+                        "stake_amount": 325.71020485,
+                        "amount": 406.57871034,
+                        "open_date": "2022-03-17T22:00:00+00:00",
+                        "close_date": "2022-03-31T15:00:00+00:00",
+                        "open_rate": 0.8011,
+                        "close_rate": 0.8325,
+                        "fee_open": 0.001,
+                        "fee_close": 0.001,
+                        "trade_duration": 19740,
+                        "profit_ratio": 0.03711979,
+                        "profit_abs": 12.10238452,
+                        "exit_reason": "SL: bbaadd",
+                        "initial_stop_loss_abs": 0.761045,
+                        "initial_stop_loss_ratio": -0.05,
+                        "stop_loss_abs": 0.761045,
+                        "stop_loss_ratio": -0.05,
+                        "min_rate": 0.7762,
+                        "max_rate": 0.93,
+                        "is_open": false,
+                        "enter_tag": null,
+                        "is_short": false,
+                        "open_timestamp": 1647554400000.0,
+                        "close_timestamp": 1648738800000.0
+                    }
+                ],
+                "locks": [],
+                "best_pair": {
+                    "key": "XRP/USDT",
+                    "trades": 5,
+                    "profit_mean": 0.018576234,
+                    "profit_mean_pct": 1.8576234,
+                    "profit_sum": 0.09288117,
+                    "profit_sum_pct": 9.29,
+                    "profit_total_abs": 28.879709560000002,
+                    "profit_total": 0.02887970956,
+                    "profit_total_pct": 2.89,
+                    "duration_avg": "5 days, 5:12:00",
+                    "wins": 2,
+                    "draws": 0,
+                    "losses": 3
+                },
+                "worst_pair": {
+                    "key": "DOT/USDT",
+                    "trades": 2,
+                    "profit_mean": -0.04436039,
+                    "profit_mean_pct": -4.436039,
+                    "profit_sum": -0.08872078,
+                    "profit_sum_pct": -8.87,
+                    "profit_total_abs": -29.776704270000003,
+                    "profit_total": -0.029776704270000003,
+                    "profit_total_pct": -2.98,
+                    "duration_avg": "2 days, 23:30:00",
+                    "wins": 0,
+                    "draws": 0,
+                    "losses": 2
+                },
+                "results_per_pair": [
+                    {
+                        "key": "XRP/USDT",
+                        "trades": 5,
+                        "profit_mean": 0.018576234,
+                        "profit_mean_pct": 1.8576234,
+                        "profit_sum": 0.09288117,
+                        "profit_sum_pct": 9.29,
+                        "profit_total_abs": 28.879709560000002,
+                        "profit_total": 0.02887970956,
+                        "profit_total_pct": 2.89,
+                        "duration_avg": "5 days, 5:12:00",
+                        "wins": 2,
+                        "draws": 0,
+                        "losses": 3
+                    },
+                    {
+                        "key": "DOT/USDT",
+                        "trades": 2,
+                        "profit_mean": -0.04436039,
+                        "profit_mean_pct": -4.436039,
+                        "profit_sum": -0.08872078,
+                        "profit_sum_pct": -8.87,
+                        "profit_total_abs": -29.776704270000003,
+                        "profit_total": -0.029776704270000003,
+                        "profit_total_pct": -2.98,
+                        "duration_avg": "2 days, 23:30:00",
+                        "wins": 0,
+                        "draws": 0,
+                        "losses": 2
+                    },
+                    {
+                        "key": "TOTAL",
+                        "trades": 7,
+                        "profit_mean": 0.0005943414285714285,
+                        "profit_mean_pct": 0.05943414285714285,
+                        "profit_sum": 0.00416039,
+                        "profit_sum_pct": 0.42,
+                        "profit_total_abs": -0.8969947099999995,
+                        "profit_total": -0.0008969947099999996,
+                        "profit_total_pct": -0.09,
+                        "duration_avg": "4 days, 13:51:00",
+                        "wins": 2,
+                        "draws": 0,
+                        "losses": 5
+                    }
+                ],
+                "results_per_enter_tag": [
+                    {
+                        "key": "TOTAL",
+                        "trades": 7,
+                        "profit_mean": 0.0005943414285714285,
+                        "profit_mean_pct": 0.05943414285714285,
+                        "profit_sum": 0.00416039,
+                        "profit_sum_pct": 0.42,
+                        "profit_total_abs": -0.8969947099999995,
+                        "profit_total": -0.0008969947099999996,
+                        "profit_total_pct": -0.09,
+                        "duration_avg": "4 days, 13:51:00",
+                        "wins": 2,
+                        "draws": 0,
+                        "losses": 5
+                    }
+                ],
+                "exit_reason_summary": [
+                    {
+                        "exit_reason": "stop_loss",
+                        "trades": 4,
+                        "wins": 0,
+                        "draws": 0,
+                        "losses": 4,
+                        "profit_mean": -0.0518981,
+                        "profit_mean_pct": -5.19,
+                        "profit_sum": -0.2075924,
+                        "profit_sum_pct": -20.76,
+                        "profit_total_abs": -69.69694983,
+                        "profit_total": -0.1037962,
+                        "profit_total_pct": -10.38
+                    },
+                    {
+                        "exit_reason": "SL: bbaadd",
+                        "trades": 3,
+                        "wins": 2,
+                        "draws": 0,
+                        "losses": 1,
+                        "profit_mean": 0.07058426333333334,
+                        "profit_mean_pct": 7.06,
+                        "profit_sum": 0.21175279000000002,
+                        "profit_sum_pct": 21.18,
+                        "profit_total_abs": 68.79995512,
+                        "profit_total": 0.10587639500000001,
+                        "profit_total_pct": 10.59
+                    }
+                ],
+                "left_open_trades": [
+                    {
+                        "key": "TOTAL",
+                        "trades": 0,
+                        "profit_mean": 0.0,
+                        "profit_mean_pct": 0.0,
+                        "profit_sum": 0.0,
+                        "profit_sum_pct": 0.0,
+                        "profit_total_abs": 0.0,
+                        "profit_total": 0.0,
+                        "profit_total_pct": 0.0,
+                        "duration_avg": "0:00",
+                        "wins": 0,
+                        "draws": 0,
+                        "losses": 0
+                    }
+                ],
+                "total_trades": 7,
+                "trade_count_long": 7,
+                "trade_count_short": 0,
+                "total_volume": 2316.01146855,
+                "avg_stake_amount": 330.85878122142856,
+                "profit_mean": 0.0005943414285714285,
+                "profit_median": -0.0518981,
+                "profit_total": -0.0008969947099999996,
+                "profit_total_long": -0.0008969947099999996,
+                "profit_total_short": 0.0,
+                "profit_total_abs": -0.8969947099999995,
+                "profit_total_long_abs": -0.8969947099999995,
+                "profit_total_short_abs": 0.0,
+                "backtest_start": "2022-02-01 00:00:00",
+                "backtest_start_ts": 1643673600000,
+                "backtest_end": "2022-04-02 10:00:00",
+                "backtest_end_ts": 1648893600000,
+                "backtest_days": 60,
+                "backtest_run_start_ts": 1649872021,
+                "backtest_run_end_ts": 1649872022,
+                "trades_per_day": 0.12,
+                "market_change": 0.1775464760647306,
+                "pairlist": [
+                    "XRP/USDT",
+                    "DOT/USDT"
+                ],
+                "stake_amount": "unlimited",
+                "stake_currency": "USDT",
+                "stake_currency_decimals": 3,
+                "starting_balance": 1000,
+                "dry_run_wallet": 1000,
+                "final_balance": 999.10300529,
+                "rejected_signals": 0,
+                "timedout_entry_orders": 0,
+                "timedout_exit_orders": 0,
+                "max_open_trades": 2,
+                "max_open_trades_setting": 3,
+                "timeframe": "1h",
+                "timeframe_detail": "",
+                "timerange": "20220201-",
+                "enable_protections": false,
+                "strategy_name": "SampleStrategy",
+                "stoploss": -0.05,
+                "trailing_stop": false,
+                "trailing_stop_positive": 0.01,
+                "trailing_stop_positive_offset": 0.011,
+                "trailing_only_offset_is_reached": false,
+                "use_custom_stoploss": true,
+                "minimal_roi": {
+                    "0": 200
+                },
+                "use_exit_signal": true,
+                "exit_profit_only": false,
+                "exit_profit_offset": 0.0,
+                "ignore_roi_if_entry_signal": false,
+                "backtest_best_day": 0.21145568,
+                "backtest_worst_day": -0.0518981,
+                "backtest_best_day_abs": 68.65267966,
+                "backtest_worst_day_abs": -17.82159521,
+                "winning_days": 2,
+                "draw_days": 50,
+                "losing_days": 5,
+                "daily_profit": [
+                    [
+                        "2022-02-03",
+                        -17.1435
+                    ],
+                    [
+                        "2022-02-04",
+                        0.0
+                    ],
+                    [
+                        "2022-02-05",
+                        0.0
+                    ],
+                    [
+                        "2022-02-06",
+                        0.0
+                    ],
+                    [
+                        "2022-02-07",
+                        0.0
+                    ],
+                    [
+                        "2022-02-08",
+                        0.0
+                    ],
+                    [
+                        "2022-02-09",
+                        0.0
+                    ],
+                    [
+                        "2022-02-10",
+                        -11.95510906
+                    ],
+                    [
+                        "2022-02-11",
+                        68.65267966
+                    ],
+                    [
+                        "2022-02-12",
+                        0.0
+                    ],
+                    [
+                        "2022-02-13",
+                        0.0
+                    ],
+                    [
+                        "2022-02-14",
+                        0.0
+                    ],
+                    [
+                        "2022-02-15",
+                        0.0
+                    ],
+                    [
+                        "2022-02-16",
+                        -17.82159521
+                    ],
+                    [
+                        "2022-02-17",
+                        0.0
+                    ],
+                    [
+                        "2022-02-18",
+                        0.0
+                    ],
+                    [
+                        "2022-02-19",
+                        0.0
+                    ],
+                    [
+                        "2022-02-20",
+                        0.0
+                    ],
+                    [
+                        "2022-02-21",
+                        0.0
+                    ],
+                    [
+                        "2022-02-22",
+                        0.0
+                    ],
+                    [
+                        "2022-02-23",
+                        0.0
+                    ],
+                    [
+                        "2022-02-24",
+                        0.0
+                    ],
+                    [
+                        "2022-02-25",
+                        0.0
+                    ],
+                    [
+                        "2022-02-26",
+                        0.0
+                    ],
+                    [
+                        "2022-02-27",
+                        -17.51607069
+                    ],
+                    [
+                        "2022-02-28",
+                        0.0
+                    ],
+                    [
+                        "2022-03-01",
+                        0.0
+                    ],
+                    [
+                        "2022-03-02",
+                        0.0
+                    ],
+                    [
+                        "2022-03-03",
+                        0.0
+                    ],
+                    [
+                        "2022-03-04",
+                        0.0
+                    ],
+                    [
+                        "2022-03-05",
+                        0.0
+                    ],
+                    [
+                        "2022-03-06",
+                        0.0
+                    ],
+                    [
+                        "2022-03-07",
+                        0.0
+                    ],
+                    [
+                        "2022-03-08",
+                        0.0
+                    ],
+                    [
+                        "2022-03-09",
+                        0.0
+                    ],
+                    [
+                        "2022-03-10",
+                        0.0
+                    ],
+                    [
+                        "2022-03-11",
+                        0.0
+                    ],
+                    [
+                        "2022-03-12",
+                        0.0
+                    ],
+                    [
+                        "2022-03-13",
+                        -17.21578393
+                    ],
+                    [
+                        "2022-03-14",
+                        0.0
+                    ],
+                    [
+                        "2022-03-15",
+                        0.0
+                    ],
+                    [
+                        "2022-03-16",
+                        0.0
+                    ],
+                    [
+                        "2022-03-17",
+                        0.0
+                    ],
+                    [
+                        "2022-03-18",
+                        0.0
+                    ],
+                    [
+                        "2022-03-19",
+                        0.0
+                    ],
+                    [
+                        "2022-03-20",
+                        0.0
+                    ],
+                    [
+                        "2022-03-21",
+                        0.0
+                    ],
+                    [
+                        "2022-03-22",
+                        0.0
+                    ],
+                    [
+                        "2022-03-23",
+                        0.0
+                    ],
+                    [
+                        "2022-03-24",
+                        0.0
+                    ],
+                    [
+                        "2022-03-25",
+                        0.0
+                    ],
+                    [
+                        "2022-03-26",
+                        0.0
+                    ],
+                    [
+                        "2022-03-27",
+                        0.0
+                    ],
+                    [
+                        "2022-03-28",
+                        0.0
+                    ],
+                    [
+                        "2022-03-29",
+                        0.0
+                    ],
+                    [
+                        "2022-03-30",
+                        0.0
+                    ],
+                    [
+                        "2022-03-31",
+                        12.10238452
+                    ]
+                ],
+                "wins": 2,
+                "losses": 5,
+                "draws": 0,
+                "holding_avg": 395460.0,
+                "holding_avg_s": 395460.0,
+                "winner_holding_avg": 901800.0,
+                "winner_holding_avg_s": 901800.0,
+                "loser_holding_avg": 192960.0,
+                "loser_holding_avg_s": 192960.0,
+                "max_drawdown": 0.1556943,
+                "max_drawdown_account": 0.050553839685960444,
+                "max_drawdown_abs": 52.553449830000005,
+                "drawdown_start": "2022-02-11 21:00:00",
+                "drawdown_start_ts": 1644613200000.0,
+                "drawdown_end": "2022-03-13 22:00:00",
+                "drawdown_end_ts": 1647208800000.0,
+                "max_drawdown_low": -12.999379229999999,
+                "max_drawdown_high": 39.5540706,
+                "csum_min": 970.90139094,
+                "csum_max": 1039.5540706
+            }
+        },
+        "strategy_comparison": [
+            {
+                "key": "SampleStrategy",
+                "trades": 7,
+                "profit_mean": 0.0005943414285714285,
+                "profit_mean_pct": 0.05943414285714285,
+                "profit_sum": 0.00416039,
+                "profit_sum_pct": 0.42,
+                "profit_total_abs": -0.8969947099999995,
+                "profit_total": -0.0008969947099999996,
+                "profit_total_pct": -0.09,
+                "duration_avg": "4 days, 13:51:00",
+                "wins": 2,
+                "draws": 0,
+                "losses": 5,
+                "max_drawdown_account": 0.050553839685960444,
+                "max_drawdown_abs": "52.553"
+            }
+        ]
+    }
+}

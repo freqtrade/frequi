@@ -31,7 +31,7 @@ function defaultMocks() {
 }
 
 describe('Backtesting', () => {
-  it.only('Is not logged in', () => {
+  it('Starts webserver mode', () => {
     ///
     defaultMocks();
     setLoginInfo();
@@ -47,15 +47,18 @@ describe('Backtesting', () => {
     strategySelect.should('exist');
     strategySelect.select('SampleStrategy');
     cy.get('option[value=SampleStrategy]').should('exist');
+    cy.get('[id=bt-analyze-btn]').should('be.disabled');
 
     cy.intercept('POST', '**/api/v1/backtest', { fixture: 'backtest/backtest_post_start.json' }).as(
       'BacktestStart',
     );
-    // cy.intercept('GET', '**/api/v1/backtest', { fixture: 'backtest/backtest_get_end.json' }).as(
-    //   'BacktestPoll',
-    // );
+    cy.intercept('GET', '**/api/v1/backtest', { fixture: 'backtest/backtest_get_end.json' }).as(
+      'BacktestPoll',
+    );
     cy.get('button[id=start-backtest]').click();
     cy.wait('@BacktestStart');
-    // cy.wait('@BacktestPoll');
+    cy.wait('@BacktestPoll');
+    // All buttons are now enabled
+    cy.get('[id=bt-analyze-btn]').should('be.enabled');
   });
 });
