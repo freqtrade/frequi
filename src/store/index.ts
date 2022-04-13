@@ -9,7 +9,6 @@ import StoreModules from '@/store/storeSubModules';
 import createBotStore, { MultiBotStoreGetters } from './modules/botStoreWrapper';
 import alertsModule from './modules/alerts';
 import layoutModule from './modules/layout';
-import settingsModule from './modules/settings';
 
 Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
@@ -18,7 +17,6 @@ const store = new Vuex.Store({
   modules: {
     [StoreModules.alerts]: alertsModule,
     [StoreModules.layout]: layoutModule,
-    [StoreModules.uiSettings]: settingsModule,
   },
   state: {
     currentTheme: initCurrentTheme,

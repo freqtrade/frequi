@@ -112,7 +112,6 @@ import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
-import { OpenTradeVizOptions, SettingsGetters } from '@/store/modules/settings';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
@@ -122,7 +121,7 @@ import StoreModules from '@/store/storeSubModules';
 
 const ftbot = namespace(StoreModules.ftbot);
 const layoutNs = namespace(StoreModules.layout);
-import { useSettingsStore } from '@/stores/settings';
+import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 
 @Component({
   components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
@@ -174,7 +173,12 @@ export default class NavBar extends Vue {
     const settingsStore = useSettingsStore();
     this.openTradesInTitle = settingsStore.openTradesInTitle;
     settingsStore.$subscribe((_, state) => {
+      const needsUpdate = this.openTradesInTitle !== state.openTradesInTitle;
       this.openTradesInTitle = state.openTradesInTitle;
+      if (needsUpdate) {
+        this.setTitle();
+        this.setOpenTradesAsPill(this.openTradeCount);
+      }
     });
 
     this.pingAll();
@@ -263,12 +267,6 @@ export default class NavBar extends Vue {
     } else if (this.openTradesInTitle === OpenTradeVizOptions.asTitle) {
       this.setTitle();
     }
-  }
-
-  @Watch(SettingsGetters.openTradesInTitle)
-  openTradesSettingChanged() {
-    this.setTitle();
-    this.setOpenTradesAsPill(this.openTradeCount);
   }
 }
 </script>
