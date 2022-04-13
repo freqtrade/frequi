@@ -10,6 +10,7 @@
           :disabled="canRunBacktest"
         >
           <b-form-radio
+            v-if="botApiVersion >= 2.15"
             v-model="btFormMode"
             name="bt-form-radios"
             button
@@ -380,6 +381,8 @@ export default class Backtesting extends Vue {
 
   @ftbot.Getter [BotStoreGetters.botState]?: BotState;
 
+  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
+
   @ftbot.Getter [BotStoreGetters.backtestProgress]!: number;
 
   @ftbot.Getter [BotStoreGetters.backtestHistory]!: StrategyBacktestResult[];
@@ -401,8 +404,6 @@ export default class Backtesting extends Vue {
   @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
 
   @ftbot.Action pollBacktest!: () => void;
-
-  @ftbot.Action getBacktestHistory!: () => void;
 
   @ftbot.Action removeBacktest!: () => void;
 
