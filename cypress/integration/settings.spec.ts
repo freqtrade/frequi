@@ -11,7 +11,7 @@ describe('Settings', () => {
     cy.wait('@ShowConf');
     // cy.wait('@Strategies');
 
-    cy.get('#__BVID__24__BV_toggle_').click();
+    cy.get('[id=avatar-drop]').parent().click();
     cy.get('.dropdown-menu > [href="/settings"]').click();
     cy.contains('FreqUI Settings');
 
