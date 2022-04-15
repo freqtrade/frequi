@@ -34,9 +34,9 @@ import ClosedTradesIcon from 'vue-material-design-icons/FolderLock.vue';
 import BalanceIcon from 'vue-material-design-icons/Bank.vue';
 import PairListIcon from 'vue-material-design-icons/ViewList.vue';
 import DashboardIcon from 'vue-material-design-icons/ViewDashboardOutline.vue';
+import StoreModules from '@/store/storeSubModules';
 import { defineComponent } from '@vue/composition-api';
 import { useNamespacedGetters } from 'vuex-composition-helpers';
-import StoreModules from '@/store/storeSubModules';
 
 export default defineComponent({
   name: 'NavFooter',

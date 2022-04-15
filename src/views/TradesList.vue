@@ -32,42 +32,55 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { BotStoreActions, BotStoreGetters } from '@/store/modules/ftbot';
+import StoreModules from '@/store/storeSubModules';
 import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import BackIcon from 'vue-material-design-icons/ArrowLeft.vue';
+import { defineComponent } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-import { Trade } from '@/types';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
-
-const ftbot = namespace(StoreModules.ftbot);
-// TODO: TradeDetail could be extracted into a sub-route to allow direct access
-@Component({
+export default defineComponent({
+  name: 'TradesList',
   components: {
     CustomTradeList,
     TradeDetail,
     BackIcon,
   },
-})
-export default class TradesList extends Vue {
-  @Prop({ default: false }) history!: boolean;
+  props: {
+    history: { default: false, type: Boolean },
+  },
+  setup() {
+    const {
+      openTrades,
+      closedTrades,
+      stakeCurrencyDecimals,
+      stakeCurrency,
+      detailTradeId,
+      tradeDetail,
+    } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.openTrades,
+      BotStoreGetters.closedTrades,
+      BotStoreGetters.stakeCurrencyDecimals,
+      BotStoreGetters.stakeCurrency,
+      BotStoreGetters.detailTradeId,
+      BotStoreGetters.tradeDetail,
+    ]);
+    const { setDetailTrade } = useNamespacedActions(StoreModules.ftbot, [
+      BotStoreActions.setDetailTrade,
+    ]);
 
-  @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.closedTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
-
-  @ftbot.Getter [BotStoreGetters.detailTradeId]?: number;
-
-  @ftbot.Getter [BotStoreGetters.tradeDetail]!: Trade;
-
-  @ftbot.Action setDetailTrade;
-}
+    return {
+      openTrades,
+      closedTrades,
+      stakeCurrencyDecimals,
+      stakeCurrency,
+      detailTradeId,
+      tradeDetail,
+      setDetailTrade,
+    };
+  },
+});
 </script>
 
 <style scoped></style>
