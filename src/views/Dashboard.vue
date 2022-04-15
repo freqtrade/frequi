@@ -172,7 +172,7 @@ export default defineComponent({
       if (isResizableLayout) {
         console.log('newlayout', newLayout);
         console.log('saving dashboard');
-        layoutStore.tradingLayout = newLayout;
+        layoutStore.dashboardLayout = newLayout;
       }
     };
 

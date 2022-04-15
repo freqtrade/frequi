@@ -66,7 +66,7 @@ function migrateLayoutSettings() {
     const dashboardLayout = localStorage.getItem(STORE_DASHBOARD_LAYOUT);
 
     const res = {
-      dashboardLayout: dashboardLayout,
+      dashboardLayout,
       tradingLayout,
       layoutLocked,
     };
