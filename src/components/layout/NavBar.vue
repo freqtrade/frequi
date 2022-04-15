@@ -200,8 +200,8 @@ export default defineComponent({
       if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
         title = `(${openTradeCount}) ${title}`;
       }
-      if (botName) {
-        title = `${title} - ${botName}`;
+      if (botName.value) {
+        title = `${title} - ${botName.value}`;
       }
       document.title = title;
     };
