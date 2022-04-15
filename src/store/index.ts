@@ -7,15 +7,11 @@ import { UserService } from '@/shared/userService';
 import { UiVersion } from '@/types';
 import StoreModules from '@/store/storeSubModules';
 import createBotStore, { MultiBotStoreGetters } from './modules/botStoreWrapper';
-import alertsModule from './modules/alerts';
 
 Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
 
 const store = new Vuex.Store({
-  modules: {
-    [StoreModules.alerts]: alertsModule,
-  },
   state: {
     currentTheme: initCurrentTheme,
     uiVersion: 'dev',

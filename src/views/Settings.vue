@@ -38,12 +38,11 @@
 </template>
 
 <script lang="ts">
-import { AlertActions } from '@/store/modules/alerts';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent } from '@vue/composition-api';
-import { useGetters, useNamespacedActions } from 'vuex-composition-helpers';
+import { useGetters } from 'vuex-composition-helpers';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
+import { showAlert } from '@/stores/alerts';
 
 export default defineComponent({
   name: 'Settings',
@@ -52,8 +51,6 @@ export default defineComponent({
     const layoutStore = useLayoutStore();
 
     const { getUiVersion } = useGetters(['getUiVersion']);
-
-    const { addAlert } = useNamespacedActions(StoreModules.alerts, [AlertActions.addAlert]);
 
     const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
     const openTradesOptions = [
@@ -66,7 +63,7 @@ export default defineComponent({
     const resetDynamicLayout = () => {
       layoutStore.resetTradingLayout();
       layoutStore.resetDashboardLayout();
-      addAlert({ message: 'Layouts have been reset.' });
+      showAlert('Layouts have been reset.');
     };
     return {
       getUiVersion,

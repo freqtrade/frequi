@@ -1,13 +1,13 @@
 <template>
   <div class="bot-alerts">
     <b-alert
-      v-for="(alert, index) in activeMessages"
+      v-for="(alert, index) in alertStore.activeMessages"
       :key="index"
       variant="warning"
       dismissible
       :show="5"
       :value="!!alert.message"
-      @dismissed="closeAlert"
+      @dismissed="alertStore.removeAlert"
     >
       {{ alert.message }}
     </b-alert>
@@ -15,22 +15,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { AlertActions } from '@/store/modules/alerts';
-import StoreModules from '@/store/storeSubModules';
-import { AlertType } from '@/types/alertTypes';
+import { defineComponent } from '@vue/composition-api';
+import { useAlertsStore } from '@/stores/alerts';
 
-const alerts = namespace(StoreModules.alerts);
-
-@Component({})
-export default class BotAlerts extends Vue {
-  @alerts.State activeMessages!: AlertType[];
-
-  @alerts.Action [AlertActions.removeAlert];
-
-  closeAlert() {
-    this[AlertActions.removeAlert]();
-  }
-}
+export default defineComponent({
+  name: 'BotAlerts',
+  setup() {
+    const alertStore = useAlertsStore();
+    return {
+      alertStore,
+    };
+  },
+});
 </script>

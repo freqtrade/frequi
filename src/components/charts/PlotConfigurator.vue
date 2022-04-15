@@ -126,12 +126,10 @@ import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
-import { AlertActions } from '@/store/modules/alerts';
 import StoreModules from '@/store/storeSubModules';
+import { showAlert } from '@/stores/alerts';
 
 const ftbot = namespace(StoreModules.ftbot);
-
-const alerts = namespace(StoreModules.alerts);
 
 @Component({
   components: { PlotIndicator },
@@ -207,8 +205,6 @@ export default class PlotConfigurator extends Vue {
   @ftbot.Action updatePlotConfigName!: (plotConfigName: string) => void;
 
   @ftbot.Getter [BotStoreGetters.plotConfigName]!: string;
-
-  @alerts.Action [AlertActions.addAlert];
 
   get plotConfigJson() {
     return JSON.stringify(this.plotConfig, null, 2);
@@ -348,7 +344,7 @@ export default class PlotConfigurator extends Vue {
       this.emitPlotConfig();
     } catch (data) {
       //
-      this.addAlert({ message: 'Failed to load Plot configuration from Strategy.' });
+      showAlert('Failed to load Plot configuration from Strategy.');
     }
   }
 }

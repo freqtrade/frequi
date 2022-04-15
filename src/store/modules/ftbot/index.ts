@@ -50,7 +50,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { parseParams } from '@/shared/apiParamParser';
 import StoreModules from '@/store/storeSubModules';
 import state, { FtbotStateType } from './state';
-import { showAlert } from '../alerts';
+import { showAlert } from '@/stores/alerts';
 
 export enum BotStoreGetters {
   botName = 'botName',

@@ -28,11 +28,10 @@ import { Lock } from '@/types';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import { AlertActions } from '@/store/modules/alerts';
+import { showAlert } from '@/stores/alerts';
 import StoreModules from '@/store/storeSubModules';
 
 const ftbot = namespace(StoreModules.ftbot);
-const alerts = namespace(StoreModules.alerts);
 
 @Component({
   components: { DeleteIcon },
@@ -44,9 +43,6 @@ export default class PairLockList extends Vue {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ftbot.Action deleteLock!: (lockid: string) => Promise<string>;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @alerts.Action [AlertActions.addAlert];
 
   timestampms = timestampms;
 
@@ -64,7 +60,7 @@ export default class PairLockList extends Vue {
     if (item.id !== undefined) {
       this.deleteLock(item.id);
     } else {
-      this.addAlert({ message: 'This Freqtrade version does not support deleting locks.' });
+      showAlert('This Freqtrade version does not support deleting locks.');
     }
   }
 }
