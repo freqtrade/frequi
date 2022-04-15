@@ -22,36 +22,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import CheckIcon from 'vue-material-design-icons/Check.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
-import { BotDescriptor, RenameBotPayload } from '@/types';
+import { BotDescriptor } from '@/types';
 import StoreModules from '@/store/storeSubModules';
+import { defineComponent, ref } from '@vue/composition-api';
+import { useNamespacedActions } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'BotRename',
   components: {
     CheckIcon,
     CloseIcon,
   },
-})
-export default class BotList extends Vue {
-  @Prop({ required: true, type: Object }) bot!: BotDescriptor;
+  props: {
+    bot: { type: Object as () => BotDescriptor, required: true },
+  },
+  emits: ['saved'],
+  setup(props, { emit }) {
+    const { renameBot } = useNamespacedActions(StoreModules.ftbot, ['renameBot']);
+    const newName = ref<string>(props.bot.botName);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action renameBot!: (payload: RenameBotPayload) => Promise<void>;
+    const save = () => {
+      renameBot({
+        botId: props.bot.botId,
+        botName: newName.value,
+      });
 
-  newName: string = this.bot.botName;
-
-  save() {
-    this.renameBot({
-      botId: this.bot.botId,
-      botName: this.newName,
-    });
-
-    this.$emit('saved');
-  }
-}
+      emit('saved');
+    };
+    return {
+      newName,
+      save,
+    };
+  },
+});
 </script>
