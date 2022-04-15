@@ -4,7 +4,7 @@
     <!-- Currently only available in Webserver mode -->
     <!-- <b-checkbox v-model="historicView">HistoricData</b-checkbox> -->
     <!-- </div> -->
-    <div v-if="historicView" class="mx-md-3 mt-2">
+    <div v-if="isWebserverMode" class="mx-md-3 mt-2">
       <div class="d-flex flex-wrap">
         <div class="col-md-3 text-left">
           <span>Strategy</span>
@@ -20,12 +20,12 @@
 
     <div class="mx-2 mt-2 pb-1 h-100">
       <CandleChartContainer
-        :available-pairs="historicView ? pairlist : whitelist"
-        :historic-view="historicView"
-        :timeframe="historicView ? selectedTimeframe : timeframe"
+        :available-pairs="isWebserverMode ? pairlist : whitelist"
+        :historic-view="isWebserverMode"
+        :timeframe="isWebserverMode ? selectedTimeframe : timeframe"
         :trades="trades"
-        :timerange="historicView ? timerange : ''"
-        :strategy="historicView ? strategy : ''"
+        :timerange="isWebserverMode ? timerange : ''"
+        :strategy="isWebserverMode ? strategy : ''"
         :plot-config-modal="false"
       >
       </CandleChartContainer>
@@ -34,61 +34,65 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import { AvailablePairPayload, AvailablePairResult, Trade, WhitelistResponse } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
+import { defineComponent, onMounted, ref } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'Graphs',
   components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },
-})
-export default class Graphs extends Vue {
-  historicView = false;
+  setup() {
+    const strategy = ref('');
+    const timerange = ref('');
+    const selectedTimeframe = ref('');
+    const { pairlist, whitelist, trades, timeframe, isWebserverMode } = useNamespacedGetters(
+      StoreModules.ftbot,
+      [
+        BotStoreGetters.pairlist,
+        BotStoreGetters.whitelist,
+        BotStoreGetters.trades,
+        BotStoreGetters.timeframe,
+        BotStoreGetters.isWebserverMode,
+      ],
+    );
 
-  strategy = '';
+    const { getWhitelist, getAvailablePairs } = useNamespacedActions(StoreModules.ftbot, [
+      'getWhitelist',
+      'getAvailablePairs',
+    ]);
+    onMounted(() => {
+      if (!whitelist.value || whitelist.value.length === 0) {
+        getWhitelist();
+      }
+      console.log(isWebserverMode.value);
+      if (isWebserverMode.value) {
+        // this.refresh();
+        getAvailablePairs({ timeframe: timeframe.value });
+        // .then((val) => {
+        // console.log(val);
+        // });
+      }
+    });
 
-  timerange = '';
-
-  selectedTimeframe = '';
-
-  @ftbot.Getter [BotStoreGetters.pairlist]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.trades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.timeframe]!: string;
-
-  @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
-
-  @ftbot.Action public getWhitelist!: () => Promise<WhitelistResponse>;
-
-  @ftbot.Action public getAvailablePairs!: (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    payload: AvailablePairPayload,
-  ) => Promise<AvailablePairResult>;
-
-  mounted() {
-    this.historicView = this.isWebserverMode;
-    if (!this.whitelist || this.whitelist.length === 0) {
-      this.getWhitelist();
-    }
-    if (this.historicView) {
-      // this.refresh();
-      this.getAvailablePairs({ timeframe: this.timeframe });
-      // .then((val) => {
-      // console.log(val);
-      // });
-    }
-  }
-}
+    return {
+      pairlist,
+      whitelist,
+      trades,
+      timeframe,
+      isWebserverMode,
+      getWhitelist,
+      getAvailablePairs,
+      strategy,
+      timerange,
+      selectedTimeframe,
+    };
+  },
+});
 </script>
 
 <style scoped></style>
