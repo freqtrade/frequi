@@ -109,11 +109,11 @@ export default class TradeList extends Vue {
 
   @Prop({ required: true }) trades!: Array<Trade>;
 
-  @Prop({ default: 'Trades' }) title!: string;
+  @Prop({ default: 'Trades', type: String }) title!: string;
 
   @Prop({ required: false, default: '' }) stakeCurrency!: string;
 
-  @Prop({ default: false }) activeTrades!: boolean;
+  @Prop({ default: false, type: Boolean }) activeTrades!: boolean;
 
   @Prop({ default: false }) showFilter!: boolean;
 

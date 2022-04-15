@@ -128,8 +128,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import Balance from '@/components/ftbot/Balance.vue';
@@ -145,15 +143,14 @@ import Performance from '@/components/ftbot/Performance.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 
-import { Lock, Trade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
-import { TradeLayout, findGridLayout, LayoutGetters, LayoutActions } from '@/store/modules/layout';
 import StoreModules from '@/store/storeSubModules';
+import { defineComponent, ref, computed } from '@vue/composition-api';
+import { useNamespacedGetters } from 'vuex-composition-helpers';
+import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
 
-const ftbot = namespace(StoreModules.ftbot);
-const layoutNs = namespace(StoreModules.layout);
-
-@Component({
+export default defineComponent({
+  name: 'Trading',
   components: {
     Balance,
     BotControls,
@@ -170,98 +167,105 @@ const layoutNs = namespace(StoreModules.layout);
     TradeDetail,
     TradeList,
   },
-})
-export default class Trading extends Vue {
-  @ftbot.Getter [BotStoreGetters.detailTradeId]!: number;
+  setup() {
+    const {
+      detailTradeId,
+      openTrades,
+      closedTrades,
+      allTrades,
+      tradeDetail,
+      timeframe,
+      currentLocks,
+      whitelist,
+      stakeCurrency,
+    } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.detailTradeId,
+      BotStoreGetters.openTrades,
+      BotStoreGetters.closedTrades,
+      BotStoreGetters.allTrades,
+      BotStoreGetters.tradeDetail,
+      BotStoreGetters.timeframe,
+      BotStoreGetters.currentLocks,
+      BotStoreGetters.whitelist,
+      BotStoreGetters.stakeCurrency,
+    ]);
+    const layoutStore = useLayoutStore();
+    const currentBreakpoint = ref('');
 
-  @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.closedTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.allTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.tradeDetail]!: Trade;
-
-  @ftbot.Getter [BotStoreGetters.timeframe]!: string;
-
-  @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
-
-  @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
-
-  @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
-
-  @layoutNs.Getter [LayoutGetters.getTradingLayoutSm]!: GridItemData[];
-
-  @layoutNs.Action [LayoutActions.setTradingLayout];
-
-  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
-
-  currentBreakpoint = '';
-
-  localGridLayout: GridItemData[] = [];
-
-  get isLayoutLocked() {
-    return this.getLayoutLocked || !this.isResizableLayout;
-  }
-
-  get isResizableLayout() {
-    return ['', 'sm', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
-  }
-
-  get gridLayout(): GridItemData[] {
-    if (this.isResizableLayout) {
-      return this.getTradingLayout;
-    }
-    return this.localGridLayout;
-  }
-
-  set gridLayout(newLayout) {
-    // Dummy setter to make gridLayout happy. Updates happen through layoutUpdated.
-  }
-
-  get gridLayoutMultiPane(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.multiPane);
-  }
-
-  get gridLayoutOpenTrades(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.openTrades);
-  }
-
-  get gridLayoutTradeHistory(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.tradeHistory);
-  }
-
-  get gridLayoutTradeDetail(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.tradeDetail);
-  }
-
-  get gridLayoutChartView(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.chartView);
-  }
-
-  mounted() {
-    this.localGridLayout = [...this.getTradingLayoutSm];
-  }
-
-  layoutUpdatedEvent(newLayout) {
-    if (this.isResizableLayout) {
-      this.setTradingLayout(newLayout);
-    }
-  }
-
-  get responsiveGridLayouts() {
-    return {
-      sm: this[LayoutGetters.getTradingLayoutSm],
+    const breakpointChanged = (newBreakpoint) => {
+      // console.log('breakpoint:', newBreakpoint);
+      currentBreakpoint.value = newBreakpoint;
     };
-  }
+    const isResizableLayout = computed(() =>
+      ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+    );
+    const isLayoutLocked = computed(() => {
+      return layoutStore.layoutLocked || !isResizableLayout;
+    });
+    const gridLayout = computed((): GridItemData[] => {
+      if (isResizableLayout) {
+        return layoutStore.tradingLayout;
+      }
+      return [...layoutStore.getTradingLayoutSm];
+    });
 
-  breakpointChanged(newBreakpoint) {
-    console.log('breakpoint:', newBreakpoint);
-    this.currentBreakpoint = newBreakpoint;
-  }
-}
+    const gridLayoutMultiPane = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.multiPane);
+    });
+
+    const gridLayoutOpenTrades = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.openTrades);
+    });
+
+    const gridLayoutTradeHistory = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.tradeHistory);
+    });
+
+    const gridLayoutTradeDetail = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.tradeDetail);
+    });
+
+    const gridLayoutChartView = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.chartView);
+    });
+
+    const responsiveGridLayouts = computed(() => {
+      return {
+        sm: layoutStore.getTradingLayoutSm,
+      };
+    });
+
+    const layoutUpdatedEvent = (newLayout) => {
+      if (isResizableLayout) {
+        layoutStore.tradingLayout = newLayout;
+      }
+    };
+
+    return {
+      detailTradeId,
+      openTrades,
+      closedTrades,
+      allTrades,
+      tradeDetail,
+      timeframe,
+      currentLocks,
+      whitelist,
+      stakeCurrency,
+      layoutStore,
+      breakpointChanged,
+      layoutUpdatedEvent,
+      isLayoutLocked,
+      gridLayout,
+      gridLayoutMultiPane,
+      gridLayoutOpenTrades,
+      gridLayoutTradeHistory,
+      gridLayoutTradeDetail,
+      gridLayoutChartView,
+      responsiveGridLayouts,
+      isResizableLayout,
+    };
+  },
+});
 </script>
 
 <style scoped></style>

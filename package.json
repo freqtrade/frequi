@@ -38,6 +38,7 @@
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.3",
     "vue-select": "^3.18.3",
+    "vue2-helpers": "^1.1.7",
     "vuex": "^3.6.2",
     "vuex-composition-helpers": "^1.1.0"
   },

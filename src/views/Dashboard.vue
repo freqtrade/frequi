@@ -2,7 +2,7 @@
   <GridLayout
     class="h-100 w-100"
     :row-height="50"
-    :layout.sync="gridLayout"
+    :layout="gridLayout"
     :vertical-compact="false"
     :margin="[5, 5]"
     :responsive-layouts="responsiveGridLayouts"
@@ -11,7 +11,7 @@
     :responsive="true"
     :prevent-collision="true"
     :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
-    @layout-updated="layoutUpdated"
+    @layout-updated="layoutUpdatedEvent"
     @breakpoint-changed="breakpointChanged"
   >
     <GridItem
@@ -94,8 +94,6 @@
 <script lang="ts">
 import { formatPrice } from '@/shared/formatters';
 
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import DailyChart from '@/components/charts/DailyChart.vue';
@@ -105,21 +103,16 @@ import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
-import {
-  DashboardLayout,
-  findGridLayout,
-  LayoutActions,
-  LayoutGetters,
-} from '@/store/modules/layout';
-import { Trade, DailyReturnValue, DailyPayload, ClosedTrade } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace(StoreModules.ftbot);
-const layoutNs = namespace(StoreModules.layout);
+import { defineComponent, ref, computed, onMounted } from '@vue/composition-api';
+import { useNamespacedGetters, useNamespacedActions } from 'vuex-composition-helpers';
+import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 
-@Component({
+export default defineComponent({
+  name: 'Dashboard',
   components: {
     GridLayout,
     GridItem,
@@ -130,111 +123,118 @@ const layoutNs = namespace(StoreModules.layout);
     TradeList,
     DraggableContainer,
   },
-})
-export default class Dashboard extends Vue {
-  @ftbot.Getter [MultiBotStoreGetters.botCount]!: number;
+  setup() {
+    const {
+      botCount,
+      allOpenTradesAllBots,
+      allTradesAllBots,
+      allDailyStatsAllBots,
+      performanceStats,
+    } = useNamespacedGetters(StoreModules.ftbot, [
+      MultiBotStoreGetters.botCount,
+      MultiBotStoreGetters.allOpenTradesAllBots,
+      MultiBotStoreGetters.allTradesAllBots,
+      MultiBotStoreGetters.allDailyStatsAllBots,
+      BotStoreGetters.performanceStats,
+    ]);
 
-  @ftbot.Getter [MultiBotStoreGetters.allOpenTradesAllBots]!: Trade[];
+    const { getPerformance, allGetDaily, getTrades, getOpenTrades, getProfit } =
+      useNamespacedActions(StoreModules.ftbot, [
+        'getPerformance',
+        'allGetDaily',
+        'getTrades',
+        'getOpenTrades',
+        'getProfit',
+      ]);
 
-  @ftbot.Getter [MultiBotStoreGetters.allTradesAllBots]!: ClosedTrade[];
+    const layoutStore = useLayoutStore();
+    const currentBreakpoint = ref('');
 
-  @ftbot.Getter [MultiBotStoreGetters.allDailyStatsAllBots]!: Record<string, DailyReturnValue>;
-
-  @ftbot.Getter [BotStoreGetters.performanceStats]!: PerformanceEntry[];
-
-  @ftbot.Action getPerformance;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action allGetDaily!: (payload?: DailyPayload) => void;
-
-  @ftbot.Action getTrades;
-
-  @ftbot.Action getOpenTrades;
-
-  @ftbot.Action getProfit;
-
-  @layoutNs.Getter [LayoutGetters.getDashboardLayoutSm]!: GridItemData[];
-
-  @layoutNs.Getter [LayoutGetters.getDashboardLayout]!: GridItemData[];
-
-  @layoutNs.Action [LayoutActions.setDashboardLayout];
-
-  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
-
-  formatPrice = formatPrice;
-
-  localGridLayout: GridItemData[] = [];
-
-  currentBreakpoint = '';
-
-  get isLayoutLocked() {
-    return this.getLayoutLocked || !this.isResizableLayout;
-  }
-
-  get isResizableLayout() {
-    return ['', 'sm', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
-  }
-
-  get gridLayout() {
-    if (this.isResizableLayout) {
-      return this.getDashboardLayout;
-    }
-    return this.localGridLayout;
-  }
-
-  set gridLayout(newLayout) {
-    // Dummy setter to make gridLayout happy. Updates happen through layoutUpdated.
-  }
-
-  layoutUpdated(newLayout) {
-    // Frozen layouts for small screen sizes.
-    if (this.isResizableLayout) {
-      console.log('newlayout', newLayout);
-      console.log('saving dashboard');
-      this.setDashboardLayout(newLayout);
-    }
-  }
-
-  get gridLayoutDaily(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.dailyChart);
-  }
-
-  get gridLayoutBotComparison(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.botComparison);
-  }
-
-  get gridLayoutAllOpenTrades(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.allOpenTrades);
-  }
-
-  get gridLayoutCumChart(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.cumChartChart);
-  }
-
-  get gridLayoutTradesLogChart(): GridItemData {
-    return findGridLayout(this.gridLayout, DashboardLayout.tradesLogChart);
-  }
-
-  get responsiveGridLayouts() {
-    return {
-      sm: this.getDashboardLayoutSm,
+    const breakpointChanged = (newBreakpoint) => {
+      //   // console.log('breakpoint:', newBreakpoint);
+      currentBreakpoint.value = newBreakpoint;
     };
-  }
+    const isResizableLayout = computed(() =>
+      ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+    );
+    const isLayoutLocked = computed(() => {
+      return layoutStore.layoutLocked || !isResizableLayout;
+    });
 
-  mounted() {
-    this.allGetDaily({ timescale: 30 });
-    this.getTrades();
-    this.getOpenTrades();
-    this.getPerformance();
-    this.getProfit();
-    this.localGridLayout = [...this.getDashboardLayoutSm];
-  }
+    const gridLayout = computed((): GridItemData[] => {
+      if (isResizableLayout) {
+        return layoutStore.dashboardLayout;
+      }
+      return [...layoutStore.getDashboardLayoutSm];
+    });
 
-  breakpointChanged(newBreakpoint) {
-    // console.log('breakpoint:', newBreakpoint);
-    this.currentBreakpoint = newBreakpoint;
-  }
-}
+    const layoutUpdatedEvent = (newLayout) => {
+      if (isResizableLayout) {
+        console.log('newlayout', newLayout);
+        console.log('saving dashboard');
+        layoutStore.tradingLayout = newLayout;
+      }
+    };
+
+    const gridLayoutDaily = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.dailyChart);
+    });
+
+    const gridLayoutBotComparison = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.botComparison);
+    });
+
+    const gridLayoutAllOpenTrades = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.allOpenTrades);
+    });
+
+    const gridLayoutCumChart = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.cumChartChart);
+    });
+
+    const gridLayoutTradesLogChart = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.tradesLogChart);
+    });
+
+    const responsiveGridLayouts = computed(() => {
+      return {
+        sm: layoutStore.getDashboardLayoutSm,
+      };
+    });
+
+    onMounted(() => {
+      allGetDaily({ timescale: 30 });
+      getTrades();
+      getOpenTrades();
+      getPerformance();
+      getProfit();
+    });
+
+    return {
+      formatPrice,
+      isLayoutLocked,
+      layoutUpdatedEvent,
+      breakpointChanged,
+      gridLayout,
+      gridLayoutDaily,
+      gridLayoutBotComparison,
+      gridLayoutAllOpenTrades,
+      gridLayoutCumChart,
+      gridLayoutTradesLogChart,
+      responsiveGridLayouts,
+      getPerformance,
+      allGetDaily,
+      getTrades,
+      getOpenTrades,
+      getProfit,
+      botCount,
+      allOpenTradesAllBots,
+      allTradesAllBots,
+      allDailyStatsAllBots,
+      performanceStats,
+    };
+  },
+});
 </script>
 
 <style scoped></style>

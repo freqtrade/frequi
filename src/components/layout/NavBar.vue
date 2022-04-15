@@ -62,7 +62,7 @@
               </template>
               <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
-              <b-checkbox v-model="layoutLockedLocal" class="pl-5">Lock layout</b-checkbox>
+              <b-checkbox v-model="layoutStore.layoutLocked" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <router-link
                 v-if="botCount === 1"
@@ -105,170 +105,163 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
 import LoginModal from '@/views/LoginModal.vue';
-import { Action, namespace, Getter } from 'vuex-class';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
-import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
-import { BotDescriptor } from '@/types';
 import StoreModules from '@/store/storeSubModules';
-
-const ftbot = namespace(StoreModules.ftbot);
-const layoutNs = namespace(StoreModules.layout);
+import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from '@vue/composition-api';
+import {
+  useActions,
+  useGetters,
+  useNamespacedActions,
+  useNamespacedGetters,
+} from 'vuex-composition-helpers';
+import { useRoute } from 'vue2-helpers/vue-router';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
+import { useLayoutStore } from '@/stores/layout';
 
-@Component({
+export default defineComponent({
+  name: 'NavBar',
   components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
-})
-export default class NavBar extends Vue {
-  pingInterval: number | null = null;
+  setup() {
+    const { getUiVersion } = useGetters(['getUiVersion']);
+    const { setLoggedIn, loadUIVersion } = useActions(['setLoggedIn', 'loadUIVersion']);
+    const { pingAll, allGetState, logout } = useNamespacedActions(StoreModules.ftbot, [
+      'pingAll',
+      'allGetState',
+      'logout',
+    ]);
+    const {
+      isBotOnline,
+      hasBots,
+      botCount,
+      botName,
+      openTradeCount,
+      canRunBacktest,
+      selectedBotObj,
+    } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.isBotOnline,
+      MultiBotStoreGetters.hasBots,
+      MultiBotStoreGetters.botCount,
+      BotStoreGetters.botName,
+      BotStoreGetters.openTradeCount,
+      BotStoreGetters.canRunBacktest,
+      MultiBotStoreGetters.selectedBotObj,
+    ]);
 
-  botSelectOpen = false;
-
-  @Action setLoggedIn;
-
-  @Action loadUIVersion;
-
-  @Getter getUiVersion!: string;
-
-  @ftbot.Action pingAll;
-
-  @ftbot.Action allGetState;
-
-  @ftbot.Action logout;
-
-  @ftbot.Getter [BotStoreGetters.isBotOnline]!: boolean;
-
-  @ftbot.Getter [MultiBotStoreGetters.hasBots]: boolean;
-
-  @ftbot.Getter [MultiBotStoreGetters.botCount]: number;
-
-  @ftbot.Getter [BotStoreGetters.botName]: string;
-
-  @ftbot.Getter [BotStoreGetters.openTradeCount]: number;
-
-  @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
-
-  @ftbot.Getter [MultiBotStoreGetters.selectedBotObj]!: BotDescriptor;
-
-  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
-
-  @layoutNs.Action [LayoutActions.resetDashboardLayout];
-
-  @layoutNs.Action [LayoutActions.resetTradingLayout];
-
-  @layoutNs.Action [LayoutActions.setLayoutLocked];
-
-  openTradesInTitle: string = OpenTradeVizOptions.showPill;
-
-  favicon: Favico | undefined = undefined;
-
-  mounted() {
     const settingsStore = useSettingsStore();
-    this.openTradesInTitle = settingsStore.openTradesInTitle;
-    settingsStore.$subscribe((_, state) => {
-      const needsUpdate = this.openTradesInTitle !== state.openTradesInTitle;
-      this.openTradesInTitle = state.openTradesInTitle;
-      if (needsUpdate) {
-        this.setTitle();
-        this.setOpenTradesAsPill(this.openTradeCount);
+    const layoutStore = useLayoutStore();
+    const route = useRoute();
+    const favicon = ref<Favico | undefined>(undefined);
+    const pingInterval = ref<number>();
+
+    const clickLogout = () => {
+      logout();
+      // TODO: This should be per bot
+      setLoggedIn(false);
+    };
+
+    const setOpenTradesAsPill = (tradeCount: number) => {
+      if (!favicon) {
+        favicon.value = new Favico({
+          animation: 'none',
+          // position: 'up',
+          // fontStyle: 'normal',
+          // bgColor: '#',
+          // textColor: '#FFFFFF',
+        });
+      }
+      if (tradeCount !== 0 && settingsStore.openTradesInTitle === 'showPill') {
+        favicon.badge(tradeCount);
+      } else {
+        favicon.reset();
+        console.log('reset');
+      }
+    };
+    const resetDynamicLayout = (): void => {
+      console.log(`resetLayout called for ${route?.fullPath}`);
+      switch (route?.fullPath) {
+        case '/trade':
+          layoutStore.resetTradingLayout();
+          break;
+        case '/dashboard':
+          layoutStore.resetDashboardLayout();
+          break;
+        default:
+      }
+    };
+    const setTitle = () => {
+      let title = 'freqUI';
+      if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
+        title = `(${openTradeCount}) ${title}`;
+      }
+      if (botName) {
+        title = `${title} - ${botName}`;
+      }
+      document.title = title;
+    };
+
+    onBeforeUnmount(() => {
+      if (pingInterval) {
+        clearInterval(pingInterval.value);
       }
     });
 
-    this.pingAll();
-    this.loadUIVersion();
-    this.pingInterval = window.setInterval(this.pingAll, 60000);
+    onMounted(() => {
+      pingAll();
+      loadUIVersion();
+      pingInterval.value = window.setInterval(pingAll, 60000);
+      if (hasBots) {
+        // Query botstate - this will enable / disable certain modes
+        allGetState();
+      }
+    });
 
-    if (this.hasBots) {
-      // Query botstate - this will enable / disable certain modes
-      this.allGetState();
-    }
-  }
+    settingsStore.$subscribe((_, state) => {
+      const needsUpdate = settingsStore.openTradesInTitle !== state.openTradesInTitle;
+      if (needsUpdate) {
+        setTitle();
+        setOpenTradesAsPill(openTradeCount.value);
+      }
+    });
 
-  beforeDestroy() {
-    if (this.pingInterval) {
-      clearInterval(this.pingInterval);
-    }
-  }
+    watch(botName, () => setTitle());
+    watch(openTradeCount, () => {
+      console.log('openTradeCount changed');
+      if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
+        setOpenTradesAsPill(openTradeCount.value);
+      } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
+        setTitle();
+      }
+    });
 
-  clickLogout(): void {
-    this.logout();
-    // TODO: This should be per bot
-    this.setLoggedIn(false);
-  }
-
-  get layoutLockedLocal() {
-    return this.getLayoutLocked;
-  }
-
-  set layoutLockedLocal(value: boolean) {
-    this.setLayoutLocked(value);
-  }
-
-  setOpenTradesAsPill(tradeCount: number) {
-    if (!this.favicon) {
-      this.favicon = new Favico({
-        animation: 'none',
-        // position: 'up',
-        // fontStyle: 'normal',
-        // bgColor: '#',
-        // textColor: '#FFFFFF',
-      });
-    }
-    if (tradeCount !== 0 && this.openTradesInTitle === 'showPill') {
-      this.favicon.badge(tradeCount);
-    } else {
-      this.favicon.reset();
-      console.log('reset');
-    }
-  }
-
-  resetDynamicLayout(): void {
-    const route = this.$router.currentRoute.path;
-    console.log(`resetLayout called for ${route}`);
-    switch (route) {
-      case '/trade':
-        this.resetTradingLayout();
-        break;
-      case '/dashboard':
-        this.resetDashboardLayout();
-        break;
-      default:
-    }
-  }
-
-  setTitle() {
-    let title = 'freqUI';
-    if (this.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-      title = `(${this.openTradeCount}) ${title}`;
-    }
-    if (this.botName) {
-      title = `${title} - ${this.botName}`;
-    }
-    document.title = title;
-  }
-
-  @Watch(BotStoreGetters.botName)
-  botnameChanged() {
-    this.setTitle();
-  }
-
-  @Watch(BotStoreGetters.openTradeCount)
-  openTradeCountChanged() {
-    console.log('openTradeCount changed');
-    if (this.openTradesInTitle === OpenTradeVizOptions.showPill) {
-      this.setOpenTradesAsPill(this.openTradeCount);
-    } else if (this.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-      this.setTitle();
-    }
-  }
-}
+    return {
+      setLoggedIn,
+      loadUIVersion,
+      getUiVersion,
+      pingAll,
+      allGetState,
+      logout,
+      favicon,
+      isBotOnline,
+      hasBots,
+      botCount,
+      botName,
+      openTradeCount,
+      canRunBacktest,
+      selectedBotObj,
+      clickLogout,
+      resetDynamicLayout,
+      setTitle,
+      layoutStore,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

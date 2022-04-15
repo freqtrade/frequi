@@ -8,7 +8,6 @@ import { UiVersion } from '@/types';
 import StoreModules from '@/store/storeSubModules';
 import createBotStore, { MultiBotStoreGetters } from './modules/botStoreWrapper';
 import alertsModule from './modules/alerts';
-import layoutModule from './modules/layout';
 
 Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
@@ -16,7 +15,6 @@ const initCurrentTheme = getCurrentTheme();
 const store = new Vuex.Store({
   modules: {
     [StoreModules.alerts]: alertsModule,
-    [StoreModules.layout]: layoutModule,
   },
   state: {
     currentTheme: initCurrentTheme,

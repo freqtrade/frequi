@@ -6,7 +6,7 @@
         <b-form-group
           description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
         >
-          <b-checkbox v-model="layoutLockedLocal">Lock layout</b-checkbox>
+          <b-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-checkbox>
         </b-form-group>
         <b-form-group description="Reset dynamic layouts to how they were.">
           <b-button size="sm" @click="resetDynamicLayout">Reset layout</b-button>
@@ -39,28 +39,20 @@
 
 <script lang="ts">
 import { AlertActions } from '@/store/modules/alerts';
-import { LayoutActions, LayoutGetters } from '@/store/modules/layout';
 import StoreModules from '@/store/storeSubModules';
-import { defineComponent, WritableComputedRef, computed } from '@vue/composition-api';
-import { useGetters, useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { defineComponent } from '@vue/composition-api';
+import { useGetters, useNamespacedActions } from 'vuex-composition-helpers';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
+import { useLayoutStore } from '@/stores/layout';
 
 export default defineComponent({
   name: 'Settings',
   setup() {
     const settingsStore = useSettingsStore();
+    const layoutStore = useLayoutStore();
+
     const { getUiVersion } = useGetters(['getUiVersion']);
-    const { setLayoutLocked, resetTradingLayout, resetDashboardLayout } = useNamespacedActions(
-      StoreModules.layout,
-      [
-        LayoutActions.setLayoutLocked,
-        LayoutActions.resetTradingLayout,
-        LayoutActions.resetDashboardLayout,
-      ],
-    );
-    const { getLayoutLocked } = useNamespacedGetters(StoreModules.layout, [
-      LayoutGetters.getLayoutLocked,
-    ]);
+
     const { addAlert } = useNamespacedActions(StoreModules.alerts, [AlertActions.addAlert]);
 
     const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
@@ -69,27 +61,20 @@ export default defineComponent({
       { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
       { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
     ];
-    const layoutLockedLocal: WritableComputedRef<boolean> = computed({
-      get(): boolean {
-        return getLayoutLocked.value;
-      },
-      set(value: boolean): void {
-        setLayoutLocked(value);
-      },
-    });
+
     //
     const resetDynamicLayout = () => {
-      resetTradingLayout();
-      resetDashboardLayout();
+      layoutStore.resetTradingLayout();
+      layoutStore.resetDashboardLayout();
       addAlert({ message: 'Layouts have been reset.' });
     };
     return {
       getUiVersion,
       resetDynamicLayout,
       settingsStore,
+      layoutStore,
       timezoneOptions,
       openTradesOptions,
-      layoutLockedLocal,
     };
   },
 });

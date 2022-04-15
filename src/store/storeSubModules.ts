@@ -2,7 +2,6 @@
 enum StoreModules {
   ftbot = 'ftbot',
   alerts = 'alerts',
-  layout = 'layout',
 }
 
 export default StoreModules;
