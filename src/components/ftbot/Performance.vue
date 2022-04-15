@@ -8,33 +8,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { BotState, PerformanceEntry } from '@/types';
 import { formatPrice } from '@/shared/formatters';
 import { BotStoreGetters } from '@/store/modules/ftbot';
+import { defineComponent, computed } from '@vue/composition-api';
+import { useNamespacedGetters } from 'vuex-composition-helpers';
 import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({})
-export default class Performance extends Vue {
-  // TODO: Verify type of PerformanceStats!
-  @ftbot.Getter [BotStoreGetters.performanceStats]!: PerformanceEntry[];
-
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  get tableFields() {
-    return [
-      { key: 'pair', label: 'Pair' },
-      { key: 'profit', label: 'Profit %' },
-      {
-        key: 'profit_abs',
-        label: `Profit ${this.botState?.stake_currency}`,
-        formatter: (v: number) => formatPrice(v, 5),
-      },
-      { key: 'count', label: 'Count' },
-    ];
-  }
-}
+export default defineComponent({
+  name: 'Performance',
+  setup() {
+    const { performanceStats, botState } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.performanceStats,
+      BotStoreGetters.botState,
+    ]);
+    const tableFields = computed(() => {
+      return [
+        { key: 'pair', label: 'Pair' },
+        { key: 'profit', label: 'Profit %' },
+        {
+          key: 'profit_abs',
+          label: `Profit ${botState.value?.stake_currency}`,
+          formatter: (v: number) => formatPrice(v, 5),
+        },
+        { key: 'count', label: 'Count' },
+      ];
+    });
+    return {
+      performanceStats,
+      botState,
+      tableFields,
+    };
+  },
+});
 </script>

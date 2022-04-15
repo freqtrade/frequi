@@ -28,23 +28,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import OpenTradesIcon from 'vue-material-design-icons/FolderOpen.vue';
 import ClosedTradesIcon from 'vue-material-design-icons/FolderLock.vue';
 import BalanceIcon from 'vue-material-design-icons/Bank.vue';
 import PairListIcon from 'vue-material-design-icons/ViewList.vue';
 import DashboardIcon from 'vue-material-design-icons/ViewDashboardOutline.vue';
+import { defineComponent } from '@vue/composition-api';
+import { useNamespacedGetters } from 'vuex-composition-helpers';
+import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace('ftbot');
-
-@Component({
+export default defineComponent({
+  name: 'NavFooter',
   components: { OpenTradesIcon, ClosedTradesIcon, BalanceIcon, PairListIcon, DashboardIcon },
-})
-export default class NavFooter extends Vue {
-  @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
-}
+  setup() {
+    const { canRunBacktest } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.canRunBacktest,
+    ]);
+    return {
+      canRunBacktest,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
