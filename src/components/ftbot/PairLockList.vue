@@ -23,47 +23,49 @@
 
 <script lang="ts">
 import { timestampms } from '@/shared/formatters';
-import { BotStoreGetters } from '@/store/modules/ftbot';
 import { Lock } from '@/types';
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { showAlert } from '@/stores/alerts';
 import StoreModules from '@/store/storeSubModules';
+import { defineComponent } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'PairLockList',
   components: { DeleteIcon },
-})
-export default class PairLockList extends Vue {
-  @ftbot.Action getLocks;
-
-  @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action deleteLock!: (lockid: string) => Promise<string>;
-
-  timestampms = timestampms;
-
-  get tableFields() {
-    return [
+  setup() {
+    const { currentLocks } = useNamespacedGetters(StoreModules.ftbot, ['currentLocks']);
+    const { getLocks, deleteLock } = useNamespacedActions(StoreModules.ftbot, [
+      'getLocks',
+      'deleteLock',
+    ]);
+    const tableFields = [
       { key: 'pair', label: 'Pair' },
       { key: 'lock_end_timestamp', label: 'Until', formatter: 'timestampms' },
       { key: 'reason', label: 'Reason' },
       { key: 'actions' },
     ];
-  }
 
-  removePairLock(item: Lock) {
-    console.log(item);
-    if (item.id !== undefined) {
-      this.deleteLock(item.id);
-    } else {
-      showAlert('This Freqtrade version does not support deleting locks.');
-    }
-  }
-}
+    const removePairLock = (item: Lock) => {
+      console.log(item);
+      if (item.id !== undefined) {
+        deleteLock(item.id);
+      } else {
+        showAlert('This Freqtrade version does not support deleting locks.');
+      }
+    };
+
+    return {
+      timestampms,
+      tableFields,
+      removePairLock,
+      currentLocks,
+      getLocks,
+      deleteLock,
+    };
+  },
+});
 </script>
 
 <style scoped></style>
