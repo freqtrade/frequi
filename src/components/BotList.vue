@@ -25,51 +25,58 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
-import { BotDescriptors } from '@/types';
 import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent, ref } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-@Component({
-  components: {
-    LoginModal,
-    BotEntry,
-    BotRename,
+export default defineComponent({
+  name: 'BotList',
+  components: { LoginModal, BotEntry, BotRename },
+  props: {
+    small: { default: false, type: Boolean },
   },
-})
-export default class BotList extends Vue {
-  @Prop({ default: false, type: Boolean }) small!: boolean;
+  setup() {
+    const { botCount, selectedBot, allIsBotOnline, allAvailableBots } = useNamespacedGetters(
+      StoreModules.ftbot,
+      [
+        MultiBotStoreGetters.botCount,
+        MultiBotStoreGetters.selectedBot,
+        MultiBotStoreGetters.allIsBotOnline,
+        MultiBotStoreGetters.allAvailableBots,
+      ],
+    );
+    const { selectBot } = useNamespacedActions(StoreModules.ftbot, ['selectBot']);
+    const editingBots = ref<string[]>([]);
 
-  @ftbot.Getter [MultiBotStoreGetters.botCount]: number;
+    const editBot = (botId: string) => {
+      if (!editingBots.value.includes(botId)) {
+        editingBots.value.push(botId);
+      }
+    };
 
-  @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
+    const stopEditBot = (botId: string) => {
+      if (!editingBots.value.includes(botId)) {
+        return;
+      }
 
-  @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline]: Record<string, boolean>;
+      editingBots.value.splice(editingBots.value.indexOf(botId), 1);
+    };
 
-  @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
-
-  @ftbot.Action selectBot;
-
-  editingBots: string[] = [];
-
-  editBot(botId: string) {
-    if (!this.editingBots.includes(botId)) {
-      this.editingBots.push(botId);
-    }
-  }
-
-  stopEditBot(botId: string) {
-    if (!this.editingBots.includes(botId)) {
-      return;
-    }
-
-    this.editingBots.splice(this.editingBots.indexOf(botId), 1);
-  }
-}
+    return {
+      botCount,
+      selectedBot,
+      allIsBotOnline,
+      allAvailableBots,
+      selectBot,
+      editingBots,
+      editBot,
+      stopEditBot,
+    };
+  },
+});
 </script>
