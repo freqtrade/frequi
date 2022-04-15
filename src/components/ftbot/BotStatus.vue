@@ -39,25 +39,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { BotState, ProfitInterface } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 
 import { formatPercent } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import StoreModules from '@/store/storeSubModules';
 
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent } from '@vue/composition-api';
+import { useNamespacedGetters } from 'vuex-composition-helpers';
 
-@Component({ components: { DateTimeTZ } })
-export default class BotStatus extends Vue {
-  @ftbot.Getter [BotStoreGetters.version]: string;
-
-  @ftbot.Getter [BotStoreGetters.profit]: ProfitInterface | {};
-
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  formatPercent = formatPercent;
-}
+export default defineComponent({
+  name: 'BotStatus',
+  components: { DateTimeTZ },
+  setup() {
+    const { version, profit, botState } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.version,
+      BotStoreGetters.profit,
+      BotStoreGetters.botState,
+    ]);
+    return {
+      version,
+      profit,
+      botState,
+      formatPercent,
+    };
+  },
+});
 </script>
