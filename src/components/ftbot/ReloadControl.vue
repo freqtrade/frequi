@@ -18,35 +18,40 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import StoreModules from '@/store/storeSubModules';
+import { defineComponent, computed } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
+export default defineComponent({
+  name: 'ReloadControl',
+  components: { RefreshIcon },
+  setup() {
+    const { globalAutoRefresh } = useNamespacedGetters(StoreModules.ftbot, [
+      MultiBotStoreGetters.globalAutoRefresh,
+    ]);
+    const { setGlobalAutoRefresh, allRefreshFull } = useNamespacedActions(StoreModules.ftbot, [
+      'setGlobalAutoRefresh',
+      'allRefreshFull',
+    ]);
+    const autoRefreshLoc = computed({
+      get() {
+        return globalAutoRefresh.value;
+      },
+      set(newValue: boolean) {
+        setGlobalAutoRefresh(newValue);
+      },
+    });
 
-@Component({ components: { RefreshIcon } })
-export default class ReloadControl extends Vue {
-  refreshInterval: number | null = null;
-
-  refreshIntervalSlow: number | null = null;
-
-  @ftbot.Getter [MultiBotStoreGetters.globalAutoRefresh]!: boolean;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action setGlobalAutoRefresh!: (newValue: boolean) => void;
-
-  @ftbot.Action allRefreshFull;
-
-  get autoRefreshLoc() {
-    return this.globalAutoRefresh;
-  }
-
-  set autoRefreshLoc(newValue: boolean) {
-    this.setGlobalAutoRefresh(newValue);
-  }
-}
+    return {
+      globalAutoRefresh,
+      setGlobalAutoRefresh,
+      allRefreshFull,
+      autoRefreshLoc,
+    };
+  },
+});
 </script>
 
 <style scoped></style>
