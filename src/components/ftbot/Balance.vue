@@ -38,56 +38,61 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { BalanceInterface } from '@/types';
 import HideIcon from 'vue-material-design-icons/EyeOff.vue';
 import ShowIcon from 'vue-material-design-icons/Eye.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
 import { formatPercent } from '@/shared/formatters';
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent, computed, ref } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-@Component({
+export default defineComponent({
+  name: 'Balance',
   components: { HideIcon, ShowIcon, BalanceChart },
-})
-export default class Balance extends Vue {
-  @ftbot.Action getBalance;
+  setup() {
+    const { balance, stakeCurrencyDecimals } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.balance,
+      BotStoreGetters.stakeCurrencyDecimals,
+    ]);
+    const { getBalance } = useNamespacedActions(StoreModules.ftbot, ['getBalance']);
+    const hideSmallBalances = ref(true);
 
-  @ftbot.Getter [BotStoreGetters.balance]!: BalanceInterface;
+    const smallBalance = computed((): number => {
+      return Number((0.1 ** stakeCurrencyDecimals.value).toFixed(8));
+    });
 
-  @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
+    const balanceCurrencies = computed(() => {
+      if (!hideSmallBalances.value) {
+        return balance.value.currencies;
+      }
 
-  hideSmallBalances = true;
-  formatPercent = formatPercent;
+      return balance.value?.currencies?.filter((v) => v.est_stake >= smallBalance.value);
+    });
 
-  get smallBalance(): number {
-    return Number((0.1 ** this.stakeCurrencyDecimals).toFixed(8));
-  }
+    const tableFields = computed(() => {
+      return [
+        { key: 'currency', label: 'Currency' },
+        { key: 'free', label: 'Available', formatter: 'formatCurrency' },
+        { key: 'est_stake', label: `in ${balance.value.stake}`, formatter: 'formatCurrency' },
+      ];
+    });
 
-  get balanceCurrencies() {
-    if (!this.hideSmallBalances) {
-      return this.balance.currencies;
-    }
+    const formatCurrency = (value) => {
+      return value ? value.toFixed(5) : '';
+    };
 
-    return this.balance?.currencies?.filter((v) => v.est_stake >= this.smallBalance);
-  }
-
-  get tableFields() {
-    return [
-      { key: 'currency', label: 'Currency' },
-      { key: 'free', label: 'Available', formatter: 'formatCurrency' },
-      { key: 'est_stake', label: `in ${this.balance.stake}`, formatter: 'formatCurrency' },
-    ];
-  }
-
-  mounted() {
-    this.getBalance();
-  }
-
-  formatCurrency(value) {
-    return value ? value.toFixed(5) : '';
-  }
-}
+    return {
+      balance,
+      stakeCurrencyDecimals,
+      hideSmallBalances,
+      getBalance,
+      formatPercent,
+      smallBalance,
+      balanceCurrencies,
+      tableFields,
+      formatCurrency,
+    };
+  },
+});
 </script>
