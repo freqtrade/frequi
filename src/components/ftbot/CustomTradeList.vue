@@ -34,136 +34,109 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { formatPercent, formatPrice } from '@/shared/formatters';
+import { formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
-import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
-import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import StoreModules from '@/store/storeSubModules';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
-import TradeProfit from './TradeProfit.vue';
+import { defineComponent, computed, ref } from '@vue/composition-api';
+import { useNamespacedActions } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'CustomTradeList',
   components: {
-    DeleteIcon,
-    ForceSellIcon,
-    ActionIcon,
-    DateTimeTZ,
-    TradeProfit,
     CustomTradeListEntry,
   },
-})
-export default class CustomTradeList extends Vue {
-  $refs!: {
-    tradesTable: HTMLFormElement;
-  };
-
-  formatPercent = formatPercent;
-
-  formatPrice = formatPrice;
-
-  @Prop({ required: true }) trades!: Array<Trade>;
-
-  @Prop({ default: 'Trades' }) title!: string;
-
-  @Prop({ required: false, default: '' }) stakeCurrency!: string;
-
-  @Prop({ default: false }) activeTrades!: boolean;
-
-  @Prop({ default: false }) showFilter!: boolean;
-
-  @Prop({ default: false, type: Boolean }) multiBotView!: boolean;
-
-  @Prop({ default: 'No Trades to show.' }) emptyText!: string;
-
-  @Prop({ default: 3, type: Number }) stakeCurrencyDecimals!: number;
-
-  @ftbot.Action setDetailTrade;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action forceSellMulti!: (payload: MultiForcesellPayload) => Promise<string>;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action deleteTradeMulti!: (payload: MultiDeletePayload) => Promise<string>;
-
-  currentPage = 1;
-
-  selectedItemIndex? = undefined;
-
-  filterText = '';
-
-  get rows(): number {
-    return this.trades.length;
-  }
-
-  perPage = this.activeTrades ? 200 : 25;
-
-  get filteredTrades() {
-    return this.trades.slice(
-      (this.currentPage - 1) * this.perPage,
-      this.currentPage * this.perPage,
+  props: {
+    trades: { required: true, type: Array as () => Trade[] },
+    title: { default: 'Trades', type: String },
+    stakeCurrency: { required: false, default: '', type: String },
+    activeTrades: { default: false, type: Boolean },
+    showFilter: { default: false, type: Boolean },
+    multiBotView: { default: false, type: Boolean },
+    emptyText: { default: 'No Trades to show.', type: String },
+    stakeCurrencyDecimals: { default: 3, type: Number },
+  },
+  setup(props, { root }) {
+    const { setDetailTrade, forceSellMulti, deleteTradeMulti } = useNamespacedActions(
+      StoreModules.ftbot,
+      ['setDetailTrade', 'forceSellMulti', 'deleteTradeMulti'],
     );
-  }
+    const currentPage = ref(1);
+    const filterText = ref('');
+    const perPage = props.activeTrades ? 200 : 25;
 
-  formatPriceWithDecimals(price) {
-    return formatPrice(price, this.stakeCurrencyDecimals);
-  }
+    const rows = computed(() => props.trades.length);
 
-  forcesellHandler(item: Trade, ordertype: string | undefined = undefined) {
-    this.$bvModal
-      .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
-      .then((value: boolean) => {
-        if (value) {
-          const payload: MultiForcesellPayload = {
-            tradeid: String(item.trade_id),
-            botId: item.botId,
-          };
-          if (ordertype) {
-            payload.ordertype = ordertype;
+    const filteredTrades = computed(() => {
+      return props.trades.slice((currentPage.value - 1) * perPage, currentPage.value * perPage);
+    });
+    const formatPriceWithDecimals = (price) => {
+      return formatPrice(price, props.stakeCurrencyDecimals);
+    };
+    const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
+      root.$bvModal
+        .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
+        .then((value: boolean) => {
+          if (value) {
+            const payload: MultiForcesellPayload = {
+              tradeid: String(item.trade_id),
+              botId: item.botId,
+            };
+            if (ordertype) {
+              payload.ordertype = ordertype;
+            }
+            forceSellMulti(payload)
+              .then((xxx) => console.log(xxx))
+              .catch((error) => console.log(error.response));
           }
-          this.forceSellMulti(payload)
-            .then((xxx) => console.log(xxx))
-            .catch((error) => console.log(error.response));
-        }
-      });
-  }
+        });
+    };
 
-  handleContextMenuEvent(item, index, event) {
-    // stop browser context menu from appearing
-    if (!this.activeTrades) {
-      return;
-    }
-    event.preventDefault();
-    // log the selected item to the console
-    console.log(item);
-  }
+    const handleContextMenuEvent = (item, index, event) => {
+      // stop browser context menu from appearing
+      if (!props.activeTrades) {
+        return;
+      }
+      event.preventDefault();
+      // log the selected item to the console
+      console.log(item);
+    };
 
-  removeTradeHandler(item) {
-    console.log(item);
-    this.$bvModal
-      .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
-      .then((value: boolean) => {
-        if (value) {
-          const payload: MultiDeletePayload = {
-            tradeid: String(item.trade_id),
-            botId: item.botId,
-          };
-          this.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-        }
-      });
-  }
+    const removeTradeHandler = (item) => {
+      console.log(item);
+      root.$bvModal
+        .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
+        .then((value: boolean) => {
+          if (value) {
+            const payload: MultiDeletePayload = {
+              tradeid: String(item.trade_id),
+              botId: item.botId,
+            };
+            deleteTradeMulti(payload).catch((error) => console.log(error.response));
+          }
+        });
+    };
+    const tradeClick = (trade) => {
+      setDetailTrade(trade);
+    };
 
-  tradeClick(trade) {
-    this.setDetailTrade(trade);
-  }
-}
+    return {
+      currentPage,
+      filterText,
+      perPage,
+      filteredTrades,
+      formatPriceWithDecimals,
+      forcesellHandler,
+      handleContextMenuEvent,
+      removeTradeHandler,
+      tradeClick,
+      setDetailTrade,
+      forceSellMulti,
+      deleteTradeMulti,
+      rows,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
