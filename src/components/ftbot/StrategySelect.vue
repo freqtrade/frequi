@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="w-100 d-flex">
-      <b-form-select
-        id="strategy-select"
-        v-model="locStrategy"
-        :options="strategyList"
-        @change="strategyChanged"
-      >
+      <b-form-select id="strategy-select" v-model="locStrategy" :options="strategyList">
       </b-form-select>
       <div class="ml-2">
         <b-button @click="getStrategyList">&#x21bb;</b-button>
@@ -20,55 +15,53 @@
 <script lang="ts">
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
-import { StrategyResult } from '@/types';
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { defineComponent, computed, onMounted } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
+export default defineComponent({
+  name: 'StrategySelect',
+  props: {
+    value: { type: String, required: true },
+    showDetails: { default: false, required: false, type: Boolean },
+  },
+  emits: ['input'],
+  setup(props, { emit }) {
+    const { getStrategyList, getStrategy } = useNamespacedActions(StoreModules.ftbot, [
+      'getStrategyList',
+      'getStrategy',
+    ]);
 
-@Component({})
-export default class StrategySelect extends Vue {
-  @Prop() value!: string;
+    const { strategyList, strategy } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.strategyList,
+      BotStoreGetters.strategy,
+    ]);
 
-  @Prop({ default: false, required: false }) showDetails!: boolean;
+    const strategyCode = computed((): string => strategy.value?.code);
+    const locStrategy = computed({
+      get() {
+        return props.value;
+      },
+      set(strategy) {
+        getStrategy(strategy);
+        emit('input', strategy);
+      },
+    });
 
-  @ftbot.Action getStrategyList;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action getStrategy!: (strategy: string) => void;
-
-  @ftbot.Getter [BotStoreGetters.strategyList]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.strategy]: StrategyResult;
-
-  @Emit('input')
-  emitStrategy(strategy: string) {
-    this.getStrategy(strategy);
-    return strategy;
-  }
-
-  get strategyCode(): string {
-    return this.strategy?.code;
-  }
-
-  get locStrategy() {
-    return this.value;
-  }
-
-  set locStrategy(val) {
-    this.emitStrategy(val);
-  }
-
-  strategyChanged(newVal) {
-    this.value = newVal;
-  }
-
-  mounted() {
-    if (this.strategyList.length === 0) {
-      this.getStrategyList();
-    }
-  }
-}
+    onMounted(() => {
+      if (strategyList.value.length === 0) {
+        getStrategyList();
+      }
+    });
+    return {
+      getStrategyList,
+      getStrategy,
+      strategyList,
+      strategy,
+      strategyCode,
+      locStrategy,
+    };
+  },
+});
 </script>
 
 <style></style>
