@@ -21,14 +21,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 
 import BotList from '@/components/BotList.vue';
 
-@Component({
+export default defineComponent({
+  name: 'Home',
   components: { BotList },
-})
-export default class Home extends Vue {}
+});
 </script>
 
 <style lang="scss" scoped>

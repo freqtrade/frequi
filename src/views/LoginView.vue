@@ -7,14 +7,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 
 import Login from '@/components/Login.vue';
 
-@Component({
+export default defineComponent({
+  name: 'LoginView',
   components: { Login },
-})
-export default class LoginView extends Vue {}
+});
 </script>
 
 <style scoped>
