@@ -167,7 +167,7 @@ export default defineComponent({
     };
 
     const setOpenTradesAsPill = (tradeCount: number) => {
-      if (!favicon) {
+      if (!favicon.value) {
         favicon.value = new Favico({
           animation: 'none',
           // position: 'up',
@@ -177,9 +177,9 @@ export default defineComponent({
         });
       }
       if (tradeCount !== 0 && settingsStore.openTradesInTitle === 'showPill') {
-        favicon.badge(tradeCount);
+        favicon.value.badge(tradeCount);
       } else {
-        favicon.reset();
+        favicon.value.reset();
         console.log('reset');
       }
     };
