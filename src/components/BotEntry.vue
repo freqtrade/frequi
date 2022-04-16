@@ -29,58 +29,63 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import { BotDescriptor, BotDescriptors } from '@/types';
+import { BotDescriptor } from '@/types';
 import StoreModules from '@/store/storeSubModules';
+import { defineComponent, computed } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters, useStore } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'BotEntry',
   components: {
     DeleteIcon,
     EditIcon,
   },
-})
-export default class BotList extends Vue {
-  @Prop({ default: false, type: Object }) bot!: BotDescriptor;
+  props: {
+    bot: { required: true, type: Object },
+    noButtons: { default: false, type: Boolean },
+  },
+  emits: ['edit'],
+  setup(props, { root }) {
+    const store = useStore();
+    const { allIsBotOnline, allAutoRefresh } = useNamespacedGetters(StoreModules.ftbot, [
+      MultiBotStoreGetters.allIsBotOnline,
+      MultiBotStoreGetters.allAutoRefresh,
+    ]);
+    const { removeBot } = useNamespacedActions(StoreModules.ftbot, ['removeBot']);
 
-  @Prop({ default: false, type: Boolean }) noButtons!: boolean;
+    const changeEvent = (v) => {
+      store.dispatch(`ftbot/${props.bot.botId}/setAutoRefresh`, v);
+    };
 
-  @ftbot.Getter [MultiBotStoreGetters.allIsBotOnline];
+    const clickRemoveBot = (bot: BotDescriptor) => {
+      //
+      root.$bvModal
+        .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
+        .then((value: boolean) => {
+          if (value) {
+            removeBot(bot.botId);
+          }
+        });
+    };
+    const autoRefreshLoc = computed({
+      get() {
+        return allAutoRefresh.value[props.bot.botId];
+      },
+      set(_) {
+        // pass
+      },
+    });
 
-  @ftbot.Getter [MultiBotStoreGetters.allAutoRefresh];
-
-  @ftbot.Getter [MultiBotStoreGetters.allAvailableBots]: BotDescriptors;
-
-  @ftbot.Action removeBot;
-
-  @ftbot.Action selectBot;
-
-  get autoRefreshLoc() {
-    return this.allAutoRefresh[this.bot.botId];
-  }
-
-  set autoRefreshLoc(v) {
-    // Dummy setter - Set via change event to avoid bouncing
-  }
-
-  changeEvent(v) {
-    this.$store.dispatch(`ftbot/${this.bot.botId}/setAutoRefresh`, v);
-  }
-
-  clickRemoveBot(bot: BotDescriptor) {
-    //
-    this.$bvModal
-      .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
-      .then((value: boolean) => {
-        if (value) {
-          this.removeBot(bot.botId);
-        }
-      });
-  }
-}
+    return {
+      allIsBotOnline,
+      allAutoRefresh,
+      changeEvent,
+      clickRemoveBot,
+      autoRefreshLoc,
+    };
+  },
+});
 </script>
