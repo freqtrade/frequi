@@ -79,99 +79,98 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { BotState, ForceEnterPayload, OrderSides } from '@/types';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
+import { ForceEnterPayload, OrderSides } from '@/types';
 
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent, ref, nextTick } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-@Component({})
-export default class ForceBuyForm extends Vue {
-  pair = '';
+export default defineComponent({
+  name: 'ForceBuyForm',
+  setup(_, { root }) {
+    const { botState, shortAllowed, botApiVersion, stakeCurrency } = useNamespacedGetters(
+      StoreModules.ftbot,
+      [
+        BotStoreGetters.botState,
+        BotStoreGetters.shortAllowed,
+        BotStoreGetters.botApiVersion,
+        BotStoreGetters.stakeCurrency,
+      ],
+    );
+    const { forcebuy } = useNamespacedActions(StoreModules.ftbot, ['forcebuy']);
+    const form = ref<HTMLFormElement>();
+    const pair = ref('');
+    const price = ref<number | null>(null);
+    const stakeAmount = ref<number | null>(null);
+    const ordertype = ref('');
+    const orderSide = ref<OrderSides>(OrderSides.long);
 
-  price = null;
+    const checkFormValidity = () => {
+      const valid = form.value?.checkValidity();
 
-  stakeAmount = null;
+      return valid;
+    };
 
-  ordertype?: string = '';
+    const handleSubmit = () => {
+      // Exit when the form isn't valid
+      if (!checkFormValidity()) {
+        return;
+      }
+      // call forcebuy
+      const payload: ForceEnterPayload = { pair: pair.value };
+      if (price.value) {
+        payload.price = Number(price.value);
+      }
+      if (ordertype.value) {
+        payload.ordertype = ordertype.value;
+      }
+      if (stakeAmount.value) {
+        payload.stakeamount = stakeAmount.value;
+      }
+      if (botApiVersion.value >= 2.13) {
+        payload.side = orderSide.value;
+      }
+      forcebuy(payload);
+      nextTick(() => {
+        root.$bvModal.hide('forcebuy-modal');
+      });
+    };
+    const resetForm = () => {
+      console.log('resetForm');
+      pair.value = '';
+      price.value = null;
+      stakeAmount.value = null;
+      if (botApiVersion.value > 1.1) {
+        ordertype.value =
+          botState.value?.order_types?.forcebuy ||
+          botState.value?.order_types?.force_entry ||
+          botState.value?.order_types?.buy ||
+          botState.value?.order_types?.entry;
+      }
+    };
 
-  orderSide: OrderSides = OrderSides.long;
-
-  $refs!: {
-    form: HTMLFormElement;
-  };
-
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  @ftbot.Getter [BotStoreGetters.shortAllowed]?: boolean;
-
-  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action forcebuy!: (payload: ForceEnterPayload) => Promise<string>;
-
-  created() {
-    this.$bvModal.show('forcebuy-modal');
-  }
-
-  close() {
-    this.$emit('close');
-  }
-
-  checkFormValidity() {
-    const valid = this.$refs.form.checkValidity();
-
-    return valid;
-  }
-
-  handleBuy(bvModalEvt) {
-    // Prevent modal from closing
-    bvModalEvt.preventDefault();
-    // Trigger submit handler
-    this.handleSubmit();
-  }
-
-  resetForm() {
-    console.log('resetForm');
-    this.pair = '';
-    this.price = null;
-    this.stakeAmount = null;
-    if (this.botApiVersion > 1.1) {
-      this.ordertype =
-        this.botState?.order_types?.forcebuy ||
-        this.botState?.order_types?.forceentry ||
-        this.botState?.order_types?.buy ||
-        this.botState?.order_types?.entry;
-    }
-  }
-
-  handleSubmit() {
-    // Exit when the form isn't valid
-    if (!this.checkFormValidity()) {
-      return;
-    }
-    // call forcebuy
-    const payload: ForceEnterPayload = { pair: this.pair };
-    if (this.price) {
-      payload.price = Number(this.price);
-    }
-    if (this.ordertype) {
-      payload.ordertype = this.ordertype;
-    }
-    if (this.stakeAmount) {
-      payload.stakeamount = this.stakeAmount;
-    }
-    if (this.botApiVersion >= 2.13) {
-      payload.side = this.orderSide;
-    }
-    this.forcebuy(payload);
-    this.$nextTick(() => {
-      this.$bvModal.hide('forcebuy-modal');
-    });
-  }
-}
+    const handleBuy = (bvModalEvt) => {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault();
+      // Trigger submit handler
+      handleSubmit();
+    };
+    return {
+      handleSubmit,
+      botState,
+      shortAllowed,
+      botApiVersion,
+      stakeCurrency,
+      form,
+      handleBuy,
+      resetForm,
+      pair,
+      price,
+      stakeAmount,
+      ordertype,
+      orderSide,
+    };
+  },
+});
 </script>
