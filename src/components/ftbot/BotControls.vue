@@ -63,9 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { BotState, ForceSellPayload } from '@/types';
+import { ForceSellPayload } from '@/types';
 import { BotStoreActions, BotStoreGetters } from '@/store/modules/ftbot';
 import PlayIcon from 'vue-material-design-icons/Play.vue';
 import StopIcon from 'vue-material-design-icons/Stop.vue';
@@ -75,10 +73,11 @@ import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ForceBuyIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
 import StoreModules from '@/store/storeSubModules';
 import ForceBuyForm from './ForceBuyForm.vue';
+import { defineComponent, computed, ref } from '@vue/composition-api';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'BotControls',
   components: {
     ForceBuyForm,
     PlayIcon,
@@ -88,73 +87,81 @@ const ftbot = namespace(StoreModules.ftbot);
     ForceSellIcon,
     ForceBuyIcon,
   },
-})
-export default class BotControls extends Vue {
-  forcebuyShow = false;
+  setup(_, { root }) {
+    const forcebuyShow = ref(false);
+    const { botState, isTrading, isWebserverMode } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.botState,
+      BotStoreGetters.isTrading,
+      BotStoreGetters.isWebserverMode,
+    ]);
+    const { startBot, stopBot, stopBuy, reloadConfig, startTrade, forcesell } =
+      useNamespacedActions(StoreModules.ftbot, [
+        BotStoreActions.startBot,
+        BotStoreActions.stopBot,
+        BotStoreActions.stopBuy,
+        BotStoreActions.reloadConfig,
+        BotStoreActions.startTrade,
+        BotStoreActions.forcesell,
+      ]);
 
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  @ftbot.Action startBot;
-
-  @ftbot.Action stopBot;
-
-  @ftbot.Action stopBuy;
-
-  @ftbot.Action reloadConfig;
-
-  @ftbot.Action startTrade;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action [BotStoreActions.forcesell]!: (payload: ForceSellPayload) => void;
-
-  @ftbot.Getter [BotStoreGetters.isTrading]!: boolean;
-
-  @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
-
-  get isRunning(): boolean {
-    return this.botState?.state === 'running';
-  }
-
-  initiateForceenter() {
-    this.$bvModal.show('forcebuy-modal');
-  }
-
-  handleStopBot() {
-    this.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
-      if (value) {
-        this.stopBot();
-      }
+    const isRunning = computed((): boolean => {
+      return botState.value?.state === 'running';
     });
-  }
 
-  handleStopBuy() {
-    this.$bvModal
-      .msgBoxConfirm('Stop buying? Freqtrade will continue to handle open trades.')
-      .then((value: boolean) => {
+    const initiateForceenter = () => {
+      root.$bvModal.show('forcebuy-modal');
+    };
+
+    const handleStopBot = () => {
+      root.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
         if (value) {
-          this.stopBuy();
+          stopBot();
         }
       });
-  }
+    };
 
-  handleReloadConfig() {
-    this.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
-      if (value) {
-        this.reloadConfig();
-      }
-    });
-  }
+    const handleStopBuy = () => {
+      root.$bvModal
+        .msgBoxConfirm('Stop buying? Freqtrade will continue to handle open trades.')
+        .then((value: boolean) => {
+          if (value) {
+            stopBuy();
+          }
+        });
+    };
 
-  handleForceSell() {
-    this.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
-      if (value) {
-        const payload: ForceSellPayload = {
-          tradeid: 'all',
-          // TODO: support ordertype (?)
-        };
-        this.forcesell(payload);
-      }
-    });
-  }
-}
+    const handleReloadConfig = () => {
+      root.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
+        if (value) {
+          reloadConfig();
+        }
+      });
+    };
+
+    const handleForceSell = () => {
+      root.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
+        if (value) {
+          const payload: ForceSellPayload = {
+            tradeid: 'all',
+            // TODO: support ordertype (?)
+          };
+          forcesell(payload);
+        }
+      });
+    };
+    return {
+      initiateForceenter,
+      handleStopBot,
+      handleStopBuy,
+      handleReloadConfig,
+      handleForceSell,
+      forcebuyShow,
+      isTrading,
+      isRunning,
+      botState,
+      isWebserverMode,
+      startBot,
+    };
+  },
+});
 </script>
