@@ -21,6 +21,8 @@ import {
 } from 'echarts/components';
 
 import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
+import { defineComponent, ref, computed } from '@vue/composition-api';
+import { useGetters } from 'vuex-composition-helpers';
 
 use([
   BarChart,
@@ -38,162 +40,162 @@ use([
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
 
-@Component({
+export default defineComponent({
+  name: 'CumProfitChart',
   components: {
     'v-chart': ECharts,
   },
-})
-export default class CumProfitChart extends Vue {
-  @Prop({ required: true }) trades!: ClosedTrade[];
+  props: {
+    trades: { required: true, type: Array as () => ClosedTrade[] },
+    showTitle: { default: true, type: Boolean },
+    profitColumn: { default: 'close_profit_abs', type: String },
+  },
+  setup(props) {
+    const { getChartTheme } = useGetters(['getChartTheme']);
+    const botList = ref<string[]>([]);
+    const cumulativeData = computed(() => {
+      botList.value = [];
+      const res: CumProfitData[] = [];
+      const resD: CumProfitDataPerDate = {};
+      const closedTrades = props.trades
+        .slice()
+        .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
+      let profit = 0.0;
 
-  @Prop({ default: true, type: Boolean }) showTitle!: boolean;
+      for (let i = 0, len = closedTrades.length; i < len; i += 1) {
+        const trade = closedTrades[i];
 
-  @Prop({ default: 'close_profit_abs' }) profitColumn!: string;
-
-  @Getter getChartTheme!: string;
-
-  botList: string[] = [];
-
-  get cumulativeData() {
-    this.botList = [];
-    const res: CumProfitData[] = [];
-    const resD: CumProfitDataPerDate = {};
-    const closedTrades = this.trades
-      .slice()
-      .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
-    let profit = 0.0;
-
-    for (let i = 0, len = closedTrades.length; i < len; i += 1) {
-      const trade = closedTrades[i];
-
-      if (trade.close_timestamp && trade[this.profitColumn]) {
-        profit += trade[this.profitColumn];
-        if (!resD[trade.close_timestamp]) {
-          // New timestamp
-          resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
-        } else {
-          // Add to existing profit
-          resD[trade.close_timestamp].profit += trade[this.profitColumn];
-          if (resD[trade.close_timestamp][trade.botId]) {
-            resD[trade.close_timestamp][trade.botId] += trade[this.profitColumn];
+        if (trade.close_timestamp && trade[props.profitColumn]) {
+          profit += trade[props.profitColumn];
+          if (!resD[trade.close_timestamp]) {
+            // New timestamp
+            resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
           } else {
-            resD[trade.close_timestamp][trade.botId] = profit;
+            // Add to existing profit
+            resD[trade.close_timestamp].profit += trade[props.profitColumn];
+            if (resD[trade.close_timestamp][trade.botId]) {
+              resD[trade.close_timestamp][trade.botId] += trade[props.profitColumn];
+            } else {
+              resD[trade.close_timestamp][trade.botId] = profit;
+            }
+          }
+          // console.log(trade.close_date, profit);
+          res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
+          if (!botList.value.includes(trade.botId)) {
+            botList.value.push(trade.botId);
           }
         }
-        // console.log(trade.close_date, profit);
-        res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
-        if (!this.botList.includes(trade.botId)) {
-          this.botList.push(trade.botId);
-        }
       }
-    }
-    // console.log(resD);
+      // console.log(resD);
 
-    return Object.entries(resD).map(([k, v]) => {
-      const obj = { date: parseInt(k, 10), profit: v.profit };
-      // TODO: The below could allow "lines" per bot"
-      // this.botList.forEach((botId) => {
-      // obj[botId] = v[botId];
-      // });
-      return obj;
+      return Object.entries(resD).map(([k, v]) => {
+        const obj = { date: parseInt(k, 10), profit: v.profit };
+        // TODO: The below could allow "lines" per bot"
+        // this.botList.forEach((botId) => {
+        // obj[botId] = v[botId];
+        // });
+        return obj;
+      });
     });
-  }
 
-  get chartOptions(): EChartsOption {
-    const chartOptionsLoc: EChartsOption = {
-      title: {
-        text: 'Cumulative Profit',
-        show: this.showTitle,
-      },
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      dataset: {
-        dimensions: ['date', 'profit'],
-        source: this.cumulativeData,
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'line',
-          label: {
-            backgroundColor: '#6a7985',
+    const chartOptions = computed((): EChartsOption => {
+      const chartOptionsLoc: EChartsOption = {
+        title: {
+          text: 'Cumulative Profit',
+          show: props.showTitle,
+        },
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        dataset: {
+          dimensions: ['date', 'profit'],
+          source: cumulativeData.value,
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'line',
+            label: {
+              backgroundColor: '#6a7985',
+            },
           },
         },
-      },
-      legend: {
-        data: [CHART_PROFIT],
-        right: '5%',
-      },
-      useUTC: false,
-      xAxis: {
-        type: 'time',
-      },
-      yAxis: [
-        {
-          type: 'value',
-          name: CHART_PROFIT,
-          splitLine: {
-            show: false,
+        legend: {
+          data: [CHART_PROFIT],
+          right: '5%',
+        },
+        useUTC: false,
+        xAxis: {
+          type: 'time',
+        },
+        yAxis: [
+          {
+            type: 'value',
+            name: CHART_PROFIT,
+            splitLine: {
+              show: false,
+            },
+            nameRotate: 90,
+            nameLocation: 'middle',
+            nameGap: 40,
           },
-          nameRotate: 90,
-          nameLocation: 'middle',
-          nameGap: 40,
+        ],
+        grid: {
+          bottom: 80,
         },
-      ],
-      grid: {
-        bottom: 80,
-      },
-      dataZoom: [
-        {
-          type: 'inside',
-          // xAxisIndex: [0],
-          start: 0,
-          end: 100,
-        },
-        {
-          show: true,
-          // xAxisIndex: [0],
-          type: 'slider',
-          bottom: 10,
-          start: 0,
-          end: 100,
-        },
-      ],
-      series: [
-        {
-          type: 'line',
-          name: CHART_PROFIT,
-          animation: true,
-          step: 'end',
-          lineStyle: {
-            color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+        dataZoom: [
+          {
+            type: 'inside',
+            // xAxisIndex: [0],
+            start: 0,
+            end: 100,
           },
-          itemStyle: {
-            color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+          {
+            show: true,
+            // xAxisIndex: [0],
+            type: 'slider',
+            bottom: 10,
+            start: 0,
+            end: 100,
           },
-          // symbol: 'none',
-        },
-      ],
-    };
-    // TODO: maybe have profit lines per bot?
-    // this.botList.forEach((botId: string) => {
-    //   console.log('bot', botId);
-    //   chartOptionsLoc.series.push({
-    //     type: 'line',
-    //     name: botId,
-    //     animation: true,
-    //     step: 'end',
-    //     lineStyle: {
-    //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
-    //     },
-    //     itemStyle: {
-    //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
-    //     },
-    //     // symbol: 'none',
-    //   });
-    // });
-    return chartOptionsLoc;
-  }
-}
+        ],
+        series: [
+          {
+            type: 'line',
+            name: CHART_PROFIT,
+            animation: true,
+            step: 'end',
+            lineStyle: {
+              color: getChartTheme.value === 'dark' ? '#c2c2c2' : 'black',
+            },
+            itemStyle: {
+              color: getChartTheme.value === 'dark' ? '#c2c2c2' : 'black',
+            },
+            // symbol: 'none',
+          },
+        ],
+      };
+      // TODO: maybe have profit lines per bot?
+      // this.botList.forEach((botId: string) => {
+      //   console.log('bot', botId);
+      //   chartOptionsLoc.series.push({
+      //     type: 'line',
+      //     name: botId,
+      //     animation: true,
+      //     step: 'end',
+      //     lineStyle: {
+      //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+      //     },
+      //     itemStyle: {
+      //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+      //     },
+      //     // symbol: 'none',
+      //   });
+      // });
+      return chartOptionsLoc;
+    });
+
+    return { getChartTheme, cumulativeData, chartOptions };
+  },
+});
 </script>
 
 <style scoped>
