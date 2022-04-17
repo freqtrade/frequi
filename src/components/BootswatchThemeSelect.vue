@@ -31,14 +31,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, ref, onMounted } from '@vue/composition-api';
 import axios from 'axios';
 import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 import { themeList } from '@/shared/themes';
 import { mapActions } from 'vuex';
 import { FTHTMLStyleElement } from '@/types/styleElement';
+import { useActions } from 'vuex-composition-helpers';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'BootswatchThemeSelect',
   components: { ThemeLightDark },
   props: {
@@ -47,27 +48,15 @@ export default Vue.extend({
       default: true,
     },
   },
-  data() {
-    return {
-      activeTheme: '',
-      themeList,
-    };
-  },
-  mounted() {
-    // If a theme has been stored in localstorage, the theme will be set.
-    if (window.localStorage.theme) this.setTheme(window.localStorage.theme);
-  },
-  methods: {
-    ...mapActions(['setCurrentTheme']),
-    handleClick(e) {
-      this.setTheme(e.target.name.trim());
-    },
-    toggleNight() {
-      this.setTheme(this.activeTheme === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
-    },
-    setTheme(themeName) {
+  setup(props) {
+    const activeTheme = ref('');
+    const themeList = ref([]);
+
+    const { setCurrentTheme } = useActions(['setCurrentTheme']);
+
+    const setTheme = (themeName) => {
       // If theme is already active, do nothing.
-      if (this.activeTheme === themeName) {
+      if (activeTheme.value === themeName) {
         return;
       }
       if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'bootstrap_dark') {
@@ -81,7 +70,7 @@ export default Vue.extend({
         bw.forEach((style, index) => {
           (bw[index] as FTHTMLStyleElement).disabled = true;
         });
-        if (this.simple && this.activeTheme) {
+        if (props.simple && activeTheme.value) {
           // Only transition if simple mode is active
           document.documentElement.classList.add('ft-theme-transition');
           window.setTimeout(() => {
@@ -110,10 +99,21 @@ export default Vue.extend({
         });
       }
       // Save the theme as localstorage
-      this.setCurrentTheme(themeName);
-      this.activeTheme = themeName;
-    },
-    fetchApi() {
+      setCurrentTheme(themeName);
+      activeTheme.value = themeName;
+    };
+
+    onMounted(() => {
+      if (window.localStorage.theme) setTheme(window.localStorage.theme);
+    });
+
+    const handleClick = (e) => {
+      setTheme(e.target.name.trim());
+    };
+    const toggleNight = () => {
+      setTheme(activeTheme.value === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
+    };
+    const fetchApi = () => {
       // Fetches boostswatch api and dynamically sets themes.
       // Not used, but useful for updating the static array of themes if bootswatch dependency is outdated.
       axios
@@ -132,7 +132,15 @@ export default Vue.extend({
         .catch((error) => {
           console.error(error);
         });
-    },
+    };
+    return {
+      activeTheme,
+      themeList,
+      setTheme,
+      handleClick,
+      toggleNight,
+      fetchApi,
+    };
   },
 });
 </script>
