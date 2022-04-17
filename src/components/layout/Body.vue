@@ -6,13 +6,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 import BotAlerts from '@/components/ftbot/BotAlerts.vue';
 
-@Component({
+export default defineComponent({
+  name: 'Body',
   components: { BotAlerts },
-})
-export default class Body extends Vue {}
+});
 </script>
 <style lang="scss" scoped>
 .container-main {

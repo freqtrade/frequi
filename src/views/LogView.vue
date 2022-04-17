@@ -5,13 +5,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 import LogViewer from '@/components/ftbot/LogViewer.vue';
 
-@Component({
+export default defineComponent({
+  name: 'LogView',
   components: { LogViewer },
-})
-export default class LogView extends Vue {}
+});
 </script>
 
 <style scoped></style>
