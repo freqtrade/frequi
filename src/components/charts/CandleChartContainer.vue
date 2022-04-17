@@ -67,7 +67,7 @@
           :trades="trades"
           :plot-config="plotConfig"
           :heikin-ashi="heikinAshi"
-          :use-u-t-c="timezone === 'UTC'"
+          :use-u-t-c="settingsStore.timezone === 'UTC'"
           :theme="getChartTheme"
         >
         </CandleChart>
@@ -89,17 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Getter, namespace } from 'vuex-class';
-import {
-  Trade,
-  PairHistory,
-  EMPTY_PLOTCONFIG,
-  PlotConfig,
-  PairCandlePayload,
-  PairHistoryPayload,
-  LoadingStatus,
-} from '@/types';
+import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
@@ -108,170 +98,168 @@ import vSelect from 'vue-select';
 import StoreModules from '@/store/storeSubModules';
 import { useSettingsStore } from '@/stores/settings';
 
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent, ref, computed, watch, onMounted } from '@vue/composition-api';
+import { useGetters, useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-@Component({ components: { CandleChart, PlotConfigurator, vSelect } })
-export default class CandleChartContainer extends Vue {
-  @Prop({ required: true }) readonly availablePairs!: string[];
-
-  @Prop({ required: true }) readonly timeframe!: string;
-
-  @Prop({ required: false, default: () => [] }) readonly trades!: Array<Trade>;
-
-  @Prop({ required: false, default: false }) historicView!: boolean;
-
-  @Prop({ required: false, default: true }) plotConfigModal!: boolean;
-
-  /** Only required if historicView is true */
-  @Prop({ required: false, default: false }) timerange!: string;
-
-  /**
-   * Only required if historicView is true
-   */
-  @Prop({ required: false, default: false }) strategy!: string;
-
-  pair = '';
-
-  plotConfig: PlotConfig = { ...EMPTY_PLOTCONFIG };
-
-  plotConfigName = '';
-
-  showPlotConfig = this.plotConfigModal;
-
-  heikinAshi: boolean = false;
-
-  @Getter getChartTheme!: string;
-
-  @ftbot.Getter [BotStoreGetters.availablePlotConfigNames]!: string[];
-
-  @ftbot.Action setPlotConfigName;
-
-  @ftbot.Getter [BotStoreGetters.candleDataStatus]!: LoadingStatus;
-
-  @ftbot.Getter [BotStoreGetters.candleData]!: PairHistory;
-
-  @ftbot.Getter [BotStoreGetters.historyStatus]!: LoadingStatus;
-
-  @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
-
-  @ftbot.Getter [BotStoreGetters.selectedPair]!: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action public getPairCandles!: (payload: PairCandlePayload) => void;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action public getPairHistory!: (payload: PairHistoryPayload) => void;
-
-  get dataset(): PairHistory {
-    if (this.historicView) {
-      return this.history[`${this.pair}__${this.timeframe}`];
-    }
-    return this.candleData[`${this.pair}__${this.timeframe}`];
-  }
-
-  get strategyName() {
-    return this.strategy || this.dataset?.strategy || '';
-  }
-
-  get datasetColumns() {
-    return this.dataset ? this.dataset.columns : [];
-  }
-
-  get isLoadingDataset(): boolean {
-    if (this.historicView) {
-      return this.historyStatus === 'loading';
-    }
-
-    return this.candleDataStatus === 'loading';
-  }
-
-  get noDatasetText(): string {
-    const status = this.historicView ? this.historyStatus : this.candleDataStatus;
-
-    switch (status) {
-      case 'loading':
-        return 'Loading...';
-
-      case 'success':
-        return 'No data available';
-
-      case 'error':
-        return 'Failed to load data';
-
-      default:
-        return 'Unknown';
-    }
-  }
-
-  get hasDataset(): boolean {
-    return !!this.dataset;
-  }
-
-  timezone: string = 'UTC';
-
-  mounted() {
+export default defineComponent({
+  name: 'CandleChartContainer',
+  components: { CandleChart, PlotConfigurator, vSelect },
+  props: {
+    trades: { required: false, default: [], type: Array as () => Trade[] },
+    availablePairs: { required: true, type: Array as () => string[] },
+    timeframe: { required: true, type: String },
+    historicView: { required: false, default: false, type: Boolean },
+    plotConfigModal: { required: false, default: true, type: Boolean },
+    /** Only required if historicView is true */
+    timerange: { required: false, default: '', type: String },
+    /** Only required if historicView is true */
+    strategy: { required: false, default: '', type: String },
+  },
+  setup(props, { root }) {
     const settingsStore = useSettingsStore();
-    this.timezone = settingsStore.timezone;
-    settingsStore.$subscribe((_, state) => {
-      this.timezone = state.timezone;
+    const { getChartTheme } = useGetters(['getChartTheme']);
+    const {
+      availablePlotConfigNames,
+      candleDataStatus,
+      candleData,
+      historyStatus,
+      history,
+      selectedPair,
+    } = useNamespacedGetters(StoreModules.ftbot, [
+      BotStoreGetters.availablePlotConfigNames,
+      BotStoreGetters.candleDataStatus,
+      BotStoreGetters.candleData,
+      BotStoreGetters.historyStatus,
+      BotStoreGetters.history,
+      BotStoreGetters.selectedPair,
+    ]);
+    const { setPlotConfigName, getPairCandles, getPairHistory } = useNamespacedActions(
+      StoreModules.ftbot,
+      ['setPlotConfigName', 'getPairCandles', 'getPairHistory'],
+    );
+    const pair = ref('');
+    const plotConfig = ref<PlotConfig>({ ...EMPTY_PLOTCONFIG });
+    const plotConfigName = ref('');
+    const heikinAshi = ref(false);
+    const showPlotConfig = ref(props.plotConfigModal);
+
+    const dataset = computed((): PairHistory => {
+      if (props.historicView) {
+        return history.value[`${pair.value}__${props.timeframe}`];
+      }
+      return candleData.value[`${pair.value}__${props.timeframe}`];
+    });
+    const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
+    const datasetColumns = computed(() => (dataset.value ? dataset.value.columns : []));
+    const hasDataset = computed(() => !!dataset.value);
+    const isLoadingDataset = computed((): boolean => {
+      if (props.historicView) {
+        return historyStatus.value === 'loading';
+      }
+
+      return candleDataStatus.value === 'loading';
+    });
+    const noDatasetText = computed((): string => {
+      const status = props.historicView ? historyStatus.value : candleDataStatus.value;
+
+      switch (status) {
+        case 'loading':
+          return 'Loading...';
+
+        case 'success':
+          return 'No data available';
+
+        case 'error':
+          return 'Failed to load data';
+
+        default:
+          return 'Unknown';
+      }
     });
 
-    if (this.selectedPair) {
-      this.pair = this.selectedPair;
-    } else if (this.availablePairs.length > 0) {
-      [this.pair] = this.availablePairs;
-    }
-    this.plotConfigName = getPlotConfigName();
-    this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+    const plotConfigChanged = () => {
+      console.log('plotConfigChanged');
+      plotConfig.value = getCustomPlotConfig(plotConfigName.value);
+      setPlotConfigName(plotConfigName.value);
+    };
 
-    if (!this.hasDataset) {
-      this.refresh();
-    }
-  }
-
-  plotConfigChanged() {
-    console.log('plotConfigChanged');
-    this.plotConfig = getCustomPlotConfig(this.plotConfigName);
-    this.setPlotConfigName(this.plotConfigName);
-  }
-
-  showConfigurator() {
-    if (this.plotConfigModal) {
-      this.$bvModal.show('plotConfiguratorModal');
-    } else {
-      this.showPlotConfig = !this.showPlotConfig;
-    }
-  }
-
-  refresh() {
-    if (this.pair && this.timeframe) {
-      if (this.historicView) {
-        this.getPairHistory({
-          pair: this.pair,
-          timeframe: this.timeframe,
-          timerange: this.timerange,
-          strategy: this.strategy,
-        });
+    const showConfigurator = () => {
+      if (props.plotConfigModal) {
+        root.$bvModal.show('plotConfiguratorModal');
       } else {
-        this.getPairCandles({ pair: this.pair, timeframe: this.timeframe, limit: 500 });
+        showPlotConfig.value = !showPlotConfig.value;
       }
-    }
-  }
+    };
+    const refresh = () => {
+      if (pair.value && props.timeframe) {
+        if (props.historicView) {
+          getPairHistory({
+            pair: pair.value,
+            timeframe: props.timeframe,
+            timerange: props.timerange,
+            strategy: props.strategy,
+          });
+        } else {
+          getPairCandles({ pair: pair.value, timeframe: props.timeframe, limit: 500 });
+        }
+      }
+    };
 
-  @Watch('availablePairs')
-  watchAvailablePairs() {
-    if (!this.availablePairs.find((pair) => pair === this.pair)) {
-      [this.pair] = this.availablePairs;
-      this.refresh();
-    }
-  }
+    watch(props.availablePairs, () => {
+      if (!props.availablePairs.find((p) => p === pair.value)) {
+        [pair.value] = props.availablePairs;
+        refresh();
+      }
+    });
 
-  @Watch(BotStoreGetters.selectedPair)
-  watchSelectedPair() {
-    this.pair = this.selectedPair;
-    this.refresh();
-  }
-}
+    watch(selectedPair, () => {
+      pair.value = selectedPair.value;
+      refresh();
+    });
+
+    onMounted(() => {
+      if (selectedPair.value) {
+        pair.value = selectedPair.value;
+      } else if (props.availablePairs.length > 0) {
+        [pair.value] = props.availablePairs;
+      }
+      plotConfigName.value = getPlotConfigName();
+      plotConfig.value = getCustomPlotConfig(plotConfigName.value);
+
+      if (!hasDataset) {
+        refresh();
+      }
+    });
+
+    return {
+      getChartTheme,
+      availablePlotConfigNames,
+      candleDataStatus,
+      candleData,
+      historyStatus,
+      history,
+      selectedPair,
+      setPlotConfigName,
+      getPairCandles,
+      getPairHistory,
+      dataset,
+      strategyName,
+      datasetColumns,
+      isLoadingDataset,
+      noDatasetText,
+      hasDataset,
+      settingsStore,
+      heikinAshi,
+      plotConfigChanged,
+      showPlotConfig,
+      showConfigurator,
+      refresh,
+      plotConfigName,
+      pair,
+      plotConfig,
+    };
+  },
+});
 </script>
 
 <style scoped lang="scss">
