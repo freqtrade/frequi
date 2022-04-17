@@ -610,17 +610,17 @@ export function createBotSubStore(botId: string, botName: string) {
           .then((result) => commit('updateLocks', result.data))
           .catch(console.error);
       },
-      async [BotStoreActions.deleteLock]({ dispatch, commit }, lockid: string) {
+      async [BotStoreActions.deleteLock]({ commit }, lockid: string) {
         try {
           const res = await api.delete<LockResponse>(`/locks/${lockid}`);
-          showAlert(dispatch, `Deleted Lock ${lockid}.`);
+          showAlert(`Deleted Lock ${lockid}.`);
           commit('updateLocks', res.data);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, `Failed to delete lock ${lockid}`, 'danger');
+          showAlert(`Failed to delete lock ${lockid}`, 'danger');
           return Promise.reject(error);
         }
       },
@@ -821,73 +821,70 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       // Post methods
       // TODO: Migrate calls to API to a seperate module unrelated to vuex?
-      async [BotStoreActions.startBot]({ dispatch }) {
+      async [BotStoreActions.startBot]() {
         try {
           const res = await api.post<{}, AxiosResponse<StatusResponse>>('/start', {});
           console.log(res.data);
-          showAlert(dispatch, res.data.status);
+          showAlert(res.data.status);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, 'Error starting bot.');
+          showAlert('Error starting bot.');
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.stopBot]({ dispatch }) {
+      async [BotStoreActions.stopBot]() {
         try {
           const res = await api.post<{}, AxiosResponse<StatusResponse>>('/stop', {});
-          showAlert(dispatch, res.data.status);
+          showAlert(res.data.status);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, 'Error stopping bot.');
+          showAlert('Error stopping bot.');
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.stopBuy]({ dispatch }) {
+      async [BotStoreActions.stopBuy]() {
         try {
           const res = await api.post<{}, AxiosResponse<StatusResponse>>('/stopbuy', {});
-          showAlert(dispatch, res.data.status);
+          showAlert(res.data.status);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, 'Error calling stopbuy.');
+          showAlert('Error calling stopbuy.');
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.reloadConfig]({ dispatch }) {
+      async [BotStoreActions.reloadConfig]() {
         try {
           const res = await api.post<{}, AxiosResponse<StatusResponse>>('/reload_config', {});
           console.log(res.data);
-          showAlert(dispatch, res.data.status);
+          showAlert(res.data.status);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, 'Error reloading.');
+          showAlert('Error reloading.');
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.deleteTrade]({ dispatch }, tradeid: string) {
+      async [BotStoreActions.deleteTrade]({}, tradeid: string) {
         try {
           const res = await api.delete<DeleteTradeResponse>(`/trades/${tradeid}`);
-          showAlert(
-            dispatch,
-            res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}`,
-          );
+          showAlert(res.data.result_msg ? res.data.result_msg : `Deleted Trade ${tradeid}`);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, `Failed to delete trade ${tradeid}`, 'danger');
+          showAlert(`Failed to delete trade ${tradeid}`, 'danger');
           return Promise.reject(error);
         }
       },
@@ -899,23 +896,23 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.forcesell]({ dispatch }, payload: ForceSellPayload) {
+      async [BotStoreActions.forcesell]({}, payload: ForceSellPayload) {
         try {
           const res = await api.post<ForceSellPayload, AxiosResponse<StatusResponse>>(
             '/forcesell',
             payload,
           );
-          showAlert(dispatch, `Sell order for ${payload.tradeid} created`);
+          showAlert(`Sell order for ${payload.tradeid} created`);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(dispatch, `Failed to create sell order for ${payload.tradeid}`, 'danger');
+          showAlert(`Failed to create sell order for ${payload.tradeid}`, 'danger');
           return Promise.reject(error);
         }
       },
-      async [BotStoreActions.forcebuy]({ dispatch }, payload: ForceEnterPayload) {
+      async [BotStoreActions.forcebuy]({}, payload: ForceEnterPayload) {
         if (payload && payload.pair) {
           try {
             // TODO: Update forcebuy to forceenter ...
@@ -923,14 +920,13 @@ export function createBotSubStore(botId: string, botName: string) {
               ForceEnterPayload,
               AxiosResponse<StatusResponse | TradeResponse>
             >('/forcebuy', payload);
-            showAlert(dispatch, `Order for ${payload.pair} created.`);
+            showAlert(`Order for ${payload.pair} created.`);
 
             return Promise.resolve(res);
           } catch (error) {
             if (axios.isAxiosError(error)) {
               console.error(error.response);
               showAlert(
-                dispatch,
                 `Error occured entering: '${(error as any).response?.data?.error}'`,
                 'danger',
               );
@@ -943,7 +939,7 @@ export function createBotSubStore(botId: string, botName: string) {
         console.error(error);
         return Promise.reject(error);
       },
-      async [BotStoreActions.addBlacklist]({ commit, dispatch }, payload: BlacklistPayload) {
+      async [BotStoreActions.addBlacklist]({ commit }, payload: BlacklistPayload) {
         console.log(`Adding ${payload} to blacklist`);
         if (payload && payload.blacklist) {
           try {
@@ -956,19 +952,17 @@ export function createBotSubStore(botId: string, botName: string) {
               const { errors } = result.data;
               Object.keys(errors).forEach((pair) => {
                 showAlert(
-                  dispatch,
                   `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
                 );
               });
             } else {
-              showAlert(dispatch, `Pair ${payload.blacklist} added.`);
+              showAlert(`Pair ${payload.blacklist} added.`);
             }
             return Promise.resolve(result.data);
           } catch (error) {
             if (axios.isAxiosError(error)) {
               console.error(error.response);
               showAlert(
-                dispatch,
                 `Error occured while adding pairs to Blacklist: '${
                   (error as any).response?.data?.error
                 }'`,
@@ -1004,19 +998,17 @@ export function createBotSubStore(botId: string, botName: string) {
               const { errors } = result.data;
               Object.keys(errors).forEach((pair) => {
                 showAlert(
-                  dispatch,
                   `Error while removing pair ${pair} from Blacklist: ${errors[pair].error_msg}`,
                 );
               });
             } else {
-              showAlert(dispatch, `Pair ${blacklistPairs} removed.`);
+              showAlert(`Pair ${blacklistPairs} removed.`);
             }
             return Promise.resolve(result.data);
           } catch (error) {
             if (axios.isAxiosError(error)) {
               console.error(error.response);
               showAlert(
-                dispatch,
                 `Error occured while removing pairs from Blacklist: '${
                   (error as any).response?.data?.error
                 }'`,
