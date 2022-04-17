@@ -14,38 +14,42 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { defineComponent, computed, onMounted } from '@vue/composition-api';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import { formatPrice } from '@/shared/formatters';
 import { BotStoreGetters } from '@/store/modules/ftbot';
 import StoreModules from '@/store/storeSubModules';
+import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DailyStats',
   components: {
     DailyChart,
   },
-  computed: {
-    ...mapGetters(StoreModules.ftbot, [BotStoreGetters.dailyStats]),
-    dailyFields() {
+  setup() {
+    const { dailyStats } = useNamespacedGetters(StoreModules.ftbot, [BotStoreGetters.dailyStats]);
+    const { getDaily } = useNamespacedActions(StoreModules.ftbot, ['getDaily']);
+    const dailyFields = computed(() => {
       return [
         { key: 'date', label: 'Day' },
         { key: 'abs_profit', label: 'Profit', formatter: (value) => formatPrice(value) },
         {
           key: 'fiat_value',
-          label: `In ${this.dailyStats.fiat_display_currency}`,
+          label: `In ${dailyStats.value.fiat_display_currency}`,
           formatter: (value) => formatPrice(value, 2),
         },
         { key: 'trade_count', label: 'Trades' },
       ];
-    },
-  },
-  mounted() {
-    this.getDaily();
-  },
-  methods: {
-    ...mapActions(StoreModules.ftbot, ['getDaily']),
+    });
+    onMounted(() => {
+      getDaily();
+    });
+
+    return {
+      getDaily,
+      dailyFields,
+      dailyStats,
+    };
   },
 });
 </script>
