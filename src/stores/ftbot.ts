@@ -59,7 +59,7 @@ export function createBotSubStore(botId: string, botName: string) {
         isBotOnline: false,
         autoRefresh: false,
         refreshing: false,
-        version: '',
+        versionState: '',
         lastLogs: [] as LogLine[],
         refreshRequired: true,
         trades: [] as Trade[],
@@ -102,7 +102,7 @@ export function createBotSubStore(botId: string, botName: string) {
       };
     },
     getters: {
-      version: (state) => state.botState?.version || state.version,
+      version: (state) => state.botState?.version || state.versionState,
       botApiVersion: (state) => state.botState?.api_version || 1.0,
       stakeCurrency: (state) => state.botState?.stake_currency || '',
       stakeCurrencyDecimals: (state) => state.botState?.stake_currency_decimals || 3,
@@ -134,7 +134,6 @@ export function createBotSubStore(botId: string, botName: string) {
         state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
       refreshNow: (state) => {
         // TODO: This might need to be done differently
-
         // const bgRefresh = rootGetters['uiSettings/backgroundSync'];
         // const selectedBot = rootGetters[`${StoreModules.ftbot}/selectedBot`];
         // if (
@@ -190,26 +189,25 @@ export function createBotSubStore(botId: string, botName: string) {
       setIsBotOnline(isBotOnline: boolean) {
         this.isBotOnline = isBotOnline;
       },
-      // async refreshSlow(forceUpdate = false) {
-      // TODO: This might need to be done differently
-      //   if (this.refreshing && !forceUpdate) {
-      //     return;
-      //   }
-      //   // Refresh data only when needed
-      //   if (forceUpdate || getters[`${this.refreshRequired}`]) {
-      //     const updates: Promise<AxiosInstance>[] = [];
-      //     updates.push(dispatch('getPerformance'));
-      //     updates.push(dispatch('getProfit'));
-      //     updates.push(dispatch('getTrades'));
-      //     updates.push(dispatch('getBalance'));
-      //     /* white/blacklist might be refreshed more often as they are not expensive on the backend */
-      //     updates.push(dispatch('getWhitelist'));
-      //     updates.push(dispatch('getBlacklist'));
-
-      //     await Promise.all(updates);
-      //     this.refreshRequired = false;
-      //   }
-      // },
+      async refreshSlow(forceUpdate = false) {
+        // TODO: This might need to be done differently
+        //   if (this.refreshing && !forceUpdate) {
+        //     return;
+        //   }
+        //   // Refresh data only when needed
+        //   if (forceUpdate || getters[`${this.refreshRequired}`]) {
+        //     const updates: Promise<AxiosInstance>[] = [];
+        //     updates.push(dispatch('getPerformance'));
+        //     updates.push(dispatch('getProfit'));
+        //     updates.push(dispatch('getTrades'));
+        //     updates.push(dispatch('getBalance'));
+        //     /* white/blacklist might be refreshed more often as they are not expensive on the backend */
+        //     updates.push(dispatch('getWhitelist'));
+        //     updates.push(dispatch('getBlacklist'));
+        //     await Promise.all(updates);
+        //     this.refreshRequired = false;
+        //   }
+      },
       refreshFrequent() {
         // Refresh data that's needed in near realtime
         this.getOpenTrades();
@@ -791,5 +789,6 @@ export function createBotSubStore(botId: string, botName: string) {
       },
     },
   });
+
   return useBotStore();
 }
