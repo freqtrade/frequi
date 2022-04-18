@@ -12,15 +12,24 @@
 
       <b-collapse id="nav-collapse" class="text-right text-md-center" is-nav>
         <b-navbar-nav>
-          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/trade"
+          <router-link
+            v-if="!botStore.activeBot.canRunBacktest"
+            class="nav-link navbar-nav"
+            to="/trade"
             >Trade</router-link
           >
-          <router-link v-if="!canRunBacktest" class="nav-link navbar-nav" to="/dashboard"
+          <router-link
+            v-if="!botStore.activeBot.canRunBacktest"
+            class="nav-link navbar-nav"
+            to="/dashboard"
             >Dashboard</router-link
           >
           <router-link class="nav-link navbar-nav" to="/graph">Chart</router-link>
           <router-link class="nav-link navbar-nav" to="/logs">Logs</router-link>
-          <router-link v-if="canRunBacktest" class="nav-link navbar-nav" to="/backtest"
+          <router-link
+            v-if="botStore.activeBot.canRunBacktest"
+            class="nav-link navbar-nav"
+            to="/backtest"
             >Backtest</router-link
           >
           <BootswatchThemeSelect />
@@ -31,7 +40,7 @@
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div class="d-flex justify-content-between">
             <b-dropdown
-              v-if="botCount > 1"
+              v-if="botStore.botCount > 1"
               size="sm"
               class="m-1"
               no-caret
@@ -40,7 +49,7 @@
               menu-class="my-0 py-0"
             >
               <template #button-content>
-                <BotEntry :bot="selectedBotObj" :no-buttons="true" />
+                <BotEntry :bot="botStore.selectedBotObj" :no-buttons="true" />
               </template>
               <BotList :small="true" />
             </b-dropdown>
@@ -48,13 +57,13 @@
           </div>
           <li class="d-none d-sm-block nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
-              {{ botName || 'No bot selected' }}
+              {{ botStore.activeBot.botName || 'No bot selected' }}
             </b-nav-text>
             <b-nav-text class="verticalCenter">
-              {{ isBotOnline ? 'Online' : 'Offline' }}
+              {{ botStore.activeBot.isBotOnline ? 'Online' : 'Offline' }}
             </b-nav-text>
           </li>
-          <li v-if="hasBots" class="nav-item">
+          <li v-if="botStore.hasBots" class="nav-item">
             <!-- Hide dropdown on xs, instead show below  -->
             <b-nav-item-dropdown id="avatar-drop" right class="d-none d-sm-block">
               <template #button-content>
@@ -65,7 +74,7 @@
               <b-checkbox v-model="layoutStore.layoutLocked" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <router-link
-                v-if="botCount === 1"
+                v-if="botStore.botCount === 1"
                 class="dropdown-item"
                 to="/"
                 @click.native="clickLogout()"
@@ -77,16 +86,16 @@
               <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
                 <div class="d-flex">
                   <b-nav-text class="verticalCenter small mr-2">
-                    {{ botName || 'No bot selected' }}
+                    {{ botStore.activeBot.botName || 'No bot selected' }}
                   </b-nav-text>
                   <b-nav-text class="verticalCenter">
-                    {{ isBotOnline ? 'Online' : 'Offline' }}
+                    {{ botStore.activeBot.isBotOnline ? 'Online' : 'Offline' }}
                   </b-nav-text>
                 </div>
               </li>
               <router-link class="nav-link navbar-nav" to="/settings">Settings</router-link>
               <router-link
-                v-if="botCount === 1"
+                v-if="botStore.botCount === 1"
                 class="nav-link navbar-nav"
                 to="/"
                 @click.native="clickLogout()"
@@ -107,23 +116,17 @@
 <script lang="ts">
 import LoginModal from '@/views/LoginModal.vue';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
-import { BotStoreGetters } from '@/store/modules/ftbot';
 import Favico from 'favico.js';
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from '@vue/composition-api';
-import {
-  useActions,
-  useGetters,
-  useNamespacedActions,
-  useNamespacedGetters,
-} from 'vuex-composition-helpers';
+import { useActions, useGetters } from 'vuex-composition-helpers';
 import { useRoute } from 'vue2-helpers/vue-router';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { UserService } from '@/shared/userService';
 
 export default defineComponent({
   name: 'NavBar',
@@ -131,28 +134,13 @@ export default defineComponent({
   setup() {
     const { getUiVersion } = useGetters(['getUiVersion']);
     const { setLoggedIn, loadUIVersion } = useActions(['setLoggedIn', 'loadUIVersion']);
-    const { pingAll, allGetState, logout } = useNamespacedActions(StoreModules.ftbot, [
-      'pingAll',
-      'allGetState',
-      'logout',
-    ]);
-    const {
-      isBotOnline,
-      hasBots,
-      botCount,
-      botName,
-      openTradeCount,
-      canRunBacktest,
-      selectedBotObj,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.isBotOnline,
-      MultiBotStoreGetters.hasBots,
-      MultiBotStoreGetters.botCount,
-      BotStoreGetters.botName,
-      BotStoreGetters.openTradeCount,
-      BotStoreGetters.canRunBacktest,
-      MultiBotStoreGetters.selectedBotObj,
-    ]);
+
+    const botStore = useBotStore();
+    // This might need to be moved to the parent (?)
+    Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {
+      botStore.addBot(v);
+    });
+    botStore.selectFirstBot();
 
     const settingsStore = useSettingsStore();
     const layoutStore = useLayoutStore();
@@ -161,7 +149,7 @@ export default defineComponent({
     const pingInterval = ref<number>();
 
     const clickLogout = () => {
-      logout();
+      botStore.removeBot(botStore.selectedBot);
       // TODO: This should be per bot
       setLoggedIn(false);
     };
@@ -198,10 +186,10 @@ export default defineComponent({
     const setTitle = () => {
       let title = 'freqUI';
       if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-        title = `(${openTradeCount}) ${title}`;
+        title = `(${botStore.activeBot.openTradeCount}) ${title}`;
       }
-      if (botName.value) {
-        title = `${title} - ${botName.value}`;
+      if (botStore.activeBot.botName) {
+        title = `${title} - ${botStore.activeBot.botName}`;
       }
       document.title = title;
     };
@@ -213,12 +201,12 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      pingAll();
+      botStore.pingAll();
       loadUIVersion();
-      pingInterval.value = window.setInterval(pingAll, 60000);
-      if (hasBots) {
+      pingInterval.value = window.setInterval(botStore.pingAll, 60000);
+      if (botStore.hasBots) {
         // Query botstate - this will enable / disable certain modes
-        allGetState();
+        botStore.allGetState();
       }
     });
 
@@ -226,39 +214,37 @@ export default defineComponent({
       const needsUpdate = settingsStore.openTradesInTitle !== state.openTradesInTitle;
       if (needsUpdate) {
         setTitle();
-        setOpenTradesAsPill(openTradeCount.value);
+        setOpenTradesAsPill(botStore.activeBot.openTradeCount);
       }
     });
 
-    watch(botName, () => setTitle());
-    watch(openTradeCount, () => {
-      console.log('openTradeCount changed');
-      if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
-        setOpenTradesAsPill(openTradeCount.value);
-      } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-        setTitle();
-      }
-    });
+    watch(
+      () => botStore.activeBot.botName,
+      () => setTitle(),
+    );
+    watch(
+      () => botStore.activeBot.openTradeCount,
+      () => {
+        console.log('openTradeCount changed');
+        if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
+          setOpenTradesAsPill(botStore.activeBot.openTradeCount);
+        } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
+          setTitle();
+        }
+      },
+    );
 
     return {
       setLoggedIn,
       loadUIVersion,
       getUiVersion,
-      pingAll,
-      allGetState,
-      logout,
       favicon,
-      isBotOnline,
-      hasBots,
-      botCount,
-      botName,
-      openTradeCount,
-      canRunBacktest,
-      selectedBotObj,
+
       clickLogout,
       resetDynamicLayout,
       setTitle,
       layoutStore,
+      botStore,
     };
   },
 });
