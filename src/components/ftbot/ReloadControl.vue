@@ -10,7 +10,7 @@
       variant="secondary"
       size="sm"
       title="Auto Refresh All bots"
-      @click="allRefreshFull"
+      @click="botStore.allRefreshFull"
     >
       <RefreshIcon :size="16" />
     </b-button>
@@ -19,35 +19,25 @@
 
 <script lang="ts">
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, computed } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'ReloadControl',
   components: { RefreshIcon },
   setup() {
-    const { globalAutoRefresh } = useNamespacedGetters(StoreModules.ftbot, [
-      MultiBotStoreGetters.globalAutoRefresh,
-    ]);
-    const { setGlobalAutoRefresh, allRefreshFull } = useNamespacedActions(StoreModules.ftbot, [
-      'setGlobalAutoRefresh',
-      'allRefreshFull',
-    ]);
+    const botStore = useBotStore();
     const autoRefreshLoc = computed({
       get() {
-        return globalAutoRefresh.value;
+        return botStore.globalAutoRefresh;
       },
       set(newValue: boolean) {
-        setGlobalAutoRefresh(newValue);
+        botStore.setGlobalAutoRefresh(newValue);
       },
     });
 
     return {
-      globalAutoRefresh,
-      setGlobalAutoRefresh,
-      allRefreshFull,
+      botStore,
       autoRefreshLoc,
     };
   },
