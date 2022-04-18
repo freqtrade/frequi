@@ -46,7 +46,7 @@
           <div class="ml-2">
             <b-select
               v-model="plotConfigName"
-              :options="availablePlotConfigNames"
+              :options="botStore.activeBot.availablePlotConfigNames"
               size="sm"
               @change="plotConfigChanged"
             >
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig } from '@/types';
+import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig, LoadingStatus } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
@@ -100,6 +100,7 @@ import { useSettingsStore } from '@/stores/settings';
 
 import { defineComponent, ref, computed, watch, onMounted } from '@vue/composition-api';
 import { useGetters, useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'CandleChartContainer',
@@ -117,26 +118,27 @@ export default defineComponent({
   },
   setup(props, { root }) {
     const settingsStore = useSettingsStore();
+    const botStore = useBotStore();
     const { getChartTheme } = useGetters(['getChartTheme']);
-    const {
-      availablePlotConfigNames,
-      candleDataStatus,
-      candleData,
-      historyStatus,
-      history,
-      selectedPair,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.availablePlotConfigNames,
-      BotStoreGetters.candleDataStatus,
-      BotStoreGetters.candleData,
-      BotStoreGetters.historyStatus,
-      BotStoreGetters.history,
-      BotStoreGetters.selectedPair,
-    ]);
-    const { setPlotConfigName, getPairCandles, getPairHistory } = useNamespacedActions(
-      StoreModules.ftbot,
-      ['setPlotConfigName', 'getPairCandles', 'getPairHistory'],
-    );
+    // const {
+    //   availablePlotConfigNames,
+    //   candleDataStatus,
+    //   candleData,
+    //   historyStatus,
+    //   history,
+    //   selectedPair,
+    // } = useNamespacedGetters(StoreModules.ftbot, [
+    //   BotStoreGetters.availablePlotConfigNames,
+    //   BotStoreGetters.candleDataStatus,
+    //   BotStoreGetters.candleData,
+    //   BotStoreGetters.historyStatus,
+    //   BotStoreGetters.history,
+    //   BotStoreGetters.selectedPair,
+    // ]);
+    // const { setPlotConfigName, getPairCandles, getPairHistory } = useNamespacedActions(
+    //   StoreModules.ftbot,
+    //   ['setPlotConfigName', 'getPairCandles', 'getPairHistory'],
+    // );
     const pair = ref('');
     const plotConfig = ref<PlotConfig>({ ...EMPTY_PLOTCONFIG });
     const plotConfigName = ref('');
@@ -145,31 +147,33 @@ export default defineComponent({
 
     const dataset = computed((): PairHistory => {
       if (props.historicView) {
-        return history.value[`${pair.value}__${props.timeframe}`];
+        return botStore.activeBot.history[`${pair.value}__${props.timeframe}`]?.data;
       }
-      return candleData.value[`${pair.value}__${props.timeframe}`];
+      return botStore.activeBot.candleData[`${pair.value}__${props.timeframe}`]?.data;
     });
     const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
     const datasetColumns = computed(() => (dataset.value ? dataset.value.columns : []));
     const hasDataset = computed(() => !!dataset.value);
     const isLoadingDataset = computed((): boolean => {
       if (props.historicView) {
-        return historyStatus.value === 'loading';
+        return botStore.activeBot.historyStatus === LoadingStatus.loading;
       }
 
-      return candleDataStatus.value === 'loading';
+      return botStore.activeBot.candleDataStatus === LoadingStatus.loading;
     });
     const noDatasetText = computed((): string => {
-      const status = props.historicView ? historyStatus.value : candleDataStatus.value;
+      const status = props.historicView
+        ? botStore.activeBot.historyStatus
+        : botStore.activeBot.candleDataStatus;
 
       switch (status) {
-        case 'loading':
+        case LoadingStatus.loading:
           return 'Loading...';
 
-        case 'success':
+        case LoadingStatus.success:
           return 'No data available';
 
-        case 'error':
+        case LoadingStatus.error:
           return 'Failed to load data';
 
         default:
@@ -180,7 +184,7 @@ export default defineComponent({
     const plotConfigChanged = () => {
       console.log('plotConfigChanged');
       plotConfig.value = getCustomPlotConfig(plotConfigName.value);
-      setPlotConfigName(plotConfigName.value);
+      botStore.activeBot.setPlotConfigName(plotConfigName.value);
     };
 
     const showConfigurator = () => {
@@ -193,33 +197,40 @@ export default defineComponent({
     const refresh = () => {
       if (pair.value && props.timeframe) {
         if (props.historicView) {
-          getPairHistory({
+          botStore.activeBot.getPairHistory({
             pair: pair.value,
             timeframe: props.timeframe,
             timerange: props.timerange,
             strategy: props.strategy,
           });
         } else {
-          getPairCandles({ pair: pair.value, timeframe: props.timeframe, limit: 500 });
+          botStore.activeBot.getPairCandles({
+            pair: pair.value,
+            timeframe: props.timeframe,
+            limit: 500,
+          });
         }
       }
     };
 
-    watch(props.availablePairs, () => {
-      if (!props.availablePairs.find((p) => p === pair.value)) {
-        [pair.value] = props.availablePairs;
-        refresh();
-      }
-    });
+    // watch(props.availablePairs, () => {
+    //   if (!props.availablePairs.find((p) => p === pair.value)) {
+    //     [pair.value] = props.availablePairs;
+    //     refresh();
+    //   }
+    // });
 
-    watch(selectedPair, () => {
-      pair.value = selectedPair.value;
-      refresh();
-    });
+    // watch(
+    //   () => botStore.activeBot.selectedPair,
+    //   () => {
+    //     pair.value = botStore.activeBot.selectedPair;
+    //     refresh();
+    //   },
+    // );
 
     onMounted(() => {
-      if (selectedPair.value) {
-        pair.value = selectedPair.value;
+      if (botStore.activeBot.selectedPair) {
+        pair.value = botStore.activeBot.selectedPair;
       } else if (props.availablePairs.length > 0) {
         [pair.value] = props.availablePairs;
       }
@@ -232,16 +243,17 @@ export default defineComponent({
     });
 
     return {
+      botStore,
       getChartTheme,
-      availablePlotConfigNames,
-      candleDataStatus,
-      candleData,
-      historyStatus,
+      // availablePlotConfigNames,
+      // candleDataStatus,
+      // candleData,
+      // historyStatus,
       history,
-      selectedPair,
-      setPlotConfigName,
-      getPairCandles,
-      getPairHistory,
+      // selectedPair,
+      // setPlotConfigName,
+      // getPairCandles,
+      // getPairHistory,
       dataset,
       strategyName,
       datasetColumns,

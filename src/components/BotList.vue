@@ -28,10 +28,8 @@
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
-import StoreModules from '@/store/storeSubModules';
 
 import { defineComponent, ref } from '@vue/composition-api';
-import { useNamespacedActions } from 'vuex-composition-helpers';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -43,7 +41,6 @@ export default defineComponent({
   setup() {
     const botStore = useBotStore();
 
-    const { selectBot } = useNamespacedActions(StoreModules.ftbot, ['selectBot']);
     const editingBots = ref<string[]>([]);
 
     const editBot = (botId: string) => {
@@ -62,7 +59,6 @@ export default defineComponent({
 
     return {
       botStore,
-      selectBot,
       editingBots,
       editBot,
       stopEditBot,

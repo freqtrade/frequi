@@ -4,7 +4,7 @@
     <!-- Currently only available in Webserver mode -->
     <!-- <b-checkbox v-model="historicView">HistoricData</b-checkbox> -->
     <!-- </div> -->
-    <div v-if="isWebserverMode" class="mx-md-3 mt-2">
+    <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
       <div class="d-flex flex-wrap">
         <div class="col-md-3 text-left">
           <span>Strategy</span>
@@ -20,12 +20,18 @@
 
     <div class="mx-2 mt-2 pb-1 h-100">
       <CandleChartContainer
-        :available-pairs="isWebserverMode ? pairlist : whitelist"
-        :historic-view="isWebserverMode"
-        :timeframe="isWebserverMode ? selectedTimeframe : timeframe"
-        :trades="trades"
-        :timerange="isWebserverMode ? timerange : ''"
-        :strategy="isWebserverMode ? strategy : ''"
+        :available-pairs="
+          botStore.activeBot.isWebserverMode
+            ? botStore.activeBot.pairlist
+            : botStore.activeBot.whitelist
+        "
+        :historic-view="botStore.activeBot.isWebserverMode"
+        :timeframe="
+          botStore.activeBot.isWebserverMode ? selectedTimeframe : botStore.activeBot.timeframe
+        "
+        :trades="botStore.activeBot.trades"
+        :timerange="botStore.activeBot.isWebserverMode ? timerange : ''"
+        :strategy="botStore.activeBot.isWebserverMode ? strategy : ''"
         :plot-config-modal="false"
       >
       </CandleChartContainer>
@@ -38,55 +44,32 @@ import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, onMounted, ref } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'Graphs',
   components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },
   setup() {
+    const botStore = useBotStore();
     const strategy = ref('');
     const timerange = ref('');
     const selectedTimeframe = ref('');
-    const { pairlist, whitelist, trades, timeframe, isWebserverMode } = useNamespacedGetters(
-      StoreModules.ftbot,
-      [
-        BotStoreGetters.pairlist,
-        BotStoreGetters.whitelist,
-        BotStoreGetters.trades,
-        BotStoreGetters.timeframe,
-        BotStoreGetters.isWebserverMode,
-      ],
-    );
 
-    const { getWhitelist, getAvailablePairs } = useNamespacedActions(StoreModules.ftbot, [
-      'getWhitelist',
-      'getAvailablePairs',
-    ]);
     onMounted(() => {
-      if (!whitelist.value || whitelist.value.length === 0) {
-        getWhitelist();
-      }
-      console.log(isWebserverMode.value);
-      if (isWebserverMode.value) {
+      if (botStore.activeBot.isWebserverMode) {
         // this.refresh();
-        getAvailablePairs({ timeframe: timeframe.value });
+        botStore.activeBot.getAvailablePairs({ timeframe: botStore.activeBot.timeframe });
         // .then((val) => {
         // console.log(val);
         // });
+      } else if (!botStore.activeBot.whitelist || botStore.activeBot.whitelist.length === 0) {
+        botStore.activeBot.getWhitelist();
       }
     });
 
     return {
-      pairlist,
-      whitelist,
-      trades,
-      timeframe,
-      isWebserverMode,
-      getWhitelist,
-      getAvailablePairs,
+      botStore,
       strategy,
       timerange,
       selectedTimeframe,
