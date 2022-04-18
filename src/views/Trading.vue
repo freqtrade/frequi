@@ -25,7 +25,11 @@
       <DraggableContainer header="Multi Pane">
         <b-tabs content-class="mt-3" class="mt-1">
           <b-tab title="Pairs combined" active>
-            <PairSummary :pairlist="whitelist" :current-locks="currentLocks" :trades="openTrades" />
+            <PairSummary
+              :pairlist="botStore.activeBot.whitelist"
+              :current-locks="botStore.activeBot.currentLocks"
+              :trades="botStore.activeBot.openTrades"
+            />
           </b-tab>
           <b-tab title="General">
             <div class="d-flex justify-content-center">
@@ -64,7 +68,7 @@
       <DraggableContainer header="Open Trades">
         <TradeList
           class="open-trades"
-          :trades="openTrades"
+          :trades="botStore.activeBot.openTrades"
           title="Open trades"
           :active-trades="true"
           empty-text="Currently no open trades."
@@ -83,7 +87,7 @@
       <DraggableContainer header="Closed Trades">
         <TradeList
           class="trade-history"
-          :trades="closedTrades"
+          :trades="botStore.activeBot.closedTrades"
           title="Trade history"
           :show-filter="true"
           empty-text="No closed trades so far."
@@ -91,7 +95,7 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      v-if="detailTradeId && gridLayoutTradeDetail.h != 0"
+      v-if="botStore.activeBot.detailTradeId && gridLayoutTradeDetail.h != 0"
       :i="gridLayoutTradeDetail.i"
       :x="gridLayoutTradeDetail.x"
       :y="gridLayoutTradeDetail.y"
@@ -101,7 +105,10 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Trade Detail">
-        <TradeDetail :trade="tradeDetail" :stake-currency="stakeCurrency" />
+        <TradeDetail
+          :trade="botStore.activeBot.tradeDetail"
+          :stake-currency="botStore.activeBot.stakeCurrency"
+        />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -116,10 +123,10 @@
     >
       <DraggableContainer header="Chart">
         <CandleChartContainer
-          :available-pairs="whitelist"
+          :available-pairs="botStore.activeBot.whitelist"
           :historic-view="!!false"
-          :timeframe="timeframe"
-          :trades="allTrades"
+          :timeframe="botStore.activeBot.timeframe"
+          :trades="botStore.activeBot.allTrades"
         >
         </CandleChartContainer>
       </DraggableContainer>
@@ -143,11 +150,9 @@ import Performance from '@/components/ftbot/Performance.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, ref, computed } from '@vue/composition-api';
-import { useNamespacedGetters } from 'vuex-composition-helpers';
 import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'Trading',
@@ -168,27 +173,7 @@ export default defineComponent({
     TradeList,
   },
   setup() {
-    const {
-      detailTradeId,
-      openTrades,
-      closedTrades,
-      allTrades,
-      tradeDetail,
-      timeframe,
-      currentLocks,
-      whitelist,
-      stakeCurrency,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.detailTradeId,
-      BotStoreGetters.openTrades,
-      BotStoreGetters.closedTrades,
-      BotStoreGetters.allTrades,
-      BotStoreGetters.tradeDetail,
-      BotStoreGetters.timeframe,
-      BotStoreGetters.currentLocks,
-      BotStoreGetters.whitelist,
-      BotStoreGetters.stakeCurrency,
-    ]);
+    const botStore = useBotStore();
     const layoutStore = useLayoutStore();
     const currentBreakpoint = ref('');
 
@@ -242,15 +227,8 @@ export default defineComponent({
     };
 
     return {
-      detailTradeId,
-      openTrades,
-      closedTrades,
-      allTrades,
-      tradeDetail,
-      timeframe,
-      currentLocks,
-      whitelist,
-      stakeCurrency,
+      botStore,
+
       layoutStore,
       breakpointChanged,
       layoutUpdatedEvent,
