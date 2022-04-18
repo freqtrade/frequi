@@ -88,13 +88,15 @@ export const useBotStore = defineStore('wrapper', {
       // TODO: could be removed.
       this.globalAutoRefresh = value;
     },
-    allRefreshFrequent(forceUpdate = false) {
+    async allRefreshFrequent(forceUpdate = false) {
+      const updates: Promise<any>[] = [];
       this.allBotStores.forEach(async (e) => {
         if (e.refreshNow && (this.globalAutoRefresh || forceUpdate)) {
-          // console.log('refreshing', e);
-          await e.refreshFrequent();
+          updates.push(e.refreshFrequent());
         }
       });
+      await Promise.all(updates);
+      return Promise.resolve();
     },
     async allRefreshSlow(forceUpdate = false) {
       this.allBotStores.forEach(async (e) => {
@@ -116,7 +118,7 @@ export const useBotStore = defineStore('wrapper', {
             await this.allGetState();
           }
         });
-        const updates: Promise<AxiosInstance>[] = [];
+        const updates: Promise<any>[] = [];
         updates.push(this.allRefreshFrequent(false));
         updates.push(this.allRefreshSlow(true));
         // updates.push(this.getDaily());
