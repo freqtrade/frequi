@@ -23,7 +23,11 @@ export const useBotStore = defineStore('wrapper', {
   },
   getters: {
     hasBots: (state) => Object.keys(state.availableBots).length > 0,
+    botCount: (state) => Object.keys(state.availableBots).length,
     allBotStores: (state) => Object.values(state.botStores),
+    activeBot: (state) =>
+      state.botStores[state.selectedBot] as ReturnType<typeof createBotSubStore>,
+    selectedBotObj: (state) => state.availableBots[state.selectedBot],
   },
   actions: {
     selectBot(botId: string) {

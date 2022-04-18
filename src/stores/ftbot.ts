@@ -110,6 +110,7 @@ export function createBotSubStore(botId: string, botName: string) {
       isWebserverMode: (state) => state.botState?.runmode === RunModes.WEBSERVER,
       selectedBacktestResult: (state) => state.backtestHistory[state.selectedBacktestResultKey],
       shortAllowed: (state) => state.botState?.short_allowed || false,
+      openTradeCount: (state) => state.openTrades.length,
       isTrading: (state) =>
         state.botState?.runmode === RunModes.LIVE || state.botState?.runmode === RunModes.DRY_RUN,
       timeframe: (state) => state.botState?.timeframe || '',
@@ -789,6 +790,5 @@ export function createBotSubStore(botId: string, botName: string) {
       },
     },
   });
-
   return useBotStore();
 }
