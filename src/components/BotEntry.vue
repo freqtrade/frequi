@@ -4,7 +4,7 @@
 
     <div class="align-items-center d-flex">
       <span class="ml-2 mr-1 align-middle">{{
-        allIsBotOnline[bot.botId] ? '&#128994;' : '&#128308;'
+        botStore.availableBots[bot.botId] ? '&#128994;' : '&#128308;'
       }}</span>
       <b-form-checkbox
         v-model="autoRefreshLoc"
@@ -29,13 +29,11 @@
 </template>
 
 <script lang="ts">
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { BotDescriptor } from '@/types';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, computed } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters, useStore } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'BotEntry',
@@ -49,15 +47,10 @@ export default defineComponent({
   },
   emits: ['edit'],
   setup(props, { root }) {
-    const store = useStore();
-    const { allIsBotOnline, allAutoRefresh } = useNamespacedGetters(StoreModules.ftbot, [
-      MultiBotStoreGetters.allIsBotOnline,
-      MultiBotStoreGetters.allAutoRefresh,
-    ]);
-    const { removeBot } = useNamespacedActions(StoreModules.ftbot, ['removeBot']);
+    const botStore = useBotStore();
 
     const changeEvent = (v) => {
-      store.dispatch(`ftbot/${props.bot.botId}/setAutoRefresh`, v);
+      botStore.botStores[props.bot.botId].setAutoRefresh(v);
     };
 
     const clickRemoveBot = (bot: BotDescriptor) => {
@@ -66,13 +59,13 @@ export default defineComponent({
         .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
         .then((value: boolean) => {
           if (value) {
-            removeBot(bot.botId);
+            botStore.removeBot(bot.botId);
           }
         });
     };
     const autoRefreshLoc = computed({
       get() {
-        return allAutoRefresh.value[props.bot.botId];
+        return botStore.botStores[props.bot.botId].autoRefresh;
       },
       set(_) {
         // pass
@@ -80,8 +73,7 @@ export default defineComponent({
     });
 
     return {
-      allIsBotOnline,
-      allAutoRefresh,
+      botStore,
       changeEvent,
       clickRemoveBot,
       autoRefreshLoc,

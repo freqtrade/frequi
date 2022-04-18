@@ -1,14 +1,14 @@
 <template>
-  <div v-if="botCount > 0">
+  <div v-if="botStore.botCount > 0">
     <h3 v-if="!small">Available bots</h3>
     <b-list-group>
       <b-list-group-item
-        v-for="bot in allAvailableBots"
+        v-for="bot in botStore.availableBots"
         :key="bot.botId"
-        :active="bot.botId === selectedBot"
+        :active="bot.botId === botStore.selectedBot"
         button
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl}`"
-        @click="selectBot(bot.botId)"
+        @click="botStore.selectBot(bot.botId)"
       >
         <bot-rename
           v-if="editingBots.includes(bot.botId)"
@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
 import StoreModules from '@/store/storeSubModules';
 
 import { defineComponent, ref } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useNamespacedActions } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'BotList',
@@ -41,15 +41,8 @@ export default defineComponent({
     small: { default: false, type: Boolean },
   },
   setup() {
-    const { botCount, selectedBot, allIsBotOnline, allAvailableBots } = useNamespacedGetters(
-      StoreModules.ftbot,
-      [
-        MultiBotStoreGetters.botCount,
-        MultiBotStoreGetters.selectedBot,
-        MultiBotStoreGetters.allIsBotOnline,
-        MultiBotStoreGetters.allAvailableBots,
-      ],
-    );
+    const botStore = useBotStore();
+
     const { selectBot } = useNamespacedActions(StoreModules.ftbot, ['selectBot']);
     const editingBots = ref<string[]>([]);
 
@@ -68,10 +61,7 @@ export default defineComponent({
     };
 
     return {
-      botCount,
-      selectedBot,
-      allIsBotOnline,
-      allAvailableBots,
+      botStore,
       selectBot,
       editingBots,
       editBot,

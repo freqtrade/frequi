@@ -25,9 +25,8 @@
 import CheckIcon from 'vue-material-design-icons/Check.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
 import { BotDescriptor } from '@/types';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, ref } from '@vue/composition-api';
-import { useNamespacedActions } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'BotRename',
@@ -40,11 +39,12 @@ export default defineComponent({
   },
   emits: ['saved'],
   setup(props, { emit }) {
-    const { renameBot } = useNamespacedActions(StoreModules.ftbot, ['renameBot']);
+    const botStore = useBotStore();
+
     const newName = ref<string>(props.bot.botName);
 
     const save = () => {
-      renameBot({
+      botStore.renameBot({
         botId: props.bot.botId,
         botName: newName.value,
       });
