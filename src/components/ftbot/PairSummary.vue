@@ -7,9 +7,9 @@
       :key="comb.pair"
       button
       class="d-flex justify-content-between align-items-center py-1"
-      :active="comb.pair === selectedPair"
+      :active="comb.pair === botStore.activeBot.selectedPair"
       :title="`${comb.pair} - ${comb.tradeCount} trades`"
-      @click="setSelectedPair(comb.pair)"
+      @click="botStore.activeBot.setSelectedPair(comb.pair)"
     >
       <div>
         {{ comb.pair }}
@@ -20,7 +20,7 @@
       <ProfitPill
         v-if="backtestMode && comb.tradeCount > 0"
         :profit-ratio="comb.profit"
-        :stake-currency="stakeCurrency"
+        :stake-currency="botStore.activeBot.stakeCurrency"
       />
     </b-list-group-item>
   </b-list-group>
@@ -28,13 +28,11 @@
 
 <script lang="ts">
 import { formatPercent, timestampms } from '@/shared/formatters';
-import { BotStoreGetters } from '@/store/modules/ftbot';
 import { Lock, Trade } from '@/types';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, computed } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 interface CombinedPairList {
   pair: string;
@@ -59,12 +57,7 @@ export default defineComponent({
     backtestMode: { required: false, default: false, type: Boolean },
   },
   setup(props) {
-    const { selectedPair, stakeCurrency } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.selectedPair,
-      BotStoreGetters.stakeCurrency,
-    ]);
-    const { setSelectedPair } = useNamespacedActions(StoreModules.ftbot, ['setSelectedPair']);
-
+    const botStore = useBotStore();
     const combinedPairList = computed(() => {
       const comb: CombinedPairList[] = [];
 
@@ -144,9 +137,7 @@ export default defineComponent({
     return {
       combinedPairList,
       tableFields,
-      selectedPair,
-      stakeCurrency,
-      setSelectedPair,
+      botStore,
     };
   },
 });
