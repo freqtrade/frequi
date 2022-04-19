@@ -1,19 +1,25 @@
 import { UserService } from '@/shared/userService';
 import {
+  BalanceInterface,
   BotDescriptor,
   BotDescriptors,
+  BotState,
   DailyPayload,
   MultiDeletePayload,
   MultiForcesellPayload,
+  ProfitInterface,
   RenameBotPayload,
+  Trade,
 } from '@/types';
 import { AxiosInstance } from 'axios';
 import { defineStore } from 'pinia';
 import { createBotSubStore } from './ftbot';
 const AUTH_SELECTED_BOT = 'ftSelectedBot';
 
+export type BotSubStore = ReturnType<typeof createBotSubStore>;
+
 export interface SubStores {
-  [key: string]: ReturnType<typeof createBotSubStore>;
+  [key: string]: BotSubStore;
 }
 
 export const useBotStore = defineStore('wrapper', {
@@ -32,8 +38,7 @@ export const useBotStore = defineStore('wrapper', {
     hasBots: (state) => Object.keys(state.availableBots).length > 0,
     botCount: (state) => Object.keys(state.availableBots).length,
     allBotStores: (state) => Object.values(state.botStores),
-    activeBot: (state) =>
-      state.botStores[state.selectedBot] as ReturnType<typeof createBotSubStore>,
+    activeBot: (state) => state.botStores[state.selectedBot] as BotSubStore,
     selectedBotObj: (state) => state.availableBots[state.selectedBot],
     nextBotId: (state) => {
       let botCount = Object.keys(state.availableBots).length;
@@ -42,6 +47,49 @@ export const useBotStore = defineStore('wrapper', {
         botCount += 1;
       }
       return `ftbot.${botCount}`;
+    },
+    allProfit: (state): Record<string, ProfitInterface> => {
+      const result: Record<string, ProfitInterface> = {};
+      Object.entries(state.botStores).forEach(([k, botStore]) => {
+        result[k] = botStore.profit;
+      });
+      return result;
+    },
+    allOpenTradeCount: (state): Record<string, number> => {
+      const result: Record<string, number> = {};
+      Object.entries(state.botStores).forEach(([k, botStore]) => {
+        result[k] = botStore.openTradeCount;
+      });
+      return result;
+    },
+    allOpenTrades: (state): Record<string, Trade[]> => {
+      const result: Record<string, Trade[]> = {};
+      Object.entries(state.botStores).forEach(([k, botStore]) => {
+        result[k] = botStore.openTrades;
+      });
+      return result;
+    },
+    allBalance: (state): Record<string, BalanceInterface> => {
+      const result: Record<string, BalanceInterface> = {};
+      Object.entries(state.botStores).forEach(([k, botStore]) => {
+        result[k] = botStore.balance;
+      });
+      return result;
+    },
+    allBotState: (state): Record<string, BotState> => {
+      const result: Record<string, BotState> = {};
+      Object.entries(state.botStores).forEach(([k, botStore]) => {
+        result[k] = botStore.botState;
+      });
+      return result;
+    },
+
+    allOpenTradesAllBots: (state): Trade[] => {
+      const result: Trade[] = [];
+      Object.entries(state.botStores).forEach(([, botStore]) => {
+        result.concat([...botStore.openTrades]);
+      });
+      return result;
     },
   },
   actions: {

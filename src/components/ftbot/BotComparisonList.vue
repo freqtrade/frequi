@@ -43,32 +43,16 @@
 </template>
 
 <script lang="ts">
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
 import ProfitPill from '@/components/general/ProfitPill.vue';
 import { formatPrice } from '@/shared/formatters';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, computed } from '@vue/composition-api';
-import { useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'BotComparisonList',
   components: { ProfitPill },
   setup() {
-    const {
-      allProfit,
-      allOpenTradeCount,
-      allOpenTrades,
-      allBotState,
-      allBalance,
-      allAvailableBots,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      MultiBotStoreGetters.allProfit,
-      MultiBotStoreGetters.allOpenTradeCount,
-      MultiBotStoreGetters.allOpenTrades,
-      MultiBotStoreGetters.allBotState,
-      MultiBotStoreGetters.allBalance,
-      MultiBotStoreGetters.allAvailableBots,
-    ]);
+    const botStore = useBotStore();
 
     const tableFields: Record<string, string | Function>[] = [
       { key: 'botId', label: 'Bot' },
@@ -93,28 +77,28 @@ export default defineComponent({
         losses: 0,
       };
 
-      Object.entries(allProfit.value).forEach(([k, v]: [k: string, v: any]) => {
-        const allStakes = allOpenTrades.value[k].reduce((a, b) => a + b.stake_amount, 0);
+      Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: any]) => {
+        const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
         const profitOpenRatio =
-          allOpenTrades.value[k].reduce((a, b) => a + b.profit_ratio * b.stake_amount, 0) /
+          botStore.allOpenTrades[k].reduce((a, b) => a + b.profit_ratio * b.stake_amount, 0) /
           allStakes;
-        const profitOpen = allOpenTrades.value[k].reduce((a, b) => a + b.profit_abs, 0);
+        const profitOpen = botStore.allOpenTrades[k].reduce((a, b) => a + b.profit_abs, 0);
 
         // TODO: handle one inactive bot ...
         val.push({
-          botId: allAvailableBots.value[k].botName,
-          trades: `${allOpenTradeCount.value[k]} / ${
-            allBotState.value[k]?.max_open_trades || 'N/A'
+          botId: botStore.availableBots[k].botName,
+          trades: `${botStore.allOpenTradeCount[k]} / ${
+            botStore.allBotState[k]?.max_open_trades || 'N/A'
           }`,
           profitClosed: v.profit_closed_coin,
           profitClosedRatio: v.profit_closed_ratio || 0,
-          stakeCurrency: allBotState.value[k]?.stake_currency || '',
+          stakeCurrency: botStore.allBotState[k]?.stake_currency || '',
           profitOpenRatio,
           profitOpen,
           wins: v.winning_trades,
           losses: v.losing_trades,
-          balance: allBalance.value[k]?.total,
-          stakeCurrencyDecimals: allBotState.value[k]?.stake_currency_decimals || 3,
+          balance: botStore.allBalance[k]?.total,
+          stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
         });
         if (v.profit_closed_coin !== undefined) {
           summary.profitClosed += v.profit_closed_coin;
@@ -129,12 +113,6 @@ export default defineComponent({
     });
 
     return {
-      allProfit,
-      allOpenTradeCount,
-      allOpenTrades,
-      allBotState,
-      allBalance,
-      allAvailableBots,
       formatPrice,
       tableFields,
       tableItems,
