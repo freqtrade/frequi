@@ -5,6 +5,8 @@ import {
   BotDescriptors,
   BotState,
   DailyPayload,
+  DailyRecord,
+  DailyReturnValue,
   MultiDeletePayload,
   MultiForcesellPayload,
   ProfitInterface,
@@ -87,9 +89,43 @@ export const useBotStore = defineStore('wrapper', {
     allOpenTradesAllBots: (state): Trade[] => {
       const result: Trade[] = [];
       Object.entries(state.botStores).forEach(([, botStore]) => {
-        result.concat([...botStore.openTrades]);
+        result.push(...botStore.openTrades);
       });
       return result;
+    },
+    allTradesAllBots: (state): Trade[] => {
+      const result: Trade[] = [];
+      Object.entries(state.botStores).forEach(([, botStore]) => {
+        result.push(...botStore.trades);
+      });
+      return result;
+    },
+    allDailyStatsAllBots: (state): DailyReturnValue => {
+      const resp: Record<string, DailyRecord> = {};
+
+      Object.entries(state.botStores).forEach(([, botStore]) => {
+        botStore.dailyStats?.data?.forEach((d) => {
+          if (!resp[d.date]) {
+            resp[d.date] = { ...d };
+          } else {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            resp[d.date].abs_profit += d.abs_profit;
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            resp[d.date].fiat_value += d.fiat_value;
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            resp[d.date].trade_count += d.trade_count;
+          }
+        });
+      });
+
+      const dailyReturn: DailyReturnValue = {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        stake_currency: 'USDT',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        fiat_display_currency: 'USD',
+        data: Object.values(resp),
+      };
+      return dailyReturn;
     },
   },
   actions: {

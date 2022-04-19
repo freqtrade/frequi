@@ -24,10 +24,10 @@
       :min-h="4"
       drag-allow-from=".drag-header"
     >
-      <DraggableContainer :header="`Daily Profit ${botCount > 1 ? 'combined' : ''}`">
+      <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
         <DailyChart
-          v-if="allDailyStatsAllBots"
-          :daily-stats="allDailyStatsAllBots"
+          v-if="botStore.allDailyStatsAllBots"
+          :daily-stats="botStore.allDailyStatsAllBots"
           :show-title="false"
         />
       </DraggableContainer>
@@ -57,7 +57,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Open Trades">
-        <trade-list :active-trades="true" :trades="allOpenTradesAllBots" multi-bot-view />
+        <trade-list :active-trades="true" :trades="botStore.allOpenTradesAllBots" multi-bot-view />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -71,7 +71,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Cumulative Profit">
-        <CumProfitChart :trades="allTradesAllBots" :show-title="false" />
+        <CumProfitChart :trades="botStore.allTradesAllBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -85,7 +85,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Trades Log">
-        <TradesLogChart :trades="allTradesAllBots" :show-title="false" />
+        <TradesLogChart :trades="botStore.allTradesAllBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
   </GridLayout>
@@ -103,13 +103,9 @@ import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import StoreModules from '@/store/storeSubModules';
-
 import { defineComponent, ref, computed, onMounted } from '@vue/composition-api';
-import { useNamespacedGetters, useNamespacedActions } from 'vuex-composition-helpers';
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -124,28 +120,7 @@ export default defineComponent({
     DraggableContainer,
   },
   setup() {
-    const {
-      botCount,
-      allOpenTradesAllBots,
-      allTradesAllBots,
-      allDailyStatsAllBots,
-      performanceStats,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      MultiBotStoreGetters.botCount,
-      MultiBotStoreGetters.allOpenTradesAllBots,
-      MultiBotStoreGetters.allTradesAllBots,
-      MultiBotStoreGetters.allDailyStatsAllBots,
-      BotStoreGetters.performanceStats,
-    ]);
-
-    const { getPerformance, allGetDaily, getTrades, getOpenTrades, getProfit } =
-      useNamespacedActions(StoreModules.ftbot, [
-        'getPerformance',
-        'allGetDaily',
-        'getTrades',
-        'getOpenTrades',
-        'getProfit',
-      ]);
+    const botStore = useBotStore();
 
     const layoutStore = useLayoutStore();
     const currentBreakpoint = ref('');
@@ -203,14 +178,14 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      allGetDaily({ timescale: 30 });
-      getTrades();
-      getOpenTrades();
-      getPerformance();
-      getProfit();
+      botStore.allGetDaily({ timescale: 30 });
+      botStore.activeBot.getTrades();
+      botStore.activeBot.getOpenTrades();
+      botStore.activeBot.getProfit();
     });
 
     return {
+      botStore,
       formatPrice,
       isLayoutLocked,
       layoutUpdatedEvent,
@@ -222,16 +197,6 @@ export default defineComponent({
       gridLayoutCumChart,
       gridLayoutTradesLogChart,
       responsiveGridLayouts,
-      getPerformance,
-      allGetDaily,
-      getTrades,
-      getOpenTrades,
-      getProfit,
-      botCount,
-      allOpenTradesAllBots,
-      allTradesAllBots,
-      allDailyStatsAllBots,
-      performanceStats,
     };
   },
 });
