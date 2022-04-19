@@ -2,7 +2,7 @@
   <div>
     <button
       class="btn btn-secondary btn-sm ml-1"
-      :disabled="!isTrading || isRunning"
+      :disabled="!botStore.activeBot.isTrading || isRunning"
       title="Start Trading"
       @click="startBot()"
     >
@@ -10,7 +10,7 @@
     </button>
     <button
       class="btn btn-secondary btn-sm ml-1"
-      :disabled="!isTrading || !isRunning"
+      :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Stop Trading - Also stops handling open trades."
       @click="handleStopBot()"
     >
@@ -18,7 +18,7 @@
     </button>
     <button
       class="btn btn-secondary btn-sm ml-1"
-      :disabled="!isTrading || !isRunning"
+      :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="StopBuy - Stops buying, but still handles open trades"
       @click="handleStopBuy()"
     >
@@ -26,7 +26,7 @@
     </button>
     <button
       class="btn btn-secondary btn-sm ml-1"
-      :disabled="!isTrading"
+      :disabled="!botStore.activeBot.isTrading"
       title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
       @click="handleReloadConfig()"
     >
@@ -34,23 +34,27 @@
     </button>
     <button
       class="btn btn-secondary btn-sm ml-1"
-      :disabled="!isTrading"
+      :disabled="!botStore.activeBot.isTrading"
       title="Forcesell all"
       @click="handleForceSell()"
     >
       <ForceSellIcon />
     </button>
     <button
-      v-if="botState && (botState.force_entry_enable || botState.forcebuy_enabled)"
+      v-if="
+        botStore.activeBot.botState &&
+        (botStore.activeBot.botState.force_entry_enable ||
+          botStore.activeBot.botState.forcebuy_enabled)
+      "
       class="btn btn-secondary btn-sm ml-1"
-      :disabled="!isTrading || !isRunning"
+      :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
       @click="initiateForceenter"
     >
       <ForceBuyIcon />
     </button>
     <button
-      v-if="isWebserverMode && false"
+      v-if="botStore.activeBot.isWebserverMode && false"
       :disabled="isTrading"
       class="btn btn-secondary btn-sm ml-1"
       title="Start Trading mode"
@@ -64,17 +68,15 @@
 
 <script lang="ts">
 import { ForceSellPayload } from '@/types';
-import { BotStoreActions, BotStoreGetters } from '@/store/modules/ftbot';
 import PlayIcon from 'vue-material-design-icons/Play.vue';
 import StopIcon from 'vue-material-design-icons/Stop.vue';
 import PauseIcon from 'vue-material-design-icons/Pause.vue';
 import ReloadIcon from 'vue-material-design-icons/Reload.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ForceBuyIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
-import StoreModules from '@/store/storeSubModules';
 import ForceBuyForm from './ForceBuyForm.vue';
 import { defineComponent, computed, ref } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'BotControls',
@@ -88,24 +90,11 @@ export default defineComponent({
     ForceBuyIcon,
   },
   setup(_, { root }) {
+    const botStore = useBotStore();
     const forcebuyShow = ref(false);
-    const { botState, isTrading, isWebserverMode } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.botState,
-      BotStoreGetters.isTrading,
-      BotStoreGetters.isWebserverMode,
-    ]);
-    const { startBot, stopBot, stopBuy, reloadConfig, startTrade, forcesell } =
-      useNamespacedActions(StoreModules.ftbot, [
-        BotStoreActions.startBot,
-        BotStoreActions.stopBot,
-        BotStoreActions.stopBuy,
-        BotStoreActions.reloadConfig,
-        BotStoreActions.startTrade,
-        BotStoreActions.forcesell,
-      ]);
 
     const isRunning = computed((): boolean => {
-      return botState.value?.state === 'running';
+      return botStore.activeBot.botState?.state === 'running';
     });
 
     const initiateForceenter = () => {
@@ -115,7 +104,7 @@ export default defineComponent({
     const handleStopBot = () => {
       root.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
         if (value) {
-          stopBot();
+          botStore.activeBot.stopBot();
         }
       });
     };
@@ -125,7 +114,7 @@ export default defineComponent({
         .msgBoxConfirm('Stop buying? Freqtrade will continue to handle open trades.')
         .then((value: boolean) => {
           if (value) {
-            stopBuy();
+            botStore.activeBot.stopBuy();
           }
         });
     };
@@ -133,7 +122,7 @@ export default defineComponent({
     const handleReloadConfig = () => {
       root.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
         if (value) {
-          reloadConfig();
+          botStore.activeBot.reloadConfig();
         }
       });
     };
@@ -145,7 +134,7 @@ export default defineComponent({
             tradeid: 'all',
             // TODO: support ordertype (?)
           };
-          forcesell(payload);
+          botStore.activeBot.forcesell(payload);
         }
       });
     };
@@ -156,11 +145,8 @@ export default defineComponent({
       handleReloadConfig,
       handleForceSell,
       forcebuyShow,
-      isTrading,
+      botStore,
       isRunning,
-      botState,
-      isWebserverMode,
-      startBot,
     };
   },
 });

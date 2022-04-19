@@ -123,11 +123,10 @@
 import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
-import StoreModules from '@/store/storeSubModules';
 import { showAlert } from '@/stores/alerts';
 
 import { defineComponent, computed, ref, watch, onMounted } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'PlotConfigurator',
@@ -139,25 +138,12 @@ export default defineComponent({
   },
   emits: ['input'],
   setup(props, { emit }) {
-    const { getStrategyPlotConfig, saveCustomPlotConfig, updatePlotConfigName } =
-      useNamespacedActions(StoreModules.ftbot, [
-        'getStrategyPlotConfig',
-        'saveCustomPlotConfig',
-        'updatePlotConfigName',
-      ]);
-    const { strategyPlotConfig, plotConfigName } = useNamespacedGetters(StoreModules.ftbot, [
-      'strategyPlotConfig',
-      'plotConfigName',
-    ]);
+    const botStore = useBotStore();
+
     const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
 
-    const plotOptions = [
-      { text: 'Main Plot', value: 'main_plot' },
-      { text: 'Subplots', value: 'subplots' },
-    ];
     const plotConfigNameLoc = ref('default');
     const newSubplotName = ref('');
-    const selAvailableIndicator = ref('');
     const selIndicatorName = ref('');
     const addNewIndicator = ref(false);
     const showConfig = ref(false);
@@ -302,9 +288,11 @@ export default defineComponent({
     };
     const loadPlotConfigFromStrategy = async () => {
       try {
-        await getStrategyPlotConfig();
-        plotConfig.value = strategyPlotConfig.value;
-        emit('input', plotConfig.value);
+        await botStore.activeBot.getStrategyPlotConfig();
+        if (botStore.activeBot.strategyPlotConfig) {
+          plotConfig.value = botStore.activeBot.strategyPlotConfig;
+          emit('input', plotConfig.value);
+        }
       } catch (data) {
         //
         showAlert('Failed to load Plot configuration from Strategy.');
@@ -312,27 +300,23 @@ export default defineComponent({
     };
 
     const savePlotConfig = () => {
-      saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
+      botStore.activeBot.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
     };
 
     watch(props.value, () => {
       console.log('config value');
       plotConfig.value = props.value;
-      plotConfigNameLoc.value = plotConfigName.value;
+      plotConfigNameLoc.value = botStore.activeBot.plotConfigName;
     });
 
     onMounted(() => {
       console.log('Config Mounted', props.value);
       plotConfig.value = props.value;
-      plotConfigNameLoc.value = plotConfigName.value;
+      plotConfigNameLoc.value = botStore.activeBot.plotConfigName;
     });
 
     return {
-      saveCustomPlotConfig,
-      getStrategyPlotConfig,
-      updatePlotConfigName,
-      strategyPlotConfig,
-      plotConfigName,
+      botStore,
       addIndicator,
       removeIndicator,
       addSubplot,

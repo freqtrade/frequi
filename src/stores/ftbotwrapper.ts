@@ -35,6 +35,14 @@ export const useBotStore = defineStore('wrapper', {
     activeBot: (state) =>
       state.botStores[state.selectedBot] as ReturnType<typeof createBotSubStore>,
     selectedBotObj: (state) => state.availableBots[state.selectedBot],
+    nextBotId: (state) => {
+      let botCount = Object.keys(state.availableBots).length;
+
+      while (`ftbot.${botCount}` in state.availableBots) {
+        botCount += 1;
+      }
+      return `ftbot.${botCount}`;
+    },
   },
   actions: {
     selectBot(botId: string) {

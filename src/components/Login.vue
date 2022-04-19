@@ -75,12 +75,10 @@
 import { useUserService } from '@/shared/userService';
 
 import { AuthPayload } from '@/types';
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import StoreModules from '@/store/storeSubModules';
 
 import { defineComponent, ref } from '@vue/composition-api';
-import { useActions, useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 import { useRouter, useRoute } from 'vue2-helpers/vue-router';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 const defaultURL = window.location.origin || 'http://localhost:3000';
 
@@ -93,15 +91,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter();
     const route = useRoute();
-    const { nextBotId, selectedBot } = useNamespacedGetters(StoreModules.ftbot, [
-      MultiBotStoreGetters.nextBotId,
-      MultiBotStoreGetters.selectedBot,
-    ]);
-    const { addBot, selectBot, allRefreshFull } = useNamespacedActions(StoreModules.ftbot, [
-      'addBot',
-      'selectBot',
-      'allRefreshFull',
-    ]);
+    const botStore = useBotStore();
 
     const nameState = ref<boolean | null>();
     const pwdState = ref<boolean | null>();
@@ -147,24 +137,24 @@ export default defineComponent({
         return;
       }
       errorMessage.value = '';
-      const userService = useUserService(nextBotId.value);
+      const userService = useUserService(botStore.nextBotId);
       // Push the name to submitted names
       userService
         .login(auth.value)
         .then(() => {
-          const botId = nextBotId.value;
-          addBot({
+          const botId = botStore.nextBotId;
+          botStore.addBot({
             botName: auth.value.botName,
             botId,
             botUrl: auth.value.url,
           });
-          if (selectedBot.value === '') {
+          if (botStore.selectedBot === '') {
             console.log(`selecting bot ${botId}`);
-            selectBot(botId);
+            botStore.selectBot(botId);
           }
 
           emitLoginResult(true);
-          allRefreshFull();
+          botStore.allRefreshFull();
           if (props.inModal === false) {
             if (typeof route?.query.redirect === 'string') {
               const resolved = router.resolve({ path: route.query.redirect });
@@ -181,7 +171,7 @@ export default defineComponent({
         .catch((error) => {
           errorMessageCORS.value = false;
           // this.nameState = false;
-          console.error(error.response);
+          console.error(error);
           if (error.response && error.response.status === 401) {
             nameState.value = false;
             pwdState.value = false;

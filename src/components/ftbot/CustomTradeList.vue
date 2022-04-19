@@ -36,10 +36,9 @@
 <script lang="ts">
 import { formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import StoreModules from '@/store/storeSubModules';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
 import { defineComponent, computed, ref } from '@vue/composition-api';
-import { useNamespacedActions } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'CustomTradeList',
@@ -57,10 +56,7 @@ export default defineComponent({
     stakeCurrencyDecimals: { default: 3, type: Number },
   },
   setup(props, { root }) {
-    const { setDetailTrade, forceSellMulti, deleteTradeMulti } = useNamespacedActions(
-      StoreModules.ftbot,
-      ['setDetailTrade', 'forceSellMulti', 'deleteTradeMulti'],
-    );
+    const botStore = useBotStore();
     const currentPage = ref(1);
     const filterText = ref('');
     const perPage = props.activeTrades ? 200 : 25;
@@ -85,7 +81,8 @@ export default defineComponent({
             if (ordertype) {
               payload.ordertype = ordertype;
             }
-            forceSellMulti(payload)
+            botStore
+              .forceSellMulti(payload)
               .then((xxx) => console.log(xxx))
               .catch((error) => console.log(error.response));
           }
@@ -112,12 +109,12 @@ export default defineComponent({
               tradeid: String(item.trade_id),
               botId: item.botId,
             };
-            deleteTradeMulti(payload).catch((error) => console.log(error.response));
+            botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
           }
         });
     };
     const tradeClick = (trade) => {
-      setDetailTrade(trade);
+      botStore.activeBot.setDetailTrade(trade);
     };
 
     return {
@@ -130,9 +127,7 @@ export default defineComponent({
       handleContextMenuEvent,
       removeTradeHandler,
       tradeClick,
-      setDetailTrade,
-      forceSellMulti,
-      deleteTradeMulti,
+      botStore,
       rows,
     };
   },

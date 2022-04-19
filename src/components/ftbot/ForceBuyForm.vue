@@ -10,7 +10,7 @@
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
-          v-if="botApiVersion >= 2.13 && shortAllowed"
+          v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed"
           label="Order direction (Long or Short)"
           label-for="order-direction"
           invalid-feedback="Stake-amount must be empty or a positive number"
@@ -45,8 +45,8 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group
-          v-if="botApiVersion > 1.12"
-          :label="`*Stake-amount in ${stakeCurrency} [optional]`"
+          v-if="botStore.activeBot.botApiVersion > 1.12"
+          :label="`*Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
           label-for="stake-input"
           invalid-feedback="Stake-amount must be empty or a positive number"
         >
@@ -59,7 +59,7 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group
-          v-if="botApiVersion > 1.1"
+          v-if="botStore.activeBot.botApiVersion > 1.1"
           label="*OrderType"
           label-for="ordertype-input"
           invalid-feedback="OrderType"
@@ -79,26 +79,16 @@
 </template>
 
 <script lang="ts">
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
+import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceEnterPayload, OrderSides } from '@/types';
 
 import { defineComponent, ref, nextTick } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
 export default defineComponent({
   name: 'ForceBuyForm',
   setup(_, { root }) {
-    const { botState, shortAllowed, botApiVersion, stakeCurrency } = useNamespacedGetters(
-      StoreModules.ftbot,
-      [
-        BotStoreGetters.botState,
-        BotStoreGetters.shortAllowed,
-        BotStoreGetters.botApiVersion,
-        BotStoreGetters.stakeCurrency,
-      ],
-    );
-    const { forcebuy } = useNamespacedActions(StoreModules.ftbot, ['forcebuy']);
+    const botStore = useBotStore();
+
     const form = ref<HTMLFormElement>();
     const pair = ref('');
     const price = ref<number | null>(null);
@@ -128,10 +118,10 @@ export default defineComponent({
       if (stakeAmount.value) {
         payload.stakeamount = stakeAmount.value;
       }
-      if (botApiVersion.value >= 2.13) {
+      if (botStore.activeBot.botApiVersion >= 2.13) {
         payload.side = orderSide.value;
       }
-      forcebuy(payload);
+      botStore.activeBot.forcebuy(payload);
       nextTick(() => {
         root.$bvModal.hide('forcebuy-modal');
       });
@@ -141,12 +131,13 @@ export default defineComponent({
       pair.value = '';
       price.value = null;
       stakeAmount.value = null;
-      if (botApiVersion.value > 1.1) {
+      if (botStore.activeBot.botApiVersion > 1.1) {
         ordertype.value =
-          botState.value?.order_types?.forcebuy ||
-          botState.value?.order_types?.force_entry ||
-          botState.value?.order_types?.buy ||
-          botState.value?.order_types?.entry;
+          botStore.activeBot.botState?.order_types?.forcebuy ||
+          botStore.activeBot.botState?.order_types?.force_entry ||
+          botStore.activeBot.botState?.order_types?.buy ||
+          botStore.activeBot.botState?.order_types?.entry ||
+          'limit';
       }
     };
 
@@ -158,10 +149,7 @@ export default defineComponent({
     };
     return {
       handleSubmit,
-      botState,
-      shortAllowed,
-      botApiVersion,
-      stakeCurrency,
+      botStore,
       form,
       handleBuy,
       resetForm,

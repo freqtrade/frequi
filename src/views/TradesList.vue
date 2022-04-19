@@ -8,37 +8,41 @@
       empty-text="Currently no open trades."
     /> -->
     <CustomTradeList
-      v-if="!history && !detailTradeId"
-      :trades="openTrades"
+      v-if="!history && !botStore.activeBot.detailTradeId"
+      :trades="botStore.activeBot.openTrades"
       title="Open trades"
       :active-trades="true"
-      :stake-currency-decimals="stakeCurrencyDecimals"
+      :stake-currency-decimals="botStore.activeBot.stakeCurrencyDecimals"
       empty-text="No open Trades."
     />
     <CustomTradeList
-      v-if="history && !detailTradeId"
-      :trades="closedTrades"
+      v-if="history && !botStore.activeBot.detailTradeId"
+      :trades="botStore.activeBot.closedTrades"
       title="Trade history"
-      :stake-currency-decimals="stakeCurrencyDecimals"
+      :stake-currency-decimals="botStore.activeBot.stakeCurrencyDecimals"
       empty-text="No closed trades so far."
     />
-    <div v-if="detailTradeId" class="d-flex flex-column">
-      <b-button size="sm" class="align-self-start mt-1 ml-1" @click="setDetailTrade(null)"
+    <div v-if="botStore.activeBot.detailTradeId" class="d-flex flex-column">
+      <b-button
+        size="sm"
+        class="align-self-start mt-1 ml-1"
+        @click="botStore.activeBot.setDetailTrade(null)"
         ><BackIcon /> Back</b-button
       >
-      <TradeDetail :trade="tradeDetail" :stake-currency="stakeCurrency" />
+      <TradeDetail
+        :trade="botStore.activeBot.tradeDetail"
+        :stake-currency="botStore.activeBot.stakeCurrency"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { BotStoreActions, BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
 import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import BackIcon from 'vue-material-design-icons/ArrowLeft.vue';
 import { defineComponent } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'TradesList',
@@ -51,33 +55,10 @@ export default defineComponent({
     history: { default: false, type: Boolean },
   },
   setup() {
-    const {
-      openTrades,
-      closedTrades,
-      stakeCurrencyDecimals,
-      stakeCurrency,
-      detailTradeId,
-      tradeDetail,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.openTrades,
-      BotStoreGetters.closedTrades,
-      BotStoreGetters.stakeCurrencyDecimals,
-      BotStoreGetters.stakeCurrency,
-      BotStoreGetters.detailTradeId,
-      BotStoreGetters.tradeDetail,
-    ]);
-    const { setDetailTrade } = useNamespacedActions(StoreModules.ftbot, [
-      BotStoreActions.setDetailTrade,
-    ]);
+    const botStore = useBotStore();
 
     return {
-      openTrades,
-      closedTrades,
-      stakeCurrencyDecimals,
-      stakeCurrency,
-      detailTradeId,
-      tradeDetail,
-      setDetailTrade,
+      botStore,
     };
   },
 });
