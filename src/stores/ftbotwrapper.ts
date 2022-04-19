@@ -292,3 +292,12 @@ export const useBotStore = defineStore('wrapper', {
     },
   },
 });
+
+export function initBots() {
+  const botStore = useBotStore();
+  // This might need to be moved to the parent (?)
+  Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {
+    botStore.addBot(v);
+  });
+  botStore.selectFirstBot();
+}

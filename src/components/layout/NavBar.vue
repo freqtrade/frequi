@@ -126,7 +126,6 @@ import { useRoute } from 'vue2-helpers/vue-router';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { UserService } from '@/shared/userService';
 
 export default defineComponent({
   name: 'NavBar',
@@ -136,11 +135,6 @@ export default defineComponent({
     const { setLoggedIn, loadUIVersion } = useActions(['setLoggedIn', 'loadUIVersion']);
 
     const botStore = useBotStore();
-    // This might need to be moved to the parent (?)
-    Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {
-      botStore.addBot(v);
-    });
-    botStore.selectFirstBot();
 
     const settingsStore = useSettingsStore();
     const layoutStore = useLayoutStore();
