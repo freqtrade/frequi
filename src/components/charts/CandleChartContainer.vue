@@ -68,7 +68,7 @@
           :plot-config="plotConfig"
           :heikin-ashi="heikinAshi"
           :use-u-t-c="settingsStore.timezone === 'UTC'"
-          :theme="getChartTheme"
+          :theme="settingsStore.chartTheme"
         >
         </CandleChart>
         <div v-else class="m-auto">
@@ -97,7 +97,6 @@ import vSelect from 'vue-select';
 import { useSettingsStore } from '@/stores/settings';
 
 import { defineComponent, ref, computed, onMounted, watch } from '@vue/composition-api';
-import { useGetters } from 'vuex-composition-helpers';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -117,7 +116,6 @@ export default defineComponent({
   setup(props, { root }) {
     const settingsStore = useSettingsStore();
     const botStore = useBotStore();
-    const { getChartTheme } = useGetters(['getChartTheme']);
 
     const pair = ref('');
     const plotConfig = ref<PlotConfig>({ ...EMPTY_PLOTCONFIG });
@@ -227,7 +225,7 @@ export default defineComponent({
 
     return {
       botStore,
-      getChartTheme,
+      settingsStore,
       history,
       dataset,
       strategyName,
@@ -235,7 +233,6 @@ export default defineComponent({
       isLoadingDataset,
       noDatasetText,
       hasDataset,
-      settingsStore,
       heikinAshi,
       plotConfigChanged,
       showPlotConfig,

@@ -132,7 +132,7 @@ export default defineComponent({
   components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
   setup() {
     const { getUiVersion } = useGetters(['getUiVersion']);
-    const { setLoggedIn, loadUIVersion } = useActions(['setLoggedIn', 'loadUIVersion']);
+    const { loadUIVersion } = useActions(['loadUIVersion']);
 
     const botStore = useBotStore();
 
@@ -145,7 +145,6 @@ export default defineComponent({
     const clickLogout = () => {
       botStore.removeBot(botStore.selectedBot);
       // TODO: This should be per bot
-      setLoggedIn(false);
     };
 
     const setOpenTradesAsPill = (tradeCount: number) => {
@@ -229,7 +228,6 @@ export default defineComponent({
     );
 
     return {
-      setLoggedIn,
       loadUIVersion,
       getUiVersion,
       favicon,

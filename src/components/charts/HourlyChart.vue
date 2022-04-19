@@ -3,17 +3,14 @@
     v-if="trades.length > 0"
     :option="hourlyChartOptions"
     autoresize
-    :theme="getChartTheme"
+    :theme="settingsStore.chartTheme"
   />
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-
 import ECharts from 'vue-echarts';
-import { defineComponent, ref, computed } from '@vue/composition-api';
-import { useGetters } from 'vuex-composition-helpers';
+import { useSettingsStore } from '@/stores/settings';
+import { defineComponent, computed } from '@vue/composition-api';
 
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
@@ -58,7 +55,7 @@ export default defineComponent({
     showTitle: { default: true, type: Boolean },
   },
   setup(props) {
-    const { getChartTheme } = useGetters(['getChartTheme']);
+    const settingsStore = useSettingsStore();
 
     const hourlyData = computed(() => {
       const res = new Array(24);
@@ -161,7 +158,7 @@ export default defineComponent({
         ],
       };
     });
-    return { getChartTheme, hourlyChartOptions };
+    return { settingsStore, hourlyChartOptions };
   },
 });
 </script>

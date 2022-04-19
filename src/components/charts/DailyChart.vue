@@ -1,9 +1,13 @@
 <template>
-  <v-chart v-if="dailyStats.data" :option="dailyChartOptions" :theme="getChartTheme" autoresize />
+  <v-chart
+    v-if="dailyStats.data"
+    :option="dailyChartOptions"
+    :theme="settingsStore.chartTheme"
+    autoresize
+  />
 </template>
 
 <script lang="ts">
-import { useGetters } from 'vuex-composition-helpers';
 import { ref, defineComponent, computed, ComputedRef } from '@vue/composition-api';
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
@@ -21,6 +25,7 @@ import {
 } from 'echarts/components';
 
 import { DailyReturnValue } from '@/types';
+import { useSettingsStore } from '@/stores/settings';
 
 use([
   BarChart,
@@ -54,7 +59,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { getChartTheme } = useGetters(['getChartTheme']);
+    const settingsStore = useSettingsStore();
     const absoluteMin: ComputedRef<number> = computed(() =>
       props.dailyStats.data.reduce(
         (min, p) => (p.abs_profit < min ? p.abs_profit : min),
@@ -155,7 +160,7 @@ export default defineComponent({
 
     return {
       dailyChartOptions,
-      getChartTheme,
+      settingsStore,
     };
   },
 });

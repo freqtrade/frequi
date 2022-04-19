@@ -3,10 +3,7 @@ import Vuex from 'vuex';
 
 import { getCurrentTheme, getTheme, storeCurrentTheme } from '@/shared/themes';
 import axios from 'axios';
-import { UserService } from '@/shared/userService';
 import { UiVersion } from '@/types';
-import StoreModules from '@/store/storeSubModules';
-import createBotStore, { MultiBotStoreGetters } from './modules/botStoreWrapper';
 
 Vue.use(Vuex);
 const initCurrentTheme = getCurrentTheme();
@@ -30,9 +27,6 @@ const store = new Vuex.Store({
     getUiVersion(state) {
       return state.uiVersion;
     },
-    loggedIn(state, getters) {
-      return getters[`${StoreModules.ftbot}/${MultiBotStoreGetters.hasBots}`];
-    },
   },
   mutations: {
     mutateCurrentTheme(state, newTheme: string) {
@@ -46,10 +40,6 @@ const store = new Vuex.Store({
   actions: {
     setCurrentTheme({ commit }, newTheme: string) {
       commit('mutateCurrentTheme', newTheme);
-    },
-
-    setLoggedIn({ commit }, loggedin: boolean) {
-      commit('setLoggedIn', loggedin);
     },
     async loadUIVersion({ commit }) {
       if (import.meta.env.PROD) {
@@ -66,12 +56,4 @@ const store = new Vuex.Store({
   },
 });
 
-UserService.migrateLogin();
-
-store.registerModule(StoreModules.ftbot, createBotStore(store));
-Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {
-  store.dispatch(`${StoreModules.ftbot}/addBot`, v);
-});
-store.dispatch(`${StoreModules.ftbot}/selectFirstBot`);
-store.dispatch(`${StoreModules.ftbot}/startRefresh`);
 export default store;

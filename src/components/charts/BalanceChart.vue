@@ -1,5 +1,10 @@
 <template>
-  <v-chart v-if="currencies" :option="balanceChartOptions" :theme="getChartTheme" autoresize />
+  <v-chart
+    v-if="currencies"
+    :option="balanceChartOptions"
+    :theme="settingsStore.chartTheme"
+    autoresize
+  />
 </template>
 
 <script lang="ts">
@@ -20,7 +25,7 @@ import {
 import { BalanceRecords } from '@/types';
 import { formatPriceCurrency } from '@/shared/formatters';
 import { defineComponent, computed } from '@vue/composition-api';
-import { useGetters } from 'vuex-composition-helpers';
+import { useSettingsStore } from '@/stores/settings';
 
 use([
   PieChart,
@@ -42,7 +47,7 @@ export default defineComponent({
     showTitle: { required: false, type: Boolean },
   },
   setup(props) {
-    const { getChartTheme } = useGetters(['getChartTheme']);
+    const settingsStore = useSettingsStore();
 
     const balanceChartOptions = computed((): EChartsOption => {
       return {
@@ -91,7 +96,7 @@ export default defineComponent({
       };
     });
 
-    return { getChartTheme, balanceChartOptions };
+    return { balanceChartOptions, settingsStore };
   },
 });
 </script>

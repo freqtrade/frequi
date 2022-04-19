@@ -34,10 +34,8 @@
 import { defineComponent, ref, onMounted } from '@vue/composition-api';
 import axios from 'axios';
 import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
-import { themeList } from '@/shared/themes';
-import { mapActions } from 'vuex';
 import { FTHTMLStyleElement } from '@/types/styleElement';
-import { useActions } from 'vuex-composition-helpers';
+import { useSettingsStore } from '@/stores/settings';
 
 export default defineComponent({
   name: 'BootswatchThemeSelect',
@@ -51,8 +49,7 @@ export default defineComponent({
   setup(props) {
     const activeTheme = ref('');
     const themeList = ref([]);
-
-    const { setCurrentTheme } = useActions(['setCurrentTheme']);
+    const settingsStore = useSettingsStore();
 
     const setTheme = (themeName) => {
       // If theme is already active, do nothing.
@@ -99,7 +96,7 @@ export default defineComponent({
         });
       }
       // Save the theme as localstorage
-      setCurrentTheme(themeName);
+      settingsStore.currentTheme = themeName;
       activeTheme.value = themeName;
     };
 

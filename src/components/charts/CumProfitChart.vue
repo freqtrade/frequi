@@ -1,11 +1,8 @@
 <template>
-  <v-chart v-if="trades" :option="chartOptions" autoresize :theme="getChartTheme" />
+  <v-chart v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-
 import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
 
@@ -22,7 +19,7 @@ import {
 
 import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
 import { defineComponent, ref, computed } from '@vue/composition-api';
-import { useGetters } from 'vuex-composition-helpers';
+import { useSettingsStore } from '@/stores/settings';
 
 use([
   BarChart,
@@ -51,7 +48,7 @@ export default defineComponent({
     profitColumn: { default: 'close_profit_abs', type: String },
   },
   setup(props) {
-    const { getChartTheme } = useGetters(['getChartTheme']);
+    const settingsStore = useSettingsStore();
     const botList = ref<string[]>([]);
     const cumulativeData = computed(() => {
       botList.value = [];
@@ -164,10 +161,10 @@ export default defineComponent({
             animation: true,
             step: 'end',
             lineStyle: {
-              color: getChartTheme.value === 'dark' ? '#c2c2c2' : 'black',
+              color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
             },
             itemStyle: {
-              color: getChartTheme.value === 'dark' ? '#c2c2c2' : 'black',
+              color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
             },
             // symbol: 'none',
           },
@@ -182,10 +179,9 @@ export default defineComponent({
       //     animation: true,
       //     step: 'end',
       //     lineStyle: {
-      //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+      //       color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
       //     },
-      //     itemStyle: {
-      //       color: this.getChartTheme === 'dark' ? '#c2c2c2' : 'black',
+      //     itemStylesettingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
       //     },
       //     // symbol: 'none',
       //   });
@@ -193,7 +189,7 @@ export default defineComponent({
       return chartOptionsLoc;
     });
 
-    return { getChartTheme, cumulativeData, chartOptions };
+    return { settingsStore, cumulativeData, chartOptions };
   },
 });
 </script>

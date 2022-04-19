@@ -1,5 +1,10 @@
 <template>
-  <v-chart v-if="trades.length > 0" :option="chartOptions" autoresize :theme="getChartTheme" />
+  <v-chart
+    v-if="trades.length > 0"
+    :option="chartOptions"
+    autoresize
+    :theme="settingsStore.chartTheme"
+  />
 </template>
 
 <script lang="ts">
@@ -20,8 +25,8 @@ import {
 } from 'echarts/components';
 
 import { ClosedTrade } from '@/types';
+import { useSettingsStore } from '@/stores/settings';
 import { defineComponent, computed } from '@vue/composition-api';
-import { useGetters } from 'vuex-composition-helpers';
 import { timestampms } from '@/shared/formatters';
 
 use([
@@ -53,7 +58,7 @@ export default defineComponent({
     showTitle: { default: true, type: Boolean },
   },
   setup(props) {
-    const { getChartTheme } = useGetters(['getChartTheme']);
+    const settingsStore = useSettingsStore();
     const chartData = computed(() => {
       const res: (number | string)[][] = [];
       const sortedTrades = props.trades
@@ -164,7 +169,7 @@ export default defineComponent({
               rotate: 90,
               offset: [7.5, 7.5],
               formatter: '{@[1]} %',
-              color: getChartTheme.value === 'dark' ? '#c2c2c2' : '#3c3c3c',
+              color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : '#3c3c3c',
             },
             encode: {
               x: 0,
@@ -179,7 +184,7 @@ export default defineComponent({
       };
     });
 
-    return { getChartTheme, chartData, chartOptions };
+    return { settingsStore, chartData, chartOptions };
   },
 });
 </script>
