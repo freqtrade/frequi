@@ -20,41 +20,38 @@
 </template>
 
 <script lang="ts">
-import { formatPercent, formatPrice, timestampms } from '@/shared/formatters';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 
 import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
 
-@Component({ components: { ProfitSymbol } })
-export default class ProfitPill extends Vue {
-  @Prop({ required: false, default: undefined, type: Number }) profitRatio?: number;
+import { defineComponent, computed } from '@vue/composition-api';
 
-  @Prop({ required: false, default: undefined, type: Number }) profitAbs?: number;
+export default defineComponent({
+  name: 'ProfitPill',
+  components: { ProfitSymbol },
+  props: {
+    profitRatio: { required: false, default: undefined, type: Number },
+    profitAbs: { required: false, default: undefined, type: Number },
+    stakeCurrency: { required: true, type: String },
+    profitDesc: { required: false, default: '', type: String },
+  },
+  setup(props) {
+    const isProfitable = computed(() => {
+      return (
+        (props.profitRatio !== undefined && props.profitRatio > 0) ||
+        (props.profitRatio === undefined && props.profitAbs !== undefined && props.profitAbs > 0)
+      );
+    });
 
-  @Prop({ required: true, type: String }) stakeCurrency!: string;
-
-  @Prop({ required: false, default: '', type: String }) profitDesc!: string;
-
-  formatPercent = formatPercent;
-
-  timestampms = timestampms;
-
-  formatPrice = formatPrice;
-
-  get isProfitable() {
-    return (
-      (this.profitRatio !== undefined && this.profitRatio > 0) ||
-      (this.profitRatio === undefined && this.profitAbs !== undefined && this.profitAbs > 0)
-    );
-  }
-
-  get profitString(): string {
-    if (this.profitRatio !== undefined && this.profitAbs !== undefined) {
-      return `(${formatPrice(this.profitAbs, 3)})`;
-    }
-    return '';
-  }
-}
+    const profitString = computed((): string => {
+      if (props.profitRatio !== undefined && props.profitAbs !== undefined) {
+        return `(${formatPrice(props.profitAbs, 3)})`;
+      }
+      return '';
+    });
+    return { profitString, isProfitable, formatPercent };
+  },
+});
 </script>
 
 <style scoped lang="scss">

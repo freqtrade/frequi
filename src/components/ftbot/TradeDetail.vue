@@ -99,29 +99,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
 import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/general/ValuePair.vue';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { Trade } from '@/types';
 
-@Component({
+import { defineComponent } from '@vue/composition-api';
+
+export default defineComponent({
+  name: 'TradeDetail',
   components: { ValuePair, TradeProfit, DateTimeTZ },
-})
-export default class TradeDetail extends Vue {
-  @Prop({ type: Object, required: true }) trade!: Trade;
-
-  @Prop({ type: String, required: true }) stakeCurrency!: string;
-
-  timestampms = timestampms;
-
-  formatPercent = formatPercent;
-
-  formatPrice = formatPrice;
-
-  formatPriceCurrency = formatPriceCurrency;
-}
+  props: {
+    trade: { required: true, type: Object as () => Trade },
+    stakeCurrency: { required: true, type: String },
+  },
+  setup() {
+    return { timestampms, formatPercent, formatPrice, formatPriceCurrency };
+  },
+});
 </script>
 <style scoped>
 .detail-header {
