@@ -1,3 +1,4 @@
+import { useBotStore } from '@/stores/ftbotwrapper';
 import axios from 'axios';
 import { UserService } from './userService';
 
@@ -55,8 +56,8 @@ export function useApi(userService: UserService, botId: string) {
       }
       if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
         console.log('Bot not running...');
-        //TODO: pinia alternative
-        // globalStore.dispatch(`ftbot/${botId}/setIsBotOnline`, false);
+        const botStore = useBotStore();
+        botStore.botStores[botId]?.setIsBotOnline(false);
       }
 
       return new Promise((resolve, reject) => {
