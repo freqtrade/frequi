@@ -2,7 +2,7 @@
   <div class="container mt-3">
     <b-card header="FreqUI Settings">
       <div class="text-left">
-        <p>UI Version: {{ getUiVersion }}</p>
+        <p>UI Version: {{ settingsStore.uiVersion }}</p>
         <b-form-group
           description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
         >
@@ -39,7 +39,6 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { useGetters } from 'vuex-composition-helpers';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { showAlert } from '@/stores/alerts';
@@ -49,8 +48,6 @@ export default defineComponent({
   setup() {
     const settingsStore = useSettingsStore();
     const layoutStore = useLayoutStore();
-
-    const { getUiVersion } = useGetters(['getUiVersion']);
 
     const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
     const openTradesOptions = [
@@ -66,7 +63,6 @@ export default defineComponent({
       showAlert('Layouts have been reset.');
     };
     return {
-      getUiVersion,
       resetDynamicLayout,
       settingsStore,
       layoutStore,

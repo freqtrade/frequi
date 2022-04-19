@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 
 import { setTimezone } from '@/shared/formatters';
 import { getCurrentTheme, getTheme } from '@/shared/themes';
+import axios from 'axios';
+import { UiVersion } from '@/types';
 
 const STORE_UI_SETTINGS = 'ftUISettings';
 
@@ -26,6 +28,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       backgroundSync: true,
       // TODO: needs proper migration ...
       currentTheme: getCurrentTheme(),
+      uiVersion: 'dev',
     };
   },
   getters: {
@@ -50,6 +53,18 @@ export const useSettingsStore = defineStore('uiSettings', {
     },
     setBackgroundSync(value: boolean) {
       this.backgroundSync = value;
+    },
+    async loadUIVersion() {
+      if (import.meta.env.PROD) {
+        try {
+          const result = await axios.get<UiVersion>('/ui_version');
+          const { version } = result.data;
+          this.uiVersion = version;
+          // commit('setUIVersion', version);
+        } catch (error) {
+          //
+        }
+      }
     },
   },
   persist: {

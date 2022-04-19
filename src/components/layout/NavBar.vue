@@ -69,7 +69,7 @@
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
-              <b-dropdown-item>V: {{ getUiVersion }}</b-dropdown-item>
+              <b-dropdown-item>V: {{ settingsStore.uiVersion }}</b-dropdown-item>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
               <b-checkbox v-model="layoutStore.layoutLocked" class="pl-5">Lock layout</b-checkbox>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
@@ -121,7 +121,6 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
 import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from '@vue/composition-api';
-import { useActions, useGetters } from 'vuex-composition-helpers';
 import { useRoute } from 'vue2-helpers/vue-router';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
@@ -131,9 +130,6 @@ export default defineComponent({
   name: 'NavBar',
   components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
   setup() {
-    const { getUiVersion } = useGetters(['getUiVersion']);
-    const { loadUIVersion } = useActions(['loadUIVersion']);
-
     const botStore = useBotStore();
 
     const settingsStore = useSettingsStore();
@@ -195,7 +191,7 @@ export default defineComponent({
 
     onMounted(() => {
       botStore.pingAll();
-      loadUIVersion();
+      settingsStore.loadUIVersion();
       pingInterval.value = window.setInterval(botStore.pingAll, 60000);
       if (botStore.hasBots) {
         // Query botstate - this will enable / disable certain modes
@@ -228,8 +224,6 @@ export default defineComponent({
     );
 
     return {
-      loadUIVersion,
-      getUiVersion,
       favicon,
 
       clickLogout,
@@ -237,6 +231,7 @@ export default defineComponent({
       setTitle,
       layoutStore,
       botStore,
+      settingsStore,
     };
   },
 });
