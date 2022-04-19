@@ -73,7 +73,7 @@ export function createBotSubStore(botId: string, botName: string) {
         balance: {} as BalanceInterface,
         dailyStats: {} as DailyReturnValue,
         pairlistMethods: [] as string[],
-        detailTradeId: undefined as number | undefined,
+        detailTradeId: null as number | null,
         selectedPair: '',
         // TODO: type me
         candleData: {},
@@ -227,8 +227,8 @@ export function createBotSubStore(botId: string, botName: string) {
         await this.getLocks();
       },
 
-      setDetailTrade(trade: Trade | undefined) {
-        this.detailTradeId = trade?.trade_id || undefined;
+      setDetailTrade(trade: Trade | null) {
+        this.detailTradeId = trade?.trade_id || null;
         this.selectedPair = trade ? trade.pair : this.selectedPair;
       },
       setSelectedPair(pair: string) {

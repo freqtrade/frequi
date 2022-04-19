@@ -1,5 +1,12 @@
 import { UserService } from '@/shared/userService';
-import { BotDescriptor, BotDescriptors, DailyPayload, RenameBotPayload } from '@/types';
+import {
+  BotDescriptor,
+  BotDescriptors,
+  DailyPayload,
+  MultiDeletePayload,
+  MultiForcesellPayload,
+  RenameBotPayload,
+} from '@/types';
 import { AxiosInstance } from 'axios';
 import { defineStore } from 'pinia';
 import { createBotSubStore } from './ftbot';
@@ -182,14 +189,14 @@ export const useBotStore = defineStore('wrapper', {
         e.getDaily(payload);
       });
     },
-    // async forceSellMulti({ dispatch }, forcesellPayload: MultiForcesellPayload) {
-    //   return dispatch(`${forcesellPayload.botId}/${[BotStoreActions.forcesell]}`, forcesellPayload);
-    // },
-    // async deleteTradeMulti({ dispatch }, deletePayload: MultiDeletePayload) {
-    //   return dispatch(
-    //     `${deletePayload.botId}/${[BotStoreActions.deleteTrade]}`,
-    //     deletePayload.tradeid,
-    //   );
-    // },
+    async forceSellMulti(forcesellPayload: MultiForcesellPayload) {
+      //   return dispatch(`${forcesellPayload.botId}/${[BotStoreActions.forcesell]}`, forcesellPayload);
+    },
+    async deleteTradeMulti(deletePayload: MultiDeletePayload) {
+      //   return dispatch(
+      //     `${deletePayload.botId}/${[BotStoreActions.deleteTrade]}`,
+      //     deletePayload.tradeid,
+      //   );
+    },
   },
 });

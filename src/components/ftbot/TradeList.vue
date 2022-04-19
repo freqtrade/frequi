@@ -26,7 +26,7 @@
         <b-popover :target="`btn-actions_${row.index}`" triggers="focus" placement="left">
           <trade-actions
             :trade="row.item"
-            :bot-api-version="botApiVersion"
+            :bot-api-version="botStore.activeBot.botApiVersion"
             @deleteTrade="removeTradeHandler"
             @forceSell="forcesellHandler"
           />
@@ -44,7 +44,7 @@
       <template #cell(trade_id)="row">
         {{ row.item.trade_id }}
         {{
-          botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
+          botStore.activeBot.botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
             ? '| ' + (row.item.is_short ? 'Short' : 'Long')
             : ''
         }}
@@ -85,13 +85,11 @@ import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
 import TradeProfit from './TradeProfit.vue';
 import TradeActions from './TradeActions.vue';
 
 import { defineComponent, ref, computed, watch } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'TradeList',
@@ -106,19 +104,7 @@ export default defineComponent({
     emptyText: { default: 'No Trades to show.', type: String },
   },
   setup(props, { root }) {
-    const { detailTradeId, stakeCurrencyDecimals, botApiVersion } = useNamespacedGetters(
-      StoreModules.ftbot,
-      [
-        BotStoreGetters.detailTradeId,
-        BotStoreGetters.stakeCurrencyDecimals,
-        BotStoreGetters.botApiVersion,
-      ],
-    );
-    const { setDetailTrade, forceSellMulti, deleteTradeMulti } = useNamespacedActions(
-      StoreModules.ftbot,
-      ['setDetailTrade', 'forceSellMulti', 'deleteTradeMulti'],
-    );
-
+    const botStore = useBotStore();
     const currentPage = ref(1);
     const selectedItemIndex = ref();
     const filterText = ref('');
@@ -131,7 +117,7 @@ export default defineComponent({
       { key: 'exit_reason', label: 'Close Reason' },
     ];
     const formatPriceWithDecimals = (price) => {
-      return formatPrice(price, stakeCurrencyDecimals.value);
+      return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
     };
     const rows = computed(() => {
       return props.trades.length;
@@ -180,7 +166,8 @@ export default defineComponent({
             if (ordertype) {
               payload.ordertype = ordertype;
             }
-            forceSellMulti(payload)
+            botStore
+              .forceSellMulti(payload)
               .then((xxx) => console.log(xxx))
               .catch((error) => console.log(error.response));
           }
@@ -207,7 +194,7 @@ export default defineComponent({
               tradeid: String(item.trade_id),
               botId: item.botId,
             };
-            deleteTradeMulti(payload).catch((error) => console.log(error.response));
+            botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
           }
         });
     };
@@ -216,19 +203,21 @@ export default defineComponent({
       // Only allow single selection mode!
       if (
         item &&
-        item.trade_id !== detailTradeId.value &&
+        item.trade_id !== botStore.activeBot.detailTradeId &&
         !tradesTable.value?.isRowSelected(index)
       ) {
-        setDetailTrade(item);
+        botStore.activeBot.setDetailTrade(item);
       } else {
         console.log('unsetting item');
-        setDetailTrade(null);
+        botStore.activeBot.setDetailTrade(null);
       }
     };
 
     const onRowSelected = () => {
-      if (detailTradeId.value) {
-        const itemIndex = props.trades.findIndex((v) => v.trade_id === detailTradeId.value);
+      if (botStore.activeBot.detailTradeId) {
+        const itemIndex = props.trades.findIndex(
+          (v) => v.trade_id === botStore.activeBot.detailTradeId,
+        );
         if (itemIndex >= 0) {
           tradesTable.value?.selectRow(itemIndex);
         } else {
@@ -238,21 +227,19 @@ export default defineComponent({
       }
     };
 
-    watch(detailTradeId, (val: number) => {
-      const index = props.trades.findIndex((v) => v.trade_id === val);
-      // Unselect when another tradeTable is selected!
-      if (index < 0) {
-        tradesTable.value?.clearSelected();
-      }
-    });
+    watch(
+      () => botStore.activeBot.detailTradeId,
+      (val: number) => {
+        const index = props.trades.findIndex((v) => v.trade_id === val);
+        // Unselect when another tradeTable is selected!
+        if (index < 0) {
+          tradesTable.value?.clearSelected();
+        }
+      },
+    );
 
     return {
-      detailTradeId,
-      stakeCurrencyDecimals,
-      botApiVersion,
-      setDetailTrade,
-      forceSellMulti,
-      deleteTradeMulti,
+      botStore,
       currentPage,
       selectedItemIndex,
       filterText,
