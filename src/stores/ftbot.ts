@@ -514,7 +514,7 @@ export function createBotSubStore(botId: string, botName: string) {
           .catch(console.error);
       },
       // // Post methods
-      // // TODO: Migrate calls to API to a seperate module unrelated to vuex?
+      // // TODO: Migrate calls to API to a seperate module unrelated to pinia?
       async startBot() {
         try {
           const res = await api.post<{}, AxiosResponse<StatusResponse>>('/start', {});
