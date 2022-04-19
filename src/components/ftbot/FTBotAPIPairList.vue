@@ -4,16 +4,16 @@
     <div>
       <h3>Whitelist Methods</h3>
 
-      <div v-if="pairlistMethods.length" class="list">
-        <b-list-group v-for="(method, key) in pairlistMethods" :key="key">
+      <div v-if="botStore.activeBot.pairlistMethods.length" class="list">
+        <b-list-group v-for="(method, key) in botStore.activeBot.pairlistMethods" :key="key">
           <b-list-group-item href="#" class="pair white">{{ method }}</b-list-group-item>
         </b-list-group>
       </div>
     </div>
     <!-- Show Whitelist -->
     <h3>Whitelist</h3>
-    <div v-if="whitelist.length" class="list">
-      <b-list-group v-for="(pair, key) in whitelist" :key="key">
+    <div v-if="botStore.activeBot.whitelist.length" class="list">
+      <b-list-group v-for="(pair, key) in botStore.activeBot.whitelist" :key="key">
         <b-list-group-item class="pair white">{{ pair }}</b-list-group-item>
       </b-list-group>
     </div>
@@ -31,12 +31,12 @@
         <b-button
           id="blacklist-add-btn"
           class="mr-1"
-          :class="botApiVersion >= 1.12 ? 'col-6' : ''"
+          :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
           size="sm"
           >+
         </b-button>
         <b-button
-          v-if="botApiVersion >= 1.12"
+          v-if="botStore.activeBot.botApiVersion >= 1.12"
           size="sm"
           class="col-6"
           title="Select pairs to delete pairs from your blacklist."
@@ -75,8 +75,8 @@
         </form>
       </b-popover>
     </div>
-    <div v-if="blacklist.length" class="list">
-      <b-list-group v-for="(pair, key) in blacklist" :key="key">
+    <div v-if="botStore.activeBot.blacklist.length" class="list">
+      <b-list-group v-for="(pair, key) in botStore.activeBot.blacklist" :key="key">
         <b-list-group-item
           class="pair black"
           :active="blacklistSelect.indexOf(key) > -1"
@@ -92,11 +92,9 @@
 </template>
 
 <script lang="ts">
-import { BotStoreGetters } from '@/store/modules/ftbot';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, ref, onMounted } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'FTBotAPIPairList',
@@ -105,27 +103,14 @@ export default defineComponent({
     const newblacklistpair = ref('');
     const blackListShow = ref(false);
     const blacklistSelect = ref<number[]>([]);
-
-    const { getWhitelist, getBlacklist, addBlacklist, deleteBlacklist } = useNamespacedActions(
-      StoreModules.ftbot,
-      ['getWhitelist', 'getBlacklist', 'addBlacklist', 'deleteBlacklist'],
-    );
-    const { whitelist, blacklist, pairlistMethods, botApiVersion } = useNamespacedGetters(
-      StoreModules.ftbot,
-      [
-        BotStoreGetters.whitelist,
-        BotStoreGetters.blacklist,
-        BotStoreGetters.pairlistMethods,
-        BotStoreGetters.botApiVersion,
-      ],
-    );
+    const botStore = useBotStore();
 
     const initBlacklist = () => {
-      if (whitelist.value.length === 0) {
-        getWhitelist();
+      if (botStore.activeBot.whitelist.length === 0) {
+        botStore.activeBot.getWhitelist();
       }
-      if (blacklist.value.length === 0) {
-        getBlacklist();
+      if (botStore.activeBot.blacklist.length === 0) {
+        botStore.activeBot.getBlacklist();
       }
     };
 
@@ -133,7 +118,7 @@ export default defineComponent({
       if (newblacklistpair.value) {
         blackListShow.value = false;
 
-        addBlacklist({ blacklist: [newblacklistpair.value] });
+        botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
         newblacklistpair.value = '';
       }
     };
@@ -154,11 +139,11 @@ export default defineComponent({
         return;
       }
       // const pairlist = blacklistSelect.value;
-      const pairlist = blacklist.value.filter(
+      const pairlist = botStore.activeBot.blacklist.filter(
         (value, index) => blacklistSelect.value.indexOf(index) > -1,
       );
       console.log('Deleting pairs: ', pairlist);
-      deleteBlacklist(pairlist);
+      botStore.activeBot.deleteBlacklist(pairlist);
       blacklistSelect.value = [];
     };
     onMounted(() => {
@@ -169,14 +154,7 @@ export default defineComponent({
       deletePairs,
       initBlacklist,
       blacklistSelectClick,
-      whitelist,
-      blacklist,
-      pairlistMethods,
-      botApiVersion,
-      getWhitelist,
-      getBlacklist,
-      addBlacklist,
-      deleteBlacklist,
+      botStore,
       newblacklistpair,
       blackListShow,
       blacklistSelect,

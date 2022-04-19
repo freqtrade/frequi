@@ -1,22 +1,28 @@
 <template>
   <div>
     <div class="w-100 d-flex">
-      <b-form-select id="strategy-select" v-model="locStrategy" :options="strategyList">
+      <b-form-select
+        id="strategy-select"
+        v-model="locStrategy"
+        :options="botStore.activeBot.strategyList"
+      >
       </b-form-select>
       <div class="ml-2">
-        <b-button @click="getStrategyList">&#x21bb;</b-button>
+        <b-button @click="botStore.activeBot.getStrategyList">&#x21bb;</b-button>
       </div>
     </div>
 
-    <textarea v-if="showDetails && strategy" v-model="strategyCode" class="w-100 h-100"></textarea>
+    <textarea
+      v-if="showDetails && botStore.activeBot.strategy"
+      v-model="strategyCode"
+      class="w-100 h-100"
+    ></textarea>
   </div>
 </template>
 
 <script lang="ts">
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
+import { useBotStore } from '@/stores/ftbotwrapper';
 import { defineComponent, computed, onMounted } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
 
 export default defineComponent({
   name: 'StrategySelect',
@@ -26,37 +32,26 @@ export default defineComponent({
   },
   emits: ['input'],
   setup(props, { emit }) {
-    const { getStrategyList, getStrategy } = useNamespacedActions(StoreModules.ftbot, [
-      'getStrategyList',
-      'getStrategy',
-    ]);
+    const botStore = useBotStore();
 
-    const { strategyList, strategy } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.strategyList,
-      BotStoreGetters.strategy,
-    ]);
-
-    const strategyCode = computed((): string => strategy.value?.code);
+    const strategyCode = computed((): string => botStore.activeBot.strategy?.code);
     const locStrategy = computed({
       get() {
         return props.value;
       },
-      set(strategy) {
-        getStrategy(strategy);
+      set(strategy: string) {
+        botStore.activeBot.getStrategy(strategy);
         emit('input', strategy);
       },
     });
 
     onMounted(() => {
-      if (strategyList.value.length === 0) {
-        getStrategyList();
+      if (botStore.activeBot.strategyList.length === 0) {
+        botStore.activeBot.getStrategyList();
       }
     });
     return {
-      getStrategyList,
-      getStrategy,
-      strategyList,
-      strategy,
+      botStore,
       strategyCode,
       locStrategy,
     };

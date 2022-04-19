@@ -2,21 +2,23 @@
   <div class="container-fluid" style="max-height: calc(100vh - 60px)">
     <div class="container-fluid">
       <div class="row mb-2"></div>
-      <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
+      <p v-if="!botStore.activeBot.canRunBacktest">
+        Bot must be in webserver mode to enable Backtesting.
+      </p>
       <div class="row w-100">
         <h2 class="col-4 col-lg-3">Backtesting</h2>
         <div
           class="col-12 col-lg-order-last col-lg-6 mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4"
-          :disabled="canRunBacktest"
+          :disabled="botStore.activeBot.canRunBacktest"
         >
           <b-form-radio
-            v-if="botApiVersion >= 2.15"
+            v-if="botStore.activeBot.botApiVersion >= 2.15"
             v-model="btFormMode"
             name="bt-form-radios"
             button
             class="mx-1 flex-samesize-items"
             value="historicResults"
-            :disabled="!canRunBacktest"
+            :disabled="!botStore.activeBot.canRunBacktest"
             >Load Results</b-form-radio
           >
           <b-form-radio
@@ -25,7 +27,7 @@
             button
             class="mx-1 flex-samesize-items"
             value="run"
-            :disabled="!canRunBacktest"
+            :disabled="!botStore.activeBot.canRunBacktest"
             >Run backtest</b-form-radio
           >
           <b-form-radio
@@ -57,8 +59,11 @@
             >Visualize result</b-form-radio
           >
         </div>
-        <small v-show="backtestRunning" class="text-right bt-running-label col-8 col-lg-3"
-          >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress, 2) }}</small
+        <small
+          v-show="botStore.activeBot.backtestRunning"
+          class="text-right bt-running-label col-8 col-lg-3"
+          >Backtest running: {{ botStore.activeBot.backtestStep }}
+          {{ formatPercent(botStore.activeBot.backtestProgress, 2) }}</small
         >
       </div>
     </div>
@@ -79,8 +84,8 @@
         <transition name="fade" mode="in-out">
           <BacktestResultSelect
             v-if="btFormMode !== 'visualize' && showLeftBar"
-            :backtest-history="backtestHistory"
-            :selected-backtest-result-key="selectedBacktestResultKey"
+            :backtest-history="botStore.activeBot.backtestHistory"
+            :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
             @selectionChange="setBacktestResult"
           />
         </transition>
@@ -97,7 +102,7 @@
           <span>Strategy</span>
           <StrategySelect v-model="strategy"></StrategySelect>
         </div>
-        <b-card bg-variant="light" :disabled="backtestRunning">
+        <b-card bg-variant="light" :disabled="botStore.activeBot.backtestRunning">
           <!-- Backtesting parameters -->
           <b-form-group
             label-cols-lg="2"
@@ -211,7 +216,7 @@
           <b-button
             id="start-backtest"
             variant="primary"
-            :disabled="backtestRunning || !canRunBacktest"
+            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
             class="mx-1"
             @click="clickBacktest"
           >
@@ -219,31 +224,31 @@
           </b-button>
           <b-button
             variant="primary"
-            :disabled="backtestRunning || !canRunBacktest"
+            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
             class="mx-1"
-            @click="pollBacktest"
+            @click="botStore.activeBot.pollBacktest"
           >
             Load backtest result
           </b-button>
           <b-button
             variant="primary"
             class="mx-1"
-            :disabled="!backtestRunning"
-            @click="stopBacktest"
+            :disabled="!botStore.activeBot.backtestRunning"
+            @click="botStore.activeBot.stopBacktest"
             >Stop Backtest</b-button
           >
           <b-button
             variant="primary"
             class="mx-1"
-            :disabled="backtestRunning || !canRunBacktest"
-            @click="removeBacktest"
+            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
+            @click="botStore.activeBot.removeBacktest"
             >Reset Backtest</b-button
           >
         </div>
       </div>
       <BacktestResultView
         v-if="hasBacktestResult && btFormMode == 'results'"
-        :backtest-result="selectedBacktestResult"
+        :backtest-result="botStore.activeBot.selectedBacktestResult"
         class="flex-fill"
       />
 
@@ -251,9 +256,12 @@
         v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
         class="text-center flex-fill mt-2 d-flex flex-column"
       >
-        <TradesLogChart :trades="selectedBacktestResult.trades" class="trades-log" />
+        <TradesLogChart
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
+          class="trades-log"
+        />
         <CumProfitChart
-          :trades="selectedBacktestResult.trades"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           profit-column="profit_abs"
           class="cum-profit"
           :show-title="true"
@@ -272,19 +280,19 @@
         <PairSummary
           class="col-md-2 overflow-auto"
           style="max-height: calc(100vh - 200px)"
-          :pairlist="selectedBacktestResult.pairlist"
-          :trades="selectedBacktestResult.trades"
+          :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           sort-method="profit"
           :backtest-mode="true"
         />
         <CandleChartContainer
-          :available-pairs="selectedBacktestResult.pairlist"
+          :available-pairs="botStore.activeBot.selectedBacktestResult.pairlist"
           :historic-view="!!true"
           :timeframe="timeframe"
           :plot-config="selectedPlotConfig"
           :timerange="timerange"
           :strategy="strategy"
-          :trades="selectedBacktestResult.trades"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           class="col-md-10 candle-chart-container px-0 w-100 h-100"
         >
         </CandleChartContainer>
@@ -292,9 +300,9 @@
       <b-card header="Single trades" class="row mt-2 w-100">
         <TradeList
           class="row trade-history mt-2 w-100"
-          :trades="selectedBacktestResult.trades"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           :show-filter="true"
-          :stake-currency="selectedBacktestResult.stake_currency"
+          :stake-currency="botStore.activeBot.selectedBacktestResult.stake_currency"
         />
       </b-card>
     </div>
@@ -318,10 +326,8 @@ import { BacktestPayload, PlotConfig } from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
 import { defineComponent, computed, ref, onMounted, watch } from '@vue/composition-api';
-import { useNamespacedActions, useNamespacedGetters } from 'vuex-composition-helpers';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'Backtesting',
@@ -339,53 +345,16 @@ export default defineComponent({
     TradeList,
   },
   setup() {
-    const {
-      backtestRunning,
-      backtestStep,
-      botState,
-      botApiVersion,
-      backtestProgress,
-      backtestHistory,
-      selectedBacktestResultKey,
-      history,
-      selectedBacktestResult,
-      canRunBacktest,
-    } = useNamespacedGetters(StoreModules.ftbot, [
-      BotStoreGetters.backtestRunning,
-      BotStoreGetters.backtestStep,
-      BotStoreGetters.botState,
-      BotStoreGetters.botApiVersion,
-      BotStoreGetters.backtestProgress,
-      BotStoreGetters.backtestHistory,
-      BotStoreGetters.selectedBacktestResultKey,
-      BotStoreGetters.history,
-      BotStoreGetters.selectedBacktestResult,
-      BotStoreGetters.canRunBacktest,
-    ]);
-    const {
-      getPairHistory,
-      getState,
-      startBacktest,
-      pollBacktest,
-      removeBacktest,
-      stopBacktest,
-      setBacktestResultKey,
-    } = useNamespacedActions(StoreModules.ftbot, [
-      'getPairHistory',
-      'getState',
-      'startBacktest',
-      'pollBacktest',
-      'removeBacktest',
-      'stopBacktest',
-      'setBacktestResultKey',
-    ]);
+    const botStore = useBotStore();
 
     const hasBacktestResult = computed(() =>
-      backtestHistory.value ? Object.keys(backtestHistory.value).length !== 0 : false,
+      botStore.activeBot.backtestHistory
+        ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
+        : false,
     );
     const timeframe = computed((): string => {
       try {
-        return selectedBacktestResult.value.timeframe;
+        return botStore.activeBot.selectedBacktestResult.timeframe;
       } catch (err) {
         return '';
       }
@@ -406,13 +375,14 @@ export default defineComponent({
     const selectedPlotConfig = ref<PlotConfig>(getCustomPlotConfig(getPlotConfigName()));
 
     const setBacktestResult = (key: string) => {
-      setBacktestResultKey(key);
+      botStore.activeBot.setBacktestResultKey(key);
 
       // Set parameters for this result
-      strategy.value = selectedBacktestResult.value.strategy_name;
-      selectedTimeframe.value = selectedBacktestResult.value.timeframe;
-      selectedDetailTimeframe.value = selectedBacktestResult.value.timeframe_detail || '';
-      timerange.value = selectedBacktestResult.value.timerange;
+      strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
+      selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
+      selectedDetailTimeframe.value =
+        botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+      timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
     };
 
     const clickBacktest = () => {
@@ -452,35 +422,23 @@ export default defineComponent({
         btPayload.timeframe_detail = selectedDetailTimeframe.value;
       }
 
-      startBacktest(btPayload);
+      botStore.activeBot.startBacktest(btPayload);
     };
-    onMounted(() => getState());
-    watch(backtestRunning, () => {
-      if (backtestRunning.value === true) {
-        pollInterval.value = window.setInterval(pollBacktest, 1000);
-      } else if (pollInterval.value) {
-        clearInterval(pollInterval.value);
-        pollInterval.value = null;
-      }
-    });
+    onMounted(() => botStore.activeBot.getState());
+    watch(
+      () => botStore.activeBot.backtestRunning,
+      () => {
+        if (botStore.activeBot.backtestRunning === true) {
+          pollInterval.value = window.setInterval(botStore.activeBot.pollBacktest, 1000);
+        } else if (pollInterval.value) {
+          clearInterval(pollInterval.value);
+          pollInterval.value = null;
+        }
+      },
+    );
     return {
-      backtestRunning,
-      backtestStep,
-      botState,
-      botApiVersion,
-      backtestProgress,
-      backtestHistory,
-      selectedBacktestResultKey,
-      history,
-      selectedBacktestResult,
-      canRunBacktest,
-      getPairHistory,
-      getState,
-      startBacktest,
-      pollBacktest,
-      removeBacktest,
-      stopBacktest,
-      setBacktestResultKey,
+      botStore,
+
       formatPercent,
       hasBacktestResult,
       timeframe,
