@@ -45,7 +45,7 @@
     "@types/echarts": "^4.9.14",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^5.19.0",
+    "@typescript-eslint/parser": "^5.20.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.1.0",
     "@vue/test-utils": "^1.3.0",
