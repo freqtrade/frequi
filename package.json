@@ -42,7 +42,7 @@
   "devDependencies": {
     "@cypress/vue": "^2.2.3",
     "@cypress/vite-dev-server": "^2.2.2",
-    "@types/echarts": "^4.9.13",
+    "@types/echarts": "^4.9.14",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^5.19.0",

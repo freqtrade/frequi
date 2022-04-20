@@ -1184,10 +1184,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/echarts@^4.9.13":
-  version "4.9.13"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.13.tgz#b4a56f8ff471af65dd54b196af6972629d6745d4"
-  integrity sha512-xqZ21MXOBU5i+BywnxAi0He+M6lsRtANBvbqJHmqM8T64Lx7azHJWbv/vSKVJfEbv3XyYpxeDhpV7gFi5mfgeA==
+"@types/echarts@^4.9.14":
+  version "4.9.14"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.14.tgz#41fd4aa286078fa3346bbd92144a704aec5e2b78"
+  integrity sha512-hg2EFjTmiatztvxIFNIQ7tTIdSsbRZJXfBwJlaucvnQKqv4t2AKmpbPXU9rLtrgD/KCpyi1SX7T+WH6uVybmqA==
   dependencies:
     "@types/zrender" "*"
 
