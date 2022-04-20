@@ -19,21 +19,29 @@
 <script lang="ts">
 import { formatPercent } from '@/shared/formatters';
 import { StrategyBacktestResult } from '@/types';
-import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 
-@Component({})
-export default class BacktestResultSelect extends Vue {
-  @Prop({ required: true }) backtestHistory!: StrategyBacktestResult[];
+import { defineComponent } from '@vue/composition-api';
 
-  @Prop({ required: false, default: '' }) selectedBacktestResultKey!: string;
-
-  @Emit('selectionChange')
-  setBacktestResult(key) {
-    return key;
-  }
-
-  formatPercent = formatPercent;
-}
+export default defineComponent({
+  name: 'BacktestResultSelect',
+  props: {
+    backtestHistory: {
+      required: true,
+      type: Object as () => Record<string, StrategyBacktestResult>,
+    },
+    selectedBacktestResultKey: { required: false, default: '', type: String },
+  },
+  emits: ['selectionChange'],
+  setup(_, { emit }) {
+    const setBacktestResult = (key) => {
+      emit('selectionChange', key);
+    };
+    return {
+      formatPercent,
+      setBacktestResult,
+    };
+  },
+});
 </script>
 
 <style scoped></style>

@@ -138,6 +138,7 @@ export default defineComponent({
   },
   emits: ['input'],
   setup(props, { emit }) {
+    // TODO: Fully test behaviour of this!!
     const botStore = useBotStore();
 
     const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);

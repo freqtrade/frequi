@@ -8,59 +8,61 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
+import { defineComponent, computed, ref } from '@vue/composition-api';
 
-@Component({})
-export default class Template extends Vue {
-  selectedTimeframe = '';
+export default defineComponent({
+  name: 'TimefameSelect',
+  props: {
+    value: { default: '', type: String },
+    belowTimeframe: { required: false, default: '', type: String },
+  },
+  emits: ['input'],
+  setup(props, { emit }) {
+    const selectedTimeframe = ref('');
+    // The below list must always remain sorted correctly!
+    const availableTimeframesBase = [
+      // Placeholder value
+      { value: '', text: 'Use strategy default' },
+      '1m',
+      '3m',
+      '5m',
+      '15m',
+      '30m',
+      '1h',
+      '2h',
+      '4h',
+      '6h',
+      '8h',
+      '12h',
+      '1d',
+      '3d',
+      '1w',
+      '2w',
+      '1M',
+      '1y',
+    ];
 
-  @Prop({ default: '' }) value!: string;
+    const availableTimeframes = computed(() => {
+      if (!props.belowTimeframe) {
+        return availableTimeframesBase;
+      }
+      const idx = availableTimeframesBase.findIndex((v) => v === props.belowTimeframe);
 
-  // Filter available timeframes to be lower than this timeframe.
-  @Prop({ default: '', required: false }) belowTimeframe!: string;
+      return [...availableTimeframesBase].splice(0, idx);
+    });
 
-  @Emit('input')
-  emitSelectedTimeframe() {
-    return this.selectedTimeframe;
-  }
+    const emitSelectedTimeframe = () => {
+      emit('input', selectedTimeframe.value);
+    };
 
-  @Watch('value')
-  watchValue() {
-    this.selectedTimeframe = this.value;
-  }
-
-  get availableTimeframes() {
-    if (!this.belowTimeframe) {
-      return this.availableTimeframesBase;
-    }
-    const idx = this.availableTimeframesBase.findIndex((v) => v === this.belowTimeframe);
-
-    return [...this.availableTimeframesBase].splice(0, idx);
-  }
-
-  // The below list must always remain sorted correctly!
-  availableTimeframesBase = [
-    // Placeholder value
-    { value: '', text: 'Use strategy default' },
-    '1m',
-    '3m',
-    '5m',
-    '15m',
-    '30m',
-    '1h',
-    '2h',
-    '4h',
-    '6h',
-    '8h',
-    '12h',
-    '1d',
-    '3d',
-    '1w',
-    '2w',
-    '1M',
-    '1y',
-  ];
-}
+    return {
+      availableTimeframesBase,
+      availableTimeframes,
+      emitSelectedTimeframe,
+      selectedTimeframe,
+    };
+  },
+});
 </script>
 
 <style scoped></style>
