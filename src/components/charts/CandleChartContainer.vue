@@ -103,7 +103,7 @@ export default defineComponent({
   name: 'CandleChartContainer',
   components: { CandleChart, PlotConfigurator, vSelect },
   props: {
-    trades: { required: false, default: [], type: Array as () => Trade[] },
+    trades: { required: false, default: () => [], type: Array as () => Trade[] },
     availablePairs: { required: true, type: Array as () => string[] },
     timeframe: { required: true, type: String },
     historicView: { required: false, default: false, type: Boolean },

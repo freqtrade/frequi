@@ -18,7 +18,7 @@ import {
 } from 'echarts/components';
 
 import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
-import { defineComponent, ref, computed } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@vue/composition-api';
 import { useSettingsStore } from '@/stores/settings';
 
 use([
@@ -50,50 +50,55 @@ export default defineComponent({
   setup(props) {
     const settingsStore = useSettingsStore();
     const botList = ref<string[]>([]);
-    const cumulativeData = computed(() => {
-      botList.value = [];
-      const res: CumProfitData[] = [];
-      const resD: CumProfitDataPerDate = {};
-      const closedTrades = props.trades
-        .slice()
-        .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
-      let profit = 0.0;
+    const cumulativeData = ref<{ date: number; profit: any }[]>([]);
 
-      for (let i = 0, len = closedTrades.length; i < len; i += 1) {
-        const trade = closedTrades[i];
+    watch(
+      () => props.trades,
+      () => {
+        botList.value = [];
+        const res: CumProfitData[] = [];
+        const resD: CumProfitDataPerDate = {};
+        const closedTrades = props.trades
+          .slice()
+          .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
+        let profit = 0.0;
 
-        if (trade.close_timestamp && trade[props.profitColumn]) {
-          profit += trade[props.profitColumn];
-          if (!resD[trade.close_timestamp]) {
-            // New timestamp
-            resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
-          } else {
-            // Add to existing profit
-            resD[trade.close_timestamp].profit += trade[props.profitColumn];
-            if (resD[trade.close_timestamp][trade.botId]) {
-              resD[trade.close_timestamp][trade.botId] += trade[props.profitColumn];
+        for (let i = 0, len = closedTrades.length; i < len; i += 1) {
+          const trade = closedTrades[i];
+
+          if (trade.close_timestamp && trade[props.profitColumn]) {
+            profit += trade[props.profitColumn];
+            if (!resD[trade.close_timestamp]) {
+              // New timestamp
+              resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
             } else {
-              resD[trade.close_timestamp][trade.botId] = profit;
+              // Add to existing profit
+              resD[trade.close_timestamp].profit += trade[props.profitColumn];
+              if (resD[trade.close_timestamp][trade.botId]) {
+                resD[trade.close_timestamp][trade.botId] += trade[props.profitColumn];
+              } else {
+                resD[trade.close_timestamp][trade.botId] = profit;
+              }
+            }
+            // console.log(trade.close_date, profit);
+            res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
+            if (!botList.value.includes(trade.botId)) {
+              botList.value.push(trade.botId);
             }
           }
-          // console.log(trade.close_date, profit);
-          res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
-          if (!botList.value.includes(trade.botId)) {
-            botList.value.push(trade.botId);
-          }
         }
-      }
-      // console.log(resD);
+        // console.log(resD);
 
-      return Object.entries(resD).map(([k, v]) => {
-        const obj = { date: parseInt(k, 10), profit: v.profit };
-        // TODO: The below could allow "lines" per bot"
-        // this.botList.forEach((botId) => {
-        // obj[botId] = v[botId];
-        // });
-        return obj;
-      });
-    });
+        cumulativeData.value = Object.entries(resD).map(([k, v]) => {
+          const obj = { date: parseInt(k, 10), profit: v.profit };
+          // TODO: The below could allow "lines" per bot"
+          // this.botList.forEach((botId) => {
+          // obj[botId] = v[botId];
+          // });
+          return obj;
+        });
+      },
+    );
 
     const chartOptions = computed((): EChartsOption => {
       const chartOptionsLoc: EChartsOption = {

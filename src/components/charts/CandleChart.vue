@@ -5,7 +5,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import { roundTimeframe } from '@/shared/timemath';
@@ -71,472 +70,518 @@ const shortexitSignalColor = '#faba25';
 const tradeBuyColor = 'cyan';
 const tradeSellColor = 'pink';
 
-@Component({
+import { defineComponent, ref, computed, onMounted, watch } from '@vue/composition-api';
+
+export default defineComponent({
+  name: 'CandleChart',
   components: { 'v-chart': ECharts },
-})
-export default class CandleChart extends Vue {
-  $refs!: {
-    candleChart: typeof ECharts;
-  };
+  props: {
+    trades: { required: false, default: () => [], type: Array as () => Trade[] },
+    dataset: { required: true, type: Object as () => PairHistory },
+    heikinAshi: { required: false, default: false, type: Boolean },
+    useUTC: { required: false, default: true, type: Boolean },
+    plotConfig: { required: true, type: Object as () => PlotConfig },
+    theme: { default: 'dark', type: String },
+  },
+  setup(props) {
+    const candleChart = ref<typeof ECharts>();
+    const buyData = ref<number[][]>([]);
+    const sellData = ref<number[][]>([]);
+    const chartOptions = ref<EChartsOption>({});
 
-  @Prop({ required: false, default: [] }) readonly trades!: Array<Trade>;
+    const strategy = computed(() => {
+      return props.dataset ? props.dataset.strategy : '';
+    });
 
-  @Prop({ required: true }) readonly dataset!: PairHistory;
+    const pair = computed(() => {
+      return props.dataset ? props.dataset.pair : '';
+    });
 
-  @Prop({ type: Boolean, default: false }) heikinAshi!: boolean;
+    const timeframe = computed(() => {
+      return props.dataset ? props.dataset.timeframe : '';
+    });
 
-  @Prop({ default: true }) readonly useUTC!: boolean;
+    const timeframems = computed(() => {
+      return props.dataset ? props.dataset.timeframe_ms : 0;
+    });
 
-  @Prop({ required: true }) plotConfig!: PlotConfig;
+    const datasetColumns = computed(() => {
+      return props.dataset ? props.dataset.columns : [];
+    });
 
-  @Prop({ default: 'dark' }) theme!: string;
+    const hasData = computed(() => {
+      return props.dataset !== null && typeof props.dataset === 'object';
+    });
 
-  buyData = [] as Array<number>[];
+    const filteredTrades = computed(() => {
+      return props.trades.filter((item: Trade) => item.pair === pair.value);
+    });
 
-  sellData = [] as Array<number>[];
+    const chartTitle = computed(() => {
+      return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
+    });
 
-  chartOptions: EChartsOption = {};
-
-  @Watch('dataset')
-  datasetChanged() {
-    this.updateChart();
-  }
-
-  @Watch('plotConfig')
-  plotConfigChanged() {
-    this.initializeChartOptions();
-  }
-
-  @Watch('heikinAshi')
-  heikinAshiChanged() {
-    this.updateChart();
-  }
-
-  get strategy() {
-    return this.dataset ? this.dataset.strategy : '';
-  }
-
-  get pair() {
-    return this.dataset ? this.dataset.pair : '';
-  }
-
-  get timeframe() {
-    return this.dataset ? this.dataset.timeframe : '';
-  }
-
-  get timeframems() {
-    return this.dataset ? this.dataset.timeframe_ms : 0;
-  }
-
-  get datasetColumns() {
-    return this.dataset ? this.dataset.columns : [];
-  }
-
-  get hasData() {
-    return this.dataset !== null && typeof this.dataset === 'object';
-  }
-
-  get filteredTrades() {
-    return this.trades.filter((item: Trade) => item.pair === this.pair);
-  }
-
-  mounted() {
-    this.initializeChartOptions();
-  }
-
-  get chartTitle() {
-    return `${this.strategy} - ${this.pair} - ${this.timeframe}`;
-  }
-
-  initializeChartOptions() {
-    this.chartOptions = {
-      title: [
-        {
-          // text: this.chartTitle,
-          show: false,
-        },
-      ],
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      useUTC: this.useUTC,
-      animation: false,
-      legend: {
-        // Initial legend, further entries are pushed to the below list
-        data: ['Candles', 'Volume', 'Long', 'Long exit'],
-        right: '1%',
-      },
-      tooltip: {
-        show: true,
-        trigger: 'axis',
-        backgroundColor: 'rgba(80,80,80,0.7)',
-        borderWidth: 0,
-        textStyle: {
-          color: '#fff',
-        },
-        axisPointer: {
-          type: 'cross',
-          lineStyle: {
-            color: '#cccccc',
-            width: 1,
-            opacity: 1,
-          },
-        },
-        // positioning copied from https://echarts.apache.org/en/option.html#tooltip.position
-        position(pos, params, dom, rect, size) {
-          // tooltip will be fixed on the right if mouse hovering on the left,
-          // and on the left if hovering on the right.
-          const obj = { top: 60 };
-          obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-          return obj;
-        },
-      },
-      axisPointer: {
-        link: [{ xAxisIndex: 'all' }],
-        label: {
-          backgroundColor: '#777',
-        },
-      },
-      xAxis: [
-        {
-          type: 'time',
-          scale: true,
-          boundaryGap: false,
-          axisLine: { onZero: false },
-          axisTick: { show: true },
-          axisLabel: { show: true },
-          axisPointer: {
-            label: { show: false },
-          },
-          position: 'top',
-          splitLine: { show: false },
-          splitNumber: 20,
-          min: 'dataMin',
-          max: 'dataMax',
-        },
-        {
-          type: 'time',
-          gridIndex: 1,
-          scale: true,
-          boundaryGap: false,
-          axisLine: { onZero: false },
-          axisTick: { show: false },
-          axisLabel: { show: false },
-          axisPointer: {
-            label: { show: false },
-          },
-          splitLine: { show: false },
-          splitNumber: 20,
-          min: 'dataMin',
-          max: 'dataMax',
-        },
-      ],
-      yAxis: [
-        {
-          scale: true,
-        },
-        {
-          scale: true,
-          gridIndex: 1,
-          splitNumber: 2,
-          name: 'volume',
-          nameLocation: 'middle',
-          // position: 'right',
-          nameGap: NAMEGAP,
-          axisLabel: { show: false },
-          axisLine: { show: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
-        },
-      ],
-      dataZoom: [
-        // Start values are recalculated once the data is known
-        {
-          type: 'inside',
-          xAxisIndex: [0, 1],
-          start: 80,
-          end: 100,
-        },
-        {
-          show: true,
-          xAxisIndex: [0, 1],
-          type: 'slider',
-          bottom: 10,
-          start: 80,
-          end: 100,
-        },
-      ],
-      // visualMap: {
-      //   //  TODO: this would allow to colorize volume bars (if we'd want this)
-      //   //  Needs green / red indicator column in data.
-      //   show: true,
-      //   seriesIndex: 1,
-      //   dimension: 5,
-      //   pieces: [
-      //     {
-      //       max: 500000.0,
-      //       color: downColor,
-      //     },
-      //     {
-      //       min: 500000.0,
-      //       color: upColor,
-      //     },
-      //   ],
-      // },
+    /** Return trade entries for charting */
+    const getTradeEntries = () => {
+      const trades: (string | number)[][] = [];
+      const tradesClose: (string | number)[][] = [];
+      for (let i = 0, len = filteredTrades.value.length; i < len; i += 1) {
+        const trade: Trade = filteredTrades.value[i];
+        if (
+          trade.open_timestamp >= props.dataset.data_start_ts &&
+          trade.open_timestamp <= props.dataset.data_stop_ts
+        ) {
+          trades.push([roundTimeframe(timeframems.value, trade.open_timestamp), trade.open_rate]);
+        }
+        if (
+          trade.close_timestamp !== undefined &&
+          trade.close_timestamp < props.dataset.data_stop_ts &&
+          trade.close_timestamp > props.dataset.data_start_ts
+        ) {
+          if (trade.close_date !== undefined && trade.close_rate !== undefined) {
+            tradesClose.push([
+              roundTimeframe(timeframems.value, trade.close_timestamp),
+              trade.close_rate,
+            ]);
+          }
+        }
+      }
+      return { trades, tradesClose };
     };
 
-    console.log('Initialized');
-    this.updateChart(true);
-  }
-
-  updateChart(initial = false) {
-    if (!this.hasData) {
-      return;
-    }
-    if (this.chartOptions?.title) {
-      this.chartOptions.title[0].text = this.chartTitle;
-    }
-    const colDate = this.dataset.columns.findIndex((el) => el === '__date_ts');
-    const colOpen = this.dataset.columns.findIndex((el) => el === 'open');
-    const colHigh = this.dataset.columns.findIndex((el) => el === 'high');
-    const colLow = this.dataset.columns.findIndex((el) => el === 'low');
-    const colClose = this.dataset.columns.findIndex((el) => el === 'close');
-    const colVolume = this.dataset.columns.findIndex((el) => el === 'volume');
-    // TODO: Remove below *signal_open after December 2021
-    const colBuyData = this.dataset.columns.findIndex(
-      (el) =>
-        el === '_buy_signal_open' ||
-        el === '_buy_signal_close' ||
-        el === '_enter_long_signal_close',
-    );
-    const colSellData = this.dataset.columns.findIndex(
-      (el) =>
-        el === '_sell_signal_open' ||
-        el === '_sell_signal_close' ||
-        el === '_exit_long_signal_close',
-    );
-
-    const hasShorts =
-      this.dataset.enter_short_signals &&
-      this.dataset.enter_short_signals > 0 &&
-      this.dataset.exit_short_signals &&
-      this.dataset.exit_short_signals > 0;
-    const colShortEntryData = this.dataset.columns.findIndex(
-      (el) => el === '_enter_short_signal_close',
-    );
-    const colShortExitData = this.dataset.columns.findIndex(
-      (el) => el === '_exit_short_signal_close',
-    );
-    console.log('short_exit', colShortExitData);
-
-    const subplotCount =
-      'subplots' in this.plotConfig ? Object.keys(this.plotConfig.subplots).length + 1 : 1;
-
-    if (this.chartOptions?.dataZoom && Array.isArray(this.chartOptions?.dataZoom)) {
-      // Only set zoom once ...
-      if (initial) {
-        const startingZoom = (1 - 250 / this.dataset.length) * 100;
-        this.chartOptions.dataZoom.forEach((el, i) => {
-          if (this.chartOptions && this.chartOptions.dataZoom) {
-            this.chartOptions.dataZoom[i].start = startingZoom;
-          }
-        });
-      } else {
-        // Remove start/end settings after chart initialization to avoid chart resetting
-        this.chartOptions.dataZoom.forEach((el, i) => {
-          if (this.chartOptions && this.chartOptions.dataZoom) {
-            delete this.chartOptions.dataZoom[i].start;
-            delete this.chartOptions.dataZoom[i].end;
-          }
-        });
+    const updateChart = (initial = false) => {
+      if (!hasData.value) {
+        return;
       }
-    }
-
-    const options: EChartsOption = {
-      dataset: {
-        source: this.heikinAshi
-          ? heikinashi(this.datasetColumns, this.dataset.data)
-          : this.dataset.data,
-      },
-      grid: [
-        {
-          left: MARGINLEFT,
-          right: MARGINRIGHT,
-          // Grid Layout from bottom to top
-          bottom: `${subplotCount * SUBPLOTHEIGHT + 2}%`,
-        },
-        {
-          // Volume
-          left: MARGINLEFT,
-          right: MARGINRIGHT,
-          // Grid Layout from bottom to top
-          bottom: `${subplotCount * SUBPLOTHEIGHT}%`,
-          height: `${SUBPLOTHEIGHT}%`,
-        },
-      ],
-
-      series: [
-        {
-          name: 'Candles',
-          type: 'candlestick',
-          barWidth: '80%',
-          itemStyle: {
-            color: upColor,
-            color0: downColor,
-            borderColor: upBorderColor,
-            borderColor0: downBorderColor,
-          },
-          encode: {
-            x: colDate,
-            // open, close, low, high
-            y: [colOpen, colClose, colLow, colHigh],
-          },
-        },
-        {
-          name: 'Volume',
-          type: 'bar',
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          itemStyle: {
-            color: '#777777',
-          },
-          large: true,
-          encode: {
-            x: colDate,
-            y: colVolume,
-          },
-        },
-        {
-          name: 'Long',
-          type: 'scatter',
-          symbol: 'triangle',
-          symbolSize: 10,
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: buySignalColor,
-          },
-          encode: {
-            x: colDate,
-            y: colBuyData,
-          },
-        },
-        {
-          name: 'Long exit',
-          type: 'scatter',
-          symbol: 'diamond',
-          symbolSize: 8,
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: sellSignalColor,
-          },
-          encode: {
-            x: colDate,
-            y: colSellData,
-          },
-        },
-      ],
-    };
-
-    if (hasShorts) {
-      // Add short support
-      if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
-        this.chartOptions.legend.data.push('Short');
-        this.chartOptions.legend.data.push('Short exit');
+      if (chartOptions.value?.title) {
+        chartOptions.value.title[0].text = chartTitle.value;
       }
-      if (Array.isArray(options.series)) {
-        options.series.push({
-          name: 'Short',
-          type: 'scatter',
-          symbol: 'pin',
-          symbolSize: 10,
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: shortEntrySignalColor,
-          },
-          encode: {
-            x: colDate,
-            y: colShortEntryData,
-          },
-        });
-        options.series.push({
-          name: 'Short exit',
-          type: 'scatter',
-          symbol: 'pin',
-          symbolSize: 8,
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: shortexitSignalColor,
-          },
-          encode: {
-            x: colDate,
-            y: colShortExitData,
-          },
-        });
+      const colDate = props.dataset.columns.findIndex((el) => el === '__date_ts');
+      const colOpen = props.dataset.columns.findIndex((el) => el === 'open');
+      const colHigh = props.dataset.columns.findIndex((el) => el === 'high');
+      const colLow = props.dataset.columns.findIndex((el) => el === 'low');
+      const colClose = props.dataset.columns.findIndex((el) => el === 'close');
+      const colVolume = props.dataset.columns.findIndex((el) => el === 'volume');
+      // TODO: Remove below *signal_open after December 2021
+      const colBuyData = props.dataset.columns.findIndex(
+        (el) =>
+          el === '_buy_signal_open' ||
+          el === '_buy_signal_close' ||
+          el === '_enter_long_signal_close',
+      );
+      const colSellData = props.dataset.columns.findIndex(
+        (el) =>
+          el === '_sell_signal_open' ||
+          el === '_sell_signal_close' ||
+          el === '_exit_long_signal_close',
+      );
+
+      const hasShorts =
+        props.dataset.enter_short_signals &&
+        props.dataset.enter_short_signals > 0 &&
+        props.dataset.exit_short_signals &&
+        props.dataset.exit_short_signals > 0;
+      const colShortEntryData = props.dataset.columns.findIndex(
+        (el) => el === '_enter_short_signal_close',
+      );
+      const colShortExitData = props.dataset.columns.findIndex(
+        (el) => el === '_exit_short_signal_close',
+      );
+      console.log('short_exit', colShortExitData);
+
+      const subplotCount =
+        'subplots' in props.plotConfig ? Object.keys(props.plotConfig.subplots).length + 1 : 1;
+
+      if (chartOptions.value?.dataZoom && Array.isArray(chartOptions.value?.dataZoom)) {
+        // Only set zoom once ...
+        if (initial) {
+          const startingZoom = (1 - 250 / props.dataset.length) * 100;
+          chartOptions.value.dataZoom.forEach((el, i) => {
+            if (chartOptions.value && chartOptions.value.dataZoom) {
+              chartOptions.value.dataZoom[i].start = startingZoom;
+            }
+          });
+        } else {
+          // Remove start/end settings after chart initialization to avoid chart resetting
+          chartOptions.value.dataZoom.forEach((el, i) => {
+            if (chartOptions.value && chartOptions.value.dataZoom) {
+              delete chartOptions.value.dataZoom[i].start;
+              delete chartOptions.value.dataZoom[i].end;
+            }
+          });
+        }
       }
-    }
 
-    // Merge this into original data
-    Object.assign(this.chartOptions, options);
+      const options: EChartsOption = {
+        dataset: {
+          source: props.heikinAshi
+            ? heikinashi(datasetColumns.value, props.dataset.data)
+            : props.dataset.data,
+        },
+        grid: [
+          {
+            left: MARGINLEFT,
+            right: MARGINRIGHT,
+            // Grid Layout from bottom to top
+            bottom: `${subplotCount * SUBPLOTHEIGHT + 2}%`,
+          },
+          {
+            // Volume
+            left: MARGINLEFT,
+            right: MARGINRIGHT,
+            // Grid Layout from bottom to top
+            bottom: `${subplotCount * SUBPLOTHEIGHT}%`,
+            height: `${SUBPLOTHEIGHT}%`,
+          },
+        ],
 
-    if ('main_plot' in this.plotConfig) {
-      Object.entries(this.plotConfig.main_plot).forEach(([key, value]) => {
-        const col = this.dataset.columns.findIndex((el) => el === key);
-        if (col > 1) {
-          if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
-            this.chartOptions.legend.data.push(key);
-          }
-          const sp: SeriesOption = {
-            name: key,
-            type: value.type || 'line',
-            xAxisIndex: 0,
-            yAxisIndex: 0,
+        series: [
+          {
+            name: 'Candles',
+            type: 'candlestick',
+            barWidth: '80%',
             itemStyle: {
-              color: value.color,
+              color: upColor,
+              color0: downColor,
+              borderColor: upBorderColor,
+              borderColor0: downBorderColor,
             },
             encode: {
               x: colDate,
-              y: col,
+              // open, close, low, high
+              y: [colOpen, colClose, colLow, colHigh],
             },
-            showSymbol: false,
-          };
-          if (Array.isArray(this.chartOptions.series)) {
-            this.chartOptions.series.push(sp);
-          }
-        } else {
-          console.log(`element ${key} for main plot not found in columns.`);
+          },
+          {
+            name: 'Volume',
+            type: 'bar',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            itemStyle: {
+              color: '#777777',
+            },
+            large: true,
+            encode: {
+              x: colDate,
+              y: colVolume,
+            },
+          },
+          {
+            name: 'Long',
+            type: 'scatter',
+            symbol: 'triangle',
+            symbolSize: 10,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: buySignalColor,
+            },
+            encode: {
+              x: colDate,
+              y: colBuyData,
+            },
+          },
+          {
+            name: 'Long exit',
+            type: 'scatter',
+            symbol: 'diamond',
+            symbolSize: 8,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: sellSignalColor,
+            },
+            encode: {
+              x: colDate,
+              y: colSellData,
+            },
+          },
+        ],
+      };
+
+      if (hasShorts) {
+        // Add short support
+        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
+          chartOptions.value.legend.data.push('Short');
+          chartOptions.value.legend.data.push('Short exit');
         }
-      });
-    }
-
-    // START Subplots
-    if ('subplots' in this.plotConfig) {
-      let plotIndex = 2;
-      Object.entries(this.plotConfig.subplots).forEach(([key, value]) => {
-        // define yaxis
-
-        // Subplots are added from bottom to top - only the "bottom-most" plot stays at the bottom.
-        // const currGridIdx = totalSubplots - plotIndex > 1 ? totalSubplots - plotIndex : plotIndex;
-        const currGridIdx = plotIndex;
-        if (Array.isArray(this.chartOptions.yAxis) && this.chartOptions.yAxis.length <= plotIndex) {
-          this.chartOptions.yAxis.push({
-            scale: true,
-            gridIndex: currGridIdx,
-            name: key,
-            nameLocation: 'middle',
-            nameGap: NAMEGAP,
-            axisLabel: { show: true },
-            axisLine: { show: false },
-            axisTick: { show: false },
-            splitLine: { show: false },
+        if (Array.isArray(options.series)) {
+          options.series.push({
+            name: 'Short',
+            type: 'scatter',
+            symbol: 'pin',
+            symbolSize: 10,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: shortEntrySignalColor,
+            },
+            encode: {
+              x: colDate,
+              y: colShortEntryData,
+            },
+          });
+          options.series.push({
+            name: 'Short exit',
+            type: 'scatter',
+            symbol: 'pin',
+            symbolSize: 8,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: shortexitSignalColor,
+            },
+            encode: {
+              x: colDate,
+              y: colShortExitData,
+            },
           });
         }
-        if (Array.isArray(this.chartOptions.xAxis) && this.chartOptions.xAxis.length <= plotIndex) {
-          this.chartOptions.xAxis.push({
+      }
+
+      // Merge this into original data
+      Object.assign(chartOptions.value, options);
+
+      if ('main_plot' in props.plotConfig) {
+        Object.entries(props.plotConfig.main_plot).forEach(([key, value]) => {
+          const col = props.dataset.columns.findIndex((el) => el === key);
+          if (col > 1) {
+            if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
+              chartOptions.value.legend.data.push(key);
+            }
+            const sp: SeriesOption = {
+              name: key,
+              type: value.type || 'line',
+              xAxisIndex: 0,
+              yAxisIndex: 0,
+              itemStyle: {
+                color: value.color,
+              },
+              encode: {
+                x: colDate,
+                y: col,
+              },
+              showSymbol: false,
+            };
+            if (Array.isArray(chartOptions.value?.series)) {
+              chartOptions.value?.series.push(sp);
+            }
+          } else {
+            console.log(`element ${key} for main plot not found in columns.`);
+          }
+        });
+      }
+
+      // START Subplots
+      if ('subplots' in props.plotConfig) {
+        let plotIndex = 2;
+        Object.entries(props.plotConfig.subplots).forEach(([key, value]) => {
+          // define yaxis
+
+          // Subplots are added from bottom to top - only the "bottom-most" plot stays at the bottom.
+          // const currGridIdx = totalSubplots - plotIndex > 1 ? totalSubplots - plotIndex : plotIndex;
+          const currGridIdx = plotIndex;
+          if (
+            Array.isArray(chartOptions.value.yAxis) &&
+            chartOptions.value.yAxis.length <= plotIndex
+          ) {
+            chartOptions.value.yAxis.push({
+              scale: true,
+              gridIndex: currGridIdx,
+              name: key,
+              nameLocation: 'middle',
+              nameGap: NAMEGAP,
+              axisLabel: { show: true },
+              axisLine: { show: false },
+              axisTick: { show: false },
+              splitLine: { show: false },
+            });
+          }
+          if (
+            Array.isArray(chartOptions.value.xAxis) &&
+            chartOptions.value.xAxis.length <= plotIndex
+          ) {
+            chartOptions.value.xAxis.push({
+              type: 'time',
+              scale: true,
+              gridIndex: currGridIdx,
+              boundaryGap: false,
+              axisLine: { onZero: false },
+              axisTick: { show: false },
+              axisLabel: { show: false },
+              axisPointer: {
+                label: { show: false },
+              },
+              splitLine: { show: false },
+              splitNumber: 20,
+            });
+          }
+          if (Array.isArray(chartOptions.value.dataZoom)) {
+            chartOptions.value.dataZoom.forEach((el) =>
+              el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
+            );
+          }
+          if (chartOptions.value.grid && Array.isArray(chartOptions.value.grid)) {
+            chartOptions.value.grid.push({
+              left: MARGINLEFT,
+              right: MARGINRIGHT,
+              bottom: `${(subplotCount - plotIndex + 1) * SUBPLOTHEIGHT}%`,
+              height: `${SUBPLOTHEIGHT}%`,
+            });
+          }
+          Object.entries(value).forEach(([sk, sv]) => {
+            // entries per subplot
+            const col = props.dataset.columns.findIndex((el) => el === sk);
+            if (col > 0) {
+              if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
+                chartOptions.value.legend.data.push(sk);
+              }
+              const sp: SeriesOption = {
+                name: sk,
+                type: sv.type || 'line',
+                xAxisIndex: plotIndex,
+                yAxisIndex: plotIndex,
+                itemStyle: {
+                  color: sv.color || randomColor(),
+                },
+                encode: {
+                  x: colDate,
+                  y: col,
+                },
+                showSymbol: false,
+              };
+              if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
+                chartOptions.value.series.push(sp);
+              }
+            } else {
+              console.log(`element ${sk} was not found in the columns.`);
+            }
+          });
+
+          plotIndex += 1;
+        });
+      }
+      // END Subplots
+      // Last subplot should show xAxis labels
+      // if (options.xAxis && Array.isArray(options.xAxis)) {
+      //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
+      //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
+      // }
+      if (chartOptions.value.grid && Array.isArray(chartOptions.value.grid)) {
+        // Last subplot is bottom
+        chartOptions.value.grid[chartOptions.value.grid.length - 1].bottom = '50px';
+        delete chartOptions.value.grid[chartOptions.value.grid.length - 1].top;
+      }
+      const { trades, tradesClose } = getTradeEntries();
+
+      const name = 'Trades';
+      const nameClose = 'Trades Close';
+      if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
+        chartOptions.value.legend.data.push(name);
+      }
+      const sp: ScatterSeriesOption = {
+        name,
+        type: 'scatter',
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        itemStyle: {
+          color: tradeBuyColor,
+        },
+        data: trades,
+      };
+      if (Array.isArray(chartOptions.value?.series)) {
+        chartOptions.value.series.push(sp);
+      }
+      if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
+        chartOptions.value.legend.data.push(nameClose);
+      }
+      const closeSeries: ScatterSeriesOption = {
+        name: nameClose,
+        type: 'scatter',
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        itemStyle: {
+          color: tradeSellColor,
+        },
+        data: tradesClose,
+      };
+      if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
+        chartOptions.value.series.push(closeSeries);
+      }
+
+      console.log('chartOptions', chartOptions.value);
+
+      candleChart.value.setOption(chartOptions.value);
+    };
+
+    const initializeChartOptions = () => {
+      chartOptions.value = {
+        title: [
+          {
+            // text: this.chartTitle,
+            show: false,
+          },
+        ],
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        useUTC: props.useUTC,
+        animation: false,
+        legend: {
+          // Initial legend, further entries are pushed to the below list
+          data: ['Candles', 'Volume', 'Long', 'Long exit'],
+          right: '1%',
+        },
+        tooltip: {
+          show: true,
+          trigger: 'axis',
+          backgroundColor: 'rgba(80,80,80,0.7)',
+          borderWidth: 0,
+          textStyle: {
+            color: '#fff',
+          },
+          axisPointer: {
+            type: 'cross',
+            lineStyle: {
+              color: '#cccccc',
+              width: 1,
+              opacity: 1,
+            },
+          },
+          // positioning copied from https://echarts.apache.org/en/option.html#tooltip.position
+          position(pos, params, dom, rect, size) {
+            // tooltip will be fixed on the right if mouse hovering on the left,
+            // and on the left if hovering on the right.
+            const obj = { top: 60 };
+            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+            return obj;
+          },
+        },
+        axisPointer: {
+          link: [{ xAxisIndex: 'all' }],
+          label: {
+            backgroundColor: '#777',
+          },
+        },
+        xAxis: [
+          {
             type: 'time',
             scale: true,
-            gridIndex: currGridIdx,
+            boundaryGap: false,
+            axisLine: { onZero: false },
+            axisTick: { show: true },
+            axisLabel: { show: true },
+            axisPointer: {
+              label: { show: false },
+            },
+            position: 'top',
+            splitLine: { show: false },
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax',
+          },
+          {
+            type: 'time',
+            gridIndex: 1,
+            scale: true,
             boundaryGap: false,
             axisLine: { onZero: false },
             axisTick: { show: false },
@@ -546,155 +591,123 @@ export default class CandleChart extends Vue {
             },
             splitLine: { show: false },
             splitNumber: 20,
-          });
-        }
-        if (Array.isArray(this.chartOptions.dataZoom)) {
-          this.chartOptions.dataZoom.forEach((el) =>
-            el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
-          );
-        }
-        if (this.chartOptions.grid && Array.isArray(this.chartOptions.grid)) {
-          this.chartOptions.grid.push({
-            left: MARGINLEFT,
-            right: MARGINRIGHT,
-            bottom: `${(subplotCount - plotIndex + 1) * SUBPLOTHEIGHT}%`,
-            height: `${SUBPLOTHEIGHT}%`,
-          });
-        }
-        Object.entries(value).forEach(([sk, sv]) => {
-          // entries per subplot
-          const col = this.dataset.columns.findIndex((el) => el === sk);
-          if (col > 0) {
-            if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
-              this.chartOptions.legend.data.push(sk);
-            }
-            const sp: SeriesOption = {
-              name: sk,
-              type: sv.type || 'line',
-              xAxisIndex: plotIndex,
-              yAxisIndex: plotIndex,
-              itemStyle: {
-                color: sv.color || randomColor(),
-              },
-              encode: {
-                x: colDate,
-                y: col,
-              },
-              showSymbol: false,
-            };
-            if (this.chartOptions.series && Array.isArray(this.chartOptions.series)) {
-              this.chartOptions.series.push(sp);
-            }
-          } else {
-            console.log(`element ${sk} was not found in the columns.`);
-          }
-        });
+            min: 'dataMin',
+            max: 'dataMax',
+          },
+        ],
+        yAxis: [
+          {
+            scale: true,
+          },
+          {
+            scale: true,
+            gridIndex: 1,
+            splitNumber: 2,
+            name: 'volume',
+            nameLocation: 'middle',
+            // position: 'right',
+            nameGap: NAMEGAP,
+            axisLabel: { show: false },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+          },
+        ],
+        dataZoom: [
+          // Start values are recalculated once the data is known
+          {
+            type: 'inside',
+            xAxisIndex: [0, 1],
+            start: 80,
+            end: 100,
+          },
+          {
+            show: true,
+            xAxisIndex: [0, 1],
+            type: 'slider',
+            bottom: 10,
+            start: 80,
+            end: 100,
+          },
+        ],
+        // visualMap: {
+        //   //  TODO: this would allow to colorize volume bars (if we'd want this)
+        //   //  Needs green / red indicator column in data.
+        //   show: true,
+        //   seriesIndex: 1,
+        //   dimension: 5,
+        //   pieces: [
+        //     {
+        //       max: 500000.0,
+        //       color: downColor,
+        //     },
+        //     {
+        //       min: 500000.0,
+        //       color: upColor,
+        //     },
+        //   ],
+        // },
+      };
 
-        plotIndex += 1;
-      });
-    }
-    // END Subplots
-    // Last subplot should show xAxis labels
-    // if (options.xAxis && Array.isArray(options.xAxis)) {
-    //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
-    //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
+      console.log('Initialized');
+      updateChart(true);
+    };
+
+    // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
+    // Calculate Buy and sell Series
+    // if (!this.signalsCalculated) {
+    //   // Generate Buy and sell array (using open rate to display marker)
+    //   for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
+    //     if (this.dataset.data[i][colBuy] === 1) {
+    //       this.buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
+    //     }
+    //     if (this.dataset.data[i][colSell] === 1) {
+    //       this.sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
+    //     }
+    //   }
+    //   this.signalsCalculated = true;
     // }
-    if (this.chartOptions.grid && Array.isArray(this.chartOptions.grid)) {
-      // Last subplot is bottom
-      this.chartOptions.grid[this.chartOptions.grid.length - 1].bottom = '50px';
-      delete this.chartOptions.grid[this.chartOptions.grid.length - 1].top;
-    }
-    const { trades, tradesClose } = this.getTradeEntries();
+    // }
+    onMounted(() => {
+      initializeChartOptions();
+    });
 
-    const name = 'Trades';
-    const nameClose = 'Trades Close';
-    if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
-      this.chartOptions.legend.data.push(name);
-    }
-    const sp: ScatterSeriesOption = {
-      name,
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      itemStyle: {
-        color: tradeBuyColor,
-      },
-      data: trades,
+    watch(
+      () => props.useUTC,
+      () => initializeChartOptions(),
+    );
+
+    watch(
+      () => props.dataset,
+      () => updateChart(),
+    );
+
+    watch(
+      () => props.plotConfig,
+      () => initializeChartOptions(),
+    );
+
+    watch(
+      () => props.heikinAshi,
+      () => updateChart(),
+    );
+
+    return {
+      candleChart,
+      buyData,
+      sellData,
+      chartOptions,
+      strategy,
+      pair,
+      timeframe,
+      timeframems,
+      datasetColumns,
+      hasData,
+      filteredTrades,
+      chartTitle,
     };
-    if (Array.isArray(this.chartOptions?.series)) {
-      this.chartOptions.series.push(sp);
-    }
-    if (!Array.isArray(this.chartOptions.legend) && this.chartOptions.legend?.data) {
-      this.chartOptions.legend.data.push(nameClose);
-    }
-    const closeSeries: ScatterSeriesOption = {
-      name: nameClose,
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      itemStyle: {
-        color: tradeSellColor,
-      },
-      data: tradesClose,
-    };
-    if (this.chartOptions.series && Array.isArray(this.chartOptions.series)) {
-      this.chartOptions.series.push(closeSeries);
-    }
-
-    console.log('chartOptions', this.chartOptions);
-
-    this.$refs.candleChart.setOption(this.chartOptions);
-  }
-
-  /** Return trade entries for charting */
-  getTradeEntries() {
-    const trades: (string | number)[][] = [];
-    const tradesClose: (string | number)[][] = [];
-    for (let i = 0, len = this.filteredTrades.length; i < len; i += 1) {
-      const trade: Trade = this.filteredTrades[i];
-      if (
-        trade.open_timestamp >= this.dataset.data_start_ts &&
-        trade.open_timestamp <= this.dataset.data_stop_ts
-      ) {
-        trades.push([roundTimeframe(this.timeframems, trade.open_timestamp), trade.open_rate]);
-      }
-      if (
-        trade.close_timestamp !== undefined &&
-        trade.close_timestamp < this.dataset.data_stop_ts &&
-        trade.close_timestamp > this.dataset.data_start_ts
-      ) {
-        if (trade.close_date !== undefined && trade.close_rate !== undefined) {
-          tradesClose.push([
-            roundTimeframe(this.timeframems, trade.close_timestamp),
-            trade.close_rate,
-          ]);
-        }
-      }
-    }
-    return { trades, tradesClose };
-  }
-
-  // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
-  // Calculate Buy and sell Series
-  // if (!this.signalsCalculated) {
-  //   // Generate Buy and sell array (using open rate to display marker)
-  //   for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
-  //     if (this.dataset.data[i][colBuy] === 1) {
-  //       this.buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-  //     }
-  //     if (this.dataset.data[i][colSell] === 1) {
-  //       this.sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-  //     }
-  //   }
-  //   this.signalsCalculated = true;
-  // }
-  // }
-
-  @Watch('useUTC')
-  useUTCChanged() {
-    this.initializeChartOptions();
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

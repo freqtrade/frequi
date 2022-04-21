@@ -67,7 +67,7 @@ export default defineComponent({
       get() {
         return botStore.botStores[props.bot.botId].autoRefresh;
       },
-      set(_) {
+      set() {
         // pass
       },
     });
