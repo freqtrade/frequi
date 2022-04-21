@@ -3,43 +3,23 @@
     <!-- Only visible on xs (phone) viewport! -->
     <hr class="my-0" />
     <div class="d-flex flex-align-center justify-content-center">
-      <router-link
-        v-if="!botStore.activeBot.canRunBacktest"
-        class="nav-link navbar-nav"
-        to="/open_trades"
-      >
+      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/open_trades">
         <OpenTradesIcon />
         Trades
       </router-link>
-      <router-link
-        v-if="!botStore.activeBot.canRunBacktest"
-        class="nav-link navbar-nav"
-        to="/trade_history"
-      >
+      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/trade_history">
         <ClosedTradesIcon />
         History
       </router-link>
-      <router-link
-        v-if="!botStore.activeBot.canRunBacktest"
-        class="nav-link navbar-nav"
-        to="/pairlist"
-      >
+      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/pairlist">
         <PairListIcon />
         Pairlist
       </router-link>
-      <router-link
-        v-if="!botStore.activeBot.canRunBacktest"
-        class="nav-link navbar-nav"
-        to="/balance"
-      >
+      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/balance">
         <BalanceIcon />
         Balance
       </router-link>
-      <router-link
-        v-if="!botStore.activeBot.canRunBacktest"
-        class="nav-link navbar-nav"
-        to="/dashboard"
-      >
+      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/dashboard">
         <DashboardIcon />
         Dashboard
       </router-link>

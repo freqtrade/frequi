@@ -41,6 +41,8 @@ export const useBotStore = defineStore('wrapper', {
     botCount: (state) => Object.keys(state.availableBots).length,
     allBotStores: (state) => Object.values(state.botStores),
     activeBot: (state) => state.botStores[state.selectedBot] as BotSubStore,
+    activeBotorUndefined: (state) => state.botStores[state.selectedBot] as BotSubStore | undefined,
+    canRunBacktest: (state) => state.botStores[state.selectedBot]?.canRunBacktest ?? false,
     selectedBotObj: (state) => state.availableBots[state.selectedBot],
     nextBotId: (state) => {
       let botCount = Object.keys(state.availableBots).length;
@@ -149,6 +151,8 @@ export const useBotStore = defineStore('wrapper', {
       botStore.botAdded();
       this.botStores[bot.botId] = botStore;
       this.availableBots[bot.botId] = bot;
+      this.botStores = { ...this.botStores };
+      this.availableBots = { ...this.availableBots };
     },
     renameBot(bot: RenameBotPayload) {
       if (!Object.keys(this.availableBots).includes(bot.botId)) {
@@ -166,6 +170,8 @@ export const useBotStore = defineStore('wrapper', {
 
         delete this.botStores[botId];
         delete this.availableBots[botId];
+        this.botStores = { ...this.botStores };
+        this.availableBots = { ...this.availableBots };
         // commit('removeBot', botId);
       } else {
         console.warn(`bot ${botId} not found! could not remove`);

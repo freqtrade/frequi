@@ -12,24 +12,15 @@
 
       <b-collapse id="nav-collapse" class="text-right text-md-center" is-nav>
         <b-navbar-nav>
-          <router-link
-            v-if="!botStore.activeBot.canRunBacktest"
-            class="nav-link navbar-nav"
-            to="/trade"
+          <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/trade"
             >Trade</router-link
           >
-          <router-link
-            v-if="!botStore.activeBot.canRunBacktest"
-            class="nav-link navbar-nav"
-            to="/dashboard"
+          <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/dashboard"
             >Dashboard</router-link
           >
           <router-link class="nav-link navbar-nav" to="/graph">Chart</router-link>
           <router-link class="nav-link navbar-nav" to="/logs">Logs</router-link>
-          <router-link
-            v-if="botStore.activeBot.canRunBacktest"
-            class="nav-link navbar-nav"
-            to="/backtest"
+          <router-link v-if="botStore.canRunBacktest" class="nav-link navbar-nav" to="/backtest"
             >Backtest</router-link
           >
           <BootswatchThemeSelect />
@@ -57,10 +48,17 @@
           </div>
           <li class="d-none d-sm-block nav-item text-secondary mr-2">
             <b-nav-text class="verticalCenter small mr-2">
-              {{ botStore.activeBot.botName || 'No bot selected' }}
+              {{
+                (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
+                'No bot selected'
+              }}
             </b-nav-text>
             <b-nav-text class="verticalCenter">
-              {{ botStore.activeBot.isBotOnline ? 'Online' : 'Offline' }}
+              {{
+                botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
+                  ? 'Online'
+                  : 'Offline'
+              }}
             </b-nav-text>
           </li>
           <li v-if="botStore.hasBots" class="nav-item">
@@ -86,10 +84,17 @@
               <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
                 <div class="d-flex">
                   <b-nav-text class="verticalCenter small mr-2">
-                    {{ botStore.activeBot.botName || 'No bot selected' }}
+                    {{
+                      (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
+                      'No bot selected'
+                    }}
                   </b-nav-text>
                   <b-nav-text class="verticalCenter">
-                    {{ botStore.activeBot.isBotOnline ? 'Online' : 'Offline' }}
+                    {{
+                      botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
+                        ? 'Online'
+                        : 'Offline'
+                    }}
                   </b-nav-text>
                 </div>
               </li>
@@ -175,10 +180,10 @@ export default defineComponent({
     const setTitle = () => {
       let title = 'freqUI';
       if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-        title = `(${botStore.activeBot.openTradeCount}) ${title}`;
+        title = `(${botStore.activeBotorUndefined?.openTradeCount}) ${title}`;
       }
-      if (botStore.activeBot.botName) {
-        title = `${title} - ${botStore.activeBot.botName}`;
+      if (botStore.activeBotorUndefined?.botName) {
+        title = `${title} - ${botStore.activeBotorUndefined?.botName}`;
       }
       document.title = title;
     };
@@ -203,16 +208,16 @@ export default defineComponent({
       const needsUpdate = settingsStore.openTradesInTitle !== state.openTradesInTitle;
       if (needsUpdate) {
         setTitle();
-        setOpenTradesAsPill(botStore.activeBot.openTradeCount);
+        setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount || 0);
       }
     });
 
     watch(
-      () => botStore.activeBot.botName,
+      () => botStore.activeBotorUndefined?.botName,
       () => setTitle(),
     );
     watch(
-      () => botStore.activeBot.openTradeCount,
+      () => botStore.activeBotorUndefined?.openTradeCount,
       () => {
         console.log('openTradeCount changed');
         if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
