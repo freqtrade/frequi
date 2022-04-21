@@ -35,7 +35,6 @@
     "vue-echarts": "^6.0.2",
     "vue-grid-layout": "^2.3.12",
     "vue-material-design-icons": "^5.0.0",
-    "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.3",
     "vue-select": "^3.18.3",
     "vue2-helpers": "^1.1.7"
