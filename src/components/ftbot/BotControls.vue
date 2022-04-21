@@ -1,3 +1,4 @@
+forceexit
 <template>
   <div>
     <button
@@ -35,10 +36,10 @@
     <button
       class="btn btn-secondary btn-sm ml-1"
       :disabled="!botStore.activeBot.isTrading"
-      title="Forcesell all"
-      @click="handleForceSell()"
+      title="Force exit all"
+      @click="handleForceExit()"
     >
-      <ForceSellIcon />
+      <ForceExitIcon />
     </button>
     <button
       v-if="
@@ -48,10 +49,10 @@
       "
       class="btn btn-secondary btn-sm ml-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
-      title="Force enter - Immediately buy an asset at an optional price. Sells are then handled according to strategy rules."
+      title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
       @click="initiateForceenter"
     >
-      <ForceBuyIcon />
+      <ForceEntryIcon />
     </button>
     <button
       v-if="botStore.activeBot.isWebserverMode && false"
@@ -72,8 +73,8 @@ import PlayIcon from 'vue-material-design-icons/Play.vue';
 import StopIcon from 'vue-material-design-icons/Stop.vue';
 import PauseIcon from 'vue-material-design-icons/Pause.vue';
 import ReloadIcon from 'vue-material-design-icons/Reload.vue';
-import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
-import ForceBuyIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
+import ForceExitIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
+import ForceEntryIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
 import ForceBuyForm from './ForceBuyForm.vue';
 import { defineComponent, computed, ref } from '@vue/composition-api';
 import { useBotStore } from '@/stores/ftbotwrapper';
@@ -86,8 +87,8 @@ export default defineComponent({
     StopIcon,
     PauseIcon,
     ReloadIcon,
-    ForceSellIcon,
-    ForceBuyIcon,
+    ForceExitIcon,
+    ForceEntryIcon,
   },
   setup(_, { root }) {
     const botStore = useBotStore();
@@ -127,14 +128,14 @@ export default defineComponent({
       });
     };
 
-    const handleForceSell = () => {
+    const handleForceExit = () => {
       root.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
         if (value) {
           const payload: ForceSellPayload = {
             tradeid: 'all',
             // TODO: support ordertype (?)
           };
-          botStore.activeBot.forcesell(payload);
+          botStore.activeBot.forceexit(payload);
         }
       });
     };
@@ -143,7 +144,7 @@ export default defineComponent({
       handleStopBot,
       handleStopBuy,
       handleReloadConfig,
-      handleForceSell,
+      handleForceExit,
       forcebuyShow,
       botStore,
       isRunning,

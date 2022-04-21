@@ -288,13 +288,10 @@ export const useBotStore = defineStore('wrapper', {
       });
     },
     async forceSellMulti(forcesellPayload: MultiForcesellPayload) {
-      //   return dispatch(`${forcesellPayload.botId}/${[BotStoreActions.forcesell]}`, forcesellPayload);
+      return this.botStores[forcesellPayload.botId].forceexit(forcesellPayload);
     },
     async deleteTradeMulti(deletePayload: MultiDeletePayload) {
-      //   return dispatch(
-      //     `${deletePayload.botId}/${[BotStoreActions.deleteTrade]}`,
-      //     deletePayload.tradeid,
-      //   );
+      return this.botStores[deletePayload.botId].deleteTrade(deletePayload.tradeid);
     },
   },
 });

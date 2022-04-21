@@ -590,7 +590,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async forcesell(payload: ForceSellPayload) {
+      async forceexit(payload: ForceSellPayload) {
         try {
           const res = await api.post<ForceSellPayload, AxiosResponse<StatusResponse>>(
             '/forcesell',
