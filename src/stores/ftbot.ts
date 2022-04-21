@@ -98,7 +98,7 @@ export function createBotSubStore(botId: string, botName: string) {
         selectedBacktestResultKey: '',
         backtestHistory: {} as Record<string, StrategyBacktestResult>,
         backtestHistoryList: [] as BacktestHistoryEntry[],
-        sysinfo: {} as SysInfoResponse,
+        sysInfo: {} as SysInfoResponse,
       };
     },
     getters: {
@@ -164,15 +164,16 @@ export function createBotSubStore(botId: string, botName: string) {
       botAdded() {
         this.autoRefresh = userService.getAutoRefresh();
       },
-      async ping() {
+      async fetchPing() {
         try {
           const result = await api.get('/ping');
           const now = Date.now();
           // TODO: Name collision!
-          // this.ping = `${result.data.status} ${now.toString()}`;
+          this.ping = `${result.data.status} ${now.toString()}`;
           this.isBotOnline = true;
           return Promise.resolve();
         } catch (error) {
+          console.log('ping fail');
           this.isBotOnline = false;
           return Promise.reject();
         }
@@ -789,10 +790,9 @@ export function createBotSubStore(botId: string, botName: string) {
       setBacktestResultKey(key: string) {
         this.selectedBacktestResultKey = key;
       },
-      async sysInfo() {
+      async getSysInfo() {
         try {
-          // TODO: TYPE me
-          const { data } = await api.get('/sysinfo');
+          const { data } = await api.get<SysInfoResponse>('/sysinfo');
           this.sysInfo = data;
           return Promise.resolve(data);
         } catch (err) {

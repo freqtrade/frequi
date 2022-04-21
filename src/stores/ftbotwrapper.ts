@@ -266,7 +266,7 @@ export const useBotStore = defineStore('wrapper', {
       await Promise.all(
         Object.entries(this.botStores).map(async ([_, v]) => {
           try {
-            await v.ping();
+            await v.fetchPing();
           } catch {
             // pass
           }

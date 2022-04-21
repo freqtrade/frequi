@@ -4,7 +4,7 @@
 
     <div class="align-items-center d-flex">
       <span class="ml-2 mr-1 align-middle">{{
-        botStore.availableBots[bot.botId] ? '&#128994;' : '&#128308;'
+        botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
       }}</span>
       <b-form-checkbox
         v-model="autoRefreshLoc"
