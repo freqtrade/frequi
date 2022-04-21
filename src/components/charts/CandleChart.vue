@@ -187,7 +187,6 @@ export default defineComponent({
       const colShortExitData = props.dataset.columns.findIndex(
         (el) => el === '_exit_short_signal_close',
       );
-      console.log('short_exit', colShortExitData);
 
       const subplotCount =
         'subplots' in props.plotConfig ? Object.keys(props.plotConfig.subplots).length + 1 : 1;

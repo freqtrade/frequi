@@ -100,8 +100,8 @@ export default defineComponent({
       }
       return {
         [selAvailableIndicator.value]: {
-          color: selColor,
-          type: graphType,
+          color: selColor.value,
+          type: graphType.value,
         },
       };
     });
