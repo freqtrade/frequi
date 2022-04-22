@@ -218,11 +218,15 @@ export const useBotStore = defineStore('wrapper', {
       try {
         // Ensure all bots status is correct.
         await this.pingAll();
-        this.allBotStores.forEach(async (e) => {
+
+        const botStoreUpdates: Promise<any>[] = [];
+        this.allBotStores.forEach((e) => {
           if (e.isBotOnline && !e.botStatusAvailable) {
-            await this.allGetState();
+            botStoreUpdates.push(e.getState());
           }
         });
+        await Promise.all(botStoreUpdates);
+
         const updates: Promise<any>[] = [];
         updates.push(this.allRefreshFrequent(false));
         updates.push(this.allRefreshSlow(true));

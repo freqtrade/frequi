@@ -195,13 +195,9 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      botStore.pingAll();
       settingsStore.loadUIVersion();
       pingInterval.value = window.setInterval(botStore.pingAll, 60000);
-      if (botStore.hasBots) {
-        // Query botstate - this will enable / disable certain modes
-        botStore.allGetState();
-      }
+      botStore.allRefreshFull();
     });
 
     settingsStore.$subscribe((_, state) => {
