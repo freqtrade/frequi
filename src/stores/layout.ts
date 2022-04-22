@@ -112,5 +112,14 @@ export const useLayoutStore = defineStore('layoutStore', {
   },
   persist: {
     key: STORE_LAYOUTS,
+    afterRestore: (context) => {
+      console.log('after restore - ', context.store);
+      if (context.store.dashboardLayout === null) {
+        context.store.dashboardLayout = JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT));
+      }
+      if (context.store.tradingLayout === null) {
+        context.store.tradingLayout = JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT));
+      }
+    },
   },
 });
