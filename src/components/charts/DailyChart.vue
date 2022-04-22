@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, computed, ComputedRef } from '@vue/composition-api';
+import { defineComponent, computed, ComputedRef } from '@vue/composition-api';
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
 
@@ -26,6 +26,7 @@ import {
 
 import { DailyReturnValue } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
+import { EChartsOption } from 'echarts';
 
 use([
   BarChart,
@@ -60,102 +61,101 @@ export default defineComponent({
 
   setup(props) {
     const settingsStore = useSettingsStore();
-    const absoluteMin: ComputedRef<number> = computed(() =>
+    const absoluteMin = computed(() =>
       props.dailyStats.data.reduce(
         (min, p) => (p.abs_profit < min ? p.abs_profit : min),
         props.dailyStats.data[0]?.abs_profit,
       ),
     );
-
-    const absoluteMax: ComputedRef<number> = computed(() =>
+    const absoluteMax = computed(() =>
       props.dailyStats.data.reduce(
         (max, p) => (p.abs_profit > max ? p.abs_profit : max),
         props.dailyStats.data[0]?.abs_profit,
       ),
     );
-    // : Ref<EChartsOption>
-    const dailyChartOptions = ref({
-      title: {
-        text: 'Daily profit',
-        show: props.showTitle,
-      },
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      dataset: {
-        dimensions: ['date', 'abs_profit', 'trade_count'],
-        source: props.dailyStats.data,
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'line',
-          label: {
-            backgroundColor: '#6a7985',
+    const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
+      return {
+        title: {
+          text: 'Daily profit',
+          show: props.showTitle,
+        },
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        dataset: {
+          dimensions: ['date', 'abs_profit', 'trade_count'],
+          source: props.dailyStats.data,
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'line',
+            label: {
+              backgroundColor: '#6a7985',
+            },
           },
         },
-      },
-      legend: {
-        data: [CHART_ABS_PROFIT, CHART_TRADE_COUNT],
-        right: '5%',
-      },
-      xAxis: [
-        {
-          type: 'category',
-          inverse: true,
+        legend: {
+          data: [CHART_ABS_PROFIT, CHART_TRADE_COUNT],
+          right: '5%',
         },
-      ],
-      visualMap: [
-        {
-          dimension: 1,
-          seriesIndex: 0,
-          show: false,
-          pieces: [
-            {
-              max: 0.0,
-              min: absoluteMin.value,
-              color: 'red',
-            },
-            {
-              min: 0.0,
-              max: absoluteMax.value,
-              color: 'green',
-            },
-          ],
-        },
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          name: CHART_ABS_PROFIT,
-          splitLine: {
+        xAxis: [
+          {
+            type: 'category',
+          },
+        ],
+        visualMap: [
+          {
+            dimension: 1,
+            seriesIndex: 0,
             show: false,
+            pieces: [
+              {
+                max: 0.0,
+                min: absoluteMin.value,
+                color: 'red',
+              },
+              {
+                min: 0.0,
+                max: absoluteMax.value,
+                color: 'green',
+              },
+            ],
           },
-          nameRotate: 90,
-          nameLocation: 'middle',
-          nameGap: 40,
-        },
-        {
-          type: 'value',
-          name: CHART_TRADE_COUNT,
-          nameRotate: 90,
-          nameLocation: 'middle',
-          nameGap: 30,
-        },
-      ],
-      series: [
-        {
-          type: 'line',
-          name: CHART_ABS_PROFIT,
-          // Color is induced by visualMap
-        },
-        {
-          type: 'bar',
-          name: CHART_TRADE_COUNT,
-          itemStyle: {
-            color: 'rgba(150,150,150,0.3)',
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: CHART_ABS_PROFIT,
+            splitLine: {
+              show: false,
+            },
+            nameRotate: 90,
+            nameLocation: 'middle',
+            nameGap: 40,
           },
-          yAxisIndex: 1,
-        },
-      ],
+          {
+            type: 'value',
+            name: CHART_TRADE_COUNT,
+            nameRotate: 90,
+            nameLocation: 'middle',
+            nameGap: 30,
+          },
+        ],
+        series: [
+          {
+            type: 'line',
+            name: CHART_ABS_PROFIT,
+            // Color is induced by visualMap
+          },
+          {
+            type: 'bar',
+            name: CHART_TRADE_COUNT,
+            itemStyle: {
+              color: 'rgba(150,150,150,0.3)',
+            },
+            yAxisIndex: 1,
+          },
+        ],
+      };
     });
 
     return {

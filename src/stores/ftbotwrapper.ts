@@ -103,8 +103,8 @@ export const useBotStore = defineStore('wrapper', {
       return result;
     },
     allDailyStatsAllBots: (state): DailyReturnValue => {
+      // Return aggregated daily stats for all bots - sorted ascending.
       const resp: Record<string, DailyRecord> = {};
-
       Object.entries(state.botStores).forEach(([, botStore]) => {
         botStore.dailyStats?.data?.forEach((d) => {
           if (!resp[d.date]) {
@@ -125,7 +125,7 @@ export const useBotStore = defineStore('wrapper', {
         stake_currency: 'USDT',
         // eslint-disable-next-line @typescript-eslint/camelcase
         fiat_display_currency: 'USD',
-        data: Object.values(resp),
+        data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
       };
       return dailyReturn;
     },
@@ -286,10 +286,15 @@ export const useBotStore = defineStore('wrapper', {
         }
       });
     },
-    allGetDaily(payload: DailyPayload) {
+    async allGetDaily(payload: DailyPayload) {
+      const updates: Promise<any>[] = [];
+
       this.allBotStores.forEach((e) => {
-        e.getDaily(payload);
+        if (e.isBotOnline) {
+          updates.push(e.getDaily(payload));
+        }
       });
+      await Promise.all(updates);
     },
     async forceSellMulti(forcesellPayload: MultiForcesellPayload) {
       return this.botStores[forcesellPayload.botId].forceexit(forcesellPayload);

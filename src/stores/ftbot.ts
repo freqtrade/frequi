@@ -492,12 +492,15 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      getDaily(payload: DailyPayload = {}) {
+      async getDaily(payload: DailyPayload = {}) {
         const { timescale = 20 } = payload;
-        return api
-          .get('/daily', { params: { timescale } })
-          .then((result) => (this.dailyStats = result.data))
-          .catch(console.error);
+        try {
+          const { data } = await api.get<DailyReturnValue>('/daily', { params: { timescale } });
+          this.dailyStats = data;
+          return Promise.resolve(data);
+        } catch (error) {
+          return Promise.reject(error);
+        }
       },
       getState() {
         return api
