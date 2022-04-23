@@ -216,8 +216,11 @@ export default defineComponent({
       () => botStore.activeBotorUndefined?.openTradeCount,
       () => {
         console.log('openTradeCount changed');
-        if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
-          setOpenTradesAsPill(botStore.activeBot.openTradeCount);
+        if (
+          settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill &&
+          botStore.activeBotorUndefined?.openTradeCount
+        ) {
+          setOpenTradesAsPill(botStore.activeBotorUndefined.openTradeCount);
         } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
           setTitle();
         }

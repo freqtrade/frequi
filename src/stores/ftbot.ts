@@ -262,7 +262,7 @@ export function createBotSubStore(botId: string, botName: string) {
           const res = await fetchTrades(pageLength, 0);
           const result: TradeResponse = res.data;
           let { trades } = result;
-          if (trades.length !== result.total_trades) {
+          if (Array.isArray(trades) && trades.length !== result.total_trades) {
             // Pagination necessary
             // Don't use Promise.all - this would fire all requests at once, which can
             // cause problems for big sqlite databases
@@ -274,17 +274,18 @@ export function createBotSubStore(botId: string, botName: string) {
               trades = trades.concat(result.trades);
               totalTrades = res.data.total_trades;
             } while (trades.length !== totalTrades);
+            const tradesCount = trades.length;
+            // Add botId to all trades
+            trades = trades.map((t) => ({
+              ...t,
+              botId,
+              botName,
+              botTradeId: `${botId}__${t.trade_id}`,
+            }));
+            this.trades = trades;
+            this.tradeCount = tradesCount;
           }
-          const tradesCount = trades.length;
-          // Add botId to all trades
-          trades = trades.map((t) => ({
-            ...t,
-            botId,
-            botName,
-            botTradeId: `${botId}__${t.trade_id}`,
-          }));
-          this.trades = trades;
-          this.tradeCount = tradesCount;
+
           return Promise.resolve();
         } catch (error) {
           if (axios.isAxiosError(error)) {
@@ -309,15 +310,17 @@ export function createBotSubStore(botId: string, botName: string) {
               // Open trades changed, so we should refresh now.
               this.refreshRequired = true;
               // dispatch('refreshSlow', null, { root: true });
-            }
 
-            const openTrades = result.data.map((t) => ({
-              ...t,
-              botId,
-              botName,
-              botTradeId: `${botId}__${t.trade_id}`,
-            }));
-            this.openTrades = openTrades;
+              const openTrades = result.data.map((t) => ({
+                ...t,
+                botId,
+                botName,
+                botTradeId: `${botId}__${t.trade_id}`,
+              }));
+              this.openTrades = openTrades;
+            } else {
+              this.openTrades = [];
+            }
           })
           .catch(console.error);
       },

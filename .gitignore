@@ -3,6 +3,8 @@ node_modules
 package-lock.json
 /dist
 
+cypress/screenshots/*
+
 # local env files
 .env.local
 .env.*.local
