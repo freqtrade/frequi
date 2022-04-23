@@ -71,70 +71,80 @@
 
 <script lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
-import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 import randomColor from '@/shared/randomColor';
 
-@Component({})
-export default class PlotIndicator extends Vue {
-  @Prop({ required: true }) value!: Record<string, IndicatorConfig>;
+import { defineComponent, computed, ref, watch } from '@vue/composition-api';
 
-  @Prop({ required: true }) columns!: string[];
+export default defineComponent({
+  name: 'PlotIndicator',
+  props: {
+    value: { required: true, type: Object as () => Record<string, IndicatorConfig> },
+    columns: { required: true, type: Array as () => string[] },
+    addNew: { required: true, type: Boolean },
+  },
+  emits: ['input'],
+  setup(props, { emit }) {
+    const selColor = ref(randomColor());
+    const graphType = ref<ChartType>(ChartType.line);
+    const availableGraphTypes = ref(Object.keys(ChartType));
+    const selAvailableIndicator = ref('');
+    const cancelled = ref(false);
 
-  @Prop({ required: true }) addNew!: boolean;
-
-  @Emit('input')
-  emitIndicator() {
-    return this.combinedIndicator;
-  }
-
-  selColor = randomColor();
-
-  graphType: ChartType = ChartType.line;
-
-  availableGraphTypes = Object.keys(ChartType);
-
-  selAvailableIndicator = '';
-
-  cancelled = false;
-
-  @Watch('value')
-  watchValue() {
-    [this.selAvailableIndicator] = Object.keys(this.value);
-    this.cancelled = false;
-    if (this.selAvailableIndicator && this.value) {
-      this.selColor = this.value[this.selAvailableIndicator].color || randomColor();
-      this.graphType = this.value[this.selAvailableIndicator].type || ChartType.line;
-    }
-  }
-
-  @Watch('selColor')
-  watchColor() {
-    if (!this.addNew) {
-      this.emitIndicator();
-    }
-  }
-
-  clickCancel() {
-    this.cancelled = true;
-    this.emitIndicator();
-  }
-
-  get combinedIndicator() {
-    if (this.cancelled || !this.selAvailableIndicator) {
-      return {};
-    }
-    return {
-      [this.selAvailableIndicator]: {
-        color: this.selColor,
-        type: this.graphType,
-      },
+    const newColor = () => {
+      selColor.value = randomColor();
     };
-  }
 
-  newColor() {
-    this.selColor = randomColor();
-  }
-}
+    const combinedIndicator = computed(() => {
+      if (cancelled.value || !selAvailableIndicator.value) {
+        return {};
+      }
+      return {
+        [selAvailableIndicator.value]: {
+          color: selColor.value,
+          type: graphType.value,
+        },
+      };
+    });
+    const emitIndicator = () => {
+      emit('input', combinedIndicator.value);
+    };
+
+    const clickCancel = () => {
+      cancelled.value = true;
+      emitIndicator();
+    };
+
+    watch(
+      () => props.value,
+      () => {
+        [selAvailableIndicator.value] = Object.keys(props.value);
+        cancelled.value = false;
+        if (selAvailableIndicator.value && props.value) {
+          selColor.value = props.value[selAvailableIndicator.value].color || randomColor();
+          graphType.value = props.value[selAvailableIndicator.value].type || ChartType.line;
+        }
+      },
+    );
+
+    watch(selColor, () => {
+      if (!props.addNew) {
+        emitIndicator();
+      }
+    });
+
+    return {
+      selColor,
+      graphType,
+      availableGraphTypes,
+      selAvailableIndicator,
+      cancelled,
+      combinedIndicator,
+      newColor,
+      emitIndicator,
+      clickCancel,
+    };
+  },
+});
 </script>
 
 <style scoped>

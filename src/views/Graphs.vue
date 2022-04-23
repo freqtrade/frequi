@@ -4,7 +4,7 @@
     <!-- Currently only available in Webserver mode -->
     <!-- <b-checkbox v-model="historicView">HistoricData</b-checkbox> -->
     <!-- </div> -->
-    <div v-if="historicView" class="mx-md-3 mt-2">
+    <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
       <div class="d-flex flex-wrap">
         <div class="col-md-3 text-left">
           <span>Strategy</span>
@@ -20,12 +20,18 @@
 
     <div class="mx-2 mt-2 pb-1 h-100">
       <CandleChartContainer
-        :available-pairs="historicView ? pairlist : whitelist"
-        :historic-view="historicView"
-        :timeframe="historicView ? selectedTimeframe : timeframe"
-        :trades="trades"
-        :timerange="historicView ? timerange : ''"
-        :strategy="historicView ? strategy : ''"
+        :available-pairs="
+          botStore.activeBot.isWebserverMode
+            ? botStore.activeBot.pairlist
+            : botStore.activeBot.whitelist
+        "
+        :historic-view="botStore.activeBot.isWebserverMode"
+        :timeframe="
+          botStore.activeBot.isWebserverMode ? selectedTimeframe : botStore.activeBot.timeframe
+        "
+        :trades="botStore.activeBot.trades"
+        :timerange="botStore.activeBot.isWebserverMode ? timerange : ''"
+        :strategy="botStore.activeBot.isWebserverMode ? strategy : ''"
         :plot-config-modal="false"
       >
       </CandleChartContainer>
@@ -34,61 +40,42 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import { AvailablePairPayload, AvailablePairResult, Trade, WhitelistResponse } from '@/types';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
+import { defineComponent, onMounted, ref } from '@vue/composition-api';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
-const ftbot = namespace(StoreModules.ftbot);
-
-@Component({
+export default defineComponent({
+  name: 'Graphs',
   components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },
-})
-export default class Graphs extends Vue {
-  historicView = false;
+  setup() {
+    const botStore = useBotStore();
+    const strategy = ref('');
+    const timerange = ref('');
+    const selectedTimeframe = ref('');
 
-  strategy = '';
+    onMounted(() => {
+      if (botStore.activeBot.isWebserverMode) {
+        // this.refresh();
+        botStore.activeBot.getAvailablePairs({ timeframe: botStore.activeBot.timeframe });
+        // .then((val) => {
+        // console.log(val);
+        // });
+      } else if (!botStore.activeBot.whitelist || botStore.activeBot.whitelist.length === 0) {
+        botStore.activeBot.getWhitelist();
+      }
+    });
 
-  timerange = '';
-
-  selectedTimeframe = '';
-
-  @ftbot.Getter [BotStoreGetters.pairlist]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.trades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.timeframe]!: string;
-
-  @ftbot.Getter [BotStoreGetters.isWebserverMode]!: boolean;
-
-  @ftbot.Action public getWhitelist!: () => Promise<WhitelistResponse>;
-
-  @ftbot.Action public getAvailablePairs!: (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    payload: AvailablePairPayload,
-  ) => Promise<AvailablePairResult>;
-
-  mounted() {
-    this.historicView = this.isWebserverMode;
-    if (!this.whitelist || this.whitelist.length === 0) {
-      this.getWhitelist();
-    }
-    if (this.historicView) {
-      // this.refresh();
-      this.getAvailablePairs({ timeframe: this.timeframe });
-      // .then((val) => {
-      // console.log(val);
-      // });
-    }
-  }
-}
+    return {
+      botStore,
+      strategy,
+      timerange,
+      selectedTimeframe,
+    };
+  },
+});
 </script>
 
 <style scoped></style>

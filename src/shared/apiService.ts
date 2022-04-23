@@ -1,10 +1,6 @@
+import { useBotStore } from '@/stores/ftbotwrapper';
 import axios from 'axios';
 import { UserService } from './userService';
-
-/**
- * Global store variable - keep a reference here to be able to emmit alerts
- */
-let globalStore;
 
 export function useApi(userService: UserService, botId: string) {
   const api = axios.create({
@@ -60,7 +56,8 @@ export function useApi(userService: UserService, botId: string) {
       }
       if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
         console.log('Bot not running...');
-        globalStore.dispatch(`ftbot/${botId}/setIsBotOnline`, false);
+        const botStore = useBotStore();
+        botStore.botStores[botId]?.setIsBotOnline(false);
       }
 
       return new Promise((resolve, reject) => {
@@ -72,13 +69,4 @@ export function useApi(userService: UserService, botId: string) {
   return {
     api,
   };
-}
-
-/**
- * Initialize api so store is accessible.
- * @param store Vuex store
- */
-export function initApi(store) {
-  globalStore = store;
-  //
 }

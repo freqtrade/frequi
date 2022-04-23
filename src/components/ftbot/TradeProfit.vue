@@ -10,25 +10,27 @@
 <script lang="ts">
 import { formatPercent, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import ProfitPill from '@/components/general/ProfitPill.vue';
 
-@Component({ components: { ProfitPill } })
-export default class TradeProfit extends Vue {
-  @Prop({ required: true, type: Object }) trade!: Trade;
+import { defineComponent, computed } from '@vue/composition-api';
 
-  formatPercent = formatPercent;
-
-  timestampms = timestampms;
-
-  get profitDesc(): string {
-    let profit = `Current profit: ${formatPercent(this.trade.profit_ratio)} (${
-      this.trade.profit_abs
-    })`;
-    profit += `\nOpen since: ${timestampms(this.trade.open_timestamp)}`;
-    return profit;
-  }
-}
+export default defineComponent({
+  name: 'TradeProfit',
+  components: { ProfitPill },
+  props: {
+    trade: { required: true, type: Object as () => Trade },
+  },
+  setup(props) {
+    const profitDesc = computed((): string => {
+      let profit = `Current profit: ${formatPercent(props.trade.profit_ratio)} (${
+        props.trade.profit_abs
+      })`;
+      profit += `\nOpen since: ${timestampms(props.trade.open_timestamp)}`;
+      return profit;
+    });
+    return { profitDesc };
+  },
+});
 </script>
 
 <style scoped></style>

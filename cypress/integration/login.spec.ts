@@ -81,6 +81,14 @@ describe('Login', () => {
     cy.get('span').should('contain', 'TestBot');
     // Check API calls have been made.
     cy.wait('@RandomAPICall');
+    // login button gone
+    cy.get('button').should('not.contain', 'Login');
+
+    // Test logout
+    cy.get('[id=avatar-drop]').parent().click();
+    cy.get('.dropdown-menu > a:last').click();
+    cy.get('button').should('contain', 'Login');
+    // login button there again
   });
 
   it('Test Login failed - wrong api url', () => {

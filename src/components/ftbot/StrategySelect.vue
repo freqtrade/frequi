@@ -4,71 +4,59 @@
       <b-form-select
         id="strategy-select"
         v-model="locStrategy"
-        :options="strategyList"
-        @change="strategyChanged"
+        :options="botStore.activeBot.strategyList"
       >
       </b-form-select>
       <div class="ml-2">
-        <b-button @click="getStrategyList">&#x21bb;</b-button>
+        <b-button @click="botStore.activeBot.getStrategyList">&#x21bb;</b-button>
       </div>
     </div>
 
-    <textarea v-if="showDetails && strategy" v-model="strategyCode" class="w-100 h-100"></textarea>
+    <textarea
+      v-if="showDetails && botStore.activeBot.strategy"
+      v-model="strategyCode"
+      class="w-100 h-100"
+    ></textarea>
   </div>
 </template>
 
 <script lang="ts">
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
-import { StrategyResult } from '@/types';
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { defineComponent, computed, onMounted } from '@vue/composition-api';
 
-const ftbot = namespace(StoreModules.ftbot);
+export default defineComponent({
+  name: 'StrategySelect',
+  props: {
+    value: { type: String, required: true },
+    showDetails: { default: false, required: false, type: Boolean },
+  },
+  emits: ['input'],
+  setup(props, { emit }) {
+    const botStore = useBotStore();
 
-@Component({})
-export default class StrategySelect extends Vue {
-  @Prop() value!: string;
+    const strategyCode = computed((): string => botStore.activeBot.strategy?.code);
+    const locStrategy = computed({
+      get() {
+        return props.value;
+      },
+      set(strategy: string) {
+        botStore.activeBot.getStrategy(strategy);
+        emit('input', strategy);
+      },
+    });
 
-  @Prop({ default: false, required: false }) showDetails!: boolean;
-
-  @ftbot.Action getStrategyList;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action getStrategy!: (strategy: string) => void;
-
-  @ftbot.Getter [BotStoreGetters.strategyList]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.strategy]: StrategyResult;
-
-  @Emit('input')
-  emitStrategy(strategy: string) {
-    this.getStrategy(strategy);
-    return strategy;
-  }
-
-  get strategyCode(): string {
-    return this.strategy?.code;
-  }
-
-  get locStrategy() {
-    return this.value;
-  }
-
-  set locStrategy(val) {
-    this.emitStrategy(val);
-  }
-
-  strategyChanged(newVal) {
-    this.value = newVal;
-  }
-
-  mounted() {
-    if (this.strategyList.length === 0) {
-      this.getStrategyList();
-    }
-  }
-}
+    onMounted(() => {
+      if (botStore.activeBot.strategyList.length === 0) {
+        botStore.activeBot.getStrategyList();
+      }
+    });
+    return {
+      botStore,
+      strategyCode,
+      locStrategy,
+    };
+  },
+});
 </script>
 
 <style></style>

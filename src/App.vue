@@ -7,27 +7,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import NavBar from '@/components/layout/NavBar.vue';
 import NavFooter from '@/components/layout/NavFooter.vue';
 import Body from '@/components/layout/Body.vue';
-import { namespace } from 'vuex-class';
-import { SettingsGetters } from './store/modules/settings';
 import { setTimezone } from './shared/formatters';
-import StoreModules from './store/storeSubModules';
+import { defineComponent, onMounted } from '@vue/composition-api';
+import { useSettingsStore } from './stores/settings';
 
-const uiSettingsNs = namespace(StoreModules.uiSettings);
-
-@Component({
+export default defineComponent({
+  name: 'App',
   components: { NavBar, Body, NavFooter },
-})
-export default class App extends Vue {
-  @uiSettingsNs.Getter [SettingsGetters.timezone]: string;
-
-  mounted() {
-    setTimezone(this.timezone);
-  }
-}
+  setup() {
+    const settingsStore = useSettingsStore();
+    onMounted(() => {
+      setTimezone(settingsStore.timezone);
+    });
+    return {};
+  },
+});
 </script>
 
 <style scoped>

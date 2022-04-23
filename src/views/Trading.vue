@@ -25,7 +25,11 @@
       <DraggableContainer header="Multi Pane">
         <b-tabs content-class="mt-3" class="mt-1">
           <b-tab title="Pairs combined" active>
-            <PairSummary :pairlist="whitelist" :current-locks="currentLocks" :trades="openTrades" />
+            <PairSummary
+              :pairlist="botStore.activeBot.whitelist"
+              :current-locks="botStore.activeBot.activeLocks"
+              :trades="botStore.activeBot.openTrades"
+            />
           </b-tab>
           <b-tab title="General">
             <div class="d-flex justify-content-center">
@@ -64,7 +68,7 @@
       <DraggableContainer header="Open Trades">
         <TradeList
           class="open-trades"
-          :trades="openTrades"
+          :trades="botStore.activeBot.openTrades"
           title="Open trades"
           :active-trades="true"
           empty-text="Currently no open trades."
@@ -83,7 +87,7 @@
       <DraggableContainer header="Closed Trades">
         <TradeList
           class="trade-history"
-          :trades="closedTrades"
+          :trades="botStore.activeBot.closedTrades"
           title="Trade history"
           :show-filter="true"
           empty-text="No closed trades so far."
@@ -91,7 +95,7 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
-      v-if="detailTradeId && gridLayoutTradeDetail.h != 0"
+      v-if="botStore.activeBot.detailTradeId && gridLayoutTradeDetail.h != 0"
       :i="gridLayoutTradeDetail.i"
       :x="gridLayoutTradeDetail.x"
       :y="gridLayoutTradeDetail.y"
@@ -101,7 +105,10 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Trade Detail">
-        <TradeDetail :trade="tradeDetail" :stake-currency="stakeCurrency" />
+        <TradeDetail
+          :trade="botStore.activeBot.tradeDetail"
+          :stake-currency="botStore.activeBot.stakeCurrency"
+        />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -116,10 +123,10 @@
     >
       <DraggableContainer header="Chart">
         <CandleChartContainer
-          :available-pairs="whitelist"
+          :available-pairs="botStore.activeBot.whitelist"
           :historic-view="!!false"
-          :timeframe="timeframe"
-          :trades="allTrades"
+          :timeframe="botStore.activeBot.timeframe"
+          :trades="botStore.activeBot.allTrades"
         >
         </CandleChartContainer>
       </DraggableContainer>
@@ -128,8 +135,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import Balance from '@/components/ftbot/Balance.vue';
@@ -145,15 +150,12 @@ import Performance from '@/components/ftbot/Performance.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 
-import { Lock, Trade } from '@/types';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import { TradeLayout, findGridLayout, LayoutGetters, LayoutActions } from '@/store/modules/layout';
-import StoreModules from '@/store/storeSubModules';
+import { defineComponent, ref, computed } from '@vue/composition-api';
+import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
-const ftbot = namespace(StoreModules.ftbot);
-const layoutNs = namespace(StoreModules.layout);
-
-@Component({
+export default defineComponent({
+  name: 'Trading',
   components: {
     Balance,
     BotControls,
@@ -170,98 +172,78 @@ const layoutNs = namespace(StoreModules.layout);
     TradeDetail,
     TradeList,
   },
-})
-export default class Trading extends Vue {
-  @ftbot.Getter [BotStoreGetters.detailTradeId]!: number;
+  setup() {
+    const botStore = useBotStore();
+    const layoutStore = useLayoutStore();
+    const currentBreakpoint = ref('');
 
-  @ftbot.Getter [BotStoreGetters.openTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.closedTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.allTrades]!: Trade[];
-
-  @ftbot.Getter [BotStoreGetters.tradeDetail]!: Trade;
-
-  @ftbot.Getter [BotStoreGetters.timeframe]!: string;
-
-  @ftbot.Getter [BotStoreGetters.currentLocks]!: Lock[];
-
-  @ftbot.Getter [BotStoreGetters.whitelist]!: string[];
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrency]!: string;
-
-  @layoutNs.Getter [LayoutGetters.getTradingLayout]!: GridItemData[];
-
-  @layoutNs.Getter [LayoutGetters.getTradingLayoutSm]!: GridItemData[];
-
-  @layoutNs.Action [LayoutActions.setTradingLayout];
-
-  @layoutNs.Getter [LayoutGetters.getLayoutLocked]: boolean;
-
-  currentBreakpoint = '';
-
-  localGridLayout: GridItemData[] = [];
-
-  get isLayoutLocked() {
-    return this.getLayoutLocked || !this.isResizableLayout;
-  }
-
-  get isResizableLayout() {
-    return ['', 'sm', 'md', 'lg', 'xl'].includes(this.currentBreakpoint);
-  }
-
-  get gridLayout(): GridItemData[] {
-    if (this.isResizableLayout) {
-      return this.getTradingLayout;
-    }
-    return this.localGridLayout;
-  }
-
-  set gridLayout(newLayout) {
-    // Dummy setter to make gridLayout happy. Updates happen through layoutUpdated.
-  }
-
-  get gridLayoutMultiPane(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.multiPane);
-  }
-
-  get gridLayoutOpenTrades(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.openTrades);
-  }
-
-  get gridLayoutTradeHistory(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.tradeHistory);
-  }
-
-  get gridLayoutTradeDetail(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.tradeDetail);
-  }
-
-  get gridLayoutChartView(): GridItemData {
-    return findGridLayout(this.gridLayout, TradeLayout.chartView);
-  }
-
-  mounted() {
-    this.localGridLayout = [...this.getTradingLayoutSm];
-  }
-
-  layoutUpdatedEvent(newLayout) {
-    if (this.isResizableLayout) {
-      this.setTradingLayout(newLayout);
-    }
-  }
-
-  get responsiveGridLayouts() {
-    return {
-      sm: this[LayoutGetters.getTradingLayoutSm],
+    const breakpointChanged = (newBreakpoint) => {
+      // console.log('breakpoint:', newBreakpoint);
+      currentBreakpoint.value = newBreakpoint;
     };
-  }
+    const isResizableLayout = computed(() =>
+      ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+    );
+    const isLayoutLocked = computed(() => {
+      return layoutStore.layoutLocked || !isResizableLayout;
+    });
+    const gridLayout = computed((): GridItemData[] => {
+      if (isResizableLayout) {
+        return layoutStore.tradingLayout;
+      }
+      return [...layoutStore.getTradingLayoutSm];
+    });
 
-  breakpointChanged(newBreakpoint) {
-    console.log('breakpoint:', newBreakpoint);
-    this.currentBreakpoint = newBreakpoint;
-  }
-}
+    const gridLayoutMultiPane = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.multiPane);
+    });
+
+    const gridLayoutOpenTrades = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.openTrades);
+    });
+
+    const gridLayoutTradeHistory = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.tradeHistory);
+    });
+
+    const gridLayoutTradeDetail = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.tradeDetail);
+    });
+
+    const gridLayoutChartView = computed(() => {
+      return findGridLayout(gridLayout.value, TradeLayout.chartView);
+    });
+
+    const responsiveGridLayouts = computed(() => {
+      return {
+        sm: layoutStore.getTradingLayoutSm,
+      };
+    });
+
+    const layoutUpdatedEvent = (newLayout) => {
+      if (isResizableLayout) {
+        layoutStore.tradingLayout = newLayout;
+      }
+    };
+
+    return {
+      botStore,
+
+      layoutStore,
+      breakpointChanged,
+      layoutUpdatedEvent,
+      isLayoutLocked,
+      gridLayout,
+      gridLayoutMultiPane,
+      gridLayoutOpenTrades,
+      gridLayoutTradeHistory,
+      gridLayoutTradeDetail,
+      gridLayoutChartView,
+      responsiveGridLayouts,
+      isResizableLayout,
+    };
+  },
+});
 </script>
 
 <style scoped></style>

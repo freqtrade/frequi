@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form ref="form" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
+    <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
       <b-form-group label="Bot Name" label-for="name-input">
         <b-form-input
           id="name-input"
@@ -72,146 +72,146 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Prop } from 'vue-property-decorator';
-import { Action, namespace } from 'vuex-class';
 import { useUserService } from '@/shared/userService';
 
-import { AuthPayload, BotDescriptor } from '@/types';
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-import StoreModules from '@/store/storeSubModules';
+import { AuthPayload } from '@/types';
+
+import { defineComponent, ref } from '@vue/composition-api';
+import { useRouter, useRoute } from 'vue2-helpers/vue-router';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
 const defaultURL = window.location.origin || 'http://localhost:3000';
-const ftbot = namespace(StoreModules.ftbot);
 
-@Component({})
-export default class Login extends Vue {
-  @Action setLoggedIn;
+export default defineComponent({
+  name: 'Login',
+  props: {
+    inModal: { default: false, type: Boolean },
+  },
+  emits: ['loginResult'],
+  setup(props, { emit }) {
+    const router = useRouter();
+    const route = useRoute();
+    const botStore = useBotStore();
 
-  @ftbot.Getter [MultiBotStoreGetters.nextBotId]: string;
+    const nameState = ref<boolean | null>();
+    const pwdState = ref<boolean | null>();
+    const urlState = ref<boolean | null>();
+    const errorMessage = ref<string>('');
+    const errorMessageCORS = ref<boolean>(false);
+    const formRef = ref<HTMLFormElement>();
+    const auth = ref<AuthPayload>({
+      botName: '',
+      url: defaultURL,
+      username: '',
+      password: '',
+    });
 
-  @ftbot.Getter [MultiBotStoreGetters.selectedBot]: string;
+    const emitLoginResult = (value: boolean) => {
+      emit('loginResult', value);
+    };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action addBot!: (payload: BotDescriptor) => void;
+    const checkFormValidity = () => {
+      const valid = formRef.value?.checkValidity();
+      nameState.value = valid || auth.value.username !== '';
+      pwdState.value = valid || auth.value.password !== '';
+      return valid;
+    };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action selectBot!: (botId: string) => void;
+    const resetLogin = () => {
+      auth.value.url = defaultURL;
+      auth.value.username = '';
+      auth.value.password = '';
+      nameState.value = null;
+      pwdState.value = null;
+      errorMessage.value = '';
+    };
 
-  @ftbot.Action allRefreshFull;
+    const handleReset = (evt) => {
+      evt.preventDefault();
+      resetLogin();
+    };
 
-  @Prop({ default: false }) inModal!: boolean;
+    const handleSubmit = () => {
+      // Exit when the form isn't valid
+      if (!checkFormValidity()) {
+        return;
+      }
+      errorMessage.value = '';
+      const userService = useUserService(botStore.nextBotId);
+      // Push the name to submitted names
+      userService
+        .login(auth.value)
+        .then(() => {
+          const botId = botStore.nextBotId;
+          botStore.addBot({
+            botName: auth.value.botName,
+            botId,
+            botUrl: auth.value.url,
+          });
+          if (botStore.selectedBot === '') {
+            console.log(`selecting bot ${botId}`);
+            botStore.selectBot(botId);
+          }
 
-  $refs!: {
-    form: HTMLFormElement;
-  };
-
-  auth: AuthPayload = {
-    botName: '',
-    url: defaultURL,
-    username: '',
-    password: '',
-  };
-
-  @Emit('loginResult')
-  emitLoginResult(value: boolean) {
-    return value;
-  }
-
-  nameState: boolean | null = null;
-
-  pwdState: boolean | null = null;
-
-  urlState: boolean | null = null;
-
-  errorMessage = '';
-
-  errorMessageCORS = false;
-
-  checkFormValidity() {
-    const valid = this.$refs.form.checkValidity();
-    this.nameState = valid || this.auth.username !== '';
-    this.pwdState = valid || this.auth.password !== '';
-    return valid;
-  }
-
-  resetLogin() {
-    this.auth.url = defaultURL;
-    this.auth.username = '';
-    this.auth.password = '';
-    this.nameState = null;
-    this.pwdState = null;
-    this.errorMessage = '';
-  }
-
-  handleReset(evt) {
-    evt.preventDefault();
-    this.resetLogin();
-  }
-
-  handleOk(evt) {
-    evt.preventDefault();
-    this.handleSubmit();
-  }
-
-  handleSubmit() {
-    // Exit when the form isn't valid
-    if (!this.checkFormValidity()) {
-      return;
-    }
-    this.errorMessage = '';
-    const userService = useUserService(this.nextBotId);
-    // Push the name to submitted names
-    userService
-      .login(this.auth)
-      .then(() => {
-        const botId = this.nextBotId;
-        this.addBot({
-          botName: this.auth.botName,
-          botId,
-          botUrl: this.auth.url,
-        });
-        if (this.selectedBot === '') {
-          console.log(`selecting bot ${botId}`);
-          this.selectBot(botId);
-        }
-
-        this.emitLoginResult(true);
-        this.allRefreshFull();
-        if (this.inModal === false) {
-          if (typeof this.$route.query.redirect === 'string') {
-            const resolved = this.$router.resolve({ path: this.$route.query.redirect });
-            if (resolved.route.name !== '404') {
-              this.$router.push(resolved.route.path);
+          emitLoginResult(true);
+          botStore.allRefreshFull();
+          if (props.inModal === false) {
+            if (typeof route?.query.redirect === 'string') {
+              const resolved = router.resolve({ path: route.query.redirect });
+              if (resolved.route.name !== '404') {
+                router.push(resolved.route.path);
+              } else {
+                router.push('/');
+              }
             } else {
-              this.$router.push('/');
+              router.push('/');
             }
+          }
+        })
+        .catch((error) => {
+          errorMessageCORS.value = false;
+          // this.nameState = false;
+          console.error(error);
+          if (error.response && error.response.status === 401) {
+            nameState.value = false;
+            pwdState.value = false;
+            errorMessage.value =
+              'Connected to bot, however Login failed, Username or Password wrong.';
           } else {
-            this.$router.push('/');
-          }
-        }
-      })
-      .catch((error) => {
-        this.errorMessageCORS = false;
-        // this.nameState = false;
-        console.error(error.response);
-        if (error.response && error.response.status === 401) {
-          this.nameState = false;
-          this.pwdState = false;
-          this.errorMessage = 'Connected to bot, however Login failed, Username or Password wrong.';
-        } else {
-          this.urlState = false;
-          this.errorMessage = `Login failed.
+            urlState.value = false;
+            errorMessage.value = `Login failed.
 Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
-You can verify this by navigating to ${this.auth.url}/api/v1/ping to make sure the bot API is reachable`;
-          if (this.auth.url !== window.location.origin) {
-            this.errorMessageCORS = true;
+You can verify this by navigating to ${auth.value.url}/api/v1/ping to make sure the bot API is reachable`;
+            if (auth.value.url !== window.location.origin) {
+              errorMessageCORS.value = true;
+            }
           }
-        }
-        console.error(this.errorMessage);
-        this.emitLoginResult(false);
-      });
-  }
-}
+          console.error(errorMessage.value);
+          emitLoginResult(false);
+        });
+    };
+
+    const handleOk = (evt) => {
+      evt.preventDefault();
+      handleSubmit();
+    };
+
+    return {
+      nameState,
+      pwdState,
+      urlState,
+      errorMessage,
+      auth,
+      checkFormValidity,
+      resetLogin,
+      handleReset,
+      handleOk,
+      handleSubmit,
+      formRef,
+      errorMessageCORS,
+    };
+  },
+});
 </script>
 
 <style scoped lang="scss">

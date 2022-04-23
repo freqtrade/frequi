@@ -4,38 +4,39 @@
 
 <script lang="ts">
 import { timestampms, timestampmsWithTimezone, timestampToDateString } from '@/shared/formatters';
-import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component({})
-export default class DateTimeTZ extends Vue {
-  @Prop({ required: true, type: Number }) date!: number;
+import { defineComponent, computed } from '@vue/composition-api';
 
-  @Prop({ required: false, type: Boolean, default: false }) showTimezone!: boolean;
+export default defineComponent({
+  name: 'DateTimeTZ',
+  props: {
+    date: { required: true, type: Number },
+    showTimezone: { required: false, type: Boolean, default: false },
+    dateOnly: { required: false, type: Boolean, default: false },
+  },
+  setup(props) {
+    const formattedDate = computed((): string => {
+      if (props.dateOnly) {
+        return timestampToDateString(props.date);
+      }
+      if (props.showTimezone) {
+        return timestampmsWithTimezone(props.date);
+      }
+      return timestampms(props.date);
+    });
 
-  @Prop({ required: false, type: Boolean, default: false }) dateOnly!: boolean;
+    const timezoneTooltip = computed((): string => {
+      const time1 = timestampmsWithTimezone(props.date);
+      const timeUTC = timestampmsWithTimezone(props.date, 'UTC');
+      if (time1 === timeUTC) {
+        return timeUTC;
+      }
 
-  timestampms = timestampms;
-
-  get formattedDate(): string {
-    if (this.dateOnly) {
-      return timestampToDateString(this.date);
-    }
-    if (this.showTimezone) {
-      return timestampmsWithTimezone(this.date);
-    }
-    return timestampms(this.date);
-  }
-
-  get timezoneTooltip(): string {
-    const time1 = timestampmsWithTimezone(this.date);
-    const timeUTC = timestampmsWithTimezone(this.date, 'UTC');
-    if (time1 === timeUTC) {
-      return timeUTC;
-    }
-
-    return `${time1}\n${timeUTC}`;
-  }
-}
+      return `${time1}\n${timeUTC}`;
+    });
+    return { formattedDate, timezoneTooltip };
+  },
+});
 </script>
 
 <style scoped></style>

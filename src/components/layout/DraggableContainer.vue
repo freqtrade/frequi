@@ -10,12 +10,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 
-@Component({})
-export default class DraggableContainer extends Vue {
-  @Prop({ required: true, type: String }) header!: string;
-}
+export default defineComponent({
+  name: 'DraggableContainer',
+  props: {
+    header: { required: true, type: String },
+  },
+});
 </script>
 
 <style scoped>

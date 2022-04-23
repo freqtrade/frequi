@@ -2,21 +2,23 @@
   <div class="container-fluid" style="max-height: calc(100vh - 60px)">
     <div class="container-fluid">
       <div class="row mb-2"></div>
-      <p v-if="!canRunBacktest">Bot must be in webserver mode to enable Backtesting.</p>
+      <p v-if="!botStore.activeBot.canRunBacktest">
+        Bot must be in webserver mode to enable Backtesting.
+      </p>
       <div class="row w-100">
         <h2 class="col-4 col-lg-3">Backtesting</h2>
         <div
           class="col-12 col-lg-order-last col-lg-6 mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4"
-          :disabled="canRunBacktest"
+          :disabled="botStore.activeBot.canRunBacktest"
         >
           <b-form-radio
-            v-if="botApiVersion >= 2.15"
+            v-if="botStore.activeBot.botApiVersion >= 2.15"
             v-model="btFormMode"
             name="bt-form-radios"
             button
             class="mx-1 flex-samesize-items"
             value="historicResults"
-            :disabled="!canRunBacktest"
+            :disabled="!botStore.activeBot.canRunBacktest"
             >Load Results</b-form-radio
           >
           <b-form-radio
@@ -25,7 +27,7 @@
             button
             class="mx-1 flex-samesize-items"
             value="run"
-            :disabled="!canRunBacktest"
+            :disabled="!botStore.activeBot.canRunBacktest"
             >Run backtest</b-form-radio
           >
           <b-form-radio
@@ -57,8 +59,11 @@
             >Visualize result</b-form-radio
           >
         </div>
-        <small v-show="backtestRunning" class="text-right bt-running-label col-8 col-lg-3"
-          >Backtest running: {{ backtestStep }} {{ formatPercent(backtestProgress, 2) }}</small
+        <small
+          v-show="botStore.activeBot.backtestRunning"
+          class="text-right bt-running-label col-8 col-lg-3"
+          >Backtest running: {{ botStore.activeBot.backtestStep }}
+          {{ formatPercent(botStore.activeBot.backtestProgress, 2) }}</small
         >
       </div>
     </div>
@@ -79,8 +84,8 @@
         <transition name="fade" mode="in-out">
           <BacktestResultSelect
             v-if="btFormMode !== 'visualize' && showLeftBar"
-            :backtest-history="backtestHistory"
-            :selected-backtest-result-key="selectedBacktestResultKey"
+            :backtest-history="botStore.activeBot.backtestHistory"
+            :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
             @selectionChange="setBacktestResult"
           />
         </transition>
@@ -97,7 +102,7 @@
           <span>Strategy</span>
           <StrategySelect v-model="strategy"></StrategySelect>
         </div>
-        <b-card bg-variant="light" :disabled="backtestRunning">
+        <b-card bg-variant="light" :disabled="botStore.activeBot.backtestRunning">
           <!-- Backtesting parameters -->
           <b-form-group
             label-cols-lg="2"
@@ -211,7 +216,7 @@
           <b-button
             id="start-backtest"
             variant="primary"
-            :disabled="backtestRunning || !canRunBacktest"
+            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
             class="mx-1"
             @click="clickBacktest"
           >
@@ -219,31 +224,31 @@
           </b-button>
           <b-button
             variant="primary"
-            :disabled="backtestRunning || !canRunBacktest"
+            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
             class="mx-1"
-            @click="pollBacktest"
+            @click="botStore.activeBot.pollBacktest"
           >
             Load backtest result
           </b-button>
           <b-button
             variant="primary"
             class="mx-1"
-            :disabled="!backtestRunning"
-            @click="stopBacktest"
+            :disabled="!botStore.activeBot.backtestRunning"
+            @click="botStore.activeBot.stopBacktest"
             >Stop Backtest</b-button
           >
           <b-button
             variant="primary"
             class="mx-1"
-            :disabled="backtestRunning || !canRunBacktest"
-            @click="removeBacktest"
+            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
+            @click="botStore.activeBot.removeBacktest"
             >Reset Backtest</b-button
           >
         </div>
       </div>
       <BacktestResultView
         v-if="hasBacktestResult && btFormMode == 'results'"
-        :backtest-result="selectedBacktestResult"
+        :backtest-result="botStore.activeBot.selectedBacktestResult"
         class="flex-fill"
       />
 
@@ -251,9 +256,12 @@
         v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
         class="text-center flex-fill mt-2 d-flex flex-column"
       >
-        <TradesLogChart :trades="selectedBacktestResult.trades" class="trades-log" />
+        <TradesLogChart
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
+          class="trades-log"
+        />
         <CumProfitChart
-          :trades="selectedBacktestResult.trades"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           profit-column="profit_abs"
           class="cum-profit"
           :show-title="true"
@@ -272,19 +280,19 @@
         <PairSummary
           class="col-md-2 overflow-auto"
           style="max-height: calc(100vh - 200px)"
-          :pairlist="selectedBacktestResult.pairlist"
-          :trades="selectedBacktestResult.trades"
+          :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           sort-method="profit"
           :backtest-mode="true"
         />
         <CandleChartContainer
-          :available-pairs="selectedBacktestResult.pairlist"
+          :available-pairs="botStore.activeBot.selectedBacktestResult.pairlist"
           :historic-view="!!true"
           :timeframe="timeframe"
           :plot-config="selectedPlotConfig"
           :timerange="timerange"
           :strategy="strategy"
-          :trades="selectedBacktestResult.trades"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           class="col-md-10 candle-chart-container px-0 w-100 h-100"
         >
         </CandleChartContainer>
@@ -292,9 +300,9 @@
       <b-card header="Single trades" class="row mt-2 w-100">
         <TradeList
           class="row trade-history mt-2 w-100"
-          :trades="selectedBacktestResult.trades"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
           :show-filter="true"
-          :stake-currency="selectedBacktestResult.stake_currency"
+          :stake-currency="botStore.activeBot.selectedBacktestResult.stake_currency"
         />
       </b-card>
     </div>
@@ -302,14 +310,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import ValuePair from '@/components/general/ValuePair.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
@@ -317,23 +322,15 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 
-import {
-  BacktestPayload,
-  BacktestSteps,
-  BotState,
-  PairHistory,
-  PairHistoryPayload,
-  PlotConfig,
-  StrategyBacktestResult,
-} from '@/types';
+import { BacktestPayload, PlotConfig } from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
+import { defineComponent, computed, ref, onMounted, watch } from '@vue/composition-api';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
-const ftbot = namespace(StoreModules.ftbot);
-@Component({
+export default defineComponent({
+  name: 'Backtesting',
   components: {
     BacktestResultView,
     BacktestResultSelect,
@@ -343,154 +340,125 @@ const ftbot = namespace(StoreModules.ftbot);
     CumProfitChart,
     TradesLogChart,
     StrategySelect,
-    ValuePair,
     PairSummary,
     TimeframeSelect,
     TradeList,
   },
-})
-export default class Backtesting extends Vue {
-  pollInterval: number | null = null;
+  setup() {
+    const botStore = useBotStore();
 
-  showLeftBar = false;
-
-  selectedTimeframe = '';
-
-  selectedDetailTimeframe = '';
-
-  strategy = '';
-
-  timerange = '';
-
-  enableProtections = false;
-
-  maxOpenTrades = '';
-
-  stakeAmountUnlimited = false;
-
-  stakeAmount = '';
-
-  startingCapital = '';
-
-  btFormMode = 'run';
-
-  selectedPlotConfig: PlotConfig = getCustomPlotConfig(getPlotConfigName());
-
-  @ftbot.Getter [BotStoreGetters.backtestRunning]!: boolean;
-
-  @ftbot.Getter [BotStoreGetters.backtestStep]!: BacktestSteps;
-
-  @ftbot.Getter [BotStoreGetters.botState]?: BotState;
-
-  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
-
-  @ftbot.Getter [BotStoreGetters.backtestProgress]!: number;
-
-  @ftbot.Getter [BotStoreGetters.backtestHistory]!: StrategyBacktestResult[];
-
-  @ftbot.Getter [BotStoreGetters.selectedBacktestResultKey]!: string;
-
-  @ftbot.Getter [BotStoreGetters.history]!: PairHistory;
-
-  @ftbot.Getter [BotStoreGetters.selectedBacktestResult]!: StrategyBacktestResult;
-
-  @ftbot.Getter [BotStoreGetters.canRunBacktest]!: boolean;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action getPairHistory!: (payload: PairHistoryPayload) => void;
-
-  @ftbot.Action getState;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action startBacktest!: (payload: BacktestPayload) => void;
-
-  @ftbot.Action pollBacktest!: () => void;
-
-  @ftbot.Action removeBacktest!: () => void;
-
-  @ftbot.Action stopBacktest!: () => void;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action setBacktestResultKey!: (key: string) => void;
-
-  formatPercent = formatPercent;
-
-  get hasBacktestResult() {
-    return this.backtestHistory ? Object.keys(this.backtestHistory).length !== 0 : false;
-  }
-
-  get timeframe(): string {
-    try {
-      return this.selectedBacktestResult.timeframe;
-    } catch (err) {
-      return '';
-    }
-  }
-
-  mounted() {
-    this.getState();
-  }
-
-  setBacktestResult(key: string) {
-    this.setBacktestResultKey(key);
-
-    // Set parameters for this result
-    this.strategy = this.selectedBacktestResult.strategy_name;
-    this.selectedTimeframe = this.selectedBacktestResult.timeframe;
-    this.selectedDetailTimeframe = this.selectedBacktestResult.timeframe_detail || '';
-    this.timerange = this.selectedBacktestResult.timerange;
-  }
-
-  clickBacktest() {
-    const btPayload: BacktestPayload = {
-      strategy: this.strategy,
-      timerange: this.timerange,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      enable_protections: this.enableProtections,
-    };
-    const openTradesInt = parseInt(this.maxOpenTrades, 10);
-    if (openTradesInt) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.max_open_trades = openTradesInt;
-    }
-    if (this.stakeAmountUnlimited) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.stake_amount = 'unlimited';
-    } else {
-      const stakeAmount = Number(this.stakeAmount);
-      if (stakeAmount) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        btPayload.stake_amount = stakeAmount.toString();
+    const hasBacktestResult = computed(() =>
+      botStore.activeBot.backtestHistory
+        ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
+        : false,
+    );
+    const timeframe = computed((): string => {
+      try {
+        return botStore.activeBot.selectedBacktestResult.timeframe;
+      } catch (err) {
+        return '';
       }
-    }
+    });
 
-    const startingCapital = Number(this.startingCapital);
-    if (startingCapital) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.dry_run_wallet = startingCapital;
-    }
+    const strategy = ref('');
+    const selectedTimeframe = ref('');
+    const selectedDetailTimeframe = ref('');
+    const timerange = ref('');
+    const showLeftBar = ref(false);
+    const enableProtections = ref(false);
+    const stakeAmountUnlimited = ref(false);
+    const maxOpenTrades = ref('');
+    const stakeAmount = ref('');
+    const startingCapital = ref('');
+    const btFormMode = ref('run');
+    const pollInterval = ref<number | null>(null);
+    const selectedPlotConfig = ref<PlotConfig>(getCustomPlotConfig(getPlotConfigName()));
 
-    if (this.selectedTimeframe) {
-      btPayload.timeframe = this.selectedTimeframe;
-    }
-    if (this.selectedDetailTimeframe) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      btPayload.timeframe_detail = this.selectedDetailTimeframe;
-    }
+    const setBacktestResult = (key: string) => {
+      botStore.activeBot.setBacktestResultKey(key);
 
-    this.startBacktest(btPayload);
-  }
+      // Set parameters for this result
+      strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
+      selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
+      selectedDetailTimeframe.value =
+        botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+      timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
+    };
 
-  @Watch('backtestRunning')
-  backtestRunningChanged() {
-    if (this.backtestRunning === true) {
-      this.pollInterval = window.setInterval(this.pollBacktest, 1000);
-    } else if (this.pollInterval) {
-      clearInterval(this.pollInterval);
-      this.pollInterval = null;
-    }
-  }
-}
+    const clickBacktest = () => {
+      const btPayload: BacktestPayload = {
+        strategy: strategy.value,
+        timerange: timerange.value,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        enable_protections: enableProtections.value,
+      };
+      const openTradesInt = parseInt(maxOpenTrades.value, 10);
+      if (openTradesInt) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        btPayload.max_open_trades = openTradesInt;
+      }
+      if (stakeAmountUnlimited.value) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        btPayload.stake_amount = 'unlimited';
+      } else {
+        const stakeAmountLoc = Number(stakeAmount.value);
+        if (stakeAmountLoc) {
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          btPayload.stake_amount = stakeAmountLoc.toString();
+        }
+      }
+
+      const startingCapitalLoc = Number(startingCapital.value);
+      if (startingCapitalLoc) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        btPayload.dry_run_wallet = startingCapitalLoc;
+      }
+
+      if (selectedTimeframe.value) {
+        btPayload.timeframe = selectedTimeframe.value;
+      }
+      if (selectedDetailTimeframe.value) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        btPayload.timeframe_detail = selectedDetailTimeframe.value;
+      }
+
+      botStore.activeBot.startBacktest(btPayload);
+    };
+    onMounted(() => botStore.activeBot.getState());
+    watch(
+      () => botStore.activeBot.backtestRunning,
+      () => {
+        if (botStore.activeBot.backtestRunning === true) {
+          pollInterval.value = window.setInterval(botStore.activeBot.pollBacktest, 1000);
+        } else if (pollInterval.value) {
+          clearInterval(pollInterval.value);
+          pollInterval.value = null;
+        }
+      },
+    );
+    return {
+      botStore,
+
+      formatPercent,
+      hasBacktestResult,
+      timeframe,
+      setBacktestResult,
+      strategy,
+      selectedTimeframe,
+      selectedDetailTimeframe,
+      timerange,
+      enableProtections,
+      showLeftBar,
+      stakeAmountUnlimited,
+      maxOpenTrades,
+      stakeAmount,
+      startingCapital,
+      btFormMode,
+      selectedPlotConfig,
+      clickBacktest,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

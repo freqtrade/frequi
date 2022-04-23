@@ -5,16 +5,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { defineComponent, computed } from '@vue/composition-api';
 
-@Component({})
-export default class ProfitSymbol extends Vue {
-  @Prop({ required: true, type: Number }) profit!: number;
-
-  get isProfitable() {
-    return this.profit > 0;
-  }
-}
+export default defineComponent({
+  name: 'ProfitSymbol',
+  props: {
+    profit: { type: Number, required: true },
+  },
+  setup(props) {
+    const isProfitable = computed(() => {
+      return props.profit > 0;
+    });
+    return {
+      isProfitable,
+    };
+  },
+});
 </script>
 
 <style scoped lang="scss">

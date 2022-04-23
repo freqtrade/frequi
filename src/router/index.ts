@@ -1,12 +1,7 @@
-import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Error404 from '@/views/Error404.vue';
-import store from '@/store';
-import StoreModules from '@/store/storeSubModules';
-import { MultiBotStoreGetters } from '@/store/modules/botStoreWrapper';
-
-Vue.use(VueRouter);
+import { initBots, useBotStore } from '@/stores/ftbotwrapper';
 
 const routes: Array<RouteConfig> = [
   {
@@ -88,8 +83,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const hasBots = store.getters[`${StoreModules.ftbot}/${MultiBotStoreGetters.hasBots}`];
-  if (!to.meta?.allowAnonymous && !hasBots) {
+  // Init bots here...
+  initBots();
+  const botStore = useBotStore();
+  if (!to.meta?.allowAnonymous && !botStore.hasBots) {
     // Forward to login if login is required
     next({
       path: '/login',

@@ -26,7 +26,7 @@
         <b-popover :target="`btn-actions_${row.index}`" triggers="focus" placement="left">
           <trade-actions
             :trade="row.item"
-            :bot-api-version="botApiVersion"
+            :bot-api-version="botStore.activeBot.botApiVersion"
             @deleteTrade="removeTradeHandler"
             @forceSell="forcesellHandler"
           />
@@ -44,7 +44,7 @@
       <template #cell(trade_id)="row">
         {{ row.item.trade_id }}
         {{
-          botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
+          botStore.activeBot.botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
             ? '| ' + (row.item.is_short ? 'Short' : 'Long')
             : ''
         }}
@@ -80,197 +80,181 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import StoreModules from '@/store/storeSubModules';
 import TradeProfit from './TradeProfit.vue';
 import TradeActions from './TradeActions.vue';
 
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
-@Component({
+export default defineComponent({
+  name: 'TradeList',
   components: { ActionIcon, DateTimeTZ, TradeProfit, TradeActions },
-})
-export default class TradeList extends Vue {
-  $refs!: {
-    tradesTable: HTMLFormElement;
-  };
+  props: {
+    trades: { required: true, type: Array as () => Array<Trade> },
+    title: { default: 'Trades', type: String },
+    stakeCurrency: { required: false, default: '', type: String },
+    activeTrades: { default: false, type: Boolean },
+    showFilter: { default: false, type: Boolean },
+    multiBotView: { default: false, type: Boolean },
+    emptyText: { default: 'No Trades to show.', type: String },
+  },
+  setup(props, { root }) {
+    const botStore = useBotStore();
+    const currentPage = ref(1);
+    const selectedItemIndex = ref();
+    const filterText = ref('');
+    const perPage = props.activeTrades ? 200 : 15;
+    const tradesTable = ref<HTMLFormElement>();
 
-  formatPercent = formatPercent;
-
-  formatPrice = formatPrice;
-
-  @Prop({ required: true }) trades!: Array<Trade>;
-
-  @Prop({ default: 'Trades' }) title!: string;
-
-  @Prop({ required: false, default: '' }) stakeCurrency!: string;
-
-  @Prop({ default: false }) activeTrades!: boolean;
-
-  @Prop({ default: false }) showFilter!: boolean;
-
-  @Prop({ default: false, type: Boolean }) multiBotView!: boolean;
-
-  @Prop({ default: 'No Trades to show.' }) emptyText!: string;
-
-  @ftbot.Getter [BotStoreGetters.detailTradeId]?: number;
-
-  @ftbot.Getter [BotStoreGetters.stakeCurrencyDecimals]!: number;
-
-  @ftbot.Getter [BotStoreGetters.botApiVersion]: number;
-
-  @ftbot.Action setDetailTrade;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action forceSellMulti!: (payload: MultiForcesellPayload) => Promise<string>;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action deleteTradeMulti!: (payload: MultiDeletePayload) => Promise<string>;
-
-  currentPage = 1;
-
-  selectedItemIndex? = undefined;
-
-  filterText = '';
-
-  @Watch('detailTradeId')
-  watchTradeDetail(val) {
-    const index = this.trades.findIndex((v) => v.trade_id === val);
-    // Unselect when another tradeTable is selected!
-    if (index < 0) {
-      this.$refs.tradesTable.clearSelected();
-    }
-  }
-
-  get rows(): number {
-    return this.trades.length;
-  }
-
-  perPage = this.activeTrades ? 200 : 15;
-
-  // Added to table-fields for current trades
-  openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
-
-  // Added to table-fields for historic trades
-  closedFields: Record<string, string | Function>[] = [
-    { key: 'close_timestamp', label: 'Close date' },
-    { key: 'exit_reason', label: 'Close Reason' },
-  ];
-
-  tableFields: Record<string, string | Function>[] = [
-    this.multiBotView ? { key: 'botName', label: 'Bot' } : {},
-    { key: 'trade_id', label: 'ID' },
-    { key: 'pair', label: 'Pair' },
-    { key: 'amount', label: 'Amount' },
-    {
-      key: 'stake_amount',
-      label: 'Stake amount',
-      formatter: (value: number) => this.formatPriceWithDecimals(value),
-    },
-    {
-      key: 'open_rate',
-      label: 'Open rate',
-      formatter: (value: number) => this.formatPrice(value),
-    },
-    {
-      key: this.activeTrades ? 'current_rate' : 'close_rate',
-      label: this.activeTrades ? 'Current rate' : 'Close rate',
-      formatter: (value: number) => this.formatPrice(value),
-    },
-    {
-      key: 'profit',
-      label: this.activeTrades ? 'Current profit %' : 'Profit %',
-      formatter: (value: number, key, item: Trade) => {
-        const percent = formatPercent(item.profit_ratio, 2);
-        return `${percent} ${`(${this.formatPriceWithDecimals(item.profit_abs)})`}`;
+    const openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
+    const closedFields: Record<string, string | Function>[] = [
+      { key: 'close_timestamp', label: 'Close date' },
+      { key: 'exit_reason', label: 'Close Reason' },
+    ];
+    const formatPriceWithDecimals = (price) => {
+      return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
+    };
+    const rows = computed(() => {
+      return props.trades.length;
+    });
+    const tableFields: Record<string, string | Function>[] = [
+      props.multiBotView ? { key: 'botName', label: 'Bot' } : {},
+      { key: 'trade_id', label: 'ID' },
+      { key: 'pair', label: 'Pair' },
+      { key: 'amount', label: 'Amount' },
+      {
+        key: 'stake_amount',
+        label: 'Stake amount',
+        formatter: (value: number) => formatPriceWithDecimals(value),
       },
-    },
-    { key: 'open_timestamp', label: 'Open date' },
-    ...(this.activeTrades ? this.openFields : this.closedFields),
-  ];
+      {
+        key: 'open_rate',
+        label: 'Open rate',
+        formatter: (value: number) => formatPrice(value),
+      },
+      {
+        key: props.activeTrades ? 'current_rate' : 'close_rate',
+        label: props.activeTrades ? 'Current rate' : 'Close rate',
+        formatter: (value: number) => formatPrice(value),
+      },
+      {
+        key: 'profit',
+        label: props.activeTrades ? 'Current profit %' : 'Profit %',
+        formatter: (value: number, key, item: Trade) => {
+          const percent = formatPercent(item.profit_ratio, 2);
+          return `${percent} ${`(${formatPriceWithDecimals(item.profit_abs)})`}`;
+        },
+      },
+      { key: 'open_timestamp', label: 'Open date' },
+      ...(props.activeTrades ? openFields : closedFields),
+    ];
 
-  formatPriceWithDecimals(price) {
-    return formatPrice(price, this.stakeCurrencyDecimals);
-  }
-
-  forcesellHandler(item: Trade, ordertype: string | undefined = undefined) {
-    this.$bvModal
-      .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
-      .then((value: boolean) => {
-        if (value) {
-          const payload: MultiForcesellPayload = {
-            tradeid: String(item.trade_id),
-            botId: item.botId,
-          };
-          if (ordertype) {
-            payload.ordertype = ordertype;
+    const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
+      root.$bvModal
+        .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
+        .then((value: boolean) => {
+          if (value) {
+            const payload: MultiForcesellPayload = {
+              tradeid: String(item.trade_id),
+              botId: item.botId,
+            };
+            if (ordertype) {
+              payload.ordertype = ordertype;
+            }
+            botStore
+              .forceSellMulti(payload)
+              .then((xxx) => console.log(xxx))
+              .catch((error) => console.log(error.response));
           }
-          this.forceSellMulti(payload)
-            .then((xxx) => console.log(xxx))
-            .catch((error) => console.log(error.response));
-        }
-      });
-  }
+        });
+    };
 
-  handleContextMenuEvent(item, index, event) {
-    // stop browser context menu from appearing
-    if (!this.activeTrades) {
-      return;
-    }
-    event.preventDefault();
-    // log the selected item to the console
-    console.log(item);
-  }
-
-  removeTradeHandler(item) {
-    console.log(item);
-    this.$bvModal
-      .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
-      .then((value: boolean) => {
-        if (value) {
-          const payload: MultiDeletePayload = {
-            tradeid: String(item.trade_id),
-            botId: item.botId,
-          };
-          this.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-        }
-      });
-  }
-
-  onRowClicked(item, index) {
-    // Only allow single selection mode!
-    if (
-      item &&
-      item.trade_id !== this.detailTradeId &&
-      !this.$refs.tradesTable.isRowSelected(index)
-    ) {
-      this.setDetailTrade(item);
-    } else {
-      console.log('unsetting item');
-      this.setDetailTrade(null);
-    }
-  }
-
-  onRowSelected() {
-    if (this.detailTradeId) {
-      const itemIndex = this.trades.findIndex((v) => v.trade_id === this.detailTradeId);
-      if (itemIndex >= 0) {
-        this.$refs.tradesTable.selectRow(itemIndex);
-      } else {
-        console.log(`Unsetting item for tradeid ${this.selectedItemIndex}`);
-        this.selectedItemIndex = undefined;
+    const handleContextMenuEvent = (item, index, event) => {
+      // stop browser context menu from appearing
+      if (!props.activeTrades) {
+        return;
       }
-    }
-  }
-}
+      event.preventDefault();
+      // log the selected item to the console
+      console.log(item);
+    };
+
+    const removeTradeHandler = (item) => {
+      console.log(item);
+      root.$bvModal
+        .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
+        .then((value: boolean) => {
+          if (value) {
+            const payload: MultiDeletePayload = {
+              tradeid: String(item.trade_id),
+              botId: item.botId,
+            };
+            botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
+          }
+        });
+    };
+
+    const onRowClicked = (item, index) => {
+      // Only allow single selection mode!
+      if (
+        item &&
+        item.trade_id !== botStore.activeBot.detailTradeId &&
+        !tradesTable.value?.isRowSelected(index)
+      ) {
+        botStore.activeBot.setDetailTrade(item);
+      } else {
+        console.log('unsetting item');
+        botStore.activeBot.setDetailTrade(null);
+      }
+    };
+
+    const onRowSelected = () => {
+      if (botStore.activeBot.detailTradeId) {
+        const itemIndex = props.trades.findIndex(
+          (v) => v.trade_id === botStore.activeBot.detailTradeId,
+        );
+        if (itemIndex >= 0) {
+          tradesTable.value?.selectRow(itemIndex);
+        } else {
+          console.log(`Unsetting item for tradeid ${selectedItemIndex.value}`);
+          selectedItemIndex.value = undefined;
+        }
+      }
+    };
+
+    watch(
+      () => botStore.activeBot.detailTradeId,
+      (val: number) => {
+        const index = props.trades.findIndex((v) => v.trade_id === val);
+        // Unselect when another tradeTable is selected!
+        if (index < 0) {
+          tradesTable.value?.clearSelected();
+        }
+      },
+    );
+
+    return {
+      botStore,
+      currentPage,
+      selectedItemIndex,
+      filterText,
+      perPage,
+      tableFields,
+      rows,
+      tradesTable,
+      forcesellHandler,
+      handleContextMenuEvent,
+      removeTradeHandler,
+      onRowClicked,
+      onRowSelected,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

@@ -258,4 +258,8 @@ export interface UiVersion {
   version: string;
 }
 
-export type LoadingStatus = 'loading' | 'success' | 'error';
+export enum LoadingStatus {
+  loading,
+  success,
+  error,
+}

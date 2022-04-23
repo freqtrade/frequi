@@ -120,238 +120,225 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
-import { BotStoreGetters } from '@/store/modules/ftbot';
-import { AlertActions } from '@/store/modules/alerts';
-import StoreModules from '@/store/storeSubModules';
+import { showAlert } from '@/stores/alerts';
 
-const ftbot = namespace(StoreModules.ftbot);
+import { defineComponent, computed, ref, watch, onMounted } from '@vue/composition-api';
+import { useBotStore } from '@/stores/ftbotwrapper';
 
-const alerts = namespace(StoreModules.alerts);
-
-@Component({
+export default defineComponent({
+  name: 'PlotConfigurator',
   components: { PlotIndicator },
-})
-export default class PlotConfigurator extends Vue {
-  @Prop({ required: true }) value!: PlotConfig;
+  props: {
+    value: { type: Object as () => PlotConfig, required: true },
+    columns: { required: true, type: Array as () => string[] },
+    asModal: { required: false, default: true, type: Boolean },
+  },
+  emits: ['input'],
+  setup(props, { emit }) {
+    const botStore = useBotStore();
 
-  @Prop({ required: true }) columns!: Array<string>;
+    const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
 
-  @Prop({ required: false, default: true }) asModal!: boolean;
+    const plotConfigNameLoc = ref('default');
+    const newSubplotName = ref('');
+    const selIndicatorName = ref('');
+    const addNewIndicator = ref(false);
+    const showConfig = ref(false);
+    const selSubPlot = ref('main_plot');
+    const tempPlotConfig = ref<PlotConfig>();
+    const tempPlotConfigValid = ref(true);
 
-  @Emit('input')
-  emitPlotConfig() {
-    return this.plotConfig;
-  }
+    const isMainPlot = computed(() => {
+      return selSubPlot.value === 'main_plot';
+    });
 
-  @ftbot.Action getStrategyPlotConfig;
+    const currentPlotConfig = computed(() => {
+      if (isMainPlot.value) {
+        return plotConfig.value.main_plot;
+      }
 
-  @ftbot.Getter [BotStoreGetters.strategyPlotConfig];
+      return plotConfig.value.subplots[selSubPlot.value];
+    });
+    const subplots = computed((): string[] => {
+      // Subplot keys (for selection window)
+      return ['main_plot', ...Object.keys(plotConfig.value.subplots)];
+    });
+    const usedColumns = computed((): string[] => {
+      if (isMainPlot.value) {
+        return Object.keys(plotConfig.value.main_plot);
+      }
+      if (selSubPlot.value in plotConfig.value.subplots) {
+        return Object.keys(plotConfig.value.subplots[selSubPlot.value]);
+      }
+      return [];
+    });
 
-  get selIndicator(): Record<string, IndicatorConfig> {
-    if (this.addNewIndicator) {
-      return {};
-    }
-    if (this.selIndicatorName) {
-      return {
-        [this.selIndicatorName]: this.currentPlotConfig[this.selIndicatorName],
-      };
-    }
-    return {};
-  }
+    const addIndicator = (newIndicator: Record<string, IndicatorConfig>) => {
+      console.log(plotConfig.value);
 
-  set selIndicator(newValue: Record<string, IndicatorConfig>) {
-    // console.log('newValue', newValue);
-    const name = Object.keys(newValue)[0];
-    // this.currentPlotConfig[this.selIndicatorName] = { ...newValue[name] };
-    // this.emitPlotConfig();
-    if (name && newValue) {
-      this.addIndicator(newValue);
-    } else {
-      this.addNewIndicator = false;
-    }
-  }
+      // const { plotConfig.value } = this;
+      const name = Object.keys(newIndicator)[0];
+      const indicator = newIndicator[name];
+      if (isMainPlot.value) {
+        console.log(`Adding ${name} to MainPlot`);
+        plotConfig.value.main_plot[name] = { ...indicator };
+      } else {
+        console.log(`Adding ${name} to ${selSubPlot.value}`);
+        plotConfig.value.subplots[selSubPlot.value][name] = { ...indicator };
+      }
 
-  plotConfig: PlotConfig = EMPTY_PLOTCONFIG;
-
-  plotOptions = [
-    { text: 'Main Plot', value: 'main_plot' },
-    { text: 'Subplots', value: 'subplots' },
-  ];
-
-  plotConfigNameLoc = 'default';
-
-  newSubplotName = '';
-
-  selAvailableIndicator = '';
-
-  selIndicatorName = '';
-
-  addNewIndicator = false;
-
-  showConfig = false;
-
-  selSubPlot = 'main_plot';
-
-  tempPlotConfig?: PlotConfig = undefined;
-
-  tempPlotConfigValid = true;
-
-  @ftbot.Action saveCustomPlotConfig;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ftbot.Action updatePlotConfigName!: (plotConfigName: string) => void;
-
-  @ftbot.Getter [BotStoreGetters.plotConfigName]!: string;
-
-  @alerts.Action [AlertActions.addAlert];
-
-  get plotConfigJson() {
-    return JSON.stringify(this.plotConfig, null, 2);
-  }
-
-  set plotConfigJson(newValue: string) {
-    try {
-      this.tempPlotConfig = JSON.parse(newValue);
-      // TODO: Should Validate schema validity (should be PlotConfig type...)
-      this.tempPlotConfigValid = true;
-    } catch (err) {
-      this.tempPlotConfigValid = false;
-    }
-  }
-
-  get subplots(): string[] {
-    // Subplot keys (for selection window)
-    return ['main_plot', ...Object.keys(this.plotConfig.subplots)];
-  }
-
-  get usedColumns(): string[] {
-    if (this.isMainPlot) {
-      return Object.keys(this.plotConfig.main_plot);
-    }
-    if (this.selSubPlot in this.plotConfig.subplots) {
-      return Object.keys(this.plotConfig.subplots[this.selSubPlot]);
-    }
-    return [];
-  }
-
-  get isMainPlot() {
-    return this.selSubPlot === 'main_plot';
-  }
-
-  get currentPlotConfig() {
-    if (this.isMainPlot) {
-      return this.plotConfig.main_plot;
-    }
-
-    return this.plotConfig.subplots[this.selSubPlot];
-  }
-
-  mounted() {
-    console.log('Config Mounted', this.value);
-    this.plotConfig = this.value;
-    this.plotConfigNameLoc = this.plotConfigName;
-  }
-
-  @Watch('value')
-  watchValue() {
-    this.plotConfig = this.value;
-    this.plotConfigNameLoc = this.plotConfigName;
-  }
-
-  addIndicator(newIndicator: Record<string, IndicatorConfig>) {
-    console.log(this.plotConfig);
-
-    const { plotConfig } = this;
-    const name = Object.keys(newIndicator)[0];
-    const indicator = newIndicator[name];
-    if (this.isMainPlot) {
-      console.log(`Adding ${name} to MainPlot`);
-      plotConfig.main_plot[name] = { ...indicator };
-    } else {
-      console.log(`Adding ${name} to ${this.selSubPlot}`);
-      plotConfig.subplots[this.selSubPlot][name] = { ...indicator };
-    }
-
-    this.plotConfig = { ...plotConfig };
-    // Reset random color
-    this.addNewIndicator = false;
-    this.emitPlotConfig();
-  }
-
-  removeIndicator() {
-    console.log(this.plotConfig);
-    const { plotConfig } = this;
-    if (this.isMainPlot) {
-      console.log(`Removing ${this.selIndicatorName} from MainPlot`);
-      delete plotConfig.main_plot[this.selIndicatorName];
-    } else {
-      console.log(`Removing ${this.selIndicatorName} from ${this.selSubPlot}`);
-      delete plotConfig.subplots[this.selSubPlot][this.selIndicatorName];
-    }
-
-    this.plotConfig = { ...plotConfig };
-    console.log(this.plotConfig);
-    this.selIndicatorName = '';
-    this.emitPlotConfig();
-  }
-
-  addSubplot() {
-    this.plotConfig.subplots = {
-      ...this.plotConfig.subplots,
-      [this.newSubplotName]: {},
+      plotConfig.value = { ...plotConfig.value };
+      // Reset random color
+      addNewIndicator.value = false;
+      emit('input', plotConfig.value);
     };
-    this.selSubPlot = this.newSubplotName;
-    this.newSubplotName = '';
 
-    console.log(this.plotConfig);
-    this.emitPlotConfig();
-  }
+    const selIndicator = computed({
+      get() {
+        if (addNewIndicator.value) {
+          return {};
+        }
+        if (selIndicatorName.value) {
+          return {
+            [selIndicatorName.value]: currentPlotConfig.value[selIndicatorName.value],
+          };
+        }
+        return {};
+      },
+      set(newValue: Record<string, IndicatorConfig>) {
+        // console.log('newValue', newValue);
+        const name = Object.keys(newValue)[0];
+        // this.currentPlotConfig[this.selIndicatorName] = { ...newValue[name] };
+        // this.emitPlotConfig();
+        if (name && newValue) {
+          addIndicator(newValue);
+        } else {
+          addNewIndicator.value = false;
+        }
+      },
+    });
 
-  delSubplot() {
-    delete this.plotConfig.subplots[this.selSubPlot];
-    this.plotConfig.subplots = { ...this.plotConfig.subplots };
-    this.selSubPlot = '';
-  }
+    const plotConfigJson = computed({
+      get() {
+        return JSON.stringify(plotConfig.value, null, 2);
+      },
+      set(newValue: string) {
+        try {
+          tempPlotConfig.value = JSON.parse(newValue);
+          // TODO: Should Validate schema validity (should be PlotConfig type...)
+          tempPlotConfigValid.value = true;
+        } catch (err) {
+          tempPlotConfigValid.value = false;
+        }
+      },
+    });
 
-  savePlotConfig() {
-    this.saveCustomPlotConfig({ [this.plotConfigNameLoc]: this.plotConfig });
-  }
+    const removeIndicator = () => {
+      console.log(plotConfig.value);
+      // const { plotConfig } = this;
+      if (isMainPlot.value) {
+        console.log(`Removing ${selIndicatorName.value} from MainPlot`);
+        delete plotConfig.value.main_plot[selIndicatorName.value];
+      } else {
+        console.log(`Removing ${selIndicatorName.value} from ${selSubPlot.value}`);
+        delete plotConfig.value.subplots[selSubPlot.value][selIndicatorName.value];
+      }
 
-  loadPlotConfig() {
-    this.plotConfig = getCustomPlotConfig(this.plotConfigNameLoc);
-    console.log(this.plotConfig);
-    console.log('loading config');
-    this.emitPlotConfig();
-  }
+      plotConfig.value = { ...plotConfig.value };
+      console.log(plotConfig.value);
+      selIndicatorName.value = '';
+      emit('input', plotConfig.value);
+    };
+    const addSubplot = () => {
+      plotConfig.value.subplots = {
+        ...plotConfig.value.subplots,
+        [newSubplotName.value]: {},
+      };
+      selSubPlot.value = newSubplotName.value;
+      newSubplotName.value = '';
 
-  loadConfigFromString() {
-    // this.plotConfig = JSON.parse();
-    if (this.tempPlotConfig !== undefined && this.tempPlotConfigValid) {
-      this.plotConfig = this.tempPlotConfig;
-      this.emitPlotConfig();
-    }
-  }
+      console.log(plotConfig.value);
+      emit('input', plotConfig.value);
+    };
 
-  resetConfig() {
-    this.plotConfig = { ...EMPTY_PLOTCONFIG };
-  }
+    const delSubplot = () => {
+      delete plotConfig.value.subplots[selSubPlot.value];
+      plotConfig.value.subplots = { ...plotConfig.value.subplots };
+      selSubPlot.value = '';
+    };
+    const loadPlotConfig = () => {
+      plotConfig.value = getCustomPlotConfig(plotConfigNameLoc.value);
+      console.log(plotConfig.value);
+      console.log('loading config');
+      emit('input', plotConfig.value);
+    };
 
-  async loadPlotConfigFromStrategy() {
-    try {
-      await this.getStrategyPlotConfig();
-      this.plotConfig = this.strategyPlotConfig;
-      this.emitPlotConfig();
-    } catch (data) {
-      //
-      this.addAlert({ message: 'Failed to load Plot configuration from Strategy.' });
-    }
-  }
-}
+    const loadConfigFromString = () => {
+      // this.plotConfig = JSON.parse();
+      if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
+        plotConfig.value = tempPlotConfig.value;
+        emit('input', plotConfig.value);
+      }
+    };
+    const resetConfig = () => {
+      plotConfig.value = { ...EMPTY_PLOTCONFIG };
+    };
+    const loadPlotConfigFromStrategy = async () => {
+      try {
+        await botStore.activeBot.getStrategyPlotConfig();
+        if (botStore.activeBot.strategyPlotConfig) {
+          plotConfig.value = botStore.activeBot.strategyPlotConfig;
+          emit('input', plotConfig.value);
+        }
+      } catch (data) {
+        //
+        showAlert('Failed to load Plot configuration from Strategy.');
+      }
+    };
+
+    const savePlotConfig = () => {
+      botStore.activeBot.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
+    };
+
+    watch(props.value, () => {
+      console.log('config value');
+      plotConfig.value = props.value;
+      plotConfigNameLoc.value = botStore.activeBot.plotConfigName;
+    });
+
+    onMounted(() => {
+      console.log('Config Mounted', props.value);
+      plotConfig.value = props.value;
+      plotConfigNameLoc.value = botStore.activeBot.plotConfigName;
+    });
+
+    return {
+      botStore,
+      removeIndicator,
+      addSubplot,
+      delSubplot,
+      loadPlotConfig,
+      loadConfigFromString,
+      resetConfig,
+      loadPlotConfigFromStrategy,
+      savePlotConfig,
+      showConfig,
+      addNewIndicator,
+      selIndicatorName,
+      usedColumns,
+      selSubPlot,
+      newSubplotName,
+      subplots,
+      plotConfigNameLoc,
+      selIndicator,
+      plotConfigJson,
+      tempPlotConfigValid,
+    };
+  },
+});
 </script>
 
 <style scoped>
@@ -362,6 +349,7 @@ export default class PlotConfigurator extends Vue {
 .form-group {
   margin-bottom: 0.5rem;
 }
+
 hr {
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;

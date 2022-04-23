@@ -59,11 +59,9 @@
 
 <script lang="ts">
 import TradeList from '@/components/ftbot/TradeList.vue';
-import { Component, Vue, Prop } from 'vue-property-decorator';
 import { StrategyBacktestResult, Trade } from '@/types';
 
-import ValuePair from '@/components/general/ValuePair.vue';
-
+import { defineComponent, computed } from '@vue/composition-api';
 import {
   timestampms,
   formatPercent,
@@ -71,298 +69,310 @@ import {
   humanizeDurationFromSeconds,
 } from '@/shared/formatters';
 
-@Component({
+export default defineComponent({
+  name: 'LoginModal',
   components: {
     TradeList,
-    ValuePair,
   },
-})
-export default class BacktestResultView extends Vue {
-  @Prop({ required: true }) readonly backtestResult!: StrategyBacktestResult;
+  props: {
+    backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
+  },
+  setup(props) {
+    const hasBacktestResult = computed(() => {
+      return !!props.backtestResult;
+    });
 
-  get hasBacktestResult() {
-    return !!this.backtestResult;
-  }
+    const formatPriceStake = (price) => {
+      return `${formatPrice(price, props.backtestResult.stake_currency_decimals)} ${
+        props.backtestResult.stake_currency
+      }`;
+    };
+    const getSortedTrades = (backtestResult: StrategyBacktestResult): Trade[] => {
+      const sortedTrades = backtestResult.trades
+        .slice()
+        .sort((a, b) => a.profit_ratio - b.profit_ratio);
+      return sortedTrades;
+    };
 
-  getSortedTrades(backtestResult: StrategyBacktestResult): Trade[] {
-    const sortedTrades = backtestResult.trades
-      .slice()
-      .sort((a, b) => a.profit_ratio - b.profit_ratio);
-    return sortedTrades;
-  }
+    const bestPair = computed((): string => {
+      const trades = getSortedTrades(props.backtestResult);
+      const value = trades[trades.length - 1];
+      return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
+    });
+    const worstPair = computed((): string => {
+      const trades = getSortedTrades(props.backtestResult);
+      const value = trades[0];
+      return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
+    });
+    const backtestResultStats = computed(() => {
+      // Transpose Result into readable format
+      const shortMetrics =
+        props.backtestResult?.trade_count_short && props.backtestResult?.trade_count_short > 0
+          ? [
+              { metric: '___', value: '___' },
+              {
+                metric: 'Long / Short',
+                value: `${props.backtestResult.trade_count_long} / ${props.backtestResult.trade_count_short}`,
+              },
+              {
+                metric: 'Total profit Long',
+                value: `${formatPercent(
+                  props.backtestResult.profit_total_long || 0,
+                )} | ${formatPriceStake(props.backtestResult.profit_total_long_abs)}`,
+              },
+              {
+                metric: 'Total profit Short',
+                value: `${formatPercent(
+                  props.backtestResult.profit_total_short || 0,
+                )} | ${formatPriceStake(props.backtestResult.profit_total_short_abs)}`,
+              },
+            ]
+          : [];
 
-  formatPriceStake(price) {
-    return `${formatPrice(price, this.backtestResult.stake_currency_decimals)} ${
-      this.backtestResult.stake_currency
-    }`;
-  }
+      return [
+        {
+          metric: 'Total Profit',
+          value: `${formatPercent(props.backtestResult.profit_total)} | ${formatPriceStake(
+            props.backtestResult.profit_total_abs,
+          )}`,
+        },
+        {
+          metric: 'Total trades / Daily Avg Trades',
+          value: `${props.backtestResult.total_trades} / ${props.backtestResult.trades_per_day}`,
+        },
+        // { metric: 'First trade', value: props.backtestResult.backtest_fi },
+        // { metric: 'First trade Pair', value: props.backtestResult.backtest_best_day },
+        {
+          metric: 'Best day',
+          value: `${formatPercent(props.backtestResult.backtest_best_day, 2)} | ${formatPriceStake(
+            props.backtestResult.backtest_best_day_abs,
+          )}`,
+        },
+        {
+          metric: 'Worst day',
+          value: `${formatPercent(props.backtestResult.backtest_worst_day, 2)} | ${formatPriceStake(
+            props.backtestResult.backtest_worst_day_abs,
+          )}`,
+        },
 
-  get bestPair(): string {
-    const trades = this.getSortedTrades(this.backtestResult);
-    const value = trades[trades.length - 1];
-    return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
-  }
+        {
+          metric: 'Win/Draw/Loss',
+          value: `${
+            props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1]
+              .wins
+          } / ${
+            props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1]
+              .draws
+          } / ${
+            props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1]
+              .losses
+          }`,
+        },
+        {
+          metric: 'Days win/draw/loss',
+          value: `${props.backtestResult.winning_days} / ${props.backtestResult.draw_days} / ${props.backtestResult.losing_days}`,
+        },
 
-  get worstPair(): string {
-    const trades = this.getSortedTrades(this.backtestResult);
-    const value = trades[0];
-    return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
-  }
+        {
+          metric: 'Avg. Duration winners',
+          value: humanizeDurationFromSeconds(props.backtestResult.winner_holding_avg),
+        },
+        {
+          metric: 'Avg. Duration Losers',
+          value: humanizeDurationFromSeconds(props.backtestResult.loser_holding_avg),
+        },
+        { metric: 'Rejected entry signals', value: props.backtestResult.rejected_signals },
+        {
+          metric: 'Entry/Exit timeouts',
+          value: `${props.backtestResult.timedout_entry_orders} / ${props.backtestResult.timedout_exit_orders}`,
+        },
 
-  get backtestResultStats() {
-    // Transpose Result into readable format
-    const shortMetrics =
-      this.backtestResult?.trade_count_short && this.backtestResult?.trade_count_short > 0
-        ? [
-            { metric: '___', value: '___' },
-            {
-              metric: 'Long / Short',
-              value: `${this.backtestResult.trade_count_long} / ${this.backtestResult.trade_count_short}`,
-            },
-            {
-              metric: 'Total profit Long',
-              value: `${formatPercent(
-                this.backtestResult.profit_total_long || 0,
-              )} | ${this.formatPriceStake(this.backtestResult.profit_total_long_abs)}`,
-            },
-            {
-              metric: 'Total profit Short',
-              value: `${formatPercent(
-                this.backtestResult.profit_total_short || 0,
-              )} | ${this.formatPriceStake(this.backtestResult.profit_total_short_abs)}`,
-            },
-          ]
-        : [];
+        ...shortMetrics,
 
-    return [
-      {
-        metric: 'Total Profit',
-        value: `${formatPercent(this.backtestResult.profit_total)} | ${this.formatPriceStake(
-          this.backtestResult.profit_total_abs,
-        )}`,
-      },
-      {
-        metric: 'Total trades / Daily Avg Trades',
-        value: `${this.backtestResult.total_trades} / ${this.backtestResult.trades_per_day}`,
-      },
-      // { metric: 'First trade', value: this.backtestResult.backtest_fi },
-      // { metric: 'First trade Pair', value: this.backtestResult.backtest_best_day },
-      {
-        metric: 'Best day',
-        value: `${formatPercent(
-          this.backtestResult.backtest_best_day,
-          2,
-        )} | ${this.formatPriceStake(this.backtestResult.backtest_best_day_abs)}`,
-      },
-      {
-        metric: 'Worst day',
-        value: `${formatPercent(
-          this.backtestResult.backtest_worst_day,
-          2,
-        )} | ${this.formatPriceStake(this.backtestResult.backtest_worst_day_abs)}`,
-      },
+        { metric: '___', value: '___' },
+        { metric: 'Min balance', value: formatPriceStake(props.backtestResult.csum_min) },
+        { metric: 'Max balance', value: formatPriceStake(props.backtestResult.csum_max) },
+        { metric: 'Market change', value: formatPercent(props.backtestResult.market_change) },
+        { metric: '___', value: '___' },
+        {
+          metric: 'Max Drawdown (Account)',
+          value: formatPercent(props.backtestResult.max_drawdown_account),
+        },
+        {
+          metric: 'Max Drawdown ABS',
+          value: formatPriceStake(props.backtestResult.max_drawdown_abs),
+        },
+        {
+          metric: 'Drawdown high | low',
+          value: `${formatPriceStake(props.backtestResult.max_drawdown_high)} | ${formatPriceStake(
+            props.backtestResult.max_drawdown_low,
+          )}`,
+        },
+        { metric: 'Drawdown start', value: timestampms(props.backtestResult.drawdown_start_ts) },
+        { metric: 'Drawdown end', value: timestampms(props.backtestResult.drawdown_end_ts) },
+        { metric: '___', value: '___' },
 
-      {
-        metric: 'Win/Draw/Loss',
-        value: `${
-          this.backtestResult.results_per_pair[this.backtestResult.results_per_pair.length - 1].wins
-        } / ${
-          this.backtestResult.results_per_pair[this.backtestResult.results_per_pair.length - 1]
-            .draws
-        } / ${
-          this.backtestResult.results_per_pair[this.backtestResult.results_per_pair.length - 1]
-            .losses
-        }`,
-      },
-      {
-        metric: 'Days win/draw/loss',
-        value: `${this.backtestResult.winning_days} / ${this.backtestResult.draw_days} / ${this.backtestResult.losing_days}`,
-      },
+        {
+          metric: 'Best Pair',
+          value: `${props.backtestResult.best_pair.key} ${formatPercent(
+            props.backtestResult.best_pair.profit_sum,
+          )}`,
+        },
+        {
+          metric: 'Worst Pair',
+          value: `${props.backtestResult.worst_pair.key} ${formatPercent(
+            props.backtestResult.worst_pair.profit_sum,
+          )}`,
+        },
+        { metric: 'Best single Trade', value: bestPair },
+        { metric: 'Worst single Trade', value: worstPair },
+      ];
+    });
 
-      {
-        metric: 'Avg. Duration winners',
-        value: humanizeDurationFromSeconds(this.backtestResult.winner_holding_avg),
-      },
-      {
-        metric: 'Avg. Duration Losers',
-        value: humanizeDurationFromSeconds(this.backtestResult.loser_holding_avg),
-      },
-      { metric: 'Rejected entry signals', value: this.backtestResult.rejected_signals },
-      {
-        metric: 'Entry/Exit timeouts',
-        value: `${this.backtestResult.timedout_entry_orders} / ${this.backtestResult.timedout_exit_orders}`,
-      },
+    const backtestResultSettings = computed(() => {
+      // Transpose Result into readable format
+      return [
+        { setting: 'Backtesting from', value: timestampms(props.backtestResult.backtest_start_ts) },
+        { setting: 'Backtesting to', value: timestampms(props.backtestResult.backtest_end_ts) },
+        {
+          setting: 'BT execution time',
+          value: humanizeDurationFromSeconds(
+            props.backtestResult.backtest_run_end_ts - props.backtestResult.backtest_run_start_ts,
+          ),
+        },
+        { setting: 'Max open trades', value: props.backtestResult.max_open_trades },
+        { setting: 'Timeframe', value: props.backtestResult.timeframe },
+        { setting: 'Timerange', value: props.backtestResult.timerange },
+        { setting: 'Stoploss', value: formatPercent(props.backtestResult.stoploss, 2) },
+        { setting: 'Trailing Stoploss', value: props.backtestResult.trailing_stop },
+        {
+          setting: 'Trail only when offset is reached',
+          value: props.backtestResult.trailing_only_offset_is_reached,
+        },
+        { setting: 'Trailing Stop positive', value: props.backtestResult.trailing_stop_positive },
+        {
+          setting: 'Trailing stop positive offset',
+          value: props.backtestResult.trailing_stop_positive_offset,
+        },
+        { setting: 'Custom Stoploss', value: props.backtestResult.use_custom_stoploss },
+        { setting: 'ROI', value: props.backtestResult.minimal_roi },
+        {
+          setting: 'Use Exit Signal',
+          value:
+            props.backtestResult.use_exit_signal !== undefined
+              ? props.backtestResult.use_exit_signal
+              : props.backtestResult.use_sell_signal,
+        },
+        {
+          setting: 'Exit profit only',
+          value:
+            props.backtestResult.exit_profit_only !== undefined
+              ? props.backtestResult.exit_profit_only
+              : props.backtestResult.sell_profit_only,
+        },
+        {
+          setting: 'Exit profit offset',
+          value:
+            props.backtestResult.exit_profit_offset !== undefined
+              ? props.backtestResult.exit_profit_offset
+              : props.backtestResult.sell_profit_offset,
+        },
+        { setting: 'Enable protections', value: props.backtestResult.enable_protections },
+        {
+          setting: 'Starting balance',
+          value: formatPriceStake(props.backtestResult.starting_balance),
+        },
+        {
+          setting: 'Final balance',
+          value: formatPriceStake(props.backtestResult.final_balance),
+        },
+        {
+          setting: 'Avg. stake amount',
+          value: formatPriceStake(props.backtestResult.avg_stake_amount),
+        },
+        {
+          setting: 'Total trade volume',
+          value: formatPriceStake(props.backtestResult.total_volume),
+        },
+      ];
+    });
+    const perPairFields = computed(() => {
+      return [
+        { key: 'key', label: 'Pair' },
+        { key: 'trades', label: 'Buys' },
+        {
+          key: 'profit_mean',
+          label: 'Avg Profit %',
+          formatter: (value) => formatPercent(value, 2),
+        },
+        { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
+        {
+          key: 'profit_total_abs',
+          label: `Tot Profit ${props.backtestResult.stake_currency}`,
+          formatter: (value) => formatPrice(value, props.backtestResult.stake_currency_decimals),
+        },
+        {
+          key: 'profit_total',
+          label: 'Tot Profit %',
+          formatter: (value) => formatPercent(value, 2),
+        },
+        { key: 'duration_avg', label: 'Avg Duration' },
+        { key: 'wins', label: 'Wins' },
+        { key: 'draws', label: 'Draws' },
+        { key: 'losses', label: 'Losses' },
+      ];
+    });
 
-      ...shortMetrics,
+    const perExitReason = computed(() => {
+      return [
+        { key: 'exit_reason', label: 'Exit Reason' },
+        { key: 'trades', label: 'Buys' },
+        {
+          key: 'profit_mean',
+          label: 'Avg Profit %',
+          formatter: (value) => formatPercent(value, 2),
+        },
+        { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
+        {
+          key: 'profit_total_abs',
+          label: `Tot Profit ${props.backtestResult.stake_currency}`,
 
-      { metric: '___', value: '___' },
-      { metric: 'Min balance', value: this.formatPriceStake(this.backtestResult.csum_min) },
-      { metric: 'Max balance', value: this.formatPriceStake(this.backtestResult.csum_max) },
-      { metric: 'Market change', value: formatPercent(this.backtestResult.market_change) },
-      { metric: '___', value: '___' },
-      {
-        metric: 'Max Drawdown (Account)',
-        value: formatPercent(this.backtestResult.max_drawdown_account),
-      },
-      {
-        metric: 'Max Drawdown ABS',
-        value: this.formatPriceStake(this.backtestResult.max_drawdown_abs),
-      },
-      {
-        metric: 'Drawdown high | low',
-        value: `${this.formatPriceStake(
-          this.backtestResult.max_drawdown_high,
-        )} | ${this.formatPriceStake(this.backtestResult.max_drawdown_low)}`,
-      },
-      { metric: 'Drawdown start', value: timestampms(this.backtestResult.drawdown_start_ts) },
-      { metric: 'Drawdown end', value: timestampms(this.backtestResult.drawdown_end_ts) },
-      { metric: '___', value: '___' },
-
-      {
-        metric: 'Best Pair',
-        value: `${this.backtestResult.best_pair.key} ${formatPercent(
-          this.backtestResult.best_pair.profit_sum,
-        )}`,
-      },
-      {
-        metric: 'Worst Pair',
-        value: `${this.backtestResult.worst_pair.key} ${formatPercent(
-          this.backtestResult.worst_pair.profit_sum,
-        )}`,
-      },
-      { metric: 'Best single Trade', value: this.bestPair },
-      { metric: 'Worst single Trade', value: this.worstPair },
+          formatter: (value) => formatPrice(value, props.backtestResult.stake_currency_decimals),
+        },
+        {
+          key: 'profit_total',
+          label: 'Tot Profit %',
+          formatter: (value) => formatPercent(value, 2),
+        },
+        { key: 'wins', label: 'Wins' },
+        { key: 'draws', label: 'Draws' },
+        { key: 'losses', label: 'Losses' },
+      ];
+    });
+    const backtestResultFields: Array<Record<string, string>> = [
+      { key: 'metric', label: 'Metric' },
+      { key: 'value', label: 'Value' },
     ];
-  }
 
-  timestampms = timestampms;
-
-  formatPercent = formatPercent;
-
-  get backtestResultSettings() {
-    // Transpose Result into readable format
-    return [
-      { setting: 'Backtesting from', value: timestampms(this.backtestResult.backtest_start_ts) },
-      { setting: 'Backtesting to', value: timestampms(this.backtestResult.backtest_end_ts) },
-      {
-        setting: 'BT execution time',
-        value: humanizeDurationFromSeconds(
-          this.backtestResult.backtest_run_end_ts - this.backtestResult.backtest_run_start_ts,
-        ),
-      },
-      { setting: 'Max open trades', value: this.backtestResult.max_open_trades },
-      { setting: 'Timeframe', value: this.backtestResult.timeframe },
-      { setting: 'Timerange', value: this.backtestResult.timerange },
-      { setting: 'Stoploss', value: formatPercent(this.backtestResult.stoploss, 2) },
-      { setting: 'Trailing Stoploss', value: this.backtestResult.trailing_stop },
-      {
-        setting: 'Trail only when offset is reached',
-        value: this.backtestResult.trailing_only_offset_is_reached,
-      },
-      { setting: 'Trailing Stop positive', value: this.backtestResult.trailing_stop_positive },
-      {
-        setting: 'Trailing stop positive offset',
-        value: this.backtestResult.trailing_stop_positive_offset,
-      },
-      { setting: 'Custom Stoploss', value: this.backtestResult.use_custom_stoploss },
-      { setting: 'ROI', value: this.backtestResult.minimal_roi },
-      {
-        setting: 'Use Exit Signal',
-        value:
-          this.backtestResult.use_exit_signal !== undefined
-            ? this.backtestResult.use_exit_signal
-            : this.backtestResult.use_sell_signal,
-      },
-      {
-        setting: 'Exit profit only',
-        value:
-          this.backtestResult.exit_profit_only !== undefined
-            ? this.backtestResult.exit_profit_only
-            : this.backtestResult.sell_profit_only,
-      },
-      {
-        setting: 'Exit profit offset',
-        value:
-          this.backtestResult.exit_profit_offset !== undefined
-            ? this.backtestResult.exit_profit_offset
-            : this.backtestResult.sell_profit_offset,
-      },
-      { setting: 'Enable protections', value: this.backtestResult.enable_protections },
-      {
-        setting: 'Starting balance',
-        value: this.formatPriceStake(this.backtestResult.starting_balance),
-      },
-      {
-        setting: 'Final balance',
-        value: this.formatPriceStake(this.backtestResult.final_balance),
-      },
-      {
-        setting: 'Avg. stake amount',
-        value: this.formatPriceStake(this.backtestResult.avg_stake_amount),
-      },
-      {
-        setting: 'Total trade volume',
-        value: this.formatPriceStake(this.backtestResult.total_volume),
-      },
+    const backtestsettingFields: Array<Record<string, string>> = [
+      { key: 'setting', label: 'Setting' },
+      { key: 'value', label: 'Value' },
     ];
-  }
 
-  get perPairFields() {
-    return [
-      { key: 'key', label: 'Pair' },
-      { key: 'trades', label: 'Buys' },
-      { key: 'profit_mean', label: 'Avg Profit %', formatter: (value) => formatPercent(value, 2) },
-      { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
-      {
-        key: 'profit_total_abs',
-        label: `Tot Profit ${this.backtestResult.stake_currency}`,
-        formatter: (value) => formatPrice(value, this.backtestResult.stake_currency_decimals),
-      },
-      {
-        key: 'profit_total',
-        label: 'Tot Profit %',
-        formatter: (value) => formatPercent(value, 2),
-      },
-      { key: 'duration_avg', label: 'Avg Duration' },
-      { key: 'wins', label: 'Wins' },
-      { key: 'draws', label: 'Draws' },
-      { key: 'losses', label: 'Losses' },
-    ];
-  }
-
-  get perExitReason() {
-    return [
-      { key: 'exit_reason', label: 'Exit Reason' },
-      { key: 'trades', label: 'Buys' },
-      { key: 'profit_mean', label: 'Avg Profit %', formatter: (value) => formatPercent(value, 2) },
-      { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
-      {
-        key: 'profit_total_abs',
-        label: `Tot Profit ${this.backtestResult.stake_currency}`,
-
-        formatter: (value) => formatPrice(value, this.backtestResult.stake_currency_decimals),
-      },
-      {
-        key: 'profit_total',
-        label: 'Tot Profit %',
-        formatter: (value) => formatPercent(value, 2),
-      },
-      { key: 'wins', label: 'Wins' },
-      { key: 'draws', label: 'Draws' },
-      { key: 'losses', label: 'Losses' },
-    ];
-  }
-
-  backtestResultFields: Array<Record<string, string>> = [
-    { key: 'metric', label: 'Metric' },
-    { key: 'value', label: 'Value' },
-  ];
-
-  backtestsettingFields: Array<Record<string, string>> = [
-    { key: 'setting', label: 'Setting' },
-    { key: 'value', label: 'Value' },
-  ];
-}
+    return {
+      hasBacktestResult,
+      formatPriceStake,
+      bestPair,
+      worstPair,
+      backtestResultStats,
+      backtestResultSettings,
+      perPairFields,
+      perExitReason,
+      backtestResultFields,
+      backtestsettingFields,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

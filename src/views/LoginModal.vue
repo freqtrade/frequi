@@ -1,43 +1,43 @@
 <template>
   <div>
     <b-button v-b-modal.modal-prevent-closing>{{ loginText }}</b-button>
-    <b-modal id="modal-prevent-closing" ref="modal" title="Login to your bot" @ok="handleOk">
+    <b-modal id="modal-prevent-closing" ref="modalRef" title="Login to your bot" @ok="handleOk">
       <Login id="loginForm" ref="loginForm" in-modal @loginResult="handleLoginResult" />
     </b-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, ref } from '@vue/composition-api';
 
 import Login from '@/components/Login.vue';
 
-@Component({
+export default defineComponent({
+  name: 'LoginModal',
   components: { Login },
-})
-export default class LoginModal extends Vue {
-  $refs!: {
-    loginForm: HTMLFormElement;
-    modal: HTMLElement;
-  };
-
-  @Prop({ required: false, default: 'Login', type: String }) loginText!: string;
-
-  resetLogin() {
-    // this.$refs.loginForm.resetLogin();
-  }
-
-  handleLoginResult(result: boolean) {
-    if (result) {
-      (this.$refs.modal as any).hide();
-    }
-  }
-
-  handleOk(evt) {
-    evt.preventDefault();
-    this.$refs.loginForm.handleSubmit();
-  }
-}
+  props: {
+    loginText: { required: false, default: 'Login', type: String },
+  },
+  setup() {
+    const modalRef = ref<HTMLElement>();
+    const loginForm = ref<HTMLFormElement>();
+    const handleLoginResult = (result: boolean) => {
+      if (result) {
+        (modalRef.value as any)?.hide();
+      }
+    };
+    const handleOk = (evt) => {
+      evt.preventDefault();
+      loginForm.value?.handleSubmit();
+    };
+    return {
+      modalRef,
+      loginForm,
+      handleOk,
+      handleLoginResult,
+    };
+  },
+});
 </script>
 
 <style scoped></style>
