@@ -11,6 +11,8 @@ export interface Lock {
   /** Time of lock end - will be rounded up to the next candle */
   lock_end_timestamp: number;
   reason: string;
+  /** Lock side, can be long, short or '*' */
+  side?: string;
   active: boolean;
 }
 
