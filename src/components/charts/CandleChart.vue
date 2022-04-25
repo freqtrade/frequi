@@ -123,15 +123,20 @@ export default defineComponent({
 
     /** Return trade entries for charting */
     const getTradeEntries = () => {
-      const trades: (string | number)[][] = [];
-      const tradesClose: (string | number)[][] = [];
+      const tradeEntries: number[][] = [];
+      const tradesClose: number[][] = [];
       for (let i = 0, len = filteredTrades.value.length; i < len; i += 1) {
         const trade: Trade = filteredTrades.value[i];
         if (
           trade.open_timestamp >= props.dataset.data_start_ts &&
           trade.open_timestamp <= props.dataset.data_stop_ts
         ) {
-          trades.push([roundTimeframe(timeframems.value, trade.open_timestamp), trade.open_rate]);
+          tradeEntries.push([
+            roundTimeframe(timeframems.value, trade.open_timestamp),
+            trade.open_rate,
+            trade.profit_abs,
+            trade.is_short ? 1 : 0,
+          ]);
         }
         if (
           trade.close_timestamp !== undefined &&
@@ -142,11 +147,13 @@ export default defineComponent({
             tradesClose.push([
               roundTimeframe(timeframems.value, trade.close_timestamp),
               trade.close_rate,
+              trade.profit_abs,
+              trade.is_short ? 1 : 0,
             ]);
           }
         }
       }
-      return { trades, tradesClose };
+      return { tradeEntries, tradesClose };
     };
 
     const updateChart = (initial = false) => {
@@ -487,8 +494,7 @@ export default defineComponent({
         chartOptions.value.grid[chartOptions.value.grid.length - 1].bottom = '50px';
         delete chartOptions.value.grid[chartOptions.value.grid.length - 1].top;
       }
-      const { trades, tradesClose } = getTradeEntries();
-
+      const { tradeEntries, tradesClose } = getTradeEntries();
       const name = 'Trades';
       const nameClose = 'Trades Close';
       if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
@@ -499,10 +505,20 @@ export default defineComponent({
         type: 'scatter',
         xAxisIndex: 0,
         yAxisIndex: 0,
+        encode: {
+          x: 0,
+          y: 1,
+        },
         itemStyle: {
           color: tradeBuyColor,
         },
-        data: trades,
+        symbol: (v, params) => {
+          // TODO: finish me
+          // console.log('v', v, params);
+          // 1 == short, 0 == long
+          return v[3] === 0 ? 'circle' : 'pin';
+        }, // Symbol per long/short wins??
+        data: tradeEntries,
       };
       if (Array.isArray(chartOptions.value?.series)) {
         chartOptions.value.series.push(sp);
@@ -515,9 +531,23 @@ export default defineComponent({
         type: 'scatter',
         xAxisIndex: 0,
         yAxisIndex: 0,
-        itemStyle: {
-          color: tradeSellColor,
+        encode: {
+          x: 0,
+          y: 1,
         },
+        itemStyle: {
+          // color: tradeSellColor,
+          color: (v) => {
+            // TODO: finish me
+            // console.log('vc', v);
+            return v.data[2] > 0 ? 'green' : tradeSellColor;
+          },
+        },
+        symbol: (v, params) => {
+          // TODO: finish me
+          // console.log('v', v, params);
+          return v[2] > 0 ? 'rect' : 'triangleup';
+        }, // Symbol per long/short wins??
         data: tradesClose,
       };
       if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
