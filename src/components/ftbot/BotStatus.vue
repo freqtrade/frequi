@@ -22,7 +22,10 @@
       >,
       <strong
         >force entry:
-        {{ botStore.activeBot.botState.force_entry_enable || botState.forcebuy_enabled }}</strong
+        {{
+          botStore.activeBot.botState.force_entry_enable ||
+          botStore.activeBot.botState.forcebuy_enabled
+        }}</strong
       >
     </p>
     <p>

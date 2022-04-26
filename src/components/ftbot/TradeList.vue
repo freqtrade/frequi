@@ -229,7 +229,7 @@ export default defineComponent({
 
     watch(
       () => botStore.activeBot.detailTradeId,
-      (val: number) => {
+      (val) => {
         const index = props.trades.findIndex((v) => v.trade_id === val);
         // Unselect when another tradeTable is selected!
         if (index < 0) {

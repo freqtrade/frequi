@@ -5,7 +5,7 @@ forceexit
       class="btn btn-secondary btn-sm ml-1"
       :disabled="!botStore.activeBot.isTrading || isRunning"
       title="Start Trading"
-      @click="startBot()"
+      @click="botStore.activeBot.startBot()"
     >
       <PlayIcon />
     </button>
@@ -59,7 +59,7 @@ forceexit
       :disabled="isTrading"
       class="btn btn-secondary btn-sm ml-1"
       title="Start Trading mode"
-      @click="startTrade()"
+      @click="botStore.activeBot.startTrade()"
     >
       <PlayIcon />
     </button>

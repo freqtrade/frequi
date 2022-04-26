@@ -36,6 +36,7 @@ import axios from 'axios';
 import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 import { FTHTMLStyleElement } from '@/types/styleElement';
 import { useSettingsStore } from '@/stores/settings';
+import { ThemeType } from '@/shared/themes';
 
 export default defineComponent({
   name: 'BootswatchThemeSelect',
@@ -48,7 +49,7 @@ export default defineComponent({
   },
   setup(props) {
     const activeTheme = ref('');
-    const themeList = ref([]);
+    const themeList = ref<ThemeType[]>([]);
     const settingsStore = useSettingsStore();
 
     const setTheme = (themeName) => {
