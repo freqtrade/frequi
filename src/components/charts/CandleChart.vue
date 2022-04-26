@@ -231,7 +231,7 @@ export default defineComponent({
             },
           },
           {
-            name: 'Long',
+            name: 'Entry',
             type: 'scatter',
             symbol: 'triangle',
             symbolSize: 10,
@@ -249,12 +249,12 @@ export default defineComponent({
       };
 
       if (colSellData >= 0) {
-        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          chartOptions.value.legend.data.push('Long exit');
-        }
+        // if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
+        //   chartOptions.value.legend.data.push('Long exit');
+        // }
         if (Array.isArray(options.series)) {
           options.series.push({
-            name: 'Long exit',
+            name: 'Exit',
             type: 'scatter',
             symbol: 'diamond',
             symbolSize: 8,
@@ -271,16 +271,11 @@ export default defineComponent({
         }
       }
 
-      if (hasShorts) {
-        // Add short support
-        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          // chartOptions.value.legend.data.push('Short');
-          chartOptions.value.legend.data.push('Short exit');
-        }
-        if (Array.isArray(options.series)) {
+      if (Array.isArray(options.series)) {
+        if (hasShorts) {
           if (colShortEntryData >= 0) {
             options.series.push({
-              name: 'Long',
+              name: 'Entry',
               type: 'scatter',
               symbol: 'triangle',
               symbolRotate: 180,
@@ -298,7 +293,7 @@ export default defineComponent({
           }
           if (colShortExitData >= 0) {
             options.series.push({
-              name: 'Short exit',
+              name: 'Exit',
               type: 'scatter',
               symbol: 'pin',
               symbolSize: 8,
@@ -502,7 +497,7 @@ export default defineComponent({
         animation: false,
         legend: {
           // Initial legend, further entries are pushed to the below list
-          data: ['Candles', 'Volume', 'Long'],
+          data: ['Candles', 'Volume', 'Entry', 'Exit'],
           right: '1%',
         },
         tooltip: {
