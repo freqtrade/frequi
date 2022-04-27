@@ -42,7 +42,7 @@ export default defineComponent({
     EditIcon,
   },
   props: {
-    bot: { required: true, type: Object },
+    bot: { required: true, type: Object as () => BotDescriptor },
     noButtons: { default: false, type: Boolean },
   },
   emits: ['edit'],
