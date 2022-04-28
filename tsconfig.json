@@ -33,5 +33,13 @@
   "exclude": [
       "node_modules",
       // "tests"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "experimentalCompatMode": 2,
+    "experimentalTemplateCompilerOptions": {
+      "compatConfig": {
+        "MODE": 2
+      } // optional
+    }
+  }
 }
