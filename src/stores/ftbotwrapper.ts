@@ -172,7 +172,6 @@ export const useBotStore = defineStore('wrapper', {
         delete this.availableBots[botId];
         this.botStores = { ...this.botStores };
         this.availableBots = { ...this.availableBots };
-        // commit('removeBot', botId);
       } else {
         console.warn(`bot ${botId} not found! could not remove`);
       }
@@ -314,4 +313,5 @@ export function initBots() {
     botStore.addBot(v);
   });
   botStore.selectFirstBot();
+  botStore.startRefresh();
 }

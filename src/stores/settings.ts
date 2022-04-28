@@ -60,7 +60,6 @@ export const useSettingsStore = defineStore('uiSettings', {
           const result = await axios.get<UiVersion>('/ui_version');
           const { version } = result.data;
           this.uiVersion = version;
-          // commit('setUIVersion', version);
         } catch (error) {
           //
         }

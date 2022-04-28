@@ -184,17 +184,13 @@ export function createBotSubStore(botId: string, botName: string) {
       rename(name: string) {
         userService.renameBot(name);
       },
-      setRefreshRequired(refreshRequired: boolean) {
-        this.refreshRequired = refreshRequired;
-      },
       setAutoRefresh(newRefreshValue) {
         this.autoRefresh = newRefreshValue;
         // TODO: Investigate this -
         // this ONLY works if ReloadControl is only visible once,otherwise it triggers twice
         if (newRefreshValue) {
-          // dispatch('startRefresh', true);
-        } else {
-          // dispatch('stopRefresh');
+          this.refreshFrequent();
+          this.refreshSlow(true);
         }
         userService.setAutoRefresh(newRefreshValue);
       },
@@ -274,17 +270,17 @@ export function createBotSubStore(botId: string, botName: string) {
               trades = trades.concat(result.trades);
               totalTrades = res.data.total_trades;
             } while (trades.length !== totalTrades);
-            const tradesCount = trades.length;
-            // Add botId to all trades
-            trades = trades.map((t) => ({
-              ...t,
-              botId,
-              botName,
-              botTradeId: `${botId}__${t.trade_id}`,
-            }));
-            this.trades = trades;
-            this.tradeCount = tradesCount;
           }
+          const tradesCount = trades.length;
+          // Add botId to all trades
+          trades = trades.map((t) => ({
+            ...t,
+            botId,
+            botName,
+            botTradeId: `${botId}__${t.trade_id}`,
+          }));
+          this.trades = trades;
+          this.tradeCount = tradesCount;
 
           return Promise.resolve();
         } catch (error) {
@@ -309,18 +305,16 @@ export function createBotSubStore(botId: string, botName: string) {
             ) {
               // Open trades changed, so we should refresh now.
               this.refreshRequired = true;
-              // dispatch('refreshSlow', null, { root: true });
-
-              const openTrades = result.data.map((t) => ({
-                ...t,
-                botId,
-                botName,
-                botTradeId: `${botId}__${t.trade_id}`,
-              }));
-              this.openTrades = openTrades;
-            } else {
-              this.openTrades = [];
+              this.refreshSlow(false);
             }
+
+            const openTrades = result.data.map((t) => ({
+              ...t,
+              botId,
+              botName,
+              botTradeId: `${botId}__${t.trade_id}`,
+            }));
+            this.openTrades = openTrades;
           })
           .catch(console.error);
       },

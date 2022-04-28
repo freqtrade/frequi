@@ -28,7 +28,7 @@ export function useApi(userService: UserService, botId: string) {
     (err) => {
       // console.log(err);
       if (err.response && err.response.status === 401) {
-        console.log('Dispatching refresh_token...');
+        console.log('Fetching refresh_token...');
         return userService
           .refreshToken()
           .then((token) => {
