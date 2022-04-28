@@ -9,7 +9,7 @@
       class="d-flex justify-content-between align-items-center py-1"
       :active="comb.pair === botStore.activeBot.selectedPair"
       :title="`${comb.pair} - ${comb.tradeCount} trades`"
-      @click="botStore.activeBot.setSelectedPair(comb.pair)"
+      @click="botStore.activeBot.selectedPair = comb.pair"
     >
       <div>
         {{ comb.pair }}

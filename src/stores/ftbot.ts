@@ -228,9 +228,6 @@ export function createBotSubStore(botId: string, botName: string) {
         this.detailTradeId = trade?.trade_id || null;
         this.selectedPair = trade ? trade.pair : this.selectedPair;
       },
-      setSelectedPair(pair: string) {
-        this.selectedPair = pair;
-      },
       saveCustomPlotConfig(plotConfig: PlotConfigStorage) {
         this.customPlotConfig = plotConfig;
         storeCustomPlotConfig(plotConfig);
