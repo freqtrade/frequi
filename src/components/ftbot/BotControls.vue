@@ -56,7 +56,7 @@ forceexit
     </button>
     <button
       v-if="botStore.activeBot.isWebserverMode && false"
-      :disabled="isTrading"
+      :disabled="botStore.activeBot.isTrading"
       class="btn btn-secondary btn-sm ml-1"
       title="Start Trading mode"
       @click="botStore.activeBot.startTrade()"

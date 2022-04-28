@@ -42,6 +42,7 @@ import {
   BlacklistPayload,
   ForceEnterPayload,
   TradeResponse,
+  ClosedTrade,
 } from '@/types';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -62,7 +63,7 @@ export function createBotSubStore(botId: string, botName: string) {
         versionState: '',
         lastLogs: [] as LogLine[],
         refreshRequired: true,
-        trades: [] as Trade[],
+        trades: [] as ClosedTrade[],
         openTrades: [] as Trade[],
         tradeCount: 0,
         performanceStats: [] as Performance[],
@@ -129,7 +130,7 @@ export function createBotSubStore(botId: string, botName: string) {
         if (!dTrade) {
           dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
         }
-        return dTrade;
+        return dTrade as Trade;
       },
       plotConfig: (state) =>
         state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
