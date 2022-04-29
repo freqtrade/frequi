@@ -20,7 +20,7 @@ export function formatPrice(value: number, decimals = 15): string {
         useGrouping: false,
         maximumFractionDigits: decimals,
       })
-    : '';
+    : 'N/A';
 }
 
 /**

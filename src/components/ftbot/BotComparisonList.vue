@@ -47,6 +47,7 @@ import ProfitPill from '@/components/general/ProfitPill.vue';
 import { formatPrice } from '@/shared/formatters';
 import { defineComponent, computed } from '@vue/composition-api';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { ProfitInterface } from '@/types';
 
 export default defineComponent({
   name: 'BotComparisonList',
@@ -77,12 +78,12 @@ export default defineComponent({
         losses: 0,
       };
 
-      Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: any]) => {
+      Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitInterface]) => {
         const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
         const profitOpenRatio =
           botStore.allOpenTrades[k].reduce((a, b) => a + b.profit_ratio * b.stake_amount, 0) /
           allStakes;
-        const profitOpen = botStore.allOpenTrades[k].reduce((a, b) => a + b.profit_abs, 0);
+        const profitOpen = botStore.allOpenTrades[k].reduce((a, b) => a + (b.profit_abs ?? 0), 0);
 
         // TODO: handle one inactive bot ...
         val.push({

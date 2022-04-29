@@ -65,9 +65,9 @@ export interface Trade {
   /** Current profit as ratio */
   profit_ratio: number;
   /** Current profit in % */
-  profit_pct: number;
+  profit_pct: number | null;
   /** Current absolute profit */
-  profit_abs: number;
+  profit_abs?: number;
 
   /** @deprecated - replaced by exit reason 2.x */
   sell_reason?: string;

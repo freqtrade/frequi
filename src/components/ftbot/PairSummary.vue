@@ -78,7 +78,7 @@ export default defineComponent({
         let profitAbs = 0;
         trades.forEach((trade) => {
           profit += trade.profit_ratio;
-          profitAbs += trade.profit_abs;
+          profitAbs += trade.profit_abs ?? 0;
         });
         const tradeCount = trades.length;
         const trade = tradeCount ? trades[0] : undefined;

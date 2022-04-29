@@ -312,7 +312,10 @@ export function createBotSubStore(botId: string, botName: string) {
                 botId,
                 botName,
                 botTradeId: `${botId}__${t.trade_id}`,
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                profit_ratio: t.profit_ratio ?? -1,
               }));
+              // TODO Don't force-patch profit_ratio but handle null values properly
               this.openTrades = openTrades;
             }
           })
