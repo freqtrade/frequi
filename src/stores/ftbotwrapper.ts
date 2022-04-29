@@ -4,6 +4,7 @@ import {
   BotDescriptor,
   BotDescriptors,
   BotState,
+  ClosedTrade,
   DailyPayload,
   DailyRecord,
   DailyReturnValue,
@@ -95,8 +96,8 @@ export const useBotStore = defineStore('wrapper', {
       });
       return result;
     },
-    allTradesAllBots: (state): Trade[] => {
-      const result: Trade[] = [];
+    allTradesAllBots: (state): ClosedTrade[] => {
+      const result: ClosedTrade[] = [];
       Object.entries(state.botStores).forEach(([, botStore]) => {
         result.push(...botStore.trades);
       });

@@ -42,6 +42,7 @@ import {
   BlacklistPayload,
   ForceEnterPayload,
   TradeResponse,
+  ClosedTrade,
 } from '@/types';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -62,7 +63,7 @@ export function createBotSubStore(botId: string, botName: string) {
         versionState: '',
         lastLogs: [] as LogLine[],
         refreshRequired: true,
-        trades: [] as Trade[],
+        trades: [] as ClosedTrade[],
         openTrades: [] as Trade[],
         tradeCount: 0,
         performanceStats: [] as Performance[],
@@ -129,7 +130,7 @@ export function createBotSubStore(botId: string, botName: string) {
         if (!dTrade) {
           dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
         }
-        return dTrade;
+        return dTrade as Trade;
       },
       plotConfig: (state) =>
         state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
@@ -255,30 +256,31 @@ export function createBotSubStore(botId: string, botName: string) {
           const res = await fetchTrades(pageLength, 0);
           const result: TradeResponse = res.data;
           let { trades } = result;
-          if (Array.isArray(trades) && trades.length !== result.total_trades) {
-            // Pagination necessary
-            // Don't use Promise.all - this would fire all requests at once, which can
-            // cause problems for big sqlite databases
-            do {
-              // eslint-disable-next-line no-await-in-loop
-              const res = await fetchTrades(pageLength, trades.length);
+          if (Array.isArray(trades)) {
+            if (trades.length !== result.total_trades) {
+              // Pagination necessary
+              // Don't use Promise.all - this would fire all requests at once, which can
+              // cause problems for big sqlite databases
+              do {
+                // eslint-disable-next-line no-await-in-loop
+                const res = await fetchTrades(pageLength, trades.length);
 
-              const result: TradeResponse = res.data;
-              trades = trades.concat(result.trades);
-              totalTrades = res.data.total_trades;
-            } while (trades.length !== totalTrades);
+                const result: TradeResponse = res.data;
+                trades = trades.concat(result.trades);
+                totalTrades = res.data.total_trades;
+              } while (trades.length !== totalTrades);
+            }
+            const tradesCount = trades.length;
+            // Add botId to all trades
+            trades = trades.map((t) => ({
+              ...t,
+              botId,
+              botName,
+              botTradeId: `${botId}__${t.trade_id}`,
+            }));
+            this.trades = trades;
+            this.tradeCount = tradesCount;
           }
-          const tradesCount = trades.length;
-          // Add botId to all trades
-          trades = trades.map((t) => ({
-            ...t,
-            botId,
-            botName,
-            botTradeId: `${botId}__${t.trade_id}`,
-          }));
-          this.trades = trades;
-          this.tradeCount = tradesCount;
-
           return Promise.resolve();
         } catch (error) {
           if (axios.isAxiosError(error)) {
@@ -304,14 +306,15 @@ export function createBotSubStore(botId: string, botName: string) {
               this.refreshRequired = true;
               this.refreshSlow(false);
             }
-
-            const openTrades = result.data.map((t) => ({
-              ...t,
-              botId,
-              botName,
-              botTradeId: `${botId}__${t.trade_id}`,
-            }));
-            this.openTrades = openTrades;
+            if (Array.isArray(result.data)) {
+              const openTrades = result.data.map((t) => ({
+                ...t,
+                botId,
+                botName,
+                botTradeId: `${botId}__${t.trade_id}`,
+              }));
+              this.openTrades = openTrades;
+            }
           })
           .catch(console.error);
       },

@@ -86,7 +86,12 @@
           <summary>Orders</summary>
           <div v-for="(order, key) in trade.orders" :key="key">
             <span>
-              (#{{ key + 1 }}) <DateTimeTZ :date="order.order_timestamp" show-timezone />
+              (#{{ key + 1 }})
+              <DateTimeTZ
+                v-if="order.order_timestamp"
+                :date="order.order_timestamp"
+                show-timezone
+              />
               <b class="ml-1">{{ order.ft_order_side }}</b> for
               <b>{{ formatPrice(order.safe_price) }}</b> | {{ order.remaining }} /
               {{ order.filled }}</span

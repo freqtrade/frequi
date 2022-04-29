@@ -1,5 +1,5 @@
 import { Lock } from './locks';
-import { Trade } from './trades';
+import { ClosedTrade, Trade } from './trades';
 
 export interface BacktestPayload {
   strategy: string;
@@ -46,7 +46,7 @@ export interface ExitReasonResults {
 }
 
 export interface StrategyBacktestResult {
-  trades: Trade[];
+  trades: ClosedTrade[];
   locks: Lock[];
   best_pair: PairResult;
   worst_pair: PairResult;
