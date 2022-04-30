@@ -274,7 +274,8 @@
       class="container-fluid text-center w-100 mt-2"
     >
       <p class="row">
-        Graph will always show the latest values for the selected strategy. Strategy: {{ strategy }}
+        Graph will always show the latest values for the selected strategy. Timerange:
+        {{ timerange }} - {{ strategy }}
       </p>
       <div class="row text-center">
         <PairSummary
