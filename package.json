@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vite",
     "dev": "vite",
-    "build": "vite build --mode prod",
+    "build": "vite build",
     "test:unit": "jest",
     "check-types": "vue-tsc --noEmit",
     "lint": "eslint --ext .ts,vue src tests",
