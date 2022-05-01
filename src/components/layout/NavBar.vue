@@ -194,8 +194,8 @@ export default defineComponent({
       }
     });
 
-    onMounted(() => {
-      settingsStore.loadUIVersion();
+    onMounted(async () => {
+      await settingsStore.loadUIVersion();
       pingInterval.value = window.setInterval(botStore.pingAll, 60000);
       botStore.allRefreshFull();
     });
