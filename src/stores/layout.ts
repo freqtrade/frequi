@@ -59,7 +59,7 @@ function migrateLayoutSettings() {
   const STORE_LAYOUT_LOCK = 'ftLayoutLocked';
 
   // If new does not exist
-  if (localStorage.getItem(STORE_LAYOUTS) === null) {
+  if (localStorage.getItem(STORE_DASHBOARD_LAYOUT) !== null) {
     console.log('Migrating dashboard settings');
     const layoutLocked = localStorage.getItem(STORE_LAYOUT_LOCK);
     const tradingLayout = localStorage.getItem(STORE_TRADING_LAYOUT);
@@ -114,10 +114,13 @@ export const useLayoutStore = defineStore('layoutStore', {
     key: STORE_LAYOUTS,
     afterRestore: (context) => {
       console.log('after restore - ', context.store);
-      if (context.store.dashboardLayout === null) {
+      if (
+        context.store.dashboardLayout === null ||
+        typeof context.store.dashboardLayout === 'string'
+      ) {
         context.store.dashboardLayout = JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT));
       }
-      if (context.store.tradingLayout === null) {
+      if (context.store.tradingLayout === null || typeof context.store.tradingLayout === 'string') {
         context.store.tradingLayout = JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT));
       }
     },
