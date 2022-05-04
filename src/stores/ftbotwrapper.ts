@@ -14,7 +14,6 @@ import {
   RenameBotPayload,
   Trade,
 } from '@/types';
-import { AxiosInstance } from 'axios';
 import { defineStore } from 'pinia';
 import { createBotSubStore } from './ftbot';
 const AUTH_SELECTED_BOT = 'ftSelectedBot';
@@ -89,36 +88,42 @@ export const useBotStore = defineStore('wrapper', {
       return result;
     },
 
-    allOpenTradesAllBots: (state): Trade[] => {
+    allOpenTradesSelectedBots: (state): Trade[] => {
       const result: Trade[] = [];
       Object.entries(state.botStores).forEach(([, botStore]) => {
-        result.push(...botStore.openTrades);
+        if (botStore.isSelected) {
+          result.push(...botStore.openTrades);
+        }
       });
       return result;
     },
-    allTradesAllBots: (state): ClosedTrade[] => {
+    allTradesSelectedBots: (state): ClosedTrade[] => {
       const result: ClosedTrade[] = [];
       Object.entries(state.botStores).forEach(([, botStore]) => {
-        result.push(...botStore.trades);
+        if (botStore.isSelected) {
+          result.push(...botStore.trades);
+        }
       });
       return result;
     },
-    allDailyStatsAllBots: (state): DailyReturnValue => {
+    allDailyStatsSelectedBots: (state): DailyReturnValue => {
       // Return aggregated daily stats for all bots - sorted ascending.
       const resp: Record<string, DailyRecord> = {};
       Object.entries(state.botStores).forEach(([, botStore]) => {
-        botStore.dailyStats?.data?.forEach((d) => {
-          if (!resp[d.date]) {
-            resp[d.date] = { ...d };
-          } else {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            resp[d.date].abs_profit += d.abs_profit;
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            resp[d.date].fiat_value += d.fiat_value;
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            resp[d.date].trade_count += d.trade_count;
-          }
-        });
+        if (botStore.isSelected) {
+          botStore.dailyStats?.data?.forEach((d) => {
+            if (!resp[d.date]) {
+              resp[d.date] = { ...d };
+            } else {
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              resp[d.date].abs_profit += d.abs_profit;
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              resp[d.date].fiat_value += d.fiat_value;
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              resp[d.date].trade_count += d.trade_count;
+            }
+          });
+        }
       });
 
       const dailyReturn: DailyReturnValue = {

@@ -26,8 +26,8 @@
     >
       <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
         <DailyChart
-          v-if="botStore.allDailyStatsAllBots"
-          :daily-stats="botStore.allDailyStatsAllBots"
+          v-if="botStore.allDailyStatsSelectedBots"
+          :daily-stats="botStore.allDailyStatsSelectedBots"
           :show-title="false"
         />
       </DraggableContainer>
@@ -57,7 +57,11 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Open Trades">
-        <trade-list :active-trades="true" :trades="botStore.allOpenTradesAllBots" multi-bot-view />
+        <trade-list
+          :active-trades="true"
+          :trades="botStore.allOpenTradesSelectedBots"
+          multi-bot-view
+        />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -71,7 +75,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Cumulative Profit">
-        <CumProfitChart :trades="botStore.allTradesAllBots" :show-title="false" />
+        <CumProfitChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -85,7 +89,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Trades Log">
-        <TradesLogChart :trades="botStore.allTradesAllBots" :show-title="false" />
+        <TradesLogChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
   </GridLayout>

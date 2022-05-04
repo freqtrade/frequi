@@ -44,7 +44,7 @@ import {
   TradeResponse,
   ClosedTrade,
 } from '@/types';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 import { showAlert } from './alerts';
 
@@ -55,6 +55,7 @@ export function createBotSubStore(botId: string, botName: string) {
   const useBotStore = defineStore(botId, {
     state: () => {
       return {
+        isSelected: true,
         ping: '',
         botStatusAvailable: false,
         isBotOnline: false,
