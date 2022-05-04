@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@vue/composition-api": "^1.5.0",
-    "axios": "^0.27.1",
+    "axios": "^0.27.2",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.22.0",
     "bootswatch": "^5.1.3",
