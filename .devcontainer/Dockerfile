@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:16-bullseye
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:18-bullseye
 
 RUN yarn global add @vue/cli \
     && sudo apt-get update \
