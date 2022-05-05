@@ -8,6 +8,16 @@
     :items="tableItems"
     :fields="tableFields"
   >
+    <template #cell(botName)="row">
+      <div class="d-flex flex-row">
+        <b-form-checkbox
+          v-if="row.item.botId && botStore.botCount > 1"
+          v-model="botStore.botStores[row.item.botId].isSelected"
+          title="Show bot in Dashboard"
+        />
+        <span>{{ row.value }}</span>
+      </div>
+    </template>
     <template #cell(profitOpen)="row">
       <profit-pill
         v-if="row.item.profitOpen && row.item.botId != 'Summary'"
@@ -47,7 +57,7 @@ import ProfitPill from '@/components/general/ProfitPill.vue';
 import { formatPrice } from '@/shared/formatters';
 import { defineComponent, computed } from '@vue/composition-api';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { ProfitInterface } from '@/types';
+import { ProfitInterface, ComparisonTableItems } from '@/types';
 
 export default defineComponent({
   name: 'BotComparisonList',
@@ -56,7 +66,7 @@ export default defineComponent({
     const botStore = useBotStore();
 
     const tableFields: Record<string, string | Function>[] = [
-      { key: 'botId', label: 'Bot' },
+      { key: 'botName', label: 'Bot' },
       { key: 'trades', label: 'Trades' },
       { key: 'profitOpen', label: 'Open Profit' },
       { key: 'profitClosed', label: 'Closed Profit' },
@@ -66,9 +76,10 @@ export default defineComponent({
 
     const tableItems = computed(() => {
       console.log('tableItems called');
-      const val: any[] = [];
-      const summary = {
-        botId: 'Summary',
+      const val: ComparisonTableItems[] = [];
+      const summary: ComparisonTableItems = {
+        botId: undefined,
+        botName: 'Summary',
         profitClosed: 0,
         profitClosedRatio: 0,
         profitOpen: 0,
@@ -87,7 +98,8 @@ export default defineComponent({
 
         // TODO: handle one inactive bot ...
         val.push({
-          botId: botStore.availableBots[k].botName,
+          botId: k,
+          botName: botStore.availableBots[k].botName,
           trades: `${botStore.allOpenTradeCount[k]} / ${
             botStore.allBotState[k]?.max_open_trades || 'N/A'
           }`,
@@ -117,6 +129,7 @@ export default defineComponent({
       formatPrice,
       tableFields,
       tableItems,
+      botStore,
     };
   },
 });
