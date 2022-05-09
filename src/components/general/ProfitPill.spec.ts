@@ -47,4 +47,19 @@ describe('ProfitPill.vue', () => {
     cy.get('div').should('contain', '(0)');
     cy.get('span').should('have.attr', 'title', 'BTC');
   });
+  it('Shows a pill without relative profits.', async () => {
+    mount(ProfitPill, {
+      propsData: {
+        profitRatio: undefined,
+        profitAbs: 223,
+        profitDesc: '',
+        stakeCurrency: 'USDT',
+      },
+    });
+
+    cy.get('div').should('have.class', 'profit-pill').should('be.visible');
+    // cy.get('div').should('not.contain', '%');
+    cy.get('div').should('contain', '223');
+    cy.get('span').should('have.attr', 'title', 'USDT');
+  });
 });

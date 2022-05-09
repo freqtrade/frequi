@@ -46,6 +46,8 @@ export default defineComponent({
     const profitString = computed((): string => {
       if (props.profitRatio !== undefined && props.profitAbs !== undefined) {
         return `(${formatPrice(props.profitAbs, 3)})`;
+      } else if (props.profitAbs !== undefined) {
+        return `${formatPrice(props.profitAbs, 3)}`;
       }
       return '';
     });

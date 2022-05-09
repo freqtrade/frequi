@@ -3,9 +3,9 @@ export interface ComparisonTableItems {
   botName: string;
   trades?: string;
   profitClosed: number;
-  profitClosedRatio: number;
+  profitClosedRatio?: number;
   profitOpen: number;
-  profitOpenRatio: number;
+  profitOpenRatio?: number;
   stakeCurrency: string;
   wins: number;
   losses: number;
