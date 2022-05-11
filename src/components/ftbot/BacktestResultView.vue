@@ -224,8 +224,8 @@ export default defineComponent({
             props.backtestResult.worst_pair.profit_sum,
           )}`,
         },
-        { metric: 'Best single Trade', value: bestPair },
-        { metric: 'Worst single Trade', value: worstPair },
+        { metric: 'Best single Trade', value: bestPair.value },
+        { metric: 'Worst single Trade', value: worstPair.value },
       ];
     });
 
