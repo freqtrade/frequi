@@ -67,6 +67,6 @@
     "vite-jest": "^0.1.4",
     "vite-plugin-vue2": "^2.0.0",
     "vue-template-compiler": "^2.6.14",
-    "vue-tsc": "^0.34.11"
+    "vue-tsc": "^0.34.12"
   }
 }
