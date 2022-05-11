@@ -23,7 +23,7 @@
 		"workbench.iconTheme": "vscode-icons",
 	},
 	"extensions": [
-		"johnsoncodehk.volar",
+		"vue.volar",
 		"dbaeumer.vscode-eslint",
 		"yzhang.markdown-all-in-one",
 		"marquesmps.dockerfile-validator",
