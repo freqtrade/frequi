@@ -1,9 +1,16 @@
 import { mount } from '@cypress/vue';
-import ProfitPill from '@/components/general/ProfitPill.vue';
+import ProfitPill from './ProfitPill.vue';
+import { createLocalVue } from '@vue/test-utils';
+
+import VueCompositionAPI from '@vue/composition-api';
+
+const localVue = createLocalVue();
+localVue.use(VueCompositionAPI);
 
 describe('ProfitPill.vue', () => {
-  it('Shows a Green pill with positive profits', async () => {
+  it('Shows a Green pill with positive profits', () => {
     mount(ProfitPill, {
+      localVue,
       propsData: {
         profitRatio: 0.051,
         profitAbs: 0.1,
@@ -16,8 +23,9 @@ describe('ProfitPill.vue', () => {
     cy.get('div').should('contain', '(0.1)');
     cy.get('span').should('have.attr', 'title', 'USDT');
   });
-  it('Shows a Red pill with positive profits', async () => {
+  it('Shows a Red pill with positive profits', () => {
     mount(ProfitPill, {
+      localVue,
       propsData: {
         profitRatio: -0.1,
         profitAbs: -0.1,
@@ -32,8 +40,9 @@ describe('ProfitPill.vue', () => {
     cy.get('div').should('contain', '(-0.1)');
     cy.get('span').should('have.attr', 'title', 'USDT');
   });
-  it('Shows a pill with 0.0 profits.', async () => {
+  it('Shows a pill with 0.0 profits.', () => {
     mount(ProfitPill, {
+      localVue,
       propsData: {
         profitRatio: 0.0,
         profitAbs: 0.0,
@@ -47,8 +56,9 @@ describe('ProfitPill.vue', () => {
     cy.get('div').should('contain', '(0)');
     cy.get('span').should('have.attr', 'title', 'BTC');
   });
-  it('Shows a pill without relative profits.', async () => {
+  it('Shows a pill without relative profits.', () => {
     mount(ProfitPill, {
+      localVue,
       propsData: {
         profitRatio: undefined,
         profitAbs: 223,
