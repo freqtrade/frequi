@@ -205,6 +205,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
         // Refresh data only when needed
         if (forceUpdate || this.refreshRequired) {
+          this.refreshing = true;
           // TODO: Should be AxiosInstance
           const updates: Promise<any>[] = [];
           updates.push(this.getPerformance());
@@ -216,6 +217,7 @@ export function createBotSubStore(botId: string, botName: string) {
           updates.push(this.getBlacklist());
           await Promise.all(updates);
           this.refreshRequired = false;
+          this.refreshing = false;
         }
         return Promise.resolve();
       },

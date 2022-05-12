@@ -75,7 +75,6 @@ export default defineComponent({
     ];
 
     const tableItems = computed(() => {
-      console.log('tableItems called');
       const val: ComparisonTableItems[] = [];
       const summary: ComparisonTableItems = {
         botId: undefined,
