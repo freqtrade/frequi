@@ -183,7 +183,7 @@ export default defineComponent({
 
     onMounted(async () => {
       await botStore.allGetDaily({ timescale: 30 });
-      botStore.activeBot.getTrades();
+      // botStore.activeBot.getTrades();
       botStore.activeBot.getOpenTrades();
       botStore.activeBot.getProfit();
     });
