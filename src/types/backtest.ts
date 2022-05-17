@@ -109,6 +109,7 @@ export interface StrategyBacktestResult {
 
   timedout_entry_orders: number;
   timedout_exit_orders: number;
+  canceled_trade_entries?: number;
 
   // Daily stats ...
   draw_days: number;

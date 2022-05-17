@@ -186,6 +186,10 @@ export default defineComponent({
           metric: 'Entry/Exit timeouts',
           value: `${props.backtestResult.timedout_entry_orders} / ${props.backtestResult.timedout_exit_orders}`,
         },
+        {
+          metric: 'Canceled Trade Entries',
+          value: props.backtestResult.canceled_trade_entries ?? 'N/A',
+        },
 
         ...shortMetrics,
 
