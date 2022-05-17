@@ -190,6 +190,14 @@ export default defineComponent({
           metric: 'Canceled Trade Entries',
           value: props.backtestResult.canceled_trade_entries ?? 'N/A',
         },
+        {
+          metric: 'Canceled Entry Orders',
+          value: props.backtestResult.canceled_entry_orders ?? 'N/A',
+        },
+        {
+          metric: 'Replaced Entry Orders',
+          value: props.backtestResult.replaced_entry_orders ?? 'N/A',
+        },
 
         ...shortMetrics,
 
