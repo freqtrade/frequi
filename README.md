@@ -1,5 +1,6 @@
-# frequi
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/freqtrade/frequi)
+# FreqUI
+
+[![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/freqtrade/frequi)
 ![FreqUI CI](https://github.com/freqtrade/frequi/workflows/FreqUI%20CI/badge.svg)
 
 Freqtrade UI build with [Vue.js](https://vuejs.org/) and [boostrap-vue](https://bootstrap-vue.org/).
