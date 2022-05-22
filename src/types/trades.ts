@@ -94,6 +94,7 @@ export interface Trade {
   is_short?: boolean;
   leverage?: number;
   interest_rate?: number;
+  liquidation_price?: number;
   funding_fees?: number;
   trading_mode?: TradingMode;
   orders?: Order[];
