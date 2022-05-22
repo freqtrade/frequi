@@ -83,7 +83,7 @@
           </ValuePair>
         </div>
         <details v-if="trade.orders">
-          <summary>Orders</summary>
+          <summary>Orders {{ trade.orders.length > 1 ? `[${trade.orders.length}]` : '' }}</summary>
           <div v-for="(order, key) in trade.orders" :key="key">
             <span>
               (#{{ key + 1 }})

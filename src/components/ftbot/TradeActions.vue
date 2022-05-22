@@ -4,28 +4,28 @@
       v-if="botApiVersion <= 1.1"
       class="btn-xs text-left"
       size="sm"
-      title="Forcesell"
+      title="Forceexit"
       @click="$emit('forceSell', trade)"
     >
-      <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell
+      <ForceSellIcon :size="16" title="Forceexit" class="mr-1" />Forceexit
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
       class="btn-xs text-left"
       size="sm"
-      title="Forcesell limit"
+      title="Forceexit limit"
       @click="$emit('forceSell', trade, 'limit')"
     >
-      <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell limit
+      <ForceSellIcon :size="16" title="Forceexit limit" class="mr-1" />Forceexit limit
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
       class="btn-xs text-left mt-1"
       size="sm"
-      title="Forcesell market"
+      title="Forceexit market"
       @click="$emit('forceSell', trade, 'market')"
     >
-      <ForceSellIcon :size="16" title="Forcesell" class="mr-1" />Forcesell market
+      <ForceSellIcon :size="16" title="Forceexit market" class="mr-1" />Forceexit market
     </b-button>
 
     <b-button
