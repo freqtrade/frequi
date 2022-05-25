@@ -30,7 +30,6 @@
 		"streetsidesoftware.code-spell-checker",
 		"vscode-icons-team.vscode-icons",
 		"hediet.vscode-drawio",
-		"naumovs.color-highlight",
 	],
 	"postCreateCommand": "yarn install",
 }
