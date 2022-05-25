@@ -616,7 +616,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async forcebuy(payload: ForceEnterPayload) {
+      async forceentry(payload: ForceEnterPayload) {
         if (payload && payload.pair) {
           try {
             // TODO: Update forcebuy to forceenter ...

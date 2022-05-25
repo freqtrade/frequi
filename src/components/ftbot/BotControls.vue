@@ -63,7 +63,7 @@ forceexit
     >
       <PlayIcon />
     </button>
-    <ForceBuyForm :modal-show="forcebuyShow" @close="$bvModal.hide('forcebuy-modal')" />
+    <ForceEntryForm :modal-show="forcebuyShow" @close="$bvModal.hide('forceentry-modal')" />
   </div>
 </template>
 
@@ -75,14 +75,14 @@ import PauseIcon from 'vue-material-design-icons/Pause.vue';
 import ReloadIcon from 'vue-material-design-icons/Reload.vue';
 import ForceExitIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ForceEntryIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
-import ForceBuyForm from './ForceBuyForm.vue';
+import ForceEntryForm from './ForceEntryForm.vue';
 import { defineComponent, computed, ref } from '@vue/composition-api';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'BotControls',
   components: {
-    ForceBuyForm,
+    ForceEntryForm,
     PlayIcon,
     StopIcon,
     PauseIcon,
@@ -99,7 +99,7 @@ export default defineComponent({
     });
 
     const initiateForceenter = () => {
-      root.$bvModal.show('forcebuy-modal');
+      root.$bvModal.show('forceentry-modal');
     };
 
     const handleStopBot = () => {

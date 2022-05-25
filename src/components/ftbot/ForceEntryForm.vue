@@ -1,12 +1,12 @@
 <template>
   <div>
     <b-modal
-      id="forcebuy-modal"
+      id="forceentry-modal"
       ref="modal"
       title="Force entering a trade"
       @show="resetForm"
       @hidden="resetForm"
-      @ok="handleBuy"
+      @ok="handleEntry"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
@@ -28,7 +28,7 @@
             id="pair-input"
             v-model="pair"
             required
-            @keydown.enter.native="handleBuy"
+            @keydown.enter.native="handleEntry"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -41,7 +41,7 @@
             v-model="price"
             type="number"
             step="0.00000001"
-            @keydown.enter.native="handleBuy"
+            @keydown.enter.native="handleEntry"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -55,7 +55,7 @@
             v-model="stakeAmount"
             type="number"
             step="0.000001"
-            @keydown.enter.native="handleBuy"
+            @keydown.enter.native="handleEntry"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -85,7 +85,7 @@ import { ForceEnterPayload, OrderSides } from '@/types';
 import { defineComponent, ref, nextTick } from '@vue/composition-api';
 
 export default defineComponent({
-  name: 'ForceBuyForm',
+  name: 'ForceEntryForm',
   setup(_, { root }) {
     const botStore = useBotStore();
 
@@ -107,7 +107,7 @@ export default defineComponent({
       if (!checkFormValidity()) {
         return;
       }
-      // call forcebuy
+      // call forceentry
       const payload: ForceEnterPayload = { pair: pair.value };
       if (price.value) {
         payload.price = Number(price.value);
@@ -121,9 +121,9 @@ export default defineComponent({
       if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
         payload.side = orderSide.value;
       }
-      botStore.activeBot.forcebuy(payload);
+      botStore.activeBot.forceentry(payload);
       nextTick(() => {
-        root.$bvModal.hide('forcebuy-modal');
+        root.$bvModal.hide('forceentry-modal');
       });
     };
     const resetForm = () => {
@@ -141,7 +141,7 @@ export default defineComponent({
       }
     };
 
-    const handleBuy = (bvModalEvt) => {
+    const handleEntry = (bvModalEvt) => {
       // Prevent modal from closing
       bvModalEvt.preventDefault();
       // Trigger submit handler
@@ -151,7 +151,7 @@ export default defineComponent({
       handleSubmit,
       botStore,
       form,
-      handleBuy,
+      handleEntry,
       resetForm,
       pair,
       price,
