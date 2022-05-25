@@ -118,7 +118,7 @@ export default defineComponent({
       if (stakeAmount.value) {
         payload.stakeamount = stakeAmount.value;
       }
-      if (botStore.activeBot.botApiVersion >= 2.13) {
+      if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
         payload.side = orderSide.value;
       }
       botStore.activeBot.forcebuy(payload);
