@@ -5314,10 +5314,10 @@ vite-jest@^0.1.4:
     magic-string "^0.25.7"
     slash "^4.0.0"
 
-vite-plugin-vue2@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-vue2/-/vite-plugin-vue2-2.0.0.tgz#7ffb1ffbff5d7a843cba533546892a2f58b79555"
-  integrity sha512-6+CfhsPgQoZnkBbMMb/pxX3gYLD3k10QljjVlUa2lL8160UmVotLuEaN+U2eSyCEnn+uBj7YMSmBPWXqqTEpsw==
+vite-plugin-vue2@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-vue2/-/vite-plugin-vue2-2.0.1.tgz#1d25e274bd64aa38ff57db5dff5936c305b80275"
+  integrity sha512-8ixcIDZwk3PSbdaqKrPFYDot044lPLIqpjjuRXUDHdRhml87Kbc6JqLq6uwHERlPovwfI3DpluWRMVgn/Llmag==
   dependencies:
     "@babel/core" "^7.17.9"
     "@babel/parser" "^7.17.9"
