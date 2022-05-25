@@ -29,6 +29,7 @@
 		"marquesmps.dockerfile-validator",
 		"streetsidesoftware.code-spell-checker",
 		"vscode-icons-team.vscode-icons",
+		"hediet.vscode-drawio",
 	],
 	"postCreateCommand": "yarn install",
 }
