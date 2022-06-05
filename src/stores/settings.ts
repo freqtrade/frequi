@@ -44,16 +44,6 @@ export const useSettingsStore = defineStore('uiSettings', {
     },
   },
   actions: {
-    setOpenTradesInTitle(locked: string) {
-      this.openTradesInTitle = locked;
-    },
-    setTimeZone(timezone: string) {
-      setTimezone(timezone);
-      this.timezone = timezone;
-    },
-    setBackgroundSync(value: boolean) {
-      this.backgroundSync = value;
-    },
     async loadUIVersion() {
       if (import.meta.env.PROD) {
         try {

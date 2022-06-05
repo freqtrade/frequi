@@ -11,7 +11,7 @@ import NavBar from '@/components/layout/NavBar.vue';
 import NavFooter from '@/components/layout/NavFooter.vue';
 import Body from '@/components/layout/Body.vue';
 import { setTimezone } from './shared/formatters';
-import { defineComponent, onMounted } from '@vue/composition-api';
+import { defineComponent, onMounted, watch } from '@vue/composition-api';
 import { useSettingsStore } from './stores/settings';
 
 export default defineComponent({
@@ -22,6 +22,13 @@ export default defineComponent({
     onMounted(() => {
       setTimezone(settingsStore.timezone);
     });
+    watch(
+      () => settingsStore.timezone,
+      (tz) => {
+        console.log('timezone changed', tz);
+        setTimezone(tz);
+      },
+    );
     return {};
   },
 });

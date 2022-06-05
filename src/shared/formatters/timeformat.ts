@@ -20,19 +20,11 @@ function getTimeZone(tz?: string): string {
   return tz || locTimeZone;
 }
 
-/**
- *
- * @param ts Convert timestamp or Date to datetime (in correct timezone)
- * @param timezone timezone to use
- * @returns Date object (in timezone)
- */
-function convertToDate(ts: number | Date, timezone?: string): Date {
-  const date = toDate(ts);
-  const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if (getTimeZone(timezone) === 'UTC') {
-    return utcToZonedTime(date, currentTz);
-  }
-  return date;
+function formatDate(date: Date, formatPattern: string, timezone?: string): string {
+  const timezoneRes = getTimeZone(timezone);
+  return format(utcToZonedTime(date, timezoneRes), formatPattern, {
+    timeZone: timezoneRes,
+  });
 }
 
 /**
@@ -40,7 +32,7 @@ function convertToDate(ts: number | Date, timezone?: string): Date {
  * @param ts Timestamp as number or date (in utc!!)
  */
 export function timestampms(ts: number | Date): string {
-  return format(convertToDate(ts), 'yyyy-MM-dd HH:mm:ss', { timeZone: locTimeZone });
+  return formatDate(toDate(ts), 'yyyy-MM-dd HH:mm:ss');
 }
 
 /**
@@ -50,9 +42,7 @@ export function timestampms(ts: number | Date): string {
  * @returns formatted date in desired timezone (or globally configured timezone)
  */
 export function timestampmsWithTimezone(ts: number | Date, timezone?: string): string {
-  return format(convertToDate(ts, timezone), 'yyyy-MM-dd HH:mm:ss (z)', {
-    timeZone: getTimeZone(timezone),
-  });
+  return formatDate(toDate(ts), 'yyyy-MM-dd HH:mm:ss (z)', timezone);
 }
 
 /**
@@ -60,7 +50,7 @@ export function timestampmsWithTimezone(ts: number | Date, timezone?: string): s
  * @param ts
  */
 export function timestampToDateString(ts: number | Date): string {
-  return format(convertToDate(ts), 'yyyy-MM-dd');
+  return formatDate(toDate(ts), 'yyyy-MM-dd');
 }
 
 /**
@@ -72,7 +62,7 @@ export function dateStringToTimeRange(datestring: string): string {
 }
 
 export function timestampHour(ts: number): number {
-  return getHours(convertToDate(ts));
+  return Number(formatDate(toDate(ts), 'HH'));
 }
 
 /**
@@ -89,4 +79,9 @@ export default {
   timestampToDateString,
   dateStringToTimeRange,
   setTimezone,
+};
+
+export const exportForTesting = {
+  getTimeZone,
+  formatDate,
 };
