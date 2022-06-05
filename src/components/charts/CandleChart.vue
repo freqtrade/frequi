@@ -468,8 +468,14 @@ export default defineComponent({
           label: 5,
           tooltip: 6,
         },
-        label: { show: true, fontSize: 10, color: props.theme === 'dark' ? '#fff' : '#000' },
-        labelLayout: { rotate: 90, align: 'left', dx: 10 },
+        label: {
+          show: true,
+          fontSize: 12,
+          backgroundColor: props.theme !== 'dark' ? '#fff' : '#000',
+          padding: 2,
+          color: props.theme === 'dark' ? '#fff' : '#000',
+        },
+        labelLayout: { rotate: 75, align: 'left', dx: 10 },
         itemStyle: {
           // color: tradeSellColor,
           color: (v) => v.data[4],
