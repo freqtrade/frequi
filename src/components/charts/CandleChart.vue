@@ -280,7 +280,15 @@ export default defineComponent({
               y: colBuyData,
             },
           },
-          {
+        ],
+      };
+
+      if (colSellData >= 0) {
+        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
+          chartOptions.value.legend.data.push('Long exit');
+        }
+        if (Array.isArray(options.series)) {
+          options.series.push({
             name: 'Long exit',
             type: 'scatter',
             symbol: 'diamond',
@@ -294,47 +302,55 @@ export default defineComponent({
               x: colDate,
               y: colSellData,
             },
-          },
-        ],
-      };
+          });
+        }
+      }
 
       if (hasShorts) {
         // Add short support
         if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          chartOptions.value.legend.data.push('Short');
-          chartOptions.value.legend.data.push('Short exit');
+          if (colShortEntryData >= 0) {
+            chartOptions.value.legend.data.push('Short');
+          }
+          if (colShortExitData >= 0) {
+            chartOptions.value.legend.data.push('Short exit');
+          }
         }
         if (Array.isArray(options.series)) {
-          options.series.push({
-            name: 'Short',
-            type: 'scatter',
-            symbol: 'pin',
-            symbolSize: 10,
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            itemStyle: {
-              color: shortEntrySignalColor,
-            },
-            encode: {
-              x: colDate,
-              y: colShortEntryData,
-            },
-          });
-          options.series.push({
-            name: 'Short exit',
-            type: 'scatter',
-            symbol: 'pin',
-            symbolSize: 8,
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            itemStyle: {
-              color: shortexitSignalColor,
-            },
-            encode: {
-              x: colDate,
-              y: colShortExitData,
-            },
-          });
+          if (colShortEntryData >= 0) {
+            options.series.push({
+              name: 'Short',
+              type: 'scatter',
+              symbol: 'pin',
+              symbolSize: 10,
+              xAxisIndex: 0,
+              yAxisIndex: 0,
+              itemStyle: {
+                color: shortEntrySignalColor,
+              },
+              encode: {
+                x: colDate,
+                y: colShortEntryData,
+              },
+            });
+          }
+          if (colShortExitData >= 0) {
+            options.series.push({
+              name: 'Short exit',
+              type: 'scatter',
+              symbol: 'pin',
+              symbolSize: 8,
+              xAxisIndex: 0,
+              yAxisIndex: 0,
+              itemStyle: {
+                color: shortexitSignalColor,
+              },
+              encode: {
+                x: colDate,
+                y: colShortExitData,
+              },
+            });
+          }
         }
       }
 
@@ -526,7 +542,7 @@ export default defineComponent({
         animation: false,
         legend: {
           // Initial legend, further entries are pushed to the below list
-          data: ['Candles', 'Volume', 'Long', 'Long exit'],
+          data: ['Candles', 'Volume', 'Long'],
           right: '1%',
         },
         tooltip: {
