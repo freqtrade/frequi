@@ -503,6 +503,7 @@ export default defineComponent({
         tooltip: {
           show: true,
           trigger: 'axis',
+          renderMode: 'richText',
           backgroundColor: 'rgba(80,80,80,0.7)',
           borderWidth: 0,
           textStyle: {
