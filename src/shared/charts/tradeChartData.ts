@@ -7,6 +7,9 @@ function buildToolTip(trade: Trade, side: string): string {
     trade.profit_ratio,
   )} \nEnter-tag: ${trade.enter_tag ?? ''} \nExit-Tag: ${trade.exit_reason ?? ''}`;
 }
+const ENTRY_SYMB = 'circle';
+const EXIT_SYMB = 'rect';
+
 
 /** Return trade entries for charting */
 export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
@@ -30,7 +33,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
       tradeData.push([
         roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp),
         trade.open_rate,
-        'circle', // TODO: use better symbol
+        ENTRY_SYMB,
         trade.is_short ? 180 : 0,
         (trade.profit_abs ?? 0) > 0 ? '#31e04b' : '#ed1511',
         // trade.is_short ? '#ffaf0d' : '#ff0df3',
@@ -49,7 +52,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
         tradeData.push([
           roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp),
           trade.close_rate,
-          'rect',
+          EXIT_SYMB,
           trade.is_short ? 180 : 0,
           // trade.is_short ? '#ffaf0d' : '#00ff26',
           (trade.profit_abs ?? 0) > 0 ? '#31e04b' : '#ed1511',
