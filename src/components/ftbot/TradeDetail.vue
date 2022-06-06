@@ -93,9 +93,10 @@
                 show-timezone
               />
               <b class="ml-1">{{ order.ft_order_side }}</b> for
-              <b>{{ formatPrice(order.safe_price) }}</b> | {{ order.remaining }} /
-              {{ order.filled }}</span
-            >
+              <b>{{ formatPrice(order.safe_price) }}</b> |
+              <span v-if="order.remaining !== 0" title="remaining">{{ order.remaining }} / </span>
+              <span title="Filled">{{ order.filled }}</span>
+            </span>
           </div>
         </details>
       </div>
