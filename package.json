@@ -13,7 +13,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:open-ct": "cypress open-ct",
-    "cy:run-ct": "cypress run-ct"
+    "cy:run-ct": "cypress run --component"
   },
   "dependencies": {
     "@vue/composition-api": "^1.6.2",

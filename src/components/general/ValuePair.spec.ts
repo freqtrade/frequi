@@ -1,9 +1,8 @@
-import { mount } from '@cypress/vue';
 import ValuePair from './ValuePair.vue';
 
 it('renders a message', () => {
   const msg = 'Test description';
-  mount(ValuePair, {
+  cy.mount(ValuePair, {
     propsData: {
       description: msg,
     },
