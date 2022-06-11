@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from '@vue/composition-api';
 import DailyChart from '@/components/charts/DailyChart.vue';
-import { formatPrice } from '@/shared/formatters';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -42,6 +42,9 @@ export default defineComponent({
           formatter: (value) => formatPrice(value, 2),
         },
         { key: 'trade_count', label: 'Trades' },
+        botStore.activeBot.botApiVersion >= 2.16
+          ? { key: 'rel_profit', label: 'Profit%', formatter: (value) => formatPercent(value, 2) }
+          : null,
       ];
     });
     onMounted(() => {
