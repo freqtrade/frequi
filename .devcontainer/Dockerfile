@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:18-bullseye
 
-RUN yarn global add @vue/cli \
-    && sudo apt-get update \
+RUN sudo apt-get update \
     && sudo apt-get install -y vim \
     && sudo apt-get clean
 

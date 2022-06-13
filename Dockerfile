@@ -13,8 +13,6 @@ RUN apk add --update --no-cache python3 g++ make\
     && yarn \
     && apk del python3 g++ make
 
-RUN yarn global add @vue/cli
-
 COPY . /app
 
 # The below flag should be removed, it's an incompatibility between
