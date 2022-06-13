@@ -4,12 +4,12 @@ export interface DailyPayload {
 
 export interface DailyRecord {
   /** Date in the format yyyy-mm-dd */
-  [key: string]: string | number | undefined;
+  [key: string]: string | number;
   date: string;
   abs_profit: number;
   /** added in  2.16*/
-  rel_profit?: number;
-  starting_balance_profit?: number;
+  rel_profit: number;
+  starting_balance_profit: number;
   fiat_value: number;
   trade_count: number;
 }
