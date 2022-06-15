@@ -8,7 +8,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config);
     },
-    specPattern: 'cypress/e2e/**/*.spec.ts',
+    specPattern: 'cypress/e2e/**/*.cy.ts',
     baseUrl: 'http://localhost:3000',
   },
   component: {
@@ -17,6 +17,6 @@ export default defineConfig({
       bundler: 'vite',
     },
     // setupNodeEvents(on, config) {},
-    specPattern: 'src/**/*.spec.ts',
+    specPattern: 'src/**/*.cy.ts',
   },
 });
