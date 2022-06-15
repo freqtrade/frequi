@@ -40,7 +40,7 @@
     "vue2-helpers": "^1.1.7"
   },
   "devDependencies": {
-    "@cypress/vite-dev-server": "^2.2.3",
+    "@cypress/vite-dev-server": "^3.0.0",
     "@cypress/vue": "^2.2.3",
     "@types/echarts": "^4.9.15",
     "@types/jest": "^27.5.0",
