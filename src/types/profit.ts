@@ -36,4 +36,8 @@ export interface ProfitInterface {
   best_pair_profit_ratio: number;
   winning_trades: number;
   losing_trades: number;
+  profit_factor?: number;
+  max_drawdown?: number;
+  max_drawdown_abs?: number;
+  trading_volume?: number;
 }

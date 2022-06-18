@@ -42,20 +42,37 @@
     <p v-if="botStore.activeBot.profit.first_trade_timestamp">
       First trade opened:
 
-      <strong
-        ><DateTimeTZ :date="botStore.activeBot.profit.first_trade_timestamp" show-timezone
-      /></strong>
+      <strong>
+        <DateTimeTZ :date="botStore.activeBot.profit.first_trade_timestamp" show-timezone />
+      </strong>
       <br />
       Last trade opened:
-      <strong
-        ><DateTimeTZ :date="botStore.activeBot.profit.latest_trade_timestamp" show-timezone
-      /></strong>
+      <strong>
+        <DateTimeTZ :date="botStore.activeBot.profit.latest_trade_timestamp" show-timezone />
+      </strong>
+    </p>
+    <p>
+      <span v-if="botStore.activeBot.profit.profit_factor">
+        Profit factor:
+        {{ botStore.activeBot.profit.profit_factor.toFixed(2) }}
+      </span>
+      <br />
+      <span v-if="botStore.activeBot.profit.trading_volume">
+        Trading volume:
+        {{
+          formatPriceCurrency(
+            botStore.activeBot.profit.trading_volume,
+            botStore.activeBot.botState.stake_currency,
+            botStore.activeBot.botState.stake_currency_decimals ?? 3,
+          )
+        }}
+      </span>
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import { formatPercent } from '@/shared/formatters';
+import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
 import { defineComponent } from '@vue/composition-api';
@@ -68,6 +85,7 @@ export default defineComponent({
     const botStore = useBotStore();
     return {
       formatPercent,
+      formatPriceCurrency,
       botStore,
     };
   },
