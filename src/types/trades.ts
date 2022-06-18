@@ -120,6 +120,7 @@ export interface ClosedTrade extends Trade {
 
 export interface TradeResponse {
   trades: ClosedTrade[];
+  offset: number;
   /** Trades count for this response */
   trades_count: number;
   /** Total trade count */
