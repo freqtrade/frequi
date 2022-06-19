@@ -64,8 +64,8 @@ const upBorderColor = '#26A69A';
 const downColor = '#EF5350';
 const downBorderColor = '#EF5350';
 
-const buySignalColor = '#31e04b';
-const shortEntrySignalColor = '#bf8613';
+const buySignalColor = '#00ff26';
+const shortEntrySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
 const shortexitSignalColor = '#faba25';
 
@@ -279,6 +279,7 @@ export default defineComponent({
         if (hasShorts) {
           if (colShortEntryData >= 0) {
             options.series.push({
+              // Short entry
               name: 'Entry',
               type: 'scatter',
               symbol: 'triangle',
@@ -289,6 +290,10 @@ export default defineComponent({
               itemStyle: {
                 color: shortEntrySignalColor,
               },
+              tooltip: {
+                // Hide tooltip - it's already there for longs.
+                show: false,
+              },
               encode: {
                 x: colDate,
                 y: colShortEntryData,
@@ -297,6 +302,7 @@ export default defineComponent({
           }
           if (colShortExitData >= 0) {
             options.series.push({
+              // Short exit
               name: 'Exit',
               type: 'scatter',
               symbol: 'pin',
@@ -304,7 +310,11 @@ export default defineComponent({
               xAxisIndex: 0,
               yAxisIndex: 0,
               itemStyle: {
+                // Hide tooltip - it's already there for longs.
                 color: shortexitSignalColor,
+              },
+              tooltip: {
+                show: false,
               },
               encode: {
                 x: colDate,
@@ -451,9 +461,6 @@ export default defineComponent({
       const { tradeData } = getTradeEntries(props.dataset, filteredTrades.value);
 
       const nameTrades = 'Trades';
-      if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-        chartOptions.value.legend.data.push(nameTrades);
-      }
       if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
         chartOptions.value.legend.data.push(nameTrades);
       }
