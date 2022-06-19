@@ -1,19 +1,23 @@
 import { TradingMode } from './types';
 
-export interface Order {
+export interface BTOrder {
+  amount: number;
+  safe_price: number;
+  ft_order_side: string;
+  order_filled_timestamp?: number;
+  ft_is_entry: boolean;
+}
+
+export interface Order extends BTOrder {
   pair: string;
   order_id: string;
   status: string;
   remaining: number;
-  amount: number;
-  safe_price: number;
   cost: number;
   filled: number;
-  ft_order_side: string;
   order_type: string;
   is_open: boolean;
   order_timestamp?: number;
-  order_filled_timestamp?: number;
 }
 
 export interface Trade {
@@ -120,6 +124,7 @@ export interface ClosedTrade extends Trade {
 
 export interface TradeResponse {
   trades: ClosedTrade[];
+  offset: number;
   /** Trades count for this response */
   trades_count: number;
   /** Total trade count */

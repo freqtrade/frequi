@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, computed, onMounted, watch } from '@vue/composition-api';
 import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
-import { roundTimeframe } from '@/shared/timemath';
 import heikinashi from '@/shared/heikinashi';
+import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
 
 import { use } from 'echarts/core';
@@ -67,10 +68,6 @@ const buySignalColor = '#00ff26';
 const shortEntrySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
 const shortexitSignalColor = '#faba25';
-const tradeBuyColor = 'cyan';
-const tradeSellColor = 'pink';
-
-import { defineComponent, ref, computed, onMounted, watch } from '@vue/composition-api';
 
 export default defineComponent({
   name: 'CandleChart',
@@ -101,10 +98,6 @@ export default defineComponent({
       return props.dataset ? props.dataset.timeframe : '';
     });
 
-    const timeframems = computed(() => {
-      return props.dataset ? props.dataset.timeframe_ms : 0;
-    });
-
     const datasetColumns = computed(() => {
       return props.dataset ? props.dataset.columns : [];
     });
@@ -120,34 +113,6 @@ export default defineComponent({
     const chartTitle = computed(() => {
       return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
     });
-
-    /** Return trade entries for charting */
-    const getTradeEntries = () => {
-      const trades: (string | number)[][] = [];
-      const tradesClose: (string | number)[][] = [];
-      for (let i = 0, len = filteredTrades.value.length; i < len; i += 1) {
-        const trade: Trade = filteredTrades.value[i];
-        if (
-          trade.open_timestamp >= props.dataset.data_start_ts &&
-          trade.open_timestamp <= props.dataset.data_stop_ts
-        ) {
-          trades.push([roundTimeframe(timeframems.value, trade.open_timestamp), trade.open_rate]);
-        }
-        if (
-          trade.close_timestamp !== undefined &&
-          trade.close_timestamp < props.dataset.data_stop_ts &&
-          trade.close_timestamp > props.dataset.data_start_ts
-        ) {
-          if (trade.close_date !== undefined && trade.close_rate !== undefined) {
-            tradesClose.push([
-              roundTimeframe(timeframems.value, trade.close_timestamp),
-              trade.close_rate,
-            ]);
-          }
-        }
-      }
-      return { trades, tradesClose };
-    };
 
     const updateChart = (initial = false) => {
       if (!hasData.value) {
@@ -210,12 +175,16 @@ export default defineComponent({
           });
         }
       }
-
+      const dataset = props.heikinAshi
+        ? heikinashi(datasetColumns.value, props.dataset.data)
+        : props.dataset.data.slice();
+      // Add new rows to end to allow slight "scroll past"
+      const newArray = Array(dataset[dataset.length - 2].length);
+      newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
+      dataset.push(newArray);
       const options: EChartsOption = {
         dataset: {
-          source: props.heikinAshi
-            ? heikinashi(datasetColumns.value, props.dataset.data)
-            : props.dataset.data,
+          source: dataset,
         },
         grid: [
           {
@@ -266,7 +235,7 @@ export default defineComponent({
             },
           },
           {
-            name: 'Long',
+            name: 'Entry',
             type: 'scatter',
             symbol: 'triangle',
             symbolSize: 10,
@@ -284,12 +253,12 @@ export default defineComponent({
       };
 
       if (colSellData >= 0) {
-        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          chartOptions.value.legend.data.push('Long exit');
-        }
+        // if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
+        //   chartOptions.value.legend.data.push('Long exit');
+        // }
         if (Array.isArray(options.series)) {
           options.series.push({
-            name: 'Long exit',
+            name: 'Exit',
             type: 'scatter',
             symbol: 'diamond',
             symbolSize: 8,
@@ -306,27 +275,24 @@ export default defineComponent({
         }
       }
 
-      if (hasShorts) {
-        // Add short support
-        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          if (colShortEntryData >= 0) {
-            chartOptions.value.legend.data.push('Short');
-          }
-          if (colShortExitData >= 0) {
-            chartOptions.value.legend.data.push('Short exit');
-          }
-        }
-        if (Array.isArray(options.series)) {
+      if (Array.isArray(options.series)) {
+        if (hasShorts) {
           if (colShortEntryData >= 0) {
             options.series.push({
-              name: 'Short',
+              // Short entry
+              name: 'Entry',
               type: 'scatter',
-              symbol: 'pin',
+              symbol: 'triangle',
+              symbolRotate: 180,
               symbolSize: 10,
               xAxisIndex: 0,
               yAxisIndex: 0,
               itemStyle: {
                 color: shortEntrySignalColor,
+              },
+              tooltip: {
+                // Hide tooltip - it's already there for longs.
+                show: false,
               },
               encode: {
                 x: colDate,
@@ -336,14 +302,19 @@ export default defineComponent({
           }
           if (colShortExitData >= 0) {
             options.series.push({
-              name: 'Short exit',
+              // Short exit
+              name: 'Exit',
               type: 'scatter',
               symbol: 'pin',
               symbolSize: 8,
               xAxisIndex: 0,
               yAxisIndex: 0,
               itemStyle: {
+                // Hide tooltip - it's already there for longs.
                 color: shortexitSignalColor,
+              },
+              tooltip: {
+                show: false,
               },
               encode: {
                 x: colDate,
@@ -487,41 +458,42 @@ export default defineComponent({
         chartOptions.value.grid[chartOptions.value.grid.length - 1].bottom = '50px';
         delete chartOptions.value.grid[chartOptions.value.grid.length - 1].top;
       }
-      const { trades, tradesClose } = getTradeEntries();
+      const { tradeData } = getTradeEntries(props.dataset, filteredTrades.value);
 
-      const name = 'Trades';
-      const nameClose = 'Trades Close';
+      const nameTrades = 'Trades';
       if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-        chartOptions.value.legend.data.push(name);
+        chartOptions.value.legend.data.push(nameTrades);
       }
-      const sp: ScatterSeriesOption = {
-        name,
+      const tradesSeries: ScatterSeriesOption = {
+        name: nameTrades,
         type: 'scatter',
         xAxisIndex: 0,
         yAxisIndex: 0,
-        itemStyle: {
-          color: tradeBuyColor,
+        encode: {
+          x: 0,
+          y: 1,
+          label: 5,
+          tooltip: 6,
         },
-        data: trades,
-      };
-      if (Array.isArray(chartOptions.value?.series)) {
-        chartOptions.value.series.push(sp);
-      }
-      if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-        chartOptions.value.legend.data.push(nameClose);
-      }
-      const closeSeries: ScatterSeriesOption = {
-        name: nameClose,
-        type: 'scatter',
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: tradeSellColor,
+        label: {
+          show: true,
+          fontSize: 12,
+          backgroundColor: props.theme !== 'dark' ? '#fff' : '#000',
+          padding: 2,
+          color: props.theme === 'dark' ? '#fff' : '#000',
         },
-        data: tradesClose,
+        labelLayout: { rotate: 75, align: 'left', dx: 10 },
+        itemStyle: {
+          // color: tradeSellColor,
+          color: (v) => v.data[4],
+        },
+        symbol: (v) => v[2],
+        symbolRotate: (v) => v[3],
+        symbolSize: 13,
+        data: tradeData,
       };
       if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
-        chartOptions.value.series.push(closeSeries);
+        chartOptions.value.series.push(tradesSeries);
       }
 
       console.log('chartOptions', chartOptions.value);
@@ -542,12 +514,13 @@ export default defineComponent({
         animation: false,
         legend: {
           // Initial legend, further entries are pushed to the below list
-          data: ['Candles', 'Volume', 'Long'],
+          data: ['Candles', 'Volume', 'Entry', 'Exit'],
           right: '1%',
         },
         tooltip: {
           show: true,
           trigger: 'axis',
+          renderMode: 'richText',
           backgroundColor: 'rgba(80,80,80,0.7)',
           borderWidth: 0,
           textStyle: {
@@ -715,7 +688,6 @@ export default defineComponent({
       strategy,
       pair,
       timeframe,
-      timeframems,
       datasetColumns,
       hasData,
       filteredTrades,
