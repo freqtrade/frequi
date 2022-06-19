@@ -97,6 +97,20 @@ export const useBotStore = defineStore('wrapper', {
       });
       return result;
     },
+    allClosedTradesSelectedBots: (state): Trade[] => {
+      const result: Trade[] = [];
+      Object.entries(state.botStores).forEach(([, botStore]) => {
+        if (botStore.isSelected) {
+          result.push(...botStore.trades);
+        }
+      });
+      return result.sort((a, b) =>
+        // Sort by close timestamp, then by tradeid
+        b.close_timestamp && a.close_timestamp
+          ? b.close_timestamp - a.close_timestamp
+          : b.trade_id - a.trade_id,
+      );
+    },
     allTradesSelectedBots: (state): ClosedTrade[] => {
       const result: ClosedTrade[] = [];
       Object.entries(state.botStores).forEach(([, botStore]) => {
