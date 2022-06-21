@@ -292,7 +292,7 @@ export default defineComponent({
               },
               tooltip: {
                 // Hide tooltip - it's already there for longs.
-                show: false,
+                // show: false,
               },
               encode: {
                 x: colDate,
@@ -310,11 +310,11 @@ export default defineComponent({
               xAxisIndex: 0,
               yAxisIndex: 0,
               itemStyle: {
-                // Hide tooltip - it's already there for longs.
                 color: shortexitSignalColor,
               },
               tooltip: {
-                show: false,
+                // Hide tooltip - it's already there for longs.
+                // show: false,
               },
               encode: {
                 x: colDate,
