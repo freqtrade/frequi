@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
-        node: [ 14, 16, 17, 18]
+        node: [ "14", "16", "17", "18"]
 
     steps:
     - uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
         retention-days: 10
 
     - name: Zip files for release
-      if: github.event_name == 'release'
+      if: github.event_name == 'release' && matrix.node == '18'
       run: |
         cd dist/
         zip -r ../freqUI.zip .
