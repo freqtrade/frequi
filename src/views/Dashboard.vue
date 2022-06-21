@@ -94,6 +94,20 @@
       </DraggableContainer>
     </GridItem>
     <GridItem
+      :i="gridLayoutProfitDistribution.i"
+      :x="gridLayoutProfitDistribution.x"
+      :y="gridLayoutProfitDistribution.y"
+      :w="gridLayoutProfitDistribution.w"
+      :h="gridLayoutProfitDistribution.h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
+    >
+      <DraggableContainer header="Profit Distribution">
+        <ProfitDistributionChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
+      </DraggableContainer>
+    </GridItem>
+    <GridItem
       :i="gridLayoutTradesLogChart.i"
       :x="gridLayoutTradesLogChart.x"
       :y="gridLayoutTradesLogChart.y"
@@ -118,6 +132,7 @@ import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
+import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
 import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
@@ -133,6 +148,7 @@ export default defineComponent({
     GridItem,
     DailyChart,
     CumProfitChart,
+    ProfitDistributionChart,
     TradesLogChart,
     BotComparisonList,
     TradeList,
@@ -188,7 +204,9 @@ export default defineComponent({
     const gridLayoutCumChart = computed((): GridItemData => {
       return findGridLayout(gridLayout.value, DashboardLayout.cumChartChart);
     });
-
+    const gridLayoutProfitDistribution = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.profitDistributionChart);
+    });
     const gridLayoutTradesLogChart = computed((): GridItemData => {
       return findGridLayout(gridLayout.value, DashboardLayout.tradesLogChart);
     });
@@ -218,6 +236,7 @@ export default defineComponent({
       gridLayoutAllOpenTrades,
       gridLayoutAllClosedTrades,
       gridLayoutCumChart,
+      gridLayoutProfitDistribution,
       gridLayoutTradesLogChart,
       responsiveGridLayouts,
     };
