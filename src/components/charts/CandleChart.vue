@@ -142,10 +142,8 @@ export default defineComponent({
       );
 
       const hasShorts =
-        props.dataset.enter_short_signals &&
-        props.dataset.enter_short_signals > 0 &&
-        props.dataset.exit_short_signals &&
-        props.dataset.exit_short_signals > 0;
+        (props.dataset.enter_short_signals && props.dataset.enter_short_signals > 0) ||
+        (props.dataset.exit_short_signals && props.dataset.exit_short_signals > 0);
       const colShortEntryData = props.dataset.columns.findIndex(
         (el) => el === '_enter_short_signal_close',
       );
