@@ -141,9 +141,6 @@ export default defineComponent({
           el === '_exit_long_signal_close',
       );
 
-      const hasShorts =
-        (props.dataset.enter_short_signals && props.dataset.enter_short_signals > 0) ||
-        (props.dataset.exit_short_signals && props.dataset.exit_short_signals > 0);
       const colShortEntryData = props.dataset.columns.findIndex(
         (el) => el === '_enter_short_signal_close',
       );
@@ -274,52 +271,50 @@ export default defineComponent({
       }
 
       if (Array.isArray(options.series)) {
-        if (hasShorts) {
-          if (colShortEntryData >= 0) {
-            options.series.push({
-              // Short entry
-              name: 'Entry',
-              type: 'scatter',
-              symbol: 'triangle',
-              symbolRotate: 180,
-              symbolSize: 10,
-              xAxisIndex: 0,
-              yAxisIndex: 0,
-              itemStyle: {
-                color: shortEntrySignalColor,
-              },
-              tooltip: {
-                // Hide tooltip - it's already there for longs.
-                // show: false,
-              },
-              encode: {
-                x: colDate,
-                y: colShortEntryData,
-              },
-            });
-          }
-          if (colShortExitData >= 0) {
-            options.series.push({
-              // Short exit
-              name: 'Exit',
-              type: 'scatter',
-              symbol: 'pin',
-              symbolSize: 8,
-              xAxisIndex: 0,
-              yAxisIndex: 0,
-              itemStyle: {
-                color: shortexitSignalColor,
-              },
-              tooltip: {
-                // Hide tooltip - it's already there for longs.
-                // show: false,
-              },
-              encode: {
-                x: colDate,
-                y: colShortExitData,
-              },
-            });
-          }
+        if (colShortEntryData >= 0) {
+          options.series.push({
+            // Short entry
+            name: 'Entry',
+            type: 'scatter',
+            symbol: 'triangle',
+            symbolRotate: 180,
+            symbolSize: 10,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: shortEntrySignalColor,
+            },
+            tooltip: {
+              // Hide tooltip - it's already there for longs.
+              // show: false,
+            },
+            encode: {
+              x: colDate,
+              y: colShortEntryData,
+            },
+          });
+        }
+        if (colShortExitData >= 0) {
+          options.series.push({
+            // Short exit
+            name: 'Exit',
+            type: 'scatter',
+            symbol: 'pin',
+            symbolSize: 8,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            itemStyle: {
+              color: shortexitSignalColor,
+            },
+            tooltip: {
+              // Hide tooltip - it's already there for longs.
+              // show: false,
+            },
+            encode: {
+              x: colDate,
+              y: colShortExitData,
+            },
+          });
         }
       }
 
