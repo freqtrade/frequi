@@ -73,7 +73,7 @@
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 
-import { defineComponent, computed, ref, watch } from '@vue/composition-api';
+import { defineComponent, computed, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'PlotIndicator',

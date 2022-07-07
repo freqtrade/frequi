@@ -32,7 +32,7 @@
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { BotDescriptor } from '@/types';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -46,7 +46,8 @@ export default defineComponent({
     noButtons: { default: false, type: Boolean },
   },
   emits: ['edit'],
-  setup(props, { root }) {
+  setup(props) {
+    const root = getCurrentInstance();
     const botStore = useBotStore();
 
     const changeEvent = (v) => {

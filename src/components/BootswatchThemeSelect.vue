@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from '@vue/composition-api';
+import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
 import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 import { FTHTMLStyleElement } from '@/types/styleElement';

@@ -12,7 +12,7 @@ import { formatPercent, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 import ProfitPill from '@/components/general/ProfitPill.vue';
 
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   name: 'TradeProfit',

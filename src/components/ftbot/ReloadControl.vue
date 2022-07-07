@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

@@ -18,7 +18,7 @@ import {
 } from 'echarts/components';
 
 import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 
 use([

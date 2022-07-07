@@ -82,11 +82,12 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceEnterPayload, OrderSides } from '@/types';
 
-import { defineComponent, ref, nextTick } from '@vue/composition-api';
+import { defineComponent, ref, nextTick, getCurrentInstance } from 'vue';
 
 export default defineComponent({
   name: 'ForceEntryForm',
-  setup(_, { root }) {
+  setup() {
+    const root = getCurrentInstance();
     const botStore = useBotStore();
 
     const form = ref<HTMLFormElement>();

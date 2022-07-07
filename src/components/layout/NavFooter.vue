@@ -33,7 +33,7 @@ import ClosedTradesIcon from 'vue-material-design-icons/FolderLock.vue';
 import BalanceIcon from 'vue-material-design-icons/Bank.vue';
 import PairListIcon from 'vue-material-design-icons/ViewList.vue';
 import DashboardIcon from 'vue-material-design-icons/ViewDashboardOutline.vue';
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { defineComponent, computed, onMounted } from '@vue/composition-api';
+import { defineComponent, computed, onMounted } from 'vue';
 
 export default defineComponent({
   name: 'StrategySelect',

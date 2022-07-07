@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { dateFromString, dateStringToTimeRange, timestampToDateString } from '@/shared/formatters';
-import { defineComponent, ref, computed, onMounted, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 const now = new Date();
 

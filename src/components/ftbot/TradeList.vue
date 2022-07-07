@@ -88,7 +88,7 @@ import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import TradeProfit from './TradeProfit.vue';
 import TradeActions from './TradeActions.vue';
 
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -103,7 +103,8 @@ export default defineComponent({
     multiBotView: { default: false, type: Boolean },
     emptyText: { default: 'No Trades to show.', type: String },
   },
-  setup(props, { root }) {
+  setup(props) {
+    const root = getCurrentInstance();
     const botStore = useBotStore();
     const currentPage = ref(1);
     const selectedItemIndex = ref();

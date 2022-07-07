@@ -20,7 +20,7 @@
 import { formatPercent } from '@/shared/formatters';
 import { StrategyBacktestResult } from '@/types';
 
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'BacktestResultSelect',

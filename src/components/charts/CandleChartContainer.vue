@@ -98,7 +98,7 @@ import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import vSelect from 'vue-select';
 import { useSettingsStore } from '@/stores/settings';
 
-import { defineComponent, ref, computed, onMounted, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, onMounted, watch, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -115,7 +115,8 @@ export default defineComponent({
     /** Only required if historicView is true */
     strategy: { required: false, default: '', type: String },
   },
-  setup(props, { root }) {
+  setup(props) {
+    const root = getCurrentInstance();
     const settingsStore = useSettingsStore();
     const botStore = useBotStore();
 

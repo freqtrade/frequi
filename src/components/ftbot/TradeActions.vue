@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Trade } from '@/types';
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 

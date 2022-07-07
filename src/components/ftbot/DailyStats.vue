@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted } from '@vue/composition-api';
+import { defineComponent, computed, onMounted } from 'vue';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';

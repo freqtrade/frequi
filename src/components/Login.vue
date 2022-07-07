@@ -76,7 +76,7 @@ import { useUserService } from '@/shared/userService';
 
 import { AuthPayload } from '@/types';
 
-import { defineComponent, ref } from '@vue/composition-api';
+import { defineComponent, ref } from 'vue';
 import { useRouter, useRoute } from 'vue2-helpers/vue-router';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

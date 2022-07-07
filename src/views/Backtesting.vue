@@ -327,7 +327,7 @@ import { BacktestPayload, PlotConfig } from '@/types';
 
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
-import { defineComponent, computed, ref, onMounted, watch } from '@vue/composition-api';
+import { defineComponent, computed, ref, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

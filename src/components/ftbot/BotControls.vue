@@ -76,7 +76,7 @@ import ReloadIcon from 'vue-material-design-icons/Reload.vue';
 import ForceExitIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ForceEntryIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
 import ForceEntryForm from './ForceEntryForm.vue';
-import { defineComponent, computed, ref } from '@vue/composition-api';
+import { defineComponent, computed, ref, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -90,7 +90,8 @@ export default defineComponent({
     ForceExitIcon,
     ForceEntryIcon,
   },
-  setup(_, { root }) {
+  setup() {
+    const root = getCurrentInstance();
     const botStore = useBotStore();
     const forcebuyShow = ref(false);
 

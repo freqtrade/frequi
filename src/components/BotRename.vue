@@ -25,7 +25,7 @@
 import CheckIcon from 'vue-material-design-icons/Check.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
 import { BotDescriptor } from '@/types';
-import { defineComponent, ref } from '@vue/composition-api';
+import { defineComponent, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -37,7 +37,7 @@ export default defineComponent({
   props: {
     bot: { type: Object as () => BotDescriptor, required: true },
   },
-  emits: ['saved'],
+  emits: ['cancelled', 'saved'],
   setup(props, { emit }) {
     const botStore = useBotStore();
 

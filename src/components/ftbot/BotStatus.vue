@@ -75,7 +75,7 @@
 import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

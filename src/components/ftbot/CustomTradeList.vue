@@ -37,7 +37,7 @@
 import { formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
-import { defineComponent, computed, ref } from '@vue/composition-api';
+import { defineComponent, computed, ref, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -55,7 +55,8 @@ export default defineComponent({
     emptyText: { default: 'No Trades to show.', type: String },
     stakeCurrencyDecimals: { default: 3, type: Number },
   },
-  setup(props, { root }) {
+  setup(props) {
+    const root = getCurrentInstance();
     const botStore = useBotStore();
     const currentPage = ref(1);
     const filterText = ref('');
