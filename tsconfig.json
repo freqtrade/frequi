@@ -37,7 +37,7 @@
   ],
   "vueCompilerOptions": {
     "experimentalImplicitWrapComponentOptionsWithDefineComponent": false,
-    "target": 2,
+    "target": 2.7,
     "experimentalTemplateCompilerOptions": {
       "compatConfig": {
         "MODE": 2
