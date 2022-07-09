@@ -124,7 +124,7 @@ export default defineComponent({
       }
       botStore.activeBot.forceentry(payload);
       nextTick(() => {
-        root.$bvModal.hide('forceentry-modal');
+        root?.proxy.$bvModal.hide('forceentry-modal');
       });
     };
     const resetForm = () => {

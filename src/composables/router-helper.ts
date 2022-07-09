@@ -5,7 +5,7 @@ import { getCurrentInstance } from 'vue';
 export function useRoute() {
   const inst = getCurrentInstance();
   if (!inst) {
-    return {};
+    throw new Error('No current instance found');
   }
   const { proxy } = inst;
   return proxy.$route;
@@ -13,7 +13,7 @@ export function useRoute() {
 export function useRouter() {
   const inst = getCurrentInstance();
   if (!inst) {
-    return {};
+    throw new Error('No current instance found');
   }
   const { proxy } = inst;
   return proxy.$router;

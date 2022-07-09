@@ -56,7 +56,7 @@ export default defineComponent({
 
     const clickRemoveBot = (bot: BotDescriptor) => {
       //
-      root.$bvModal
+      root?.proxy.$bvModal
         .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
         .then((value: boolean) => {
           if (value) {

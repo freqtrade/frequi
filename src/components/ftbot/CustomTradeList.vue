@@ -71,7 +71,7 @@ export default defineComponent({
       return formatPrice(price, props.stakeCurrencyDecimals);
     };
     const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
-      root.$bvModal
+      root?.proxy.$bvModal
         .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
         .then((value: boolean) => {
           if (value) {
@@ -102,7 +102,7 @@ export default defineComponent({
 
     const removeTradeHandler = (item) => {
       console.log(item);
-      root.$bvModal
+      root?.proxy.$bvModal
         .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
         .then((value: boolean) => {
           if (value) {

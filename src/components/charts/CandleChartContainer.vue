@@ -169,7 +169,7 @@ export default defineComponent({
 
     const showConfigurator = () => {
       if (props.plotConfigModal) {
-        root.$bvModal.show('plotConfiguratorModal');
+        root?.proxy.$bvModal.show('plotConfiguratorModal');
       } else {
         showPlotConfig.value = !showPlotConfig.value;
       }

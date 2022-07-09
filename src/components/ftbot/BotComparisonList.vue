@@ -40,7 +40,7 @@
         <span :title="row.item.stakeCurrency"
           >{{ formatPrice(row.item.balance, row.item.stakeCurrencyDecimals) }}
         </span>
-        <span clas="text-small">{{ row.item.stakeCurrency }}</span>
+        <span class="text-small">{{ row.item.stakeCurrency }}</span>
       </div>
     </template>
     <template #cell(winVsLoss)="row">

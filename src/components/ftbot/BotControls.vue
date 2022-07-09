@@ -63,7 +63,7 @@ forceexit
     >
       <PlayIcon />
     </button>
-    <ForceEntryForm :modal-show="forcebuyShow" @close="$bvModal.hide('forceentry-modal')" />
+    <ForceEntryForm :modal-show="forcebuyShow" @close="hideForceenter" />
   </div>
 </template>
 
@@ -100,11 +100,14 @@ export default defineComponent({
     });
 
     const initiateForceenter = () => {
-      root.$bvModal.show('forceentry-modal');
+      root?.proxy.$bvModal.show('forceentry-modal');
+    };
+    const hideForceenter = () => {
+      root?.proxy.$bvModal.hide('forceentry-modal');
     };
 
     const handleStopBot = () => {
-      root.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
+      root?.proxy.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
         if (value) {
           botStore.activeBot.stopBot();
         }
@@ -112,7 +115,7 @@ export default defineComponent({
     };
 
     const handleStopBuy = () => {
-      root.$bvModal
+      root?.proxy.$bvModal
         .msgBoxConfirm('Stop buying? Freqtrade will continue to handle open trades.')
         .then((value: boolean) => {
           if (value) {
@@ -122,7 +125,7 @@ export default defineComponent({
     };
 
     const handleReloadConfig = () => {
-      root.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
+      root?.proxy.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
         if (value) {
           botStore.activeBot.reloadConfig();
         }
@@ -130,7 +133,7 @@ export default defineComponent({
     };
 
     const handleForceExit = () => {
-      root.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
+      root?.proxy.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
         if (value) {
           const payload: ForceSellPayload = {
             tradeid: 'all',
@@ -142,6 +145,7 @@ export default defineComponent({
     };
     return {
       initiateForceenter,
+      hideForceenter,
       handleStopBot,
       handleStopBuy,
       handleReloadConfig,
