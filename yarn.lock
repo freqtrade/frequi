@@ -1144,11 +1144,6 @@
     "@vue/compiler-dom" "3.2.37"
     "@vue/shared" "3.2.37"
 
-"@vue/composition-api@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.7.0.tgz#26fae79e5023fc6c9dfd99ca5d3d357e1c5b9c60"
-  integrity sha512-hxOgLYR+wjuPX9bkP2pAPlqUs98XxBoa9DSLyp1z6+YR92wC42PZcZKs4d+VRtcv4udOv041Kss+F6ap5nj8YA==
-
 "@vue/devtools-api@^6.1.4":
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.1.4.tgz#b4aec2f4b4599e11ba774a50c67fa378c9824e53"
@@ -5009,11 +5004,6 @@ vue-tsc@^0.38.5:
   integrity sha512-AFlqvwpENOTTJxS1Gl1uG0ZVsvtGCbgv9d0i4fXk5Pnao/ETVwWewPEsj+4cPlwa5htO9WhK6qfWwoqcCqg0yQ==
   dependencies:
     "@volar/vue-typescript" "0.38.5"
-
-vue2-helpers@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/vue2-helpers/-/vue2-helpers-1.1.7.tgz#f105313979af0260ef446c583fd2fa75b067afd1"
-  integrity sha512-NLF7bYFPyoKMvn/Bkxr7+7Ure/kZpWmd6pQpG613dT0Sn6EwI+2+LwVUQyDkDk4P0UaAwvn/QEYzhBRzDzuGLw==
 
 vue@^2.7.0:
   version "2.7.3"

@@ -126,7 +126,7 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
 import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from 'vue';
-import { useRoute } from 'vue2-helpers/vue-router';
+import { useRoute } from '@/composables/router-helper';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';

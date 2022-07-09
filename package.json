@@ -35,8 +35,7 @@
     "vue-grid-layout": "^2.3.12",
     "vue-material-design-icons": "^5.1.1",
     "vue-router": "^3.5.4",
-    "vue-select": "^3.18.3",
-    "vue2-helpers": "^1.1.7"
+    "vue-select": "^3.18.3"
   },
   "devDependencies": {
     "@cypress/vite-dev-server": "^3.0.0",
@@ -46,7 +45,6 @@
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^5.30.6",
     "@vitejs/plugin-vue2": "^1.1.2",
-    "@vue/composition-api": "^1.7.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.1.0",
     "@vue/runtime-dom": "^3.2.37",
