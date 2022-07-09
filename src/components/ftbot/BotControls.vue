@@ -63,7 +63,7 @@ forceexit
     >
       <PlayIcon />
     </button>
-    <ForceEntryForm :modal-show="forcebuyShow" @close="hideForceenter" />
+    <ForceEntryForm @close="hideForceenter" />
   </div>
 </template>
 
