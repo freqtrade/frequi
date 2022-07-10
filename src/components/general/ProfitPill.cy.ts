@@ -1,10 +1,7 @@
 import ProfitPill from './ProfitPill.vue';
 import { createLocalVue } from '@vue/test-utils';
 
-import VueCompositionAPI from '@vue/composition-api';
-
 const localVue = createLocalVue();
-localVue.use(VueCompositionAPI);
 
 describe('ProfitPill.vue', () => {
   it('Shows a Green pill with positive profits', () => {
