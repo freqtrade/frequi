@@ -20,6 +20,8 @@ import './commands';
 // require('./commands')
 
 import { mount } from 'cypress/vue2';
+// Vue2.7 Workaround to have proper types
+import { mount as mount3 } from 'cypress/vue';
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -28,7 +30,7 @@ import { mount } from 'cypress/vue2';
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount;
+      mount: typeof mount3;
     }
   }
 }
