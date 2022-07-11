@@ -41,7 +41,9 @@
           >
         </div>
         <div class="ml-auto d-flex align-items-center">
-          <b-form-checkbox v-model="heikinAshi">Heikin Ashi</b-form-checkbox>
+          <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
+            >Heikin Ashi</b-form-checkbox
+          >
 
           <div class="ml-2">
             <b-select
@@ -66,7 +68,7 @@
           :dataset="dataset"
           :trades="trades"
           :plot-config="plotConfig"
-          :heikin-ashi="heikinAshi"
+          :heikin-ashi="settingsStore.useHeikinAshiCandles"
           :use-u-t-c="settingsStore.timezone === 'UTC'"
           :theme="settingsStore.chartTheme"
         >
@@ -120,7 +122,6 @@ export default defineComponent({
     const pair = ref('');
     const plotConfig = ref<PlotConfig>({ ...EMPTY_PLOTCONFIG });
     const plotConfigName = ref('');
-    const heikinAshi = ref(false);
     const showPlotConfig = ref(props.plotConfigModal);
 
     const dataset = computed((): PairHistory => {
@@ -233,7 +234,6 @@ export default defineComponent({
       isLoadingDataset,
       noDatasetText,
       hasDataset,
-      heikinAshi,
       plotConfigChanged,
       showPlotConfig,
       showConfigurator,

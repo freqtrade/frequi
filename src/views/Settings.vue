@@ -32,6 +32,11 @@
         <b-form-group description="Keep background sync running while other bots are selected.">
           <b-checkbox v-model="settingsStore.backgroundSync">Background sync</b-checkbox>
         </b-form-group>
+        <b-form-group description="Use Heikin Ashi candles in your charts">
+          <b-checkbox v-model="settingsStore.useHeikinAshiCandles"
+            >Use Heikin Ashi candles.</b-checkbox
+          >
+        </b-form-group>
       </div>
     </b-card>
   </div>

@@ -26,9 +26,9 @@ export const useSettingsStore = defineStore('uiSettings', {
       openTradesInTitle: OpenTradeVizOptions.showPill as string,
       timezone: 'UTC',
       backgroundSync: true,
-      // TODO: needs proper migration ...
       currentTheme: getCurrentTheme(),
       uiVersion: 'dev',
+      useHeikinAshiCandles: false,
     };
   },
   getters: {
