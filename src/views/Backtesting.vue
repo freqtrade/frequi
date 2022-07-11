@@ -321,9 +321,8 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 
-import { BacktestPayload, PlotConfig } from '@/types';
+import { BacktestPayload } from '@/types';
 
-import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
 import { defineComponent, computed, ref, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
