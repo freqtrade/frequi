@@ -26,7 +26,7 @@ import {
 
 import { ClosedTrade } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import { timestampms } from '@/shared/formatters';
 
 use([

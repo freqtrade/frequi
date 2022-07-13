@@ -88,7 +88,7 @@ import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import TradeProfit from './TradeProfit.vue';
 import TradeActions from './TradeActions.vue';
 
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -103,7 +103,8 @@ export default defineComponent({
     multiBotView: { default: false, type: Boolean },
     emptyText: { default: 'No Trades to show.', type: String },
   },
-  setup(props, { root }) {
+  setup(props) {
+    const root = getCurrentInstance();
     const botStore = useBotStore();
     const currentPage = ref(1);
     const selectedItemIndex = ref();
@@ -155,7 +156,7 @@ export default defineComponent({
     ];
 
     const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
-      root.$bvModal
+      root?.proxy.$bvModal
         .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
         .then((value: boolean) => {
           if (value) {
@@ -186,7 +187,7 @@ export default defineComponent({
 
     const removeTradeHandler = (item) => {
       console.log(item);
-      root.$bvModal
+      root?.proxy.$bvModal
         .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
         .then((value: boolean) => {
           if (value) {

@@ -40,7 +40,7 @@
         <span :title="row.item.stakeCurrency"
           >{{ formatPrice(row.item.balance, row.item.stakeCurrencyDecimals) }}
         </span>
-        <span clas="text-small">{{ row.item.stakeCurrency }}</span>
+        <span class="text-small">{{ row.item.stakeCurrency }}</span>
       </div>
     </template>
     <template #cell(winVsLoss)="row">
@@ -55,7 +55,7 @@
 <script lang="ts">
 import ProfitPill from '@/components/general/ProfitPill.vue';
 import { formatPrice } from '@/shared/formatters';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ProfitInterface, ComparisonTableItems } from '@/types';
 

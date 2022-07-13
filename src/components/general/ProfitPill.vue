@@ -24,7 +24,7 @@ import { formatPercent, formatPrice } from '@/shared/formatters';
 
 import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
 
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   name: 'ProfitPill',

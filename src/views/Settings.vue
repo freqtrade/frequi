@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { showAlert } from '@/stores/alerts';

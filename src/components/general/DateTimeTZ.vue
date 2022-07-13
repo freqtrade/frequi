@@ -5,7 +5,7 @@
 <script lang="ts">
 import { timestampms, timestampmsWithTimezone, timestampToDateString } from '@/shared/formatters';
 
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   name: 'DateTimeTZ',

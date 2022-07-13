@@ -2,15 +2,19 @@
   <div>
     <b-button v-b-modal.modal-prevent-closing>{{ loginText }}</b-button>
     <b-modal id="modal-prevent-closing" ref="modalRef" title="Login to your bot" @ok="handleOk">
-      <Login id="loginForm" ref="loginForm" in-modal @loginResult="handleLoginResult" />
+      <Login ref="loginForm" in-modal @loginResult="handleLoginResult" />
     </b-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api';
+import { defineComponent, ref } from 'vue';
 
 import Login from '@/components/Login.vue';
+
+interface HTMLModal extends HTMLElement {
+  hide: () => void;
+}
 
 export default defineComponent({
   name: 'LoginModal',
@@ -19,11 +23,11 @@ export default defineComponent({
     loginText: { required: false, default: 'Login', type: String },
   },
   setup() {
-    const modalRef = ref<HTMLElement>();
+    const modalRef = ref<HTMLModal>();
     const loginForm = ref<HTMLFormElement>();
     const handleLoginResult = (result: boolean) => {
       if (result) {
-        (modalRef.value as any)?.hide();
+        modalRef.value?.hide();
       }
     };
     const handleOk = (evt) => {

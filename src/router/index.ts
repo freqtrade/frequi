@@ -1,13 +1,11 @@
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '@/views/Home.vue';
-import Error404 from '@/views/Error404.vue';
 import { initBots, useBotStore } from '@/stores/ftbotwrapper';
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: () => import('@/views/Home.vue'),
     meta: {
       allowAnonymous: true,
     },
@@ -72,7 +70,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     name: '404',
-    component: Error404,
+    component: () => import('@/views/Error404.vue'),
   },
 ];
 

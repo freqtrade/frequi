@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { defineComponent, onMounted, computed } from '@vue/composition-api';
+import { defineComponent, onMounted, computed } from 'vue';
 
 export default defineComponent({
   name: 'LogViewer',

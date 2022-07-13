@@ -61,7 +61,7 @@
 import TradeList from '@/components/ftbot/TradeList.vue';
 import { StrategyBacktestResult, Trade } from '@/types';
 
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import {
   timestampms,
   formatPercent,

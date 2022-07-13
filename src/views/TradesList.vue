@@ -41,7 +41,7 @@
 import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import BackIcon from 'vue-material-design-icons/ArrowLeft.vue';
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

@@ -107,7 +107,7 @@ import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
-import { defineComponent, ref, computed, onMounted } from '@vue/composition-api';
+import { defineComponent, ref, computed, onMounted } from 'vue';
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

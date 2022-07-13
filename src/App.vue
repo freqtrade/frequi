@@ -11,9 +11,8 @@ import NavBar from '@/components/layout/NavBar.vue';
 import NavFooter from '@/components/layout/NavFooter.vue';
 import Body from '@/components/layout/Body.vue';
 import { setTimezone } from './shared/formatters';
-import { defineComponent, onMounted, watch } from '@vue/composition-api';
+import { defineComponent, onMounted, watch } from 'vue';
 import { useSettingsStore } from './stores/settings';
-
 export default defineComponent({
   name: 'App',
   components: { NavBar, Body, NavFooter },

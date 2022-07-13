@@ -9,7 +9,6 @@
         <h2 class="col-4 col-lg-3">Backtesting</h2>
         <div
           class="col-12 col-lg-order-last col-lg-6 mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4"
-          :disabled="botStore.activeBot.canRunBacktest"
         >
           <b-form-radio
             v-if="botStore.activeBot.botApiVersion >= 2.15"
@@ -290,7 +289,6 @@
           :available-pairs="botStore.activeBot.selectedBacktestResult.pairlist"
           :historic-view="!!true"
           :timeframe="timeframe"
-          :plot-config="selectedPlotConfig"
           :timerange="timerange"
           :strategy="strategy"
           :trades="botStore.activeBot.selectedBacktestResult.trades"
@@ -323,11 +321,10 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 
-import { BacktestPayload, PlotConfig } from '@/types';
+import { BacktestPayload } from '@/types';
 
-import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import { formatPercent } from '@/shared/formatters';
-import { defineComponent, computed, ref, onMounted, watch } from '@vue/composition-api';
+import { defineComponent, computed, ref, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -373,7 +370,6 @@ export default defineComponent({
     const startingCapital = ref('');
     const btFormMode = ref('run');
     const pollInterval = ref<number | null>(null);
-    const selectedPlotConfig = ref<PlotConfig>(getCustomPlotConfig(getPlotConfigName()));
 
     const setBacktestResult = (key: string) => {
       botStore.activeBot.setBacktestResultKey(key);
@@ -455,7 +451,6 @@ export default defineComponent({
       stakeAmount,
       startingCapital,
       btFormMode,
-      selectedPlotConfig,
       clickBacktest,
     };
   },

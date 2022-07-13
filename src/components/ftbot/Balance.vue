@@ -44,7 +44,7 @@ import HideIcon from 'vue-material-design-icons/EyeOff.vue';
 import ShowIcon from 'vue-material-design-icons/Eye.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { formatPercent } from '@/shared/formatters';
-import { defineComponent, computed, ref } from '@vue/composition-api';
+import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

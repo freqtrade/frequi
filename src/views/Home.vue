@@ -5,7 +5,7 @@
     </div>
     <hr />
     <!-- <img alt="Freqtrade logo" src="../assets/freqtrade-logo.png" width="450px" class="my-5" /> -->
-    <div alt="Freqtrade logo" class="logo-svg my-5 mx-auto" />
+    <div title="Freqtrade logo" class="logo-svg my-5 mx-auto" />
     <div>
       <h1>Welcome to the Freqtrade UI</h1>
     </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 
 import BotList from '@/components/BotList.vue';
 

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ComputedRef } from '@vue/composition-api';
+import { defineComponent, computed, ComputedRef } from 'vue';
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
 

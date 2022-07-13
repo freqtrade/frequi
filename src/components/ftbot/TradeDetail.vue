@@ -111,7 +111,7 @@ import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { Trade } from '@/types';
 
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'TradeDetail',

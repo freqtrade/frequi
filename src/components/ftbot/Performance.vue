@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { formatPrice } from '@/shared/formatters';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

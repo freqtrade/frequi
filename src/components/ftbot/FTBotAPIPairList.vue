@@ -93,7 +93,7 @@
 
 <script lang="ts">
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import { defineComponent, ref, onMounted } from '@vue/composition-api';
+import { defineComponent, ref, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

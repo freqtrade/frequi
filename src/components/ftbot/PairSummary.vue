@@ -31,7 +31,7 @@ import { formatPercent, timestampms } from '@/shared/formatters';
 import { Lock, Trade } from '@/types';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 interface CombinedPairList {

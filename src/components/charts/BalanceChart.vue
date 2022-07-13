@@ -24,7 +24,7 @@ import {
 
 import { BalanceRecords } from '@/types';
 import { formatPriceCurrency } from '@/shared/formatters';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 
 use([

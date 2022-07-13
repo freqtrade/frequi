@@ -10,7 +10,7 @@
 <script lang="ts">
 import ECharts from 'vue-echarts';
 import { useSettingsStore } from '@/stores/settings';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';

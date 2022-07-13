@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <b-card header="Freqtrade bot Login">
-      <Login id="loginForm" ref="loginForm" />
+      <Login ref="loginForm" />
     </b-card>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 
 import Login from '@/components/Login.vue';
 

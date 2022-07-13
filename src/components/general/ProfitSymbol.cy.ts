@@ -1,9 +1,7 @@
 import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
 import { createLocalVue } from '@vue/test-utils';
-import VueCompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
-localVue.use(VueCompositionAPI);
 
 describe('ProfitSymbol.vue', () => {
   it('calculates isProfitable with negative profit', () => {

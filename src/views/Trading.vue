@@ -150,7 +150,7 @@ import Performance from '@/components/ftbot/Performance.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 
-import { defineComponent, ref, computed } from '@vue/composition-api';
+import { defineComponent, ref, computed } from 'vue';
 import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
