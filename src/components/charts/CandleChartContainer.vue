@@ -22,7 +22,7 @@
             style="min-width: 7em"
             size="sm"
             :clearable="false"
-            @change="refresh"
+            @input="refresh"
           >
           </v-select>
 
@@ -175,6 +175,7 @@ export default defineComponent({
       }
     };
     const refresh = () => {
+      console.log('refresh', pair.value, props.timeframe);
       if (pair.value && props.timeframe) {
         if (props.historicView) {
           botStore.activeBot.getPairHistory({
