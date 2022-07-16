@@ -23,6 +23,9 @@
       drag-allow-from=".card-header"
     >
       <DraggableContainer header="Multi Pane">
+        <div class="mt-1 d-flex justify-content-center">
+          <BotControls class="mt-1 mb-2" />
+        </div>
         <b-tabs content-class="mt-3" class="mt-1">
           <b-tab title="Pairs combined" active>
             <PairSummary
@@ -32,9 +35,6 @@
             />
           </b-tab>
           <b-tab title="General">
-            <div class="d-flex justify-content-center">
-              <BotControls class="mt-1 mb-2" />
-            </div>
             <BotStatus />
           </b-tab>
           <b-tab title="Performance">
