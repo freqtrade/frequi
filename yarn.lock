@@ -4980,10 +4980,10 @@ vue-grid-layout@^2.3.12:
     "@interactjs/modifiers" "^1.10.2"
     element-resize-detector "^1.2.1"
 
-vue-material-design-icons@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-5.1.1.tgz#e6b29d14b44f3ad7b9ad24cd9a13f6673e600fe6"
-  integrity sha512-f2M4+7GWIwrg106KJ9a4BU1G5kOxvemIuK1ZDkIdh3ehAJ0vvln7/5PZJ8u6ka4VWV8oA+26mBYSDbS1dpq05w==
+vue-material-design-icons@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-5.1.2.tgz#d0b9227786672fc17be239fb8c1d8e22e33feb45"
+  integrity sha512-nD1qFM2qAkMlVoe23EfNKIeMfYl6YjHZjSty9q0mwc2gXmPmvEhixywJQhM+VF5KVBI1zAkVTNLoUEERPY10pA==
 
 vue-router@^3.5.4:
   version "3.5.4"
