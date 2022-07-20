@@ -35,7 +35,7 @@
     "vue-grid-layout": "^2.3.12",
     "vue-material-design-icons": "^5.1.2",
     "vue-router": "^3.5.4",
-    "vue-select": "^3.18.3"
+    "vue-select": "^3.20.0"
   },
   "devDependencies": {
     "@cypress/vite-dev-server": "^3.0.0",
