@@ -27,7 +27,7 @@
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.27.2",
     "pinia": "^2.0.16",
-    "pinia-plugin-persistedstate": "^1.6.1",
+    "pinia-plugin-persistedstate": "^1.6.3",
     "vue": "^2.7.5",
     "vue-class-component": "^7.2.5",
     "vue-demi": "0.13.4",
