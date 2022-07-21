@@ -25,9 +25,13 @@
         <template slot="bottom-row">
           <td><strong>Total</strong></td>
           <td>
-            <span class="font-italic" title="Increase over initial capital">{{
-              formatPercent(botStore.activeBot.balance.starting_capital_ratio)
-            }}</span>
+            <span
+              class="font-italic"
+              :title="`Increase over initial capital of ${formatCurrency(
+                botStore.activeBot.balance.starting_capital,
+              )} ${botStore.activeBot.balance.stake}`"
+              >{{ formatPercent(botStore.activeBot.balance.starting_capital_ratio) }}</span
+            >
           </td>
           <!-- this is a computed prop that adds up all the expenses in the visible rows -->
           <td>
