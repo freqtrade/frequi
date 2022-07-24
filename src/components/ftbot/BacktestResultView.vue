@@ -137,6 +137,18 @@ export default defineComponent({
           )}`,
         },
         {
+          metric: 'CAGR',
+          value: `${props.backtestResult.cagr ? formatPercent(props.backtestResult.cagr) : 'N/A'}`,
+        },
+        {
+          metric: 'Profit factor',
+          value: `${
+            props.backtestResult.profit_factor
+              ? formatPrice(props.backtestResult.profit_factor, 3)
+              : 'N/A'
+          }`,
+        },
+        {
           metric: 'Total trades / Daily Avg Trades',
           value: `${props.backtestResult.total_trades} / ${props.backtestResult.trades_per_day}`,
         },

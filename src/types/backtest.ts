@@ -61,6 +61,7 @@ export interface StrategyBacktestResult {
   profit_total: number;
   profit_total_abs: number;
   cagr?: number;
+  profit_factor?: number;
 
   backtest_end: string;
   backtest_end_ts: number;
