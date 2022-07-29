@@ -14,8 +14,6 @@
     "allowJs": true,
     "baseUrl": "src",
     "types": [
-      // "webpack-env",
-      // "jest",
       "cypress",
       "vite/client",
     ],
