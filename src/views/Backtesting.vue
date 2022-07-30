@@ -465,11 +465,11 @@ export default defineComponent({
 }
 
 .cum-profit {
-  height: 350px;
+  height: 350px !important;
   max-height: 350px;
 }
 .trades-log {
-  height: 350px;
+  height: 350px !important;
   max-height: 350px;
 }
 .bt-running-label {
