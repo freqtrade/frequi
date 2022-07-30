@@ -81,6 +81,9 @@
           <ValuePair v-if="trade.interest_rate !== undefined" description="Interest rate">
             {{ formatPrice(trade.interest_rate) }}
           </ValuePair>
+          <ValuePair v-if="trade.liquidation_price !== undefined" description="Liquidation Price">
+            {{ formatPrice(trade.liquidation_price) }}
+          </ValuePair>
         </div>
         <details v-if="trade.orders">
           <summary>Orders {{ trade.orders.length > 1 ? `[${trade.orders.length}]` : '' }}</summary>
