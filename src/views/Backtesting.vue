@@ -292,9 +292,20 @@
           :timerange="timerange"
           :strategy="strategy"
           :trades="botStore.activeBot.selectedBacktestResult.trades"
-          class="col-md-10 candle-chart-container px-0 w-100 h-100"
+          class="col-md-8 candle-chart-container px-0 w-100 h-100"
         >
         </CandleChartContainer>
+        <TradeListNav 
+          class="col-md-2 overflow-auto"
+          style="max-height: calc(100vh - 200px)"
+          :trades="botStore.activeBot.selectedBacktestResult.trades.filter(t => t.pair === botStore.activeBot.selectedPair)"
+        />
+        <!--<TradeList
+          class="col-md-2 overflow-auto"
+          :trades="botStore.activeBot.selectedBacktestResult.trades.filter(t => t.pair === botStore.activeBot.selectedPair)"
+          :show-filter="true"
+          :stake-currency="botStore.activeBot.selectedBacktestResult.stake_currency"
+        /> -->
       </div>
       <b-card header="Single trades" class="row mt-2 w-100">
         <TradeList
@@ -319,6 +330,7 @@ import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
+import TradeListNav from '@/components/ftbot/TradeListNav.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 
 import { BacktestPayload } from '@/types';
@@ -341,6 +353,7 @@ export default defineComponent({
     PairSummary,
     TimeframeSelect,
     TradeList,
+    TradeListNav
   },
   setup() {
     const botStore = useBotStore();
