@@ -1,13 +1,13 @@
 <template>
   <b-list-group>
     <b-list-group-item
-      v-for="trade in trades"
+      v-for="trade in trades.sort((a,b) => a.open_timestamp < b.open_timestamp)"
       :key="trade.open_timestamp"
       button
       class="d-flex justify-content-between align-items-center py-1"
       :title="`${trade.pair}`"
-      :active="trade.open_timestamp === selectedTrade"
-      @click="tradeSelect(trade)"
+      :active="trade.open_timestamp === selectedTrade.open_timestamp"
+      @click="selectedTrade = trade; $emit('trade-select',trade);"
     >
       <div>
         <DateTimeTZ :date="trade.open_timestamp" />
@@ -20,6 +20,7 @@
         :stake-currency="botStore.activeBot.stakeCurrency"
       />
     </b-list-group-item>
+    <b-list-group-item v-if="trades.length === 0">No trades to show...</b-list-group-item>
   </b-list-group>
 </template>
 
@@ -36,21 +37,15 @@ export default defineComponent({
   components: { TradeProfit, ProfitPill, DateTimeTZ },
   props: {
     trades: { required: true, type: Array as () => Trade[] },
-    sortMethod: { default: 'normal', type: String },
-    backtestMode: { required: false, default: false, type: Boolean },
+    backtestMode: { required: false, default: false, type: Boolean }
   },
 
   setup(props) {
     const botStore = useBotStore();
     const selectedTrade = ref(0)
-
-    const tradeSelect = (trade: Trade) => {
-        selectedTrade.value = trade.open_timestamp;
-    }
     
     return {
       botStore,
-      tradeSelect,
       selectedTrade
     };
   },
