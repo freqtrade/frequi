@@ -272,10 +272,24 @@
       v-if="hasBacktestResult && btFormMode == 'visualize'"
       class="container-fluid text-center w-100 mt-2"
     >
-      <p class="row">
-        Graph will always show the latest values for the selected strategy. Timerange:
-        {{ timerange }} - {{ strategy }}
-      </p>
+      <div class="row">
+        <div class="col-md-11 text-left">
+          <p>
+            Graph will always show the latest values for the selected strategy. Timerange:
+            {{ timerange }} - {{ strategy }}
+          </p>
+        </div>
+        <div class="col-md-1">
+          <b-button
+            v-if="btFormMode === 'visualize'"
+            class="right-bar-toggle"
+            aria-label="Close"
+            size="sm"
+            @click="showRightBar = !showRightBar"
+            >{{ showRightBar ? '&gt;' : '&lt;'  }}
+          </b-button>
+        </div>
+      </div>
       <div class="row text-center">
         <PairSummary
           class="col-md-2 overflow-auto"
@@ -292,20 +306,17 @@
           :timerange="timerange"
           :strategy="strategy"
           :trades="botStore.activeBot.selectedBacktestResult.trades"
-          class="col-md-8 candle-chart-container px-0 w-100 h-100"
+          :class="`${showRightBar ? 'col-md-8' : 'col-md-10'} candle-chart-container px-0 w-100 h-100`"
+          :sliderPosition="sliderPosition"
         >
         </CandleChartContainer>
         <TradeListNav 
-          class="col-md-2 overflow-auto"
+          class="overflow-auto col-md-2"
           style="max-height: calc(100vh - 200px)"
+          v-if="showRightBar"
           :trades="botStore.activeBot.selectedBacktestResult.trades.filter(t => t.pair === botStore.activeBot.selectedPair)"
+          @trade-select="navigateChartToTrade"
         />
-        <!--<TradeList
-          class="col-md-2 overflow-auto"
-          :trades="botStore.activeBot.selectedBacktestResult.trades.filter(t => t.pair === botStore.activeBot.selectedPair)"
-          :show-filter="true"
-          :stake-currency="botStore.activeBot.selectedBacktestResult.stake_currency"
-        /> -->
       </div>
       <b-card header="Single trades" class="row mt-2 w-100">
         <TradeList
@@ -333,7 +344,7 @@ import TradeList from '@/components/ftbot/TradeList.vue';
 import TradeListNav from '@/components/ftbot/TradeListNav.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 
-import { BacktestPayload } from '@/types';
+import { BacktestPayload, ChartSliderPosition, Trade } from '@/types';
 
 import { formatPercent } from '@/shared/formatters';
 import { defineComponent, computed, ref, onMounted, watch } from 'vue';
@@ -376,6 +387,7 @@ export default defineComponent({
     const selectedDetailTimeframe = ref('');
     const timerange = ref('');
     const showLeftBar = ref(false);
+    const showRightBar = ref(true);
     const enableProtections = ref(false);
     const stakeAmountUnlimited = ref(false);
     const maxOpenTrades = ref('');
@@ -383,6 +395,7 @@ export default defineComponent({
     const startingCapital = ref('');
     const btFormMode = ref('run');
     const pollInterval = ref<number | null>(null);
+    const sliderPosition = ref(<ChartSliderPosition>{});
 
     const setBacktestResult = (key: string) => {
       botStore.activeBot.setBacktestResultKey(key);
@@ -434,6 +447,14 @@ export default defineComponent({
 
       botStore.activeBot.startBacktest(btPayload);
     };
+
+    const navigateChartToTrade = (trade : Trade) => {
+      sliderPosition.value = {
+        startValue: trade.open_timestamp,
+        endValue: trade.close_timestamp
+      }
+    };
+
     onMounted(() => botStore.activeBot.getState());
     watch(
       () => botStore.activeBot.backtestRunning,
@@ -459,12 +480,15 @@ export default defineComponent({
       timerange,
       enableProtections,
       showLeftBar,
+      showRightBar,
       stakeAmountUnlimited,
       maxOpenTrades,
       stakeAmount,
       startingCapital,
       btFormMode,
       clickBacktest,
+      navigateChartToTrade,
+      sliderPosition
     };
   },
 });
