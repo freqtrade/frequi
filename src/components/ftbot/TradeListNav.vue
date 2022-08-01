@@ -7,10 +7,7 @@
       class="d-flex justify-content-between align-items-center py-1"
       :title="`${trade.pair}`"
       :active="trade.open_timestamp === selectedTrade.open_timestamp"
-      @click="
-        selectedTrade = trade;
-        $emit('trade-select', trade);
-      "
+      @click="onTradeSelect(trade)"
     >
       <div>
         <DateTimeTZ :date="trade.open_timestamp" />
@@ -42,10 +39,16 @@ export default defineComponent({
     trades: { required: true, type: Array as () => Trade[] },
     backtestMode: { required: false, default: false, type: Boolean },
   },
+  emits: ['trade-select'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const botStore = useBotStore();
     const selectedTrade = ref({} as Trade);
+
+    const onTradeSelect = (trade: Trade) => {
+      selectedTrade.value = trade;
+      emit('trade-select', trade);
+    };
 
     const sortedTrades = computed(() => {
       return props.trades.slice().sort((a, b) => b.open_timestamp - a.open_timestamp);
@@ -55,6 +58,7 @@ export default defineComponent({
       botStore,
       selectedTrade,
       sortedTrades,
+      onTradeSelect,
     };
   },
 });
