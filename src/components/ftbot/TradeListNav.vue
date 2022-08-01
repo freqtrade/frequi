@@ -1,7 +1,7 @@
 <template>
   <b-list-group>
     <b-list-group-item
-      v-for="trade in trades.sort((a,b) => a.open_timestamp < b.open_timestamp)"
+      v-for="trade in sortedTrades"
       :key="trade.open_timestamp"
       button
       class="d-flex justify-content-between align-items-center py-1"
@@ -42,11 +42,16 @@ export default defineComponent({
 
   setup(props) {
     const botStore = useBotStore();
-    const selectedTrade = ref(0)
-    
+    const selectedTrade = ref(<Trade>{});
+
+    const sortedTrades = computed(() => {
+      return props.trades.slice().sort((a,b) => b.open_timestamp - a.open_timestamp);
+    });
+
     return {
       botStore,
-      selectedTrade
+      selectedTrade,
+      sortedTrades
     };
   },
 });
