@@ -279,7 +279,7 @@
             {{ timerange }} - {{ strategy }}
           </p>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1 text-right">
           <b-button
             v-if="btFormMode === 'visualize'"
             class="right-bar-toggle"
