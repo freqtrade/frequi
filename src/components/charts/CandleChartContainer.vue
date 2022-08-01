@@ -71,7 +71,7 @@
           :heikin-ashi="settingsStore.useHeikinAshiCandles"
           :use-u-t-c="settingsStore.timezone === 'UTC'"
           :theme="settingsStore.chartTheme"
-          :sliderPosition="sliderPosition"
+          :slider-position="sliderPosition"
         >
         </CandleChart>
         <div v-else class="m-auto">
@@ -92,7 +92,14 @@
 </template>
 
 <script lang="ts">
-import { Trade, PairHistory, EMPTY_PLOTCONFIG, PlotConfig, LoadingStatus, ChartSliderPosition } from '@/types';
+import {
+  Trade,
+  PairHistory,
+  EMPTY_PLOTCONFIG,
+  PlotConfig,
+  LoadingStatus,
+  ChartSliderPosition,
+} from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
@@ -115,7 +122,11 @@ export default defineComponent({
     timerange: { required: false, default: '', type: String },
     /** Only required if historicView is true */
     strategy: { required: false, default: '', type: String },
-    sliderPosition: {required: false, type: Object as () => ChartSliderPosition}
+    sliderPosition: {
+      required: false,
+      type: Object as () => ChartSliderPosition,
+      default: () => undefined,
+    },
   },
   setup(props) {
     const root = getCurrentInstance();

@@ -7,7 +7,10 @@
       class="d-flex justify-content-between align-items-center py-1"
       :title="`${trade.pair}`"
       :active="trade.open_timestamp === selectedTrade.open_timestamp"
-      @click="selectedTrade = trade; $emit('trade-select',trade);"
+      @click="
+        selectedTrade = trade;
+        $emit('trade-select', trade);
+      "
     >
       <div>
         <DateTimeTZ :date="trade.open_timestamp" />
@@ -16,7 +19,7 @@
       <TradeProfit :trade="trade" />
       <ProfitPill
         v-if="backtestMode"
-        :profit-ratio="trade.profit"
+        :profit-ratio="trade.profit_ratio"
         :stake-currency="botStore.activeBot.stakeCurrency"
       />
     </b-list-group-item>
@@ -37,21 +40,21 @@ export default defineComponent({
   components: { TradeProfit, ProfitPill, DateTimeTZ },
   props: {
     trades: { required: true, type: Array as () => Trade[] },
-    backtestMode: { required: false, default: false, type: Boolean }
+    backtestMode: { required: false, default: false, type: Boolean },
   },
 
   setup(props) {
     const botStore = useBotStore();
-    const selectedTrade = ref(<Trade>{});
+    const selectedTrade = ref({} as Trade);
 
     const sortedTrades = computed(() => {
-      return props.trades.slice().sort((a,b) => b.open_timestamp - a.open_timestamp);
+      return props.trades.slice().sort((a, b) => b.open_timestamp - a.open_timestamp);
     });
 
     return {
       botStore,
       selectedTrade,
-      sortedTrades
+      sortedTrades,
     };
   },
 });

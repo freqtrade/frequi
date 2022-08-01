@@ -8,6 +8,6 @@ export interface CumProfitDataPerDate {
 }
 
 export interface ChartSliderPosition {
-  startValue: number,
-  endValue: number
+  startValue: number;
+  endValue: number;
 }

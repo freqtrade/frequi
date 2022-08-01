@@ -286,7 +286,7 @@
             aria-label="Close"
             size="sm"
             @click="showRightBar = !showRightBar"
-            >{{ showRightBar ? '&gt;' : '&lt;'  }}
+            >{{ showRightBar ? '&gt;' : '&lt;' }}
           </b-button>
         </div>
       </div>
@@ -306,15 +306,21 @@
           :timerange="timerange"
           :strategy="strategy"
           :trades="botStore.activeBot.selectedBacktestResult.trades"
-          :class="`${showRightBar ? 'col-md-8' : 'col-md-10'} candle-chart-container px-0 w-100 h-100`"
-          :sliderPosition="sliderPosition"
+          :class="`${
+            showRightBar ? 'col-md-8' : 'col-md-10'
+          } candle-chart-container px-0 w-100 h-100`"
+          :slider-position="sliderPosition"
         >
         </CandleChartContainer>
-        <TradeListNav 
+        <TradeListNav
+          v-if="showRightBar"
           class="overflow-auto col-md-2"
           style="max-height: calc(100vh - 200px)"
-          v-if="showRightBar"
-          :trades="botStore.activeBot.selectedBacktestResult.trades.filter(t => t.pair === botStore.activeBot.selectedPair)"
+          :trades="
+            botStore.activeBot.selectedBacktestResult.trades.filter(
+              (t) => t.pair === botStore.activeBot.selectedPair,
+            )
+          "
           @trade-select="navigateChartToTrade"
         />
       </div>
@@ -364,7 +370,7 @@ export default defineComponent({
     PairSummary,
     TimeframeSelect,
     TradeList,
-    TradeListNav
+    TradeListNav,
   },
   setup() {
     const botStore = useBotStore();
@@ -395,7 +401,7 @@ export default defineComponent({
     const startingCapital = ref('');
     const btFormMode = ref('run');
     const pollInterval = ref<number | null>(null);
-    const sliderPosition = ref(<ChartSliderPosition>{});
+    const sliderPosition = ref({} as ChartSliderPosition);
 
     const setBacktestResult = (key: string) => {
       botStore.activeBot.setBacktestResultKey(key);
@@ -448,11 +454,11 @@ export default defineComponent({
       botStore.activeBot.startBacktest(btPayload);
     };
 
-    const navigateChartToTrade = (trade : Trade) => {
+    const navigateChartToTrade = (trade: Trade) => {
       sliderPosition.value = {
         startValue: trade.open_timestamp,
-        endValue: trade.close_timestamp
-      }
+        endValue: trade.close_timestamp,
+      };
     };
 
     onMounted(() => botStore.activeBot.getState());
@@ -488,7 +494,7 @@ export default defineComponent({
       btFormMode,
       clickBacktest,
       navigateChartToTrade,
-      sliderPosition
+      sliderPosition,
     };
   },
 });

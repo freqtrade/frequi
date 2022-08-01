@@ -12,7 +12,7 @@ import heikinashi from '@/shared/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
 import { addHours, subHours } from 'date-fns';
-import { utcToZonedTime, zonedTimeToUtc, format } from 'date-fns-tz';
+import { format } from 'date-fns-tz';
 
 import { use } from 'echarts/core';
 import { EChartsOption, SeriesOption, ScatterSeriesOption } from 'echarts';
@@ -81,7 +81,11 @@ export default defineComponent({
     useUTC: { required: false, default: true, type: Boolean },
     plotConfig: { required: true, type: Object as () => PlotConfig },
     theme: { default: 'dark', type: String },
-    sliderPosition: {required: false, type: Object as () => ChartSliderPosition}
+    sliderPosition: {
+      required: false,
+      type: Object as () => ChartSliderPosition,
+      default: () => undefined,
+    },
   },
   setup(props) {
     const candleChart = ref<typeof ECharts>();
@@ -638,16 +642,18 @@ export default defineComponent({
     };
 
     const updateSliderPosition = () => {
-      let start = format(subHours(props.sliderPosition.startValue,3),'yyyy-MM-dd HH:mm:ss');
-      let end = format(addHours(props.sliderPosition.endValue,3),'yyyy-MM-dd HH:mm:ss');
+      if (!props.sliderPosition) return;
+
+      const start = format(subHours(props.sliderPosition.startValue, 3), 'yyyy-MM-dd HH:mm:ss');
+      const end = format(addHours(props.sliderPosition.endValue, 3), 'yyyy-MM-dd HH:mm:ss');
 
       candleChart.value.dispatchAction({
         type: 'dataZoom',
         dataZoomIndex: 0,
         startValue: start,
-        endValue: end
+        endValue: end,
       });
-    }
+    };
 
     // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
     // Calculate Buy and sell Series
@@ -690,7 +696,7 @@ export default defineComponent({
 
     watch(
       () => props.sliderPosition,
-      () => updateSliderPosition()
+      () => updateSliderPosition(),
     );
 
     return {
