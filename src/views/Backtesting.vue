@@ -457,7 +457,9 @@ export default defineComponent({
     const navigateChartToTrade = (trade: Trade) => {
       sliderPosition.value = {
         startValue: trade.open_timestamp,
-        endValue: trade.close_timestamp,
+        endValue: trade.close_timestamp
+          ? trade.close_timestamp
+          : trade.open_timestamp + 3 * 60 * 60 * 1000,
       };
     };
 
