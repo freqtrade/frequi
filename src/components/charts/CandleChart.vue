@@ -11,7 +11,6 @@ import randomColor from '@/shared/randomColor';
 import heikinashi from '@/shared/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
-import { addHours, subHours } from 'date-fns';
 import { format } from 'date-fns-tz';
 
 import { use } from 'echarts/core';
@@ -644,8 +643,16 @@ export default defineComponent({
     const updateSliderPosition = () => {
       if (!props.sliderPosition) return;
 
-      const start = format(subHours(props.sliderPosition.startValue, 3), 'yyyy-MM-dd HH:mm:ss');
-      const end = format(addHours(props.sliderPosition.endValue, 3), 'yyyy-MM-dd HH:mm:ss');
+      const start = format(
+        props.sliderPosition.startValue - props.dataset.timeframe_ms * 40,
+        'yyyy-MM-dd HH:mm:ss',
+      );
+      const end = format(
+        props.sliderPosition.endValue
+          ? props.sliderPosition.endValue + props.dataset.timeframe_ms * 40
+          : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80,
+        'yyyy-MM-dd HH:mm:ss',
+      );
 
       candleChart.value.dispatchAction({
         type: 'dataZoom',
