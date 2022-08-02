@@ -1,27 +1,30 @@
 <template>
-  <b-list-group>
-    <b-list-group-item
-      v-for="trade in sortedTrades"
-      :key="trade.open_timestamp"
-      button
-      class="d-flex justify-content-between align-items-center py-1"
-      :title="`${trade.pair}`"
-      :active="trade.open_timestamp === selectedTrade.open_timestamp"
-      @click="onTradeSelect(trade)"
-    >
-      <div>
-        <DateTimeTZ :date="trade.open_timestamp" />
-      </div>
+  <div>
+    <span>Trade Navigation</span>
+    <b-list-group>
+      <b-list-group-item
+        v-for="trade in sortedTrades"
+        :key="trade.open_timestamp"
+        button
+        class="d-flex justify-content-between align-items-center py-1"
+        :title="`${trade.pair}`"
+        :active="trade.open_timestamp === selectedTrade.open_timestamp"
+        @click="onTradeSelect(trade)"
+      >
+        <div>
+          <DateTimeTZ :date="trade.open_timestamp" />
+        </div>
 
-      <TradeProfit :trade="trade" />
-      <ProfitPill
-        v-if="backtestMode"
-        :profit-ratio="trade.profit_ratio"
-        :stake-currency="botStore.activeBot.stakeCurrency"
-      />
-    </b-list-group-item>
-    <b-list-group-item v-if="trades.length === 0">No trades to show...</b-list-group-item>
-  </b-list-group>
+        <TradeProfit :trade="trade" />
+        <ProfitPill
+          v-if="backtestMode"
+          :profit-ratio="trade.profit_ratio"
+          :stake-currency="botStore.activeBot.stakeCurrency"
+        />
+      </b-list-group-item>
+      <b-list-group-item v-if="trades.length === 0">No trades to show...</b-list-group-item>
+    </b-list-group>
+  </div>
 </template>
 
 <script lang="ts">

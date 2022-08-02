@@ -282,8 +282,8 @@
         <div class="col-md-1 text-right">
           <b-button
             v-if="btFormMode === 'visualize'"
-            class="right-bar-toggle"
             aria-label="Close"
+            title="Trade Navigation"
             size="sm"
             @click="showRightBar = !showRightBar"
             >{{ showRightBar ? '&gt;' : '&lt;' }}
@@ -401,7 +401,7 @@ export default defineComponent({
     const startingCapital = ref('');
     const btFormMode = ref('run');
     const pollInterval = ref<number | null>(null);
-    const sliderPosition = ref({} as ChartSliderPosition);
+    const sliderPosition = ref<ChartSliderPosition>();
 
     const setBacktestResult = (key: string) => {
       botStore.activeBot.setBacktestResultKey(key);
