@@ -6,3 +6,8 @@ export interface CumProfitData {
 export interface CumProfitDataPerDate {
   [key: number]: CumProfitData;
 }
+
+export interface ChartSliderPosition {
+  startValue: number;
+  endValue: number | undefined;
+}

@@ -6,11 +6,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
-import { Trade, PairHistory, PlotConfig } from '@/types';
+import { Trade, PairHistory, PlotConfig, ChartSliderPosition } from '@/types';
 import randomColor from '@/shared/randomColor';
 import heikinashi from '@/shared/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
+import { format } from 'date-fns-tz';
 
 import { use } from 'echarts/core';
 import { EChartsOption, SeriesOption, ScatterSeriesOption } from 'echarts';
@@ -79,6 +80,11 @@ export default defineComponent({
     useUTC: { required: false, default: true, type: Boolean },
     plotConfig: { required: true, type: Object as () => PlotConfig },
     theme: { default: 'dark', type: String },
+    sliderPosition: {
+      required: false,
+      type: Object as () => ChartSliderPosition,
+      default: () => undefined,
+    },
   },
   setup(props) {
     const candleChart = ref<typeof ECharts>();
@@ -634,6 +640,28 @@ export default defineComponent({
       updateChart(true);
     };
 
+    const updateSliderPosition = () => {
+      if (!props.sliderPosition) return;
+
+      const start = format(
+        props.sliderPosition.startValue - props.dataset.timeframe_ms * 40,
+        'yyyy-MM-dd HH:mm:ss',
+      );
+      const end = format(
+        props.sliderPosition.endValue
+          ? props.sliderPosition.endValue + props.dataset.timeframe_ms * 40
+          : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80,
+        'yyyy-MM-dd HH:mm:ss',
+      );
+
+      candleChart.value.dispatchAction({
+        type: 'dataZoom',
+        dataZoomIndex: 0,
+        startValue: start,
+        endValue: end,
+      });
+    };
+
     // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
     // Calculate Buy and sell Series
     // if (!this.signalsCalculated) {
@@ -671,6 +699,11 @@ export default defineComponent({
     watch(
       () => props.heikinAshi,
       () => updateChart(),
+    );
+
+    watch(
+      () => props.sliderPosition,
+      () => updateSliderPosition(),
     );
 
     return {
