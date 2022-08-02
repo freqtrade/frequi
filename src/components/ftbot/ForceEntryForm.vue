@@ -59,6 +59,20 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group
+          v-if="botStore.activeBot.botApiVersion > 2.16 && botStore.activeBot.shortAllowed"
+          :label="`*Leverage to apply [optional]`"
+          label-for="leverage-input"
+          invalid-feedback="Leverage must be empty or a positive number"
+        >
+          <b-form-input
+            id="leverage-input"
+            v-model="leverage"
+            type="number"
+            step="1"
+            @keydown.enter.native="handleEntry"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
           v-if="botStore.activeBot.botApiVersion > 1.1"
           label="*OrderType"
           label-for="ordertype-input"
@@ -94,6 +108,8 @@ export default defineComponent({
     const pair = ref('');
     const price = ref<number | null>(null);
     const stakeAmount = ref<number | null>(null);
+    const leverage = ref<number | null>(null);
+
     const ordertype = ref('');
     const orderSide = ref<OrderSides>(OrderSides.long);
 
@@ -121,6 +137,9 @@ export default defineComponent({
       }
       if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
         payload.side = orderSide.value;
+      }
+      if (leverage.value) {
+        payload.leverage = leverage.value;
       }
       botStore.activeBot.forceentry(payload);
       nextTick(() => {
@@ -159,6 +178,7 @@ export default defineComponent({
       stakeAmount,
       ordertype,
       orderSide,
+      leverage,
     };
   },
 });
