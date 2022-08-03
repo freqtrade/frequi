@@ -20,6 +20,7 @@
       <ProfitPill
         v-if="backtestMode && comb.tradeCount > 0"
         :profit-ratio="comb.profit"
+        :profit-abs="comb.profitAbs"
         :stake-currency="botStore.activeBot.stakeCurrency"
       />
     </b-list-group-item>
