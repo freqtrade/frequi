@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { formatPrice } from '@/shared/formatters';
-import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
+import { Trade } from '@/types';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
 import { defineComponent, computed, ref, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
@@ -70,25 +70,6 @@ export default defineComponent({
     const formatPriceWithDecimals = (price) => {
       return formatPrice(price, props.stakeCurrencyDecimals);
     };
-    const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
-      root?.proxy.$bvModal
-        .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
-        .then((value: boolean) => {
-          if (value) {
-            const payload: MultiForcesellPayload = {
-              tradeid: String(item.trade_id),
-              botId: item.botId,
-            };
-            if (ordertype) {
-              payload.ordertype = ordertype;
-            }
-            botStore
-              .forceSellMulti(payload)
-              .then((xxx) => console.log(xxx))
-              .catch((error) => console.log(error.response));
-          }
-        });
-    };
 
     const handleContextMenuEvent = (item, index, event) => {
       // stop browser context menu from appearing
@@ -100,20 +81,6 @@ export default defineComponent({
       console.log(item);
     };
 
-    const removeTradeHandler = (item) => {
-      console.log(item);
-      root?.proxy.$bvModal
-        .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
-        .then((value: boolean) => {
-          if (value) {
-            const payload: MultiDeletePayload = {
-              tradeid: String(item.trade_id),
-              botId: item.botId,
-            };
-            botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-          }
-        });
-    };
     const tradeClick = (trade) => {
       botStore.activeBot.setDetailTrade(trade);
     };
@@ -124,9 +91,7 @@ export default defineComponent({
       perPage,
       filteredTrades,
       formatPriceWithDecimals,
-      forcesellHandler,
       handleContextMenuEvent,
-      removeTradeHandler,
       tradeClick,
       botStore,
       rows,
