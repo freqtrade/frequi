@@ -11,10 +11,7 @@
         :active="trade.open_timestamp === selectedTrade.open_timestamp"
         @click="onTradeSelect(trade)"
       >
-        <div>
-          <DateTimeTZ :date="trade.open_timestamp" />
-        </div>
-
+        <div>{{ trade.is_short ? '[S]-' : '[L]-' }}<DateTimeTZ :date="trade.open_timestamp" /></div>
         <TradeProfit :trade="trade" />
         <ProfitPill
           v-if="backtestMode"
