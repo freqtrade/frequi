@@ -5,7 +5,7 @@
       class="btn-xs text-left"
       size="sm"
       title="Forceexit"
-      @click="$emit('forceSell', trade)"
+      @click="$emit('forceExit', trade)"
     >
       <ForceSellIcon :size="16" title="Forceexit" class="mr-1" />Forceexit
     </b-button>
@@ -14,7 +14,7 @@
       class="btn-xs text-left"
       size="sm"
       title="Forceexit limit"
-      @click="$emit('forceSell', trade, 'limit')"
+      @click="$emit('forceExit', trade, 'limit')"
     >
       <ForceSellIcon :size="16" title="Forceexit limit" class="mr-1" />Forceexit limit
     </b-button>
@@ -23,7 +23,7 @@
       class="btn-xs text-left mt-1"
       size="sm"
       title="Forceexit market"
-      @click="$emit('forceSell', trade, 'market')"
+      @click="$emit('forceExit', trade, 'market')"
     >
       <ForceSellIcon :size="16" title="Forceexit market" class="mr-1" />Forceexit market
     </b-button>
@@ -59,7 +59,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['forceSell', 'deleteTrade'],
+  emits: ['forceExit', 'deleteTrade'],
   setup() {
     return {};
   },

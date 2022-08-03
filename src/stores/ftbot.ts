@@ -606,13 +606,13 @@ export function createBotSubStore(botId: string, botName: string) {
             '/forcesell',
             payload,
           );
-          showAlert(`Sell order for ${payload.tradeid} created`);
+          showAlert(`Exit order for ${payload.tradeid} created`);
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert(`Failed to create sell order for ${payload.tradeid}`, 'danger');
+          showAlert(`Failed to create exit order for ${payload.tradeid}`, 'danger');
           return Promise.reject(error);
         }
       },

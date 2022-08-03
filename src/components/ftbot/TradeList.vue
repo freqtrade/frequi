@@ -28,7 +28,7 @@
             :trade="row.item"
             :bot-api-version="botStore.activeBot.botApiVersion"
             @deleteTrade="removeTradeHandler"
-            @forceSell="forcesellHandler"
+            @forceExit="forceExitHandler"
           />
         </b-popover>
       </template>
@@ -155,7 +155,7 @@ export default defineComponent({
       ...(props.activeTrades ? openFields : closedFields),
     ];
 
-    const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
+    const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
       root?.proxy.$bvModal
         .msgBoxConfirm(
           `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`,
@@ -250,7 +250,7 @@ export default defineComponent({
       tableFields,
       rows,
       tradesTable,
-      forcesellHandler,
+      forceExitHandler,
       handleContextMenuEvent,
       removeTradeHandler,
       onRowClicked,

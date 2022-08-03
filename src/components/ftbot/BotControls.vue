@@ -133,7 +133,7 @@ export default defineComponent({
     };
 
     const handleForceExit = () => {
-      root?.proxy.$bvModal.msgBoxConfirm(`Really forcesell ALL trades?`).then((value: boolean) => {
+      root?.proxy.$bvModal.msgBoxConfirm(`Really forceexit ALL trades?`).then((value: boolean) => {
         if (value) {
           const payload: ForceSellPayload = {
             tradeid: 'all',
