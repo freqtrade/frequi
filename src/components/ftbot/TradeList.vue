@@ -157,7 +157,9 @@ export default defineComponent({
 
     const forcesellHandler = (item: Trade, ordertype: string | undefined = undefined) => {
       root?.proxy.$bvModal
-        .msgBoxConfirm(`Really forcesell trade ${item.trade_id} (Pair ${item.pair})?`)
+        .msgBoxConfirm(
+          `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`,
+        )
         .then((value: boolean) => {
           if (value) {
             const payload: MultiForcesellPayload = {
