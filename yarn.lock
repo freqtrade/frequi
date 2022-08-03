@@ -4116,10 +4116,10 @@ pify@^2.2.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha1-7RQaasBDqEnqWISY59yosVMw6Qw=
 
-pinia-plugin-persistedstate@^1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/pinia-plugin-persistedstate/-/pinia-plugin-persistedstate-1.6.3.tgz#6cd691f96814603c70ec5bb756f9f4d037b1aec8"
-  integrity sha512-vwxUca3DZKW6+wnGsgu6hA0ESVKoLovF8vH1jMOPBhaH4VpCSTgn5AsprTxXyg3uMk047m0B+NggeMTcCC8H6w==
+pinia-plugin-persistedstate@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/pinia-plugin-persistedstate/-/pinia-plugin-persistedstate-2.1.0.tgz#4d7d9d21ed0b1e77fa082d714459d24943000405"
+  integrity sha512-qqFWulmvt2r07JqVwud+q9RyRgJrXQmu5pFtXogsV1Z1kHN1H5hxZfMmbezK6VpPPLTSnQ/dXd9c7NRc4Lfk9Q==
 
 pinia@^2.0.17:
   version "2.0.17"
