@@ -29,6 +29,7 @@
             :bot-api-version="botStore.activeBot.botApiVersion"
             @deleteTrade="removeTradeHandler"
             @forceExit="forceExitHandler"
+            @forceExitPartial="forceExitPartialHandler"
           />
         </b-popover>
       </template>
@@ -76,6 +77,7 @@
         style="width: unset"
       />
     </div>
+    <force-exit-form v-if="activeTrades" :trade="feTrade" />
   </div>
 </template>
 
@@ -87,13 +89,14 @@ import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import TradeProfit from './TradeProfit.vue';
 import TradeActions from './TradeActions.vue';
+import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
-import { defineComponent, ref, computed, watch, getCurrentInstance } from 'vue';
+import { defineComponent, ref, computed, watch, getCurrentInstance, nextTick } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'TradeList',
-  components: { ActionIcon, DateTimeTZ, TradeProfit, TradeActions },
+  components: { ActionIcon, DateTimeTZ, TradeProfit, TradeActions, ForceExitForm },
   props: {
     trades: { required: true, type: Array as () => Array<Trade> },
     title: { default: 'Trades', type: String },
@@ -109,6 +112,7 @@ export default defineComponent({
     const currentPage = ref(1);
     const selectedItemIndex = ref();
     const filterText = ref('');
+    const feTrade = ref<Trade>({} as Trade);
     const perPage = props.activeTrades ? 200 : 15;
     const tradesTable = ref<HTMLFormElement>();
 
@@ -175,6 +179,14 @@ export default defineComponent({
               .catch((error) => console.log(error.response));
           }
         });
+    };
+
+    const forceExitPartialHandler = (item: Trade) => {
+      feTrade.value = item;
+      nextTick(() => {
+        console.log('showing modal', item);
+        root?.proxy.$bvModal.show('forceexit-modal');
+      });
     };
 
     const handleContextMenuEvent = (item, index, event) => {
@@ -251,10 +263,12 @@ export default defineComponent({
       rows,
       tradesTable,
       forceExitHandler,
+      forceExitPartialHandler,
       handleContextMenuEvent,
       removeTradeHandler,
       onRowClicked,
       onRowSelected,
+      feTrade,
     };
   },
 });

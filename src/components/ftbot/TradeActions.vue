@@ -27,6 +27,15 @@
     >
       <ForceSellIcon :size="16" title="Forceexit market" class="mr-1" />Forceexit market
     </b-button>
+    <b-button
+      v-if="botApiVersion > 2.16"
+      class="btn-xs text-left mt-1"
+      size="sm"
+      title="Forceexit partial"
+      @click="$emit('forceExitPartial', trade)"
+    >
+      <ForceSellIcon :size="16" title="Forceexit partial" class="mr-1" />Forceexit partial
+    </b-button>
 
     <b-button
       class="btn-xs text-left mt-1"
@@ -59,7 +68,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['forceExit', 'deleteTrade'],
+  emits: ['forceExit', 'forceExitPartial', 'deleteTrade'],
   setup() {
     return {};
   },
