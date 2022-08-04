@@ -12,9 +12,11 @@
         @click="onTradeSelect(trade)"
       >
         <div>
+          <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
+            trade.is_short ? 'S-' : 'L-'
+          }}</span>
           <DateTimeTZ :date="trade.open_timestamp" />
         </div>
-
         <TradeProfit :trade="trade" />
         <ProfitPill
           v-if="backtestMode"
