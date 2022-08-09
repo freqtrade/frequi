@@ -12,9 +12,9 @@ export interface Order extends BTOrder {
   pair: string;
   order_id: string;
   status: string;
-  remaining: number;
+  remaining: number | null;
   cost: number;
-  filled: number;
+  filled: number | null;
   order_type: string;
   is_open: boolean;
   order_timestamp?: number;

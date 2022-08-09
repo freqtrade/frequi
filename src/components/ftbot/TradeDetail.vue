@@ -97,10 +97,10 @@
               />
               <b class="ml-1">{{ order.ft_order_side }}</b> for
               <b>{{ formatPrice(order.safe_price) }}</b> |
-              <span v-if="order.remaining !== 0" title="remaining"
+              <span v-if="order.remaining && order.remaining !== 0" title="remaining"
                 >{{ formatPrice(order.remaining, 8) }} /
               </span>
-              <span title="Filled">{{ formatPrice(order.filled, 8) }}</span>
+              <span title="Filled">{{ formatPrice(order.filled ?? 0, 8) }}</span>
             </span>
           </div>
         </details>
