@@ -18,7 +18,7 @@ import {
 } from 'echarts/components';
 
 import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
-import { defineComponent, ref, computed, watch } from 'vue';
+import { defineComponent, computed, ComputedRef } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 
 use([
@@ -49,12 +49,10 @@ export default defineComponent({
   },
   setup(props) {
     const settingsStore = useSettingsStore();
-    const botList = ref<string[]>([]);
-    const cumulativeData = ref<{ date: number; profit: any }[]>([]);
+    // const botList = ref<string[]>([]);
+    // const cumulativeData = ref<{ date: number; profit: any }[]>([]);
 
-    const calcCumulativeData = () => {
-      console.log('trades');
-      botList.value = [];
+    const cumulativeData: ComputedRef<{ date: number; profit: number }[]> = computed(() => {
       const res: CumProfitData[] = [];
       const resD: CumProfitDataPerDate = {};
       const closedTrades = props.trades
@@ -79,16 +77,12 @@ export default defineComponent({
               resD[trade.close_timestamp][trade.botId] = profit;
             }
           }
-          // console.log(trade.close_date, profit);
           res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
-          if (!botList.value.includes(trade.botId)) {
-            botList.value.push(trade.botId);
-          }
         }
       }
       // console.log(resD);
 
-      cumulativeData.value = Object.entries(resD).map(([k, v]) => {
+      return Object.entries(resD).map(([k, v]) => {
         const obj = { date: parseInt(k, 10), profit: v.profit };
         // TODO: The below could allow "lines" per bot"
         // this.botList.forEach((botId) => {
@@ -96,10 +90,7 @@ export default defineComponent({
         // });
         return obj;
       });
-    };
-    watch([props.trades], calcCumulativeData);
-    // Initial call
-    calcCumulativeData();
+    });
 
     const chartOptions = computed((): EChartsOption => {
       const chartOptionsLoc: EChartsOption = {
