@@ -30,7 +30,7 @@
     "pinia-plugin-persistedstate": "^2.1.1",
     "vue": "^2.7.5",
     "vue-class-component": "^7.2.5",
-    "vue-demi": "0.13.6",
+    "vue-demi": "0.13.8",
     "vue-echarts": "^6.2.3",
     "vue-grid-layout": "^2.4.0",
     "vue-material-design-icons": "^5.1.2",
