@@ -496,8 +496,9 @@ export default defineComponent({
       }
 
       console.log('chartOptions', chartOptions.value);
-
-      candleChart.value.setOption(chartOptions.value);
+      if (candleChart.value) {
+        candleChart.value.setOption(chartOptions.value);
+      }
     };
 
     const initializeChartOptions = () => {
@@ -653,13 +654,14 @@ export default defineComponent({
           : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80,
         'yyyy-MM-dd HH:mm:ss',
       );
-
-      candleChart.value.dispatchAction({
-        type: 'dataZoom',
-        dataZoomIndex: 0,
-        startValue: start,
-        endValue: end,
-      });
+      if (candleChart.value) {
+        candleChart.value.dispatchAction({
+          type: 'dataZoom',
+          dataZoomIndex: 0,
+          startValue: start,
+          endValue: end,
+        });
+      }
     };
 
     // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
