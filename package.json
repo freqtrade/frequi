@@ -26,7 +26,7 @@
     "echarts": "^5.3.3",
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.27.2",
-    "pinia": "^2.0.18",
+    "pinia": "^2.0.20",
     "pinia-plugin-persistedstate": "^2.1.1",
     "vue": "^2.7.5",
     "vue-class-component": "^7.2.5",
