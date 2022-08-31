@@ -34,7 +34,7 @@
     "vue-echarts": "^6.2.3",
     "vue-grid-layout": "^2.4.0",
     "vue-material-design-icons": "^5.1.2",
-    "vue-router": "^3.6.3",
+    "vue-router": "^3.6.4",
     "vue-select": "^3.20.0"
   },
   "devDependencies": {
