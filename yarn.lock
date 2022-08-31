@@ -5113,10 +5113,10 @@ vue-material-design-icons@^5.1.2:
   resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-5.1.2.tgz#d0b9227786672fc17be239fb8c1d8e22e33feb45"
   integrity sha512-nD1qFM2qAkMlVoe23EfNKIeMfYl6YjHZjSty9q0mwc2gXmPmvEhixywJQhM+VF5KVBI1zAkVTNLoUEERPY10pA==
 
-vue-router@^3.6.3:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.6.3.tgz#121f8028186104fe6c3b71fe3065f45ec84d215c"
-  integrity sha512-G21CKd8o/Mr3h8Xgi6zwg2ixJ5OxBG9G5w/b5McEFfLBqyQJc/7HDGsibf2FAl2enpZla+OJ3IlYipRusGN/4w==
+vue-router@^3.6.4:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.6.4.tgz#46b77eca93cd69f6840c4730b13976a130144ecc"
+  integrity sha512-QSJs5aKKPiwBH++gelVbnq0ZFbUZXjlsjAklUM+F8dtd49YY72QsD1uGpBk/cqLK1bkZ8HiqPjS8NkhaGtpqHw==
 
 vue-select@^3.20.0:
   version "3.20.0"
