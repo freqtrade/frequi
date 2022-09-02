@@ -50,13 +50,15 @@ export default defineComponent({
     console.log('setup start');
     const settingsStore = useSettingsStore();
     // registerTransform(ecStat.transform.histogram);
-    const profits = props.trades.map((trade) => trade.profit_ratio);
     // console.log(profits);
     // const data = [[]];
 
     const bins = 10;
-    const data = binData(profits, bins);
-    console.log(profits, data);
+    const data = computed(() => {
+      const profits = props.trades.map((trade) => trade.profit_ratio);
+
+      return binData(profits, bins);
+    });
 
     const chartOptions = computed((): EChartsOption => {
       const chartOptionsLoc: EChartsOption = {
@@ -66,7 +68,7 @@ export default defineComponent({
         },
         backgroundColor: 'rgba(0, 0, 0, 0)',
         dataset: {
-          source: data,
+          source: data.value,
         },
         tooltip: {
           trigger: 'axis',
