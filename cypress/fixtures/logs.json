@@ -1,0 +1,223 @@
+{
+    "log_count": 30,
+    "logs": [
+        [
+            "2022-09-04 16:36:52",
+            1662302212049.2812,
+            "freqtrade.worker",
+            "INFO",
+            "Starting worker 2022.9.dev"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212049.3745,
+            "freqtrade.configuration.load_config",
+            "INFO",
+            "Using config: ./user_data/config.json ..."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212050.2412,
+            "freqtrade.loggers",
+            "INFO",
+            "Verbosity set to 0"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212050.3572,
+            "freqtrade.configuration.configuration",
+            "INFO",
+            "Runmode set to dry_run."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212050.3826,
+            "freqtrade.configuration.configuration",
+            "WARNING",
+            "`force_entry_enable` RPC message enabled."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212050.4028,
+            "freqtrade.configuration.configuration",
+            "INFO",
+            "Dry run is enabled"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212050.4756,
+            "freqtrade.configuration.configuration",
+            "INFO",
+            "Using max_open_trades: 3 ..."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212050.8184,
+            "freqtrade.configuration.check_exchange",
+            "INFO",
+            "Checking exchange..."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212059.5503,
+            "freqtrade.configuration.check_exchange",
+            "INFO",
+            "Exchange \"binance\" is officially supported by the Freqtrade development team."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212059.634,
+            "freqtrade.configuration.configuration",
+            "INFO",
+            "Using pairlist from configuration."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212059.6855,
+            "freqtrade.freqtradebot",
+            "INFO",
+            "Starting freqtrade 2022.9.dev"
+        ],
+
+        [
+            "2022-09-04 16:36:52",
+            1662302212069.927,
+            "freqtrade.resolvers.iresolver",
+            "INFO",
+            "Using resolved strategy NoActionStrategy from '/freqtrade/user_data/strategies/NoActionStrategy.py'..."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.0261,
+            "freqtrade.strategy.hyper",
+            "INFO",
+            "Found no parameter file."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.2322,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Override strategy 'stake_currency' with value in config file: USDT."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.2654,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Override strategy 'stake_amount' with value in config file: 50."
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.2927,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using minimal_roi: {'0': 0.05}"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.316,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using timeframe: 1m"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.3347,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using stoploss: -0.005"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.3518,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using trailing_stop: True"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.3684,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using trailing_stop_positive: 0.01"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.3855,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using trailing_stop_positive_offset: 0.015"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.4026,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using trailing_only_offset_is_reached: False"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.4187,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using use_custom_stoploss: False"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.4363,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using process_only_new_candles: False"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.4526,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using order_types: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'limit', 'emergency_exit': 'limit', 'stoploss_on_exchange': False, 'stoploss_on_exchange_interval': 60, 'stoploss_on_exchange_limit_ratio': 0.999}"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.477,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using order_time_in_force: {'entry': 'ioc', 'exit': 'gtc'}"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.5002,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using stake_currency: USDT"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.5166,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using stake_amount: 50"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.532,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using protections: []"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.5513,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using startup_candle_count: 200"
+        ],
+        [
+            "2022-09-04 16:36:52",
+            1662302212070.5671,
+            "freqtrade.resolvers.strategy_resolver",
+            "INFO",
+            "Strategy using unfilledtimeout: {'entry': 10, 'exit': 10, 'unit': 'seconds', 'exit_timeout_count': 2000}"
+        ]
+    ]
+}
