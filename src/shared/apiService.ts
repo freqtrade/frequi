@@ -5,7 +5,7 @@ import { UserService } from './userService';
 export function useApi(userService: UserService, botId: string) {
   const api = axios.create({
     baseURL: userService.getBaseUrl(),
-    timeout: 10000,
+    timeout: 20000,
     withCredentials: true,
   });
   // Sent auth headers interceptor
