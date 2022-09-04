@@ -1,0 +1,64 @@
+{
+    "version": "2022.8",
+    "strategy_version": "1.1.5",
+    "api_version": 2.17,
+    "dry_run": true,
+    "trading_mode": "spot",
+    "short_allowed": false,
+    "stake_currency": "USDT",
+    "stake_amount": "50",
+    "available_capital": 1000.0,
+    "stake_currency_decimals": 3,
+    "max_open_trades": 3,
+    "minimal_roi": {
+        "0": 0.05
+    },
+    "stoploss": -0.005,
+    "trailing_stop": true,
+    "trailing_stop_positive": 0.01,
+    "trailing_stop_positive_offset": 0.015,
+    "trailing_only_offset_is_reached": false,
+    "unfilledtimeout": {
+        "entry": 10,
+        "exit": 10,
+        "unit": "seconds",
+        "exit_timeout_count": 2000
+    },
+    "order_types": {
+        "entry": "limit",
+        "exit": "limit",
+        "emergency_exit": "limit",
+        "force_exit": null,
+        "force_entry": null,
+        "stoploss": "limit",
+        "stoploss_on_exchange": false,
+        "stoploss_on_exchange_interval": 60
+    },
+    "use_custom_stoploss": false,
+    "timeframe": "1m",
+    "timeframe_ms": 60000,
+    "timeframe_min": 1,
+    "exchange": "binance",
+    "strategy": "NoActionStrategy",
+    "force_entry_enable": true,
+    "exit_pricing": {
+        "price_side": "other",
+        "use_order_book": true,
+        "order_book_top": 1
+    },
+    "entry_pricing": {
+        "price_side": "other",
+        "use_order_book": true,
+        "price_last_balance": 0.0,
+        "order_book_top": 1,
+        "check_depth_of_market": {
+            "enabled": false,
+            "bids_to_ask_delta": 1
+        }
+    },
+    "bot_name": "TestBot123",
+    "state": "running",
+    "runmode": "dry_run",
+    "position_adjustment_enable": true,
+    "max_entry_position_adjustment": 3
+}

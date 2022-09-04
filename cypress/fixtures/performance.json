@@ -1,0 +1,58 @@
+[
+    {
+        "pair": "LTC/USDT",
+        "profit": 0.45,
+        "profit_ratio": 0.004545904027666401,
+        "profit_pct": 0.45,
+        "profit_abs": 0.10887519000000001,
+        "count": 2
+    },
+    {
+        "pair": "ETC/USDT",
+        "profit": 0.29,
+        "profit_ratio": 0.0028783330753339572,
+        "profit_pct": 0.29,
+        "profit_abs": 0.1440453,
+        "count": 1
+    },
+    {
+        "pair": "TRX/USDT",
+        "profit": 0.17,
+        "profit_ratio": 0.00167518,
+        "profit_pct": 0.17,
+        "profit_abs": 0.83674944,
+        "count": 1
+    },
+    {
+        "pair": "BTC/USDT",
+        "profit": -1.47,
+        "profit_ratio": -0.014713809081536511,
+        "profit_pct": -1.47,
+        "profit_abs": -3.81200005,
+        "count": 9
+    },
+    {
+        "pair": "ETH/USDT",
+        "profit": -2.43,
+        "profit_ratio": -0.024289884285767328,
+        "profit_pct": -2.43,
+        "profit_abs": -6.150283,
+        "count": 8
+    },
+    {
+        "pair": "DOT/USDT",
+        "profit": 13.31,
+        "profit_ratio": 0.13306229586612298,
+        "profit_pct": 13.31,
+        "profit_abs": -97.83082590000001,
+        "count": 54
+    },
+    {
+        "pair": "XRP/USDT",
+        "profit": -34.21,
+        "profit_ratio": -0.342123315582023,
+        "profit_pct": -34.21,
+        "profit_abs": -124.26266862000003,
+        "count": 74
+    }
+]

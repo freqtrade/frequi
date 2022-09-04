@@ -1,0 +1,27 @@
+{
+    "currencies": [
+        {
+            "currency": "USDT",
+            "free": 766.8545525,
+            "balance": 766.8545525,
+            "used": 0.0,
+            "est_stake": 766.8545525,
+            "stake": "USDT",
+            "side": "long",
+            "leverage": 1.0,
+            "is_position": false,
+            "position": 0.0
+        }
+    ],
+    "total": 766.8545525,
+    "symbol": "USD",
+    "value": 767.6214070524999,
+    "stake": "USDT",
+    "note": "Simulated balances",
+    "starting_capital": 1000.0,
+    "starting_capital_ratio": -0.2331454475,
+    "starting_capital_pct": -23.31,
+    "starting_capital_fiat": 1000.9999999999999,
+    "starting_capital_fiat_ratio": -0.2331454475,
+    "starting_capital_fiat_pct": -23.31
+}

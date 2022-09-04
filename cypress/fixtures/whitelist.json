@@ -1,0 +1,14 @@
+{
+    "whitelist": [
+        "BTC/USDT",
+        "ETH/USDT",
+        "XRP/USDT",
+        "DOT/USDT",
+        "LTC/USDT",
+        "ETC/USDT"
+    ],
+    "length": 6,
+    "method": [
+        "StaticPairList"
+    ]
+}

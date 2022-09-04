@@ -23,6 +23,6 @@ export function defaultMocks() {
 
   cy.intercept('GET', '**/api/v1/ping', { fixture: 'ping.json' }).as('Ping');
   cy.intercept('GET', '**/api/v1/show_config', {
-    fixture: 'backtest/show_config_backtest.json',
+    fixture: 'show_config.json',
   }).as('ShowConf');
 }

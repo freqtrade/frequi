@@ -1,0 +1,51 @@
+{
+    "blacklist": [
+        "BNB/BTC",
+        "BNB/BUSD",
+        "BNB/ETH",
+        "BNB/EUR",
+        "BNB/NGN",
+        "BNB/PAX",
+        "BNB/RUB",
+        "BNB/TRY",
+        "BNB/TUSD",
+        "BNB/USDC",
+        "BNB/USDS",
+        "BNB/USDT",
+        "BUSD/USDT",
+        "EUR/USDT",
+        "NGN/USDT",
+        "PAX/USDT",
+        "RUB/USDT",
+        "TRY/USDT",
+        "TUSD/USDT",
+        "USDC/USDT",
+        "USDS/USDT",
+        "USDT/USDT"
+    ],
+    "blacklist_expanded": [
+        "BNB/BTC",
+        "BNB/BUSD",
+        "BNB/ETH",
+        "BNB/EUR",
+        "BNB/NGN",
+        "BNB/PAX",
+        "BNB/RUB",
+        "BNB/TRY",
+        "BNB/TUSD",
+        "BNB/USDC",
+        "BNB/USDS",
+        "BNB/USDT",
+        "BUSD/USDT",
+        "EUR/USDT",
+        "PAX/USDT",
+        "TUSD/USDT",
+        "USDC/USDT",
+        "USDS/USDT"
+    ],
+    "errors": {},
+    "length": 22,
+    "method": [
+        "StaticPairList"
+    ]
+}
