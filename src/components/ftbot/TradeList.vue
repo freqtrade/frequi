@@ -20,7 +20,13 @@
       @row-selected="onRowSelected"
     >
       <template #cell(actions)="row">
-        <b-button :id="`btn-actions_${row.index}`" class="btn-xs" size="sm" title="Actions">
+        <b-button
+          :id="`btn-actions_${row.index}`"
+          class="btn-xs"
+          size="sm"
+          title="Actions"
+          href="#"
+        >
           <ActionIcon :size="16" title="Actions" />
         </b-button>
         <b-popover :target="`btn-actions_${row.index}`" triggers="focus" placement="left">
