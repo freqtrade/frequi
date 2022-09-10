@@ -424,17 +424,21 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(data);
         }
       },
-      getStrategyList() {
-        return api
-          .get<StrategyListResult>('/strategies')
-          .then((result) => (this.strategyList = result.data.strategies))
-          .catch(console.error);
+      async getStrategyList() {
+        try {
+          const { data } = await api.get<StrategyListResult>('/strategies');
+          this.strategyList = data.strategies;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
       },
       async getStrategy(strategy: string) {
         try {
-          const result = await api.get<StrategyResult>(`/strategy/${strategy}`, {});
-          this.strategy = result.data;
-          return Promise.resolve(result.data);
+          const { data } = await api.get<StrategyResult>(`/strategy/${strategy}`, {});
+          this.strategy = data;
+          return Promise.resolve(data);
         } catch (error) {
           console.error(error);
           return Promise.reject(error);
@@ -442,13 +446,12 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getAvailablePairs(payload: AvailablePairPayload) {
         try {
-          const result = await api.get<AvailablePairResult>('/available_pairs', {
+          const { data } = await api.get<AvailablePairResult>('/available_pairs', {
             params: { ...payload },
           });
           // result is of type AvailablePairResult
-          const { pairs } = result.data;
-          this.pairlist = pairs;
-          return Promise.resolve(result.data);
+          this.pairlist = data.pairs;
+          return Promise.resolve(data);
         } catch (error) {
           console.error(error);
           return Promise.reject(error);
@@ -456,44 +459,48 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getPerformance() {
         try {
-          const result = await api.get<Performance[]>('/performance');
-          this.performanceStats = result.data;
-          return Promise.resolve(result.data);
+          const { data } = await api.get<Performance[]>('/performance');
+          this.performanceStats = data;
+          return Promise.resolve(data);
         } catch (error) {
           console.error(error);
           return Promise.reject(error);
         }
       },
-      getWhitelist() {
-        return api
-          .get<WhitelistResponse>('/whitelist')
-          .then((result) => {
-            this.whitelist = result.data.whitelist;
-            this.pairlistMethods = result.data.method;
-            return Promise.resolve(result.data);
-          })
-          .catch((error) => {
-            // console.error(error);
-            return Promise.reject(error);
-          });
+      async getWhitelist() {
+        try {
+          const { data } = await api.get<WhitelistResponse>('/whitelist');
+          this.whitelist = data.whitelist;
+          this.pairlistMethods = data.method;
+          return Promise.resolve(data);
+        } catch (error) {
+          return Promise.reject(error);
+        }
       },
-      getBlacklist() {
-        return api
-          .get<BlacklistResponse>('/blacklist')
-          .then((result) => (this.blacklist = result.data.blacklist))
-          .catch(console.error);
+      async getBlacklist() {
+        try {
+          const { data } = await api.get<BlacklistResponse>('/blacklist');
+          this.blacklist = data.blacklist;
+          return Promise.resolve(data);
+        } catch (error) {
+          return Promise.reject(error);
+        }
       },
-      getProfit() {
-        return api
-          .get('/profit')
-          .then((result) => (this.profit = result.data))
-          .catch(console.error);
+      async getProfit() {
+        try {
+          const { data } = await api.get('/profit');
+          this.profit = data;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
       },
       async getBalance() {
         try {
-          const result = await api.get('/balance');
-          this.balance = result.data;
-          return Promise.resolve(result.data);
+          const { data } = await api.get('/balance');
+          this.balance = data;
+          return Promise.resolve(data);
         } catch (error) {
           return Promise.reject(error);
         }
@@ -505,32 +512,39 @@ export function createBotSubStore(botId: string, botName: string) {
           this.dailyStats = data;
           return Promise.resolve(data);
         } catch (error) {
+          console.error(error);
           return Promise.reject(error);
         }
       },
-      getState() {
-        return api
-          .get('/show_config')
-          .then((result) => {
-            this.botState = result.data;
-            this.botStatusAvailable = true;
-          })
-          .catch(console.error);
+      async getState() {
+        try {
+          const { data } = await api.get('/show_config');
+          this.botState = data;
+          this.botStatusAvailable = true;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
       },
-      getLogs() {
-        return api
-          .get('/logs')
-          .then((result) => (this.lastLogs = result.data.logs))
-          .catch(console.error);
+      async getLogs() {
+        try {
+          const { data } = await api.get('/logs');
+          this.lastLogs = data.logs;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
       },
       // // Post methods
       // // TODO: Migrate calls to API to a seperate module unrelated to pinia?
       async startBot() {
         try {
-          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/start', {});
-          console.log(res.data);
-          showAlert(res.data.status);
-          return Promise.resolve(res);
+          const { data } = await api.post<{}, AxiosResponse<StatusResponse>>('/start', {});
+          console.log(data);
+          showAlert(data.status);
+          return Promise.resolve(data);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
