@@ -102,7 +102,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (window.localStorage.theme) setTheme(window.localStorage.theme);
+      if (settingsStore.currentTheme) setTheme(settingsStore.currentTheme);
     });
 
     const handleClick = (e) => {
