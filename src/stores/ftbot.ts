@@ -38,6 +38,7 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 import { showAlert } from './alerts';
+import { useWebSocket } from '@vueuse/core';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -46,6 +47,7 @@ export function createBotSubStore(botId: string, botName: string) {
   const useBotStore = defineStore(botId, {
     state: () => {
       return {
+        websocketStarted: false,
         isSelected: true,
         ping: '',
         botStatusAvailable: false,
@@ -501,6 +503,7 @@ export function createBotSubStore(botId: string, botName: string) {
           const { data } = await api.get('/show_config');
           this.botState = data;
           this.botStatusAvailable = true;
+          this.startWebSocket();
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
@@ -806,7 +809,58 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
+      startWebSocket() {
+        if (
+          this.websocketStarted === true ||
+          this.botStatusAvailable === false ||
+          this.botApiVersion < 2.2
+        ) {
+          return;
+        }
+        const { status, data, send, open, close, ws } = useWebSocket(
+          // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
+          `${userService.getBaseWsUrl()}/message/ws?token=${userService.getAccessToken()}`,
+          {
+            autoReconnect: {
+              delay: 10000,
+              // retries: 10
+            },
+            // heartbeat: {
+            //   message: JSON.stringify({ type: 'ping' }),
+            //   interval: 10000,
+            // },
+            onError: (ws, event) => {
+              console.log('onError', event, ws);
+              this.websocketStarted = false;
+              close();
+            },
+            onMessage: (ws, event) => {
+              // console.log('Event', event, typeof event.data);
+              const msg = JSON.parse(event.data);
+              console.log(`Received event ${msg.type}`);
+              // TODO: implement proper message handling
+            },
+            onConnected: () => {
+              console.log('subscribing');
+              this.websocketStarted = true;
+              send(
+                JSON.stringify({
+                  type: 'subscribe',
+                  data: ['whitelist', 'entry_fill', 'exit_fill' /*'analyzed_df'*/],
+                }),
+              );
+              send(
+                JSON.stringify({
+                  type: 'whitelist',
+                  data: '',
+                }),
+              );
+            },
+          },
+        );
+      },
     },
   });
+
   return useBotStore();
 }
