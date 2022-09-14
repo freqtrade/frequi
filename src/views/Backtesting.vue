@@ -265,6 +265,12 @@
           class="cum-profit"
           :show-title="true"
         />
+        <hr />
+        <ProfitDistributionChart
+          class="mt-3"
+          :trades="botStore.activeBot.selectedBacktestResult.trades"
+          :show-title="true"
+        />
       </div>
     </div>
 
@@ -349,6 +355,7 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import TradeListNav from '@/components/ftbot/TradeListNav.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
+import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
 
 import { BacktestPayload, ChartSliderPosition, Trade } from '@/types';
 
@@ -366,6 +373,7 @@ export default defineComponent({
     CandleChartContainer,
     CumProfitChart,
     TradesLogChart,
+    ProfitDistributionChart,
     StrategySelect,
     PairSummary,
     TimeframeSelect,

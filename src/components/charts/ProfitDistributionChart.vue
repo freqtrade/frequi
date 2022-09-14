@@ -1,10 +1,11 @@
 <template>
-  <div class="d-flex flex-column h-100">
-    <div class="flex-grow-1">
+  <div class="d-flex flex-column h-100 position-relative">
+    <div class="flex-grow-1 order-2">
       <v-chart v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
     <b-form-group
-      class="w-25 position-absolute"
+      class="w-25 order-1"
+      :class="showTitle ? 'ml-5 pl-5' : 'position-absolute'"
       label="Bins"
       label-for="input-bins"
       label-cols="6"
@@ -61,7 +62,6 @@ export default defineComponent({
     showTitle: { default: true, type: Boolean },
   },
   setup(props) {
-    console.log('setup start');
     const settingsStore = useSettingsStore();
     // registerTransform(ecStat.transform.histogram);
     // console.log(profits);
@@ -77,7 +77,7 @@ export default defineComponent({
     const chartOptions = computed((): EChartsOption => {
       const chartOptionsLoc: EChartsOption = {
         title: {
-          text: 'Cumulative Profit',
+          text: 'Profit distribution',
           show: props.showTitle,
         },
         backgroundColor: 'rgba(0, 0, 0, 0)',
