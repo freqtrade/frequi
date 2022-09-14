@@ -57,11 +57,7 @@
       drag-allow-from=".drag-header"
     >
       <DraggableContainer header="Open Trades">
-        <trade-list
-          :active-trades="true"
-          :trades="botStore.allOpenTradesSelectedBots"
-          multi-bot-view
-        />
+        <trade-list active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -76,6 +72,39 @@
     >
       <DraggableContainer header="Cumulative Profit">
         <CumProfitChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
+      </DraggableContainer>
+    </GridItem>
+    <GridItem
+      :i="gridLayoutAllClosedTrades.i"
+      :x="gridLayoutAllClosedTrades.x"
+      :y="gridLayoutAllClosedTrades.y"
+      :w="gridLayoutAllClosedTrades.w"
+      :h="gridLayoutAllClosedTrades.h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
+    >
+      <DraggableContainer header="Closed Trades">
+        <trade-list
+          :active-trades="false"
+          show-filter
+          :trades="botStore.allClosedTradesSelectedBots"
+          multi-bot-view
+        />
+      </DraggableContainer>
+    </GridItem>
+    <GridItem
+      :i="gridLayoutProfitDistribution.i"
+      :x="gridLayoutProfitDistribution.x"
+      :y="gridLayoutProfitDistribution.y"
+      :w="gridLayoutProfitDistribution.w"
+      :h="gridLayoutProfitDistribution.h"
+      :min-w="3"
+      :min-h="4"
+      drag-allow-from=".drag-header"
+    >
+      <DraggableContainer header="Profit Distribution">
+        <ProfitDistributionChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
       </DraggableContainer>
     </GridItem>
     <GridItem
@@ -103,6 +132,7 @@ import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
+import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
 import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
@@ -118,6 +148,7 @@ export default defineComponent({
     GridItem,
     DailyChart,
     CumProfitChart,
+    ProfitDistributionChart,
     TradesLogChart,
     BotComparisonList,
     TradeList,
@@ -166,11 +197,16 @@ export default defineComponent({
     const gridLayoutAllOpenTrades = computed((): GridItemData => {
       return findGridLayout(gridLayout.value, DashboardLayout.allOpenTrades);
     });
+    const gridLayoutAllClosedTrades = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.allClosedTrades);
+    });
 
     const gridLayoutCumChart = computed((): GridItemData => {
       return findGridLayout(gridLayout.value, DashboardLayout.cumChartChart);
     });
-
+    const gridLayoutProfitDistribution = computed((): GridItemData => {
+      return findGridLayout(gridLayout.value, DashboardLayout.profitDistributionChart);
+    });
     const gridLayoutTradesLogChart = computed((): GridItemData => {
       return findGridLayout(gridLayout.value, DashboardLayout.tradesLogChart);
     });
@@ -198,7 +234,9 @@ export default defineComponent({
       gridLayoutDaily,
       gridLayoutBotComparison,
       gridLayoutAllOpenTrades,
+      gridLayoutAllClosedTrades,
       gridLayoutCumChart,
+      gridLayoutProfitDistribution,
       gridLayoutTradesLogChart,
       responsiveGridLayouts,
     };
