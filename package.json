@@ -28,7 +28,7 @@
     "humanize-duration": "^3.27.3",
     "pinia": "^2.0.22",
     "pinia-plugin-persistedstate": "^2.2.0",
-    "vue": "^2.7.10",
+    "vue": "^3.2.39",
     "vue-class-component": "^7.2.5",
     "vue-demi": "0.13.11",
     "vue-echarts": "^6.2.3",
