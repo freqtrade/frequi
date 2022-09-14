@@ -1,6 +1,6 @@
 import { binData } from '@/shared/charts/binCount';
 
-describe.only('binCount.ts', () => {
+describe('binCount.ts', () => {
   it('Bins data as expected', () => {
     const testData = [1, 1, 2, 3, 5, 6, 8, 10];
     const res = binData(testData, 3);
@@ -37,10 +37,10 @@ describe.only('binCount.ts', () => {
   it('Bins data performant', () => {
     const randomSize = 20000;
     const randomData = Array.from({ length: randomSize }, () => Math.floor(Math.random() * 10));
-    const startTime = performance.now();
+    const startTime = Date.now();
     const res = binData(randomData, 5);
 
-    const endTime = performance.now();
+    const endTime = Date.now();
     expect(endTime - startTime).toBeLessThan(20);
 
     expect(res.map((v) => v[1]).reduce((a, b) => a + b)).toEqual(randomData.length);
