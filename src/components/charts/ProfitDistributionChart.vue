@@ -1,5 +1,19 @@
 <template>
-  <v-chart v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
+  <div class="d-flex flex-column h-100">
+    <div class="flex-grow-1">
+      <v-chart v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
+    </div>
+    <b-form-group
+      class="w-25 position-absolute"
+      label="Bins"
+      label-for="input-bins"
+      label-cols="6"
+      content-cols="6"
+      size="sm"
+    >
+      <b-form-select id="input-bins" v-model="bins" size="sm" :options="binOptions"></b-form-select>
+    </b-form-group>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,12 +66,12 @@ export default defineComponent({
     // registerTransform(ecStat.transform.histogram);
     // console.log(profits);
     // const data = [[]];
-
-    const bins = 10;
+    const binOptions = [10, 15, 20, 25, 50];
+    const bins = ref<number>(20);
     const data = computed(() => {
       const profits = props.trades.map((trade) => trade.profit_ratio);
 
-      return binData(profits, bins);
+      return binData(profits, bins.value);
     });
 
     const chartOptions = computed((): EChartsOption => {
@@ -84,14 +98,14 @@ export default defineComponent({
           right: '5%',
         },
         xAxis: {
-          type: 'value',
+          type: 'category',
           name: 'Profit %',
           nameLocation: 'middle',
           nameGap: 25,
         },
         yAxis: [
           {
-            type: 'log',
+            type: 'value',
             name: CHART_PROFIT,
             splitLine: {
               show: false,
@@ -99,6 +113,7 @@ export default defineComponent({
             nameRotate: 90,
             nameLocation: 'middle',
             nameGap: 35,
+            position: 'left',
           },
         ],
         // grid: {
@@ -122,7 +137,7 @@ export default defineComponent({
       return chartOptionsLoc;
     });
     console.log(chartOptions);
-    return { settingsStore, chartOptions };
+    return { settingsStore, chartOptions, bins, binOptions };
   },
 });
 </script>
