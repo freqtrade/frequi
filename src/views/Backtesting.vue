@@ -85,7 +85,7 @@
             v-if="btFormMode !== 'visualize' && showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
             :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
-            @selectionChange="setBacktestResult"
+            @selectionChange="botStore.activeBot.setBacktestResultKey"
           />
         </transition>
       </div>
@@ -411,9 +411,7 @@ export default defineComponent({
     const pollInterval = ref<number | null>(null);
     const sliderPosition = ref<ChartSliderPosition>();
 
-    const setBacktestResult = (key: string) => {
-      botStore.activeBot.setBacktestResultKey(key);
-
+    const selectBacktestResult = () => {
       // Set parameters for this result
       strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
       selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
@@ -421,6 +419,13 @@ export default defineComponent({
         botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
       timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
     };
+
+    watch(
+      () => botStore.activeBot.selectedBacktestResultKey,
+      () => {
+        selectBacktestResult();
+      },
+    );
 
     const clickBacktest = () => {
       const btPayload: BacktestPayload = {
@@ -487,7 +492,6 @@ export default defineComponent({
       formatPercent,
       hasBacktestResult,
       timeframe,
-      setBacktestResult,
       strategy,
       selectedTimeframe,
       selectedDetailTimeframe,
