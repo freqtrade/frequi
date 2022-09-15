@@ -251,27 +251,10 @@
         class="flex-fill"
       />
 
-      <div
+      <BacktestGraphsView
         v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
-        class="text-center flex-fill mt-2 d-flex flex-column"
-      >
-        <TradesLogChart
-          :trades="botStore.activeBot.selectedBacktestResult.trades"
-          class="trades-log"
-        />
-        <CumProfitChart
-          :trades="botStore.activeBot.selectedBacktestResult.trades"
-          profit-column="profit_abs"
-          class="cum-profit"
-          :show-title="true"
-        />
-        <hr />
-        <ProfitDistributionChart
-          class="mt-3"
-          :trades="botStore.activeBot.selectedBacktestResult.trades"
-          :show-title="true"
-        />
-      </div>
+        :trades="botStore.activeBot.selectedBacktestResult.trades"
+      />
     </div>
 
     <div
@@ -348,14 +331,12 @@ import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import CumProfitChart from '@/components/charts/CumProfitChart.vue';
-import TradesLogChart from '@/components/charts/TradesLog.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import TradeListNav from '@/components/ftbot/TradeListNav.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
-import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
+import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
 
 import { BacktestPayload, ChartSliderPosition, Trade } from '@/types';
 
@@ -367,13 +348,11 @@ export default defineComponent({
   name: 'Backtesting',
   components: {
     BacktestResultView,
+    BacktestGraphsView,
     BacktestResultSelect,
     BacktestHistoryLoad,
     TimeRangeSelect,
     CandleChartContainer,
-    CumProfitChart,
-    TradesLogChart,
-    ProfitDistributionChart,
     StrategySelect,
     PairSummary,
     TimeframeSelect,
@@ -519,14 +498,6 @@ export default defineComponent({
   height: calc(100vh - 250px) !important;
 }
 
-.cum-profit {
-  height: 350px !important;
-  max-height: 350px;
-}
-.trades-log {
-  height: 350px !important;
-  max-height: 350px;
-}
 .bt-running-label {
   position: absolute;
   right: 2em;
