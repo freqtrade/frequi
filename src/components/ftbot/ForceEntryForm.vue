@@ -13,15 +13,18 @@
           v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed"
           label="Order direction (Long or Short)"
           label-for="order-direction"
-          invalid-feedback="Stake-amount must be empty or a positive number"
+          invalid-feedback="Order direction must be empty or a positive number"
         >
-          <b-select
+          <b-form-radio-group
+            id="order-direction"
             v-model="orderSide"
-            class="ml-2"
             :options="['long', 'short']"
-            style="min-width: 7em"
-          >
-          </b-select>
+            name="radios-btn-default"
+            size="sm"
+            buttons
+            style="min-width: 10em"
+            button-variant="outline-primary"
+          ></b-form-radio-group>
         </b-form-group>
         <b-form-group label="Pair" label-for="pair-input" invalid-feedback="Pair is required">
           <b-form-input
@@ -68,7 +71,7 @@
             id="leverage-input"
             v-model="leverage"
             type="number"
-            step="1"
+            step="0.01"
             @keydown.enter.native="handleEntry"
           ></b-form-input>
         </b-form-group>
@@ -78,14 +81,16 @@
           label-for="ordertype-input"
           invalid-feedback="OrderType"
         >
-          <b-select
+          <b-form-radio-group
+            id="ordertype-input"
             v-model="ordertype"
-            class="ml-2"
             :options="['market', 'limit']"
-            style="min-width: 7em"
+            name="radios-btn-default"
+            buttons
+            button-variant="outline-primary"
+            style="min-width: 10em"
             size="sm"
-          >
-          </b-select>
+          ></b-form-radio-group>
         </b-form-group>
       </form>
     </b-modal>
