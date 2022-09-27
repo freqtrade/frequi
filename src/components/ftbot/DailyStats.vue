@@ -9,7 +9,7 @@
     <div>
       <DailyChart
         v-if="botStore.activeBot.dailyStats.data"
-        :daily-stats="botStore.activeBot.dailyStats"
+        :daily-stats="botStore.activeBot.dailyStatsSorted"
       />
     </div>
     <div>

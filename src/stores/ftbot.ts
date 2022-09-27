@@ -161,6 +161,12 @@ export function createBotSubStore(botId: string, botName: string) {
       botName: (state) => state.botState?.bot_name || 'freqtrade',
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
       activeLocks: (state) => state.currentLocks?.locks || [],
+      dailyStatsSorted: (state): DailyReturnValue => {
+        return {
+          ...state.dailyStats,
+          data: Object.values(state.dailyStats.data).sort((a, b) => (a.date > b.date ? 1 : -1)),
+        };
+      },
     },
     actions: {
       botAdded() {
