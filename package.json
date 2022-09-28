@@ -45,7 +45,7 @@
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^5.38.1",
     "@vitejs/plugin-vue2": "^1.1.2",
-    "@vue/composition-api": "^1.7.0",
+    "@vue/composition-api": "^1.7.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.1.0",
     "@vue/runtime-dom": "^3.2.40",
