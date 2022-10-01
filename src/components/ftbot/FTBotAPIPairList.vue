@@ -11,7 +11,7 @@
       </div>
     </div>
     <!-- Show Whitelist -->
-    <h3>Whitelist</h3>
+    <h3 :title="`${botStore.activeBot.whitelist.length} pairs`">Whitelist</h3>
     <div v-if="botStore.activeBot.whitelist.length" class="list">
       <b-list-group v-for="(pair, key) in botStore.activeBot.whitelist" :key="key">
         <b-list-group-item class="pair white">{{ pair }}</b-list-group-item>
