@@ -40,6 +40,11 @@
       "compatConfig": {
         "MODE": 2
       } // optional
+    },
+    "experimentalModelPropName": {
+      "": {
+        "b-form-radio": true
+      },
     }
   }
 }
