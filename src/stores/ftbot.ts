@@ -6,7 +6,6 @@ import {
   storePlotConfigName,
 } from '@/shared/storage';
 import { useUserService } from '@/shared/userService';
-import { parseParams } from '@/shared/apiParamParser';
 import {
   BotState,
   Trade,
@@ -714,7 +713,9 @@ export function createBotSubStore(botId: string, botName: string) {
                   // eslint-disable-next-line @typescript-eslint/camelcase
                   pairs_to_delete: blacklistPairs,
                 },
-                paramsSerializer: (params) => parseParams(params),
+                paramsSerializer: {
+                  indexes: null,
+                },
               },
             );
             this.blacklist = result.data.blacklist;
