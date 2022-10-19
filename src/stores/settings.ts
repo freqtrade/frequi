@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 
-import { setTimezone } from '@/shared/formatters';
 import { getCurrentTheme, getTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UiVersion } from '@/types';

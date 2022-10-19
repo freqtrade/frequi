@@ -1,4 +1,4 @@
-import { parse, toDate, getHours } from 'date-fns';
+import { parse, toDate } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import humanizeDuration from 'humanize-duration';
 

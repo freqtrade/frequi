@@ -37,7 +37,7 @@
 import { formatPrice } from '@/shared/formatters';
 import { Trade } from '@/types';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
-import { defineComponent, computed, ref, getCurrentInstance } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -56,7 +56,6 @@ export default defineComponent({
     stakeCurrencyDecimals: { default: 3, type: Number },
   },
   setup(props) {
-    const root = getCurrentInstance();
     const botStore = useBotStore();
     const currentPage = ref(1);
     const filterText = ref('');

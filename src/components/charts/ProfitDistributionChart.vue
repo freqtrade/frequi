@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
 
