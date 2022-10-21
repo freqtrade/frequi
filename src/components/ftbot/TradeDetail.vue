@@ -36,9 +36,11 @@
             formatPrice(trade.max_rate)
           }}</ValuePair>
           <ValuePair description="Open-Fees">
-            {{ trade.fee_open_cost }} {{ trade.fee_open_currency }} ({{
-              formatPercent(trade.fee_open)
-            }})
+            {{ trade.fee_open_cost }} {{ trade.quote_currency }}
+            <span v-if="trade.quote_currency !== trade.fee_open_currency">
+              (in {{ trade.fee_open_currency }})
+            </span>
+            ({{ formatPercent(trade.fee_open) }})
           </ValuePair>
           <ValuePair v-if="trade.fee_close_cost && trade.fee_close" description="Fees close">
             {{ trade.fee_close_cost }} {{ trade.fee_close_currency }} ({{
