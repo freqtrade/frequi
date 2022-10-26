@@ -846,7 +846,7 @@ export function createBotSubStore(botId: string, botName: string) {
               send(
                 JSON.stringify({
                   type: 'subscribe',
-                  data: ['whitelist', 'entry_fill', 'exit_fill' /*'analyzed_df'*/],
+                  data: ['whitelist', 'entry_fill', 'exit_fill', 'new_candle' /*'analyzed_df'*/],
                 }),
               );
               send(
