@@ -21,18 +21,18 @@
       <PairSummary
         class="col-md-2 overflow-auto"
         style="max-height: calc(100vh - 200px)"
-        :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
-        :trades="botStore.activeBot.selectedBacktestResult.trades"
+        :pairlist="pairlist"
+        :trades="trades"
         sort-method="profit"
         :backtest-mode="true"
       />
       <CandleChartContainer
-        :available-pairs="botStore.activeBot.selectedBacktestResult.pairlist"
+        :available-pairs="pairlist"
         :historic-view="!!true"
         :timeframe="timeframe"
         :timerange="timerange"
         :strategy="strategy"
-        :trades="botStore.activeBot.selectedBacktestResult.trades"
+        :trades="trades"
         :class="`${
           showRightBar ? 'col-md-8' : 'col-md-10'
         } candle-chart-container px-0 w-100 h-100 align-self-stretch`"
@@ -43,21 +43,12 @@
         v-if="showRightBar"
         class="overflow-auto col-md-2"
         style="max-height: calc(100vh - 200px)"
-        :trades="
-          botStore.activeBot.selectedBacktestResult.trades.filter(
-            (t) => t.pair === botStore.activeBot.selectedPair,
-          )
-        "
+        :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
         @trade-select="navigateChartToTrade"
       />
     </div>
     <b-card header="Single trades" class="row mt-2 w-100">
-      <TradeList
-        class="row trade-history mt-2 w-100"
-        :trades="botStore.activeBot.selectedBacktestResult.trades"
-        :show-filter="true"
-        :stake-currency="botStore.activeBot.selectedBacktestResult.stake_currency"
-      />
+      <TradeList class="row trade-history mt-2 w-100" :trades="trades" :show-filter="true" />
     </b-card>
   </div>
 </template>
@@ -83,6 +74,8 @@ export default defineComponent({
     timeframe: { required: true, type: String },
     strategy: { required: true, type: String },
     timerange: { required: true, type: String },
+    pairlist: { required: true, type: Array as () => string[] },
+    trades: { required: true, type: Array as () => Trade[] },
   },
   setup() {
     const botStore = useBotStore();

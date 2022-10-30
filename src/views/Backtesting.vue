@@ -261,7 +261,13 @@
       v-if="hasBacktestResult && btFormMode == 'visualize'"
       class="container-fluid text-center w-100 mt-2"
     >
-      <BacktestResultChart :timeframe="timeframe" :strategy="strategy" :timerange="timerange" />
+      <BacktestResultChart
+        :timeframe="timeframe"
+        :strategy="strategy"
+        :timerange="timerange"
+        :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
+        :trades="botStore.activeBot.selectedBacktestResult.trades"
+      />
     </div>
   </div>
 </template>
