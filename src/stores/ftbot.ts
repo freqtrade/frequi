@@ -39,6 +39,7 @@ import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 import { showAlert } from './alerts';
 import { useWebSocket } from '@vueuse/core';
+import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -809,6 +810,15 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
+      _handleWebsocketMessage(ws, event: MessageEvent<any>) {
+        const msg = JSON.parse(event.data);
+        if (msg.type === FtWsMessageTypes.whitelist) {
+          this.whitelist = msg.data;
+        } else {
+          // Unhandled events ...
+          console.log(`Received event ${msg.type}`);
+        }
+      },
       startWebSocket() {
         if (
           this.websocketStarted === true ||
@@ -834,24 +844,25 @@ export function createBotSubStore(botId: string, botName: string) {
               this.websocketStarted = false;
               close();
             },
-            onMessage: (ws, event) => {
-              // console.log('Event', event, typeof event.data);
-              const msg = JSON.parse(event.data);
-              console.log(`Received event ${msg.type}`);
-              // TODO: implement proper message handling
-            },
+            onMessage: this._handleWebsocketMessage,
             onConnected: () => {
               console.log('subscribing');
               this.websocketStarted = true;
               send(
                 JSON.stringify({
                   type: 'subscribe',
-                  data: ['whitelist', 'entry_fill', 'exit_fill', 'new_candle' /*'analyzed_df'*/],
+                  data: [
+                    FtWsMessageTypes.whitelist,
+                    FtWsMessageTypes.entryFill,
+                    FtWsMessageTypes.exitFill,
+                    // FtWsMessageTypes.newCandle,
+                    /*'new_candle' /*'analyzed_df'*/
+                  ],
                 }),
               );
               send(
                 JSON.stringify({
-                  type: 'whitelist',
+                  type: FtWsMessageTypes.whitelist,
                   data: '',
                 }),
               );
