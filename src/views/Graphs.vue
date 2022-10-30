@@ -2,7 +2,7 @@
   <div class="d-flex flex-column h-100">
     <!-- <div v-if="isWebserverMode" class="mr-auto ml-3"> -->
     <!-- Currently only available in Webserver mode -->
-    <!-- <b-checkbox v-model="historicView">HistoricData</b-checkbox> -->
+    <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
       <div class="d-flex flex-wrap">

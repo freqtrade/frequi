@@ -69,7 +69,9 @@
               </template>
               <b-dropdown-item>V: {{ settingsStore.uiVersion }}</b-dropdown-item>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
-              <b-checkbox v-model="layoutStore.layoutLocked" class="pl-5">Lock layout</b-checkbox>
+              <b-form-checkbox v-model="layoutStore.layoutLocked" class="pl-5"
+                >Lock layout</b-form-checkbox
+              >
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <router-link
                 v-if="botStore.botCount === 1"

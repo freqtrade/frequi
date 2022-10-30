@@ -6,7 +6,7 @@
         <b-form-group
           description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
         >
-          <b-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-checkbox>
+          <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
         </b-form-group>
         <b-form-group description="Reset dynamic layouts to how they were.">
           <b-button size="sm" @click="resetDynamicLayout">Reset layout</b-button>
@@ -30,11 +30,11 @@
           ></b-form-select>
         </b-form-group>
         <b-form-group description="Keep background sync running while other bots are selected.">
-          <b-checkbox v-model="settingsStore.backgroundSync">Background sync</b-checkbox>
+          <b-form-checkbox v-model="settingsStore.backgroundSync">Background sync</b-form-checkbox>
         </b-form-group>
         <b-form-group description="Use Heikin Ashi candles in your charts">
-          <b-checkbox v-model="settingsStore.useHeikinAshiCandles"
-            >Use Heikin Ashi candles.</b-checkbox
+          <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
+            >Use Heikin Ashi candles.</b-form-checkbox
           >
         </b-form-group>
       </div>
