@@ -20,8 +20,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-20.04 ]
-        node: [ "14", "16", "17", "18"]
+        os: [ ubuntu-22.04 ]
+        node: [ "14", "16", "17", "18", "19"]
 
     steps:
     - uses: actions/checkout@v3
