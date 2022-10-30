@@ -40,7 +40,7 @@
             >Short exits: {{ dataset.exit_short_signals }}</small
           >
         </div>
-        <div class="ml-auto d-flex align-items-center">
+        <div class="ms-auto d-flex align-items-center">
           <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
             >Heikin Ashi</b-form-checkbox
           >

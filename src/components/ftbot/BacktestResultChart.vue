@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-11 text-left">
+      <div class="col-md-11 text-start">
         <p>
           Graph will always show the latest values for the selected strategy. Timerange:
           {{ timerange }} - {{ strategy }}
         </p>
       </div>
-      <div class="col-md-1 text-right">
+      <div class="col-md-1 text-end">
         <b-button
           aria-label="Close"
           title="Trade Navigation"

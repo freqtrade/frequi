@@ -2,7 +2,7 @@
   <div class="d-flex flex-column">
     <b-button
       v-if="botApiVersion <= 1.1"
-      class="btn-xs text-left"
+      class="btn-xs text-start"
       size="sm"
       title="Forceexit"
       @click="$emit('forceExit', trade)"
@@ -11,7 +11,7 @@
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
-      class="btn-xs text-left"
+      class="btn-xs text-start"
       size="sm"
       title="Forceexit limit"
       @click="$emit('forceExit', trade, 'limit')"
@@ -20,7 +20,7 @@
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
-      class="btn-xs text-left mt-1"
+      class="btn-xs text-start mt-1"
       size="sm"
       title="Forceexit market"
       @click="$emit('forceExit', trade, 'market')"
@@ -29,7 +29,7 @@
     </b-button>
     <b-button
       v-if="botApiVersion > 2.16"
-      class="btn-xs text-left mt-1"
+      class="btn-xs text-start mt-1"
       size="sm"
       title="Forceexit partial"
       @click="$emit('forceExitPartial', trade)"
@@ -38,7 +38,7 @@
     </b-button>
 
     <b-button
-      class="btn-xs text-left mt-1"
+      class="btn-xs text-start mt-1"
       size="sm"
       title="Delete trade"
       @click="$emit('deleteTrade', trade)"

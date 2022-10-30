@@ -30,7 +30,7 @@
         </b-input-group>
       </b-form-group>
     </div>
-    <label class="text-left">
+    <label class="text-start">
       Timerange: <b>{{ timeRange }}</b>
     </label>
   </div>

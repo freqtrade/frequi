@@ -8,7 +8,7 @@
       }}</span>
       <b-form-checkbox
         v-model="autoRefreshLoc"
-        class="ml-auto float-right mr-2 my-auto"
+        class="ms-auto float-end mr-2 my-auto"
         title="AutoRefresh"
         variant="secondary"
         @change="changeEvent"

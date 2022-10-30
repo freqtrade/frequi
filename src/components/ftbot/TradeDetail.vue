@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-left">
+  <div class="container text-start">
     <div class="row">
       <div class="col-lg-5">
         <h5 class="detail-header">General</h5>

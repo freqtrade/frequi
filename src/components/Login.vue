@@ -63,7 +63,7 @@
           >
         </b-alert>
       </div>
-      <div v-if="inModal === false" class="float-right">
+      <div v-if="inModal === false" class="float-end">
         <b-button class="mr-2" type="reset" variant="danger">Reset</b-button>
         <b-button type="submit" variant="primary">Submit</b-button>
       </div>

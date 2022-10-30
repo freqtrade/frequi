@@ -60,7 +60,7 @@
         </div>
         <small
           v-show="botStore.activeBot.backtestRunning"
-          class="text-right bt-running-label col-8 col-lg-3"
+          class="text-end bt-running-label col-8 col-lg-3"
           >Backtest running: {{ botStore.activeBot.backtestStep }}
           {{ formatPercent(botStore.activeBot.backtestProgress, 2) }}</small
         >
@@ -107,7 +107,7 @@
             label-cols-lg="2"
             label="Backtest params"
             label-size="sm"
-            label-class="font-weight-bold pt-0"
+            label-class="fw-bold pt-0"
             class="mb-0"
           >
             <b-form-group

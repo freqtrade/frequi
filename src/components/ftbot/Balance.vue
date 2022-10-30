@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="mb-2">
-      <label class="mr-auto h3">Balance</label>
-      <b-button class="float-right" size="sm" @click="botStore.activeBot.getBalance"
+      <label class="me-auto h3">Balance</label>
+      <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance"
         >&#x21bb;</b-button
       >
       <b-form-checkbox
         v-model="hideSmallBalances"
-        class="float-right"
+        class="float-end"
         size="sm"
         title="Hide small balances"
         button

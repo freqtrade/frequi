@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      class="btn btn-secondary float-right"
+      class="btn btn-secondary float-end"
       title="Refresh"
       aria-label="Refresh"
       @click="botStore.activeBot.getBacktestHistory"

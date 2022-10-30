@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex flex-align-center ml-2">
+  <div class="d-flex align-items-center ml-2">
     <b-form-checkbox
       v-model="autoRefreshLoc"
-      class="ml-auto float-right my-auto"
+      class="ms-auto float-end my-auto"
       title="AutoRefresh"
     ></b-form-checkbox>
     <b-button

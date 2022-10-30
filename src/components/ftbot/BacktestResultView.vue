@@ -4,9 +4,9 @@
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
 
-    <div class="row text-left ml-0">
+    <div class="row text-start ml-0">
       <div class="row w-100">
-        <div class="col-12 col-xl-6 px-0 px-xl-0 pr-xl-1">
+        <div class="col-12 col-xl-6 px-0 px-xl-0 pe-xl-1">
           <b-card header="Strategy settings">
             <b-table
               small
@@ -17,7 +17,7 @@
             </b-table>
           </b-card>
         </div>
-        <div class="col-12 col-xl-6 px-0 px-xl-0 pt-2 pt-xl-0 pl-xl-1">
+        <div class="col-12 col-xl-6 px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1">
           <b-card header="Metrics">
             <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
             </b-table>

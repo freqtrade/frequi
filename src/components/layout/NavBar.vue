@@ -27,7 +27,7 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto" menu-class="w-100">
+        <b-navbar-nav class="ms-auto" menu-class="w-100">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div class="d-flex justify-content-between">
             <b-dropdown
@@ -69,7 +69,7 @@
               </template>
               <b-dropdown-item>V: {{ settingsStore.uiVersion }}</b-dropdown-item>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
-              <b-form-checkbox v-model="layoutStore.layoutLocked" class="pl-5"
+              <b-form-checkbox v-model="layoutStore.layoutLocked" class="ps-5"
                 >Lock layout</b-form-checkbox
               >
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex justify-content-between align-items-center profit-pill pl-2 pr-1"
+    class="d-flex justify-content-between align-items-center profit-pill ps-2 pe-1"
     :class="isProfitable ? 'profit-pill-profit' : ''"
     :title="profitDesc"
   >

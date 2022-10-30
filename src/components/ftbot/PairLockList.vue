@@ -1,10 +1,8 @@
 <template>
   <div>
     <div class="mb-2">
-      <label class="mr-auto h3">Pair Locks</label>
-      <b-button class="float-right" size="sm" @click="botStore.activeBot.getLocks"
-        >&#x21bb;</b-button
-      >
+      <label class="me-auto h3">Pair Locks</label>
+      <b-button class="float-end" size="sm" @click="botStore.activeBot.getLocks">&#x21bb;</b-button>
     </div>
     <div>
       <b-table class="table-sm" :items="botStore.activeBot.activeLocks" :fields="tableFields">
