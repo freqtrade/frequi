@@ -135,7 +135,7 @@
 </template>
 
 <script lang="ts">
-import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
+import { GridItemData } from 'vue-grid-layout';
 
 import Balance from '@/components/ftbot/Balance.vue';
 import BotControls from '@/components/ftbot/BotControls.vue';
@@ -164,8 +164,8 @@ export default defineComponent({
     DailyStats,
     DraggableContainer,
     FTBotAPIPairList,
-    GridItem,
-    GridLayout,
+    // GridItem,
+    // GridLayout,
     PairLockList,
     PairSummary,
     Performance,

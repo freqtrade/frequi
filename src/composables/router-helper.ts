@@ -1,6 +1,10 @@
 // TODO: This helper can be removed once
 // vue-router either releases a new version, or we update to vue3.
-import { effectScope, getCurrentInstance, reactive } from 'vue';
+import {
+  // effectScope,
+  getCurrentInstance,
+  reactive,
+} from 'vue';
 
 import { Route } from 'vue-router';
 
@@ -19,14 +23,14 @@ export function useRoute(): Route {
     return undefined as any;
   }
   if (!currentRoute) {
-    const scope = effectScope(true);
-    scope.run(() => {
-      const { $router } = inst.proxy;
-      currentRoute = reactive(assign({}, $router.currentRoute)) as any;
-      $router.afterEach((to) => {
-        assign(currentRoute, to);
-      });
-    });
+    // const scope = effectScope(true);
+    // scope.run(() => {
+    //   const { $router } = inst.proxy;
+    //   currentRoute = reactive(assign({}, $router.currentRoute)) as any;
+    //   $router.afterEach((to) => {
+    //     assign(currentRoute, to);
+    //   });
+    // });
   }
   return currentRoute;
 }
