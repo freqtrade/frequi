@@ -261,66 +261,7 @@
       v-if="hasBacktestResult && btFormMode == 'visualize'"
       class="container-fluid text-center w-100 mt-2"
     >
-      <div class="row">
-        <div class="col-md-11 text-left">
-          <p>
-            Graph will always show the latest values for the selected strategy. Timerange:
-            {{ timerange }} - {{ strategy }}
-          </p>
-        </div>
-        <div class="col-md-1 text-right">
-          <b-button
-            v-if="btFormMode === 'visualize'"
-            aria-label="Close"
-            title="Trade Navigation"
-            size="sm"
-            @click="showRightBar = !showRightBar"
-            >{{ showRightBar ? '&gt;' : '&lt;' }}
-          </b-button>
-        </div>
-      </div>
-      <div class="row text-center">
-        <PairSummary
-          class="col-md-2 overflow-auto"
-          style="max-height: calc(100vh - 200px)"
-          :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
-          :trades="botStore.activeBot.selectedBacktestResult.trades"
-          sort-method="profit"
-          :backtest-mode="true"
-        />
-        <CandleChartContainer
-          :available-pairs="botStore.activeBot.selectedBacktestResult.pairlist"
-          :historic-view="!!true"
-          :timeframe="timeframe"
-          :timerange="timerange"
-          :strategy="strategy"
-          :trades="botStore.activeBot.selectedBacktestResult.trades"
-          :class="`${
-            showRightBar ? 'col-md-8' : 'col-md-10'
-          } candle-chart-container px-0 w-100 h-100`"
-          :slider-position="sliderPosition"
-        >
-        </CandleChartContainer>
-        <TradeListNav
-          v-if="showRightBar"
-          class="overflow-auto col-md-2"
-          style="max-height: calc(100vh - 200px)"
-          :trades="
-            botStore.activeBot.selectedBacktestResult.trades.filter(
-              (t) => t.pair === botStore.activeBot.selectedPair,
-            )
-          "
-          @trade-select="navigateChartToTrade"
-        />
-      </div>
-      <b-card header="Single trades" class="row mt-2 w-100">
-        <TradeList
-          class="row trade-history mt-2 w-100"
-          :trades="botStore.activeBot.selectedBacktestResult.trades"
-          :show-filter="true"
-          :stake-currency="botStore.activeBot.selectedBacktestResult.stake_currency"
-        />
-      </b-card>
+      <BacktestResultChart :timeframe="timeframe" :strategy="strategy" :timerange="timerange" />
     </div>
   </div>
 </template>
@@ -329,16 +270,13 @@
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
-import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import PairSummary from '@/components/ftbot/PairSummary.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
-import TradeList from '@/components/ftbot/TradeList.vue';
-import TradeListNav from '@/components/ftbot/TradeListNav.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
+import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
 
-import { BacktestPayload, ChartSliderPosition, Trade } from '@/types';
+import { BacktestPayload } from '@/types';
 
 import { formatPercent } from '@/shared/formatters';
 import { defineComponent, computed, ref, onMounted, watch } from 'vue';
@@ -352,12 +290,9 @@ export default defineComponent({
     BacktestResultSelect,
     BacktestHistoryLoad,
     TimeRangeSelect,
-    CandleChartContainer,
     StrategySelect,
-    PairSummary,
     TimeframeSelect,
-    TradeList,
-    TradeListNav,
+    BacktestResultChart,
   },
   setup() {
     const botStore = useBotStore();
@@ -380,7 +315,6 @@ export default defineComponent({
     const selectedDetailTimeframe = ref('');
     const timerange = ref('');
     const showLeftBar = ref(false);
-    const showRightBar = ref(true);
     const enableProtections = ref(false);
     const stakeAmountUnlimited = ref(false);
     const maxOpenTrades = ref('');
@@ -388,7 +322,6 @@ export default defineComponent({
     const startingCapital = ref('');
     const btFormMode = ref('run');
     const pollInterval = ref<number | null>(null);
-    const sliderPosition = ref<ChartSliderPosition>();
 
     const selectBacktestResult = () => {
       // Set parameters for this result
@@ -446,13 +379,6 @@ export default defineComponent({
       botStore.activeBot.startBacktest(btPayload);
     };
 
-    const navigateChartToTrade = (trade: Trade) => {
-      sliderPosition.value = {
-        startValue: trade.open_timestamp,
-        endValue: trade.close_timestamp,
-      };
-    };
-
     onMounted(() => botStore.activeBot.getState());
     watch(
       () => botStore.activeBot.backtestRunning,
@@ -477,27 +403,18 @@ export default defineComponent({
       timerange,
       enableProtections,
       showLeftBar,
-      showRightBar,
       stakeAmountUnlimited,
       maxOpenTrades,
       stakeAmount,
       startingCapital,
       btFormMode,
       clickBacktest,
-      navigateChartToTrade,
-      sliderPosition,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.candle-chart-container {
-  // TODO: Rough estimate - still to fix correctly
-  // Applies to all "calc" usages in this file.
-  height: calc(100vh - 250px) !important;
-}
-
 .bt-running-label {
   position: absolute;
   right: 2em;
