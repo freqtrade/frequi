@@ -163,7 +163,9 @@ export function createBotSubStore(botId: string, botName: string) {
       dailyStatsSorted: (state): DailyReturnValue => {
         return {
           ...state.dailyStats,
-          data: Object.values(state.dailyStats.data).sort((a, b) => (a.date > b.date ? 1 : -1)),
+          data: state.dailyStats.data
+            ? Object.values(state.dailyStats.data).sort((a, b) => (a.date > b.date ? 1 : -1))
+            : [],
         };
       },
     },
