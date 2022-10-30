@@ -1,7 +1,7 @@
-import VueRouter, { RouteConfig } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { initBots, useBotStore } from '@/stores/ftbotwrapper';
 
-const routes: Array<RouteConfig> = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
@@ -68,14 +68,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '*',
+    path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404.vue'),
   },
 ];
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   base: import.meta.env.BASE_URL,
   routes,
 });

@@ -1,17 +1,14 @@
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue2';
+import createVuePlugin from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [createVuePlugin({})],
   resolve: {
-    alias: [
-      {
-        find: '@',
-        replacement: resolve(__dirname, 'src'),
-      },
-    ],
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
   },
   build: {
     chunkSizeWarningLimit: 700, // Default is 500
