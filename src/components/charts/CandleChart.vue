@@ -133,18 +133,11 @@ export default defineComponent({
       const colLow = props.dataset.columns.findIndex((el) => el === 'low');
       const colClose = props.dataset.columns.findIndex((el) => el === 'close');
       const colVolume = props.dataset.columns.findIndex((el) => el === 'volume');
-      // TODO: Remove below *signal_open after December 2021
-      const colBuyData = props.dataset.columns.findIndex(
-        (el) =>
-          el === '_buy_signal_open' ||
-          el === '_buy_signal_close' ||
-          el === '_enter_long_signal_close',
+      const colEntryData = props.dataset.columns.findIndex(
+        (el) => el === '_buy_signal_close' || el === '_enter_long_signal_close',
       );
-      const colSellData = props.dataset.columns.findIndex(
-        (el) =>
-          el === '_sell_signal_open' ||
-          el === '_sell_signal_close' ||
-          el === '_exit_long_signal_close',
+      const colExitData = props.dataset.columns.findIndex(
+        (el) => el === '_sell_signal_close' || el === '_exit_long_signal_close',
       );
 
       const colShortEntryData = props.dataset.columns.findIndex(
@@ -157,7 +150,7 @@ export default defineComponent({
       const subplotCount =
         'subplots' in props.plotConfig ? Object.keys(props.plotConfig.subplots).length + 1 : 1;
 
-      if (chartOptions.value?.dataZoom && Array.isArray(chartOptions.value?.dataZoom)) {
+      if (Array.isArray(chartOptions.value?.dataZoom)) {
         // Only set zoom once ...
         if (initial) {
           const startingZoom = (1 - 250 / props.dataset.length) * 100;
@@ -247,13 +240,13 @@ export default defineComponent({
             },
             encode: {
               x: colDate,
-              y: colBuyData,
+              y: colEntryData,
             },
           },
         ],
       };
 
-      if (colSellData >= 0) {
+      if (colExitData >= 0) {
         // if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
         //   chartOptions.value.legend.data.push('Long exit');
         // }
@@ -270,7 +263,7 @@ export default defineComponent({
             },
             encode: {
               x: colDate,
-              y: colSellData,
+              y: colExitData,
             },
           });
         }
@@ -452,7 +445,7 @@ export default defineComponent({
       //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
       //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
       // }
-      if (chartOptions.value.grid && Array.isArray(chartOptions.value.grid)) {
+      if (Array.isArray(chartOptions.value.grid)) {
         // Last subplot is bottom
         chartOptions.value.grid[chartOptions.value.grid.length - 1].bottom = '50px';
         delete chartOptions.value.grid[chartOptions.value.grid.length - 1].top;
@@ -492,7 +485,7 @@ export default defineComponent({
         symbolSize: 13,
         data: tradeData,
       };
-      if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
+      if (Array.isArray(chartOptions.value.series)) {
         chartOptions.value.series.push(tradesSeries);
       }
 
