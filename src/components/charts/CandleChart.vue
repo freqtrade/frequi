@@ -489,13 +489,17 @@ export default defineComponent({
         chartOptions.value.series.push(tradesSeries);
       }
 
-      console.log('chartOptions', chartOptions.value);
-      if (candleChart.value) {
-        candleChart.value.setOption(chartOptions.value);
-      }
+      // console.log('chartOptions', chartOptions.value);
+      candleChart.value?.setOption(chartOptions.value, {
+        replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
+        noMerge: !initial,
+      });
     };
 
     const initializeChartOptions = () => {
+      // Ensure we start empty.
+      candleChart.value?.setOption({}, { noMerge: true });
+
       chartOptions.value = {
         title: [
           {
@@ -706,7 +710,6 @@ export default defineComponent({
       candleChart,
       buyData,
       sellData,
-      chartOptions,
       strategy,
       pair,
       timeframe,
