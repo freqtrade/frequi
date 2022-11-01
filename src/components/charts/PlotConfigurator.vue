@@ -127,6 +127,7 @@ import { showAlert } from '@/stores/alerts';
 
 import { defineComponent, computed, ref, watch, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { usePlotConfigStore } from '@/stores/plotConfig';
 
 export default defineComponent({
   name: 'PlotConfigurator',
@@ -139,6 +140,7 @@ export default defineComponent({
   emits: ['input'],
   setup(props, { emit }) {
     const botStore = useBotStore();
+    const plotStore = usePlotConfigStore();
 
     const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
 
@@ -300,23 +302,22 @@ export default defineComponent({
     };
 
     const savePlotConfig = () => {
-      botStore.activeBot.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
+      plotStore.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
     };
 
     watch(props.value, () => {
       console.log('config value');
       plotConfig.value = props.value;
-      plotConfigNameLoc.value = botStore.activeBot.plotConfigName;
+      plotConfigNameLoc.value = plotStore.plotConfigName;
     });
 
     onMounted(() => {
       console.log('Config Mounted', props.value);
       plotConfig.value = props.value;
-      plotConfigNameLoc.value = botStore.activeBot.plotConfigName;
+      plotConfigNameLoc.value = plotStore.plotConfigName;
     });
 
     return {
-      botStore,
       removeIndicator,
       addSubplot,
       delSubplot,

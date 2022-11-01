@@ -1,10 +1,4 @@
 import { useApi } from '@/shared/apiService';
-import {
-  getAllPlotConfigNames,
-  getPlotConfigName,
-  storeCustomPlotConfig,
-  storePlotConfigName,
-} from '@/shared/storage';
 import { useUserService } from '@/shared/userService';
 import {
   BotState,
@@ -14,7 +8,6 @@ import {
   BalanceInterface,
   DailyReturnValue,
   LockResponse,
-  PlotConfigStorage,
   ProfitInterface,
   BacktestResult,
   StrategyBacktestResult,
@@ -24,7 +17,6 @@ import {
   LoadingStatus,
   BacktestHistoryEntry,
   RunModes,
-  EMPTY_PLOTCONFIG,
   DailyPayload,
   BlacklistResponse,
   WhitelistResponse,
@@ -83,9 +75,6 @@ export function createBotSubStore(botId: string, botName: string) {
         history: {},
         historyStatus: LoadingStatus.loading,
         strategyPlotConfig: undefined as PlotConfig | undefined,
-        customPlotConfig: {} as PlotConfigStorage,
-        plotConfigName: getPlotConfigName(),
-        availablePlotConfigNames: getAllPlotConfigNames(),
         strategyList: [] as string[],
         strategy: {} as StrategyResult,
         pairlist: [] as string[],
@@ -132,8 +121,6 @@ export function createBotSubStore(botId: string, botName: string) {
         }
         return dTrade as Trade;
       },
-      plotConfig: (state) =>
-        state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
       refreshNow: (state) => {
         if (
           state.autoRefresh &&
@@ -241,21 +228,6 @@ export function createBotSubStore(botId: string, botName: string) {
       setDetailTrade(trade: Trade | null) {
         this.detailTradeId = trade?.trade_id || null;
         this.selectedPair = trade ? trade.pair : this.selectedPair;
-      },
-      saveCustomPlotConfig(plotConfig: PlotConfigStorage) {
-        this.customPlotConfig = plotConfig;
-        storeCustomPlotConfig(plotConfig);
-        this.availablePlotConfigNames = getAllPlotConfigNames();
-      },
-      updatePlotConfigName(plotConfigName: string) {
-        // Set default plot config name
-        this.plotConfigName = plotConfigName;
-        storePlotConfigName(plotConfigName);
-      },
-      setPlotConfigName(plotConfigName: string) {
-        // TODO: This is identical to updatePlotConfigName
-        this.plotConfigName = plotConfigName;
-        storePlotConfigName(plotConfigName);
       },
       async getTrades() {
         try {

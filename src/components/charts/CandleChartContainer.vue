@@ -48,7 +48,7 @@
           <div class="ml-2">
             <b-select
               v-model="plotConfigName"
-              :options="botStore.activeBot.availablePlotConfigNames"
+              :options="plotStore.availablePlotConfigNames"
               size="sm"
               @change="plotConfigChanged"
             >
@@ -105,6 +105,7 @@ import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { getCustomPlotConfig, getPlotConfigName } from '@/shared/storage';
 import vSelect from 'vue-select';
 import { useSettingsStore } from '@/stores/settings';
+import { usePlotConfigStore } from '@/stores/plotConfig';
 
 import { defineComponent, ref, computed, onMounted, watch, getCurrentInstance } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
@@ -132,6 +133,7 @@ export default defineComponent({
     const root = getCurrentInstance();
     const settingsStore = useSettingsStore();
     const botStore = useBotStore();
+    const plotStore = usePlotConfigStore();
 
     const pair = ref('');
     const plotConfig = ref<PlotConfig>({ ...EMPTY_PLOTCONFIG });
@@ -177,7 +179,7 @@ export default defineComponent({
     const plotConfigChanged = () => {
       console.log('plotConfigChanged');
       plotConfig.value = getCustomPlotConfig(plotConfigName.value);
-      botStore.activeBot.setPlotConfigName(plotConfigName.value);
+      plotStore.setPlotConfigName(plotConfigName.value);
     };
 
     const showConfigurator = () => {
@@ -242,6 +244,7 @@ export default defineComponent({
     return {
       botStore,
       settingsStore,
+      plotStore,
       history,
       dataset,
       strategyName,
