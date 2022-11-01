@@ -58,7 +58,7 @@
       <b-button
         v-if="addNew"
         class="ml-1 flex-grow-1"
-        variant="primary"
+        variant="secondary"
         title="Add "
         size="sm"
         @click="clickCancel"

@@ -43,7 +43,7 @@
         Add new indicator
       </b-button>
       <b-button
-        variant="primary"
+        variant="secondary"
         title="Remove indicator to plot"
         size="sm"
         :disabled="!selIndicatorName"
@@ -64,23 +64,14 @@
     <hr />
 
     <div>
-      <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfig">Load</b-button>
-      <b-button class="ml-1" variant="primary" size="sm" @click="loadPlotConfigFromStrategy">
+      <b-button class="ml-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
+      <b-button class="ml-1" variant="secondary" size="sm" @click="loadPlotConfigFromStrategy">
         From strategy
       </b-button>
 
       <b-button
         class="ml-1"
-        variant="primary"
-        size="sm"
-        data-toggle="tooltip"
-        title="Save configuration"
-        @click="savePlotConfig"
-        >Save</b-button
-      >
-      <b-button
-        class="ml-1"
-        variant="primary"
+        variant="secondary"
         size="sm"
         title="Load configuration from text box below"
         @click="resetConfig"
@@ -89,7 +80,7 @@
       <b-button
         id="showButton"
         class="ml-1"
-        variant="primary"
+        variant="secondary"
         size="sm"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
@@ -99,11 +90,20 @@
       <b-button
         v-if="showConfig"
         class="ml-1"
-        variant="primary"
+        variant="secondary"
         size="sm"
         title="Load configuration from text box below"
         @click="loadConfigFromString"
         >Load from String</b-button
+      >
+      <b-button
+        class="ml-1"
+        variant="primary"
+        size="sm"
+        data-toggle="tooltip"
+        title="Save configuration"
+        @click="savePlotConfig"
+        >Save</b-button
       >
     </div>
     <div v-if="showConfig" class="col-mb-5 ml-1 mt-2">
