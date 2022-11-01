@@ -9,7 +9,7 @@
         hide-backdrop
         button-size="sm"
       >
-        <PlotConfigurator v-model="plotStore.plotConfig" :columns="datasetColumns" />
+        <PlotConfigurator :columns="datasetColumns" />
       </b-modal>
 
       <div class="row mr-0">
@@ -85,11 +85,7 @@
     </div>
     <transition name="fade" mode="in-out">
       <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25 config-sidebar">
-        <PlotConfigurator
-          v-model="plotStore.plotConfig"
-          :columns="datasetColumns"
-          :as-modal="false"
-        />
+        <PlotConfigurator :columns="datasetColumns" :as-modal="false" />
       </div>
     </transition>
   </div>

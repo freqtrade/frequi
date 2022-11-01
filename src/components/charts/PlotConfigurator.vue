@@ -133,13 +133,11 @@ export default defineComponent({
   name: 'PlotConfigurator',
   components: { PlotIndicator },
   props: {
-    value: { type: Object as () => PlotConfig, required: true },
     columns: { required: true, type: Array as () => string[] },
     asModal: { required: false, default: true, type: Boolean },
   },
   emits: ['input'],
   setup(props, { emit }) {
-    const botStore = useBotStore();
     const plotStore = usePlotConfigStore();
 
     const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
@@ -290,6 +288,7 @@ export default defineComponent({
     };
     const loadPlotConfigFromStrategy = async () => {
       try {
+        const botStore = useBotStore();
         await botStore.activeBot.getStrategyPlotConfig();
         if (botStore.activeBot.strategyPlotConfig) {
           plotConfig.value = botStore.activeBot.strategyPlotConfig;
@@ -305,19 +304,14 @@ export default defineComponent({
       plotStore.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
     };
 
-    watch(props.value, () => {
-      console.log('config value');
-      plotConfig.value = props.value;
-      plotConfigNameLoc.value = plotStore.plotConfigName;
-    });
-
     onMounted(() => {
-      console.log('Config Mounted', props.value);
-      plotConfig.value = props.value;
+      // console.log('Config Mounted', props.value);
+      plotConfig.value = plotStore.plotConfig;
       plotConfigNameLoc.value = plotStore.plotConfigName;
     });
 
     return {
+      plotStore,
       removeIndicator,
       addSubplot,
       delSubplot,
