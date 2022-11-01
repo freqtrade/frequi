@@ -47,7 +47,7 @@
 
           <div class="ml-2">
             <b-select
-              v-model="plotConfigName"
+              v-model="plotStore.plotConfigName"
               :options="plotStore.availablePlotConfigNames"
               size="sm"
               @change="plotConfigChanged"
@@ -137,7 +137,6 @@ export default defineComponent({
 
     const pair = ref('');
     const plotConfig = ref<PlotConfig>({ ...EMPTY_PLOTCONFIG });
-    const plotConfigName = ref('');
     const showPlotConfig = ref(props.plotConfigModal);
 
     const dataset = computed((): PairHistory => {
@@ -178,8 +177,8 @@ export default defineComponent({
 
     const plotConfigChanged = () => {
       console.log('plotConfigChanged');
-      plotConfig.value = getCustomPlotConfig(plotConfigName.value);
-      plotStore.setPlotConfigName(plotConfigName.value);
+      plotConfig.value = getCustomPlotConfig(plotStore.plotConfigName);
+      plotStore.setPlotConfigName(plotStore.plotConfigName);
     };
 
     const showConfigurator = () => {
@@ -233,8 +232,8 @@ export default defineComponent({
       } else if (props.availablePairs.length > 0) {
         [pair.value] = props.availablePairs;
       }
-      plotConfigName.value = getPlotConfigName();
-      plotConfig.value = getCustomPlotConfig(plotConfigName.value);
+      plotStore.plotConfigName = getPlotConfigName();
+      plotConfig.value = getCustomPlotConfig(plotStore.plotConfigName);
 
       if (!hasDataset) {
         refresh();
@@ -256,7 +255,6 @@ export default defineComponent({
       showPlotConfig,
       showConfigurator,
       refresh,
-      plotConfigName,
       pair,
       plotConfig,
     };
