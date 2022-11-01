@@ -35,5 +35,9 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       this.plotConfig = getCustomPlotConfig(this.plotConfigName);
       this.setPlotConfigName(this.plotConfigName);
     },
+    setPlotConfig(plotConfig: PlotConfig) {
+      console.log('emit...');
+      this.plotConfig = { ...plotConfig };
+    },
   },
 });

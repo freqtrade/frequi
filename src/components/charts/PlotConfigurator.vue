@@ -125,7 +125,7 @@ import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
 
-import { defineComponent, computed, ref, watch, onMounted } from 'vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 
@@ -137,7 +137,7 @@ export default defineComponent({
     asModal: { required: false, default: true, type: Boolean },
   },
   emits: ['input'],
-  setup(props, { emit }) {
+  setup() {
     const plotStore = usePlotConfigStore();
 
     const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
@@ -193,7 +193,7 @@ export default defineComponent({
       plotConfig.value = { ...plotConfig.value };
       // Reset random color
       addNewIndicator.value = false;
-      emit('input', plotConfig.value);
+      plotStore.setPlotConfig(plotConfig.value);
     };
 
     const selIndicator = computed({
@@ -250,7 +250,7 @@ export default defineComponent({
       plotConfig.value = { ...plotConfig.value };
       console.log(plotConfig.value);
       selIndicatorName.value = '';
-      emit('input', plotConfig.value);
+      plotStore.setPlotConfig(plotConfig.value);
     };
     const addSubplot = () => {
       plotConfig.value.subplots = {
@@ -260,27 +260,27 @@ export default defineComponent({
       selSubPlot.value = newSubplotName.value;
       newSubplotName.value = '';
 
-      console.log(plotConfig.value);
-      emit('input', plotConfig.value);
+      plotStore.setPlotConfig(plotConfig.value);
     };
 
     const delSubplot = () => {
       delete plotConfig.value.subplots[selSubPlot.value];
       plotConfig.value.subplots = { ...plotConfig.value.subplots };
       selSubPlot.value = '';
+      plotStore.setPlotConfig(plotConfig.value);
     };
     const loadPlotConfig = () => {
       plotConfig.value = getCustomPlotConfig(plotConfigNameLoc.value);
       console.log(plotConfig.value);
       console.log('loading config');
-      emit('input', plotConfig.value);
+      plotStore.setPlotConfig(plotConfig.value);
     };
 
     const loadConfigFromString = () => {
       // this.plotConfig = JSON.parse();
       if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
         plotConfig.value = tempPlotConfig.value;
-        emit('input', plotConfig.value);
+        plotStore.setPlotConfig(plotConfig.value);
       }
     };
     const resetConfig = () => {
@@ -292,7 +292,7 @@ export default defineComponent({
         await botStore.activeBot.getStrategyPlotConfig();
         if (botStore.activeBot.strategyPlotConfig) {
           plotConfig.value = botStore.activeBot.strategyPlotConfig;
-          emit('input', plotConfig.value);
+          plotStore.setPlotConfig(plotConfig.value);
         }
       } catch (data) {
         //
