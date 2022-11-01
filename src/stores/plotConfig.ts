@@ -5,7 +5,7 @@ import {
   storeCustomPlotConfig,
   storePlotConfigName,
 } from '@/shared/storage';
-import { PlotConfigStorage, EMPTY_PLOTCONFIG } from '@/types';
+import { PlotConfigStorage, EMPTY_PLOTCONFIG, PlotConfig } from '@/types';
 import { defineStore } from 'pinia';
 
 export const usePlotConfigStore = defineStore('plotConfig', {
