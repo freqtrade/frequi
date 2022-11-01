@@ -1,5 +1,6 @@
 import {
   getAllPlotConfigNames,
+  getCustomPlotConfig,
   getPlotConfigName,
   storeCustomPlotConfig,
   storePlotConfigName,
@@ -13,10 +14,11 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       customPlotConfig: {} as PlotConfigStorage,
       plotConfigName: getPlotConfigName(),
       availablePlotConfigNames: getAllPlotConfigNames(),
+      plotConfig: { ...EMPTY_PLOTCONFIG },
     };
   },
   getters: {
-    plotConfig: (state) => state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
+    // plotConfig: (state) => state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
   },
   actions: {
     saveCustomPlotConfig(plotConfig: PlotConfigStorage) {
@@ -24,20 +26,14 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       storeCustomPlotConfig(plotConfig);
       this.availablePlotConfigNames = getAllPlotConfigNames();
     },
-    updatePlotConfigName(plotConfigName: string) {
-      // Set default plot config name
-      this.plotConfigName = plotConfigName;
-      storePlotConfigName(plotConfigName);
-    },
     setPlotConfigName(plotConfigName: string) {
-      // TODO: This is identical to updatePlotConfigName
       this.plotConfigName = plotConfigName;
       storePlotConfigName(plotConfigName);
     },
-    // plotConfigChanged() {
-    // console.log('plotConfigChanged');
-    // plotConfig.value = getCustomPlotConfig(this.plotConfigName);
-    // plotStore.setPlotConfigName(plotConfigName.value);
-    // },
+    plotConfigChanged() {
+      console.log('plotConfigChanged');
+      this.plotConfig = getCustomPlotConfig(this.plotConfigName);
+      this.setPlotConfigName(this.plotConfigName);
+    },
   },
 });
