@@ -437,10 +437,10 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/vite-dev-server@^3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@cypress/vite-dev-server/-/vite-dev-server-3.3.1.tgz#8fd10835dc38d10808e2b8b04ec97e64a4031c0c"
-  integrity sha512-Iw6WtPeamQbQtyI+iNIutCDOjHvBFNBBqg1NiT3HjdRMiXAPmeehqy/LUP1Q4W/FdBpmCADAXOHU4bW85ds/mg==
+"@cypress/vite-dev-server@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@cypress/vite-dev-server/-/vite-dev-server-3.4.0.tgz#94e09b5a4a311e3211a5bc0148a0b62dca63867e"
+  integrity sha512-mrqJlzQUSUCNHVshApTOCUT83W9M+B0ivr1JY1UkPlWoeQD6ZFFgvdg6Ov8G/gpWhV0oYDe2QNOwLvAd9szgOA==
   dependencies:
     debug "4.3.3"
     find-up "6.3.0"
