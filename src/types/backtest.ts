@@ -120,7 +120,8 @@ export interface StrategyBacktestResult {
   drawdown_end_ts: number;
   drawdown_start: string;
   drawdown_start_ts: number;
-  loser_holding_avg: number;
+  loser_holding_avg: string;
+  loser_holding_avg_s: number;
   losing_days: number;
   max_drawdown: number;
   max_drawdown_account: number;
@@ -132,7 +133,8 @@ export interface StrategyBacktestResult {
   csum_min: number;
   csum_max: number;
 
-  winner_holding_avg: number;
+  winner_holding_avg: string;
+  winner_holding_avg_s: number;
   winning_days: number;
 
   trade_count_long?: number;

@@ -187,11 +187,11 @@ export default defineComponent({
 
         {
           metric: 'Avg. Duration winners',
-          value: humanizeDurationFromSeconds(props.backtestResult.winner_holding_avg),
+          value: humanizeDurationFromSeconds(props.backtestResult.winner_holding_avg_s),
         },
         {
           metric: 'Avg. Duration Losers',
-          value: humanizeDurationFromSeconds(props.backtestResult.loser_holding_avg),
+          value: humanizeDurationFromSeconds(props.backtestResult.loser_holding_avg_s),
         },
         { metric: 'Rejected entry signals', value: props.backtestResult.rejected_signals },
         {
@@ -266,6 +266,7 @@ export default defineComponent({
         },
         { setting: 'Max open trades', value: props.backtestResult.max_open_trades },
         { setting: 'Timeframe', value: props.backtestResult.timeframe },
+        { setting: 'Timeframe Detail', value: props.backtestResult.timeframe_detail },
         { setting: 'Timerange', value: props.backtestResult.timerange },
         { setting: 'Stoploss', value: formatPercent(props.backtestResult.stoploss, 2) },
         { setting: 'Trailing Stoploss', value: props.backtestResult.trailing_stop },
