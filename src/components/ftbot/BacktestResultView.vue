@@ -266,7 +266,7 @@ export default defineComponent({
         },
         { setting: 'Max open trades', value: props.backtestResult.max_open_trades },
         { setting: 'Timeframe', value: props.backtestResult.timeframe },
-        { setting: 'Timeframe Detail', value: props.backtestResult.timeframe_detail },
+        { setting: 'Timeframe Detail', value: props.backtestResult.timeframe_detail || 'N/A' },
         { setting: 'Timerange', value: props.backtestResult.timerange },
         { setting: 'Stoploss', value: formatPercent(props.backtestResult.stoploss, 2) },
         { setting: 'Trailing Stoploss', value: props.backtestResult.trailing_stop },
