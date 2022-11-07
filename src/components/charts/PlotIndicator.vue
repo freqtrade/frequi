@@ -2,10 +2,16 @@
   <div>
     <div v-if="addNew">
       <b-form-group label="Add indicator" label-for="indicatorSelector">
+        <b-input-group>
+          <b-form-input v-model="indicatorFilter" placeholder="Filter indicators"></b-form-input>
+          <b-input-group-append>
+            <b-button @click="indicatorFilter = ''">X</b-button>
+          </b-input-group-append>
+        </b-input-group>
         <b-form-select
           id="indicatorSelector"
           v-model="selAvailableIndicator"
-          :options="columns"
+          :options="filteredIndicators"
           :select-size="4"
         >
         </b-form-select>
@@ -87,8 +93,15 @@ export default defineComponent({
     const selColor = ref(randomColor());
     const graphType = ref<ChartType>(ChartType.line);
     const availableGraphTypes = ref(Object.keys(ChartType));
+    const indicatorFilter = ref('');
     const selAvailableIndicator = ref('');
     const cancelled = ref(false);
+
+    const filteredIndicators = computed(() => {
+      return props.columns.filter((col) =>
+        col.toLowerCase().includes(indicatorFilter.value.toLowerCase()),
+      );
+    });
 
     const newColor = () => {
       selColor.value = randomColor();
@@ -142,6 +155,8 @@ export default defineComponent({
       newColor,
       emitIndicator,
       clickCancel,
+      indicatorFilter,
+      filteredIndicators,
     };
   },
 });
