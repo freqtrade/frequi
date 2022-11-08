@@ -2,10 +2,14 @@
   <div>
     <div v-if="addNew">
       <b-form-group label="Add indicator" label-for="indicatorSelector">
-        <b-input-group>
+        <b-input-group size="sm">
           <b-form-input v-model="indicatorFilter" placeholder="Filter indicators"></b-form-input>
           <b-input-group-append>
-            <b-button @click="indicatorFilter = ''">X</b-button>
+            <Reset
+              class="pointer align-self-center ml-1"
+              :size="18"
+              @click="indicatorFilter = ''"
+            ></Reset>
           </b-input-group-append>
         </b-input-group>
         <b-form-select
@@ -78,11 +82,15 @@
 <script lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
+import Reset from 'vue-material-design-icons/CloseCircleOutline.vue';
 
 import { defineComponent, computed, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'PlotIndicator',
+  components: {
+    Reset,
+  },
   props: {
     value: { required: true, type: Object as () => Record<string, IndicatorConfig> },
     columns: { required: true, type: Array as () => string[] },
@@ -170,5 +178,8 @@ export default defineComponent({
   height: 25px;
   width: 25px;
   vertical-align: center;
+}
+.pointer {
+  cursor: pointer;
 }
 </style>
