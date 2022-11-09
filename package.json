@@ -19,7 +19,7 @@
     "@popperjs/core": "^2.11.6",
     "axios": "^1.2.0",
     "bootstrap": "^5.2.2",
-    "bootstrap-vue-3": "^0.3.12",
+    "bootstrap-vue-3": "^0.4.6",
     "bootswatch": "^5.2.2",
     "core-js": "^3.26.1",
     "date-fns": "^2.29.3",

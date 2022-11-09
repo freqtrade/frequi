@@ -253,7 +253,7 @@ export default defineComponent({
   padding-left: 0.5em;
 }
 .navbar {
-  padding: 0.2rem 1rem;
+  padding: 0.2rem 0rem;
 }
 
 .router-link-active,
