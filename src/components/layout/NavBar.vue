@@ -1,13 +1,13 @@
 <template>
   <header>
-    <b-navbar toggleable="sm" type="dark" variant="primary">
+    <b-navbar toggleable="sm" dark variant="primary">
       <router-link class="navbar-brand" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
       </router-link>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
-      <!-- <ReloadControl class="mr-3" /> -->
+      <!-- <ReloadControl class="me-3" /> -->
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" class="text-right text-md-center" is-nav>
@@ -44,10 +44,10 @@
               </template>
               <BotList :small="true" />
             </b-dropdown>
-            <ReloadControl class="mr-3" />
+            <ReloadControl class="me-3" />
           </div>
-          <li class="d-none d-sm-block nav-item text-secondary mr-2">
-            <b-nav-text class="verticalCenter small mr-2">
+          <li class="d-none d-sm-block nav-item text-secondary me-2">
+            <b-nav-text class="verticalCenter small me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
@@ -83,9 +83,9 @@
             </b-nav-item-dropdown>
             <div class="d-block d-sm-none">
               <!-- Visible only on XS -->
-              <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
+              <li class="nav-item text-secondary ms-2 d-sm-none d-flex justify-content-between">
                 <div class="d-flex">
-                  <b-nav-text class="verticalCenter small mr-2">
+                  <b-nav-text class="verticalCenter small me-2">
                     {{
                       (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                       'No bot selected'
