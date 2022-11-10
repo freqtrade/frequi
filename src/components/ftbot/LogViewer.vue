@@ -14,7 +14,9 @@ export default defineComponent({
   setup() {
     const botStore = useBotStore();
 
-    onMounted(() => botStore.activeBot.getLogs());
+    onMounted(async () =>  {
+      botStore.activeBot.getLogs();
+    });
 
     const formattedLogs = computed(() => {
       let result = '';
