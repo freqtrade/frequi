@@ -14,7 +14,7 @@ export default defineComponent({
   setup() {
     const botStore = useBotStore();
 
-    onMounted(async () =>  {
+    onMounted(async () => {
       botStore.activeBot.getLogs();
     });
 
