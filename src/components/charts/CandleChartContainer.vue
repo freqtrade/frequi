@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex h-100">
-    <div class="flex-fill container-fluid flex-column align-items-stretch d-flex h-100">
+    <div class="flex-fill flex-column align-items-stretch d-flex h-100">
       <b-modal
         v-if="plotConfigModal"
         id="plotConfiguratorModal"
@@ -12,7 +12,7 @@
         <PlotConfigurator :columns="datasetColumns" />
       </b-modal>
 
-      <div class="row me-0">
+      <div class="d-flex me-0">
         <div class="ms-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
           <span class="ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <v-select
@@ -62,7 +62,7 @@
           </div>
         </div>
       </div>
-      <div class="row me-1 ms-1 h-100">
+      <div class="me-1 ms-1 h-100">
         <CandleChart
           v-if="hasDataset"
           :dataset="dataset"
