@@ -107,14 +107,14 @@
       >
     </div>
     <div v-if="showConfig" class="col-mb-5 ml-1 mt-2">
-      <b-textarea
+      <b-form-textarea
         id="TextArea"
         v-model="plotConfigJson"
         class="textArea"
         size="sm"
         :state="tempPlotConfigValid"
       >
-      </b-textarea>
+      </b-form-textarea>
     </div>
   </div>
 </template>
@@ -136,7 +136,6 @@ export default defineComponent({
     columns: { required: true, type: Array as () => string[] },
     asModal: { required: false, default: true, type: Boolean },
   },
-  emits: ['input'],
   setup() {
     const plotStore = usePlotConfigStore();
 

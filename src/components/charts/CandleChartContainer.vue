@@ -46,13 +46,13 @@
           >
 
           <div class="ml-2">
-            <b-select
+            <b-form-select
               v-model="plotStore.plotConfigName"
               :options="plotStore.availablePlotConfigNames"
               size="sm"
               @change="plotStore.plotConfigChanged"
             >
-            </b-select>
+            </b-form-select>
           </div>
 
           <div class="ml-2 mr-0 mr-md-1">

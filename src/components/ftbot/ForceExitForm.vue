@@ -44,14 +44,14 @@
           label-for="ordertype-input"
           invalid-feedback="OrderType"
         >
-          <b-select
+          <b-form-select
             v-model="ordertype"
             class="ml-2"
             :options="['market', 'limit']"
             style="min-width: 7em"
             size="sm"
           >
-          </b-select>
+          </b-form-select>
         </b-form-group>
       </form>
     </b-modal>
