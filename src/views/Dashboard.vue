@@ -1,8 +1,8 @@
 <template>
-  <GridLayout
+  <grid-layout
     class="h-100 w-100"
     :row-height="50"
-    :layout="gridLayout"
+    :layout="gridLayoutData"
     :vertical-compact="false"
     :margin="[5, 5]"
     :responsive-layouts="responsiveGridLayouts"
@@ -11,123 +11,131 @@
     :responsive="true"
     :prevent-collision="true"
     :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
+    :col-num="12"
     @layout-updated="layoutUpdatedEvent"
     @breakpoint-changed="breakpointChanged"
   >
-    <GridItem
-      :i="gridLayoutDaily.i"
-      :x="gridLayoutDaily.x"
-      :y="gridLayoutDaily.y"
-      :w="gridLayoutDaily.w"
-      :h="gridLayoutDaily.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
-        <DailyChart
-          v-if="botStore.allDailyStatsSelectedBots"
-          :daily-stats="botStore.allDailyStatsSelectedBots"
-          :show-title="false"
-        />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
-      :i="gridLayoutBotComparison.i"
-      :x="gridLayoutBotComparison.x"
-      :y="gridLayoutBotComparison.y"
-      :w="gridLayoutBotComparison.w"
-      :h="gridLayoutBotComparison.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Bot comparison">
-        <bot-comparison-list />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
-      :i="gridLayoutAllOpenTrades.i"
-      :x="gridLayoutAllOpenTrades.x"
-      :y="gridLayoutAllOpenTrades.y"
-      :w="gridLayoutAllOpenTrades.w"
-      :h="gridLayoutAllOpenTrades.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Open Trades">
-        <trade-list active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
-      :i="gridLayoutCumChart.i"
-      :x="gridLayoutCumChart.x"
-      :y="gridLayoutCumChart.y"
-      :w="gridLayoutCumChart.w"
-      :h="gridLayoutCumChart.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Cumulative Profit">
-        <CumProfitChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
-      :i="gridLayoutAllClosedTrades.i"
-      :x="gridLayoutAllClosedTrades.x"
-      :y="gridLayoutAllClosedTrades.y"
-      :w="gridLayoutAllClosedTrades.w"
-      :h="gridLayoutAllClosedTrades.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Closed Trades">
-        <trade-list
-          :active-trades="false"
-          show-filter
-          :trades="botStore.allClosedTradesSelectedBots"
-          multi-bot-view
-        />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
-      :i="gridLayoutProfitDistribution.i"
-      :x="gridLayoutProfitDistribution.x"
-      :y="gridLayoutProfitDistribution.y"
-      :w="gridLayoutProfitDistribution.w"
-      :h="gridLayoutProfitDistribution.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Profit Distribution">
-        <ProfitDistributionChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
-      </DraggableContainer>
-    </GridItem>
-    <GridItem
-      :i="gridLayoutTradesLogChart.i"
-      :x="gridLayoutTradesLogChart.x"
-      :y="gridLayoutTradesLogChart.y"
-      :w="gridLayoutTradesLogChart.w"
-      :h="gridLayoutTradesLogChart.h"
-      :min-w="3"
-      :min-h="4"
-      drag-allow-from=".drag-header"
-    >
-      <DraggableContainer header="Trades Log">
-        <TradesLogChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
-      </DraggableContainer>
-    </GridItem>
-  </GridLayout>
+    <template #default="{ gridItemProps }">
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutDaily.i"
+        :x="gridLayoutDaily.x"
+        :y="gridLayoutDaily.y"
+        :w="gridLayoutDaily.w"
+        :h="gridLayoutDaily.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
+          <DailyChart
+            v-if="botStore.allDailyStatsSelectedBots"
+            :daily-stats="botStore.allDailyStatsSelectedBots"
+            :show-title="false"
+          />
+        </DraggableContainer>
+      </grid-item>
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutBotComparison.i"
+        :x="gridLayoutBotComparison.x"
+        :y="gridLayoutBotComparison.y"
+        :w="gridLayoutBotComparison.w"
+        :h="gridLayoutBotComparison.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Bot comparison">
+          <bot-comparison-list />
+        </DraggableContainer>
+      </grid-item>
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutAllOpenTrades.i"
+        :x="gridLayoutAllOpenTrades.x"
+        :y="gridLayoutAllOpenTrades.y"
+        :w="gridLayoutAllOpenTrades.w"
+        :h="gridLayoutAllOpenTrades.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Open Trades">
+          <trade-list active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
+        </DraggableContainer>
+      </grid-item>
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutCumChart.i"
+        :x="gridLayoutCumChart.x"
+        :y="gridLayoutCumChart.y"
+        :w="gridLayoutCumChart.w"
+        :h="gridLayoutCumChart.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Cumulative Profit">
+          <CumProfitChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
+        </DraggableContainer>
+      </grid-item>
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutAllClosedTrades.i"
+        :x="gridLayoutAllClosedTrades.x"
+        :y="gridLayoutAllClosedTrades.y"
+        :w="gridLayoutAllClosedTrades.w"
+        :h="gridLayoutAllClosedTrades.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Closed Trades">
+          <trade-list
+            :active-trades="false"
+            show-filter
+            :trades="botStore.allClosedTradesSelectedBots"
+            multi-bot-view
+          />
+        </DraggableContainer>
+      </grid-item>
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutProfitDistribution.i"
+        :x="gridLayoutProfitDistribution.x"
+        :y="gridLayoutProfitDistribution.y"
+        :w="gridLayoutProfitDistribution.w"
+        :h="gridLayoutProfitDistribution.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Profit Distribution">
+          <ProfitDistributionChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
+        </DraggableContainer>
+      </grid-item>
+      <grid-item
+        v-bind="gridItemProps"
+        :i="gridLayoutTradesLogChart.i"
+        :x="gridLayoutTradesLogChart.x"
+        :y="gridLayoutTradesLogChart.y"
+        :w="gridLayoutTradesLogChart.w"
+        :h="gridLayoutTradesLogChart.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Trades Log">
+          <TradesLogChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
+        </DraggableContainer>
+      </grid-item>
+    </template>
+  </grid-layout>
 </template>
 
 <script lang="ts">
 import { formatPrice } from '@/shared/formatters';
-
-import { GridLayout, GridItem, GridItemData } from 'vue-grid-layout';
 
 import DailyChart from '@/components/charts/DailyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
@@ -140,12 +148,11 @@ import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 import { defineComponent, ref, computed, onMounted } from 'vue';
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { GridItemData } from '@/types';
 
 export default defineComponent({
   name: 'Dashboard',
   components: {
-    GridLayout,
-    GridItem,
     DailyChart,
     CumProfitChart,
     ProfitDistributionChart,
@@ -171,7 +178,7 @@ export default defineComponent({
       return layoutStore.layoutLocked || !isResizableLayout;
     });
 
-    const gridLayout = computed((): GridItemData[] => {
+    const gridLayoutData = computed((): GridItemData[] => {
       if (isResizableLayout) {
         return layoutStore.dashboardLayout;
       }
@@ -187,28 +194,28 @@ export default defineComponent({
     };
 
     const gridLayoutDaily = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.dailyChart);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.dailyChart);
     });
 
     const gridLayoutBotComparison = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.botComparison);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.botComparison);
     });
 
     const gridLayoutAllOpenTrades = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.allOpenTrades);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.allOpenTrades);
     });
     const gridLayoutAllClosedTrades = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.allClosedTrades);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.allClosedTrades);
     });
 
     const gridLayoutCumChart = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.cumChartChart);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
     });
     const gridLayoutProfitDistribution = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.profitDistributionChart);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
     });
     const gridLayoutTradesLogChart = computed((): GridItemData => {
-      return findGridLayout(gridLayout.value, DashboardLayout.tradesLogChart);
+      return findGridLayout(gridLayoutData.value, DashboardLayout.tradesLogChart);
     });
 
     const responsiveGridLayouts = computed(() => {
@@ -230,7 +237,7 @@ export default defineComponent({
       isLayoutLocked,
       layoutUpdatedEvent,
       breakpointChanged,
-      gridLayout,
+      gridLayoutData,
       gridLayoutDaily,
       gridLayoutBotComparison,
       gridLayoutAllOpenTrades,

@@ -10,3 +10,4 @@ export * from './plot';
 export * from './profit';
 export * from './trades';
 export * from './types';
+export * from './gridLayout';
