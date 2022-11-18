@@ -13,7 +13,7 @@
       </b-modal>
 
       <div class="row me-0">
-        <div class="ms-2 d-flex flex-wrap flex-md-nowrap align-items-center">
+        <div class="ms-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
           <span class="ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <v-select
             v-model="pair"
@@ -40,7 +40,7 @@
             >Short exits: {{ dataset.exit_short_signals }}</small
           >
         </div>
-        <div class="ms-auto d-flex align-items-center">
+        <div class="ms-auto d-flex align-items-center w-auto">
           <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
             >Heikin Ashi</b-form-checkbox
           >
