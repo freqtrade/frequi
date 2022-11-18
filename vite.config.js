@@ -6,6 +6,7 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [createVuePlugin({})],
   resolve: {
+    dedupe: ['vue'],
     alias: {
       '@': resolve(__dirname, 'src'),
     },
