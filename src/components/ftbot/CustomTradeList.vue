@@ -21,7 +21,7 @@
         :per-page="perPage"
         aria-controls="tradeList"
       ></b-pagination>
-      <b-input
+      <b-form-input
         v-if="showFilter"
         v-model="filterText"
         type="text"
