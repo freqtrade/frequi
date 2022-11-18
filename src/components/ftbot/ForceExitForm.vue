@@ -46,7 +46,7 @@
         >
           <b-form-select
             v-model="ordertype"
-            class="ml-2"
+            class="ms-2"
             :options="['market', 'limit']"
             style="min-width: 7em"
             size="sm"

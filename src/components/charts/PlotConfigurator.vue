@@ -47,7 +47,7 @@
         title="Remove indicator to plot"
         size="sm"
         :disabled="!selIndicatorName"
-        class="ml-1"
+        class="ms-1"
         @click="removeIndicator"
       >
         Remove indicator
@@ -64,13 +64,13 @@
     <hr />
 
     <div>
-      <b-button class="ml-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
-      <b-button class="ml-1" variant="secondary" size="sm" @click="loadPlotConfigFromStrategy">
+      <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
+      <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfigFromStrategy">
         From strategy
       </b-button>
 
       <b-button
-        class="ml-1"
+        class="ms-1"
         variant="secondary"
         size="sm"
         title="Load configuration from text box below"
@@ -79,7 +79,7 @@
       >
       <b-button
         id="showButton"
-        class="ml-1"
+        class="ms-1"
         variant="secondary"
         size="sm"
         title="Show configuration for easy transfer to a strategy"
@@ -89,7 +89,7 @@
 
       <b-button
         v-if="showConfig"
-        class="ml-1"
+        class="ms-1"
         variant="secondary"
         size="sm"
         title="Load configuration from text box below"
@@ -97,7 +97,7 @@
         >Load from String</b-button
       >
       <b-button
-        class="ml-1"
+        class="ms-1"
         variant="primary"
         size="sm"
         data-toggle="tooltip"
@@ -106,7 +106,7 @@
         >Save</b-button
       >
     </div>
-    <div v-if="showConfig" class="col-mb-5 ml-1 mt-2">
+    <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
       <b-form-textarea
         id="TextArea"
         v-model="plotConfigJson"

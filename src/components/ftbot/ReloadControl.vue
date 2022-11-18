@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-center ml-2">
+  <div class="d-flex align-items-center ms-2">
     <b-form-checkbox
       v-model="autoRefreshLoc"
       class="ms-auto float-end my-auto"

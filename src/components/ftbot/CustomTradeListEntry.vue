@@ -4,7 +4,7 @@
       class="px-1 d-flex flex-row flex-fill text-start justify-content-between align-items-center"
     >
       <span>
-        <span class="mr-1 fw-bold">{{ trade.pair }}</span>
+        <span class="me-1 fw-bold">{{ trade.pair }}</span>
         <small class="text-secondary">(#{{ trade.trade_id }})</small>
       </span>
       <small>

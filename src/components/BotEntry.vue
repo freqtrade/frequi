@@ -1,14 +1,14 @@
 <template>
   <div class="d-flex align-items-center justify-content-between w-100">
-    <span class="mr-2">{{ bot.botName || bot.botId }}</span>
+    <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="align-items-center d-flex">
-      <span class="ml-2 mr-1 align-middle">{{
+      <span class="ms-2 me-1 align-middle">{{
         botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
       }}</span>
       <b-form-checkbox
         v-model="autoRefreshLoc"
-        class="ms-auto float-end mr-2 my-auto"
+        class="ms-auto float-end me-2 my-auto"
         title="AutoRefresh"
         variant="secondary"
         @change="changeEvent"
@@ -16,11 +16,11 @@
         R
       </b-form-checkbox>
       <div v-if="!noButtons" class="d-flex flex-align-cent">
-        <b-button class="ml-1" size="sm" title="Delete bot" @click="$emit('edit')">
+        <b-button class="ms-1" size="sm" title="Delete bot" @click="$emit('edit')">
           <EditIcon :size="16" />
         </b-button>
 
-        <b-button class="ml-1" size="sm" title="Delete bot" @click.prevent="clickRemoveBot(bot)">
+        <b-button class="ms-1" size="sm" title="Delete bot" @click.prevent="clickRemoveBot(bot)">
           <DeleteIcon :size="16" title="Delete Bot" />
         </b-button>
       </div>

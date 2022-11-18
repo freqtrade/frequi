@@ -7,7 +7,7 @@
         :options="botStore.activeBot.strategyList"
       >
       </b-form-select>
-      <div class="ml-2">
+      <div class="ms-2">
         <b-button @click="botStore.activeBot.getStrategyList">&#x21bb;</b-button>
       </div>
     </div>

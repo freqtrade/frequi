@@ -25,7 +25,7 @@
           v-if="trade.profit_ratio && trade.profit_abs"
           :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
         >
-          <trade-profit class="ml-2" :trade="trade" />
+          <trade-profit class="ms-2" :trade="trade" />
         </ValuePair>
         <details>
           <summary>Details</summary>
@@ -97,7 +97,7 @@
                 :date="order.order_timestamp"
                 show-timezone
               />
-              <b class="ml-1">{{ order.ft_order_side }}</b> for
+              <b class="ms-1">{{ order.ft_order_side }}</b> for
               <b>{{ formatPrice(order.safe_price) }}</b> |
               <span v-if="order.remaining && order.remaining !== 0" title="remaining"
                 >{{ formatPrice(order.remaining, 8) }} /

@@ -15,7 +15,7 @@
           ></b-form-input>
         </b-input-group>
       </b-form-group>
-      <b-form-group class="ml-2 col-md-6" label="End date" label-for="dp_dateTo">
+      <b-form-group class="ms-2 col-md-6" label="End date" label-for="dp_dateTo">
         <b-input-group>
           <b-input-group-prepend>
             <b-form-datepicker v-model="dateTo" class="mb-1" button-only></b-form-datepicker>

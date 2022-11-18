@@ -12,12 +12,12 @@
         <PlotConfigurator :columns="datasetColumns" />
       </b-modal>
 
-      <div class="row mr-0">
-        <div class="ml-2 d-flex flex-wrap flex-md-nowrap align-items-center">
-          <span class="ml-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+      <div class="row me-0">
+        <div class="ms-2 d-flex flex-wrap flex-md-nowrap align-items-center">
+          <span class="ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <v-select
             v-model="pair"
-            class="ml-2"
+            class="ms-2"
             :options="availablePairs"
             style="min-width: 7em"
             size="sm"
@@ -26,17 +26,17 @@
           >
           </v-select>
 
-          <b-button class="ml-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
-          <small v-if="dataset" class="ml-2 text-nowrap" title="Long entry signals"
+          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
+          <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
             >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
           >
-          <small v-if="dataset" class="ml-2 text-nowrap" title="Long exit signals"
+          <small v-if="dataset" class="ms-2 text-nowrap" title="Long exit signals"
             >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
           >
-          <small v-if="dataset && dataset.enter_short_signals" class="ml-2 text-nowrap"
+          <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
             >Short entries: {{ dataset.enter_short_signals }}</small
           >
-          <small v-if="dataset && dataset.exit_short_signals" class="ml-2 text-nowrap"
+          <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-nowrap"
             >Short exits: {{ dataset.exit_short_signals }}</small
           >
         </div>
@@ -45,7 +45,7 @@
             >Heikin Ashi</b-form-checkbox
           >
 
-          <div class="ml-2">
+          <div class="ms-2">
             <b-form-select
               v-model="plotStore.plotConfigName"
               :options="plotStore.availablePlotConfigNames"
@@ -55,14 +55,14 @@
             </b-form-select>
           </div>
 
-          <div class="ml-2 mr-0 mr-md-1">
+          <div class="ms-2 me-0 me-md-1">
             <b-button size="sm" title="Plot configurator" @click="showConfigurator">
               &#9881;
             </b-button>
           </div>
         </div>
       </div>
-      <div class="row mr-1 ml-1 h-100">
+      <div class="row me-1 ms-1 h-100">
         <CandleChart
           v-if="hasDataset"
           :dataset="dataset"

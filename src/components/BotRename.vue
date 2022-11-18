@@ -9,12 +9,12 @@
       autofocus
     />
 
-    <div class="d-flex ml-2">
+    <div class="d-flex ms-2">
       <b-button type="submit" size="sm" title="Save">
         <CheckIcon :size="16" />
       </b-button>
 
-      <b-button class="ml-1" size="sm" title="Cancel" @click="$emit('cancelled')">
+      <b-button class="ms-1" size="sm" title="Cancel" @click="$emit('cancelled')">
         <CloseIcon :size="16" />
       </b-button>
     </div>

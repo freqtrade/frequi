@@ -7,7 +7,7 @@
       title="Forceexit"
       @click="$emit('forceExit', trade)"
     >
-      <ForceSellIcon :size="16" title="Forceexit" class="mr-1" />Forceexit
+      <ForceSellIcon :size="16" title="Forceexit" class="me-1" />Forceexit
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
@@ -16,7 +16,7 @@
       title="Forceexit limit"
       @click="$emit('forceExit', trade, 'limit')"
     >
-      <ForceSellIcon :size="16" title="Forceexit limit" class="mr-1" />Forceexit limit
+      <ForceSellIcon :size="16" title="Forceexit limit" class="me-1" />Forceexit limit
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
@@ -25,7 +25,7 @@
       title="Forceexit market"
       @click="$emit('forceExit', trade, 'market')"
     >
-      <ForceSellIcon :size="16" title="Forceexit market" class="mr-1" />Forceexit market
+      <ForceSellIcon :size="16" title="Forceexit market" class="me-1" />Forceexit market
     </b-button>
     <b-button
       v-if="botApiVersion > 2.16"
@@ -34,7 +34,7 @@
       title="Forceexit partial"
       @click="$emit('forceExitPartial', trade)"
     >
-      <ForceSellIcon :size="16" title="Forceexit partial" class="mr-1" />Forceexit partial
+      <ForceSellIcon :size="16" title="Forceexit partial" class="me-1" />Forceexit partial
     </b-button>
 
     <b-button
@@ -43,7 +43,7 @@
       title="Delete trade"
       @click="$emit('deleteTrade', trade)"
     >
-      <DeleteIcon :size="16" title="Delete trade" class="mr-1" />
+      <DeleteIcon :size="16" title="Delete trade" class="me-1" />
       Delete
     </b-button>
   </div>

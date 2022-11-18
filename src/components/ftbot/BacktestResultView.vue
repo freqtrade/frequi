@@ -4,7 +4,7 @@
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
 
-    <div class="row text-start ml-0">
+    <div class="row text-start ms-0">
       <div class="row w-100">
         <div class="col-12 col-xl-6 px-0 px-xl-0 pe-xl-1">
           <b-card header="Strategy settings">

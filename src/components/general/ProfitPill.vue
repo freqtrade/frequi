@@ -10,7 +10,7 @@
       {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
       <span
         v-if="profitString"
-        class="ml-1"
+        class="ms-1"
         :class="profitRatio ? 'small' : ''"
         :title="stakeCurrency"
         >{{ profitString }}</span

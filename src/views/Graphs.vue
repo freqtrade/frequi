@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column h-100">
-    <!-- <div v-if="isWebserverMode" class="me-auto ml-3"> -->
+    <!-- <div v-if="isWebserverMode" class="me-auto ms-3"> -->
     <!-- Currently only available in Webserver mode -->
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->

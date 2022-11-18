@@ -30,7 +30,7 @@
       <div class="float-end d-flex d-flex-columns pe-1">
         <b-button
           id="blacklist-add-btn"
-          class="mr-1"
+          class="me-1"
           :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
           size="sm"
           >+
