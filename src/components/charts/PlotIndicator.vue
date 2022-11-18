@@ -92,11 +92,11 @@ export default defineComponent({
     Reset,
   },
   props: {
-    value: { required: true, type: Object as () => Record<string, IndicatorConfig> },
+    modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
     columns: { required: true, type: Array as () => string[] },
     addNew: { required: true, type: Boolean },
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const selColor = ref(randomColor());
     const graphType = ref<ChartType>(ChartType.line);
@@ -127,7 +127,7 @@ export default defineComponent({
       };
     });
     const emitIndicator = () => {
-      emit('input', combinedIndicator.value);
+      emit('update:modelValue', combinedIndicator.value);
     };
 
     const clickCancel = () => {
@@ -136,13 +136,13 @@ export default defineComponent({
     };
 
     watch(
-      () => props.value,
+      () => props.modelValue,
       () => {
-        [selAvailableIndicator.value] = Object.keys(props.value);
+        [selAvailableIndicator.value] = Object.keys(props.modelValue);
         cancelled.value = false;
-        if (selAvailableIndicator.value && props.value) {
-          selColor.value = props.value[selAvailableIndicator.value].color || randomColor();
-          graphType.value = props.value[selAvailableIndicator.value].type || ChartType.line;
+        if (selAvailableIndicator.value && props.modelValue) {
+          selColor.value = props.modelValue[selAvailableIndicator.value].color || randomColor();
+          graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
         }
       },
     );
