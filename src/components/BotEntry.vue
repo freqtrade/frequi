@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-center justify-content-between w-100">
+  <div v-if="bot" class="d-flex align-items-center justify-content-between w-100">
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="align-items-center d-flex">
@@ -20,11 +20,14 @@
           <EditIcon :size="16" />
         </b-button>
 
-        <b-button class="ms-1" size="sm" title="Delete bot" @click.prevent="clickRemoveBot(bot)">
+        <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
           <DeleteIcon :size="16" title="Delete Bot" />
         </b-button>
       </div>
     </div>
+    <b-modal v-model="botRemoveModalVisible" title="Logout confirmation" @ok="confirmRemoveBot">
+      Really remove (logout) from {{ bot.botName }} ({{ bot.botId }})?
+    </b-modal>
   </div>
 </template>
 
@@ -32,7 +35,7 @@
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { BotDescriptor } from '@/types';
-import { defineComponent, computed, getCurrentInstance } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -47,22 +50,17 @@ export default defineComponent({
   },
   emits: ['edit'],
   setup(props) {
-    const root = getCurrentInstance();
     const botStore = useBotStore();
 
     const changeEvent = (v) => {
       botStore.botStores[props.bot.botId].setAutoRefresh(v);
     };
+    const botRemoveModalVisible = ref(false);
 
-    const clickRemoveBot = (bot: BotDescriptor) => {
-      //
-      root?.proxy.$bvModal
-        .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
-        .then((value: boolean) => {
-          if (value) {
-            botStore.removeBot(bot.botId);
-          }
-        });
+    const confirmRemoveBot = () => {
+      botRemoveModalVisible.value = false;
+      botStore.removeBot(props.bot.botId);
+      console.log('removing bot.');
     };
     const autoRefreshLoc = computed({
       get() {
@@ -76,8 +74,9 @@ export default defineComponent({
     return {
       botStore,
       changeEvent,
-      clickRemoveBot,
       autoRefreshLoc,
+      confirmRemoveBot,
+      botRemoveModalVisible,
     };
   },
 });

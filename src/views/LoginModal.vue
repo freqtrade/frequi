@@ -30,8 +30,7 @@ export default defineComponent({
         modalRef.value?.hide();
       }
     };
-    const handleOk = (evt) => {
-      evt.preventDefault();
+    const handleOk = () => {
       loginForm.value?.handleSubmit();
     };
     return {
