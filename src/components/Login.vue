@@ -77,8 +77,8 @@ import { useUserService } from '@/shared/userService';
 import { AuthPayload } from '@/types';
 
 import { defineComponent, ref } from 'vue';
-import { useRouter, useRoute } from '@/composables/router-helper';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { useRoute, useRouter } from 'vue-router';
 
 const defaultURL = window.location.origin || 'http://localhost:3000';
 

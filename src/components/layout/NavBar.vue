@@ -128,10 +128,10 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
 import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from 'vue';
-import { useRoute } from '@/composables/router-helper';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'NavBar',
