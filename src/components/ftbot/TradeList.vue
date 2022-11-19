@@ -83,7 +83,7 @@
         style="width: unset"
       />
     </div>
-    <force-exit-form v-if="activeTrades" :trade="feTrade" />
+    <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
   </div>
 </template>
 
@@ -121,6 +121,7 @@ export default defineComponent({
     const feTrade = ref<Trade>({} as Trade);
     const perPage = props.activeTrades ? 200 : 15;
     const tradesTable = ref<HTMLFormElement>();
+    const forceExitVisible = ref(false);
 
     const openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
     const closedFields: Record<string, string | Function>[] = [
@@ -275,6 +276,7 @@ export default defineComponent({
       onRowClicked,
       onRowSelected,
       feTrade,
+      forceExitVisible,
     };
   },
 });
