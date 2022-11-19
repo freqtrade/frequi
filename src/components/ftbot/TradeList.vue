@@ -5,7 +5,7 @@
       small
       hover
       stacked="md"
-      :items="trades"
+      :items="[...trades]"
       :fields="tableFields"
       show-empty
       :empty-text="emptyText"
@@ -190,10 +190,7 @@ export default defineComponent({
 
     const forceExitPartialHandler = (item: Trade) => {
       feTrade.value = item;
-      nextTick(() => {
-        console.log('showing modal', item);
-        root?.proxy.$bvModal.show('forceexit-modal');
-      });
+      forceExitVisible.value = true;
     };
 
     const handleContextMenuEvent = (item, index, event) => {
@@ -221,16 +218,11 @@ export default defineComponent({
         });
     };
 
-    const onRowClicked = (item, index) => {
+    const onRowClicked = (item) => {
       // Only allow single selection mode!
-      if (
-        item &&
-        item.trade_id !== botStore.activeBot.detailTradeId &&
-        !tradesTable.value?.isRowSelected(index)
-      ) {
+      if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
         botStore.activeBot.setDetailTrade(item);
       } else {
-        console.log('unsetting item');
         botStore.activeBot.setDetailTrade(null);
       }
     };
