@@ -26,7 +26,12 @@
           button-variant="outline-primary"
         ></b-form-radio-group>
       </b-form-group>
-      <b-form-group label="Pair" label-for="pair-input" invalid-feedback="Pair is required">
+      <b-form-group
+        label="Pair"
+        label-for="pair-input"
+        invalid-feedback="Pair is required"
+        :state="selectedPair !== undefined"
+      >
         <b-form-input
           id="pair-input"
           v-model="selectedPair"
@@ -39,6 +44,7 @@
         label="*Price [optional]"
         label-for="price-input"
         invalid-feedback="Price must be empty or a positive number"
+        :state="!price || price > 0"
       >
         <b-form-input
           id="price-input"
@@ -53,6 +59,7 @@
         :label="`*Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
         label-for="stake-input"
         invalid-feedback="Stake-amount must be empty or a positive number"
+        :state="!stakeAmount || stakeAmount > 0"
       >
         <b-form-input
           id="stake-input"
@@ -67,6 +74,7 @@
         :label="`*Leverage to apply [optional]`"
         label-for="leverage-input"
         invalid-feedback="Leverage must be empty or a positive number"
+        :state="!leverage || leverage > 0"
       >
         <b-form-input
           id="leverage-input"
@@ -81,6 +89,7 @@
         label="*OrderType"
         label-for="ordertype-input"
         invalid-feedback="OrderType"
+        :state="true"
       >
         <b-form-radio-group
           id="ordertype-input"
@@ -115,9 +124,9 @@ export default defineComponent({
 
     const form = ref<HTMLFormElement>();
     const selectedPair = ref('');
-    const price = ref<number | null>(null);
-    const stakeAmount = ref<number | null>(null);
-    const leverage = ref<number | null>(null);
+    const price = ref<number | undefined>(undefined);
+    const stakeAmount = ref<number | undefined>(undefined);
+    const leverage = ref<number | undefined>(undefined);
 
     const ordertype = ref('');
     const orderSide = ref<OrderSides>(OrderSides.long);
