@@ -50,7 +50,7 @@ forceexit
       class="btn btn-secondary btn-sm ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
-      @click="initiateForceenter"
+      @click="forceEnter = true"
     >
       <ForceEntryIcon />
     </button>
@@ -63,7 +63,7 @@ forceexit
     >
       <PlayIcon />
     </button>
-    <ForceEntryForm :pair="botStore.activeBot.selectedPair" @close="hideForceenter" />
+    <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
   </div>
 </template>
 
@@ -93,18 +93,11 @@ export default defineComponent({
   setup() {
     const root = getCurrentInstance();
     const botStore = useBotStore();
-    const forcebuyShow = ref(false);
+    const forceEnter = ref<boolean>(false);
 
     const isRunning = computed((): boolean => {
       return botStore.activeBot.botState?.state === 'running';
     });
-
-    const initiateForceenter = () => {
-      root?.proxy.$bvModal.show('forceentry-modal');
-    };
-    const hideForceenter = () => {
-      root?.proxy.$bvModal.hide('forceentry-modal');
-    };
 
     const handleStopBot = () => {
       root?.proxy.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
@@ -144,13 +137,11 @@ export default defineComponent({
       });
     };
     return {
-      initiateForceenter,
-      hideForceenter,
       handleStopBot,
       handleStopBuy,
       handleReloadConfig,
       handleForceExit,
-      forcebuyShow,
+      forceEnter,
       botStore,
       isRunning,
     };

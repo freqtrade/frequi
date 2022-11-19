@@ -3,6 +3,7 @@
     <b-modal
       id="forceentry-modal"
       ref="modal"
+      v-model="model"
       title="Force entering a trade"
       @show="resetForm"
       @hidden="resetForm"
@@ -102,18 +103,16 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceEnterPayload, OrderSides } from '@/types';
 
-import { defineComponent, ref, nextTick, getCurrentInstance } from 'vue';
+import { computed, defineComponent, nextTick, ref } from 'vue';
 
 export default defineComponent({
   name: 'ForceEntryForm',
   props: {
-    pair: {
-      type: String,
-      default: '',
-    },
+    modelValue: { required: true, default: false, type: Boolean },
+    pair: { type: String, default: '' },
   },
-  setup(props) {
-    const root = getCurrentInstance();
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     const botStore = useBotStore();
 
     const form = ref<HTMLFormElement>();
@@ -124,6 +123,15 @@ export default defineComponent({
 
     const ordertype = ref('');
     const orderSide = ref<OrderSides>(OrderSides.long);
+
+    const model = computed({
+      get() {
+        return props.modelValue;
+      },
+      set(value: boolean) {
+        emit('update:modelValue', value);
+      },
+    });
 
     const checkFormValidity = () => {
       const valid = form.value?.checkValidity();
@@ -155,9 +163,8 @@ export default defineComponent({
         payload.leverage = leverage.value;
       }
       botStore.activeBot.forceentry(payload);
-
       await nextTick();
-      root?.proxy.$bvModal.hide('forceentry-modal');
+      emit('update:modelValue', false);
     };
     const resetForm = () => {
       console.log('resetForm');
@@ -174,9 +181,7 @@ export default defineComponent({
       }
     };
 
-    const handleEntry = (bvModalEvt) => {
-      // Prevent modal from closing
-      bvModalEvt.preventDefault();
+    const handleEntry = () => {
       // Trigger submit handler
       handleSubmit();
     };
@@ -186,6 +191,7 @@ export default defineComponent({
 
     return {
       handleSubmit,
+      model,
       botStore,
       form,
       handleEntry,
