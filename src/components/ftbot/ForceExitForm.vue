@@ -16,9 +16,10 @@
         </p>
         <b-form-group
           v-if="botStore.activeBot.botApiVersion > 1.12"
-          :label="`*amount in ${trade.base_currency} [optional]`"
+          :label="`*Amount in ${trade.base_currency} [optional]`"
           label-for="stake-input"
           invalid-feedback="Amount must be empty or a positive number"
+          :state="amount !== undefined && amount > 0"
         >
           <b-form-input
             id="stake-input"
@@ -43,6 +44,7 @@
           label="*OrderType"
           label-for="ordertype-input"
           invalid-feedback="OrderType"
+          :state="ordertype !== undefined"
         >
           <b-form-select
             v-model="ordertype"
