@@ -15,6 +15,11 @@
     font-size: 0.8rem;
 }
 
+.modal.show {
+    // TODO: modal bootstrap fix (???)
+    display: block;
+}
+
 [data-theme="dark"] {
     $bg-dark: rgb(18, 18, 18);
 
