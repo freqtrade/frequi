@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex h-100">
-    <div class="flex-fill flex-column align-items-stretch d-flex h-100">
+    <div class="flex-fill w-100 flex-column align-items-stretch d-flex h-100">
       <div class="d-flex me-0">
         <div class="ms-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
           <span class="ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
@@ -45,7 +45,6 @@
           </div>
 
           <div class="ms-2 me-0 me-md-1">
-            {{ showPlotConfigModal }}
             <b-button size="sm" title="Plot configurator" @click="showConfigurator">
               &#9881;
             </b-button>

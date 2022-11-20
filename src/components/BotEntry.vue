@@ -3,19 +3,19 @@
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="align-items-center d-flex">
-      <span class="ms-2 me-1 align-middle">{{
-        botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
-      }}</span>
       <b-form-checkbox
         v-model="autoRefreshLoc"
-        class="ms-auto float-end me-2 my-auto"
+        class="ms-auto float-end me-2 my-auto mt-1"
         title="AutoRefresh"
         variant="secondary"
+        switch
         @change="changeEvent"
       >
-        R
+        <span class="ms-2 me-1 align-middle">{{
+          botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
+        }}</span>
       </b-form-checkbox>
-      <div v-if="!noButtons" class="d-flex flex-align-cent">
+      <div v-if="!noButtons" class="float-end d-flex flex-align-center">
         <b-button class="ms-1" size="sm" title="Delete bot" @click="$emit('edit')">
           <EditIcon :size="16" />
         </b-button>
@@ -87,3 +87,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss">
+.form-switch {
+  padding-left: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+</style>

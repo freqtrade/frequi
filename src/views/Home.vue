@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="container col-12 col-sm-6 col-lg-4">
+    <div class="d-flex justify-content-center">
       <bot-list />
     </div>
     <hr />

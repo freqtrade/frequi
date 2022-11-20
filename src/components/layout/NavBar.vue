@@ -46,7 +46,9 @@
             </b-dropdown>
             <ReloadControl class="me-3" />
           </div>
-          <li class="d-none d-sm-block nav-item text-secondary me-2">
+          <li
+            class="d-none d-sm-flex flex-sm-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
+          >
             <b-nav-text class="verticalCenter small me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
@@ -261,9 +263,9 @@ export default defineComponent({
   color: white !important;
 }
 
-.verticalCenter {
-  align-items: center;
-  display: inline-flex;
-  height: 100%;
-}
+// .verticalCenter {
+//   align-items: center;
+//   display: inline-flex;
+//   height: 100%;
+// }
 </style>
