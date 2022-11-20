@@ -25,7 +25,13 @@
         </b-button>
       </div>
     </div>
-    <b-modal v-model="botRemoveModalVisible" title="Logout confirmation" @ok="confirmRemoveBot">
+    <b-modal
+      v-if="!noButtons"
+      id="removeBotModal"
+      v-model="botRemoveModalVisible"
+      title="Logout confirmation"
+      @ok="confirmRemoveBot"
+    >
       Really remove (logout) from {{ bot.botName }} ({{ bot.botId }})?
     </b-modal>
   </div>
