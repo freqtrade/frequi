@@ -31,6 +31,7 @@
             id="pair-input"
             v-model="pair"
             required
+            :placeholder="botStore.activeBot.selectedPair"
             @keydown.enter.native="handleEntry"
           ></b-form-input>
         </b-form-group>
@@ -124,11 +125,14 @@ export default defineComponent({
       return valid;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+      pair.value = pair.value !== '' ? pair.value : botStore.activeBot.selectedPair;
+      await nextTick();
       // Exit when the form isn't valid
       if (!checkFormValidity()) {
         return;
       }
+
       // call forceentry
       const payload: ForceEnterPayload = { pair: pair.value };
       if (price.value) {
@@ -147,9 +151,9 @@ export default defineComponent({
         payload.leverage = leverage.value;
       }
       botStore.activeBot.forceentry(payload);
-      nextTick(() => {
-        root?.proxy.$bvModal.hide('forceentry-modal');
-      });
+
+      await nextTick();
+      root?.proxy.$bvModal.hide('forceentry-modal');
     };
     const resetForm = () => {
       console.log('resetForm');
