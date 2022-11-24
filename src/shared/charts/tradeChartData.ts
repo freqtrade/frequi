@@ -40,7 +40,11 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
       if (trade.orders) {
         for (let i = 0; i < trade.orders.length; i++) {
           const order: Order = trade.orders[i];
-          if (order.order_filled_timestamp) {
+          if (
+            order.order_filled_timestamp &&
+            order.order_filled_timestamp <= dataset.data_stop_ts &&
+            order.order_filled_timestamp > dataset.data_start_ts
+          ) {
             // Trade entry
             if (i === 0) {
               tradeData.push([
