@@ -29,9 +29,10 @@
         <b-form-group label="Pair" label-for="pair-input" invalid-feedback="Pair is required">
           <b-form-input
             id="pair-input"
-            v-model="pair"
+            v-model="selectedPair"
             required
             @keydown.enter.native="handleEntry"
+            @focus="inputSelect"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -105,12 +106,18 @@ import { defineComponent, ref, nextTick, getCurrentInstance } from 'vue';
 
 export default defineComponent({
   name: 'ForceEntryForm',
-  setup() {
+  props: {
+    pair: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props) {
     const root = getCurrentInstance();
     const botStore = useBotStore();
 
     const form = ref<HTMLFormElement>();
-    const pair = ref('');
+    const selectedPair = ref('');
     const price = ref<number | null>(null);
     const stakeAmount = ref<number | null>(null);
     const leverage = ref<number | null>(null);
@@ -124,13 +131,14 @@ export default defineComponent({
       return valid;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       // Exit when the form isn't valid
       if (!checkFormValidity()) {
         return;
       }
+
       // call forceentry
-      const payload: ForceEnterPayload = { pair: pair.value };
+      const payload: ForceEnterPayload = { pair: selectedPair.value };
       if (price.value) {
         payload.price = Number(price.value);
       }
@@ -147,13 +155,13 @@ export default defineComponent({
         payload.leverage = leverage.value;
       }
       botStore.activeBot.forceentry(payload);
-      nextTick(() => {
-        root?.proxy.$bvModal.hide('forceentry-modal');
-      });
+
+      await nextTick();
+      root?.proxy.$bvModal.hide('forceentry-modal');
     };
     const resetForm = () => {
       console.log('resetForm');
-      pair.value = '';
+      selectedPair.value = props.pair;
       price.value = null;
       stakeAmount.value = null;
       if (botStore.activeBot.botApiVersion > 1.1) {
@@ -172,13 +180,18 @@ export default defineComponent({
       // Trigger submit handler
       handleSubmit();
     };
+    const inputSelect = (bvModalEvt) => {
+      bvModalEvt.srcElement?.select();
+    };
+
     return {
       handleSubmit,
       botStore,
       form,
       handleEntry,
+      inputSelect,
       resetForm,
-      pair,
+      selectedPair,
       price,
       stakeAmount,
       ordertype,

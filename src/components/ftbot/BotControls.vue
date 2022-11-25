@@ -63,7 +63,7 @@ forceexit
     >
       <PlayIcon />
     </button>
-    <ForceEntryForm @close="hideForceenter" />
+    <ForceEntryForm :pair="botStore.activeBot.selectedPair" @close="hideForceenter" />
   </div>
 </template>
 
