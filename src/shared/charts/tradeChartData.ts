@@ -10,15 +10,15 @@ function buildToolTip(trade: Trade, side: string): string {
 // const ENTRY_SYMB = 'circle';
 // const EXIT_SYMB = 'rect';
 
-const ENTRY_SYMB =
+const ADJUSTMENT_SYMBOL =
   'path://m 52.444161,104.1909 8.386653,25.34314 8.386651,25.34313 -16.731501,0.0422 -16.731501,0.0422 8.344848,-25.38539 z m 0.08656,-48.368126 8.386652,25.343139 8.386652,25.343137 -16.731501,0.0422 -16.731502,0.0422 8.344848,-25.385389 z';
-const EXIT_SYMB =
+const OPEN_CLOSE_SYMBOL =
   'path://m 102.20764,19.885384 h 24.1454 v 41.928829 h -24.1454 z m 12.17344,36.423813 8.38665,25.343139 8.38666,25.343134 -16.7315,0.0422 -16.731507,0.0422 8.344847,-25.385386 z';
 
 const SHORT_COLOR = '#AD00FF';
-const SHORT_ADJUST_COLOR = '#CE3BFF';
+//const SHORT_ADJUST_COLOR = '#CE3BFF';
 const LONG_COLOR = '#0066FF';
-const LONG_ADJUST_COLOR = '#00A9FF';
+//const LONG_ADJUST_COLOR = '#00A9FF';
 
 /** Return trade entries for charting */
 export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
@@ -50,7 +50,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
               tradeData.push([
                 roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp),
                 order.safe_price,
-                ENTRY_SYMB,
+                OPEN_CLOSE_SYMBOL,
                 order.ft_order_side == 'sell' ? 180 : 0,
                 trade.is_short ? SHORT_COLOR : LONG_COLOR,
                 trade.is_short ? 'Short' : 'Long',
@@ -67,8 +67,8 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
                 tradeData.push([
                   roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp),
                   trade.close_rate,
-                  EXIT_SYMB,
-                  trade.is_short ? 180 : 0,
+                  OPEN_CLOSE_SYMBOL,
+                  trade.is_short ? 0 : 180,
                   trade.is_short ? SHORT_COLOR : LONG_COLOR,
                   // (trade.profit_abs ?? 0) > 0 ? '#31e04b' : '#fc0505',
                   formatPercent(trade.profit_ratio, 2),
@@ -81,7 +81,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
               tradeData.push([
                 roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp),
                 order.safe_price,
-                ENTRY_SYMB,
+                ADJUSTMENT_SYMBOL,
                 order.ft_order_side == 'sell' ? 180 : 0,
                 trade.is_short ? SHORT_COLOR : LONG_COLOR,
                 '',
