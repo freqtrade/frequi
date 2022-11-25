@@ -30,15 +30,10 @@
           <b-form-input
             id="pair-input"
             v-model="selectedPair"
-            list="pair-input-whitelist"
             required
             @keydown.enter.native="handleEntry"
             @focus="inputSelect"
           ></b-form-input>
-          <b-form-datalist
-            id="pair-input-whitelist"
-            :options="botStore.activeBot.whitelist"
-          ></b-form-datalist>
         </b-form-group>
         <b-form-group
           label="*Price [optional]"
