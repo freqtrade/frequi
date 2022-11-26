@@ -53,9 +53,7 @@
         background: lighten($bg-dark, 5%);
         color: $fg-color;
     }
-    .table {
-        color: $fg-color;
-    }
+
     .list-group-item {
         color: $fg-color;
         background: $bg-dark;
@@ -144,17 +142,26 @@
         border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .table.b-table > tbody > .table-active, .table.b-table > tbody > .table-active > th, .table.b-table > tbody > .table-active > td {
+    .table {
+        color: $fg-color;
+    }
+    .table.b-table > tbody > .selected,
+    .table.b-table > tbody > .selected > th,
+    .table.b-table > tbody > .selected > td {
         // Table selected cells
+        color: $fg-color;
         background: darken($bg-dark, 10%);
-
     }
 
-    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th,
-    .table.b-table.table-hover > tbody > tr.table-active:hover td, .table.b-table.table-hover > tbody > tr.table-active:hover th{
+
+    .table-hover tbody tr:hover td,
+    .table-hover tbody tr:hover th,
+    .table.b-table > tbody > .selected:hover,
+    .table.b-table.table-hover > tbody > tr.selected th:hover{
         // Table selected cells hover
         color: $fg-color;
         background: lighten($bg-dark, 10%);
+        --bs-table-hover-bg: #272727;
     }
 
     .form-select {

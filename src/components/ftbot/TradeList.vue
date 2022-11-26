@@ -29,7 +29,12 @@
         >
           <ActionIcon :size="16" title="Actions" />
         </b-button>
-        <b-popover :target="`btn-actions_${row.index}`" triggers="focus" placement="left">
+        <b-popover
+          :target="`btn-actions_${row.index}`"
+          :title="`Actions for ${row.item.pair}`"
+          triggers="focus"
+          placement="left"
+        >
           <trade-actions
             :trade="row.item"
             :bot-api-version="botStore.activeBot.botApiVersion"
