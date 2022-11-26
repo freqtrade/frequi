@@ -201,7 +201,6 @@ export default defineComponent({
     onMounted(async () => {
       await settingsStore.loadUIVersion();
       pingInterval.value = window.setInterval(botStore.pingAll, 60000);
-      botStore.allRefreshFull();
     });
 
     settingsStore.$subscribe((_, state) => {
