@@ -69,11 +69,11 @@
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
-              <b-dropdown-item>V: {{ settingsStore.uiVersion }}</b-dropdown-item>
+              <span class="ps-3">V: {{ settingsStore.uiVersion }}</span>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
-              <b-form-checkbox v-model="layoutStore.layoutLocked" class="ps-5"
-                >Lock layout</b-form-checkbox
-              >
+              <div class="ps-3">
+                <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
+              </div>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <router-link
                 v-if="botStore.botCount === 1"
