@@ -1,4 +1,4 @@
-import { formatPercent } from '@/shared/formatters';
+import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import { roundTimeframe } from '@/shared/timemath';
 import { Order, PairHistory, Trade } from '@/types';
 
@@ -7,6 +7,15 @@ function buildToolTip(trade: Trade, side: string): string {
     trade.profit_ratio,
   )} \nEnter-tag: ${trade.enter_tag ?? ''} \nExit-Tag: ${trade.exit_reason ?? ''}`;
 }
+
+function buildAdjustmentToolTip(trade: Trade, order: Order): string {
+  return `${trade.is_short ? 'Short' : 'Long'} adjustment
+    ${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
+    order.cost,
+    trade.quote_currency ?? '',
+  )}\nEnter-tag: ${trade.enter_tag ?? ''}`;
+}
+
 // const ENTRY_SYMB = 'circle';
 // const EXIT_SYMB = 'rect';
 
@@ -61,12 +70,11 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
               if (
                 trade.close_timestamp <= dataset.data_stop_ts &&
                 trade.close_timestamp > dataset.data_start_ts &&
-                trade.close_date !== undefined &&
-                trade.close_rate !== undefined
+                trade.is_open === false
               ) {
                 tradeData.push([
                   roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp),
-                  trade.close_rate,
+                  order.safe_price,
                   OPEN_CLOSE_SYMBOL,
                   trade.is_short ? 0 : 180,
                   trade.is_short ? SHORT_COLOR : LONG_COLOR,
@@ -85,7 +93,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
                 order.ft_order_side == 'sell' ? 180 : 0,
                 trade.is_short ? SHORT_COLOR : LONG_COLOR,
                 '',
-                buildToolTip(trade, 'adjustment'),
+                buildAdjustmentToolTip(trade, order),
               ]);
             }
           }
