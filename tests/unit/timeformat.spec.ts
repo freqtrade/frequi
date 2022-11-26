@@ -14,15 +14,15 @@ const { getTimeZone } = exportForTesting;
 
 describe('timeformatter.ts', () => {
   it('sets timezone correctly', () => {
-    expect(getTimeZone() == 'UTC');
-    expect(getTimeZone(undefined) == 'UTC');
+    expect(getTimeZone()).toEqual('UTC');
+    expect(getTimeZone(undefined)).toEqual('UTC');
     setTimezone('CET');
-    expect(getTimeZone() == 'CET');
+    expect(getTimeZone()).toEqual('CET');
     setTimezone('UTC');
-    expect(getTimeZone() == 'UTC');
+    expect(getTimeZone()).toEqual('UTC');
   });
   it('timestampmsWithTimezone convert correctly', () => {
-    expect(getTimeZone(undefined) == 'UTC');
+    expect(getTimeZone(undefined)).toEqual('UTC');
     setTimezone('UTC');
     expect(timestampmsWithTimezone(1651057500000, 'CET')).toEqual('2022-04-27 13:05:00 (GMT+2)');
     expect(timestampmsWithTimezone(1651057500000, 'UTC')).toEqual('2022-04-27 11:05:00 (UTC)');

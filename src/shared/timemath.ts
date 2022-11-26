@@ -1,5 +1,5 @@
-const ROUND_UP = 2;
-const ROUND_DOWN = 3;
+export const ROUND_UP = 2;
+export const ROUND_DOWN = 3;
 
 export function roundTimeframe(
   timeframems: number,
