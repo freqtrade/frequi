@@ -31,7 +31,7 @@ describe('Trade', () => {
     cy.get('button').should('contain', 'ETH/USDT').should('be.visible');
     cy.get('button').contains('ETH/USDT').should('be.visible');
 
-    cy.get('a[role="tab"]').contains('General').click();
+    cy.get('button[role="tab"]').contains('General').click();
     cy.get('button').contains('ETH/USDT').should('not.be.visible');
   });
 });
