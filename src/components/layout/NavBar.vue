@@ -114,7 +114,7 @@
           </li>
           <li v-else>
             <!-- should open Modal window! -->
-            <LoginModal />
+            <LoginModal v-if="route?.path !== '/login'" />
           </li>
         </b-navbar-nav>
       </b-collapse>
@@ -235,6 +235,7 @@ export default defineComponent({
       layoutStore,
       botStore,
       settingsStore,
+      route,
     };
   },
 });
