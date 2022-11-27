@@ -1913,10 +1913,10 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bootstrap-vue-3@^0.4.8:
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.4.8.tgz#b03b8c2c16ed77d51d50406e2d50cf944108a037"
-  integrity sha512-e3aOt25rujE0dxLC1gyGVV9ziIgcIqLBMTvuWtTVjc/PFL/+gMn86TPxSlWfh8o6UcJiyVH+MRkGuttsFqaSMw==
+bootstrap-vue-3@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.4.10.tgz#5d5e1aca2f540566728df1f4bd98438e119ee7fd"
+  integrity sha512-dQ7CVNsTx/8EjBvy12Alen64RfKwVfVB2FSnSlhCgl///1rF86GIhMZ7mKoiqAz80FlDGOjzj1A4U5ewpzoW5w==
   dependencies:
     "@nuxt/kit" "3.0.0-rc.12"
 
