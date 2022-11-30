@@ -171,8 +171,8 @@ export class UserService {
             this.logout();
           } else if (err.response && (err.response.status === 500 || err.response.status === 404)) {
             console.log('Bot seems to be offline... - retrying later');
-            reject(err);
           }
+          reject(err);
         });
     });
   }
