@@ -176,8 +176,8 @@ export default defineComponent({
     const resetForm = () => {
       console.log('resetForm');
       selectedPair.value = props.pair;
-      price.value = null;
-      stakeAmount.value = null;
+      price.value = undefined;
+      stakeAmount.value = undefined;
       if (botStore.activeBot.botApiVersion > 1.1) {
         ordertype.value =
           botStore.activeBot.botState?.order_types?.forcebuy ||
