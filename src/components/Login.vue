@@ -93,9 +93,9 @@ export default defineComponent({
     const route = useRoute();
     const botStore = useBotStore();
 
-    const nameState = ref<boolean | null>();
-    const pwdState = ref<boolean | null>();
-    const urlState = ref<boolean | null>();
+    const nameState = ref<boolean | undefined>();
+    const pwdState = ref<boolean | undefined>();
+    const urlState = ref<boolean | undefined>();
     const errorMessage = ref<string>('');
     const errorMessageCORS = ref<boolean>(false);
     const formRef = ref<HTMLFormElement>();
@@ -121,8 +121,8 @@ export default defineComponent({
       auth.value.url = defaultURL;
       auth.value.username = '';
       auth.value.password = '';
-      nameState.value = null;
-      pwdState.value = null;
+      nameState.value = undefined;
+      pwdState.value = undefined;
       errorMessage.value = '';
     };
 
@@ -158,10 +158,10 @@ export default defineComponent({
           if (props.inModal === false) {
             if (typeof route?.query.redirect === 'string') {
               const resolved = router.resolve({ path: route.query.redirect });
-              if (resolved.route.name !== '404') {
-                router.push(resolved.route.path);
-              } else {
+              if (resolved.name === '404') {
                 router.push('/');
+              } else {
+                router.push(resolved.path);
               }
             } else {
               router.push('/');
