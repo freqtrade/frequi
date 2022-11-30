@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { AlertType } from '@/types/alertTypes';
+import { ref } from 'vue';
 
 export const useAlertsStore = defineStore('alerts', {
   state: () => {
@@ -9,13 +10,14 @@ export const useAlertsStore = defineStore('alerts', {
     addAlert(message: AlertType) {
       this.activeMessages.push(message);
     },
-    removeAlert() {
-      this.activeMessages.shift();
+    removeAlert(alert: AlertType) {
+      console.log('dismissed');
+      this.activeMessages = this.activeMessages.filter((v) => v !== alert);
     },
   },
 });
 
 export function showAlert(message: string, severity = '') {
   const alertsStore = useAlertsStore();
-  alertsStore.addAlert({ message, severity });
+  alertsStore.addAlert({ message, severity, timeout: 5 });
 }
