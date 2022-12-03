@@ -64,6 +64,7 @@ forceexit
       <PlayIcon />
     </button>
     <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
+    <MessageBox ref="msgBox" />
   </div>
 </template>
 
@@ -76,7 +77,8 @@ import ReloadIcon from 'vue-material-design-icons/Reload.vue';
 import ForceExitIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 import ForceEntryIcon from 'vue-material-design-icons/PlusBoxMultipleOutline.vue';
 import ForceEntryForm from './ForceEntryForm.vue';
-import { defineComponent, computed, ref, getCurrentInstance } from 'vue';
+import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -89,52 +91,67 @@ export default defineComponent({
     ReloadIcon,
     ForceExitIcon,
     ForceEntryIcon,
+    MessageBox,
   },
   setup() {
-    const root = getCurrentInstance();
     const botStore = useBotStore();
     const forceEnter = ref<boolean>(false);
+    const msgBox = ref<typeof MessageBox>();
 
     const isRunning = computed((): boolean => {
       return botStore.activeBot.botState?.state === 'running';
     });
 
     const handleStopBot = () => {
-      root?.proxy.$bvModal.msgBoxConfirm('Stop Bot?').then((value: boolean) => {
-        if (value) {
-          botStore.activeBot.stopBot();
-        }
-      });
+      const msg: MsgBoxObject = {
+        title: 'Stop Bot',
+        message: 'Stop the bot loop from running?',
+        accept: () => {
+          console.log('stopped...');
+          // botStore.activeBot.stopBot();
+        },
+      };
+      msgBox.value?.show(msg);
     };
 
     const handleStopBuy = () => {
-      root?.proxy.$bvModal
-        .msgBoxConfirm('Stop buying? Freqtrade will continue to handle open trades.')
-        .then((value: boolean) => {
-          if (value) {
-            botStore.activeBot.stopBuy();
-          }
-        });
+      const msg: MsgBoxObject = {
+        title: 'Stop Buying',
+        message: 'Freqtrade will continue to handle open trades.',
+        accept: () => {
+          console.log('stopBuy...');
+          botStore.activeBot.stopBuy();
+        },
+      };
+      msgBox.value?.show(msg);
     };
 
     const handleReloadConfig = () => {
-      root?.proxy.$bvModal.msgBoxConfirm('Reload configuration?').then((value: boolean) => {
-        if (value) {
+      const msg: MsgBoxObject = {
+        title: 'Reload',
+        message: 'Reload configuration (including strategy)?',
+        accept: () => {
+          console.log('reload...');
           botStore.activeBot.reloadConfig();
-        }
-      });
+        },
+      };
+      msgBox.value?.show(msg);
     };
 
     const handleForceExit = () => {
-      root?.proxy.$bvModal.msgBoxConfirm(`Really forceexit ALL trades?`).then((value: boolean) => {
-        if (value) {
+      const msg: MsgBoxObject = {
+        title: 'ForceExit all',
+        message: 'Really forceexit ALL trades?',
+        accept: () => {
+          console.log('forceexit all...');
           const payload: ForceSellPayload = {
             tradeid: 'all',
             // TODO: support ordertype (?)
           };
           botStore.activeBot.forceexit(payload);
-        }
-      });
+        },
+      };
+      msgBox.value?.show(msg);
     };
     return {
       handleStopBot,
@@ -144,6 +161,7 @@ export default defineComponent({
       forceEnter,
       botStore,
       isRunning,
+      msgBox,
     };
   },
 });
