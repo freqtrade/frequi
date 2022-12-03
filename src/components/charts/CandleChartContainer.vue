@@ -98,7 +98,7 @@ import vSelect from 'vue-select';
 import { useSettingsStore } from '@/stores/settings';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 
-import { defineComponent, ref, computed, onMounted, watch, getCurrentInstance } from 'vue';
+import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({

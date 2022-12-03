@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { AlertType } from '@/types/alertTypes';
-import { ref } from 'vue';
 
 export const useAlertsStore = defineStore('alerts', {
   state: () => {
