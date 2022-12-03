@@ -18,8 +18,9 @@
         <b-form-input
           id="url-input"
           v-model="auth.url"
-          :state="urlState"
           required
+          trim
+          :state="urlState === '' ? null : urlState"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -34,6 +35,7 @@
           v-model="auth.username"
           required
           placeholder="Freqtrader"
+          :state="nameState === '' ? null : nameState"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -48,6 +50,7 @@
           v-model="auth.password"
           required
           type="password"
+          :state="pwdState === '' ? null : pwdState"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -93,9 +96,9 @@ export default defineComponent({
     const route = useRoute();
     const botStore = useBotStore();
 
-    const nameState = ref<boolean | undefined>();
-    const pwdState = ref<boolean | undefined>();
-    const urlState = ref<boolean | undefined>();
+    const nameState = ref<boolean | ''>('');
+    const pwdState = ref<boolean | ''>('');
+    const urlState = ref<boolean | ''>('');
     const errorMessage = ref<string>('');
     const errorMessageCORS = ref<boolean>(false);
     const formRef = ref<HTMLFormElement>();
@@ -121,8 +124,9 @@ export default defineComponent({
       auth.value.url = defaultURL;
       auth.value.username = '';
       auth.value.password = '';
-      nameState.value = undefined;
-      pwdState.value = undefined;
+      nameState.value = '';
+      pwdState.value = '';
+      urlState.value = '';
       errorMessage.value = '';
     };
 
