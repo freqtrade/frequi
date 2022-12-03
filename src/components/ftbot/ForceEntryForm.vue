@@ -13,7 +13,8 @@
         v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed"
         label="Order direction (Long or Short)"
         label-for="order-direction"
-        invalid-feedback="Order direction must be empty or a positive number"
+        invalid-feedback="Order direction must be set"
+        :state="orderSide !== undefined"
       >
         <b-form-radio-group
           id="order-direction"
