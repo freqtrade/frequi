@@ -27,6 +27,7 @@ describe('Trade', () => {
     cy.wait('@Blacklist');
     cy.wait('@Locks');
     cy.wait('@Performance');
+    cy.get('.drag-header').contains('Multi Pane').should('be.visible');
     cy.get('button').should('contain', 'BTC/USDT');
     cy.get('button').should('contain', 'ETH/USDT').should('be.visible');
     cy.get('button').contains('ETH/USDT').should('be.visible');
