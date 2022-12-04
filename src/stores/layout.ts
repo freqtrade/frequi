@@ -119,14 +119,24 @@ export const useLayoutStore = defineStore('layoutStore', {
   persist: {
     key: STORE_LAYOUTS,
     afterRestore: (context) => {
-      console.log('after restore - ', context.store);
       if (
         context.store.dashboardLayout === null ||
-        typeof context.store.dashboardLayout === 'string'
+        typeof context.store.dashboardLayout === 'string' ||
+        context.store.dashboardLayout.length === 0 ||
+        typeof context.store.dashboardLayout[0]['i'] === 'string' ||
+        context.store.dashboardLayout.length < DEFAULT_DASHBOARD_LAYOUT.length
       ) {
+        console.log('loading dashboard Layout from default.');
         context.store.dashboardLayout = JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT));
       }
-      if (context.store.tradingLayout === null || typeof context.store.tradingLayout === 'string') {
+      if (
+        context.store.tradingLayout === null ||
+        typeof context.store.tradingLayout === 'string' ||
+        context.store.tradingLayout.length === 0 ||
+        typeof context.store.tradingLayout[0]['i'] === 'string' ||
+        context.store.tradingLayout.length < DEFAULT_TRADING_LAYOUT.length
+      ) {
+        console.log('loading trading Layout from default.');
         context.store.tradingLayout = JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT));
       }
     },
