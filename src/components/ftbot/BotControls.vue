@@ -107,8 +107,7 @@ export default defineComponent({
         title: 'Stop Bot',
         message: 'Stop the bot loop from running?',
         accept: () => {
-          console.log('stopped...');
-          // botStore.activeBot.stopBot();
+          botStore.activeBot.stopBot();
         },
       };
       msgBox.value?.show(msg);
@@ -119,7 +118,6 @@ export default defineComponent({
         title: 'Stop Buying',
         message: 'Freqtrade will continue to handle open trades.',
         accept: () => {
-          console.log('stopBuy...');
           botStore.activeBot.stopBuy();
         },
       };
@@ -143,7 +141,6 @@ export default defineComponent({
         title: 'ForceExit all',
         message: 'Really forceexit ALL trades?',
         accept: () => {
-          console.log('forceexit all...');
           const payload: ForceSellPayload = {
             tradeid: 'all',
             // TODO: support ordertype (?)

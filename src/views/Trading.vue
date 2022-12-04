@@ -172,8 +172,6 @@ export default defineComponent({
     DailyStats,
     DraggableContainer,
     FTBotAPIPairList,
-    // GridItem,
-    // GridLayout,
     PairLockList,
     PairSummary,
     Performance,

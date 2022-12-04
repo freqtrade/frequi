@@ -262,10 +262,4 @@ export default defineComponent({
 .nav-link:active {
   color: white !important;
 }
-
-// .verticalCenter {
-//   align-items: center;
-//   display: inline-flex;
-//   height: 100%;
-// }
 </style>
