@@ -23,14 +23,14 @@
     <!-- Blacklsit -->
     <div>
       <label
-        class="mr-auto h3"
+        class="me-auto h3"
         title="Blacklist - Select (followed by a click on '-') to remove pairs"
         >Blacklist</label
       >
-      <div class="float-right d-flex d-flex-columns pr-1">
+      <div class="float-end d-flex d-flex-columns pe-1">
         <b-button
           id="blacklist-add-btn"
-          class="mr-1"
+          class="me-1"
           :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
           size="sm"
           >+
@@ -49,7 +49,7 @@
       <b-popover
         title="Add to blacklist"
         target="blacklist-add-btn"
-        triggers="click blur"
+        triggers="click"
         :show.sync="blackListShow"
       >
         <form ref="form" @submit.prevent>
@@ -64,7 +64,7 @@
             </b-form-group>
             <b-button
               id="blacklist-submit"
-              class="float-right mb-2"
+              class="float-end mb-2"
               size="sm"
               type="submit"
               @click="addBlacklistPair"

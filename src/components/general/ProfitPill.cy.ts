@@ -1,12 +1,8 @@
 import ProfitPill from './ProfitPill.vue';
-import { createLocalVue } from '@vue/test-utils';
-
-const localVue = createLocalVue();
 
 describe('ProfitPill.vue', () => {
   it('Shows a Green pill with positive profits', () => {
     cy.mount(ProfitPill, {
-      localVue,
       propsData: {
         profitRatio: 0.051,
         profitAbs: 0.1,
@@ -21,7 +17,6 @@ describe('ProfitPill.vue', () => {
   });
   it('Shows a Red pill with positive profits', () => {
     cy.mount(ProfitPill, {
-      localVue,
       propsData: {
         profitRatio: -0.1,
         profitAbs: -0.1,
@@ -38,7 +33,6 @@ describe('ProfitPill.vue', () => {
   });
   it('Shows a pill with 0.0 profits.', () => {
     cy.mount(ProfitPill, {
-      localVue,
       propsData: {
         profitRatio: 0.0,
         profitAbs: 0.0,
@@ -54,7 +48,6 @@ describe('ProfitPill.vue', () => {
   });
   it('Shows a pill without relative profits.', () => {
     cy.mount(ProfitPill, {
-      localVue,
       propsData: {
         profitRatio: undefined,
         profitAbs: 223,

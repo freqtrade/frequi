@@ -1,20 +1,21 @@
-import Vue from 'vue';
-import './plugins/bootstrap-vue';
+import { createApp } from 'vue';
+import { BootstrapVue3 } from './plugins/bootstrap-vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia, PiniaVuePlugin } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import VueRouter from 'vue-router';
+import GridLayout from 'vue3-drr-grid-layout';
 
-Vue.use(PiniaVuePlugin);
+const myApp = createApp(App);
+
+myApp.use(PiniaVuePlugin);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
+myApp.use(pinia);
 
-Vue.use(VueRouter);
+myApp.use(router);
+myApp.use(BootstrapVue3);
+myApp.use(GridLayout);
 
-Vue.config.productionTip = false;
-new Vue({
-  router,
-  render: (h) => h(App),
-  pinia,
-}).$mount('#app');
+// Vue.config.productionTip = false;
+myApp.mount('#app');

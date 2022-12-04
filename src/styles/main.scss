@@ -2,8 +2,9 @@
 @import 'bootstrap_variables_ovw';
 
 @import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-vue/src/index';
+// @import 'bootstrap-vue/src/index';
 
-@import "vue-select/src/scss/vue-select.scss";
+// @import "vue-select/src/scss/vue-select.scss";
+@import 'vue-select/dist/vue-select.css';
 @import 'variables';
 @import 'styles_ovw';

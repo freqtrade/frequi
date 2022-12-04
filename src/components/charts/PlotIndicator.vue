@@ -6,7 +6,7 @@
           <b-form-input v-model="indicatorFilter" placeholder="Filter indicators"></b-form-input>
           <b-input-group-append>
             <Reset
-              class="pointer align-self-center ml-1"
+              class="pointer align-self-center ms-1"
               :size="18"
               @click="indicatorFilter = ''"
             ></Reset>
@@ -36,7 +36,7 @@
     <b-form-group label="Color" label-for="colsel" size="sm">
       <b-input-group>
         <b-input-group-prepend>
-          <div :style="{ 'background-color': selColor }" class="colorbox mr-2"></div>
+          <div :style="{ 'background-color': selColor }" class="colorbox me-2"></div>
           <!-- <b-form-input
             id="colsel"
             v-model="selColor"
@@ -67,7 +67,7 @@
       </b-button>
       <b-button
         v-if="addNew"
-        class="ml-1 flex-grow-1"
+        class="ms-1 flex-grow-1"
         variant="secondary"
         title="Add "
         size="sm"
@@ -92,11 +92,11 @@ export default defineComponent({
     Reset,
   },
   props: {
-    value: { required: true, type: Object as () => Record<string, IndicatorConfig> },
+    modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
     columns: { required: true, type: Array as () => string[] },
     addNew: { required: true, type: Boolean },
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const selColor = ref(randomColor());
     const graphType = ref<ChartType>(ChartType.line);
@@ -127,7 +127,7 @@ export default defineComponent({
       };
     });
     const emitIndicator = () => {
-      emit('input', combinedIndicator.value);
+      emit('update:modelValue', combinedIndicator.value);
     };
 
     const clickCancel = () => {
@@ -136,13 +136,13 @@ export default defineComponent({
     };
 
     watch(
-      () => props.value,
+      () => props.modelValue,
       () => {
-        [selAvailableIndicator.value] = Object.keys(props.value);
+        [selAvailableIndicator.value] = Object.keys(props.modelValue);
         cancelled.value = false;
-        if (selAvailableIndicator.value && props.value) {
-          selColor.value = props.value[selAvailableIndicator.value].color || randomColor();
-          graphType.value = props.value[selAvailableIndicator.value].type || ChartType.line;
+        if (selAvailableIndicator.value && props.modelValue) {
+          selColor.value = props.modelValue[selAvailableIndicator.value].color || randomColor();
+          graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
         }
       },
     );

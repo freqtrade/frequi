@@ -2,7 +2,7 @@
   <div>
     <b-modal
       id="forceexit-modal"
-      ref="modal"
+      v-model="model"
       title="Force exiting a trade"
       @show="resetForm"
       @hidden="resetForm"
@@ -16,9 +16,10 @@
         </p>
         <b-form-group
           v-if="botStore.activeBot.botApiVersion > 1.12"
-          :label="`*amount in ${trade.base_currency} [optional]`"
+          :label="`*Amount in ${trade.base_currency} [optional]`"
           label-for="stake-input"
           invalid-feedback="Amount must be empty or a positive number"
+          :state="amount !== undefined && amount > 0"
         >
           <b-form-input
             id="stake-input"
@@ -43,10 +44,11 @@
           label="*OrderType"
           label-for="ordertype-input"
           invalid-feedback="OrderType"
+          :state="ordertype !== undefined"
         >
           <b-form-select
             v-model="ordertype"
-            class="ml-2"
+            class="ms-2"
             :options="['market', 'limit']"
             style="min-width: 7em"
             size="sm"
@@ -62,7 +64,7 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceSellPayload, Trade } from '@/types';
 
-import { defineComponent, ref, nextTick, getCurrentInstance } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 
 export default defineComponent({
   name: 'ForceExitForm',
@@ -71,13 +73,14 @@ export default defineComponent({
       type: Object as () => Trade,
       required: true,
     },
+    modelValue: { required: true, default: false, type: Boolean },
   },
-  setup(props) {
-    const root = getCurrentInstance();
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     const botStore = useBotStore();
 
     const form = ref<HTMLFormElement>();
-    const amount = ref<number | null>(null);
+    const amount = ref<number | undefined>(undefined);
     const ordertype = ref('limit');
 
     const checkFormValidity = () => {
@@ -85,6 +88,15 @@ export default defineComponent({
 
       return valid;
     };
+
+    const model = computed({
+      get() {
+        return props.modelValue;
+      },
+      set(value: boolean) {
+        emit('update:modelValue', value);
+      },
+    });
 
     const handleSubmit = () => {
       // Exit when the form isn't valid
@@ -101,9 +113,7 @@ export default defineComponent({
         payload.amount = amount.value;
       }
       botStore.activeBot.forceexit(payload);
-      nextTick(() => {
-        root?.proxy.$bvModal.hide('forceexit-modal');
-      });
+      model.value = false;
     };
     const resetForm = () => {
       amount.value = props.trade.amount;
@@ -115,9 +125,7 @@ export default defineComponent({
       }
     };
 
-    const handleEntry = (bvModalEvt) => {
-      // Prevent modal from closing
-      bvModalEvt.preventDefault();
+    const handleEntry = () => {
       // Trigger submit handler
       handleSubmit();
     };
@@ -129,6 +137,7 @@ export default defineComponent({
       resetForm,
       amount,
       ordertype,
+      model,
     };
   },
 });

@@ -25,7 +25,7 @@
     <div v-if="botStore.activeBot.detailTradeId" class="d-flex flex-column">
       <b-button
         size="sm"
-        class="align-self-start mt-1 ml-1"
+        class="align-self-start mt-1 ms-1"
         @click="botStore.activeBot.setDetailTrade(null)"
         ><BackIcon /> Back</b-button
       >

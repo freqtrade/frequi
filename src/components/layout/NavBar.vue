@@ -1,13 +1,13 @@
 <template>
   <header>
-    <b-navbar toggleable="sm" type="dark" variant="primary">
+    <b-navbar toggleable="sm" dark variant="primary">
       <router-link class="navbar-brand" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
       </router-link>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
-      <!-- <ReloadControl class="mr-3" /> -->
+      <!-- <ReloadControl class="me-3" /> -->
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" class="text-right text-md-center" is-nav>
@@ -27,7 +27,7 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto" menu-class="w-100">
+        <b-navbar-nav class="ms-auto" menu-class="w-100">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div class="d-flex justify-content-between">
             <b-dropdown
@@ -44,10 +44,12 @@
               </template>
               <BotList :small="true" />
             </b-dropdown>
-            <ReloadControl class="mr-3" />
+            <ReloadControl class="me-3" />
           </div>
-          <li class="d-none d-sm-block nav-item text-secondary mr-2">
-            <b-nav-text class="verticalCenter small mr-2">
+          <li
+            class="d-none d-sm-flex flex-sm-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
+          >
+            <b-nav-text class="verticalCenter small me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
@@ -67,11 +69,11 @@
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
-              <b-dropdown-item>V: {{ settingsStore.uiVersion }}</b-dropdown-item>
+              <span class="ps-3">V: {{ settingsStore.uiVersion }}</span>
               <router-link class="dropdown-item" to="/settings">Settings</router-link>
-              <b-form-checkbox v-model="layoutStore.layoutLocked" class="pl-5"
-                >Lock layout</b-form-checkbox
-              >
+              <div class="ps-3">
+                <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
+              </div>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
               <router-link
                 v-if="botStore.botCount === 1"
@@ -83,9 +85,9 @@
             </b-nav-item-dropdown>
             <div class="d-block d-sm-none">
               <!-- Visible only on XS -->
-              <li class="nav-item text-secondary ml-2 d-sm-none d-flex justify-content-between">
+              <li class="nav-item text-secondary ms-2 d-sm-none d-flex justify-content-between">
                 <div class="d-flex">
-                  <b-nav-text class="verticalCenter small mr-2">
+                  <b-nav-text class="verticalCenter small me-2">
                     {{
                       (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                       'No bot selected'
@@ -112,7 +114,7 @@
           </li>
           <li v-else>
             <!-- should open Modal window! -->
-            <LoginModal />
+            <LoginModal v-if="route?.path !== '/login'" />
           </li>
         </b-navbar-nav>
       </b-collapse>
@@ -128,10 +130,10 @@ import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
 import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from 'vue';
-import { useRoute } from '@/composables/router-helper';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'NavBar',
@@ -199,7 +201,6 @@ export default defineComponent({
     onMounted(async () => {
       await settingsStore.loadUIVersion();
       pingInterval.value = window.setInterval(botStore.pingAll, 60000);
-      botStore.allRefreshFull();
     });
 
     settingsStore.$subscribe((_, state) => {
@@ -234,6 +235,7 @@ export default defineComponent({
       layoutStore,
       botStore,
       settingsStore,
+      route,
     };
   },
 });
@@ -253,17 +255,11 @@ export default defineComponent({
   padding-left: 0.5em;
 }
 .navbar {
-  padding: 0.2rem 1rem;
+  padding: 0.2rem 0rem;
 }
 
 .router-link-active,
 .nav-link:active {
   color: white !important;
-}
-
-.verticalCenter {
-  align-items: center;
-  display: inline-flex;
-  height: 100%;
 }
 </style>

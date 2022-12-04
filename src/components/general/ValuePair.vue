@@ -19,7 +19,7 @@ export default defineComponent({
     },
     classLabel: {
       type: String,
-      default: 'col-4 font-weight-bold mb-0',
+      default: 'col-4 fw-bold mb-0',
     },
     classValue: {
       type: String,

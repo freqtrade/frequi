@@ -334,4 +334,5 @@ export function initBots() {
   });
   botStore.selectFirstBot();
   botStore.startRefresh();
+  botStore.allRefreshFull();
 }

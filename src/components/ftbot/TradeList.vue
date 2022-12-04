@@ -5,7 +5,7 @@
       small
       hover
       stacked="md"
-      :items="trades"
+      :items="[...trades]"
       :fields="tableFields"
       show-empty
       :empty-text="emptyText"
@@ -29,7 +29,12 @@
         >
           <ActionIcon :size="16" title="Actions" />
         </b-button>
-        <b-popover :target="`btn-actions_${row.index}`" triggers="focus" placement="left">
+        <b-popover
+          :target="`btn-actions_${row.index}`"
+          :title="`Actions for ${row.item.pair}`"
+          triggers="focus"
+          placement="left"
+        >
           <trade-actions
             :trade="row.item"
             :bot-api-version="botStore.activeBot.botApiVersion"
@@ -83,7 +88,15 @@
         style="width: unset"
       />
     </div>
-    <force-exit-form v-if="activeTrades" :trade="feTrade" />
+    <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
+    <b-modal
+      ref="removeTradeModal"
+      v-model="removeTradeVisible"
+      title="Exit trade"
+      @ok="forceExitExecuter"
+    >
+      {{ confirmExitText }}
+    </b-modal>
   </div>
 </template>
 
@@ -97,7 +110,7 @@ import TradeProfit from './TradeProfit.vue';
 import TradeActions from './TradeActions.vue';
 import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
-import { defineComponent, ref, computed, watch, getCurrentInstance, nextTick } from 'vue';
+import { defineComponent, ref, computed, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -113,7 +126,6 @@ export default defineComponent({
     emptyText: { default: 'No Trades to show.', type: String },
   },
   setup(props) {
-    const root = getCurrentInstance();
     const botStore = useBotStore();
     const currentPage = ref(1);
     const selectedItemIndex = ref();
@@ -121,6 +133,10 @@ export default defineComponent({
     const feTrade = ref<Trade>({} as Trade);
     const perPage = props.activeTrades ? 200 : 15;
     const tradesTable = ref<HTMLFormElement>();
+    const forceExitVisible = ref(false);
+    const removeTradeVisible = ref(false);
+    const confirmExitText = ref('');
+    const removeTradeModal = ref<HTMLElement>();
 
     const openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
     const closedFields: Record<string, string | Function>[] = [
@@ -164,35 +180,51 @@ export default defineComponent({
       { key: 'open_timestamp', label: 'Open date' },
       ...(props.activeTrades ? openFields : closedFields),
     ];
-
+    const feOrderType = ref<string | undefined>(undefined);
     const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
-      root?.proxy.$bvModal
-        .msgBoxConfirm(
-          `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`,
-        )
-        .then((value: boolean) => {
-          if (value) {
-            const payload: MultiForcesellPayload = {
-              tradeid: String(item.trade_id),
-              botId: item.botId,
-            };
-            if (ordertype) {
-              payload.ordertype = ordertype;
-            }
-            botStore
-              .forceSellMulti(payload)
-              .then((xxx) => console.log(xxx))
-              .catch((error) => console.log(error.response));
-          }
-        });
+      feTrade.value = item;
+      confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
+      removeTradeVisible.value = true;
+      feOrderType.value = ordertype;
+    };
+
+    const forceExitExecuter = () => {
+      // TODO: this should be done properly.
+      if (confirmExitText.value.includes('delete')) {
+        const payload: MultiDeletePayload = {
+          tradeid: String(feTrade.value.trade_id),
+          botId: feTrade.value.botId,
+        };
+        botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
+        removeTradeVisible.value = false;
+        return;
+      }
+      console.log(confirmExitText.value);
+
+      const payload: MultiForcesellPayload = {
+        tradeid: String(feTrade.value.trade_id),
+        botId: feTrade.value.botId,
+      };
+      if (feOrderType.value) {
+        payload.ordertype = feOrderType.value;
+      }
+      botStore
+        .forceSellMulti(payload)
+        .then((xxx) => console.log(xxx))
+        .catch((error) => console.log(error.response));
+      feOrderType.value = undefined;
+      removeTradeVisible.value = false;
+    };
+
+    const removeTradeHandler = (item: Trade) => {
+      confirmExitText.value = `Really delete trade ${item.trade_id} (Pair ${item.pair})?`;
+      feTrade.value = item;
+      removeTradeVisible.value = true;
     };
 
     const forceExitPartialHandler = (item: Trade) => {
       feTrade.value = item;
-      nextTick(() => {
-        console.log('showing modal', item);
-        root?.proxy.$bvModal.show('forceexit-modal');
-      });
+      forceExitVisible.value = true;
     };
 
     const handleContextMenuEvent = (item, index, event) => {
@@ -205,31 +237,11 @@ export default defineComponent({
       console.log(item);
     };
 
-    const removeTradeHandler = (item) => {
-      console.log(item);
-      root?.proxy.$bvModal
-        .msgBoxConfirm(`Really delete trade ${item.trade_id} (Pair ${item.pair})?`)
-        .then((value: boolean) => {
-          if (value) {
-            const payload: MultiDeletePayload = {
-              tradeid: String(item.trade_id),
-              botId: item.botId,
-            };
-            botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-          }
-        });
-    };
-
-    const onRowClicked = (item, index) => {
+    const onRowClicked = (item) => {
       // Only allow single selection mode!
-      if (
-        item &&
-        item.trade_id !== botStore.activeBot.detailTradeId &&
-        !tradesTable.value?.isRowSelected(index)
-      ) {
+      if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
         botStore.activeBot.setDetailTrade(item);
       } else {
-        console.log('unsetting item');
         botStore.activeBot.setDetailTrade(null);
       }
     };
@@ -275,6 +287,11 @@ export default defineComponent({
       onRowClicked,
       onRowSelected,
       feTrade,
+      forceExitVisible,
+      removeTradeVisible,
+      confirmExitText,
+      removeTradeModal,
+      forceExitExecuter,
     };
   },
 });

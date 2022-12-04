@@ -3,28 +3,16 @@
     <b-alert
       v-for="(alert, index) in alertStore.activeMessages"
       :key="index"
+      v-model="alert.timeout"
       variant="warning"
       dismissible
-      :show="5"
-      :value="!!alert.message"
-      @dismissed="alertStore.removeAlert"
+      @closed="alertStore.removeAlert(alert)"
+      >{{ alert.message }}</b-alert
     >
-      {{ alert.message }}
-    </b-alert>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useAlertsStore } from '@/stores/alerts';
-
-export default defineComponent({
-  name: 'BotAlerts',
-  setup() {
-    const alertStore = useAlertsStore();
-    return {
-      alertStore,
-    };
-  },
-});
+const alertStore = useAlertsStore();
 </script>

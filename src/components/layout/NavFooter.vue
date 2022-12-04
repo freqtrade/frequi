@@ -2,7 +2,7 @@
   <footer class="d-md-none">
     <!-- Only visible on xs (phone) viewport! -->
     <hr class="my-0" />
-    <div class="d-flex flex-align-center justify-content-center">
+    <div class="d-flex flex-align-center justify-content-between px-2">
       <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/open_trades">
         <OpenTradesIcon />
         Trades

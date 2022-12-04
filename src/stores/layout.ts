@@ -1,22 +1,22 @@
+import { GridItemData } from '@/types';
 import { defineStore } from 'pinia';
-import { GridItemData } from 'vue-grid-layout';
 
 export enum TradeLayout {
-  multiPane = 'g-multiPane',
-  openTrades = 'g-openTrades',
-  tradeHistory = 'g-tradeHistory',
-  tradeDetail = 'g-tradeDetail',
-  chartView = 'g-chartView',
+  multiPane = 0,
+  openTrades = 1,
+  tradeHistory = 2,
+  tradeDetail = 3,
+  chartView = 4,
 }
 
 export enum DashboardLayout {
-  dailyChart = 'g-dailyChart',
-  botComparison = 'g-botComparison',
-  allOpenTrades = 'g-allOpenTrades',
-  cumChartChart = 'g-cumChartChart',
-  allClosedTrades = 'g-allClosedTrades',
-  profitDistributionChart = 'g-profitDistributionChart',
-  tradesLogChart = 'g-TradesLogChart',
+  dailyChart = 0,
+  botComparison = 1,
+  allOpenTrades = 2,
+  cumChartChart = 3,
+  allClosedTrades = 4,
+  profitDistributionChart = 5,
+  tradesLogChart = 6,
 }
 
 // Define default layouts
@@ -88,7 +88,7 @@ migrateLayoutSettings();
  * @param gridLayout Array of grid layouts used in this layout. Must be passed to GridLayout, too.
  * @param name Name within the dashboard layout to find
  */
-export function findGridLayout(gridLayout: GridItemData[], name: string): GridItemData {
+export function findGridLayout(gridLayout: GridItemData[], name: number): GridItemData {
   let layout = gridLayout.find((value) => value.i === name);
   if (!layout) {
     layout = { i: name, x: 0, y: 0, w: 4, h: 6 };
@@ -119,14 +119,24 @@ export const useLayoutStore = defineStore('layoutStore', {
   persist: {
     key: STORE_LAYOUTS,
     afterRestore: (context) => {
-      console.log('after restore - ', context.store);
       if (
         context.store.dashboardLayout === null ||
-        typeof context.store.dashboardLayout === 'string'
+        typeof context.store.dashboardLayout === 'string' ||
+        context.store.dashboardLayout.length === 0 ||
+        typeof context.store.dashboardLayout[0]['i'] === 'string' ||
+        context.store.dashboardLayout.length < DEFAULT_DASHBOARD_LAYOUT.length
       ) {
+        console.log('loading dashboard Layout from default.');
         context.store.dashboardLayout = JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT));
       }
-      if (context.store.tradingLayout === null || typeof context.store.tradingLayout === 'string') {
+      if (
+        context.store.tradingLayout === null ||
+        typeof context.store.tradingLayout === 'string' ||
+        context.store.tradingLayout.length === 0 ||
+        typeof context.store.tradingLayout[0]['i'] === 'string' ||
+        context.store.tradingLayout.length < DEFAULT_TRADING_LAYOUT.length
+      ) {
+        console.log('loading trading Layout from default.');
         context.store.tradingLayout = JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT));
       }
     },

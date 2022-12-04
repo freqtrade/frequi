@@ -31,12 +31,13 @@ describe('Login', () => {
     cy.visit('/trade');
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq('/login');
-      expect(loc.search).to.eq('?redirect=%2Ftrade');
+      expect(loc.search).to.eq('?redirect=/trade');
     });
   });
 
   it('Test Login', () => {
     cy.visit('/login');
+    cy.get('.card-header').contains('Freqtrade bot Login');
     cy.get('input[id=name-input]').type('TestBot');
     cy.get('input[id=username-input]').type('Freqtrader');
     cy.get('input[id=password-input]').type('SuperDuperBot');
@@ -93,6 +94,7 @@ describe('Login', () => {
 
   it('Test Login failed - wrong api url', () => {
     cy.visit('/login');
+    cy.get('.card-header').contains('Freqtrade bot Login');
     cy.get('input[id=name-input]').type('TestBot');
     cy.get('input[id=username-input]').type('Freqtrader');
     cy.get('input[id=password-input]').type('SuperDuperBot');
@@ -123,6 +125,7 @@ describe('Login', () => {
 
   it('Test Login failed - wrong password url', () => {
     cy.visit('/login');
+    cy.get('.card-header').contains('Freqtrade bot Login');
     cy.get('input[id=name-input]').type('TestBot');
     cy.get('input[id=username-input]').type('Freqtrader');
     cy.get('input[id=password-input]').type('SuperDuperBot');

@@ -12,10 +12,11 @@ function tradeMocks() {
 }
 
 describe('Trade', () => {
-  it('Trade view', () => {
+  it('Trade view', { scrollBehavior: false }, () => {
     defaultMocks();
     tradeMocks();
     setLoginInfo();
+    cy.viewport('macbook-11');
 
     cy.visit('/trade');
     cy.wait('@Ping');
@@ -27,11 +28,37 @@ describe('Trade', () => {
     cy.wait('@Blacklist');
     cy.wait('@Locks');
     cy.wait('@Performance');
+    cy.get('.drag-header').contains('Multi Pane').should('be.visible');
+    cy.get('.drag-header').contains('Chart').should('be.visible');
     cy.get('button').should('contain', 'BTC/USDT');
     cy.get('button').should('contain', 'ETH/USDT').should('be.visible');
     cy.get('button').contains('ETH/USDT').should('be.visible');
 
-    cy.get('a[role="tab"]').contains('General').click();
+    // Test messageBox behavior
+    // No modal visible
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-secondary')
+      .filter(':visible')
+      .should('have.length', 0);
+
+    cy.get('button[title*="Stop Trading"]').click();
+    // Modal open
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-secondary')
+      .filter(':visible')
+      .contains('Cancel')
+      .should('be.visible')
+      .click();
+    // Modal closed
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-secondary')
+      .filter(':visible')
+      .should('have.length', 0);
+
+    // General
+    cy.get('button[role="tab"]').contains('General').click();
     cy.get('button').contains('ETH/USDT').should('not.be.visible');
+    // 2nd segment
+    cy.get('.drag-header').contains('Open Trades').scrollIntoView().should('be.visible');
+    cy.get('.drag-header').contains('Closed Trades').scrollIntoView().should('be.visible');
+    cy.get('span').contains('TRX/USDT').should('be.visible');
+    cy.get('td').contains('8070.5').should('be.visible');
   });
 });

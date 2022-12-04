@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      class="btn btn-secondary float-right"
+      class="btn btn-secondary float-end"
       title="Refresh"
       aria-label="Refresh"
       @click="botStore.activeBot.getBacktestHistory"
@@ -12,7 +12,7 @@
       Load Historic results from disk. You can click on multiple results to load all of them into
       freqUI.
     </p>
-    <b-list-group v-if="botStore.activeBot.backtestHistoryList" class="ml-2">
+    <b-list-group v-if="botStore.activeBot.backtestHistoryList" class="ms-2">
       <b-list-group-item
         v-for="(res, idx) in botStore.activeBot.backtestHistoryList"
         :key="idx"

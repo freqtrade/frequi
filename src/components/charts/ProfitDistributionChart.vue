@@ -5,7 +5,7 @@
     </div>
     <b-form-group
       class="w-25 order-1"
-      :class="showTitle ? 'ml-5 pl-5' : 'position-absolute'"
+      :class="showTitle ? 'ms-5 ps-5' : 'position-absolute'"
       label="Bins"
       label-for="input-bins"
       label-cols="6"

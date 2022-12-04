@@ -1,16 +1,16 @@
 <template>
   <div
-    class="d-flex justify-content-between align-items-center profit-pill pl-2 pr-1"
+    class="d-flex justify-content-between align-items-center profit-pill ps-2 pe-1"
     :class="isProfitable ? 'profit-pill-profit' : ''"
     :title="profitDesc"
   >
-    <profit-symbol :profit="profitRatio || profitAbs" />
+    <profit-symbol :profit="(profitRatio || profitAbs) ?? 0" />
 
     <div class="d-flex justify-content-center align-items-center flex-grow-1">
       {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
       <span
         v-if="profitString"
-        class="ml-1"
+        class="ms-1"
         :class="profitRatio ? 'small' : ''"
         :title="stakeCurrency"
         >{{ profitString }}</span

@@ -1,30 +1,39 @@
 <template>
-  <div class="d-flex align-items-center justify-content-between w-100">
-    <span class="mr-2">{{ bot.botName || bot.botId }}</span>
+  <div v-if="bot" class="d-flex align-items-center justify-content-between w-100">
+    <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="align-items-center d-flex">
-      <span class="ml-2 mr-1 align-middle">{{
-        botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
-      }}</span>
       <b-form-checkbox
         v-model="autoRefreshLoc"
-        class="ml-auto float-right mr-2 my-auto"
+        class="ms-auto float-end me-2 my-auto mt-1"
         title="AutoRefresh"
         variant="secondary"
+        switch
         @change="changeEvent"
       >
-        R
+        <span class="ms-2 me-1 align-middle">{{
+          botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
+        }}</span>
       </b-form-checkbox>
-      <div v-if="!noButtons" class="d-flex flex-align-cent">
-        <b-button class="ml-1" size="sm" title="Delete bot" @click="$emit('edit')">
+      <div v-if="!noButtons" class="float-end d-flex flex-align-center">
+        <b-button class="ms-1" size="sm" title="Delete bot" @click="$emit('edit')">
           <EditIcon :size="16" />
         </b-button>
 
-        <b-button class="ml-1" size="sm" title="Delete bot" @click.prevent="clickRemoveBot(bot)">
+        <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
           <DeleteIcon :size="16" title="Delete Bot" />
         </b-button>
       </div>
     </div>
+    <b-modal
+      v-if="!noButtons"
+      id="removeBotModal"
+      v-model="botRemoveModalVisible"
+      title="Logout confirmation"
+      @ok="confirmRemoveBot"
+    >
+      Really remove (logout) from {{ bot.botName }} ({{ bot.botId }})?
+    </b-modal>
   </div>
 </template>
 
@@ -32,7 +41,7 @@
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { BotDescriptor } from '@/types';
-import { defineComponent, computed, getCurrentInstance } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
@@ -47,22 +56,17 @@ export default defineComponent({
   },
   emits: ['edit'],
   setup(props) {
-    const root = getCurrentInstance();
     const botStore = useBotStore();
 
     const changeEvent = (v) => {
       botStore.botStores[props.bot.botId].setAutoRefresh(v);
     };
+    const botRemoveModalVisible = ref(false);
 
-    const clickRemoveBot = (bot: BotDescriptor) => {
-      //
-      root?.proxy.$bvModal
-        .msgBoxConfirm(`Really remove (logout) from '${bot.botName}' (${bot.botId})?`)
-        .then((value: boolean) => {
-          if (value) {
-            botStore.removeBot(bot.botId);
-          }
-        });
+    const confirmRemoveBot = () => {
+      botRemoveModalVisible.value = false;
+      botStore.removeBot(props.bot.botId);
+      console.log('removing bot.');
     };
     const autoRefreshLoc = computed({
       get() {
@@ -76,9 +80,18 @@ export default defineComponent({
     return {
       botStore,
       changeEvent,
-      clickRemoveBot,
       autoRefreshLoc,
+      confirmRemoveBot,
+      botRemoveModalVisible,
     };
   },
 });
 </script>
+
+<style scoped lang="scss">
+.form-switch {
+  padding-left: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+</style>

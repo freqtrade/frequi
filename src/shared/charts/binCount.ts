@@ -8,11 +8,13 @@ export function binData(data: number[], bins: number) {
     Math.round((minimum + i * binSize) * 1000) / 1000,
     0,
   ]);
+
   // console.log(baseBins);
   for (let i = 0; i < data.length; i++) {
     const index = Math.min(Math.floor((data[i] - minimum) / binSize), bins - 1);
-    // console.log(data[i], index)
-    baseBins[index][1]++;
+    if (!isNaN(index)) {
+      baseBins[index][1]++;
+    }
   }
 
   return baseBins;

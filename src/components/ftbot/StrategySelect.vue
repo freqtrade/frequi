@@ -7,7 +7,7 @@
         :options="botStore.activeBot.strategyList"
       >
       </b-form-select>
-      <div class="ml-2">
+      <div class="ms-2">
         <b-button @click="botStore.activeBot.getStrategyList">&#x21bb;</b-button>
       </div>
     </div>
@@ -27,7 +27,7 @@ import { defineComponent, computed, onMounted } from 'vue';
 export default defineComponent({
   name: 'StrategySelect',
   props: {
-    value: { type: String, required: true },
+    modelValue: { type: String, required: true },
     showDetails: { default: false, required: false, type: Boolean },
   },
   emits: ['input'],
@@ -37,7 +37,7 @@ export default defineComponent({
     const strategyCode = computed((): string => botStore.activeBot.strategy?.code);
     const locStrategy = computed({
       get() {
-        return props.value;
+        return props.modelValue;
       },
       set(strategy: string) {
         botStore.activeBot.getStrategy(strategy);

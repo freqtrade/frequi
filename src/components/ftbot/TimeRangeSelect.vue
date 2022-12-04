@@ -15,7 +15,7 @@
           ></b-form-input>
         </b-input-group>
       </b-form-group>
-      <b-form-group class="ml-2 col-md-6" label="End date" label-for="dp_dateTo">
+      <b-form-group class="ms-2 col-md-6" label="End date" label-for="dp_dateTo">
         <b-input-group>
           <b-input-group-prepend>
             <b-form-datepicker v-model="dateTo" class="mb-1" button-only></b-form-datepicker>
@@ -30,7 +30,7 @@
         </b-input-group>
       </b-form-group>
     </div>
-    <label class="text-left">
+    <label class="text-start">
       Timerange: <b>{{ timeRange }}</b>
     </label>
   </div>
@@ -45,7 +45,7 @@ const now = new Date();
 export default defineComponent({
   name: 'TimeRangeSelect',
   props: {
-    value: { required: true, type: String },
+    modelValue: { required: true, type: String },
   },
   setup(props, { emit }) {
     const dateFrom = ref<string>('');
@@ -63,7 +63,7 @@ export default defineComponent({
     };
 
     const updateInput = () => {
-      const tr = props.value.split('-');
+      const tr = props.modelValue.split('-');
       if (tr[0]) {
         dateFrom.value = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
       }
@@ -79,7 +79,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      if (!props.value) {
+      if (!props.modelValue) {
         dateFrom.value = timestampToDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1));
       } else {
         updateInput();

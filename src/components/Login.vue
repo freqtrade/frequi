@@ -18,8 +18,9 @@
         <b-form-input
           id="url-input"
           v-model="auth.url"
-          :state="urlState"
           required
+          trim
+          :state="urlState === '' ? null : urlState"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -34,6 +35,7 @@
           v-model="auth.username"
           required
           placeholder="Freqtrader"
+          :state="nameState === '' ? null : nameState"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -48,6 +50,7 @@
           v-model="auth.password"
           required
           type="password"
+          :state="pwdState === '' ? null : pwdState"
           @keydown.enter.native="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -63,8 +66,8 @@
           >
         </b-alert>
       </div>
-      <div v-if="inModal === false" class="float-right">
-        <b-button class="mr-2" type="reset" variant="danger">Reset</b-button>
+      <div v-if="inModal === false" class="float-end">
+        <b-button class="me-2" type="reset" variant="danger">Reset</b-button>
         <b-button type="submit" variant="primary">Submit</b-button>
       </div>
     </form>
@@ -77,8 +80,8 @@ import { useUserService } from '@/shared/userService';
 import { AuthPayload } from '@/types';
 
 import { defineComponent, ref } from 'vue';
-import { useRouter, useRoute } from '@/composables/router-helper';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { useRoute, useRouter } from 'vue-router';
 
 const defaultURL = window.location.origin || 'http://localhost:3000';
 
@@ -93,9 +96,9 @@ export default defineComponent({
     const route = useRoute();
     const botStore = useBotStore();
 
-    const nameState = ref<boolean | null>();
-    const pwdState = ref<boolean | null>();
-    const urlState = ref<boolean | null>();
+    const nameState = ref<boolean | ''>('');
+    const pwdState = ref<boolean | ''>('');
+    const urlState = ref<boolean | ''>('');
     const errorMessage = ref<string>('');
     const errorMessageCORS = ref<boolean>(false);
     const formRef = ref<HTMLFormElement>();
@@ -121,8 +124,9 @@ export default defineComponent({
       auth.value.url = defaultURL;
       auth.value.username = '';
       auth.value.password = '';
-      nameState.value = null;
-      pwdState.value = null;
+      nameState.value = '';
+      pwdState.value = '';
+      urlState.value = '';
       errorMessage.value = '';
     };
 
@@ -158,10 +162,10 @@ export default defineComponent({
           if (props.inModal === false) {
             if (typeof route?.query.redirect === 'string') {
               const resolved = router.resolve({ path: route.query.redirect });
-              if (resolved.route.name !== '404') {
-                router.push(resolved.route.path);
-              } else {
+              if (resolved.name === '404') {
                 router.push('/');
+              } else {
+                router.push(resolved.path);
               }
             } else {
               router.push('/');
