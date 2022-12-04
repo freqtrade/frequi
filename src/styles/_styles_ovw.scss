@@ -7,6 +7,7 @@
 .text-profit {
     color: $color-profit;
 }
+
 .text-loss {
     color: $color-loss;
 }
@@ -34,21 +35,25 @@
     $bg-darker: darken($bg-dark, 5%);
     $fg-color: #dedede;
 
-    background-color: darken($bg-dark, 5%) ;
+    background-color: darken($bg-dark, 5%);
     color: $fg-color !important;
+
     body {
         background: $bg-darker;
         color: $fg-color;
     }
+
     .card {
         border-color: lighten($bg-dark, 10%);
         background-color: $bg-dark;
 
     }
+
     .card-body {
         background: $bg-dark;
         color: $fg-color;
     }
+
     .card-header {
         background: lighten($bg-dark, 5%);
         color: $fg-color;
@@ -58,14 +63,15 @@
         color: $fg-color;
         background: $bg-dark;
     }
+
     // .custom-select {
     //     color: $fg-color;
     //     // background: $bg-dark;
     // }
     .nav-tabs {
         border-bottom: 1px solid lighten($bg-dark, 20%);
-        .nav-link
-        {
+
+        .nav-link {
             color: $primary;
 
             &:hover {
@@ -74,26 +80,32 @@
             }
         }
     }
+
     .nav-link.active {
         color: $fg-color;
         background: $bg-darker;
-        border-color:  lighten($bg-dark, 20%);
+        border-color: lighten($bg-dark, 20%);
     }
+
     .modal-content {
         color: $fg-color;
         background: $bg-dark;
     }
+
     .form-control {
         color: $fg-color;
         background: $bg-dark;
     }
+
     .popover {
         background: $bg-dark;
-        border-color:  lighten($bg-dark, 20%);
+        border-color: lighten($bg-dark, 20%);
     }
+
     .popover-header {
         background: $bg-darker;
     }
+
     .popover-body {
         color: $fg-color;
     }
@@ -101,26 +113,31 @@
     .logo-svg {
         background-color: $fg-color;
     }
+
     textarea {
         color: $fg-color;
         background: $bg-dark;
     }
+
     .text-dark {
         color: $fg-color !important;
     }
-    .dropdown-menu
-    {
+
+    .dropdown-menu {
         background-color: lighten($bg-dark, 5%);
         color: $fg-color;
     }
+
     .dropdown-item {
         color: $fg-color;
     }
+
     // Styles for searchable select
-    .vs__dropdown-toggle{
+    .vs__dropdown-toggle {
         border-color: lighten($bg-dark, 20%);
         // border: 1px solid $fg-color;
     }
+
     .style-chooser .vs__search::placeholder,
     .style-chooser .vs__dropdown-toggle,
     .style-chooser .vs__dropdown-menu,
@@ -129,15 +146,19 @@
         color: $fg-color;
     }
 
-    .vs__search, .vs__dropdown-option {
+    .vs__search,
+    .vs__dropdown-option {
         color: $fg-color;
     }
+
     .vs__open-indicator {
         fill: darken($fg-color, 10%);
     }
+
     .vs__selected {
         color: $fg-color;
     }
+
     hr {
         border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
@@ -145,9 +166,10 @@
     .table {
         color: $fg-color;
     }
-    .table.b-table > tbody > .selected,
-    .table.b-table > tbody > .selected > th,
-    .table.b-table > tbody > .selected > td {
+
+    .table.b-table>tbody>.selected,
+    .table.b-table>tbody>.selected>th,
+    .table.b-table>tbody>.selected>td {
         // Table selected cells
         color: $fg-color;
         background: darken($bg-dark, 10%);
@@ -156,8 +178,8 @@
 
     .table-hover tbody tr:hover td,
     .table-hover tbody tr:hover th,
-    .table.b-table > tbody > .selected:hover,
-    .table.b-table.table-hover > tbody > tr.selected th:hover{
+    .table.b-table>tbody>.selected:hover,
+    .table.b-table.table-hover>tbody>tr.selected th:hover {
         // Table selected cells hover
         color: $fg-color;
         background: lighten($bg-dark, 10%);
@@ -174,21 +196,19 @@
         background: $bg-dark;
         border-color: lighten($bg-dark, 20%);
     }
-        .toast-header {
-            color: $fg-color;
-            background: darken($bg-dark, 10%);
-            border-color: lighten($bg-dark, 20%);
-        }
+
+    .toast-header {
+        color: $fg-color;
+        background: darken($bg-dark, 10%);
+        border-color: lighten($bg-dark, 20%);
+    }
 }
-
-
-
 
 html.ft-theme-transition,
 html.ft-theme-transition *,
 html.ft-theme-transition *:before,
 html.ft-theme-transition *:after {
-    transition:background 750ms ease-in-out,
-               border-color 750ms ease-in-out;
+    transition: background 750ms ease-in-out,
+        border-color 750ms ease-in-out;
     transition-delay: 0 !important;
 }
