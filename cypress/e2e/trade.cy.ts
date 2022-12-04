@@ -34,8 +34,28 @@ describe('Trade', () => {
     cy.get('button').should('contain', 'ETH/USDT').should('be.visible');
     cy.get('button').contains('ETH/USDT').should('be.visible');
 
+    // Test messageBox behavior
+    // No modal visible
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-secondary')
+      .filter(':visible')
+      .should('have.length', 0);
+
+    cy.get('button[title*="Stop Trading"]').click();
+    // Modal open
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-secondary')
+      .filter(':visible')
+      .contains('Cancel')
+      .should('be.visible')
+      .click();
+    // Modal closed
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-secondary')
+      .filter(':visible')
+      .should('have.length', 0);
+
+    // General
     cy.get('button[role="tab"]').contains('General').click();
     cy.get('button').contains('ETH/USDT').should('not.be.visible');
+    // 2nd segment
     cy.get('.drag-header').contains('Open Trades').scrollIntoView().should('be.visible');
     cy.get('.drag-header').contains('Closed Trades').scrollIntoView().should('be.visible');
     cy.get('span').contains('TRX/USDT').should('be.visible');
