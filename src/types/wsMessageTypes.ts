@@ -29,14 +29,10 @@ export interface FtExitFillMessage extends FtBaseWsMessage {
   // ...
 }
 
-export interface NewCandleMessage {
-  /** Pair, timeframe, candletype*/
-  key: [string, string, string];
-}
-
 export interface FtNewCandleMessage extends FtBaseWsMessage {
   type: FtWsMessageTypes.newCandle;
-  data: NewCandleMessage;
+  /** Pair, timeframe, candletype*/
+  data: [string, string, string];
   // ...
 }
 

@@ -826,7 +826,7 @@ export function createBotSubStore(botId: string, botName: string) {
             break;
           case FtWsMessageTypes.newCandle:
             console.log('exitFill', msg);
-            const [pair, timeframe] = msg.data.key;
+            const [pair, timeframe] = msg.data;
             // TODO: check for active bot ...
             if (pair === this.selectedPair) {
               showAlert(`New Candle for ${pair}`, 'success');
@@ -869,16 +869,20 @@ export function createBotSubStore(botId: string, botName: string) {
             onConnected: () => {
               console.log('subscribing');
               this.websocketStarted = true;
+              const subscriptions = [
+                FtWsMessageTypes.whitelist,
+                FtWsMessageTypes.entryFill,
+                FtWsMessageTypes.exitFill,
+                /*'new_candle' /*'analyzed_df'*/
+              ];
+              if (this.botApiVersion >= 2.21) {
+                subscriptions.push(FtWsMessageTypes.newCandle);
+              }
+
               send(
                 JSON.stringify({
                   type: 'subscribe',
-                  data: [
-                    FtWsMessageTypes.whitelist,
-                    FtWsMessageTypes.entryFill,
-                    FtWsMessageTypes.exitFill,
-                    FtWsMessageTypes.newCandle,
-                    /*'new_candle' /*'analyzed_df'*/
-                  ],
+                  data: subscriptions,
                 }),
               );
               send(
