@@ -2,7 +2,7 @@ export enum FtWsMessageTypes {
   whitelist = 'whitelist',
   entryFill = 'entry_fill',
   exitFill = 'exit_fill',
-  newCandle = 'newCandle',
+  newCandle = 'new_candle',
 }
 
 export interface FtBaseWsMessage {
@@ -29,8 +29,14 @@ export interface FtExitFillMessage extends FtBaseWsMessage {
   // ...
 }
 
+export interface NewCandleMessage {
+  /** Pair, timeframe, candletype*/
+  key: [string, string, string];
+}
+
 export interface FtNewCandleMessage extends FtBaseWsMessage {
   type: FtWsMessageTypes.newCandle;
+  data: NewCandleMessage;
   // ...
 }
 

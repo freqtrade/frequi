@@ -826,7 +826,13 @@ export function createBotSubStore(botId: string, botName: string) {
             break;
           case FtWsMessageTypes.newCandle:
             console.log('exitFill', msg);
-            showAlert(`New Candle`, 'success');
+            const [pair, timeframe] = msg.data.key;
+            // TODO: check for active bot ...
+            if (pair === this.selectedPair) {
+              showAlert(`New Candle for ${pair}`, 'success');
+              // Reload pair candles
+              this.getPairCandles({ pair, timeframe, limit: 500 });
+            }
             break;
           default:
             // Unhandled events ...
@@ -870,7 +876,7 @@ export function createBotSubStore(botId: string, botName: string) {
                     FtWsMessageTypes.whitelist,
                     FtWsMessageTypes.entryFill,
                     FtWsMessageTypes.exitFill,
-                    // FtWsMessageTypes.newCandle,
+                    FtWsMessageTypes.newCandle,
                     /*'new_candle' /*'analyzed_df'*/
                   ],
                 }),
