@@ -41,7 +41,7 @@ describe('binCount.ts', () => {
     const res = binData(randomData, 5);
 
     const endTime = Date.now();
-    expect(endTime - startTime).toBeLessThan(20);
+    expect(endTime - startTime).toBeLessThan(30);
 
     expect(res.map((v) => v[1]).reduce((a, b) => a + b)).toEqual(randomData.length);
   });
