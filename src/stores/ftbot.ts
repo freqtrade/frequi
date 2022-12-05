@@ -812,11 +812,22 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       _handleWebsocketMessage(ws, event: MessageEvent<any>) {
         const msg = JSON.parse(event.data);
-        if (msg.type === FtWsMessageTypes.whitelist) {
-          this.whitelist = msg.data;
-        } else {
-          // Unhandled events ...
-          console.log(`Received event ${msg.type}`);
+        switch (msg.type) {
+          case FtWsMessageTypes.whitelist:
+            this.whitelist = msg.data;
+            break;
+          case FtWsMessageTypes.entryFill:
+            console.log('entryFill', msg);
+            showAlert(`Entry fill for ${msg.pair} at ${msg.open_rate}`, 'success');
+            break;
+          case FtWsMessageTypes.exitFill:
+            console.log('exitFill', msg);
+            showAlert(`Exit fill for ${msg.pair} at ${msg.open_rate}`, 'success');
+            break;
+          default:
+            // Unhandled events ...
+            console.log(`Received event ${msg.type}`);
+            break;
         }
       },
       startWebSocket() {
