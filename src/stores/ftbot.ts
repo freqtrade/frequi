@@ -39,7 +39,7 @@ import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 import { showAlert } from './alerts';
 import { useWebSocket } from '@vueuse/core';
-import { FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -811,7 +811,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       _handleWebsocketMessage(ws, event: MessageEvent<any>) {
-        const msg = JSON.parse(event.data);
+        const msg: FTWsMessage = JSON.parse(event.data);
         switch (msg.type) {
           case FtWsMessageTypes.whitelist:
             this.whitelist = msg.data;
@@ -824,9 +824,13 @@ export function createBotSubStore(botId: string, botName: string) {
             console.log('exitFill', msg);
             showAlert(`Exit fill for ${msg.pair} at ${msg.open_rate}`, 'success');
             break;
+          case FtWsMessageTypes.newCandle:
+            console.log('exitFill', msg);
+            showAlert(`New Candle`, 'success');
+            break;
           default:
             // Unhandled events ...
-            console.log(`Received event ${msg.type}`);
+            console.log(`Received event ${(msg as any).type}`);
             break;
         }
       },
