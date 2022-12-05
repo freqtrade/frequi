@@ -529,7 +529,7 @@ export function createBotSubStore(botId: string, botName: string) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert('Error starting bot.');
+          showAlert('Error starting bot.', 'danger');
           return Promise.reject(error);
         }
       },
@@ -542,7 +542,7 @@ export function createBotSubStore(botId: string, botName: string) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert('Error stopping bot.');
+          showAlert('Error stopping bot.', 'danger');
           return Promise.reject(error);
         }
       },
@@ -555,7 +555,7 @@ export function createBotSubStore(botId: string, botName: string) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert('Error calling stopbuy.');
+          showAlert('Error calling stopbuy.', 'danger');
           return Promise.reject(error);
         }
       },
@@ -569,7 +569,7 @@ export function createBotSubStore(botId: string, botName: string) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
           }
-          showAlert('Error reloading.');
+          showAlert('Error reloading.', 'danger');
           return Promise.reject(error);
         }
       },
@@ -600,7 +600,7 @@ export function createBotSubStore(botId: string, botName: string) {
             '/forcesell',
             payload,
           );
-          showAlert(`Exit order for ${payload.tradeid} created`);
+          showAlert(`Exit order for ${payload.tradeid} created`, 'success');
           return Promise.resolve(res);
         } catch (error) {
           if (axios.isAxiosError(error)) {
@@ -618,7 +618,7 @@ export function createBotSubStore(botId: string, botName: string) {
               ForceEnterPayload,
               AxiosResponse<StatusResponse | TradeResponse>
             >('/forcebuy', payload);
-            showAlert(`Order for ${payload.pair} created.`);
+            showAlert(`Order for ${payload.pair} created.`, 'success');
 
             return Promise.resolve(res);
           } catch (error) {
@@ -651,6 +651,7 @@ export function createBotSubStore(botId: string, botName: string) {
               Object.keys(errors).forEach((pair) => {
                 showAlert(
                   `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
+                  'danger',
                 );
               });
             } else {
@@ -699,6 +700,7 @@ export function createBotSubStore(botId: string, botName: string) {
               Object.keys(errors).forEach((pair) => {
                 showAlert(
                   `Error while removing pair ${pair} from Blacklist: ${errors[pair].error_msg}`,
+                  'danger',
                 );
               });
             } else {
