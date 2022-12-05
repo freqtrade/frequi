@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { AlertType } from '@/types/alertTypes';
+import { AlertSeverity, AlertType } from '@/types/alertTypes';
 
 export const useAlertsStore = defineStore('alerts', {
   state: () => {
@@ -16,7 +16,7 @@ export const useAlertsStore = defineStore('alerts', {
   },
 });
 
-export function showAlert(message: string, severity = '') {
+export function showAlert(message: string, severity: AlertSeverity = 'warning') {
   const alertsStore = useAlertsStore();
   alertsStore.addAlert({ message, severity, timeout: 5 });
 }

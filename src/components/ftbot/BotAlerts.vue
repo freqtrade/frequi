@@ -4,7 +4,7 @@
       v-for="(alert, index) in alertStore.activeMessages"
       :key="index"
       v-model="alert.timeout"
-      variant="warning"
+      :variant="alert.severity ?? 'warning'"
       dismissible
       @closed="alertStore.removeAlert(alert)"
       >{{ alert.message }}</b-alert
