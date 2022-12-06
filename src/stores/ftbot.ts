@@ -40,6 +40,7 @@ import { defineStore } from 'pinia';
 import { showAlert } from './alerts';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { showNotification } from '@/shared/notifications';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -817,12 +818,10 @@ export function createBotSubStore(botId: string, botName: string) {
             this.whitelist = msg.data;
             break;
           case FtWsMessageTypes.entryFill:
-            console.log('entryFill', msg);
-            showAlert(`Entry fill for ${msg.pair} at ${msg.open_rate}`, 'success');
-            break;
           case FtWsMessageTypes.exitFill:
-            console.log('exitFill', msg);
-            showAlert(`Exit fill for ${msg.pair} at ${msg.open_rate}`, 'success');
+          case FtWsMessageTypes.exitCancel:
+          case FtWsMessageTypes.entryCancel:
+            showNotification(msg);
             break;
           case FtWsMessageTypes.newCandle:
             console.log('exitFill', msg);
@@ -833,14 +832,7 @@ export function createBotSubStore(botId: string, botName: string) {
               this.getPairCandles({ pair, timeframe, limit: 500 });
             }
             break;
-          case FtWsMessageTypes.exitCancel:
-            console.log('exitCancel', msg);
-            showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning');
-            break;
-          case FtWsMessageTypes.entryCancel:
-            console.log('entryCancel', msg);
-            showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning');
-            break;
+
           default:
             // Unhandled events ...
             console.log(`Received event ${(msg as any).type}`);

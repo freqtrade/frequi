@@ -37,45 +37,47 @@
             >Use Heikin Ashi candles.</b-form-checkbox
           >
         </b-form-group>
+        <b-form-group description="Notifications">
+          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
+            >Entry notifications</b-form-checkbox
+          >
+          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]"
+            >Exit notifications</b-form-checkbox
+          >
+          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]"
+            >Entry Cancel notifications</b-form-checkbox
+          >
+          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]"
+            >Exit Cancel notifications</b-form-checkbox
+          >
+        </b-form-group>
       </div>
     </b-card>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { showAlert } from '@/stores/alerts';
+import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
-export default defineComponent({
-  name: 'Settings',
-  setup() {
-    const settingsStore = useSettingsStore();
-    const layoutStore = useLayoutStore();
+const settingsStore = useSettingsStore();
+const layoutStore = useLayoutStore();
 
-    const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
-    const openTradesOptions = [
-      { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
-      { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
-      { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
-    ];
+const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
+const openTradesOptions = [
+  { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
+  { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
+  { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
+];
 
-    //
-    const resetDynamicLayout = () => {
-      layoutStore.resetTradingLayout();
-      layoutStore.resetDashboardLayout();
-      showAlert('Layouts have been reset.');
-    };
-    return {
-      resetDynamicLayout,
-      settingsStore,
-      layoutStore,
-      timezoneOptions,
-      openTradesOptions,
-    };
-  },
-});
+//
+const resetDynamicLayout = () => {
+  layoutStore.resetTradingLayout();
+  layoutStore.resetDashboardLayout();
+  showAlert('Layouts have been reset.');
+};
 </script>
 
 <style scoped></style>
