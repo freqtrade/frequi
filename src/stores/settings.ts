@@ -31,6 +31,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       uiVersion: 'dev',
       useHeikinAshiCandles: false,
       notifications: notificationDefaults,
+      profitDistributionBins: 20,
     };
   },
   getters: {
