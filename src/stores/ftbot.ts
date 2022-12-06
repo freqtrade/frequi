@@ -829,7 +829,6 @@ export function createBotSubStore(botId: string, botName: string) {
             const [pair, timeframe] = msg.data;
             // TODO: check for active bot ...
             if (pair === this.selectedPair) {
-              showAlert(`New Candle for ${pair}`, 'success');
               // Reload pair candles
               this.getPairCandles({ pair, timeframe, limit: 500 });
             }
