@@ -12,12 +12,6 @@ export enum OpenTradeVizOptions {
   noOpenTrades = 'noOpenTrades',
 }
 
-export interface SettingsType {
-  openTradesInTitle?: string;
-  timezone?: string;
-  backgroundSync?: boolean;
-}
-
 export const useSettingsStore = defineStore('uiSettings', {
   // other options...
   state: () => {
