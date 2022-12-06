@@ -1,7 +1,10 @@
 export enum FtWsMessageTypes {
   whitelist = 'whitelist',
   entryFill = 'entry_fill',
+  entryCancel = 'entry_cancel',
+
   exitFill = 'exit_fill',
+  exitCancel = 'exit_cancel',
   newCandle = 'new_candle',
 }
 
@@ -21,11 +24,28 @@ export interface FtEntryFillMessage extends FtBaseWsMessage {
   amount: number;
   // ...
 }
+
 export interface FtExitFillMessage extends FtBaseWsMessage {
   type: FtWsMessageTypes.exitFill;
   pair: string;
   open_rate: number;
   amount: number;
+  // ...
+}
+
+export interface FTEntryCancelMessage extends FtBaseWsMessage {
+  type: FtWsMessageTypes.entryCancel;
+  pair: string;
+  reason: string;
+  direction: string;
+  // ...
+}
+
+export interface FTExitCancelMessage extends FtBaseWsMessage {
+  type: FtWsMessageTypes.exitCancel;
+  pair: string;
+  reason: string;
+  direction: string;
   // ...
 }
 
@@ -39,5 +59,7 @@ export interface FtNewCandleMessage extends FtBaseWsMessage {
 export type FTWsMessage =
   | FtWhitelistMessage
   | FtEntryFillMessage
+  | FTEntryCancelMessage
   | FtExitFillMessage
+  | FTExitCancelMessage
   | FtNewCandleMessage;

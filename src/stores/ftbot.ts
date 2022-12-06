@@ -833,6 +833,14 @@ export function createBotSubStore(botId: string, botName: string) {
               this.getPairCandles({ pair, timeframe, limit: 500 });
             }
             break;
+          case FtWsMessageTypes.exitCancel:
+            console.log('exitCancel', msg);
+            showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning');
+            break;
+          case FtWsMessageTypes.entryCancel:
+            console.log('entryCancel', msg);
+            showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning');
+            break;
           default:
             // Unhandled events ...
             console.log(`Received event ${(msg as any).type}`);
@@ -872,6 +880,8 @@ export function createBotSubStore(botId: string, botName: string) {
                 FtWsMessageTypes.whitelist,
                 FtWsMessageTypes.entryFill,
                 FtWsMessageTypes.exitFill,
+                FtWsMessageTypes.entryCancel,
+                FtWsMessageTypes.exitCancel,
                 /*'new_candle' /*'analyzed_df'*/
               ];
               if (this.botApiVersion >= 2.21) {
