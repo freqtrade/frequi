@@ -821,7 +821,7 @@ export function createBotSubStore(botId: string, botName: string) {
           case FtWsMessageTypes.exitFill:
           case FtWsMessageTypes.exitCancel:
           case FtWsMessageTypes.entryCancel:
-            showNotification(msg);
+            showNotification(msg, botName);
             break;
           case FtWsMessageTypes.newCandle:
             console.log('exitFill', msg);
