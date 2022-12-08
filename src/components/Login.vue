@@ -74,147 +74,130 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useUserService } from '@/shared/userService';
-
 import { AuthPayload } from '@/types';
 
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute, useRouter } from 'vue-router';
 
+const props = defineProps({
+  inModal: { default: false, type: Boolean },
+});
+const emit = defineEmits(['loginResult']);
+
 const defaultURL = window.location.origin || 'http://localhost:3000';
 
-export default defineComponent({
-  name: 'Login',
-  props: {
-    inModal: { default: false, type: Boolean },
-  },
-  emits: ['loginResult'],
-  setup(props, { emit }) {
-    const router = useRouter();
-    const route = useRoute();
-    const botStore = useBotStore();
+const router = useRouter();
+const route = useRoute();
+const botStore = useBotStore();
 
-    const nameState = ref<boolean | ''>('');
-    const pwdState = ref<boolean | ''>('');
-    const urlState = ref<boolean | ''>('');
-    const errorMessage = ref<string>('');
-    const errorMessageCORS = ref<boolean>(false);
-    const formRef = ref<HTMLFormElement>();
-    const auth = ref<AuthPayload>({
-      botName: '',
-      url: defaultURL,
-      username: '',
-      password: '',
-    });
+const nameState = ref<boolean | ''>('');
+const pwdState = ref<boolean | ''>('');
+const urlState = ref<boolean | ''>('');
+const errorMessage = ref<string>('');
+const errorMessageCORS = ref<boolean>(false);
+const formRef = ref<HTMLFormElement>();
+const auth = ref<AuthPayload>({
+  botName: '',
+  url: defaultURL,
+  username: '',
+  password: '',
+});
 
-    const emitLoginResult = (value: boolean) => {
-      emit('loginResult', value);
-    };
+const emitLoginResult = (value: boolean) => {
+  emit('loginResult', value);
+};
 
-    const checkFormValidity = () => {
-      const valid = formRef.value?.checkValidity();
-      nameState.value = valid || auth.value.username !== '';
-      pwdState.value = valid || auth.value.password !== '';
-      return valid;
-    };
+const checkFormValidity = () => {
+  const valid = formRef.value?.checkValidity();
+  nameState.value = valid || auth.value.username !== '';
+  pwdState.value = valid || auth.value.password !== '';
+  return valid;
+};
 
-    const resetLogin = () => {
-      auth.value.url = defaultURL;
-      auth.value.username = '';
-      auth.value.password = '';
-      nameState.value = '';
-      pwdState.value = '';
-      urlState.value = '';
-      errorMessage.value = '';
-    };
+const resetLogin = () => {
+  auth.value.url = defaultURL;
+  auth.value.username = '';
+  auth.value.password = '';
+  nameState.value = '';
+  pwdState.value = '';
+  urlState.value = '';
+  errorMessage.value = '';
+};
 
-    const handleReset = (evt) => {
-      evt.preventDefault();
-      resetLogin();
-    };
+const handleReset = (evt) => {
+  evt.preventDefault();
+  resetLogin();
+};
 
-    const handleSubmit = () => {
-      // Exit when the form isn't valid
-      if (!checkFormValidity()) {
-        return;
+const handleSubmit = () => {
+  // Exit when the form isn't valid
+  if (!checkFormValidity()) {
+    return;
+  }
+  errorMessage.value = '';
+  const userService = useUserService(botStore.nextBotId);
+  // Push the name to submitted names
+  userService
+    .login(auth.value)
+    .then(() => {
+      const botId = botStore.nextBotId;
+      botStore.addBot({
+        botName: auth.value.botName,
+        botId,
+        botUrl: auth.value.url,
+      });
+      if (botStore.selectedBot === '') {
+        console.log(`selecting bot ${botId}`);
+        botStore.selectBot(botId);
       }
-      errorMessage.value = '';
-      const userService = useUserService(botStore.nextBotId);
-      // Push the name to submitted names
-      userService
-        .login(auth.value)
-        .then(() => {
-          const botId = botStore.nextBotId;
-          botStore.addBot({
-            botName: auth.value.botName,
-            botId,
-            botUrl: auth.value.url,
-          });
-          if (botStore.selectedBot === '') {
-            console.log(`selecting bot ${botId}`);
-            botStore.selectBot(botId);
-          }
 
-          emitLoginResult(true);
-          botStore.allRefreshFull();
-          if (props.inModal === false) {
-            if (typeof route?.query.redirect === 'string') {
-              const resolved = router.resolve({ path: route.query.redirect });
-              if (resolved.name === '404') {
-                router.push('/');
-              } else {
-                router.push(resolved.path);
-              }
-            } else {
-              router.push('/');
-            }
-          }
-        })
-        .catch((error) => {
-          errorMessageCORS.value = false;
-          // this.nameState = false;
-          console.error(error);
-          if (error.response && error.response.status === 401) {
-            nameState.value = false;
-            pwdState.value = false;
-            errorMessage.value =
-              'Connected to bot, however Login failed, Username or Password wrong.';
+      emitLoginResult(true);
+      botStore.allRefreshFull();
+      if (props.inModal === false) {
+        if (typeof route?.query.redirect === 'string') {
+          const resolved = router.resolve({ path: route.query.redirect });
+          if (resolved.name === '404') {
+            router.push('/');
           } else {
-            urlState.value = false;
-            errorMessage.value = `Login failed.
+            router.push(resolved.path);
+          }
+        } else {
+          router.push('/');
+        }
+      }
+    })
+    .catch((error) => {
+      errorMessageCORS.value = false;
+      // this.nameState = false;
+      console.error(error);
+      if (error.response && error.response.status === 401) {
+        nameState.value = false;
+        pwdState.value = false;
+        errorMessage.value = 'Connected to bot, however Login failed, Username or Password wrong.';
+      } else {
+        urlState.value = false;
+        errorMessage.value = `Login failed.
 Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
 You can verify this by navigating to ${auth.value.url}/api/v1/ping to make sure the bot API is reachable`;
-            if (auth.value.url !== window.location.origin) {
-              errorMessageCORS.value = true;
-            }
-          }
-          console.error(errorMessage.value);
-          emitLoginResult(false);
-        });
-    };
+        if (auth.value.url !== window.location.origin) {
+          errorMessageCORS.value = true;
+        }
+      }
+      console.error(errorMessage.value);
+      emitLoginResult(false);
+    });
+};
 
-    const handleOk = (evt) => {
-      evt.preventDefault();
-      handleSubmit();
-    };
+const handleOk = (evt) => {
+  evt.preventDefault();
+  handleSubmit();
+};
 
-    return {
-      nameState,
-      pwdState,
-      urlState,
-      errorMessage,
-      auth,
-      checkFormValidity,
-      resetLogin,
-      handleReset,
-      handleOk,
-      handleSubmit,
-      formRef,
-      errorMessageCORS,
-    };
-  },
+defineExpose({
+  handleSubmit,
 });
 </script>
 
