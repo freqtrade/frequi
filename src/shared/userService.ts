@@ -144,6 +144,7 @@ export class UserService {
       const obj: AuthStorage = {
         botName: auth.botName,
         apiUrl: auth.url,
+        username: auth.username,
         accessToken: data.access_token || '',
         refreshToken: data.refresh_token || '',
         autoRefresh: true,

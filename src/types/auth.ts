@@ -13,6 +13,7 @@ export interface AuthResponse {
 export interface AuthStorage {
   botName: string;
   apiUrl: string;
+  username?: string;
   refreshToken: string;
   accessToken: string;
   autoRefresh: boolean;
