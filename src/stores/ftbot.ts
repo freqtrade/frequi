@@ -54,6 +54,7 @@ export function createBotSubStore(botId: string, botName: string) {
         ping: '',
         botStatusAvailable: false,
         isBotOnline: false,
+        isBotLoggedIn: true,
         autoRefresh: false,
         refreshing: false,
         versionState: '',
@@ -824,7 +825,6 @@ export function createBotSubStore(botId: string, botName: string) {
             showNotification(msg, botName);
             break;
           case FtWsMessageTypes.newCandle:
-            console.log('exitFill', msg);
             const [pair, timeframe] = msg.data;
             // TODO: check for active bot ...
             if (pair === this.selectedPair) {

@@ -50,6 +50,11 @@ export function useApi(userService: UserService, botId: string) {
           .catch((error) => {
             console.log('No new token received');
             console.log(error);
+            const botStore = useBotStore();
+            if (botStore.botStores[botId]) {
+              botStore.botStores[botId].setIsBotOnline(false);
+              botStore.botStores[botId].isBotLoggedIn = false;
+            }
           });
 
         // maybe redirect to /login if needed !

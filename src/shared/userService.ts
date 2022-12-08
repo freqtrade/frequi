@@ -80,6 +80,13 @@ export class UserService {
     };
   }
 
+  setRefreshTokenExpired(): void {
+    const loginInfo = this.getLoginInfo();
+    loginInfo.refreshToken = '';
+    loginInfo.accessToken = '';
+    this.storeLoginInfo(loginInfo);
+  }
+
   public static getAvailableBots(): BotDescriptors {
     const allInfo = UserService.getAllLoginInfos();
     const response: BotDescriptors = {};
@@ -167,8 +174,9 @@ export class UserService {
         .catch((err) => {
           console.error(err);
           if (err.response && err.response.status === 401) {
-            // in case of errors when using the refresh token - logout.
-            this.logout();
+            // Refresh token did not refresh.
+            console.log('Refresh token did not refresh.');
+            this.setRefreshTokenExpired();
           } else if (err.response && (err.response.status === 500 || err.response.status === 404)) {
             console.log('Bot seems to be offline... - retrying later');
           }

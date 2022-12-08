@@ -12,11 +12,17 @@
         @change="changeEvent"
       >
         <OnlineIcon
+          v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :size="18"
           class="ms-2 me-1 align-middle"
           :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
         ></OnlineIcon>
+        <LoggedOutIcon
+          v-else
+          class="offline"
+          title="Login info expied, please login again."
+        ></LoggedOutIcon>
       </b-form-checkbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
         <b-button class="ms-1" size="sm" title="Delete bot" @click="$emit('edit')">
@@ -44,6 +50,7 @@
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import OnlineIcon from 'vue-material-design-icons/Circle.vue';
+import LoggedOutIcon from 'vue-material-design-icons/Cancel.vue';
 import { BotDescriptor } from '@/types';
 import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
@@ -54,6 +61,7 @@ export default defineComponent({
     DeleteIcon,
     EditIcon,
     OnlineIcon,
+    LoggedOutIcon,
   },
   props: {
     bot: { required: true, type: Object as () => BotDescriptor },
