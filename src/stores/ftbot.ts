@@ -38,6 +38,9 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
 import { showAlert } from './alerts';
+import { useWebSocket } from '@vueuse/core';
+import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { showNotification } from '@/shared/notifications';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -46,6 +49,7 @@ export function createBotSubStore(botId: string, botName: string) {
   const useBotStore = defineStore(botId, {
     state: () => {
       return {
+        websocketStarted: false,
         isSelected: true,
         ping: '',
         botStatusAvailable: false,
@@ -501,6 +505,7 @@ export function createBotSubStore(botId: string, botName: string) {
           const { data } = await api.get('/show_config');
           this.botState = data;
           this.botStatusAvailable = true;
+          this.startWebSocket();
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
@@ -806,7 +811,93 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
+      _handleWebsocketMessage(ws, event: MessageEvent<any>) {
+        const msg: FTWsMessage = JSON.parse(event.data);
+        switch (msg.type) {
+          case FtWsMessageTypes.whitelist:
+            this.whitelist = msg.data;
+            break;
+          case FtWsMessageTypes.entryFill:
+          case FtWsMessageTypes.exitFill:
+          case FtWsMessageTypes.exitCancel:
+          case FtWsMessageTypes.entryCancel:
+            showNotification(msg, botName);
+            break;
+          case FtWsMessageTypes.newCandle:
+            console.log('exitFill', msg);
+            const [pair, timeframe] = msg.data;
+            // TODO: check for active bot ...
+            if (pair === this.selectedPair) {
+              // Reload pair candles
+              this.getPairCandles({ pair, timeframe, limit: 500 });
+            }
+            break;
+
+          default:
+            // Unhandled events ...
+            console.log(`Received event ${(msg as any).type}`);
+            break;
+        }
+      },
+      startWebSocket() {
+        if (
+          this.websocketStarted === true ||
+          this.botStatusAvailable === false ||
+          this.botApiVersion < 2.2
+        ) {
+          return;
+        }
+        const { status, data, send, open, close, ws } = useWebSocket(
+          // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
+          `${userService.getBaseWsUrl()}/message/ws?token=${userService.getAccessToken()}`,
+          {
+            autoReconnect: {
+              delay: 10000,
+              // retries: 10
+            },
+            // heartbeat: {
+            //   message: JSON.stringify({ type: 'ping' }),
+            //   interval: 10000,
+            // },
+            onError: (ws, event) => {
+              console.log('onError', event, ws);
+              this.websocketStarted = false;
+              close();
+            },
+            onMessage: this._handleWebsocketMessage,
+            onConnected: () => {
+              console.log('subscribing');
+              this.websocketStarted = true;
+              const subscriptions = [
+                FtWsMessageTypes.whitelist,
+                FtWsMessageTypes.entryFill,
+                FtWsMessageTypes.exitFill,
+                FtWsMessageTypes.entryCancel,
+                FtWsMessageTypes.exitCancel,
+                /*'new_candle' /*'analyzed_df'*/
+              ];
+              if (this.botApiVersion >= 2.21) {
+                subscriptions.push(FtWsMessageTypes.newCandle);
+              }
+
+              send(
+                JSON.stringify({
+                  type: 'subscribe',
+                  data: subscriptions,
+                }),
+              );
+              send(
+                JSON.stringify({
+                  type: FtWsMessageTypes.whitelist,
+                  data: '',
+                }),
+              );
+            },
+          },
+        );
+      },
     },
   });
+
   return useBotStore();
 }

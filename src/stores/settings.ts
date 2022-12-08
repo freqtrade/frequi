@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { getCurrentTheme, getTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UiVersion } from '@/types';
+import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 const STORE_UI_SETTINGS = 'ftUISettings';
 
@@ -12,11 +13,12 @@ export enum OpenTradeVizOptions {
   noOpenTrades = 'noOpenTrades',
 }
 
-export interface SettingsType {
-  openTradesInTitle?: string;
-  timezone?: string;
-  backgroundSync?: boolean;
-}
+const notificationDefaults = {
+  [FtWsMessageTypes.entryFill]: true,
+  [FtWsMessageTypes.exitFill]: true,
+  [FtWsMessageTypes.entryCancel]: true,
+  [FtWsMessageTypes.exitCancel]: true,
+};
 
 export const useSettingsStore = defineStore('uiSettings', {
   // other options...
@@ -28,6 +30,8 @@ export const useSettingsStore = defineStore('uiSettings', {
       currentTheme: getCurrentTheme(),
       uiVersion: 'dev',
       useHeikinAshiCandles: false,
+      notifications: notificationDefaults,
+      profitDistributionBins: 20,
     };
   },
   getters: {

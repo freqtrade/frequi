@@ -189,6 +189,17 @@ export class UserService {
     return `${baseURL}${APIBASE}`;
   }
 
+  public getBaseWsUrl(): string {
+    const baseUrl = this.getBaseUrl();
+    if (baseUrl.startsWith('http://')) {
+      return baseUrl.replace('http://', 'ws://');
+    }
+    if (baseUrl.startsWith('https://')) {
+      return baseUrl.replace('https://', 'wss://');
+    }
+    return '';
+  }
+
   /**
    * Call on startup to migrate old login info to new login
    */

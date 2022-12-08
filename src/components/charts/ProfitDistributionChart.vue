@@ -12,7 +12,12 @@
       content-cols="6"
       size="sm"
     >
-      <b-form-select id="input-bins" v-model="bins" size="sm" :options="binOptions"></b-form-select>
+      <b-form-select
+        id="input-bins"
+        v-model="settingsStore.profitDistributionBins"
+        size="sm"
+        :options="binOptions"
+      ></b-form-select>
     </b-form-group>
   </div>
 </template>
@@ -67,11 +72,10 @@ export default defineComponent({
     // console.log(profits);
     // const data = [[]];
     const binOptions = [10, 15, 20, 25, 50];
-    const bins = ref<number>(20);
     const data = computed(() => {
       const profits = props.trades.map((trade) => trade.profit_ratio);
 
-      return binData(profits, bins.value);
+      return binData(profits, settingsStore.profitDistributionBins);
     });
 
     const chartOptions = computed((): EChartsOption => {
@@ -137,7 +141,7 @@ export default defineComponent({
       return chartOptionsLoc;
     });
     console.log(chartOptions);
-    return { settingsStore, chartOptions, bins, binOptions };
+    return { settingsStore, chartOptions, binOptions };
   },
 });
 </script>
