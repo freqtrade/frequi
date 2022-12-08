@@ -11,9 +11,12 @@
         switch
         @change="changeEvent"
       >
-        <span class="ms-2 me-1 align-middle">{{
-          botStore.botStores[bot.botId].isBotOnline ? '&#128994;' : '&#128308;'
-        }}</span>
+        <OnlineIcon
+          :size="18"
+          class="ms-2 me-1 align-middle"
+          :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
+          :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
+        ></OnlineIcon>
       </b-form-checkbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
         <b-button class="ms-1" size="sm" title="Delete bot" @click="$emit('edit')">
@@ -40,6 +43,7 @@
 <script lang="ts">
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
+import OnlineIcon from 'vue-material-design-icons/Circle.vue';
 import { BotDescriptor } from '@/types';
 import { defineComponent, computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
@@ -49,6 +53,7 @@ export default defineComponent({
   components: {
     DeleteIcon,
     EditIcon,
+    OnlineIcon,
   },
   props: {
     bot: { required: true, type: Object as () => BotDescriptor },
@@ -93,5 +98,11 @@ export default defineComponent({
   padding-left: 0;
   display: flex;
   flex-wrap: nowrap;
+}
+.online {
+  color: #1aa903;
+}
+.offline {
+  color: #e01515;
 }
 </style>
