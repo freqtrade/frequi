@@ -81,6 +81,7 @@ import { AuthPayload } from '@/types';
 import { ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 
 const props = defineProps({
   inModal: { default: false, type: Boolean },
@@ -131,8 +132,7 @@ const handleReset = (evt) => {
   evt.preventDefault();
   resetLogin();
 };
-
-const handleSubmit = () => {
+const handleSubmit = async () => {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -140,55 +140,51 @@ const handleSubmit = () => {
   errorMessage.value = '';
   const userService = useUserService(botStore.nextBotId);
   // Push the name to submitted names
-  userService
-    .login(auth.value)
-    .then(() => {
-      const botId = botStore.nextBotId;
-      botStore.addBot({
-        botName: auth.value.botName,
-        botId,
-        botUrl: auth.value.url,
-      });
-      if (botStore.selectedBot === '') {
-        console.log(`selecting bot ${botId}`);
-        botStore.selectBot(botId);
-      }
+  try {
+    await userService.login(auth.value);
+    const botId = botStore.nextBotId;
+    botStore.addBot({
+      botName: auth.value.botName,
+      botId,
+      botUrl: auth.value.url,
+    });
+    // switch to newly added bot
+    botStore.selectBot(botId);
 
-      emitLoginResult(true);
-      botStore.allRefreshFull();
-      if (props.inModal === false) {
-        if (typeof route?.query.redirect === 'string') {
-          const resolved = router.resolve({ path: route.query.redirect });
-          if (resolved.name === '404') {
-            router.push('/');
-          } else {
-            router.push(resolved.path);
-          }
-        } else {
+    emitLoginResult(true);
+    botStore.allRefreshFull();
+    if (props.inModal === false) {
+      if (typeof route?.query.redirect === 'string') {
+        const resolved = router.resolve({ path: route.query.redirect });
+        if (resolved.name === '404') {
           router.push('/');
+        } else {
+          router.push(resolved.path);
         }
-      }
-    })
-    .catch((error) => {
-      errorMessageCORS.value = false;
-      // this.nameState = false;
-      console.error(error);
-      if (error.response && error.response.status === 401) {
-        nameState.value = false;
-        pwdState.value = false;
-        errorMessage.value = 'Connected to bot, however Login failed, Username or Password wrong.';
       } else {
-        urlState.value = false;
-        errorMessage.value = `Login failed.
+        router.push('/');
+      }
+    }
+  } catch (error) {
+    errorMessageCORS.value = false;
+    // this.nameState = false;
+    console.error(error);
+    if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
+      nameState.value = false;
+      pwdState.value = false;
+      errorMessage.value = 'Connected to bot, however Login failed, Username or Password wrong.';
+    } else {
+      urlState.value = false;
+      errorMessage.value = `Login failed.
 Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
 You can verify this by navigating to ${auth.value.url}/api/v1/ping to make sure the bot API is reachable`;
-        if (auth.value.url !== window.location.origin) {
-          errorMessageCORS.value = true;
-        }
+      if (auth.value.url !== window.location.origin) {
+        errorMessageCORS.value = true;
       }
-      console.error(errorMessage.value);
-      emitLoginResult(false);
-    });
+    }
+    console.error(errorMessage.value);
+    emitLoginResult(false);
+  }
 };
 
 const handleOk = (evt) => {
