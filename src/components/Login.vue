@@ -143,22 +143,16 @@ const handleSubmit = async () => {
   errorMessage.value = '';
   // Push the name to submitted names
   try {
+    const botId = botEdit.value ? props.existingAuth.botId : botStore.nextBotId;
+    const userService = useUserService(botId);
+    await userService.login(auth.value);
     if (botEdit.value) {
       // Bot editing ...
-      const botId = props.existingAuth.botId;
-      const userService = useUserService(botId);
-      try {
-        await userService.refreshLogin(auth.value);
-        botStore.botStores[botId].isBotLoggedIn = true;
-        // botStore.allRefreshFull();
-      } catch (e) {
-        console.error(e);
-      }
+      botStore.botStores[botId].isBotLoggedIn = true;
+      botStore.botStores[botId].isBotOnline = true;
+      // botStore.allRefreshFull();
     } else {
       // Add new bot
-      const botId = botStore.nextBotId;
-      const userService = useUserService(botId);
-      await userService.login(auth.value);
       botStore.addBot({
         botName: auth.value.botName,
         botId,

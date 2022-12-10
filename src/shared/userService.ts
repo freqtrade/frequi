@@ -155,22 +155,9 @@ export class UserService {
     return Promise.reject('login failed');
   }
 
-  public async refreshLogin(auth: AuthPayload) {
-    try {
-      const obj = await this.loginCall(auth);
-      this.storeLoginInfo(obj);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   public async login(auth: AuthPayload) {
-    try {
-      const obj = await this.loginCall(auth);
-      this.storeLoginInfo(obj);
-    } catch (e) {
-      console.error(e);
-    }
+    const obj = await this.loginCall(auth);
+    this.storeLoginInfo(obj);
   }
 
   public refreshToken(): Promise<string> {
