@@ -87,14 +87,21 @@ const getSortedTrades = (backtestResult: StrategyBacktestResult): Trade[] => {
 
 const bestPair = computed((): string => {
   const trades = getSortedTrades(props.backtestResult);
+  if (trades.length === 0) {
+    return 'N/A';
+  }
   const value = trades[trades.length - 1];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 });
 const worstPair = computed((): string => {
   const trades = getSortedTrades(props.backtestResult);
+  if (trades.length === 0) {
+    return 'N/A';
+  }
   const value = trades[0];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 });
+
 const backtestResultStats = computed(() => {
   // Transpose Result into readable format
   const shortMetrics =
