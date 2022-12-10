@@ -7,7 +7,9 @@
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
         button
-        :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl}`"
+        :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
+          botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
+        }`"
         @click="botStore.selectBot(bot.botId)"
       >
         <bot-rename
@@ -17,10 +19,16 @@
           @cancelled="stopEditBot(bot.botId)"
         />
 
-        <bot-entry v-else :bot="bot" :no-buttons="small" @edit="editBot(bot.botId)" />
+        <bot-entry
+          v-else
+          :bot="bot"
+          :no-buttons="small"
+          @edit="editBot(bot.botId)"
+          @editLogin="editBotLogin(bot.botId)"
+        />
       </b-list-group-item>
     </b-list-group>
-    <LoginModal v-if="!small" class="mt-2" login-text="Add new bot" />
+    <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
   </div>
 </template>
 
@@ -31,6 +39,7 @@ import BotRename from '@/components/BotRename.vue';
 
 import { defineComponent, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { AuthStorageWithBotId } from '@/types';
 
 export default defineComponent({
   name: 'BotList',
@@ -42,11 +51,20 @@ export default defineComponent({
     const botStore = useBotStore();
 
     const editingBots = ref<string[]>([]);
+    const loginModal = ref<typeof LoginModal>();
 
     const editBot = (botId: string) => {
       if (!editingBots.value.includes(botId)) {
         editingBots.value.push(botId);
       }
+    };
+
+    const editBotLogin = (botId: string) => {
+      const loginInfo: AuthStorageWithBotId = {
+        ...botStore.botStores[botId].getLoginInfo(),
+        botId,
+      };
+      loginModal.value?.openLoginModal(loginInfo);
     };
 
     const stopEditBot = (botId: string) => {
@@ -61,7 +79,9 @@ export default defineComponent({
       botStore,
       editingBots,
       editBot,
+      editBotLogin,
       stopEditBot,
+      loginModal,
     };
   },
 });

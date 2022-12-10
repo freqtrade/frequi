@@ -183,6 +183,9 @@ export function createBotSubStore(botId: string, botName: string) {
       logout() {
         userService.logout();
       },
+      getLoginInfo() {
+        return userService.getLoginInfo();
+      },
       rename(name: string) {
         userService.renameBot(name);
       },

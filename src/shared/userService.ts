@@ -66,7 +66,7 @@ export class UserService {
    * Retrieve Login info object for the given bot
    * @returns Login Info object
    */
-  private getLoginInfo(): AuthStorage {
+  public getLoginInfo(): AuthStorage {
     const info = UserService.getAllLoginInfos();
     if (this.botId in info && 'apiUrl' in info[this.botId] && 'refreshToken' in info[this.botId]) {
       return info[this.botId];
@@ -74,6 +74,7 @@ export class UserService {
     return {
       botName: '',
       apiUrl: '',
+      username: '',
       refreshToken: '',
       accessToken: '',
       autoRefresh: false,
@@ -131,7 +132,7 @@ export class UserService {
     this.removeLoginInfo();
   }
 
-  public async login(auth: AuthPayload) {
+  private async loginCall(auth: AuthPayload): Promise<AuthStorage> {
     //  Login using username / password
     const { data } = await axios.post<{}, AxiosResponse<AuthResponse>>(
       `${auth.url}/api/v1/token/login`,
@@ -149,7 +150,26 @@ export class UserService {
         refreshToken: data.refresh_token || '',
         autoRefresh: true,
       };
+      return Promise.resolve(obj);
+    }
+    return Promise.reject('login failed');
+  }
+
+  public async refreshLogin(auth: AuthPayload) {
+    try {
+      const obj = await this.loginCall(auth);
       this.storeLoginInfo(obj);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  public async login(auth: AuthPayload) {
+    try {
+      const obj = await this.loginCall(auth);
+      this.storeLoginInfo(obj);
+    } catch (e) {
+      console.error(e);
     }
   }
 

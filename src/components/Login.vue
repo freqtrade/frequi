@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
 import { useUserService } from '@/shared/userService';
-import { AuthPayload } from '@/types';
+import { AuthPayload, AuthStorageWithBotId } from '@/types';
 
 import { ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
@@ -85,6 +85,7 @@ import axios from 'axios';
 
 const props = defineProps({
   inModal: { default: false, type: Boolean },
+  existingAuth: { default: null, required: false, type: Object as () => AuthStorageWithBotId },
 });
 const emit = defineEmits(['loginResult']);
 
@@ -100,6 +101,7 @@ const urlState = ref<boolean | ''>('');
 const errorMessage = ref<string>('');
 const errorMessageCORS = ref<boolean>(false);
 const formRef = ref<HTMLFormElement>();
+const botEdit = ref<boolean>(false);
 const auth = ref<AuthPayload>({
   botName: '',
   url: defaultURL,
@@ -126,6 +128,7 @@ const resetLogin = () => {
   pwdState.value = '';
   urlState.value = '';
   errorMessage.value = '';
+  botEdit.value = false;
 };
 
 const handleReset = (evt) => {
@@ -138,21 +141,35 @@ const handleSubmit = async () => {
     return;
   }
   errorMessage.value = '';
-  const userService = useUserService(botStore.nextBotId);
   // Push the name to submitted names
   try {
-    await userService.login(auth.value);
-    const botId = botStore.nextBotId;
-    botStore.addBot({
-      botName: auth.value.botName,
-      botId,
-      botUrl: auth.value.url,
-    });
-    // switch to newly added bot
-    botStore.selectBot(botId);
+    if (botEdit.value) {
+      // Bot editing ...
+      const botId = props.existingAuth.botId;
+      const userService = useUserService(botId);
+      try {
+        await userService.refreshLogin(auth.value);
+        botStore.botStores[botId].isBotLoggedIn = true;
+        // botStore.allRefreshFull();
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      // Add new bot
+      const botId = botStore.nextBotId;
+      const userService = useUserService(botId);
+      await userService.login(auth.value);
+      botStore.addBot({
+        botName: auth.value.botName,
+        botId,
+        botUrl: auth.value.url,
+      });
+      // switch to newly added bot
+      botStore.selectBot(botId);
+      emitLoginResult(true);
+      botStore.allRefreshFull();
+    }
 
-    emitLoginResult(true);
-    botStore.allRefreshFull();
     if (props.inModal === false) {
       if (typeof route?.query.redirect === 'string') {
         const resolved = router.resolve({ path: route.query.redirect });
@@ -191,9 +208,20 @@ const handleOk = (evt) => {
   evt.preventDefault();
   handleSubmit();
 };
+const reset = () => {
+  resetLogin();
+  console.log('reset ', props.existingAuth);
+  if (props.existingAuth) {
+    botEdit.value = true;
+    auth.value.botName = props.existingAuth.botName;
+    auth.value.url = props.existingAuth.apiUrl;
+    auth.value.username = props.existingAuth.username ?? '';
+  }
+};
 
 defineExpose({
   handleSubmit,
+  reset,
 });
 </script>
 

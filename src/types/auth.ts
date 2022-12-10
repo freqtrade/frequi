@@ -24,6 +24,10 @@ export interface AuthStorage {
   autoRefresh: boolean;
 }
 
+export interface AuthStorageWithBotId extends AuthStorage {
+  botId: string;
+}
+
 /** Auth Storage container */
 export interface AuthStorageMulti {
   [key: string]: AuthStorage;

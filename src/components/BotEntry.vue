@@ -21,14 +21,22 @@
         <LoggedOutIcon
           v-else
           class="offline"
-          title="Login info expied, please login again."
+          title="Login info expired, please login again."
         ></LoggedOutIcon>
       </b-form-checkbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
-        <b-button class="ms-1" size="sm" title="Delete bot" @click="$emit('edit')">
+        <b-button
+          v-if="botStore.botStores[bot.botId].isBotLoggedIn"
+          class="ms-1"
+          size="sm"
+          title="Edit bot"
+          @click="$emit('edit')"
+        >
           <EditIcon :size="16" />
         </b-button>
-
+        <b-button v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
+          <LoginIcon :size="16" />
+        </b-button>
         <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
           <DeleteIcon :size="16" title="Delete Bot" />
         </b-button>
@@ -48,6 +56,7 @@
 
 <script lang="ts">
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
+import LoginIcon from 'vue-material-design-icons/Login.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import OnlineIcon from 'vue-material-design-icons/Circle.vue';
 import LoggedOutIcon from 'vue-material-design-icons/Cancel.vue';
@@ -60,6 +69,7 @@ export default defineComponent({
   components: {
     DeleteIcon,
     EditIcon,
+    LoginIcon,
     OnlineIcon,
     LoggedOutIcon,
   },
@@ -67,7 +77,7 @@ export default defineComponent({
     bot: { required: true, type: Object as () => BotDescriptor },
     noButtons: { default: false, type: Boolean },
   },
-  emits: ['edit'],
+  emits: ['edit', 'editLogin'],
   setup(props) {
     const botStore = useBotStore();
 
