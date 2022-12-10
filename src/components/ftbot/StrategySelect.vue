@@ -30,7 +30,7 @@ export default defineComponent({
     modelValue: { type: String, required: true },
     showDetails: { default: false, required: false, type: Boolean },
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const botStore = useBotStore();
 
@@ -41,7 +41,7 @@ export default defineComponent({
       },
       set(strategy: string) {
         botStore.activeBot.getStrategy(strategy);
-        emit('input', strategy);
+        emit('update:modelValue', strategy);
       },
     });
 
