@@ -1,3 +1,6 @@
+/**
+ * Payload the user enters, which is required for login.
+ */
 export interface AuthPayload {
   botName: string;
   url: string;
@@ -5,11 +8,13 @@ export interface AuthPayload {
   password: string;
 }
 
+/** Response from the API */
 export interface AuthResponse {
   access_token?: string;
   refresh_token?: string;
 }
 
+/** Stored Authentication */
 export interface AuthStorage {
   botName: string;
   apiUrl: string;
@@ -19,6 +24,7 @@ export interface AuthStorage {
   autoRefresh: boolean;
 }
 
+/** Auth Storage container */
 export interface AuthStorageMulti {
   [key: string]: AuthStorage;
 }
