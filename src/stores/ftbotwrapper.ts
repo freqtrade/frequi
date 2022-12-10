@@ -190,6 +190,9 @@ export const useBotStore = defineStore('wrapper', {
 
         delete this.botStores[botId];
         delete this.availableBots[botId];
+        if (this.selectedBot === botId) {
+          this.selectFirstBot();
+        }
         this.botStores = { ...this.botStores };
         this.availableBots = { ...this.availableBots };
       } else {
