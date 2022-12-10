@@ -140,7 +140,7 @@ export default defineComponent({
       };
       return chartOptionsLoc;
     });
-    console.log(chartOptions);
+    // console.log(chartOptions);
     return { settingsStore, chartOptions, binOptions };
   },
 });
