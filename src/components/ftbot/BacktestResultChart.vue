@@ -35,7 +35,7 @@
         :trades="trades"
         :class="`${
           showRightBar ? 'col-md-8' : 'col-md-10'
-        } candle-chart-container px-0 w-100 h-100 align-self-stretch`"
+        } candle-chart-container px-0 h-100 align-self-stretch`"
         :slider-position="sliderPosition"
       >
       </CandleChartContainer>
