@@ -20,42 +20,32 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { defineComponent, computed, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 
-export default defineComponent({
-  name: 'StrategySelect',
-  props: {
-    modelValue: { type: String, required: true },
-    showDetails: { default: false, required: false, type: Boolean },
+const props = defineProps({
+  modelValue: { type: String, required: true },
+  showDetails: { default: false, required: false, type: Boolean },
+});
+const emit = defineEmits(['update:modelValue']);
+const botStore = useBotStore();
+
+const strategyCode = computed((): string => botStore.activeBot.strategy?.code);
+const locStrategy = computed({
+  get() {
+    return props.modelValue;
   },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const botStore = useBotStore();
-
-    const strategyCode = computed((): string => botStore.activeBot.strategy?.code);
-    const locStrategy = computed({
-      get() {
-        return props.modelValue;
-      },
-      set(strategy: string) {
-        botStore.activeBot.getStrategy(strategy);
-        emit('update:modelValue', strategy);
-      },
-    });
-
-    onMounted(() => {
-      if (botStore.activeBot.strategyList.length === 0) {
-        botStore.activeBot.getStrategyList();
-      }
-    });
-    return {
-      botStore,
-      strategyCode,
-      locStrategy,
-    };
+  set(strategy: string) {
+    botStore.activeBot.getStrategy(strategy);
+    emit('update:modelValue', strategy);
   },
+});
+
+onMounted(() => {
+  if (botStore.activeBot.strategyList.length === 0) {
+    botStore.activeBot.getStrategyList();
+  }
 });
 </script>
 
