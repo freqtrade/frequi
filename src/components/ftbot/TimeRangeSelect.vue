@@ -36,64 +36,53 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { dateFromString, dateStringToTimeRange, timestampToDateString } from '@/shared/formatters';
-import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
 const now = new Date();
 
-export default defineComponent({
-  name: 'TimeRangeSelect',
-  props: {
-    modelValue: { required: true, type: String },
-  },
-  setup(props, { emit }) {
-    const dateFrom = ref<string>('');
-    const dateTo = ref<string>('');
+const props = defineProps({
+  modelValue: { required: true, type: String },
+});
+const emit = defineEmits(['update:modelValue']);
+const dateFrom = ref<string>('');
+const dateTo = ref<string>('');
 
-    const timeRange = computed(() => {
-      if (dateFrom.value !== '' || dateTo.value !== '') {
-        return `${dateStringToTimeRange(dateFrom.value)}-${dateStringToTimeRange(dateTo.value)}`;
-      }
-      return '';
-    });
+const timeRange = computed(() => {
+  if (dateFrom.value !== '' || dateTo.value !== '') {
+    return `${dateStringToTimeRange(dateFrom.value)}-${dateStringToTimeRange(dateTo.value)}`;
+  }
+  return '';
+});
 
-    const updated = () => {
-      emit('input', timeRange.value);
-    };
+const updated = () => {
+  emit('update:modelValue', timeRange.value);
+};
 
-    const updateInput = () => {
-      const tr = props.modelValue.split('-');
-      if (tr[0]) {
-        dateFrom.value = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
-      }
-      if (tr.length > 1 && tr[1]) {
-        dateTo.value = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
-      }
-      updated();
-    };
+const updateInput = () => {
+  const tr = props.modelValue.split('-');
+  if (tr[0]) {
+    dateFrom.value = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
+  }
+  if (tr.length > 1 && tr[1]) {
+    dateTo.value = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
+  }
+  updated();
+};
 
-    watch(
-      () => timeRange.value,
-      () => updated(),
-    );
+watch(
+  () => timeRange.value,
+  () => updated(),
+);
 
-    onMounted(() => {
-      if (!props.modelValue) {
-        dateFrom.value = timestampToDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1));
-      } else {
-        updateInput();
-      }
-      emit('input', timeRange.value);
-    });
-
-    return {
-      dateFrom,
-      dateTo,
-      timeRange,
-      updated,
-    };
-  },
+onMounted(() => {
+  if (!props.modelValue) {
+    dateFrom.value = timestampToDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+  } else {
+    updateInput();
+  }
+  emit('update:modelValue', timeRange.value);
 });
 </script>
 
