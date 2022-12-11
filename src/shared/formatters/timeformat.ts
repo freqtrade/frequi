@@ -1,6 +1,7 @@
 import { parse, toDate } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import humanizeDuration from 'humanize-duration';
+import { isUndefined } from './numberformat';
 
 export function dateFromString(datestring: string, format: string): Date {
   return parse(datestring, format, 0);
@@ -58,7 +59,7 @@ export function timestampToDateString(ts: number | Date): string {
  * @param datestring Input string (in the format yyyy-MM-dd)
  */
 export function dateStringToTimeRange(datestring: string): string {
-  return datestring.replace(/-/g, '');
+  return isUndefined(datestring) ? '' : datestring.replace(/-/g, '');
 }
 
 export function timestampHour(ts: number): number {

@@ -1670,6 +1670,14 @@
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.2.6.tgz#23d85b81d05be36f12aa802459a7876457dec795"
   integrity sha512-64zHtJZdG7V/U2L0j/z3Pt5bSygccI3xs+Kl7LB73AZK4MQ8WONJhqDQPK8leUFFA9CmmoJygeky7zcl2hX10A==
 
+"@vuepic/vue-datepicker@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-3.6.1.tgz#7c082c72b78ebecc63922bb72c0b2e200005e39f"
+  integrity sha512-kdHFrfRtNaGXlUE0snavYnqajSj6VbdlvkscezPeNQNfo9BEYAVPp0YSFoXpoGXvyJNdBLRvfRDDCTTl2IASRg==
+  dependencies:
+    date-fns "^2.29.3"
+    date-fns-tz "^1.3.7"
+
 "@vueuse/core@^9.1.1":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-9.1.1.tgz#a5c09c33ccee58cfd53bc3ec2d5a0d304155529e"
@@ -1985,7 +1993,7 @@ bootstrap-vue-3@^0.4.11:
   resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.4.11.tgz#088e1da6ef09aee0d6687d17ad92668712e22021"
   integrity sha512-iCleKqZHqG/4l9AEaZ0aZtyjH5wXGT0JEFpTlAVrsvhbMQptkb5kRQXDh7F9mFKBVQ5+E5ykgRjvSoioIH06DA==
   dependencies:
-    "@nuxt/kit" "3.0.0"
+    "@nuxt/kit" "3.0.0-rc.12"
 
 bootstrap@^5.2.3:
   version "5.2.3"
