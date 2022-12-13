@@ -65,7 +65,13 @@
 
     <div>
       <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
-      <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfigFromStrategy">
+      <b-button
+        :disabled="botStore.activeBot.isWebserverMode || !botStore.activeBot.isBotOnline"
+        class="ms-1"
+        variant="secondary"
+        size="sm"
+        @click="loadPlotConfigFromStrategy"
+      >
         From strategy
       </b-button>
 
@@ -135,6 +141,7 @@ defineProps({
 });
 
 const plotStore = usePlotConfigStore();
+const botStore = useBotStore();
 
 const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
 
@@ -284,7 +291,6 @@ const resetConfig = () => {
 };
 const loadPlotConfigFromStrategy = async () => {
   try {
-    const botStore = useBotStore();
     await botStore.activeBot.getStrategyPlotConfig();
     if (botStore.activeBot.strategyPlotConfig) {
       plotConfig.value = botStore.activeBot.strategyPlotConfig;
