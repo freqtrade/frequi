@@ -8,7 +8,6 @@
       v-model="loginViewOpen"
       title="Login to your bot"
       @ok="handleOk"
-      @hide.prevent
     >
       <login ref="loginForm" in-modal :existing-auth="loginInfo" @loginResult="handleLoginResult" />
     </b-modal>
@@ -32,7 +31,8 @@ const handleLoginResult = (result: boolean) => {
     loginViewOpen.value = false;
   }
 };
-const handleOk = () => {
+const handleOk = (evt) => {
+  evt.preventDefault();
   loginForm.value?.handleSubmit();
 };
 const openLoginModal = async (botInfo: AuthStorageWithBotId | undefined = undefined) => {
