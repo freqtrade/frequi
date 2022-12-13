@@ -8,6 +8,7 @@
       v-model="loginViewOpen"
       title="Login to your bot"
       @ok="handleOk"
+      @hide.prevent
     >
       <login ref="loginForm" in-modal :existing-auth="loginInfo" @loginResult="handleLoginResult" />
     </b-modal>

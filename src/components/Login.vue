@@ -121,6 +121,7 @@ const checkFormValidity = () => {
 };
 
 const resetLogin = () => {
+  auth.value.botName = '';
   auth.value.url = defaultURL;
   auth.value.username = '';
   auth.value.password = '';
