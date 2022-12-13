@@ -79,94 +79,72 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import Reset from 'vue-material-design-icons/CloseCircleOutline.vue';
 
-import { defineComponent, computed, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-export default defineComponent({
-  name: 'PlotIndicator',
-  components: {
-    Reset,
+const props = defineProps({
+  modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
+  columns: { required: true, type: Array as () => string[] },
+  addNew: { required: true, type: Boolean },
+});
+const emit = defineEmits(['update:modelValue']);
+const selColor = ref(randomColor());
+const graphType = ref<ChartType>(ChartType.line);
+const availableGraphTypes = ref(Object.keys(ChartType));
+const indicatorFilter = ref('');
+const selAvailableIndicator = ref('');
+const cancelled = ref(false);
+
+const filteredIndicators = computed(() => {
+  return props.columns.filter((col) =>
+    col.toLowerCase().includes(indicatorFilter.value.toLowerCase()),
+  );
+});
+
+const newColor = () => {
+  selColor.value = randomColor();
+};
+
+const combinedIndicator = computed(() => {
+  if (cancelled.value || !selAvailableIndicator.value) {
+    return {};
+  }
+  return {
+    [selAvailableIndicator.value]: {
+      color: selColor.value,
+      type: graphType.value,
+    },
+  };
+});
+const emitIndicator = () => {
+  emit('update:modelValue', combinedIndicator.value);
+};
+
+const clickCancel = () => {
+  cancelled.value = true;
+  emitIndicator();
+};
+
+watch(
+  () => props.modelValue,
+  () => {
+    [selAvailableIndicator.value] = Object.keys(props.modelValue);
+    cancelled.value = false;
+    if (selAvailableIndicator.value && props.modelValue) {
+      selColor.value = props.modelValue[selAvailableIndicator.value].color || randomColor();
+      graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
+    }
   },
-  props: {
-    modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
-    columns: { required: true, type: Array as () => string[] },
-    addNew: { required: true, type: Boolean },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const selColor = ref(randomColor());
-    const graphType = ref<ChartType>(ChartType.line);
-    const availableGraphTypes = ref(Object.keys(ChartType));
-    const indicatorFilter = ref('');
-    const selAvailableIndicator = ref('');
-    const cancelled = ref(false);
+);
 
-    const filteredIndicators = computed(() => {
-      return props.columns.filter((col) =>
-        col.toLowerCase().includes(indicatorFilter.value.toLowerCase()),
-      );
-    });
-
-    const newColor = () => {
-      selColor.value = randomColor();
-    };
-
-    const combinedIndicator = computed(() => {
-      if (cancelled.value || !selAvailableIndicator.value) {
-        return {};
-      }
-      return {
-        [selAvailableIndicator.value]: {
-          color: selColor.value,
-          type: graphType.value,
-        },
-      };
-    });
-    const emitIndicator = () => {
-      emit('update:modelValue', combinedIndicator.value);
-    };
-
-    const clickCancel = () => {
-      cancelled.value = true;
-      emitIndicator();
-    };
-
-    watch(
-      () => props.modelValue,
-      () => {
-        [selAvailableIndicator.value] = Object.keys(props.modelValue);
-        cancelled.value = false;
-        if (selAvailableIndicator.value && props.modelValue) {
-          selColor.value = props.modelValue[selAvailableIndicator.value].color || randomColor();
-          graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
-        }
-      },
-    );
-
-    watch(selColor, () => {
-      if (!props.addNew) {
-        emitIndicator();
-      }
-    });
-
-    return {
-      selColor,
-      graphType,
-      availableGraphTypes,
-      selAvailableIndicator,
-      cancelled,
-      combinedIndicator,
-      newColor,
-      emitIndicator,
-      clickCancel,
-      indicatorFilter,
-      filteredIndicators,
-    };
-  },
+watch(selColor, () => {
+  if (!props.addNew) {
+    emitIndicator();
+  }
 });
 </script>
 
