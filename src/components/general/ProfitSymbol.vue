@@ -4,22 +4,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-export default defineComponent({
-  name: 'ProfitSymbol',
-  props: {
-    profit: { type: Number, required: true },
-  },
-  setup(props) {
-    const isProfitable = computed(() => {
-      return props.profit > 0;
-    });
-    return {
-      isProfitable,
-    };
-  },
+const props = defineProps({
+  profit: { type: Number, required: true },
+});
+const isProfitable = computed(() => {
+  return props.profit > 0;
 });
 </script>
 
