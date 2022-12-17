@@ -22,7 +22,7 @@
         <strong>{{ botStore.activeBot.balance.note }}</strong>
       </p>
       <b-table class="table-sm" :items="balanceCurrencies" :fields="tableFields">
-        <template slot="bottom-row">
+        <template #custom-foot>
           <td><strong>Total</strong></td>
           <td>
             <span
