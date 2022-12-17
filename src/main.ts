@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
-import { BootstrapVue3 } from './plugins/bootstrap-vue';
-import App from './App.vue';
-import router from './router';
 import { createPinia, PiniaVuePlugin } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import GridLayout from 'vue3-drr-grid-layout';
+import { createApp } from 'vue';
+import App from './App.vue';
+import { BootstrapVue3 } from './plugins/bootstrap-vue';
+import { GridLayout } from './plugins/vue-grid-layout';
+import router from './router';
 
 const myApp = createApp(App);
 

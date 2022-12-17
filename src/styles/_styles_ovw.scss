@@ -202,6 +202,16 @@
         background: darken($bg-dark, 10%);
         border-color: lighten($bg-dark, 20%);
     }
+
+    .vue-grid-item>.vue-resizable-handle {
+        // Stupid workaround to have the Shevron actually show.
+        background-color: darken($fg-color, 50%);
+    }
+}
+
+.vue-grid-item {
+    // Fix white corners in vue-grid-item.
+    background-color: unset !important;
 }
 
 html.ft-theme-transition,
