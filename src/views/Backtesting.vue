@@ -272,7 +272,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
@@ -285,139 +285,104 @@ import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
 import { BacktestPayload } from '@/types';
 
 import { formatPercent } from '@/shared/formatters';
-import { defineComponent, computed, ref, onMounted, watch } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'Backtesting',
-  components: {
-    BacktestResultView,
-    BacktestGraphsView,
-    BacktestResultSelect,
-    BacktestHistoryLoad,
-    TimeRangeSelect,
-    StrategySelect,
-    TimeframeSelect,
-    BacktestResultChart,
-  },
-  setup() {
-    const botStore = useBotStore();
+const botStore = useBotStore();
 
-    const hasBacktestResult = computed(() =>
-      botStore.activeBot.backtestHistory
-        ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
-        : false,
-    );
-    const timeframe = computed((): string => {
-      try {
-        return botStore.activeBot.selectedBacktestResult.timeframe;
-      } catch (err) {
-        return '';
-      }
-    });
-
-    const strategy = ref('');
-    const selectedTimeframe = ref('');
-    const selectedDetailTimeframe = ref('');
-    const timerange = ref('');
-    const showLeftBar = ref(false);
-    const enableProtections = ref(false);
-    const stakeAmountUnlimited = ref(false);
-    const maxOpenTrades = ref('');
-    const stakeAmount = ref('');
-    const startingCapital = ref('');
-    const btFormMode = ref('run');
-    const pollInterval = ref<number | null>(null);
-
-    const selectBacktestResult = () => {
-      // Set parameters for this result
-      strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
-      selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
-      selectedDetailTimeframe.value =
-        botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
-      timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
-    };
-
-    watch(
-      () => botStore.activeBot.selectedBacktestResultKey,
-      () => {
-        selectBacktestResult();
-      },
-    );
-
-    const clickBacktest = () => {
-      const btPayload: BacktestPayload = {
-        strategy: strategy.value,
-        timerange: timerange.value,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        enable_protections: enableProtections.value,
-      };
-      const openTradesInt = parseInt(maxOpenTrades.value, 10);
-      if (openTradesInt) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        btPayload.max_open_trades = openTradesInt;
-      }
-      if (stakeAmountUnlimited.value) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        btPayload.stake_amount = 'unlimited';
-      } else {
-        const stakeAmountLoc = Number(stakeAmount.value);
-        if (stakeAmountLoc) {
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          btPayload.stake_amount = stakeAmountLoc.toString();
-        }
-      }
-
-      const startingCapitalLoc = Number(startingCapital.value);
-      if (startingCapitalLoc) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        btPayload.dry_run_wallet = startingCapitalLoc;
-      }
-
-      if (selectedTimeframe.value) {
-        btPayload.timeframe = selectedTimeframe.value;
-      }
-      if (selectedDetailTimeframe.value) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        btPayload.timeframe_detail = selectedDetailTimeframe.value;
-      }
-
-      botStore.activeBot.startBacktest(btPayload);
-    };
-
-    onMounted(() => botStore.activeBot.getState());
-    watch(
-      () => botStore.activeBot.backtestRunning,
-      () => {
-        if (botStore.activeBot.backtestRunning === true) {
-          pollInterval.value = window.setInterval(botStore.activeBot.pollBacktest, 1000);
-        } else if (pollInterval.value) {
-          clearInterval(pollInterval.value);
-          pollInterval.value = null;
-        }
-      },
-    );
-    return {
-      botStore,
-
-      formatPercent,
-      hasBacktestResult,
-      timeframe,
-      strategy,
-      selectedTimeframe,
-      selectedDetailTimeframe,
-      timerange,
-      enableProtections,
-      showLeftBar,
-      stakeAmountUnlimited,
-      maxOpenTrades,
-      stakeAmount,
-      startingCapital,
-      btFormMode,
-      clickBacktest,
-    };
-  },
+const hasBacktestResult = computed(() =>
+  botStore.activeBot.backtestHistory
+    ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
+    : false,
+);
+const timeframe = computed((): string => {
+  try {
+    return botStore.activeBot.selectedBacktestResult.timeframe;
+  } catch (err) {
+    return '';
+  }
 });
+
+const strategy = ref('');
+const selectedTimeframe = ref('');
+const selectedDetailTimeframe = ref('');
+const timerange = ref('');
+const showLeftBar = ref(false);
+const enableProtections = ref(false);
+const stakeAmountUnlimited = ref(false);
+const maxOpenTrades = ref('');
+const stakeAmount = ref('');
+const startingCapital = ref('');
+const btFormMode = ref('run');
+const pollInterval = ref<number | null>(null);
+
+const selectBacktestResult = () => {
+  // Set parameters for this result
+  strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
+  selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
+  selectedDetailTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+  timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
+};
+
+watch(
+  () => botStore.activeBot.selectedBacktestResultKey,
+  () => {
+    selectBacktestResult();
+  },
+);
+
+const clickBacktest = () => {
+  const btPayload: BacktestPayload = {
+    strategy: strategy.value,
+    timerange: timerange.value,
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    enable_protections: enableProtections.value,
+  };
+  const openTradesInt = parseInt(maxOpenTrades.value, 10);
+  if (openTradesInt) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    btPayload.max_open_trades = openTradesInt;
+  }
+  if (stakeAmountUnlimited.value) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    btPayload.stake_amount = 'unlimited';
+  } else {
+    const stakeAmountLoc = Number(stakeAmount.value);
+    if (stakeAmountLoc) {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      btPayload.stake_amount = stakeAmountLoc.toString();
+    }
+  }
+
+  const startingCapitalLoc = Number(startingCapital.value);
+  if (startingCapitalLoc) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    btPayload.dry_run_wallet = startingCapitalLoc;
+  }
+
+  if (selectedTimeframe.value) {
+    btPayload.timeframe = selectedTimeframe.value;
+  }
+  if (selectedDetailTimeframe.value) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    btPayload.timeframe_detail = selectedDetailTimeframe.value;
+  }
+
+  botStore.activeBot.startBacktest(btPayload);
+};
+
+onMounted(() => botStore.activeBot.getState());
+watch(
+  () => botStore.activeBot.backtestRunning,
+  () => {
+    if (botStore.activeBot.backtestRunning === true) {
+      pollInterval.value = window.setInterval(botStore.activeBot.pollBacktest, 1000);
+    } else if (pollInterval.value) {
+      clearInterval(pollInterval.value);
+      pollInterval.value = null;
+    }
+  },
+);
 </script>
 
 <style lang="scss" scoped>
