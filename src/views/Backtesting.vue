@@ -195,6 +195,7 @@
               ></b-form-checkbox>
             </b-form-group>
             <b-form-group
+              v-if="botStore.activeBot.botApiVersion >= 2.22"
               label-cols-sm="5"
               label="Cache Backtest results:"
               label-align-sm="right"
