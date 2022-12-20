@@ -194,6 +194,14 @@
                 v-model="enableProtections"
               ></b-form-checkbox>
             </b-form-group>
+            <b-form-group
+              label-cols-sm="5"
+              label="Cache Backtest results:"
+              label-align-sm="right"
+              label-for="enable-cache"
+            >
+              <b-form-checkbox id="enable-cache" v-model="allowCache"></b-form-checkbox>
+            </b-form-group>
             <template v-if="botStore.activeBot.botApiVersion >= 2.22">
               <b-form-group
                 label-cols-sm="5"
@@ -343,6 +351,7 @@ const freqAI = ref({
 });
 const enableProtections = ref(false);
 const stakeAmountUnlimited = ref(false);
+const allowCache = ref(true);
 const maxOpenTrades = ref('');
 const stakeAmount = ref('');
 const startingCapital = ref('');
@@ -399,6 +408,10 @@ const clickBacktest = () => {
   if (selectedDetailTimeframe.value) {
     // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.timeframe_detail = selectedDetailTimeframe.value;
+  }
+  if (!allowCache.value) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    btPayload.backtest_cache = 'none';
   }
   if (freqAI.value.enabled) {
     btPayload.freqaimodel = freqAI.value.model;
