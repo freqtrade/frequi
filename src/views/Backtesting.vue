@@ -211,7 +211,15 @@
                 </template>
                 <b-form-checkbox id="enable-freqai" v-model="enableFreqAI"></b-form-checkbox>
               </b-form-group>
-              <FreqaiModelSelect v-if="enableFreqAI" v-model="freqaiModel"></FreqaiModelSelect>
+              <b-form-group
+                v-if="enableFreqAI"
+                label-cols-sm="5"
+                label="FreqAI Model"
+                label-align-sm="right"
+                label-for="freqai-model"
+              >
+                <FreqaiModelSelect id="freqai-model" v-model="freqaiModel"></FreqaiModelSelect>
+              </b-form-group>
             </template>
 
             <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
