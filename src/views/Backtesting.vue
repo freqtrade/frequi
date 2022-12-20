@@ -201,6 +201,14 @@
                 label-align-sm="right"
                 label-for="enable-freqai"
               >
+                <template #label>
+                  <div class="d-flex justify-content-center">
+                    <span class="me-2">Enable FreqAI:</span>
+                    <InfoBox
+                      hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
+                    />
+                  </div>
+                </template>
                 <b-form-checkbox id="enable-freqai" v-model="enableFreqAI"></b-form-checkbox>
               </b-form-group>
               <FreqaiModelSelect v-if="enableFreqAI" v-model="freqaiModel"></FreqaiModelSelect>
@@ -293,6 +301,7 @@ import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
+import InfoBox from '@/components/general/InfoBox.vue';
 
 import { BacktestPayload } from '@/types';
 
