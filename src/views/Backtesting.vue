@@ -101,7 +101,7 @@
           <span>Strategy</span>
           <StrategySelect v-model="strategy"></StrategySelect>
         </div>
-        <b-card bg-variant="light" :disabled="botStore.activeBot.backtestRunning">
+        <b-card :disabled="botStore.activeBot.backtestRunning">
           <!-- Backtesting parameters -->
           <b-form-group
             label-cols-lg="2"
