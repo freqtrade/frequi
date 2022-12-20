@@ -209,16 +209,16 @@
                     />
                   </div>
                 </template>
-                <b-form-checkbox id="enable-freqai" v-model="enableFreqAI"></b-form-checkbox>
+                <b-form-checkbox id="enable-freqai" v-model="freqAI.enabled"></b-form-checkbox>
               </b-form-group>
               <b-form-group
-                v-if="enableFreqAI"
+                v-if="freqAI.enabled"
                 label-cols-sm="5"
                 label="FreqAI Model"
                 label-align-sm="right"
                 label-for="freqai-model"
               >
-                <FreqaiModelSelect id="freqai-model" v-model="freqaiModel"></FreqaiModelSelect>
+                <FreqaiModelSelect id="freqai-model" v-model="freqAI.model"></FreqaiModelSelect>
               </b-form-group>
             </template>
 
@@ -337,9 +337,11 @@ const selectedTimeframe = ref('');
 const selectedDetailTimeframe = ref('');
 const timerange = ref('');
 const showLeftBar = ref(false);
+const freqAI = ref({
+  enabled: false,
+  model: '',
+});
 const enableProtections = ref(false);
-const enableFreqAI = ref(false);
-const freqaiModel = ref('');
 const stakeAmountUnlimited = ref(false);
 const maxOpenTrades = ref('');
 const stakeAmount = ref('');
@@ -398,8 +400,8 @@ const clickBacktest = () => {
     // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.timeframe_detail = selectedDetailTimeframe.value;
   }
-  if (enableFreqAI.value) {
-    btPayload.freqaimodel = freqaiModel.value;
+  if (freqAI.value.enabled) {
+    btPayload.freqaimodel = freqAI.value.model;
   }
 
   botStore.activeBot.startBacktest(btPayload);
