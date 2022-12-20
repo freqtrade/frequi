@@ -194,6 +194,17 @@
                 v-model="enableProtections"
               ></b-form-checkbox>
             </b-form-group>
+            <template v-if="botStore.activeBot.botApiVersion >= 2.22">
+              <b-form-group
+                label-cols-sm="5"
+                label="Enable FreqAI:"
+                label-align-sm="right"
+                label-for="enable-freqai"
+              >
+                <b-form-checkbox id="enable-freqai" v-model="enableFreqAI"></b-form-checkbox>
+              </b-form-group>
+              <FreqaiModelSelect v-if="enableFreqAI" v-model="freqaiModel"></FreqaiModelSelect>
+            </template>
 
             <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
               <b-form-input
@@ -277,6 +288,7 @@ import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
+import FreqaiModelSelect from '@/components/ftbot/FreqaiModelSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
@@ -309,6 +321,8 @@ const selectedDetailTimeframe = ref('');
 const timerange = ref('');
 const showLeftBar = ref(false);
 const enableProtections = ref(false);
+const enableFreqAI = ref(false);
+const freqaiModel = ref('');
 const stakeAmountUnlimited = ref(false);
 const maxOpenTrades = ref('');
 const stakeAmount = ref('');
@@ -366,6 +380,9 @@ const clickBacktest = () => {
   if (selectedDetailTimeframe.value) {
     // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.timeframe_detail = selectedDetailTimeframe.value;
+  }
+  if (enableFreqAI.value) {
+    btPayload.freqaimodel = freqaiModel.value;
   }
 
   botStore.activeBot.startBacktest(btPayload);

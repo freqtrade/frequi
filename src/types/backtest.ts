@@ -11,6 +11,7 @@ export interface BacktestPayload {
   stake_amount?: string;
   dry_run_wallet?: number;
   enable_protections?: boolean;
+  freqaimodel?: string;
 }
 
 export interface PairResult {
