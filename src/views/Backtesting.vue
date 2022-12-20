@@ -221,6 +221,18 @@
                 <b-form-checkbox id="enable-freqai" v-model="freqAI.enabled"></b-form-checkbox>
               </b-form-group>
               <b-form-group
+                label-cols-sm="5"
+                label="FreqAI identifier:"
+                label-align-sm="right"
+                label-for="freqai-identifier"
+              >
+                <b-form-input
+                  id="freqai-identifier"
+                  v-model="freqAI.identifier"
+                  placeholder="Use config default"
+                ></b-form-input>
+              </b-form-group>
+              <b-form-group
                 v-if="freqAI.enabled"
                 label-cols-sm="5"
                 label="FreqAI Model"
@@ -349,6 +361,7 @@ const showLeftBar = ref(false);
 const freqAI = ref({
   enabled: false,
   model: '',
+  identifier: '',
 });
 const enableProtections = ref(false);
 const stakeAmountUnlimited = ref(false);
@@ -416,6 +429,9 @@ const clickBacktest = () => {
   }
   if (freqAI.value.enabled) {
     btPayload.freqaimodel = freqAI.value.model;
+    if (freqAI.value.identifier !== '') {
+      btPayload.freqai = { identifier: freqAI.value.identifier };
+    }
   }
 
   botStore.activeBot.startBacktest(btPayload);

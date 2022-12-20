@@ -13,6 +13,9 @@ export interface BacktestPayload {
   enable_protections?: boolean;
   backtest_cache?: string;
   freqaimodel?: string;
+  freqai?: {
+    identifier: string;
+  };
 }
 
 export interface PairResult {
