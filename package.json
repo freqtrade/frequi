@@ -34,7 +34,7 @@
     "vue": "3.2.42",
     "vue-class-component": "^7.2.5",
     "vue-demi": "0.13.11",
-    "vue-echarts": "^6.2.3",
+    "vue-echarts": "^6.3.3",
     "vue-material-design-icons": "^5.1.2",
     "vue-router": "^4.1.6",
     "vue-select": "^4.0.0-beta.6",
