@@ -30,10 +30,10 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       this.plotConfigName = plotConfigName;
       storePlotConfigName(plotConfigName);
     },
-    plotConfigChanged() {
+    plotConfigChanged(plotConfigName = '') {
       console.log('plotConfigChanged');
+      this.setPlotConfigName(plotConfigName ? plotConfigName : this.plotConfigName);
       this.plotConfig = getCustomPlotConfig(this.plotConfigName);
-      this.setPlotConfigName(this.plotConfigName);
     },
     setPlotConfig(plotConfig: PlotConfig) {
       console.log('emit...');
