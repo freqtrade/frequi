@@ -307,7 +307,7 @@ const savePlotConfig = () => {
 };
 
 onMounted(() => {
-  // console.log('Config Mounted', props.value);
+  // console.log('Config Mounted', props);
   plotConfig.value = plotStore.plotConfig;
   plotConfigNameLoc.value = plotStore.plotConfigName;
 });

@@ -85,7 +85,7 @@
       ok-only
       hide-backdrop
     >
-      <PlotConfigurator :columns="datasetColumns" />
+      <PlotConfigurator v-if="showPlotConfigModal" :columns="datasetColumns" />
     </b-modal>
   </div>
 </template>
