@@ -175,6 +175,10 @@ export interface StrategyResult {
   code: string;
 }
 
+export interface FreqAIModelListResult {
+  freqaimodels: string[];
+}
+
 export interface AvailablePairPayload {
   timeframe?: string;
   stake_currency?: string;

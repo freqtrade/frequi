@@ -41,6 +41,7 @@ import { showAlert } from './alerts';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 import { showNotification } from '@/shared/notifications';
+import { FreqAIModelListResult } from '../types/types';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -81,6 +82,7 @@ export function createBotSubStore(botId: string, botName: string) {
         historyStatus: LoadingStatus.loading,
         strategyPlotConfig: undefined as PlotConfig | undefined,
         strategyList: [] as string[],
+        freqaiModelList: [] as string[],
         strategy: {} as StrategyResult,
         pairlist: [] as string[],
         currentLocks: undefined as LockResponse | undefined,
@@ -426,6 +428,16 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const { data } = await api.get<StrategyResult>(`/strategy/${strategy}`, {});
           this.strategy = data;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getFreqAIModelList() {
+        try {
+          const { data } = await api.get<FreqAIModelListResult>('/freqaimodels');
+          this.freqaiModelList = data.freqaimodels;
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);

@@ -101,7 +101,7 @@
           <span>Strategy</span>
           <StrategySelect v-model="strategy"></StrategySelect>
         </div>
-        <b-card bg-variant="light" :disabled="botStore.activeBot.backtestRunning">
+        <b-card :disabled="botStore.activeBot.backtestRunning">
           <!-- Backtesting parameters -->
           <b-form-group
             label-cols-lg="2"
@@ -194,6 +194,54 @@
                 v-model="enableProtections"
               ></b-form-checkbox>
             </b-form-group>
+            <b-form-group
+              v-if="botStore.activeBot.botApiVersion >= 2.22"
+              label-cols-sm="5"
+              label="Cache Backtest results:"
+              label-align-sm="right"
+              label-for="enable-cache"
+            >
+              <b-form-checkbox id="enable-cache" v-model="allowCache"></b-form-checkbox>
+            </b-form-group>
+            <template v-if="botStore.activeBot.botApiVersion >= 2.22">
+              <b-form-group
+                label-cols-sm="5"
+                label="Enable FreqAI:"
+                label-align-sm="right"
+                label-for="enable-freqai"
+              >
+                <template #label>
+                  <div class="d-flex justify-content-center">
+                    <span class="me-2">Enable FreqAI:</span>
+                    <InfoBox
+                      hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
+                    />
+                  </div>
+                </template>
+                <b-form-checkbox id="enable-freqai" v-model="freqAI.enabled"></b-form-checkbox>
+              </b-form-group>
+              <b-form-group
+                label-cols-sm="5"
+                label="FreqAI identifier:"
+                label-align-sm="right"
+                label-for="freqai-identifier"
+              >
+                <b-form-input
+                  id="freqai-identifier"
+                  v-model="freqAI.identifier"
+                  placeholder="Use config default"
+                ></b-form-input>
+              </b-form-group>
+              <b-form-group
+                v-if="freqAI.enabled"
+                label-cols-sm="5"
+                label="FreqAI Model"
+                label-align-sm="right"
+                label-for="freqai-model"
+              >
+                <FreqaiModelSelect id="freqai-model" v-model="freqAI.model"></FreqaiModelSelect>
+              </b-form-group>
+            </template>
 
             <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
               <b-form-input
@@ -277,10 +325,12 @@ import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
+import FreqaiModelSelect from '@/components/ftbot/FreqaiModelSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
+import InfoBox from '@/components/general/InfoBox.vue';
 
 import { BacktestPayload } from '@/types';
 
@@ -308,8 +358,14 @@ const selectedTimeframe = ref('');
 const selectedDetailTimeframe = ref('');
 const timerange = ref('');
 const showLeftBar = ref(false);
+const freqAI = ref({
+  enabled: false,
+  model: '',
+  identifier: '',
+});
 const enableProtections = ref(false);
 const stakeAmountUnlimited = ref(false);
+const allowCache = ref(true);
 const maxOpenTrades = ref('');
 const stakeAmount = ref('');
 const startingCapital = ref('');
@@ -366,6 +422,16 @@ const clickBacktest = () => {
   if (selectedDetailTimeframe.value) {
     // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.timeframe_detail = selectedDetailTimeframe.value;
+  }
+  if (!allowCache.value) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    btPayload.backtest_cache = 'none';
+  }
+  if (freqAI.value.enabled) {
+    btPayload.freqaimodel = freqAI.value.model;
+    if (freqAI.value.identifier !== '') {
+      btPayload.freqai = { identifier: freqAI.value.identifier };
+    }
   }
 
   botStore.activeBot.startBacktest(btPayload);
