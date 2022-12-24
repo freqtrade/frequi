@@ -1,9 +1,9 @@
 <template>
-  <div class="card h-100 w-100 overflow-auto">
+  <div class="card h-100 w-100">
     <div class="drag-header card-header">
       {{ header }}
     </div>
-    <div class="card-body h-100 w-100">
+    <div class="card-body h-100 w-100 overflow-auto">
       <slot></slot>
     </div>
   </div>
