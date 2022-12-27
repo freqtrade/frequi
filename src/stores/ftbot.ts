@@ -213,7 +213,7 @@ export function createBotSubStore(botId: string, botName: string) {
           try {
             this.refreshing = true;
             // TODO: Should be AxiosInstance
-            const updates: Promise<any>[] = [];
+            const updates: Promise<unknown>[] = [];
             updates.push(this.getPerformance());
             updates.push(this.getProfit());
             updates.push(this.getTrades());
@@ -862,7 +862,7 @@ export function createBotSubStore(botId: string, botName: string) {
         ) {
           return;
         }
-        const { status, data, send, open, close, ws } = useWebSocket(
+        const { send, close } = useWebSocket(
           // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
           `${userService.getBaseWsUrl()}/message/ws?token=${userService.getAccessToken()}`,
           {

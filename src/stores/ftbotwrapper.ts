@@ -216,7 +216,7 @@ export const useBotStore = defineStore('wrapper', {
       this.globalAutoRefresh = value;
     },
     async allRefreshFrequent(forceUpdate = false) {
-      const updates: Promise<any>[] = [];
+      const updates: Promise<unknown>[] = [];
       this.allBotStores.forEach(async (e) => {
         if (e.refreshNow && (this.globalAutoRefresh || forceUpdate)) {
           updates.push(e.refreshFrequent());
@@ -242,14 +242,14 @@ export const useBotStore = defineStore('wrapper', {
         await this.pingAll();
 
         const botStoreUpdates: Promise<any>[] = [];
-        this.allBotStores.forEach((e) => {
-          if (e.isBotOnline && !e.botStatusAvailable) {
-            botStoreUpdates.push(e.getState());
+        this.allBotStores.forEach((bot) => {
+          if (bot.isBotOnline && !bot.botStatusAvailable) {
+            botStoreUpdates.push(bot.getState());
           }
         });
         await Promise.all(botStoreUpdates);
 
-        const updates: Promise<any>[] = [];
+        const updates: Promise<void>[] = [];
         updates.push(this.allRefreshFrequent(false));
         updates.push(this.allRefreshSlow(true));
         // updates.push(this.getDaily());
@@ -309,11 +309,11 @@ export const useBotStore = defineStore('wrapper', {
       });
     },
     async allGetDaily(payload: DailyPayload) {
-      const updates: Promise<any>[] = [];
+      const updates: Promise<DailyReturnValue>[] = [];
 
-      this.allBotStores.forEach((e) => {
-        if (e.isBotOnline) {
-          updates.push(e.getDaily(payload));
+      this.allBotStores.forEach((bot) => {
+        if (bot.isBotOnline) {
+          updates.push(bot.getDaily(payload));
         }
       });
       await Promise.all(updates);
