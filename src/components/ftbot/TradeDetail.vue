@@ -7,7 +7,7 @@
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
 
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
-        <ValuePair v-if="trade.buy_tag" description="Entry tag">{{ trade.buy_tag }}</ValuePair>
+        <ValuePair v-if="trade.enter_tag" description="Entry tag">{{ trade.enter_tag }}</ValuePair>
         <ValuePair description="Stake"
           >{{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
           {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
