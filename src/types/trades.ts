@@ -41,6 +41,8 @@ export interface Trade {
   amount: number;
   amount_requested?: number;
   stake_amount: number;
+  /** Maximum invested capital. Aggregated entry-orders without subtracting. */
+  max_stake_amount?: number | null;
   strategy?: string;
   exchange?: string;
   /** @deprecated - Replaced by enter_tag with 2.x */
