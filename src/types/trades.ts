@@ -45,8 +45,6 @@ export interface Trade {
   max_stake_amount?: number | null;
   strategy?: string;
   exchange?: string;
-  /** @deprecated - Replaced by enter_tag with 2.x */
-  buy_tag?: string;
   /** Replaces buy_tag with version 2.x */
   enter_tag?: string;
 
@@ -75,8 +73,6 @@ export interface Trade {
   /** Current absolute profit */
   profit_abs?: number;
 
-  /** @deprecated - replaced by exit reason 2.x */
-  sell_reason?: string;
   exit_reason?: string;
   exit_order_status?: string;
   min_rate?: number;
