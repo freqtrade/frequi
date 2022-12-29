@@ -139,6 +139,24 @@ const backtestResultStats = computed(() => {
       value: `${props.backtestResult.cagr ? formatPercent(props.backtestResult.cagr) : 'N/A'}`,
     },
     {
+      metric: 'Sortino',
+      value: `${props.backtestResult.sortino ? props.backtestResult.sortino.toFixed(2) : 'N/A'}`,
+    },
+    {
+      metric: 'Sharpe',
+      value: `${props.backtestResult.sharpe ? props.backtestResult.sharpe.toFixed(2) : 'N/A'}`,
+    },
+    {
+      metric: 'Calmar',
+      value: `${props.backtestResult.calmar ? props.backtestResult.calmar.toFixed(2) : 'N/A'}`,
+    },
+    {
+      metric: 'Expectancy',
+      value: `${
+        props.backtestResult.expectancy ? props.backtestResult.expectancy.toFixed(2) : 'N/A'
+      }`,
+    },
+    {
       metric: 'Profit factor',
       value: `${
         props.backtestResult.profit_factor
