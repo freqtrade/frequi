@@ -221,6 +221,7 @@
                 <b-form-checkbox id="enable-freqai" v-model="freqAI.enabled"></b-form-checkbox>
               </b-form-group>
               <b-form-group
+                v-if="freqAI.enabled"
                 label-cols-sm="5"
                 label="FreqAI identifier:"
                 label-align-sm="right"
