@@ -101,3 +101,12 @@ yarn serve
 ```
 
 You now have useful vscode extensions, git support, your command history of the project.
+
+### Fix cypress errors
+
+Depending on the system configuration (node version, ...), there can failures when starting cypress.
+This can be mitigated by using the following environment variable.
+
+```
+export NODE_OPTIONS=--openssl-legacy-provider
+```
