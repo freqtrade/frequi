@@ -18,5 +18,5 @@ export const useAlertsStore = defineStore('alerts', {
 
 export function showAlert(message: string, severity: AlertSeverity = 'warning') {
   const alertsStore = useAlertsStore();
-  alertsStore.addAlert({ message, severity, timeout: 5 });
+  alertsStore.addAlert({ message, severity, timeout: 5000 });
 }
