@@ -55,7 +55,7 @@
         ></b-form-input>
       </b-form-group>
       <div>
-        <b-alert v-if="errorMessage" class="alert-wrap" show variant="warning">
+        <b-alert v-if="errorMessage" class="alert-wrap" :model-value="true" variant="warning">
           {{ errorMessage }}
           <br />
           <span v-if="errorMessageCORS">
