@@ -537,7 +537,8 @@ export default defineComponent({
             // tooltip will be fixed on the right if mouse hovering on the left,
             // and on the left if hovering on the right.
             const obj = { top: 60 };
-            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+            const mouseIsLeft = pos[0] < size.viewSize[0] / 2;
+            obj[['left', 'right'][+mouseIsLeft]] = mouseIsLeft ? 5 : 60;
             return obj;
           },
         },
