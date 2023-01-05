@@ -1,5 +1,5 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
-import axios from 'axios';
+import axios, { AxiosHeaders } from 'axios';
 import { UserService } from './userService';
 
 export function useApi(userService: UserService, botId: string) {
@@ -10,15 +10,18 @@ export function useApi(userService: UserService, botId: string) {
   });
   // Sent auth headers interceptor
   api.interceptors.request.use(
-    (config) => {
-      const custconfig = config;
+    (request) => {
       const token = userService.getAccessToken();
-      // Append token to each request
-      if (token) {
-        // Merge custconfig dicts
-        custconfig.headers = { ...config.headers, ...{ Authorization: `Bearer ${token}` } };
+      try {
+        if (token) {
+          request.headers = request.headers as AxiosHeaders;
+          // Append token to each request
+          request.headers.set('Authorization', `Bearer ${token}`);
+        }
+      } catch (e) {
+        console.log(e);
       }
-      return custconfig;
+      return request;
     },
     (error) => Promise.reject(error),
   );
