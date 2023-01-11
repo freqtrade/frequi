@@ -5763,10 +5763,10 @@ vue-demi@*, vue-demi@0.13.11, vue-demi@^0.13.2:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
   integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
 
-vue-echarts@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/vue-echarts/-/vue-echarts-6.5.0.tgz#09b8719db626c93cc56ae29dda6461a26e528122"
-  integrity sha512-WpmQVOwQm0+SfA4qq4a7/H45wEzXju2wcbNZqRC4S0ttjA23SaPISZjGbSCvEuqKfbxmsKbnmU6zI0z0PurB6A==
+vue-echarts@^6.5.1:
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/vue-echarts/-/vue-echarts-6.5.1.tgz#f7e7eb86354b0f1a461906b4b92aac456dd5dd65"
+  integrity sha512-vlCX65ITq83xkOljip3juL8LyMd4cHOE6Zmp+9u1nPxPrar0irEtTwV80lkFm5yQM4Ef9X9fNdMa6gmsj75xYw==
   dependencies:
     resize-detector "^0.3.0"
     vue-demi "^0.13.2"
