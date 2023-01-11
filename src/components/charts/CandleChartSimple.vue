@@ -52,6 +52,7 @@ use([
 ]);
 
 // Chart default options
+const MARGINTOP = '1.5%';
 const MARGINLEFT = '5.5%';
 const MARGINRIGHT = '1%';
 const NAMEGAP = 55;
@@ -180,6 +181,7 @@ export default defineComponent({
         },
         grid: [
           {
+            top: MARGINTOP,
             left: MARGINLEFT,
             right: MARGINRIGHT,
             // Grid Layout from bottom to top
@@ -187,6 +189,7 @@ export default defineComponent({
           },
           {
             // Volume
+            top: MARGINTOP,
             left: MARGINLEFT,
             right: MARGINRIGHT,
             // Grid Layout from bottom to top
@@ -220,7 +223,7 @@ export default defineComponent({
             itemStyle: {
               color: '#777777',
             },
-            large: true,
+            large: false,
             encode: {
               x: colDate,
               y: colVolume,
@@ -280,6 +283,10 @@ export default defineComponent({
             yAxisIndex: 0,
             itemStyle: {
               color: shortEntrySignalColor,
+            },
+            tooltip: {
+              // Hide tooltip - it's already there for longs.
+              // show: false,
             },
             encode: {
               x: colDate,
@@ -363,7 +370,7 @@ export default defineComponent({
               name: key,
               nameLocation: 'middle',
               nameGap: NAMEGAP,
-              axisLabel: { show: true },
+              axisLabel: { show: false },
               axisLine: { show: false },
               axisTick: { show: false },
               splitLine: { show: false },
@@ -433,12 +440,6 @@ export default defineComponent({
           plotIndex += 1;
         });
       }
-      // END Subplots
-      // Last subplot should show xAxis labels
-      // if (options.xAxis && Array.isArray(options.xAxis)) {
-      //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
-      //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
-      // }
       if (Array.isArray(chartOptions.value.grid)) {
         // Last subplot is bottom
         chartOptions.value.grid[chartOptions.value.grid.length - 1].bottom = '50px';
@@ -462,7 +463,7 @@ export default defineComponent({
           tooltip: 6,
         },
         label: {
-          show: true,
+          show: false,
           fontSize: 12,
           backgroundColor: props.theme !== 'dark' ? '#fff' : '#000',
           padding: 2,
@@ -504,11 +505,11 @@ export default defineComponent({
         backgroundColor: 'rgba(0, 0, 0, 0)',
         useUTC: props.useUTC,
         animation: false,
-        legend: {
-          // Initial legend, further entries are pushed to the below list
-          data: ['Candles', 'Volume', 'Entry', 'Exit'],
-          right: '1%',
-        },
+        // legend: {
+        //   // Initial legend, further entries are pushed to the below list
+        //   data: ['Candles', 'Volume', 'Entry', 'Exit'],
+        //   right: '1%',
+        // },
 
         axisPointer: {
           link: [{ xAxisIndex: 'all' }],
@@ -522,8 +523,8 @@ export default defineComponent({
             scale: true,
             boundaryGap: false,
             axisLine: { onZero: false },
-            axisTick: { show: true },
-            axisLabel: { show: true },
+            axisTick: { show: false },
+            axisLabel: { show: false },
             axisPointer: {
               label: { show: false },
             },
@@ -566,18 +567,22 @@ export default defineComponent({
             axisLine: { show: false },
             axisTick: { show: false },
             splitLine: { show: false },
+            axisPointer: {
+              label: { show: false },
+            },
           },
         ],
         dataZoom: [
           // Start values are recalculated once the data is known
           {
+
             type: 'inside',
             xAxisIndex: [0, 1],
             start: 80,
             end: 100,
           },
           {
-            show: true,
+            show: false,
             xAxisIndex: [0, 1],
             type: 'slider',
             bottom: 10,
@@ -585,23 +590,6 @@ export default defineComponent({
             end: 100,
           },
         ],
-        // visualMap: {
-        //   //  TODO: this would allow to colorize volume bars (if we'd want this)
-        //   //  Needs green / red indicator column in data.
-        //   show: true,
-        //   seriesIndex: 1,
-        //   dimension: 5,
-        //   pieces: [
-        //     {
-        //       max: 500000.0,
-        //       color: downColor,
-        //     },
-        //     {
-        //       min: 500000.0,
-        //       color: upColor,
-        //     },
-        //   ],
-        // },
       };
 
       console.log('Initialized');
@@ -631,45 +619,25 @@ export default defineComponent({
       }
     };
 
-    // createSignalData(colDate: number, colOpen: number, colBuy: number, colSell: number): void {
-    // Calculate Buy and sell Series
-    // if (!this.signalsCalculated) {
-    //   // Generate Buy and sell array (using open rate to display marker)
-    //   for (let i = 0, len = this.dataset.data.length; i < len; i += 1) {
-    //     if (this.dataset.data[i][colBuy] === 1) {
-    //       this.buyData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-    //     }
-    //     if (this.dataset.data[i][colSell] === 1) {
-    //       this.sellData.push([this.dataset.data[i][colDate], this.dataset.data[i][colOpen]]);
-    //     }
-    //   }
-    //   this.signalsCalculated = true;
-    // }
-    // }
     onMounted(() => {
       initializeChartOptions();
     });
-
     watch(
       () => props.useUTC,
       () => initializeChartOptions(),
     );
-
     watch(
       () => props.dataset,
       () => updateChart(),
     );
-
     watch(
       () => props.plotConfig,
       () => initializeChartOptions(),
     );
-
     watch(
       () => props.heikinAshi,
       () => updateChart(),
     );
-
     watch(
       () => props.sliderPosition,
       () => updateSliderPosition(),

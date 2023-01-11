@@ -1,7 +1,9 @@
 <template>
   <div class="d-flex h-100">
     <div class="flex-fill w-100 flex-column align-items-stretch d-flex h-100">
-      {{ pair }}
+      <div class="pair-name">
+        {{ pair }}
+      </div>
       <div class="me-1 ms-1 h-100">
         <CandleChartSimple
           v-if="hasDataset"
@@ -133,5 +135,10 @@ export default defineComponent({
 .fade-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+.pair-name {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
 }
 </style>
