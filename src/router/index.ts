@@ -21,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Graphs.vue'),
   },
   {
+    path: '/graph_grid',
+    name: 'Freqtrade Graph Grid',
+    component: () => import('@/views/GraphsGrid.vue'),
+  },
+  {
     path: '/logs',
     name: 'Freqtrade Logs',
     component: () => import('@/views/LogView.vue'),
