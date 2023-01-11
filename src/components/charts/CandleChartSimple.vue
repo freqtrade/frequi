@@ -21,7 +21,6 @@ import {
   AxisPointerComponent,
   CalendarComponent,
   DatasetComponent,
-  DataZoomComponent,
   GridComponent,
   LegendComponent,
   TimelineComponent,
@@ -35,7 +34,6 @@ use([
   AxisPointerComponent,
   CalendarComponent,
   DatasetComponent,
-  DataZoomComponent,
   GridComponent,
   LegendComponent,
   TimelineComponent,
@@ -149,25 +147,6 @@ export default defineComponent({
       const subplotCount =
         'subplots' in props.plotConfig ? Object.keys(props.plotConfig.subplots).length + 1 : 1;
 
-      if (Array.isArray(chartOptions.value?.dataZoom)) {
-        // Only set zoom once ...
-        if (initial) {
-          const startingZoom = (1 - 250 / props.dataset.length) * 100;
-          chartOptions.value.dataZoom.forEach((el, i) => {
-            if (chartOptions.value && chartOptions.value.dataZoom) {
-              chartOptions.value.dataZoom[i].start = startingZoom;
-            }
-          });
-        } else {
-          // Remove start/end settings after chart initialization to avoid chart resetting
-          chartOptions.value.dataZoom.forEach((el, i) => {
-            if (chartOptions.value && chartOptions.value.dataZoom) {
-              delete chartOptions.value.dataZoom[i].start;
-              delete chartOptions.value.dataZoom[i].end;
-            }
-          });
-        }
-      }
       const dataset = props.heikinAshi
         ? heikinashi(datasetColumns.value, props.dataset.data)
         : props.dataset.data.slice();
@@ -395,11 +374,6 @@ export default defineComponent({
               splitNumber: 20,
             });
           }
-          if (Array.isArray(chartOptions.value.dataZoom)) {
-            chartOptions.value.dataZoom.forEach((el) =>
-              el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
-            );
-          }
           if (chartOptions.value.grid && Array.isArray(chartOptions.value.grid)) {
             chartOptions.value.grid.push({
               left: MARGINLEFT,
@@ -572,24 +546,6 @@ export default defineComponent({
             },
           },
         ],
-        dataZoom: [
-          // Start values are recalculated once the data is known
-          {
-
-            type: 'inside',
-            xAxisIndex: [0, 1],
-            start: 80,
-            end: 100,
-          },
-          {
-            show: false,
-            xAxisIndex: [0, 1],
-            type: 'slider',
-            bottom: 10,
-            start: 80,
-            end: 100,
-          },
-        ],
       };
 
       console.log('Initialized');
@@ -609,14 +565,6 @@ export default defineComponent({
           : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80,
         'yyyy-MM-dd HH:mm:ss',
       );
-      if (candleChart.value) {
-        candleChart.value.dispatchAction({
-          type: 'dataZoom',
-          dataZoomIndex: 0,
-          startValue: start,
-          endValue: end,
-        });
-      }
     };
 
     onMounted(() => {
