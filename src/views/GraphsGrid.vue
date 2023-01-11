@@ -51,6 +51,7 @@ export default defineComponent({
   .graphs-grid {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 20px;
 
     .grid {
       width: 50%;

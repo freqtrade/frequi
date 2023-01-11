@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
-import { Trade, PairHistory, PlotConfig, ChartSliderPosition } from '@/types';
+import { Trade, PairHistory, PlotConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import heikinashi from '@/shared/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
@@ -50,8 +50,8 @@ use([
 ]);
 
 // Chart default options
-const MARGINTOP = '1.5%';
-const MARGINLEFT = '5.5%';
+const MARGINTOP = '0%';
+const MARGINLEFT = '7.5%';
 const MARGINRIGHT = '1%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
@@ -76,12 +76,7 @@ export default defineComponent({
     heikinAshi: { required: false, default: false, type: Boolean },
     useUTC: { required: false, default: true, type: Boolean },
     plotConfig: { required: true, type: Object as () => PlotConfig },
-    theme: { default: 'dark', type: String },
-    sliderPosition: {
-      required: false,
-      type: Object as () => ChartSliderPosition,
-      default: () => undefined,
-    },
+    theme: { default: 'dark', type: String }
   },
   setup(props) {
     const candleChart = ref<typeof ECharts>();
@@ -176,7 +171,6 @@ export default defineComponent({
             height: `${SUBPLOTHEIGHT}%`,
           },
         ],
-
         series: [
           {
             name: 'Candles',
@@ -227,9 +221,7 @@ export default defineComponent({
       };
 
       if (colExitData >= 0) {
-        // if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-        //   chartOptions.value.legend.data.push('Long exit');
-        // }
+
         if (Array.isArray(options.series)) {
           options.series.push({
             name: 'Exit',
@@ -470,21 +462,9 @@ export default defineComponent({
       candleChart.value?.setOption({}, { noMerge: true });
 
       chartOptions.value = {
-        title: [
-          {
-            // text: this.chartTitle,
-            show: false,
-          },
-        ],
         backgroundColor: 'rgba(0, 0, 0, 0)',
         useUTC: props.useUTC,
         animation: false,
-        // legend: {
-        //   // Initial legend, further entries are pushed to the below list
-        //   data: ['Candles', 'Volume', 'Entry', 'Exit'],
-        //   right: '1%',
-        // },
-
         axisPointer: {
           link: [{ xAxisIndex: 'all' }],
           label: {
@@ -533,8 +513,8 @@ export default defineComponent({
             scale: true,
             gridIndex: 1,
             splitNumber: 2,
-            name: 'volume',
-            nameLocation: 'middle',
+            // name: 'volume',
+            // nameLocation: 'middle',
             // position: 'right',
             nameGap: NAMEGAP,
             axisLabel: { show: false },
@@ -550,21 +530,6 @@ export default defineComponent({
 
       console.log('Initialized');
       updateChart(true);
-    };
-
-    const updateSliderPosition = () => {
-      if (!props.sliderPosition) return;
-
-      const start = format(
-        props.sliderPosition.startValue - props.dataset.timeframe_ms * 40,
-        'yyyy-MM-dd HH:mm:ss',
-      );
-      const end = format(
-        props.sliderPosition.endValue
-          ? props.sliderPosition.endValue + props.dataset.timeframe_ms * 40
-          : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80,
-        'yyyy-MM-dd HH:mm:ss',
-      );
     };
 
     onMounted(() => {
@@ -586,11 +551,6 @@ export default defineComponent({
       () => props.heikinAshi,
       () => updateChart(),
     );
-    watch(
-      () => props.sliderPosition,
-      () => updateSliderPosition(),
-    );
-
     return {
       candleChart,
       buyData,
