@@ -27,7 +27,6 @@ import {
   TimelineComponent,
   TitleComponent,
   ToolboxComponent,
-  TooltipComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
@@ -42,7 +41,6 @@ use([
   TimelineComponent,
   TitleComponent,
   ToolboxComponent,
-  TooltipComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 
@@ -283,10 +281,6 @@ export default defineComponent({
             itemStyle: {
               color: shortEntrySignalColor,
             },
-            tooltip: {
-              // Hide tooltip - it's already there for longs.
-              // show: false,
-            },
             encode: {
               x: colDate,
               y: colShortEntryData,
@@ -515,33 +509,7 @@ export default defineComponent({
           data: ['Candles', 'Volume', 'Entry', 'Exit'],
           right: '1%',
         },
-        tooltip: {
-          show: true,
-          trigger: 'axis',
-          renderMode: 'richText',
-          backgroundColor: 'rgba(80,80,80,0.7)',
-          borderWidth: 0,
-          textStyle: {
-            color: '#fff',
-          },
-          axisPointer: {
-            type: 'cross',
-            lineStyle: {
-              color: '#cccccc',
-              width: 1,
-              opacity: 1,
-            },
-          },
-          // positioning copied from https://echarts.apache.org/en/option.html#tooltip.position
-          position(pos, params, dom, rect, size) {
-            // tooltip will be fixed on the right if mouse hovering on the left,
-            // and on the left if hovering on the right.
-            const obj = { top: 60 };
-            const mouseIsLeft = pos[0] < size.viewSize[0] / 2;
-            obj[['left', 'right'][+mouseIsLeft]] = mouseIsLeft ? 5 : 60;
-            return obj;
-          },
-        },
+
         axisPointer: {
           link: [{ xAxisIndex: 'all' }],
           label: {
