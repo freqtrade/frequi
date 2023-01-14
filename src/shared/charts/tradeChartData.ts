@@ -43,15 +43,18 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
   for (let i = 0, len = filteredTrades.length; i < len; i += 1) {
     const trade: Trade = filteredTrades[i];
     if (
-      trade.open_timestamp >= dataset.data_start_ts &&
-      trade.open_timestamp <= dataset.data_stop_ts
+      // Trade is open or closed and within timerange
+      roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= dataset.data_stop_ts ||
+      !trade.close_timestamp ||
+      (trade.close_timestamp && trade.close_timestamp >= dataset.data_start_ts)
     ) {
       if (trade.orders) {
         for (let i = 0; i < trade.orders.length; i++) {
           const order: Order = trade.orders[i];
           if (
             order.order_filled_timestamp &&
-            order.order_filled_timestamp <= dataset.data_stop_ts &&
+            roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp) <=
+              dataset.data_stop_ts &&
             order.order_filled_timestamp > dataset.data_start_ts
           ) {
             // Trade entry
@@ -68,7 +71,8 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
               // Trade exit
             } else if (i === trade.orders.length - 1 && trade.close_timestamp) {
               if (
-                trade.close_timestamp <= dataset.data_stop_ts &&
+                roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp) <=
+                  dataset.data_stop_ts &&
                 trade.close_timestamp > dataset.data_start_ts &&
                 trade.is_open === false
               ) {
