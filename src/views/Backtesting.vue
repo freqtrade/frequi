@@ -376,6 +376,7 @@ const pollInterval = ref<number | null>(null);
 const selectBacktestResult = () => {
   // Set parameters for this result
   strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
+  botStore.activeBot.getStrategy(strategy.value);
   selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
   selectedDetailTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
   timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
