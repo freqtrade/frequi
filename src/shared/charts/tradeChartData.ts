@@ -1,19 +1,25 @@
 import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import { roundTimeframe } from '@/shared/timemath';
-import { Order, PairHistory, Trade } from '@/types';
+import { Order, PairHistory, Trade, BTOrder } from '@/types';
 
-function buildToolTip(trade: Trade, side: string): string {
-  return `${trade.is_short ? 'Short' : 'Long'} ${side}  ${formatPercent(
-    trade.profit_ratio,
-  )} \nEnter-tag: ${trade.enter_tag ?? ''} \nExit-Tag: ${trade.exit_reason ?? ''}`;
+function buildTooltipCost(trade: Trade, order: Order | BTOrder): string {
+  return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
+    'cost' in order ? order.cost : order.amount * order.safe_price,
+    trade.quote_currency ?? '<stake_currency>',
+  )}`;
 }
 
-function buildAdjustmentToolTip(trade: Trade, order: Order): string {
+function buildToolTip(trade: Trade, order: Order | BTOrder, side: string): string {
+  return `${trade.is_short ? 'Short' : 'Long'} ${side}  ${formatPercent(trade.profit_ratio)}
+  ${buildTooltipCost(trade, order)}
+  Enter-tag: ${trade.enter_tag ?? ''}
+  Exit-Tag: ${trade.exit_reason ?? ''}`;
+}
+
+function buildAdjustmentToolTip(trade: Trade, order: Order | BTOrder): string {
   return `${trade.is_short ? 'Short' : 'Long'} adjustment
-    ${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
-    order.cost,
-    trade.quote_currency ?? '',
-  )}\nEnter-tag: ${trade.enter_tag ?? ''}`;
+  ${buildTooltipCost(trade, order)}
+  Enter-tag: ${trade.enter_tag ?? ''}`;
 }
 
 // const ENTRY_SYMB = 'circle';
@@ -50,7 +56,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
     ) {
       if (trade.orders) {
         for (let i = 0; i < trade.orders.length; i++) {
-          const order: Order = trade.orders[i];
+          const order: Order | BTOrder = trade.orders[i];
           if (
             order.order_filled_timestamp &&
             roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp) <=
@@ -66,7 +72,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
                 order.ft_order_side == 'sell' ? 180 : 0,
                 trade.is_short ? SHORT_COLOR : LONG_COLOR,
                 trade.is_short ? 'Short' : 'Long',
-                buildToolTip(trade, 'entry'),
+                buildToolTip(trade, order, 'entry'),
               ]);
               // Trade exit
             } else if (i === trade.orders.length - 1 && trade.close_timestamp) {
@@ -84,7 +90,7 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
                   trade.is_short ? SHORT_COLOR : LONG_COLOR,
                   // (trade.profit_abs ?? 0) > 0 ? '#31e04b' : '#fc0505',
                   formatPercent(trade.profit_ratio, 2),
-                  buildToolTip(trade, 'exit'),
+                  buildToolTip(trade, order, 'exit'),
                 ]);
               }
             }
