@@ -400,14 +400,23 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getStrategyPlotConfig() {
         try {
-          const result = await api.get<PlotConfig>('/plot_config');
-          const plotConfig = result.data;
+          const payload = {};
+          if (this.isWebserverMode) {
+            if (!this.strategy.strategy) {
+              return Promise.reject({ data: 'No strategy selected' });
+            }
+            payload['strategy'] = this.strategy.strategy;
+          }
+
+          const { data: plotConfig } = await api.get<PlotConfig>('/plot_config', {
+            params: { ...payload },
+          });
           if (plotConfig.subplots === null) {
             // Subplots should not be null but an empty object
             // TODO: Remove this fix when fix in freqtrade is populated further.
             plotConfig.subplots = {};
           }
-          this.strategyPlotConfig = result.data;
+          this.strategyPlotConfig = plotConfig;
           return Promise.resolve();
         } catch (data) {
           console.error(data);

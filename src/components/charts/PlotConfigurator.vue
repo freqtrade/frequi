@@ -66,7 +66,10 @@
     <div>
       <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
       <b-button
-        :disabled="botStore.activeBot.isWebserverMode || !botStore.activeBot.isBotOnline"
+        :disabled="
+          (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
+          !botStore.activeBot.isBotOnline
+        "
         class="ms-1"
         variant="secondary"
         size="sm"
@@ -179,7 +182,7 @@ const usedColumns = computed((): string[] => {
   return [];
 });
 
-const addIndicator = (newIndicator: Record<string, IndicatorConfig>) => {
+function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
   console.log(plotConfig.value);
 
   // const { plotConfig.value } = this;
@@ -197,7 +200,7 @@ const addIndicator = (newIndicator: Record<string, IndicatorConfig>) => {
   // Reset random color
   addNewIndicator.value = false;
   plotStore.setPlotConfig(plotConfig.value);
-};
+}
 
 const selIndicator = computed({
   get() {
@@ -239,7 +242,7 @@ const plotConfigJson = computed({
   },
 });
 
-const removeIndicator = () => {
+function removeIndicator() {
   console.log(plotConfig.value);
   // const { plotConfig } = this;
   if (isMainPlot.value) {
@@ -254,8 +257,8 @@ const removeIndicator = () => {
   console.log(plotConfig.value);
   selIndicatorName.value = '';
   plotStore.setPlotConfig(plotConfig.value);
-};
-const addSubplot = () => {
+}
+function addSubplot() {
   plotConfig.value.subplots = {
     ...plotConfig.value.subplots,
     [newSubplotName.value]: {},
@@ -264,32 +267,36 @@ const addSubplot = () => {
   newSubplotName.value = '';
 
   plotStore.setPlotConfig(plotConfig.value);
-};
+}
 
-const delSubplot = () => {
+function delSubplot() {
   delete plotConfig.value.subplots[selSubPlot.value];
   plotConfig.value.subplots = { ...plotConfig.value.subplots };
   selSubPlot.value = '';
   plotStore.setPlotConfig(plotConfig.value);
-};
-const loadPlotConfig = () => {
+}
+function loadPlotConfig() {
   plotConfig.value = getCustomPlotConfig(plotConfigNameLoc.value);
   console.log(plotConfig.value);
   console.log('loading config');
   plotStore.setPlotConfig(plotConfig.value);
-};
+}
 
-const loadConfigFromString = () => {
+function loadConfigFromString() {
   // this.plotConfig = JSON.parse();
   if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
     plotConfig.value = tempPlotConfig.value;
     plotStore.setPlotConfig(plotConfig.value);
   }
-};
-const resetConfig = () => {
+}
+function resetConfig() {
   plotConfig.value = { ...EMPTY_PLOTCONFIG };
-};
-const loadPlotConfigFromStrategy = async () => {
+}
+async function loadPlotConfigFromStrategy() {
+  if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy.strategy) {
+    showAlert(`No strategy selected, can't load plot config.`);
+    return;
+  }
   try {
     await botStore.activeBot.getStrategyPlotConfig();
     if (botStore.activeBot.strategyPlotConfig) {
@@ -300,11 +307,11 @@ const loadPlotConfigFromStrategy = async () => {
     //
     showAlert('Failed to load Plot configuration from Strategy.');
   }
-};
+}
 
-const savePlotConfig = () => {
+function savePlotConfig() {
   plotStore.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
-};
+}
 
 onMounted(() => {
   // console.log('Config Mounted', props);
