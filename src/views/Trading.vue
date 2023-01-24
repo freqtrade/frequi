@@ -100,7 +100,11 @@
         </DraggableContainer>
       </grid-item>
       <grid-item
-        v-if="botStore.activeBot.detailTradeId && gridLayoutTradeDetail.h != 0"
+        v-if="
+          botStore.activeBot.detailTradeId &&
+          botStore.activeBot.tradeDetail &&
+          gridLayoutTradeDetail.h != 0
+        "
         v-bind="gridItemProps"
         :i="gridLayoutTradeDetail.i"
         :x="gridLayoutTradeDetail.x"

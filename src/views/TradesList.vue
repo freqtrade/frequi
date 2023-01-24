@@ -22,7 +22,10 @@
       :stake-currency-decimals="botStore.activeBot.stakeCurrencyDecimals"
       empty-text="No closed trades so far."
     />
-    <div v-if="botStore.activeBot.detailTradeId" class="d-flex flex-column">
+    <div
+      v-if="botStore.activeBot.detailTradeId && botStore.activeBot.tradeDetail"
+      class="d-flex flex-column"
+    >
       <b-button
         size="sm"
         class="align-self-start mt-1 ms-1"

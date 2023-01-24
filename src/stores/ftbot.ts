@@ -121,13 +121,13 @@ export function createBotSubStore(botId: string, botName: string) {
               : b.trade_id - a.trade_id,
           );
       },
-      tradeDetail: (state) => {
+      tradeDetail: (state): Trade | undefined => {
         // console.log('tradeDetail', state.openTrades.length, state.openTrades);
         let dTrade = state.openTrades.find((item) => item.trade_id === state.detailTradeId);
         if (!dTrade) {
           dTrade = state.trades.find((item) => item.trade_id === state.detailTradeId);
         }
-        return dTrade as Trade;
+        return dTrade;
       },
       refreshNow: (state) => {
         if (
