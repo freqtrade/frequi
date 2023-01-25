@@ -19,7 +19,7 @@
     "@popperjs/core": "^2.11.6",
     "@vuepic/vue-datepicker": "^3.6.5",
     "@vueuse/core": "^9.11.1",
-    "axios": "^1.2.2",
+    "axios": "^1.2.4",
     "bootstrap": "^5.2.3",
     "bootstrap-vue-3": "^0.5.1",
     "bootswatch": "^5.2.3",
