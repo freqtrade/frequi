@@ -1,6 +1,4 @@
 <template>
-  <!-- <b-table class="table-sm" :items="combinedPairList" :fields="tableFields"> </b-table> -->
-
   <b-list-group>
     <b-list-group-item
       v-for="comb in combinedPairList"
