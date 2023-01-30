@@ -49,30 +49,22 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Trade } from '@/types';
-import { defineComponent } from 'vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
 
-export default defineComponent({
-  name: 'TradeActions',
-  components: { DeleteIcon, ForceSellIcon },
-  props: {
-    botApiVersion: {
-      type: Number,
-      default: 1.0,
-    },
-    trade: {
-      type: Object as () => Trade,
-      required: true,
-    },
+defineProps({
+  botApiVersion: {
+    type: Number,
+    default: 1.0,
   },
-  emits: ['forceExit', 'forceExitPartial', 'deleteTrade'],
-  setup() {
-    return {};
+  trade: {
+    type: Object as () => Trade,
+    required: true,
   },
 });
+defineEmits(['forceExit', 'forceExitPartial', 'deleteTrade']);
 </script>
 
 <style scoped lang="scss"></style>
