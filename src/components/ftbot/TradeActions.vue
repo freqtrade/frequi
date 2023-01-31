@@ -36,6 +36,15 @@
     >
       <ForceSellIcon :size="16" title="Forceexit partial" class="me-1" />Forceexit partial
     </b-button>
+    <b-button
+      v-if="botApiVersion >= 2.24 && trade.open_order_id"
+      class="btn-xs text-start mt-1"
+      size="sm"
+      title="Cancel open orders"
+      @click="$emit('cancelOpenOrder', trade)"
+    >
+      <CancelIcon :size="16" title="Cancel open order" class="me-1" />Cancel open order
+    </b-button>
 
     <b-button
       class="btn-xs text-start mt-1"
@@ -53,6 +62,7 @@
 import { Trade } from '@/types';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
+import CancelIcon from 'vue-material-design-icons/Cancel.vue';
 
 defineProps({
   botApiVersion: {
@@ -64,7 +74,7 @@ defineProps({
     required: true,
   },
 });
-defineEmits(['forceExit', 'forceExitPartial', 'deleteTrade']);
+defineEmits(['forceExit', 'forceExitPartial', 'cancelOpenOrder', 'deleteTrade']);
 </script>
 
 <style scoped lang="scss"></style>

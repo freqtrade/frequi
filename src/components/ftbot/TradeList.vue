@@ -42,6 +42,7 @@
             @deleteTrade="removeTradeHandler"
             @forceExit="forceExitHandler"
             @forceExitPartial="forceExitPartialHandler"
+            @cancel-open-order="cancelOpenOrderHandler"
           />
         </b-popover>
       </template>
@@ -90,12 +91,7 @@
       />
     </div>
     <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
-    <b-modal
-      ref="removeTradeModal"
-      v-model="removeTradeVisible"
-      title="Exit trade"
-      @ok="forceExitExecuter"
-    >
+    <b-modal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
       {{ confirmExitText }}
     </b-modal>
   </div>
@@ -113,6 +109,13 @@ import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
 import { ref, computed, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+
+enum ModalReasons {
+  removeTrade,
+  forceExit,
+  forceExitPartial,
+  cancelOpenOrder,
+}
 
 const props = defineProps({
   trades: { required: true, type: Array as () => Array<Trade> },
@@ -133,7 +136,7 @@ const tradesTable = ref<HTMLFormElement>();
 const forceExitVisible = ref(false);
 const removeTradeVisible = ref(false);
 const confirmExitText = ref('');
-const removeTradeModal = ref<HTMLElement>();
+const confirmExitValue = ref<ModalReasons | null>(null);
 
 const openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
 const closedFields: Record<string, string | Function>[] = [
@@ -180,41 +183,48 @@ const tableFields: Record<string, string | Function>[] = [
 const feOrderType = ref<string | undefined>(undefined);
 const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
   feTrade.value = item;
+  confirmExitValue.value = ModalReasons.forceExit;
   confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
   removeTradeVisible.value = true;
   feOrderType.value = ordertype;
 };
 
 const forceExitExecuter = () => {
-  // TODO: this should be done properly.
-  if (confirmExitText.value.includes('delete')) {
+  if (confirmExitValue.value === ModalReasons.removeTrade) {
     const payload: MultiDeletePayload = {
       tradeid: String(feTrade.value.trade_id),
       botId: feTrade.value.botId,
     };
     botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-    removeTradeVisible.value = false;
-    return;
   }
-  console.log(confirmExitText.value);
+  if (confirmExitValue.value === ModalReasons.forceExit) {
+    const payload: MultiForcesellPayload = {
+      tradeid: String(feTrade.value.trade_id),
+      botId: feTrade.value.botId,
+    };
+    if (feOrderType.value) {
+      payload.ordertype = feOrderType.value;
+    }
+    botStore
+      .forceSellMulti(payload)
+      .then((xxx) => console.log(xxx))
+      .catch((error) => console.log(error.response));
+  }
+  if (confirmExitValue.value === ModalReasons.cancelOpenOrder) {
+    const payload: MultiDeletePayload = {
+      tradeid: String(feTrade.value.trade_id),
+      botId: feTrade.value.botId,
+    };
+    botStore.cancelOpenOrderMulti(payload);
+  }
 
-  const payload: MultiForcesellPayload = {
-    tradeid: String(feTrade.value.trade_id),
-    botId: feTrade.value.botId,
-  };
-  if (feOrderType.value) {
-    payload.ordertype = feOrderType.value;
-  }
-  botStore
-    .forceSellMulti(payload)
-    .then((xxx) => console.log(xxx))
-    .catch((error) => console.log(error.response));
   feOrderType.value = undefined;
   removeTradeVisible.value = false;
 };
 
 const removeTradeHandler = (item: Trade) => {
   confirmExitText.value = `Really delete trade ${item.trade_id} (Pair ${item.pair})?`;
+  confirmExitValue.value = ModalReasons.removeTrade;
   feTrade.value = item;
   removeTradeVisible.value = true;
 };
@@ -222,6 +232,13 @@ const removeTradeHandler = (item: Trade) => {
 const forceExitPartialHandler = (item: Trade) => {
   feTrade.value = item;
   forceExitVisible.value = true;
+};
+
+const cancelOpenOrderHandler = (item: Trade) => {
+  confirmExitText.value = `Cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`;
+  feTrade.value = item;
+  confirmExitValue.value = ModalReasons.cancelOpenOrder;
+  removeTradeVisible.value = true;
 };
 
 const handleContextMenuEvent = (item, index, event) => {

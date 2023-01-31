@@ -324,6 +324,9 @@ export const useBotStore = defineStore('wrapper', {
     async deleteTradeMulti(deletePayload: MultiDeletePayload) {
       return this.botStores[deletePayload.botId].deleteTrade(deletePayload.tradeid);
     },
+    async cancelOpenOrderMulti(deletePayload: MultiDeletePayload) {
+      return this.botStores[deletePayload.botId].cancelOpenOrder(deletePayload.tradeid);
+    },
   },
 });
 

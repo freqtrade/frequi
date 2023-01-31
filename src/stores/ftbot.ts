@@ -616,6 +616,21 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
+      async cancelOpenOrder(tradeid: string) {
+        try {
+          const res = await api.delete<DeleteTradeResponse>(`/trades/${tradeid}/open-order`);
+          showAlert(
+            res.data.result_msg ? res.data.result_msg : `Canceled open order for ${tradeid}`,
+          );
+          return Promise.resolve(res);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+          }
+          showAlert(`Failed to cancel open order ${tradeid}`, 'danger');
+          return Promise.reject(error);
+        }
+      },
       async startTrade() {
         try {
           const res = await api.post('/start_trade', {});
