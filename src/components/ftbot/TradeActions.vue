@@ -34,7 +34,7 @@
       title="Forceexit partial"
       @click="$emit('forceExitPartial', trade)"
     >
-      <ForceSellIcon :size="16" title="Forceexit partial" class="me-1" />Forceexit partial
+      <ForceSellPartialIcon :size="16" title="Forceexit partial" class="me-1" />Forceexit partial
     </b-button>
     <b-button
       v-if="botApiVersion >= 2.24 && trade.open_order_id"
@@ -61,7 +61,8 @@
 <script setup lang="ts">
 import { Trade } from '@/types';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import ForceSellIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
+import ForceSellPartialIcon from 'vue-material-design-icons/CloseBoxMultiple.vue';
+import ForceSellIcon from 'vue-material-design-icons/CloseBox.vue';
 import CancelIcon from 'vue-material-design-icons/Cancel.vue';
 
 defineProps({
