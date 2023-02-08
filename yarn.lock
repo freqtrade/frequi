@@ -649,10 +649,10 @@
     find-up "6.3.0"
     node-html-parser "5.3.3"
 
-"@cypress/vue@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-5.0.3.tgz#c9a35cdec8a35567c222484ce63d4722ab3b84b6"
-  integrity sha512-wGOr/aI5KAwpbO44Anb0lgi3mdOUg8V+F16Mam7txBqSCIoX4nRHNDVOx6MR3fSUEsDRhYi3reF+mQgdZdc9rQ==
+"@cypress/vue@^5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-5.0.4.tgz#d46c8a0ecf2f5e2fb0f0f8b0d0c350c3058aea73"
+  integrity sha512-BZWzQQNDf8wanhkegQSb8cb3F5VK4oq43jOfYtnuJuDNUL5tcqoWmA1xe/YoQ9uLL26HdepOmyxTGoEgjAkpig==
 
 "@cypress/xvfb@^1.2.4":
   version "1.2.4"
