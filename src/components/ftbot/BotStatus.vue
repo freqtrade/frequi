@@ -14,8 +14,15 @@
       on
       <strong>{{ botStore.activeBot.botState.exchange }}</strong> in
       <strong>{{ botStore.activeBot.botState.trading_mode || 'spot' }}</strong> markets, with
-      Strategy
-      <strong>{{ botStore.activeBot.botState.strategy }}</strong>
+      Strategy <strong>{{ botStore.activeBot.botState.strategy }}</strong
+      >.
+    </p>
+    <p v-if="'stoploss_on_exchange' in botStore.activeBot.botState">
+      Stoploss on exchange is
+      <strong>{{
+        botStore.activeBot.botState.stoploss_on_exchange ? 'enabled' : 'disabled'
+      }}</strong
+      >.
     </p>
     <p>
       Currently <strong>{{ botStore.activeBot.botState.state }}</strong

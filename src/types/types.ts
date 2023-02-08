@@ -144,7 +144,6 @@ export interface BotState {
   stake_currency: string;
   stake_currency_decimals?: number;
   available_balance?: number;
-  stoploss: number;
   strategy: string;
   /** Timeframe in readable form (e.g. 5m) */
   timeframe: string;
@@ -155,6 +154,8 @@ export interface BotState {
   /** Given name of the bot */
   bot_name: string;
 
+  stoploss: number;
+  stoploss_on_exchange?: boolean;
   trailing_only_offset_is_reached: boolean;
   trailing_stop: boolean;
   trailing_stop_positive: number;
