@@ -1677,7 +1677,7 @@
     date-fns "^2.29.3"
     date-fns-tz "^1.3.7"
 
-"@vueuse/core@^9.12.0", "@vueuse/core@^9.6.0":
+"@vueuse/core@^9.11.1", "@vueuse/core@^9.12.0":
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-9.12.0.tgz#e5b20f901e081c7ae5fe0e5f3af217929034eefe"
   integrity sha512-h/Di8Bvf6xRcvS/PvUVheiMYYz3U0tH3X25YxONSaAUBa841ayMwxkuzx/DGUMCW/wHWzD8tRy2zYmOC36r4sg==
@@ -1987,13 +1987,13 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bootstrap-vue-3@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.5.1.tgz#ea7f7f2eddbeb3f6eaef000bb357e8cbe6a045c5"
-  integrity sha512-azgy+97Ih+TJvI1vJnqt4mptQ8Wvm3P8eKDvL9ZMGBWN/9k2ikU4Wx1OM0KNOZDcC4kyaWmC08n9cbaaShrkJg==
+bootstrap-vue-next@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.7.3.tgz#510ff80886ac308fb23be18265188cac0b155992"
+  integrity sha512-YHlqH6dCWZsCwQTBUOrhER3f/G/vN/aC34zAaFxnewXNkWJIdNWSdF0cipJqDti9aSC7iuprNu7Q0Ajeg/jElA==
   dependencies:
     "@nuxt/kit" "3.0.0"
-    "@vueuse/core" "^9.6.0"
+    "@vueuse/core" "^9.11.1"
 
 bootstrap@^5.2.3:
   version "5.2.3"
