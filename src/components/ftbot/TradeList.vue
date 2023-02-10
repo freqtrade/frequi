@@ -5,7 +5,14 @@
       small
       hover
       stacked="md"
-      :items="[...trades]"
+      :items="
+        trades.filter(
+          (t) =>
+            t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
+            t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
+            t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
+        )
+      "
       :fields="tableFields"
       show-empty
       :empty-text="emptyText"
@@ -15,7 +22,6 @@
       selectable
       :select-head="false"
       select-mode="single"
-      :filter="filterText"
       @row-contextmenu="handleContextMenuEvent"
       @row-clicked="onRowClicked"
       @row-selected="onRowSelected"
