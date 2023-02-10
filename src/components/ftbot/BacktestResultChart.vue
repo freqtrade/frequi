@@ -53,45 +53,32 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import TradeListNav from '@/components/ftbot/TradeListNav.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { ChartSliderPosition, Trade } from '@/types';
 
-export default defineComponent({
-  name: 'BacktestResultChart',
-  components: {
-    CandleChartContainer,
-    PairSummary,
-    TradeList,
-    TradeListNav,
-  },
-  props: {
-    timeframe: { required: true, type: String },
-    strategy: { required: true, type: String },
-    timerange: { required: true, type: String },
-    pairlist: { required: true, type: Array as () => string[] },
-    trades: { required: true, type: Array as () => Trade[] },
-  },
-  setup() {
-    const botStore = useBotStore();
-    const showRightBar = ref(true);
-    const sliderPosition = ref<ChartSliderPosition>();
-
-    const navigateChartToTrade = (trade: Trade) => {
-      sliderPosition.value = {
-        startValue: trade.open_timestamp,
-        endValue: trade.close_timestamp,
-      };
-    };
-
-    return { botStore, showRightBar, navigateChartToTrade, sliderPosition };
-  },
+defineProps({
+  timeframe: { required: true, type: String },
+  strategy: { required: true, type: String },
+  timerange: { required: true, type: String },
+  pairlist: { required: true, type: Array as () => string[] },
+  trades: { required: true, type: Array as () => Trade[] },
 });
+const botStore = useBotStore();
+const showRightBar = ref(true);
+const sliderPosition = ref<ChartSliderPosition>();
+
+const navigateChartToTrade = (trade: Trade) => {
+  sliderPosition.value = {
+    startValue: trade.open_timestamp,
+    endValue: trade.close_timestamp,
+  };
+};
 </script>
 
 <style lang="scss" scoped>
