@@ -29,43 +29,30 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Trade } from '@/types';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
-import { defineComponent, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
-export default defineComponent({
-  name: 'TradeListNav',
-  components: { TradeProfit, ProfitPill, DateTimeTZ },
-  props: {
-    trades: { required: true, type: Array as () => Trade[] },
-    backtestMode: { required: false, default: false, type: Boolean },
-  },
-  emits: ['trade-select'],
+const props = defineProps({
+  trades: { required: true, type: Array as () => Trade[] },
+  backtestMode: { required: false, default: false, type: Boolean },
+});
+const emit = defineEmits(['trade-select']);
 
-  setup(props, { emit }) {
-    const botStore = useBotStore();
-    const selectedTrade = ref({} as Trade);
+const botStore = useBotStore();
+const selectedTrade = ref({} as Trade);
 
-    const onTradeSelect = (trade: Trade) => {
-      selectedTrade.value = trade;
-      emit('trade-select', trade);
-    };
+const onTradeSelect = (trade: Trade) => {
+  selectedTrade.value = trade;
+  emit('trade-select', trade);
+};
 
-    const sortedTrades = computed(() => {
-      return props.trades.slice().sort((a, b) => b.open_timestamp - a.open_timestamp);
-    });
-
-    return {
-      botStore,
-      selectedTrade,
-      sortedTrades,
-      onTradeSelect,
-    };
-  },
+const sortedTrades = computed(() => {
+  return props.trades.slice().sort((a, b) => b.open_timestamp - a.open_timestamp);
 });
 </script>
 
