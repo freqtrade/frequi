@@ -60,85 +60,70 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceSellPayload, Trade } from '@/types';
 
-import { defineComponent, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 
-export default defineComponent({
-  name: 'ForceExitForm',
-  props: {
-    trade: {
-      type: Object as () => Trade,
-      required: true,
-    },
-    modelValue: { required: true, default: false, type: Boolean },
+const props = defineProps({
+  trade: {
+    type: Object as () => Trade,
+    required: true,
   },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const botStore = useBotStore();
+  modelValue: { required: true, default: false, type: Boolean },
+});
+const emit = defineEmits(['update:modelValue']);
+const botStore = useBotStore();
 
-    const form = ref<HTMLFormElement>();
-    const amount = ref<number | undefined>(undefined);
-    const ordertype = ref('limit');
+const form = ref<HTMLFormElement>();
+const amount = ref<number | undefined>(undefined);
+const ordertype = ref('limit');
 
-    const checkFormValidity = () => {
-      const valid = form.value?.checkValidity();
+const checkFormValidity = () => {
+  const valid = form.value?.checkValidity();
 
-      return valid;
-    };
+  return valid;
+};
 
-    const model = computed({
-      get() {
-        return props.modelValue;
-      },
-      set(value: boolean) {
-        emit('update:modelValue', value);
-      },
-    });
-
-    const handleSubmit = () => {
-      // Exit when the form isn't valid
-      if (!checkFormValidity()) {
-        return;
-      }
-      // call forceentry
-      const payload: ForceSellPayload = { tradeid: String(props.trade.trade_id) };
-
-      if (ordertype.value) {
-        payload.ordertype = ordertype.value;
-      }
-      if (amount.value) {
-        payload.amount = amount.value;
-      }
-      botStore.activeBot.forceexit(payload);
-      model.value = false;
-    };
-    const resetForm = () => {
-      amount.value = props.trade.amount;
-      if (botStore.activeBot.botApiVersion > 1.1) {
-        ordertype.value =
-          botStore.activeBot.botState?.order_types?.force_exit ||
-          botStore.activeBot.botState?.order_types?.exit ||
-          'limit';
-      }
-    };
-
-    const handleEntry = () => {
-      // Trigger submit handler
-      handleSubmit();
-    };
-    return {
-      handleSubmit,
-      botStore,
-      form,
-      handleEntry,
-      resetForm,
-      amount,
-      ordertype,
-      model,
-    };
+const model = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: boolean) {
+    emit('update:modelValue', value);
   },
 });
+
+const handleSubmit = () => {
+  // Exit when the form isn't valid
+  if (!checkFormValidity()) {
+    return;
+  }
+  // call forceentry
+  const payload: ForceSellPayload = { tradeid: String(props.trade.trade_id) };
+
+  if (ordertype.value) {
+    payload.ordertype = ordertype.value;
+  }
+  if (amount.value) {
+    payload.amount = amount.value;
+  }
+  botStore.activeBot.forceexit(payload);
+  model.value = false;
+};
+const resetForm = () => {
+  amount.value = props.trade.amount;
+  if (botStore.activeBot.botApiVersion > 1.1) {
+    ordertype.value =
+      botStore.activeBot.botState?.order_types?.force_exit ||
+      botStore.activeBot.botState?.order_types?.exit ||
+      'limit';
+  }
+};
+
+const handleEntry = () => {
+  // Trigger submit handler
+  handleSubmit();
+};
 </script>
