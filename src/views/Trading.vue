@@ -146,7 +146,7 @@
   </grid-layout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { GridItemData } from '@/types';
 
 import Balance from '@/components/ftbot/Balance.vue';
@@ -162,98 +162,62 @@ import Performance from '@/components/ftbot/Performance.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 
-import { defineComponent, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'Trading',
-  components: {
-    Balance,
-    BotControls,
-    BotStatus,
-    CandleChartContainer,
-    DailyStats,
-    DraggableContainer,
-    FTBotAPIPairList,
-    PairLockList,
-    PairSummary,
-    Performance,
-    TradeDetail,
-    TradeList,
-  },
-  setup() {
-    const botStore = useBotStore();
-    const layoutStore = useLayoutStore();
-    const currentBreakpoint = ref('');
+const botStore = useBotStore();
+const layoutStore = useLayoutStore();
+const currentBreakpoint = ref('');
 
-    const breakpointChanged = (newBreakpoint) => {
-      // console.log('breakpoint:', newBreakpoint);
-      currentBreakpoint.value = newBreakpoint;
-    };
-    const isResizableLayout = computed(() =>
-      ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
-    );
-    const isLayoutLocked = computed(() => {
-      return layoutStore.layoutLocked || !isResizableLayout;
-    });
-    const gridLayoutData = computed((): GridItemData[] => {
-      if (isResizableLayout) {
-        return layoutStore.tradingLayout;
-      }
-      return [...layoutStore.getTradingLayoutSm];
-    });
-
-    const gridLayoutMultiPane = computed(() => {
-      return findGridLayout(gridLayoutData.value, TradeLayout.multiPane);
-    });
-
-    const gridLayoutOpenTrades = computed(() => {
-      return findGridLayout(gridLayoutData.value, TradeLayout.openTrades);
-    });
-
-    const gridLayoutTradeHistory = computed(() => {
-      return findGridLayout(gridLayoutData.value, TradeLayout.tradeHistory);
-    });
-
-    const gridLayoutTradeDetail = computed(() => {
-      return findGridLayout(gridLayoutData.value, TradeLayout.tradeDetail);
-    });
-
-    const gridLayoutChartView = computed(() => {
-      return findGridLayout(gridLayoutData.value, TradeLayout.chartView);
-    });
-
-    const responsiveGridLayouts = computed(() => {
-      return {
-        sm: layoutStore.getTradingLayoutSm,
-      };
-    });
-
-    const layoutUpdatedEvent = (newLayout) => {
-      if (isResizableLayout) {
-        layoutStore.tradingLayout = newLayout;
-      }
-    };
-
-    return {
-      botStore,
-
-      layoutStore,
-      breakpointChanged,
-      layoutUpdatedEvent,
-      isLayoutLocked,
-      gridLayoutData,
-      gridLayoutMultiPane,
-      gridLayoutOpenTrades,
-      gridLayoutTradeHistory,
-      gridLayoutTradeDetail,
-      gridLayoutChartView,
-      responsiveGridLayouts,
-      isResizableLayout,
-    };
-  },
+const breakpointChanged = (newBreakpoint) => {
+  // console.log('breakpoint:', newBreakpoint);
+  currentBreakpoint.value = newBreakpoint;
+};
+const isResizableLayout = computed(() =>
+  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+);
+const isLayoutLocked = computed(() => {
+  return layoutStore.layoutLocked || !isResizableLayout;
 });
+const gridLayoutData = computed((): GridItemData[] => {
+  if (isResizableLayout) {
+    return layoutStore.tradingLayout;
+  }
+  return [...layoutStore.getTradingLayoutSm];
+});
+
+const gridLayoutMultiPane = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.multiPane);
+});
+
+const gridLayoutOpenTrades = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.openTrades);
+});
+
+const gridLayoutTradeHistory = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.tradeHistory);
+});
+
+const gridLayoutTradeDetail = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.tradeDetail);
+});
+
+const gridLayoutChartView = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.chartView);
+});
+
+const responsiveGridLayouts = computed(() => {
+  return {
+    sm: layoutStore.getTradingLayoutSm,
+  };
+});
+
+const layoutUpdatedEvent = (newLayout) => {
+  if (isResizableLayout) {
+    layoutStore.tradingLayout = newLayout;
+  }
+};
 </script>
 
 <style scoped></style>
