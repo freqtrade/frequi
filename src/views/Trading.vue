@@ -11,7 +11,6 @@
     :responsive="true"
     :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
     :col-num="12"
-    @update:layout="layoutUpdatedEvent"
     @update:breakpoint="breakpointChanged"
   >
     <template #default="{ gridItemProps }">
@@ -212,12 +211,6 @@ const responsiveGridLayouts = computed(() => {
     sm: layoutStore.getTradingLayoutSm,
   };
 });
-
-const layoutUpdatedEvent = (newLayout) => {
-  if (isResizableLayout) {
-    layoutStore.tradingLayout = newLayout;
-  }
-};
 </script>
 
 <style scoped></style>
