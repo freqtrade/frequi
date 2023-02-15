@@ -107,111 +107,90 @@
   </b-modal>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceEnterPayload, OrderSides } from '@/types';
 
-import { computed, defineComponent, nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
-export default defineComponent({
-  name: 'ForceEntryForm',
-  props: {
-    modelValue: { required: true, default: false, type: Boolean },
-    pair: { type: String, default: '' },
+const props = defineProps({
+  modelValue: { required: true, default: false, type: Boolean },
+  pair: { type: String, default: '' },
+});
+const emit = defineEmits(['update:modelValue']);
+const botStore = useBotStore();
+
+const form = ref<HTMLFormElement>();
+const selectedPair = ref('');
+const price = ref<number | undefined>(undefined);
+const stakeAmount = ref<number | undefined>(undefined);
+const leverage = ref<number | undefined>(undefined);
+
+const ordertype = ref('');
+const orderSide = ref<OrderSides>(OrderSides.long);
+
+const model = computed({
+  get() {
+    return props.modelValue;
   },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const botStore = useBotStore();
-
-    const form = ref<HTMLFormElement>();
-    const selectedPair = ref('');
-    const price = ref<number | undefined>(undefined);
-    const stakeAmount = ref<number | undefined>(undefined);
-    const leverage = ref<number | undefined>(undefined);
-
-    const ordertype = ref('');
-    const orderSide = ref<OrderSides>(OrderSides.long);
-
-    const model = computed({
-      get() {
-        return props.modelValue;
-      },
-      set(value: boolean) {
-        emit('update:modelValue', value);
-      },
-    });
-
-    const checkFormValidity = () => {
-      const valid = form.value?.checkValidity();
-
-      return valid;
-    };
-
-    const handleSubmit = async () => {
-      // Exit when the form isn't valid
-      if (!checkFormValidity()) {
-        return;
-      }
-
-      // call forceentry
-      const payload: ForceEnterPayload = { pair: selectedPair.value };
-      if (price.value) {
-        payload.price = Number(price.value);
-      }
-      if (ordertype.value) {
-        payload.ordertype = ordertype.value;
-      }
-      if (stakeAmount.value) {
-        payload.stakeamount = stakeAmount.value;
-      }
-      if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
-        payload.side = orderSide.value;
-      }
-      if (leverage.value) {
-        payload.leverage = leverage.value;
-      }
-      botStore.activeBot.forceentry(payload);
-      await nextTick();
-      emit('update:modelValue', false);
-    };
-    const resetForm = () => {
-      console.log('resetForm');
-      selectedPair.value = props.pair;
-      price.value = undefined;
-      stakeAmount.value = undefined;
-      if (botStore.activeBot.botApiVersion > 1.1) {
-        ordertype.value =
-          botStore.activeBot.botState?.order_types?.forcebuy ||
-          botStore.activeBot.botState?.order_types?.force_entry ||
-          botStore.activeBot.botState?.order_types?.buy ||
-          botStore.activeBot.botState?.order_types?.entry ||
-          'limit';
-      }
-    };
-
-    const handleEntry = () => {
-      // Trigger submit handler
-      handleSubmit();
-    };
-    const inputSelect = (bvModalEvt) => {
-      bvModalEvt.srcElement?.select();
-    };
-
-    return {
-      handleSubmit,
-      model,
-      botStore,
-      form,
-      handleEntry,
-      inputSelect,
-      resetForm,
-      selectedPair,
-      price,
-      stakeAmount,
-      ordertype,
-      orderSide,
-      leverage,
-    };
+  set(value: boolean) {
+    emit('update:modelValue', value);
   },
 });
+
+const checkFormValidity = () => {
+  const valid = form.value?.checkValidity();
+
+  return valid;
+};
+
+const handleSubmit = async () => {
+  // Exit when the form isn't valid
+  if (!checkFormValidity()) {
+    return;
+  }
+
+  // call forceentry
+  const payload: ForceEnterPayload = { pair: selectedPair.value };
+  if (price.value) {
+    payload.price = Number(price.value);
+  }
+  if (ordertype.value) {
+    payload.ordertype = ordertype.value;
+  }
+  if (stakeAmount.value) {
+    payload.stakeamount = stakeAmount.value;
+  }
+  if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
+    payload.side = orderSide.value;
+  }
+  if (leverage.value) {
+    payload.leverage = leverage.value;
+  }
+  botStore.activeBot.forceentry(payload);
+  await nextTick();
+  emit('update:modelValue', false);
+};
+const resetForm = () => {
+  console.log('resetForm');
+  selectedPair.value = props.pair;
+  price.value = undefined;
+  stakeAmount.value = undefined;
+  if (botStore.activeBot.botApiVersion > 1.1) {
+    ordertype.value =
+      botStore.activeBot.botState?.order_types?.forcebuy ||
+      botStore.activeBot.botState?.order_types?.force_entry ||
+      botStore.activeBot.botState?.order_types?.buy ||
+      botStore.activeBot.botState?.order_types?.entry ||
+      'limit';
+  }
+};
+
+const handleEntry = () => {
+  // Trigger submit handler
+  handleSubmit();
+};
+const inputSelect = (bvModalEvt) => {
+  bvModalEvt.srcElement?.select();
+};
 </script>
