@@ -16,7 +16,6 @@
       <b-dropdown-item-button
         v-for="(theme, key) in themeList"
         :key="key"
-        v-b-tooltip.hover.right
         :active="activeTheme === theme.name"
         :title="theme.description"
         :name="theme.name"
