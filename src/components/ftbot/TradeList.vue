@@ -27,30 +27,15 @@
       @row-selected="onRowSelected"
     >
       <template #cell(actions)="row">
-        <b-button
-          :id="`btn-actions_${row.index}`"
-          class="btn-xs"
-          size="sm"
-          title="Actions"
-          href="#"
-        >
-          <ActionIcon :size="16" title="Actions" />
-        </b-button>
-        <b-popover
-          :target="`btn-actions_${row.index}`"
-          :title="`Actions for ${row.item.pair}`"
-          triggers="focus"
-          placement="left"
-        >
-          <trade-actions
-            :trade="row.item"
-            :bot-api-version="botStore.activeBot.botApiVersion"
-            @deleteTrade="removeTradeHandler"
-            @forceExit="forceExitHandler"
-            @forceExitPartial="forceExitPartialHandler"
-            @cancel-open-order="cancelOpenOrderHandler"
-          />
-        </b-popover>
+        <TradeActionsPopover
+          :id="row.index"
+          :trade="row.item"
+          :bot-api-version="botStore.activeBot.botApiVersion"
+          @deleteTrade="removeTradeHandler(row.item)"
+          @forceExit="forceExitHandler"
+          @forceExitPartial="forceExitPartialHandler"
+          @cancel-open-order="cancelOpenOrderHandler"
+        />
       </template>
       <template #cell(pair)="row">
         <span>
@@ -107,10 +92,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import TradeProfit from './TradeProfit.vue';
-import TradeActions from './TradeActions.vue';
+import TradeActionsPopover from './TradeActionsPopover.vue';
 import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
 import { ref, computed, watch } from 'vue';
