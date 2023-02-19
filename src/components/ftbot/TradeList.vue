@@ -54,6 +54,10 @@
             : ''
         }}
       </template>
+      <template #cell(stake_amount)="row">
+        {{ formatPriceWithDecimals(row.item.stake_amount) }}
+        {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
+      </template>
       <template #cell(profit)="row">
         <trade-profit :trade="row.item" />
       </template>
@@ -148,7 +152,6 @@ const tableFields: Record<string, string | Function>[] = [
   {
     key: 'stake_amount',
     label: 'Stake amount',
-    formatter: (value: number) => formatPriceWithDecimals(value),
   },
   {
     key: 'open_rate',
