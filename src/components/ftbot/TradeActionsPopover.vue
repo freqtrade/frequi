@@ -34,7 +34,6 @@ const cancelOpenOrderHandler = (item: Trade) => {
       class="btn-xs"
       size="sm"
       title="Actions"
-      href="#"
       @click="popoverOpen = !popoverOpen"
     >
       <ActionIcon :size="16" title="Actions" />
