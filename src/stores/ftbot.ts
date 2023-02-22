@@ -783,11 +783,14 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async pollBacktest() {
-        const result = await api.get<BacktestStatus>('/backtest');
+        const { data } = await api.get<BacktestStatus>('/backtest');
 
-        this.updateBacktestRunning(result.data);
-        if (result.data.running === false && result.data.backtest_result) {
-          this.updateBacktestResult(result.data.backtest_result);
+        this.updateBacktestRunning(data);
+        if (data.running === false && data.backtest_result) {
+          this.updateBacktestResult(data.backtest_result);
+        }
+        if (data.status === 'error') {
+          showAlert(`Backtest failed: ${data.status_msg}.`, 'danger');
         }
       },
       async removeBacktest() {
