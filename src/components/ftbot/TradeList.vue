@@ -103,6 +103,7 @@ import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
 import { ref, computed, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { useRouter } from 'vue-router';
 
 enum ModalReasons {
   removeTrade,
@@ -121,6 +122,7 @@ const props = defineProps({
   emptyText: { default: 'No Trades to show.', type: String },
 });
 const botStore = useBotStore();
+const router = useRouter();
 const currentPage = ref(1);
 const selectedItemIndex = ref();
 const filterText = ref('');
@@ -246,9 +248,15 @@ const handleContextMenuEvent = (item, index, event) => {
 };
 
 const onRowClicked = (item) => {
-  // Only allow single selection mode!
+  if (props.multiBotView && botStore.selectedBot !== item.botId) {
+    // Multibotview - on click switch to the bot trade view
+    botStore.selectBot(item.botId);
+  }
   if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
     botStore.activeBot.setDetailTrade(item);
+    if (props.multiBotView) {
+      router.push({ name: 'Freqtrade Trading' });
+    }
   } else {
     botStore.activeBot.setDetailTrade(null);
   }
