@@ -32,57 +32,43 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
 
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { AuthStorageWithBotId } from '@/types';
 
-export default defineComponent({
-  name: 'BotList',
-  components: { LoginModal, BotEntry, BotRename },
-  props: {
-    small: { default: false, type: Boolean },
-  },
-  setup() {
-    const botStore = useBotStore();
-
-    const editingBots = ref<string[]>([]);
-    const loginModal = ref<typeof LoginModal>();
-
-    const editBot = (botId: string) => {
-      if (!editingBots.value.includes(botId)) {
-        editingBots.value.push(botId);
-      }
-    };
-
-    const editBotLogin = (botId: string) => {
-      const loginInfo: AuthStorageWithBotId = {
-        ...botStore.botStores[botId].getLoginInfo(),
-        botId,
-      };
-      loginModal.value?.openLoginModal(loginInfo);
-    };
-
-    const stopEditBot = (botId: string) => {
-      if (!editingBots.value.includes(botId)) {
-        return;
-      }
-
-      editingBots.value.splice(editingBots.value.indexOf(botId), 1);
-    };
-
-    return {
-      botStore,
-      editingBots,
-      editBot,
-      editBotLogin,
-      stopEditBot,
-      loginModal,
-    };
-  },
+defineProps({
+  small: { default: false, type: Boolean },
 });
+
+const botStore = useBotStore();
+
+const editingBots = ref<string[]>([]);
+const loginModal = ref<typeof LoginModal>();
+
+const editBot = (botId: string) => {
+  if (!editingBots.value.includes(botId)) {
+    editingBots.value.push(botId);
+  }
+};
+
+const editBotLogin = (botId: string) => {
+  const loginInfo: AuthStorageWithBotId = {
+    ...botStore.botStores[botId].getLoginInfo(),
+    botId,
+  };
+  loginModal.value?.openLoginModal(loginInfo);
+};
+
+const stopEditBot = (botId: string) => {
+  if (!editingBots.value.includes(botId)) {
+    return;
+  }
+
+  editingBots.value.splice(editingBots.value.indexOf(botId), 1);
+};
 </script>
