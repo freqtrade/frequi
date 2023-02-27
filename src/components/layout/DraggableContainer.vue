@@ -1,7 +1,9 @@
 <template>
   <div class="card h-100 w-100">
     <div class="drag-header card-header">
-      {{ header }}
+      <slot name="header">
+        {{ header }}
+      </slot>
     </div>
     <div class="card-body h-100 w-100 overflow-auto">
       <slot></slot>
@@ -9,14 +11,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'DraggableContainer',
-  props: {
-    header: { required: true, type: String },
-  },
+<script setup lang="ts">
+defineProps({
+  header: { required: true, type: String },
 });
 </script>
 
