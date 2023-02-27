@@ -285,37 +285,38 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      getOpenTrades() {
-        return api
-          .get<never, AxiosResponse<Trade[]>>('/status')
-          .then((result) => {
-            // Check if trade-id's are different in this call, then trigger a full refresh
-            if (
-              Array.isArray(this.openTrades) &&
-              Array.isArray(result.data) &&
-              (this.openTrades.length !== result.data.length ||
-                !this.openTrades.every(
-                  (val, index) => val.trade_id === result.data[index].trade_id,
-                ))
-            ) {
-              // Open trades changed, so we should refresh now.
-              this.refreshRequired = true;
-              this.refreshSlow(false);
+      async getOpenTrades() {
+        try {
+          const { data } = await api.get<never, AxiosResponse<Trade[]>>('/status');
+          // Check if trade-id's are different in this call, then trigger a full refresh
+          if (
+            Array.isArray(this.openTrades) &&
+            Array.isArray(data) &&
+            (this.openTrades.length !== data.length ||
+              !this.openTrades.every((val, index) => val.trade_id === data[index].trade_id))
+          ) {
+            // Open trades changed, so we should refresh now.
+            this.refreshRequired = true;
+            this.refreshSlow(false);
+          }
+          if (Array.isArray(data)) {
+            const openTrades = data.map((t) => ({
+              ...t,
+              botId,
+              botName,
+              botTradeId: `${botId}__${t.trade_id}`,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              profit_ratio: t.profit_ratio ?? -1,
+            }));
+            // TODO Don't force-patch profit_ratio but handle null values properly
+            this.openTrades = openTrades;
+            if (this.selectedPair === '') {
+              this.selectedPair = openTrades[0]?.pair || '';
             }
-            if (Array.isArray(result.data)) {
-              const openTrades = result.data.map((t) => ({
-                ...t,
-                botId,
-                botName,
-                botTradeId: `${botId}__${t.trade_id}`,
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                profit_ratio: t.profit_ratio ?? -1,
-              }));
-              // TODO Don't force-patch profit_ratio but handle null values properly
-              this.openTrades = openTrades;
-            }
-          })
-          .catch(console.error);
+          }
+        } catch (data) {
+          return console.error(data);
+        }
       },
       getLocks() {
         return api
