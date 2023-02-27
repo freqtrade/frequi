@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 defineProps({
-  header: { required: true, type: String },
+  header: { required: false, type: String, default: '' },
 });
 </script>
 

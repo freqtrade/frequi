@@ -61,7 +61,16 @@
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Open Trades">
+        <DraggableContainer>
+          <template #header>
+            <div class="d-flex justify-content-center">
+              Open Trades
+              <InfoBox
+                class="ms-2"
+                hint="Open trades of all selected bots. Click on a trade to go to the trade page for that trade/bot."
+              />
+            </div>
+          </template>
           <trade-list active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
         </DraggableContainer>
       </grid-item>
@@ -91,7 +100,16 @@
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Closed Trades">
+        <DraggableContainer>
+          <template #header>
+            <div class="d-flex justify-content-center">
+              Closed trades
+              <InfoBox
+                class="ms-2"
+                hint="Closed trades for all selected bots. Click on a trade to go to the trade page for that trade/bot."
+              />
+            </div>
+          </template>
           <trade-list
             :active-trades="false"
             show-filter
@@ -144,6 +162,7 @@ import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart
 import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
+import InfoBox from '@/components/general/InfoBox.vue';
 
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
