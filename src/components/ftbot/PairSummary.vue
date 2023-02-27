@@ -114,21 +114,6 @@ const combinedPairList = computed(() => {
   }
   return comb;
 });
-const tableFields = computed(() => {
-  return [
-    { key: 'pair', label: 'Pair' },
-    {
-      key: 'locks.lock_end_timestamp',
-      label: 'Lock',
-      formatter: (value) => (value ? `${timestampms(value)}` : ''),
-    },
-    {
-      key: 'trade.current_profit',
-      label: 'Position',
-      formatter: (value) => formatPercent(value, 3),
-    },
-  ];
-});
 </script>
 
 <style scoped>
