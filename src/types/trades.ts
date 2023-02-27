@@ -72,6 +72,8 @@ export interface Trade {
   profit_pct: number | null;
   /** Current absolute profit */
   profit_abs?: number;
+  /** Absolute, realized profit */
+  realized_profit?: number;
 
   exit_reason?: string;
   exit_order_status?: string;
