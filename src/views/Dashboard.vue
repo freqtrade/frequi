@@ -134,8 +134,8 @@
   </grid-layout>
 </template>
 
-<script lang="ts">
-import { formatPrice } from '@/shared/formatters';
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
 
 import DailyChart from '@/components/charts/DailyChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
@@ -145,109 +145,77 @@ import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 
-import { defineComponent, ref, computed, onMounted } from 'vue';
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { GridItemData } from '@/types';
 
-export default defineComponent({
-  name: 'Dashboard',
-  components: {
-    DailyChart,
-    CumProfitChart,
-    ProfitDistributionChart,
-    TradesLogChart,
-    BotComparisonList,
-    TradeList,
-    DraggableContainer,
-  },
-  setup() {
-    const botStore = useBotStore();
+const botStore = useBotStore();
 
-    const layoutStore = useLayoutStore();
-    const currentBreakpoint = ref('');
+const layoutStore = useLayoutStore();
+const currentBreakpoint = ref('');
 
-    const breakpointChanged = (newBreakpoint) => {
-      //   // console.log('breakpoint:', newBreakpoint);
-      currentBreakpoint.value = newBreakpoint;
-    };
-    const isResizableLayout = computed(() =>
-      ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
-    );
-    const isLayoutLocked = computed(() => {
-      return layoutStore.layoutLocked || !isResizableLayout;
-    });
+const breakpointChanged = (newBreakpoint) => {
+  //   // console.log('breakpoint:', newBreakpoint);
+  currentBreakpoint.value = newBreakpoint;
+};
+const isResizableLayout = computed(() =>
+  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+);
+const isLayoutLocked = computed(() => {
+  return layoutStore.layoutLocked || !isResizableLayout;
+});
 
-    const gridLayoutData = computed((): GridItemData[] => {
-      if (isResizableLayout) {
-        return layoutStore.dashboardLayout;
-      }
-      return [...layoutStore.getDashboardLayoutSm];
-    });
+const gridLayoutData = computed((): GridItemData[] => {
+  if (isResizableLayout) {
+    return layoutStore.dashboardLayout;
+  }
+  return [...layoutStore.getDashboardLayoutSm];
+});
 
-    const layoutUpdatedEvent = (newLayout) => {
-      if (isResizableLayout) {
-        console.log('newlayout', newLayout);
-        console.log('saving dashboard');
-        layoutStore.dashboardLayout = newLayout;
-      }
-    };
+const layoutUpdatedEvent = (newLayout) => {
+  if (isResizableLayout) {
+    console.log('newlayout', newLayout);
+    console.log('saving dashboard');
+    layoutStore.dashboardLayout = newLayout;
+  }
+};
 
-    const gridLayoutDaily = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.dailyChart);
-    });
+const gridLayoutDaily = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.dailyChart);
+});
 
-    const gridLayoutBotComparison = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.botComparison);
-    });
+const gridLayoutBotComparison = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.botComparison);
+});
 
-    const gridLayoutAllOpenTrades = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.allOpenTrades);
-    });
-    const gridLayoutAllClosedTrades = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.allClosedTrades);
-    });
+const gridLayoutAllOpenTrades = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.allOpenTrades);
+});
+const gridLayoutAllClosedTrades = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.allClosedTrades);
+});
 
-    const gridLayoutCumChart = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
-    });
-    const gridLayoutProfitDistribution = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
-    });
-    const gridLayoutTradesLogChart = computed((): GridItemData => {
-      return findGridLayout(gridLayoutData.value, DashboardLayout.tradesLogChart);
-    });
+const gridLayoutCumChart = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
+});
+const gridLayoutProfitDistribution = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
+});
+const gridLayoutTradesLogChart = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.tradesLogChart);
+});
 
-    const responsiveGridLayouts = computed(() => {
-      return {
-        sm: layoutStore.getDashboardLayoutSm,
-      };
-    });
+const responsiveGridLayouts = computed(() => {
+  return {
+    sm: layoutStore.getDashboardLayoutSm,
+  };
+});
 
-    onMounted(async () => {
-      await botStore.allGetDaily({ timescale: 30 });
-      // botStore.activeBot.getTrades();
-      botStore.activeBot.getOpenTrades();
-      botStore.activeBot.getProfit();
-    });
-
-    return {
-      botStore,
-      formatPrice,
-      isLayoutLocked,
-      layoutUpdatedEvent,
-      breakpointChanged,
-      gridLayoutData,
-      gridLayoutDaily,
-      gridLayoutBotComparison,
-      gridLayoutAllOpenTrades,
-      gridLayoutAllClosedTrades,
-      gridLayoutCumChart,
-      gridLayoutProfitDistribution,
-      gridLayoutTradesLogChart,
-      responsiveGridLayouts,
-    };
-  },
+onMounted(async () => {
+  await botStore.allGetDaily({ timescale: 30 });
+  // botStore.activeBot.getTrades();
+  botStore.activeBot.getOpenTrades();
+  botStore.activeBot.getProfit();
 });
 </script>
 
