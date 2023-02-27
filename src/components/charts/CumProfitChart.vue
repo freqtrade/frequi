@@ -45,7 +45,7 @@ export default defineComponent({
   props: {
     trades: { required: true, type: Array as () => ClosedTrade[] },
     showTitle: { default: true, type: Boolean },
-    profitColumn: { default: 'close_profit_abs', type: String },
+    profitColumn: { default: 'profit_abs', type: String },
   },
   setup(props) {
     const settingsStore = useSettingsStore();
