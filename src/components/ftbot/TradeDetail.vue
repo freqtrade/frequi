@@ -21,6 +21,9 @@
         <ValuePair v-if="trade.close_timestamp" description="Close date">{{
           timestampms(trade.close_timestamp)
         }}</ValuePair>
+        <ValuePair v-if="trade.is_open && trade.realized_profit" description="Realized profit">
+          {{ formatPriceCurrency(trade.realized_profit, stakeCurrency) }}
+        </ValuePair>
         <ValuePair
           v-if="trade.profit_ratio && trade.profit_abs"
           :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
