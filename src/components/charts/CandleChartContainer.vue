@@ -90,7 +90,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Trade, PairHistory, LoadingStatus, ChartSliderPosition } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
@@ -98,148 +98,123 @@ import vSelect from 'vue-select';
 import { useSettingsStore } from '@/stores/settings';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 
-import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'CandleChartContainer',
-  components: { CandleChart, PlotConfigurator, vSelect },
-  props: {
-    trades: { required: false, default: () => [], type: Array as () => Trade[] },
-    availablePairs: { required: true, type: Array as () => string[] },
-    timeframe: { required: true, type: String },
-    historicView: { required: false, default: false, type: Boolean },
-    plotConfigModal: { required: false, default: true, type: Boolean },
-    /** Only required if historicView is true */
-    timerange: { required: false, default: '', type: String },
-    /** Only required if historicView is true */
-    strategy: { required: false, default: '', type: String },
-    sliderPosition: {
-      required: false,
-      type: Object as () => ChartSliderPosition,
-      default: () => undefined,
-    },
+const props = defineProps({
+  trades: { required: false, default: () => [], type: Array as () => Trade[] },
+  availablePairs: { required: true, type: Array as () => string[] },
+  timeframe: { required: true, type: String },
+  historicView: { required: false, default: false, type: Boolean },
+  plotConfigModal: { required: false, default: true, type: Boolean },
+  /** Only required if historicView is true */
+  timerange: { required: false, default: '', type: String },
+  /** Only required if historicView is true */
+  strategy: { required: false, default: '', type: String },
+  sliderPosition: {
+    required: false,
+    type: Object as () => ChartSliderPosition,
+    default: () => undefined,
   },
-  setup(props) {
-    const settingsStore = useSettingsStore();
-    const botStore = useBotStore();
-    const plotStore = usePlotConfigStore();
+});
+const settingsStore = useSettingsStore();
+const botStore = useBotStore();
+const plotStore = usePlotConfigStore();
 
-    const pair = ref('');
-    const showPlotConfig = ref(props.plotConfigModal);
+const pair = ref('');
+const showPlotConfig = ref(props.plotConfigModal);
 
-    const dataset = computed((): PairHistory => {
-      if (props.historicView) {
-        return botStore.activeBot.history[`${pair.value}__${props.timeframe}`]?.data;
-      }
-      return botStore.activeBot.candleData[`${pair.value}__${props.timeframe}`]?.data;
-    });
-    const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
-    const datasetColumns = computed(() => (dataset.value ? dataset.value.columns : []));
-    const hasDataset = computed(() => !!dataset.value);
-    const isLoadingDataset = computed((): boolean => {
-      if (props.historicView) {
-        return botStore.activeBot.historyStatus === LoadingStatus.loading;
-      }
+const dataset = computed((): PairHistory => {
+  if (props.historicView) {
+    return botStore.activeBot.history[`${pair.value}__${props.timeframe}`]?.data;
+  }
+  return botStore.activeBot.candleData[`${pair.value}__${props.timeframe}`]?.data;
+});
+const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
+const datasetColumns = computed(() => (dataset.value ? dataset.value.columns : []));
+const hasDataset = computed(() => !!dataset.value);
+const isLoadingDataset = computed((): boolean => {
+  if (props.historicView) {
+    return botStore.activeBot.historyStatus === LoadingStatus.loading;
+  }
 
-      return botStore.activeBot.candleDataStatus === LoadingStatus.loading;
-    });
-    const noDatasetText = computed((): string => {
-      const status = props.historicView
-        ? botStore.activeBot.historyStatus
-        : botStore.activeBot.candleDataStatus;
+  return botStore.activeBot.candleDataStatus === LoadingStatus.loading;
+});
+const noDatasetText = computed((): string => {
+  const status = props.historicView
+    ? botStore.activeBot.historyStatus
+    : botStore.activeBot.candleDataStatus;
 
-      switch (status) {
-        case LoadingStatus.loading:
-          return 'Loading...';
+  switch (status) {
+    case LoadingStatus.loading:
+      return 'Loading...';
 
-        case LoadingStatus.success:
-          return 'No data available';
+    case LoadingStatus.success:
+      return 'No data available';
 
-        case LoadingStatus.error:
-          return 'Failed to load data';
+    case LoadingStatus.error:
+      return 'Failed to load data';
 
-        default:
-          return 'Unknown';
-      }
-    });
-    const showPlotConfigModal = ref(false);
-    const showConfigurator = () => {
-      if (props.plotConfigModal) {
-        showPlotConfigModal.value = !showPlotConfigModal.value;
-      } else {
-        showPlotConfig.value = !showPlotConfig.value;
-      }
-    };
-    const refresh = () => {
-      console.log('refresh', pair.value, props.timeframe);
-      if (pair.value && props.timeframe) {
-        if (props.historicView) {
-          botStore.activeBot.getPairHistory({
-            pair: pair.value,
-            timeframe: props.timeframe,
-            timerange: props.timerange,
-            strategy: props.strategy,
-          });
-        } else {
-          botStore.activeBot.getPairCandles({
-            pair: pair.value,
-            timeframe: props.timeframe,
-            limit: 500,
-          });
-        }
-      }
-    };
+    default:
+      return 'Unknown';
+  }
+});
+const showPlotConfigModal = ref(false);
+const showConfigurator = () => {
+  if (props.plotConfigModal) {
+    showPlotConfigModal.value = !showPlotConfigModal.value;
+  } else {
+    showPlotConfig.value = !showPlotConfig.value;
+  }
+};
+const refresh = () => {
+  console.log('refresh', pair.value, props.timeframe);
+  if (pair.value && props.timeframe) {
+    if (props.historicView) {
+      botStore.activeBot.getPairHistory({
+        pair: pair.value,
+        timeframe: props.timeframe,
+        timerange: props.timerange,
+        strategy: props.strategy,
+      });
+    } else {
+      botStore.activeBot.getPairCandles({
+        pair: pair.value,
+        timeframe: props.timeframe,
+        limit: 500,
+      });
+    }
+  }
+};
 
-    watch(
-      () => props.availablePairs,
-      () => {
-        if (!props.availablePairs.find((p) => p === pair.value)) {
-          [pair.value] = props.availablePairs;
-          refresh();
-        }
-      },
-    );
-
-    watch(
-      () => botStore.activeBot.selectedPair,
-      () => {
-        pair.value = botStore.activeBot.selectedPair;
-        refresh();
-      },
-    );
-
-    onMounted(() => {
-      if (botStore.activeBot.selectedPair) {
-        pair.value = botStore.activeBot.selectedPair;
-      } else if (props.availablePairs.length > 0) {
-        [pair.value] = props.availablePairs;
-      }
-      plotStore.plotConfigChanged();
-
-      if (!hasDataset) {
-        refresh();
-      }
-    });
-
-    return {
-      botStore,
-      settingsStore,
-      plotStore,
-      history,
-      dataset,
-      strategyName,
-      datasetColumns,
-      isLoadingDataset,
-      noDatasetText,
-      hasDataset,
-      showPlotConfig,
-      showConfigurator,
-      refresh,
-      pair,
-      showPlotConfigModal,
-    };
+watch(
+  () => props.availablePairs,
+  () => {
+    if (!props.availablePairs.find((p) => p === pair.value)) {
+      [pair.value] = props.availablePairs;
+      refresh();
+    }
   },
+);
+
+watch(
+  () => botStore.activeBot.selectedPair,
+  () => {
+    pair.value = botStore.activeBot.selectedPair;
+    refresh();
+  },
+);
+
+onMounted(() => {
+  if (botStore.activeBot.selectedPair) {
+    pair.value = botStore.activeBot.selectedPair;
+  } else if (props.availablePairs.length > 0) {
+    [pair.value] = props.availablePairs;
+  }
+  plotStore.plotConfigChanged();
+  if (!hasDataset.value) {
+    refresh();
+  }
 });
 </script>
 
