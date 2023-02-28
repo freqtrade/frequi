@@ -103,7 +103,7 @@
         <DraggableContainer>
           <template #header>
             <div class="d-flex justify-content-center">
-              Closed trades
+              Closed Trades
               <InfoBox
                 class="ms-2"
                 hint="Closed trades for all selected bots. Click on a trade to go to the trade page for that trade/bot."
