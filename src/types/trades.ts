@@ -20,7 +20,7 @@ export interface Order extends BTOrder {
   order_timestamp?: number;
 }
 
-export interface Trade {
+interface TradeBase {
   /**
    * corresponds to the UI (ftbot.1) - does NOT relate to the backend!
    */
@@ -65,7 +65,6 @@ export interface Trade {
   fee_close_cost?: number;
   fee_close_currency?: string;
 
-  current_rate?: number;
   /** Current profit as ratio */
   profit_ratio: number;
   /** Current profit in % */
@@ -90,9 +89,6 @@ export interface Trade {
   initial_stop_loss_ratio?: number;
   initial_stop_loss_pct?: number;
 
-  stoploss_current_dist?: number;
-  stoploss_current_dist_ratio?: number;
-  stoploss_current_dist_pct?: number;
   open_order_id?: string;
   /** Short properties - only available in API versions 2.x and up */
   is_short?: boolean;
@@ -104,7 +100,20 @@ export interface Trade {
   orders?: Order[];
 }
 
-export interface ClosedTrade extends Trade {
+/** Open trade (and backesting) */
+export interface Trade extends TradeBase {
+  stoploss_current_dist?: number;
+  stoploss_current_dist_ratio?: number;
+  stoploss_current_dist_pct?: number;
+  stoploss_entry_dist?: number;
+  stoploss_entry_dist_ratio?: number;
+  current_rate?: number;
+
+  total_profit_abs?: number;
+  total_profit_fiat?: number;
+}
+
+export interface ClosedTrade extends TradeBase {
   fee_open_cost: number;
   fee_open_currency: string;
 
