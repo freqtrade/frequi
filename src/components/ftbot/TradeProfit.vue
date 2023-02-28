@@ -12,11 +12,15 @@ import { formatPercent, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 import ProfitPill from '@/components/general/ProfitPill.vue';
 
-import { computed } from 'vue';
+import { computed, PropType } from 'vue';
 
 const props = defineProps({
   trade: { required: true, type: Object as () => Trade },
-  mode: { required: false, default: 'default', type: String },
+  mode: {
+    required: false,
+    default: 'default',
+    type: String as PropType<'default' | 'total' | 'realized'>,
+  },
 });
 const profitDesc = computed((): string => {
   let profit = `Current profit: ${formatPercent(props.trade.profit_ratio)} (${
@@ -27,10 +31,26 @@ const profitDesc = computed((): string => {
 });
 
 const profitRatio = computed<number | undefined>(() => {
-  return props.trade.profit_ratio;
+  switch (props.mode) {
+    case 'default':
+      return props.trade.profit_ratio;
+    case 'total':
+      return undefined;
+    default:
+      return undefined;
+  }
 });
 const profitAbs = computed<number | undefined>(() => {
-  return props.trade.profit_abs;
+  switch (props.mode) {
+    case 'default':
+      return props.trade.profit_abs;
+    case 'total':
+      return props.trade.total_profit_abs;
+    case 'realized':
+      return props.trade.realized_profit;
+    default:
+      return undefined;
+  }
 });
 </script>
 

@@ -25,10 +25,10 @@
           v-if="trade.is_open && trade.realized_profit && !trade.total_profit_abs"
           description="Realized Profit"
         >
-          {{ formatPriceCurrency(trade.realized_profit, stakeCurrency) }}
+          <trade-profit class="ms-2" :trade="trade" mode="realized" />
         </ValuePair>
         <ValuePair v-if="trade.is_open && trade.total_profit_abs" description="Total Profit">
-          {{ formatPriceCurrency(trade.total_profit_abs, stakeCurrency) }}
+          <trade-profit class="ms-2" :trade="trade" mode="total" />
         </ValuePair>
         <ValuePair
           v-if="trade.profit_ratio && trade.profit_abs"
