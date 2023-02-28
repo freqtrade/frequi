@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPrice } from '@/shared/formatters';
+import { formatPercent, formatPrice, formatPriceCurrency } from '@/shared/formatters';
 
 import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
 
@@ -43,7 +43,11 @@ const profitString = computed((): string => {
   if (props.profitRatio !== undefined && props.profitAbs !== undefined) {
     return `(${formatPrice(props.profitAbs, 3)})`;
   } else if (props.profitAbs !== undefined) {
-    return `${formatPrice(props.profitAbs, 3)}`;
+    if (props.stakeCurrency !== undefined) {
+      return `${formatPriceCurrency(props.profitAbs, props.stakeCurrency, 3)}`;
+    } else {
+      return `${formatPrice(props.profitAbs, 3)}`;
+    }
   }
   return '';
 });
