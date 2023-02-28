@@ -214,6 +214,7 @@ export function createBotSubStore(botId: string, botName: string) {
             this.refreshing = true;
             // TODO: Should be AxiosInstance
             const updates: Promise<unknown>[] = [];
+            updates.push(this.getState());
             updates.push(this.getPerformance());
             updates.push(this.getProfit());
             updates.push(this.getTrades());
@@ -232,7 +233,6 @@ export function createBotSubStore(botId: string, botName: string) {
       async refreshFrequent() {
         // Refresh data that's needed in near realtime
         await this.getOpenTrades();
-        await this.getState();
         await this.getLocks();
       },
 
