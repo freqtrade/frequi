@@ -23,7 +23,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-vue-next": "^0.7.3",
     "bootswatch": "^5.2.3",
-    "core-js": "^3.28.0",
+    "core-js": "^3.29.0",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
     "echarts": "^5.4.1",
