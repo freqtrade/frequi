@@ -35,7 +35,9 @@ const profitRatio = computed<number | undefined>(() => {
     case 'default':
       return props.trade.profit_ratio;
     case 'total':
-      return undefined;
+      return props.trade.total_profit_ratio;
+    case 'realized':
+      return props.trade.realized_profit_ratio;
     default:
       return undefined;
   }

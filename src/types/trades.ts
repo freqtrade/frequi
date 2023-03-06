@@ -73,6 +73,8 @@ interface TradeBase {
   profit_abs?: number;
   /** Absolute, realized profit */
   realized_profit?: number;
+  /** Relative, realized profit */
+  realized_profit_ratio?: number;
 
   exit_reason?: string;
   exit_order_status?: string;
@@ -111,6 +113,7 @@ export interface Trade extends TradeBase {
 
   total_profit_abs?: number;
   total_profit_fiat?: number;
+  total_profit_ratio?: number;
 }
 
 export interface ClosedTrade extends TradeBase {
