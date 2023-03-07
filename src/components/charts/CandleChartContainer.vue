@@ -132,7 +132,7 @@ const dataset = computed((): PairHistory => {
 });
 const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
 const datasetColumns = computed(() => (dataset.value ? dataset.value.columns : []));
-const hasDataset = computed(() => !!dataset.value);
+const hasDataset = computed(() => dataset.value && dataset.value.data.length > 0);
 const isLoadingDataset = computed((): boolean => {
   if (props.historicView) {
     return botStore.activeBot.historyStatus === LoadingStatus.loading;

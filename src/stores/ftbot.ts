@@ -340,7 +340,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       getPairCandles(payload: PairCandlePayload) {
         if (payload.pair && payload.timeframe) {
-          this.historyStatus = LoadingStatus.loading;
+          this.candleDataStatus = LoadingStatus.loading;
           return api
             .get('/pair_candles', {
               params: { ...payload },
@@ -354,11 +354,11 @@ export function createBotSubStore(botId: string, botName: string) {
                   data: result.data,
                 },
               };
-              this.historyStatus = LoadingStatus.success;
+              this.candleDataStatus = LoadingStatus.success;
             })
             .catch((err) => {
               console.error(err);
-              this.historyStatus = LoadingStatus.error;
+              this.candleDataStatus = LoadingStatus.error;
             });
         }
         // Error branchs
