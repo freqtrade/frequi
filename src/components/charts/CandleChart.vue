@@ -173,7 +173,7 @@ export default defineComponent({
         ? heikinashi(datasetColumns.value, props.dataset.data)
         : props.dataset.data.slice();
       // Add new rows to end to allow slight "scroll past"
-      const newArray = Array(dataset[dataset.length - 2].length);
+      const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2].length : 0);
       newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
       dataset.push(newArray);
       const options: EChartsOption = {
