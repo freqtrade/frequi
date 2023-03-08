@@ -14,16 +14,26 @@ import ProfitPill from '@/components/general/ProfitPill.vue';
 
 import { computed, PropType } from 'vue';
 
+type modes = 'default' | 'total' | 'realized';
+
 const props = defineProps({
   trade: { required: true, type: Object as () => Trade },
   mode: {
     required: false,
     default: 'default',
-    type: String as PropType<'default' | 'total' | 'realized'>,
+    type: String as PropType<modes>,
   },
 });
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const modeDescs: { [key in modes]: string } = {
+  default: 'Current profit',
+  total: 'Total profit',
+  realized: 'Realized profit',
+};
+
 const profitDesc = computed((): string => {
-  let profit = `Current profit: ${formatPercent(props.trade.profit_ratio)} (${
+  let profit = `${modeDescs[props.mode]}: ${formatPercent(props.trade.profit_ratio)} (${
     props.trade.profit_abs
   })`;
   profit += `\nOpen since: ${timestampms(props.trade.open_timestamp)}`;
