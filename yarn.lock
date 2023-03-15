@@ -1669,10 +1669,10 @@
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.2.7.tgz#0d93d635031a4cca2de70b825aef3fe20a41e702"
   integrity sha512-BMuoruUFTEqhLoOgsMcgNVMiByYbfHCKGr2C4CPdGtz/affUtDVX5zr1RnPuq0tYSiaqq+Enw5voUpG6JY8Q7g==
 
-"@vuepic/vue-datepicker@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-4.2.0.tgz#04a2b82c4b0ded3ef88d145875b41d6d09ef14fb"
-  integrity sha512-ipo3ZoY/zyVBXbTcnC16GvIuo/Ja/ddaN0OGVV45KMXmsXJsUFo52c17c1l17iDm7N9Ds8l4yRSGmWpDAzrbXQ==
+"@vuepic/vue-datepicker@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-4.2.1.tgz#fa53c72ee046b3b7d05cde7337e41674ce87786a"
+  integrity sha512-O8hy0o9jQkv/Et7G0mUFDR94NTcHHouy70ELfrTmaWOIBamS/8cRWAwwb/reOvKPX+eo1XKs/v2mj+i5WA14kw==
   dependencies:
     date-fns "^2.29.3"
     date-fns-tz "^1.3.7"
