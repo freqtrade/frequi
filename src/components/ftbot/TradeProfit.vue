@@ -32,14 +32,6 @@ const modeDescs: { [key in modes]: string } = {
   realized: 'Realized profit',
 };
 
-const profitDesc = computed((): string => {
-  let profit = `${modeDescs[props.mode]}: ${formatPercent(props.trade.profit_ratio)} (${
-    props.trade.profit_abs
-  })`;
-  profit += `\nOpen since: ${timestampms(props.trade.open_timestamp)}`;
-  return profit;
-});
-
 const profitRatio = computed<number | undefined>(() => {
   switch (props.mode) {
     case 'default':
@@ -63,6 +55,13 @@ const profitAbs = computed<number | undefined>(() => {
     default:
       return undefined;
   }
+});
+const profitDesc = computed((): string => {
+  let profit = `${modeDescs[props.mode]}: ${
+    profitRatio.value ? formatPercent(profitRatio.value) : ''
+  } (${profitAbs.value})`;
+  profit += `\nOpen since: ${timestampms(props.trade.open_timestamp)}`;
+  return profit;
 });
 </script>
 
