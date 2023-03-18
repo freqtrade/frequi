@@ -44,60 +44,42 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import HideIcon from 'vue-material-design-icons/EyeOff.vue';
 import ShowIcon from 'vue-material-design-icons/Eye.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { formatPercent } from '@/shared/formatters';
-import { defineComponent, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'Balance',
-  components: { HideIcon, ShowIcon, BalanceChart },
-  setup() {
-    const botStore = useBotStore();
-    const hideSmallBalances = ref(true);
+const botStore = useBotStore();
+const hideSmallBalances = ref(true);
 
-    const smallBalance = computed((): number => {
-      return Number((0.1 ** botStore.activeBot.stakeCurrencyDecimals).toFixed(8));
-    });
+const smallBalance = computed((): number => {
+  return Number((0.1 ** botStore.activeBot.stakeCurrencyDecimals).toFixed(8));
+});
 
-    const balanceCurrencies = computed(() => {
-      if (!hideSmallBalances.value) {
-        return botStore.activeBot.balance.currencies;
-      }
+const balanceCurrencies = computed(() => {
+  if (!hideSmallBalances.value) {
+    return botStore.activeBot.balance.currencies;
+  }
 
-      return botStore.activeBot.balance.currencies?.filter(
-        (v) => v.est_stake >= smallBalance.value,
-      );
-    });
+  return botStore.activeBot.balance.currencies?.filter((v) => v.est_stake >= smallBalance.value);
+});
 
-    const tableFields = computed(() => {
-      return [
-        { key: 'currency', label: 'Currency' },
-        { key: 'free', label: 'Available', formatter: 'formatCurrency' },
-        {
-          key: 'est_stake',
-          label: `in ${botStore.activeBot.balance.stake}`,
-          formatter: 'formatCurrency',
-        },
-      ];
-    });
+const formatCurrency = (value) => {
+  return value ? value.toFixed(5) : '';
+};
 
-    const formatCurrency = (value) => {
-      return value ? value.toFixed(5) : '';
-    };
-
-    return {
-      botStore,
-      hideSmallBalances,
-      formatPercent,
-      smallBalance,
-      balanceCurrencies,
-      tableFields,
-      formatCurrency,
-    };
-  },
+const tableFields = computed(() => {
+  return [
+    { key: 'currency', label: 'Currency' },
+    { key: 'free', label: 'Available', formatter: formatCurrency },
+    {
+      key: 'est_stake',
+      label: `in ${botStore.activeBot.balance.stake}`,
+      formatter: formatCurrency,
+    },
+  ];
 });
 </script>
