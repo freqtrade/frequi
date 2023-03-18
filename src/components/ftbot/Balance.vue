@@ -48,7 +48,7 @@
 import HideIcon from 'vue-material-design-icons/EyeOff.vue';
 import ShowIcon from 'vue-material-design-icons/Eye.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
-import { formatPercent } from '@/shared/formatters';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
@@ -68,7 +68,7 @@ const balanceCurrencies = computed(() => {
 });
 
 const formatCurrency = (value) => {
-  return value ? value.toFixed(5) : '';
+  return value ? formatPrice(value, 5) : '';
 };
 
 const tableFields = computed(() => {
