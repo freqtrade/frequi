@@ -152,6 +152,7 @@ const handleSubmit = async () => {
       botStore.botStores[botId].isBotLoggedIn = true;
       botStore.botStores[botId].isBotOnline = true;
       // botStore.allRefreshFull();
+      emitLoginResult(true);
     } else {
       // Add new bot
       botStore.addBot({
