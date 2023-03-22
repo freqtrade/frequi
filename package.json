@@ -41,7 +41,7 @@
     "vue3-drr-grid-layout": "^1.9.7"
   },
   "devDependencies": {
-    "@cypress/vite-dev-server": "^5.0.4",
+    "@cypress/vite-dev-server": "^5.0.5",
     "@cypress/vue": "^5.0.5",
     "@types/echarts": "^4.9.16",
     "@types/jest": "^27.5.0",

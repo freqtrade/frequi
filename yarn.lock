@@ -640,14 +640,15 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/vite-dev-server@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@cypress/vite-dev-server/-/vite-dev-server-5.0.4.tgz#4cbd4317b6a02c457d49b68953b7a9fdec3d57f8"
-  integrity sha512-F9ZkoBcHoILYKEQHDPnsBdzVbnudLoav3iMCOPRvgWfuMlen+zVed1g0nBBYTwfVYMfc9Xqn37ePC3GLSl1aYw==
+"@cypress/vite-dev-server@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@cypress/vite-dev-server/-/vite-dev-server-5.0.5.tgz#46b4bb6443857f45825815220b9e7a34fc724403"
+  integrity sha512-ZR6Smfe2Jpe7V//yrISgbe4CfLfjpMuqr9ryCmx7NV3XiKJVBMIYmDUQ0lVIR6m7JaHv0/rElM8dTA6R987olQ==
   dependencies:
     debug "^4.3.4"
     find-up "6.3.0"
     node-html-parser "5.3.3"
+    semver "^7.3.2"
 
 "@cypress/vue@^5.0.5":
   version "5.0.5"
