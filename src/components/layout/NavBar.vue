@@ -122,123 +122,105 @@
   </header>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import LoginModal from '@/views/LoginModal.vue';
 import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
 import Favico from 'favico.js';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotList from '@/components/BotList.vue';
-import { defineComponent, ref, onBeforeUnmount, onMounted, watch } from 'vue';
+import { ref, onBeforeUnmount, onMounted, watch } from 'vue';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute } from 'vue-router';
 
-export default defineComponent({
-  name: 'NavBar',
-  components: { LoginModal, BootswatchThemeSelect, ReloadControl, BotEntry, BotList },
-  setup() {
-    const botStore = useBotStore();
+const botStore = useBotStore();
 
-    const settingsStore = useSettingsStore();
-    const layoutStore = useLayoutStore();
-    const route = useRoute();
-    const favicon = ref<Favico | undefined>(undefined);
-    const pingInterval = ref<number>();
+const settingsStore = useSettingsStore();
+const layoutStore = useLayoutStore();
+const route = useRoute();
+const favicon = ref<Favico | undefined>(undefined);
+const pingInterval = ref<number>();
 
-    const clickLogout = () => {
-      botStore.removeBot(botStore.selectedBot);
-      // TODO: This should be per bot
-    };
+const clickLogout = () => {
+  botStore.removeBot(botStore.selectedBot);
+  // TODO: This should be per bot
+};
 
-    const setOpenTradesAsPill = (tradeCount: number) => {
-      if (!favicon.value) {
-        favicon.value = new Favico({
-          animation: 'none',
-          // position: 'up',
-          // fontStyle: 'normal',
-          // bgColor: '#',
-          // textColor: '#FFFFFF',
-        });
-      }
-      if (tradeCount !== 0 && settingsStore.openTradesInTitle === 'showPill') {
-        favicon.value.badge(tradeCount);
-      } else {
-        favicon.value.reset();
-        console.log('reset');
-      }
-    };
-    const resetDynamicLayout = (): void => {
-      console.log(`resetLayout called for ${route?.fullPath}`);
-      switch (route?.fullPath) {
-        case '/trade':
-          layoutStore.resetTradingLayout();
-          break;
-        case '/dashboard':
-          layoutStore.resetDashboardLayout();
-          break;
-        default:
-      }
-    };
-    const setTitle = () => {
-      let title = 'freqUI';
-      if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-        title = `(${botStore.activeBotorUndefined?.openTradeCount}) ${title}`;
-      }
-      if (botStore.activeBotorUndefined?.botName) {
-        title = `${title} - ${botStore.activeBotorUndefined?.botName}`;
-      }
-      document.title = title;
-    };
-
-    onBeforeUnmount(() => {
-      if (pingInterval) {
-        clearInterval(pingInterval.value);
-      }
+const setOpenTradesAsPill = (tradeCount: number) => {
+  if (!favicon.value) {
+    favicon.value = new Favico({
+      animation: 'none',
+      // position: 'up',
+      // fontStyle: 'normal',
+      // bgColor: '#',
+      // textColor: '#FFFFFF',
     });
+  }
+  if (tradeCount !== 0 && settingsStore.openTradesInTitle === 'showPill') {
+    favicon.value.badge(tradeCount);
+  } else {
+    favicon.value.reset();
+    console.log('reset');
+  }
+};
+const resetDynamicLayout = (): void => {
+  console.log(`resetLayout called for ${route?.fullPath}`);
+  switch (route?.fullPath) {
+    case '/trade':
+      layoutStore.resetTradingLayout();
+      break;
+    case '/dashboard':
+      layoutStore.resetDashboardLayout();
+      break;
+    default:
+  }
+};
+const setTitle = () => {
+  let title = 'freqUI';
+  if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
+    title = `(${botStore.activeBotorUndefined?.openTradeCount}) ${title}`;
+  }
+  if (botStore.activeBotorUndefined?.botName) {
+    title = `${title} - ${botStore.activeBotorUndefined?.botName}`;
+  }
+  document.title = title;
+};
 
-    onMounted(async () => {
-      await settingsStore.loadUIVersion();
-      pingInterval.value = window.setInterval(botStore.pingAll, 60000);
-    });
-
-    settingsStore.$subscribe((_, state) => {
-      const needsUpdate = settingsStore.openTradesInTitle !== state.openTradesInTitle;
-      if (needsUpdate) {
-        setTitle();
-        setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount || 0);
-      }
-    });
-
-    watch(
-      () => botStore.activeBotorUndefined?.botName,
-      () => setTitle(),
-    );
-    watch(
-      () => botStore.activeBotorUndefined?.openTradeCount,
-      () => {
-        if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
-          setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount ?? 0);
-        } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-          setTitle();
-        }
-      },
-    );
-
-    return {
-      favicon,
-
-      clickLogout,
-      resetDynamicLayout,
-      setTitle,
-      layoutStore,
-      botStore,
-      settingsStore,
-      route,
-    };
-  },
+onBeforeUnmount(() => {
+  if (pingInterval) {
+    clearInterval(pingInterval.value);
+  }
 });
+
+onMounted(async () => {
+  await settingsStore.loadUIVersion();
+  pingInterval.value = window.setInterval(botStore.pingAll, 60000);
+});
+
+settingsStore.$subscribe((_, state) => {
+  const needsUpdate = settingsStore.openTradesInTitle !== state.openTradesInTitle;
+  if (needsUpdate) {
+    setTitle();
+    setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount || 0);
+  }
+});
+
+watch(
+  () => botStore.activeBotorUndefined?.botName,
+  () => setTitle(),
+);
+watch(
+  () => botStore.activeBotorUndefined?.openTradeCount,
+  () => {
+    if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
+      setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount ?? 0);
+    } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
+      setTitle();
+    }
+  },
+);
 </script>
 
 <style lang="scss" scoped>
