@@ -18,8 +18,7 @@
         :key="key"
         :active="activeTheme === theme.name"
         :title="theme.description"
-        :name="theme.name"
-        @click="handleClick"
+        @click="handleClick(theme.name)"
         >{{ theme.name }}{{ theme.dark ? ' [dark]' : '' }}</b-dropdown-item-button
       >
     </b-nav-item-dropdown>
@@ -100,8 +99,8 @@ onMounted(() => {
   if (settingsStore.currentTheme) setTheme(settingsStore.currentTheme);
 });
 
-const handleClick = (e) => {
-  setTheme(e.target.name.trim());
+const handleClick = (name: string) => {
+  setTheme(name.trim());
 };
 const toggleNight = () => {
   setTheme(activeTheme.value === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
