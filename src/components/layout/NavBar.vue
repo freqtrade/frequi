@@ -23,7 +23,7 @@
           <router-link v-if="botStore.canRunBacktest" class="nav-link navbar-nav" to="/backtest"
             >Backtest</router-link
           >
-          <BootswatchThemeSelect />
+          <theme-select />
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import LoginModal from '@/views/LoginModal.vue';
-import BootswatchThemeSelect from '@/components/BootswatchThemeSelect.vue';
+import ThemeSelect from '@/components/ThemeSelect.vue';
 import Favico from 'favico.js';
 import ReloadControl from '@/components/ftbot/ReloadControl.vue';
 import BotEntry from '@/components/BotEntry.vue';
