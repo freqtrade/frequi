@@ -8,13 +8,13 @@
       right
       lazy
     >
-      <b-dropdown-item v-if="themeList.length === 0">
+      <b-dropdown-item v-if="themeList1.length === 0">
         <b-spinner small></b-spinner> Loading Themes...
       </b-dropdown-item>
 
       <!-- TODO Add  v-b-tooltip.hover.right=="{ variant: 'className' }" for tooltip class rendered from bootswatch-->
       <b-dropdown-item-button
-        v-for="(theme, key) in themeList"
+        v-for="(theme, key) in themeList1"
         :key="key"
         :active="activeTheme === theme.name"
         :title="theme.description"
@@ -35,7 +35,7 @@ import axios from 'axios';
 import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 import { FTHTMLStyleElement } from '@/types/styleElement';
 import { useSettingsStore } from '@/stores/settings';
-import { ThemeType } from '@/shared/themes';
+import { themeList, ThemeType } from '@/shared/themes';
 
 const props = defineProps({
   simple: {
@@ -44,7 +44,7 @@ const props = defineProps({
   },
 });
 const activeTheme = ref('');
-const themeList = ref<ThemeType[]>([]);
+const themeList1 = ref<ThemeType[]>(themeList);
 const settingsStore = useSettingsStore();
 
 const setTheme = (themeName) => {
