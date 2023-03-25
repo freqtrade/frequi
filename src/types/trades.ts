@@ -99,6 +99,11 @@ interface TradeBase {
   liquidation_price?: number;
   funding_fees?: number;
   trading_mode?: TradingMode;
+
+  amount_precision?: number;
+  price_precision?: number;
+  precision_mode?: number;
+
   orders?: Order[];
 }
 
