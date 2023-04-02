@@ -162,11 +162,11 @@ export function createBotSubStore(botId: string, botName: string) {
           const now = Date.now();
           // TODO: Name collision!
           this.ping = `${result.data.status} ${now.toString()}`;
-          this.isBotOnline = true;
+          this.setIsBotOnline(true);
           return Promise.resolve();
         } catch (error) {
           console.log('ping fail');
-          this.isBotOnline = false;
+          this.setIsBotOnline(false);
           return Promise.reject();
         }
       },
