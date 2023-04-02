@@ -138,18 +138,6 @@ export function createBotSubStore(botId: string, botName: string) {
         ) {
           return true;
         }
-        // TODO: This backgroundSyncCheck is still missing above
-        // const bgRefresh = rootGetters['uiSettings/backgroundSync'];
-        // const selectedBot = rootGetters[`${StoreModules.ftbot}/selectedBot`];
-        // if (
-        //   (selectedBot === botId || bgRefresh) &&
-        //   getters.autoRefresh &&
-        //   getters.isBotOnline &&
-        //   getters.botStatusAvailable &&
-        //   !getters.isWebserverMode
-        // ) {
-        //   return true;
-        // }
         return false;
       },
       botName: (state) => state.botState?.bot_name || 'freqtrade',
