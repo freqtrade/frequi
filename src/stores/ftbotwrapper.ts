@@ -218,7 +218,7 @@ export const useBotStore = defineStore('wrapper', {
     async allRefreshFrequent(forceUpdate = false) {
       const updates: Promise<unknown>[] = [];
       this.allBotStores.forEach(async (e) => {
-        if (e.refreshNow && (this.globalAutoRefresh || forceUpdate)) {
+        if (e.refreshNow && e.botStatusAvailable && (this.globalAutoRefresh || forceUpdate)) {
           updates.push(e.refreshFrequent());
         }
       });

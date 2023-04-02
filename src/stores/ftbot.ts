@@ -133,7 +133,6 @@ export function createBotSubStore(botId: string, botName: string) {
         if (
           state.autoRefresh &&
           state.isBotOnline &&
-          state.botStatusAvailable &&
           state.botState?.runmode !== RunModes.WEBSERVER
         ) {
           return true;
