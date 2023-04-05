@@ -68,6 +68,7 @@ import {
   formatPrice,
   humanizeDurationFromSeconds,
 } from '@/shared/formatters';
+import { TableField } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
@@ -389,12 +390,12 @@ const perExitReason = computed(() => {
     { key: 'losses', label: 'Losses' },
   ];
 });
-const backtestResultFields: Array<Record<string, string>> = [
+const backtestResultFields: TableField[] = [
   { key: 'metric', label: 'Metric' },
   { key: 'value', label: 'Value' },
 ];
 
-const backtestsettingFields: Array<Record<string, string>> = [
+const backtestsettingFields: TableField[] = [
   { key: 'setting', label: 'Setting' },
   { key: 'value', label: 'Value' },
 ];
