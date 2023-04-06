@@ -21,7 +21,7 @@
     "@vueuse/core": "^9.13.0",
     "axios": "^1.3.4",
     "bootstrap": "^5.2.3",
-    "bootstrap-vue-next": "^0.7.3",
+    "bootstrap-vue-next": "^0.8.0",
     "core-js": "^3.30.0",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",

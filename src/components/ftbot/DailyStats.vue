@@ -20,8 +20,9 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue';
 import DailyChart from '@/components/charts/DailyChart.vue';
-import { formatPercent, formatPrice } from '@/shared/formatters';
+import { formatPercent } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { TableField } from 'bootstrap-vue-next';
 
 export default defineComponent({
   name: 'DailyStats',
@@ -30,20 +31,28 @@ export default defineComponent({
   },
   setup() {
     const botStore = useBotStore();
-    const dailyFields = computed(() => {
-      return [
+    const dailyFields = computed<TableField[]>(() => {
+      const res: TableField[] = [
         { key: 'date', label: 'Day' },
-        { key: 'abs_profit', label: 'Profit', formatter: (value) => formatPrice(value) },
+        {
+          key: 'abs_profit',
+          label: 'Profit',
+          // formatter: (value: unknown) => formatPrice(value as number),
+        },
         {
           key: 'fiat_value',
           label: `In ${botStore.activeBot.dailyStats.fiat_display_currency}`,
-          formatter: (value) => formatPrice(value, 2),
+          // formatter: (value: unknown) => formatPrice(value as number, 2),
         },
         { key: 'trade_count', label: 'Trades' },
-        botStore.activeBot.botApiVersion >= 2.16
-          ? { key: 'rel_profit', label: 'Profit%', formatter: (value) => formatPercent(value, 2) }
-          : null,
       ];
+      if (botStore.activeBot.botApiVersion >= 2.16)
+        res.push({
+          key: 'rel_profit',
+          label: 'Profit%',
+          formatter: (value: unknown) => formatPercent(value as number, 2),
+        });
+      return res;
     });
     onMounted(() => {
       botStore.activeBot.getDaily();

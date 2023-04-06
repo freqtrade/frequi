@@ -29,7 +29,7 @@
           small
           hover
           stacked="sm"
-          :items="backtestResult.exit_reason_summary || backtestResult.sell_reason_summary"
+          :items="(backtestResult.exit_reason_summary || backtestResult.sell_reason_summary) as unknown as TableItem[]"
           :fields="perExitReason"
         >
         </b-table>
@@ -39,7 +39,7 @@
           small
           hover
           stacked="sm"
-          :items="backtestResult.results_per_pair"
+          :items="backtestResult.results_per_pair as unknown as TableItem[]"
           :fields="perPairFields"
         >
         </b-table>
@@ -68,6 +68,7 @@ import {
   formatPrice,
   humanizeDurationFromSeconds,
 } from '@/shared/formatters';
+import { TableField, TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
@@ -389,12 +390,12 @@ const perExitReason = computed(() => {
     { key: 'losses', label: 'Losses' },
   ];
 });
-const backtestResultFields: Array<Record<string, string>> = [
+const backtestResultFields: TableField[] = [
   { key: 'metric', label: 'Metric' },
   { key: 'value', label: 'Value' },
 ];
 
-const backtestsettingFields: Array<Record<string, string>> = [
+const backtestsettingFields: TableField[] = [
   { key: 'setting', label: 'Setting' },
   { key: 'value', label: 'Value' },
 ];
