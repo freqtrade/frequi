@@ -29,7 +29,7 @@
           small
           hover
           stacked="sm"
-          :items="backtestResult.exit_reason_summary || backtestResult.sell_reason_summary"
+          :items="(backtestResult.exit_reason_summary || backtestResult.sell_reason_summary) as unknown as TableItem[]"
           :fields="perExitReason"
         >
         </b-table>
@@ -39,7 +39,7 @@
           small
           hover
           stacked="sm"
-          :items="backtestResult.results_per_pair"
+          :items="backtestResult.results_per_pair as unknown as TableItem[]"
           :fields="perPairFields"
         >
         </b-table>
@@ -68,7 +68,7 @@ import {
   formatPrice,
   humanizeDurationFromSeconds,
 } from '@/shared/formatters';
-import { TableField } from 'bootstrap-vue-next';
+import { TableField, TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
