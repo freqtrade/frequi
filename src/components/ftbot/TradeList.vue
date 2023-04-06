@@ -11,7 +11,7 @@
             t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
             t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
             t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
-        )
+        ) as unknown as TableItem[]
       "
       :fields="tableFields"
       show-empty
@@ -104,7 +104,7 @@ import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 import { ref, computed, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
-import { TableField } from 'bootstrap-vue-next';
+import { TableField, TableItem } from 'bootstrap-vue-next';
 
 enum ModalReasons {
   removeTrade,
