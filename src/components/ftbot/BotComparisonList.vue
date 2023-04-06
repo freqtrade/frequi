@@ -58,6 +58,7 @@ import { formatPrice } from '@/shared/formatters';
 import { defineComponent, computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ProfitInterface, ComparisonTableItems } from '@/types';
+import { TableField, TableItem } from 'bootstrap-vue-next';
 
 export default defineComponent({
   name: 'BotComparisonList',
@@ -65,7 +66,7 @@ export default defineComponent({
   setup() {
     const botStore = useBotStore();
 
-    const tableFields: Record<string, string | Function>[] = [
+    const tableFields: TableField[] = [
       { key: 'botName', label: 'Bot' },
       { key: 'trades', label: 'Trades' },
       { key: 'profitOpen', label: 'Open Profit' },
@@ -74,7 +75,7 @@ export default defineComponent({
       { key: 'winVsLoss', label: 'W/L' },
     ];
 
-    const tableItems = computed(() => {
+    const tableItems = computed<TableItem[]>(() => {
       const val: ComparisonTableItems[] = [];
       const summary: ComparisonTableItems = {
         botId: undefined,
@@ -121,7 +122,7 @@ export default defineComponent({
         }
       });
       val.push(summary);
-      return val;
+      return val as unknown as TableItem[];
     });
 
     return {
