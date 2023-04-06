@@ -104,6 +104,7 @@ import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 import { ref, computed, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
+import { TableField } from 'bootstrap-vue-next';
 
 enum ModalReasons {
   removeTrade,
@@ -134,8 +135,8 @@ const removeTradeVisible = ref(false);
 const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
 
-const openFields: Record<string, string | Function>[] = [{ key: 'actions' }];
-const closedFields: Record<string, string | Function>[] = [
+const openFields: TableField[] = [{ key: 'actions' }];
+const closedFields: TableField[] = [
   { key: 'close_timestamp', label: 'Close date' },
   { key: 'exit_reason', label: 'Close Reason' },
 ];
@@ -146,8 +147,8 @@ const rows = computed(() => {
   return props.trades.length;
 });
 
-const tableFields: Record<string, string | Function>[] = [
-  props.multiBotView ? { key: 'botName', label: 'Bot' } : {},
+const tableFields: TableField[] = [
+  props.multiBotView ? { key: 'botName', label: 'Bot' } : { key: 'actions' },
   { key: 'trade_id', label: 'ID' },
   { key: 'pair', label: 'Pair' },
   { key: 'amount', label: 'Amount' },
@@ -158,19 +159,24 @@ const tableFields: Record<string, string | Function>[] = [
   {
     key: 'open_rate',
     label: 'Open rate',
-    formatter: (value: number) => formatPrice(value),
+    formatter: (value: unknown) => formatPrice(value as number),
   },
   {
     key: props.activeTrades ? 'current_rate' : 'close_rate',
     label: props.activeTrades ? 'Current rate' : 'Close rate',
-    formatter: (value: number) => formatPrice(value),
+    formatter: (value: unknown) => formatPrice(value as number),
   },
   {
     key: 'profit',
     label: props.activeTrades ? 'Current profit %' : 'Profit %',
-    formatter: (value: number, key, item: Trade) => {
-      const percent = formatPercent(item.profit_ratio, 2);
-      return `${percent} ${`(${formatPriceWithDecimals(item.profit_abs)})`}`;
+
+    formatter: (value: unknown, key?: string, item?: unknown) => {
+      if (!item) {
+        return '';
+      }
+      const typedItem = item as Trade;
+      const percent = formatPercent(typedItem.profit_ratio, 2);
+      return `${percent} ${`(${formatPriceWithDecimals(typedItem.profit_abs)})`}`;
     },
   },
   { key: 'open_timestamp', label: 'Open date' },
