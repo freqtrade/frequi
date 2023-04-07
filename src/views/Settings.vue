@@ -9,7 +9,7 @@
           <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
         </b-form-group>
         <b-form-group description="Reset dynamic layouts to how they were.">
-          <b-button size="sm" @click="resetDynamicLayout">Reset layout</b-button>
+          <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
         </b-form-group>
         <b-form-group
           label="Show open trades in header"
