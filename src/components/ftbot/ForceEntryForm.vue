@@ -19,7 +19,7 @@
         <b-form-radio-group
           id="order-direction"
           v-model="orderSide"
-          :options="['long', 'short']"
+          :options="orderSideOptions"
           name="radios-btn-default"
           size="sm"
           buttons
@@ -95,8 +95,8 @@
         <b-form-radio-group
           id="ordertype-input"
           v-model="ordertype"
-          :options="['market', 'limit']"
-          name="radios-btn-default"
+          :options="orderTypeOptions"
+          name="radios-btn-orderType"
           buttons
           button-variant="outline-primary"
           style="min-width: 10em"
@@ -128,6 +128,15 @@ const leverage = ref<number | undefined>(undefined);
 
 const ordertype = ref('');
 const orderSide = ref<OrderSides>(OrderSides.long);
+
+const orderTypeOptions = [
+  { value: 'market', text: 'Market' },
+  { value: 'limit', text: 'Limit' },
+];
+const orderSideOptions = [
+  { value: 'long', text: 'Long' },
+  { value: 'short', text: 'Short' },
+];
 
 const model = computed({
   get() {
