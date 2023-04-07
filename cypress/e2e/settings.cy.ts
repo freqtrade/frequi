@@ -9,7 +9,8 @@ describe('Settings', () => {
     cy.visit('/');
     cy.wait('@Ping');
     cy.wait('@ShowConf');
-    cy.get('li').contains('Online', { timeout: 5000 }).should('be.visible');
+    cy.get('li').contains('Online').should('be.visible');
+    cy.get('h1').contains('Welcome to the Freqtrade UI', { timeout: 5000 }).should('be.visible');
     // cy.wait('@Strategies');
 
     cy.get('[id=avatar-drop]').should('be.visible').parent().click();
