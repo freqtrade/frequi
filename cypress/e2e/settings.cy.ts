@@ -9,6 +9,7 @@ describe('Settings', () => {
     cy.visit('/');
     cy.wait('@Ping');
     cy.wait('@ShowConf');
+    cy.get('li').contains('Online', { timeout: 5000 }).should('be.visible');
     // cy.wait('@Strategies');
 
     cy.get('[id=avatar-drop]').should('be.visible').parent().click();
