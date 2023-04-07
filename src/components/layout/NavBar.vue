@@ -65,7 +65,7 @@
           </li>
           <li v-if="botStore.hasBots" class="nav-item">
             <!-- Hide dropdown on xs, instead show below  -->
-            <b-nav-item-dropdown id="avatar-drop" right class="d-none d-sm-block">
+            <b-nav-item-dropdown id="avatar-drop" right auto-close class="d-none d-sm-block">
               <template #button-content>
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
