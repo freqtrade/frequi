@@ -47,24 +47,31 @@
       {{ botStore.activeBot.profit.best_pair }}.
     </p>
     <p v-if="botStore.activeBot.profit.first_trade_timestamp">
-      First trade opened:
-
-      <strong>
-        <DateTimeTZ :date="botStore.activeBot.profit.first_trade_timestamp" show-timezone />
-      </strong>
-      <br />
-      Last trade opened:
-      <strong>
-        <DateTimeTZ :date="botStore.activeBot.profit.latest_trade_timestamp" show-timezone />
-      </strong>
+      <span v-if="botStore.activeBot.profit.bot_start_timestamp" class="d-block">
+        Bot start date:
+        <strong>
+          <DateTimeTZ :date="botStore.activeBot.profit.bot_start_timestamp" show-timezone />
+        </strong>
+      </span>
+      <span class="d-block">
+        First trade opened:
+        <strong>
+          <DateTimeTZ :date="botStore.activeBot.profit.first_trade_timestamp" show-timezone />
+        </strong>
+      </span>
+      <span class="d-block">
+        Last trade opened:
+        <strong>
+          <DateTimeTZ :date="botStore.activeBot.profit.latest_trade_timestamp" show-timezone />
+        </strong>
+      </span>
     </p>
     <p>
-      <span v-if="botStore.activeBot.profit.profit_factor">
+      <span v-if="botStore.activeBot.profit.profit_factor" class="d-block">
         Profit factor:
         {{ botStore.activeBot.profit.profit_factor.toFixed(2) }}
       </span>
-      <br />
-      <span v-if="botStore.activeBot.profit.trading_volume">
+      <span v-if="botStore.activeBot.profit.trading_volume" class="d-block">
         Trading volume:
         {{
           formatPriceCurrency(

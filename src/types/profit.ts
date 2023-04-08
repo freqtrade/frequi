@@ -40,4 +40,7 @@ export interface ProfitInterface {
   max_drawdown?: number;
   max_drawdown_abs?: number;
   trading_volume?: number;
+  /** Initial bot start date*/
+  bot_start_timestamp?: number;
+  bot_start_date?: string;
 }
