@@ -1,7 +1,13 @@
 <template>
   <div>
-    <span>Trade Navigation</span>
     <b-list-group>
+      <b-list-group-item
+        button
+        class="d-flex flex-wrap justify-content-center align-items-center"
+        :title="'Trade Navigation'"
+        @click="sortNewestFirst = !sortNewestFirst"
+        >Trade Navigation {{ sortNewestFirst ? '&#8595;' : '&#8593;' }}
+      </b-list-group-item>
       <b-list-group-item
         v-for="trade in sortedTrades"
         :key="trade.open_timestamp"
@@ -45,6 +51,7 @@ const emit = defineEmits(['trade-select']);
 
 const botStore = useBotStore();
 const selectedTrade = ref({} as Trade);
+const sortNewestFirst = ref(true);
 
 const onTradeSelect = (trade: Trade) => {
   selectedTrade.value = trade;
@@ -52,7 +59,13 @@ const onTradeSelect = (trade: Trade) => {
 };
 
 const sortedTrades = computed(() => {
-  return props.trades.slice().sort((a, b) => b.open_timestamp - a.open_timestamp);
+  return props.trades
+    .slice()
+    .sort((a, b) =>
+      sortNewestFirst.value
+        ? b.open_timestamp - a.open_timestamp
+        : a.open_timestamp - b.open_timestamp,
+    );
 });
 </script>
 
