@@ -1,23 +1,11 @@
-<script lang="ts">
+<script setup lang="ts">
 import { ClosedTrade } from '@/types';
-import { defineComponent } from 'vue';
 import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 
-export default defineComponent({
-  name: 'BacktestGraphsView',
-  components: {
-    ProfitDistributionChart,
-    CumProfitChart,
-    TradesLogChart,
-  },
-  props: {
-    trades: { required: true, type: Array as () => ClosedTrade[] },
-  },
-  setup() {
-    return {};
-  },
+defineProps({
+  trades: { required: true, type: Array as () => ClosedTrade[] },
 });
 </script>
 <template>
