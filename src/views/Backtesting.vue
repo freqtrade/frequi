@@ -379,6 +379,7 @@ const selectBacktestResult = () => {
   botStore.activeBot.getStrategy(strategy.value);
   selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
   selectedDetailTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+  // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
   timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
 };
 

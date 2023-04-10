@@ -356,7 +356,7 @@ export function createBotSubStore(botId: string, botName: string) {
         });
       },
       getPairHistory(payload: PairHistoryPayload) {
-        if (payload.pair && payload.timeframe && payload.timerange) {
+        if (payload.pair && payload.timeframe) {
           this.historyStatus = LoadingStatus.loading;
           return api
             .get('/pair_history', {
