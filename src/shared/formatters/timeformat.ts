@@ -1,10 +1,12 @@
 import { parse, toDate } from 'date-fns';
-import { format, utcToZonedTime } from 'date-fns-tz';
+import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import humanizeDuration from 'humanize-duration';
 import { isUndefined } from './numberformat';
 
+/** Parse date from string, returns date in UTC! */
 export function dateFromString(datestring: string, format: string): Date {
-  return parse(datestring, format, 0);
+  const localTime = parse(datestring, format, 0);
+  return zonedTimeToUtc(localTime, 'UTC');
 }
 
 let locTimeZone = 'UTC';

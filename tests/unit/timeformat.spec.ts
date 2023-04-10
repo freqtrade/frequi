@@ -6,6 +6,7 @@ import {
   timestampToDateString,
   dateStringToTimeRange,
   timestampHour,
+  dateFromString,
 } from '@/shared/formatters';
 
 const { getTimeZone } = exportForTesting;
@@ -57,5 +58,16 @@ describe('timeformatter.ts', () => {
     expect(timestampHour(1651057500000)).toEqual(11);
     setTimezone('CET');
     expect(timestampHour(1651057500000)).toEqual(13);
+  });
+  it('dateFromString converts correctly', () => {
+    expect(dateFromString('2022-04-04', 'yyyy-MM-dd')).toEqual(
+      new Date('2022-04-04T00:00:00.000Z'),
+    );
+    expect(dateFromString('2023-02-08', 'yyyy-MM-dd')).toEqual(
+      new Date('2023-02-08T00:00:00.000Z'),
+    );
+    expect(dateFromString('2022-12-31', 'yyyy-MM-dd')).toEqual(
+      new Date('2022-12-31T00:00:00.000Z'),
+    );
   });
 });
