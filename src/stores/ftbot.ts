@@ -873,7 +873,8 @@ export function createBotSubStore(botId: string, botName: string) {
         if (
           this.websocketStarted === true ||
           this.botStatusAvailable === false ||
-          this.botApiVersion < 2.2
+          this.botApiVersion < 2.2 ||
+          this.isWebserverMode === true
         ) {
           return;
         }
