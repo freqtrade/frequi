@@ -46,13 +46,13 @@ import { useSettingsStore } from '@/stores/settings';
 const settingsStore = useSettingsStore();
 
 const now = new Date();
+const dateFrom = ref<string>('');
+const dateTo = ref<string>('');
 
 const props = defineProps({
   modelValue: { required: true, type: String },
 });
 const emit = defineEmits(['update:modelValue']);
-const dateFrom = ref<string>('');
-const dateTo = ref<string>('');
 
 const timeRange = computed(() => {
   if (dateFrom.value !== '' || dateTo.value !== '') {
@@ -61,24 +61,30 @@ const timeRange = computed(() => {
   return '';
 });
 
-const updated = () => {
-  emit('update:modelValue', timeRange.value);
-};
-
 const updateInput = () => {
   const tr = props.modelValue.split('-');
   if (tr[0]) {
     dateFrom.value = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
+  } else {
+    dateFrom.value = '';
   }
   if (tr.length > 1 && tr[1]) {
     dateTo.value = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
+  } else {
+    dateTo.value = '';
   }
-  updated();
+  emit('update:modelValue', timeRange.value);
 };
 
 watch(
   () => timeRange.value,
-  () => updated(),
+  () => emit('update:modelValue', timeRange.value),
+);
+watch(
+  () => props.modelValue,
+  () => {
+    updateInput();
+  },
 );
 
 onMounted(() => {
