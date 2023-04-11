@@ -53,8 +53,8 @@ jobs:
       uses: cypress-io/github-action@v5
       with:
         # build: yarn build
-        start: yarn serve
-        wait-on: 'http://localhost:3000'
+        start: yarn serve --host
+        wait-on: 'http://127.0.0.1:3000'
 
     - name: Build build
       run: yarn build
