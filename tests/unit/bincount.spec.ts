@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { binData } from '@/shared/charts/binCount';
 
 describe('binCount.ts', () => {
