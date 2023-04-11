@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { formatPercent, formatPrice, formatPriceCurrency } from '@/shared/formatters';
 
 describe('formatters.ts', () => {
