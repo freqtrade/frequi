@@ -5,6 +5,7 @@ updates:
   schedule:
     interval: "daily"
     time: "05:00"
+    timezone: "UTC"
   open-pull-requests-limit: 10
 
 - package-ecosystem: docker
@@ -12,6 +13,7 @@ updates:
   schedule:
     interval: "daily"
     time: "05:00"
+    timezone: "UTC"
   open-pull-requests-limit: 10
 
 - package-ecosystem: npm
@@ -19,6 +21,8 @@ updates:
   schedule:
     interval: "weekly"
     day: "wednesday"
+    time: "05:00"
+    timezone: "UTC"
   open-pull-requests-limit: 10
   target-branch: main
 
@@ -26,6 +30,8 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
-    day: "wednesday"
+    day: "thursday"
+    time: "05:00"
+    timezone: "UTC"
   open-pull-requests-limit: 10
   target-branch: main
