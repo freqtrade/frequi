@@ -87,7 +87,7 @@
       </b-form-group>
       <b-form-group
         v-if="botStore.activeBot.botApiVersion > 1.1"
-        label="*OrderType"
+        label="OrderType"
         label-for="ordertype-input"
         invalid-feedback="OrderType"
         :state="true"
@@ -102,6 +102,18 @@
           style="min-width: 10em"
           size="sm"
         ></b-form-radio-group>
+      </b-form-group>
+      <b-form-group
+        v-if="botStore.activeBot.botApiVersion > 1.16"
+        label="*Custom entry tag Optional]"
+        label-for="enterTag-input"
+      >
+        <b-form-input
+          id="enterTag-input"
+          v-model="enterTag"
+          type="text"
+          name="radios-btn-orderType"
+        ></b-form-input>
       </b-form-group>
     </form>
   </b-modal>
@@ -128,6 +140,7 @@ const leverage = ref<number | undefined>(undefined);
 
 const ordertype = ref('');
 const orderSide = ref<OrderSides>(OrderSides.long);
+const enterTag = ref('force_entry');
 
 const orderTypeOptions = [
   { value: 'market', text: 'Market' },
@@ -173,6 +186,11 @@ const handleSubmit = async () => {
   if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
     payload.side = orderSide.value;
   }
+  if (botStore.activeBot.botApiVersion >= 2.16 && enterTag.value) {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    payload.entry_tag = enterTag.value;
+  }
+
   if (leverage.value) {
     payload.leverage = leverage.value;
   }

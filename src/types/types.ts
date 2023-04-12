@@ -9,6 +9,7 @@ export interface ForceEnterPayload {
   price?: number;
   ordertype?: string;
   stakeamount?: number;
+  entry_tag?: string;
   leverage?: number;
 }
 
