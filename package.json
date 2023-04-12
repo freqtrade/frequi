@@ -44,7 +44,7 @@
     "@cypress/vue": "^5.0.5",
     "@types/echarts": "^4.9.16",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^5.57.1",
+    "@typescript-eslint/parser": "^5.58.0",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue/compiler-sfc": "3.2.47",
     "@vue/eslint-config-prettier": "^6.0.0",
