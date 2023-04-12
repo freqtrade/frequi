@@ -6,7 +6,7 @@
           id="name-input"
           v-model="auth.botName"
           placeholder="Bot Name"
-          @keydown.enter.native="handleOk"
+          @keydown.enter="handleOk"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -21,7 +21,7 @@
           required
           trim
           :state="urlState === '' ? null : urlState"
-          @keydown.enter.native="handleOk"
+          @keydown.enter="handleOk"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -36,7 +36,7 @@
           required
           placeholder="Freqtrader"
           :state="nameState === '' ? null : nameState"
-          @keydown.enter.native="handleOk"
+          @keydown.enter="handleOk"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -51,7 +51,7 @@
           required
           type="password"
           :state="pwdState === '' ? null : pwdState"
-          @keydown.enter.native="handleOk"
+          @keydown.enter="handleOk"
         ></b-form-input>
       </b-form-group>
       <div>

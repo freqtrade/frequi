@@ -37,7 +37,7 @@
           id="pair-input"
           v-model="selectedPair"
           required
-          @keydown.enter.native="handleEntry"
+          @keydown.enter="handleEntry"
           @focus="inputSelect"
         ></b-form-input>
       </b-form-group>
@@ -52,7 +52,7 @@
           v-model="price"
           type="number"
           step="0.00000001"
-          @keydown.enter.native="handleEntry"
+          @keydown.enter="handleEntry"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -67,7 +67,7 @@
           v-model="stakeAmount"
           type="number"
           step="0.000001"
-          @keydown.enter.native="handleEntry"
+          @keydown.enter="handleEntry"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -82,7 +82,7 @@
           v-model="leverage"
           type="number"
           step="0.01"
-          @keydown.enter.native="handleEntry"
+          @keydown.enter="handleEntry"
         ></b-form-input>
       </b-form-group>
       <b-form-group
