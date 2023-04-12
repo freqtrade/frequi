@@ -177,10 +177,10 @@ const isResizableLayout = computed(() =>
   ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
 );
 const isLayoutLocked = computed(() => {
-  return layoutStore.layoutLocked || !isResizableLayout;
+  return layoutStore.layoutLocked || !isResizableLayout.value;
 });
 const gridLayoutData = computed((): GridItemData[] => {
-  if (isResizableLayout) {
+  if (isResizableLayout.value) {
     return layoutStore.tradingLayout;
   }
   return [...layoutStore.getTradingLayoutSm];

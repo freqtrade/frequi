@@ -181,18 +181,18 @@ const isResizableLayout = computed(() =>
   ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
 );
 const isLayoutLocked = computed(() => {
-  return layoutStore.layoutLocked || !isResizableLayout;
+  return layoutStore.layoutLocked || !isResizableLayout.value;
 });
 
 const gridLayoutData = computed((): GridItemData[] => {
-  if (isResizableLayout) {
+  if (isResizableLayout.value) {
     return layoutStore.dashboardLayout;
   }
   return [...layoutStore.getDashboardLayoutSm];
 });
 
 const layoutUpdatedEvent = (newLayout) => {
-  if (isResizableLayout) {
+  if (isResizableLayout.value) {
     console.log('newlayout', newLayout);
     console.log('saving dashboard');
     layoutStore.dashboardLayout = newLayout;
