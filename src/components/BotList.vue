@@ -24,7 +24,7 @@
           :bot="bot"
           :no-buttons="small"
           @edit="editBot(bot.botId)"
-          @editLogin="editBotLogin(bot.botId)"
+          @edit-login="editBotLogin(bot.botId)"
         />
       </b-list-group-item>
     </b-list-group>

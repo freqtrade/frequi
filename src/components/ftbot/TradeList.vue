@@ -31,9 +31,9 @@
           :id="row.index"
           :trade="row.item"
           :bot-api-version="botStore.activeBot.botApiVersion"
-          @deleteTrade="removeTradeHandler(row.item)"
-          @forceExit="forceExitHandler"
-          @forceExitPartial="forceExitPartialHandler"
+          @delete-trade="removeTradeHandler(row.item)"
+          @force-exit="forceExitHandler"
+          @force-exit-partial="forceExitPartialHandler"
           @cancel-open-order="cancelOpenOrderHandler"
         />
       </template>
