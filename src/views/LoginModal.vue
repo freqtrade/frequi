@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import Login from '@/components/Login.vue';
+import Login from '@/components/BotLogin.vue.js';
 import { AuthStorageWithBotId } from '@/types';
 import { nextTick, ref } from 'vue';
 import LoginIcon from 'vue-material-design-icons/Login.vue';

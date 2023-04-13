@@ -5,14 +5,8 @@
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import BotAlerts from '@/components/ftbot/BotAlerts.vue';
-
-export default defineComponent({
-  name: 'Body',
-  components: { BotAlerts },
-});
 </script>
 <style lang="scss" scoped>
 .container-main {

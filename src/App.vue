@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="d-flex flex-column vh-100">
     <NavBar />
-    <Body class="flex-fill overflow-auto" />
+    <BodyLayout class="flex-fill overflow-auto" />
     <NavFooter />
   </div>
 </template>
@@ -9,13 +9,13 @@
 <script lang="ts">
 import NavBar from '@/components/layout/NavBar.vue';
 import NavFooter from '@/components/layout/NavFooter.vue';
-import Body from '@/components/layout/Body.vue';
+import BodyLayout from '@/components/layout/BodyLayout.vue';
 import { setTimezone } from './shared/formatters';
 import { defineComponent, onMounted, watch } from 'vue';
 import { useSettingsStore } from './stores/settings';
 export default defineComponent({
   name: 'App',
-  components: { NavBar, Body, NavFooter },
+  components: { NavBar, BodyLayout, NavFooter },
   setup() {
     const settingsStore = useSettingsStore();
     onMounted(() => {

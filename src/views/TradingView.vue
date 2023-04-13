@@ -148,7 +148,7 @@
 <script setup lang="ts">
 import { GridItemData } from '@/types';
 
-import Balance from '@/components/ftbot/Balance.vue';
+import Balance from '@/components/ftbot/BotBalance.vue.js';
 import BotControls from '@/components/ftbot/BotControls.vue';
 import BotStatus from '@/components/ftbot/BotStatus.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';

@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/balance',
     name: 'Freqtrade Balance',
-    component: () => import('@/components/ftbot/Balance.vue'),
+    component: () => import('@/components/ftbot/BotBalance.vue'),
   },
   {
     path: '/open_trades',

@@ -9,7 +9,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import Login from '@/components/Login.vue';
+import Login from '@/components/BotLogin.vue.js';
 
 export default defineComponent({
   name: 'LoginView',
