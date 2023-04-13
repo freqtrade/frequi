@@ -394,28 +394,23 @@ const clickBacktest = () => {
   const btPayload: BacktestPayload = {
     strategy: strategy.value,
     timerange: timerange.value,
-    // eslint-disable-next-line @typescript-eslint/camelcase
     enable_protections: enableProtections.value,
   };
   const openTradesInt = parseInt(maxOpenTrades.value, 10);
   if (openTradesInt) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.max_open_trades = openTradesInt;
   }
   if (stakeAmountUnlimited.value) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.stake_amount = 'unlimited';
   } else {
     const stakeAmountLoc = Number(stakeAmount.value);
     if (stakeAmountLoc) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       btPayload.stake_amount = stakeAmountLoc.toString();
     }
   }
 
   const startingCapitalLoc = Number(startingCapital.value);
   if (startingCapitalLoc) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.dry_run_wallet = startingCapitalLoc;
   }
 
@@ -423,11 +418,9 @@ const clickBacktest = () => {
     btPayload.timeframe = selectedTimeframe.value;
   }
   if (selectedDetailTimeframe.value) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.timeframe_detail = selectedDetailTimeframe.value;
   }
   if (!allowCache.value) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     btPayload.backtest_cache = 'none';
   }
   if (freqAI.value.enabled) {

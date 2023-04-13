@@ -44,7 +44,6 @@ describe('Login', () => {
 
     cy.intercept('**/api/v1/**', {
       statusCode: 200,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
       headers: { 'access-control-allow-origin': '*' },
     }).as('RandomAPICall');
@@ -55,7 +54,6 @@ describe('Login', () => {
       },
       {
         statusCode: 200,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
         headers: { 'access-control-allow-origin': '*' },
       },
@@ -101,7 +99,6 @@ describe('Login', () => {
 
     cy.intercept('**/api/v1/**', {
       statusCode: 200,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
       headers: { 'access-control-allow-origin': '*' },
     }).as('RandomAPICall');
@@ -112,7 +109,6 @@ describe('Login', () => {
       },
       {
         statusCode: 404,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
         headers: { 'access-control-allow-origin': '*' },
       },
@@ -132,7 +128,6 @@ describe('Login', () => {
 
     cy.intercept('**/api/v1/**', {
       statusCode: 200,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
       headers: { 'access-control-allow-origin': '*' },
     }).as('RandomAPICall');
@@ -143,7 +138,6 @@ describe('Login', () => {
       },
       {
         statusCode: 401,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         body: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
         headers: { 'access-control-allow-origin': '*' },
       },

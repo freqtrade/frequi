@@ -187,7 +187,6 @@ const handleSubmit = async () => {
     payload.side = orderSide.value;
   }
   if (botStore.activeBot.botApiVersion >= 2.16 && enterTag.value) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     payload.entry_tag = enterTag.value;
   }
 

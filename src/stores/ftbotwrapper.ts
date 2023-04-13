@@ -129,11 +129,8 @@ export const useBotStore = defineStore('wrapper', {
             if (!resp[d.date]) {
               resp[d.date] = { ...d };
             } else {
-              // eslint-disable-next-line @typescript-eslint/camelcase
               resp[d.date].abs_profit += d.abs_profit;
-              // eslint-disable-next-line @typescript-eslint/camelcase
               resp[d.date].fiat_value += d.fiat_value;
-              // eslint-disable-next-line @typescript-eslint/camelcase
               resp[d.date].trade_count += d.trade_count;
             }
           });
@@ -141,9 +138,7 @@ export const useBotStore = defineStore('wrapper', {
       });
 
       const dailyReturn: DailyReturnValue = {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         stake_currency: 'USDT',
-        // eslint-disable-next-line @typescript-eslint/camelcase
         fiat_display_currency: 'USD',
         data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
       };

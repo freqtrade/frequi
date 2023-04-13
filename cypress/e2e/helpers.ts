@@ -17,7 +17,6 @@ export function setLoginInfo() {
 export function defaultMocks() {
   cy.intercept('**/api/v1/**', {
     statusCode: 200,
-    // eslint-disable-next-line @typescript-eslint/camelcase
     headers: { 'access-control-allow-origin': '*' },
   }).as('RandomAPICall');
 

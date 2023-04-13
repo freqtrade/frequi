@@ -292,7 +292,6 @@ export function createBotSubStore(botId: string, botName: string) {
               botId,
               botName,
               botTradeId: `${botId}__${t.trade_id}`,
-              // eslint-disable-next-line @typescript-eslint/camelcase
               profit_ratio: t.profit_ratio ?? -1,
             }));
             // TODO Don't force-patch profit_ratio but handle null values properly
@@ -731,7 +730,6 @@ export function createBotSubStore(botId: string, botName: string) {
               '/blacklist',
               {
                 params: {
-                  // eslint-disable-next-line @typescript-eslint/camelcase
                   pairs_to_delete: blacklistPairs,
                 },
                 paramsSerializer: {
@@ -866,7 +864,7 @@ export function createBotSubStore(botId: string, botName: string) {
           case FtWsMessageTypes.entryCancel:
             showNotification(msg, botName);
             break;
-          case FtWsMessageTypes.newCandle:
+          case FtWsMessageTypes.newCandle: {
             const [pair, timeframe] = msg.data;
             // TODO: check for active bot ...
             if (pair === this.selectedPair) {
@@ -874,7 +872,7 @@ export function createBotSubStore(botId: string, botName: string) {
               this.getPairCandles({ pair, timeframe, limit: 500 });
             }
             break;
-
+          }
           default:
             // Unhandled events ...
             console.log(`Received event ${(msg as any).type}`);
