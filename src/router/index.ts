@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Home.vue'),
+    component: () => import('@/views/HomeView.vue'),
     meta: {
       allowAnonymous: true,
     },
@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/trade',
     name: 'Freqtrade Trading',
-    component: () => import('@/views/Trading.vue'),
+    component: () => import('@/views/TradingView.vue'),
   },
   {
     path: '/graph',
@@ -28,12 +28,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/backtest',
     name: 'Freqtrade Backtest',
-    component: () => import('@/views/Backtesting.vue'),
+    component: () => import('@/views/BacktestingView.vue'),
   },
   {
     path: '/dashboard',
     name: 'Freqtrade Dashboard',
-    component: () => import('@/views/Dashboard.vue'),
+    component: () => import('@/views/DashboardView.vue'),
   },
   {
     path: '/balance',
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/settings',
     name: 'Freqtrade Settings',
-    component: () => import('@/views/Settings.vue'),
+    component: () => import('@/views/SettingsView.vue'),
   },
   {
     path: '/login',
