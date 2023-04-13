@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/graph',
     name: 'Freqtrade Graph',
-    component: () => import('@/views/Graphs.vue'),
+    component: () => import('@/views/GraphsView.vue'),
   },
   {
     path: '/logs',
@@ -70,7 +70,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/(.*)*',
     name: '404',
-    component: () => import('@/views/Error404.vue'),
+    component: () => import('@/views/Error404View.vue'),
   },
 ];
 

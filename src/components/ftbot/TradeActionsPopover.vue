@@ -50,7 +50,7 @@ const cancelOpenOrderHandler = (item: Trade) => {
         :bot-api-version="botApiVersion"
         @force-exit="forceExitHandler"
         @force-exit-partial="forceExitPartialHandler"
-        @deleteTrade="
+        @delete-trade="
           popoverOpen = false;
           $emit('deleteTrade', trade);
         "

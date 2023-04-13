@@ -134,7 +134,7 @@ export class UserService {
 
   private async loginCall(auth: AuthPayload): Promise<AuthStorage> {
     //  Login using username / password
-    const { data } = await axios.post<{}, AxiosResponse<AuthResponse>>(
+    const { data } = await axios.post<Record<string, never>, AxiosResponse<AuthResponse>>(
       `${auth.url}/api/v1/token/login`,
       {},
       {
@@ -165,7 +165,7 @@ export class UserService {
     const token = this.getRefreshToken();
     return new Promise((resolve, reject) => {
       axios
-        .post<{}, AxiosResponse<AuthResponse>>(
+        .post<Record<string, never>, AxiosResponse<AuthResponse>>(
           `${this.getAPIUrl()}${APIBASE}/token/refresh`,
           {},
           {
