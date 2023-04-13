@@ -6,15 +6,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
+<script setup lang="ts">
 import Login from '@/components/BotLogin.vue';
-
-export default defineComponent({
-  name: 'LoginView',
-  components: { Login },
-});
 </script>
 
 <style scoped>
