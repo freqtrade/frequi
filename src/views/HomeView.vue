@@ -20,15 +20,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
+<script setup lang="ts">
 import BotList from '@/components/BotList.vue';
-
-export default defineComponent({
-  name: 'Home',
-  components: { BotList },
-});
 </script>
 
 <style lang="scss" scoped>

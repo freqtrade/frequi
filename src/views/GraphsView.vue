@@ -39,42 +39,29 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
 import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
 import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import { defineComponent, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'Graphs',
-  components: { CandleChartContainer, StrategySelect, TimeRangeSelect, TimeframeSelect },
-  setup() {
-    const botStore = useBotStore();
-    const strategy = ref('');
-    const timerange = ref('');
-    const selectedTimeframe = ref('');
+const botStore = useBotStore();
+const strategy = ref('');
+const timerange = ref('');
+const selectedTimeframe = ref('');
 
-    onMounted(() => {
-      if (botStore.activeBot.isWebserverMode) {
-        // this.refresh();
-        botStore.activeBot.getAvailablePairs({ timeframe: botStore.activeBot.timeframe });
-        // .then((val) => {
-        // console.log(val);
-        // });
-      } else if (!botStore.activeBot.whitelist || botStore.activeBot.whitelist.length === 0) {
-        botStore.activeBot.getWhitelist();
-      }
-    });
-
-    return {
-      botStore,
-      strategy,
-      timerange,
-      selectedTimeframe,
-    };
-  },
+onMounted(() => {
+  if (botStore.activeBot.isWebserverMode) {
+    // this.refresh();
+    botStore.activeBot.getAvailablePairs({ timeframe: botStore.activeBot.timeframe });
+    // .then((val) => {
+    // console.log(val);
+    // });
+  } else if (!botStore.activeBot.whitelist || botStore.activeBot.whitelist.length === 0) {
+    botStore.activeBot.getWhitelist();
+  }
 });
 </script>
 
