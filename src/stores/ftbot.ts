@@ -539,7 +539,10 @@ export function createBotSubStore(botId: string, botName: string) {
       // // TODO: Migrate calls to API to a seperate module unrelated to pinia?
       async startBot() {
         try {
-          const { data } = await api.post<{}, AxiosResponse<StatusResponse>>('/start', {});
+          const { data } = await api.post<Record<string, never>, AxiosResponse<StatusResponse>>(
+            '/start',
+            {},
+          );
           console.log(data);
           showAlert(data.status);
           return Promise.resolve(data);
@@ -553,7 +556,10 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async stopBot() {
         try {
-          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/stop', {});
+          const res = await api.post<Record<string, never>, AxiosResponse<StatusResponse>>(
+            '/stop',
+            {},
+          );
           showAlert(res.data.status);
           return Promise.resolve(res);
         } catch (error) {
@@ -566,7 +572,10 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async stopBuy() {
         try {
-          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/stopbuy', {});
+          const res = await api.post<Record<string, never>, AxiosResponse<StatusResponse>>(
+            '/stopbuy',
+            {},
+          );
           showAlert(res.data.status);
           return Promise.resolve(res);
         } catch (error) {
@@ -579,7 +588,10 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async reloadConfig() {
         try {
-          const res = await api.post<{}, AxiosResponse<StatusResponse>>('/reload_config', {});
+          const res = await api.post<Record<string, never>, AxiosResponse<StatusResponse>>(
+            '/reload_config',
+            {},
+          );
           console.log(res.data);
           showAlert(res.data.status);
           return Promise.resolve(res);

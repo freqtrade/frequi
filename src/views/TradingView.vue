@@ -40,7 +40,7 @@
               <BotStatus />
             </b-tab>
             <b-tab title="Performance">
-              <Performance class="performance-view" />
+              <BotPerformance class="performance-view" />
             </b-tab>
             <b-tab title="Balance" lazy>
               <Balance />
@@ -157,7 +157,7 @@ import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
 import PairLockList from '@/components/ftbot/PairLockList.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
-import Performance from '@/components/ftbot/Performance.vue';
+import BotPerformance from '@/components/ftbot/BotPerformance.vue.js';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import TradeList from '@/components/ftbot/TradeList.vue';
 

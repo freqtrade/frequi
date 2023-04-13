@@ -18,7 +18,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 
 export default defineComponent({
-  name: 'Performance',
+  name: 'BotPerformance',
   setup() {
     const botStore = useBotStore();
     const tableFields = computed<TableField[]>(() => {
