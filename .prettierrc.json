@@ -1,6 +1,7 @@
 {
+    "$schema": "https://json.schemastore.org/prettierrc",
     "printWidth": 100,
     "singleQuote": true,
     "trailingComma": "all",
-    "files": "./src/**/*.{js,vue,json}"
+    "files": "./src/**/*.{ts,js,vue,json}"
 }
