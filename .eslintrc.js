@@ -7,10 +7,12 @@ module.exports = {
 
   extends: [
     // vue/recommended includes all higher levels (vue/strongly-recommended, vue/essential)
-    'plugin:vue/recommended',
+    'plugin:vue/vue3-recommended',
     '@vue/typescript/recommended',
-    '@vue/prettier',
-    '@vue/prettier/@typescript-eslint',
+    'eslint:recommended',
+    '@vue/eslint-config-typescript',
+    '@vue/eslint-config-prettier',
+    // '@vue/prettier/@typescript-eslint',
   ],
 
   parser: 'vue-eslint-parser',
@@ -28,6 +30,36 @@ module.exports = {
     // disable eslint no-shadow as it's causing false positives on typescript enums
     'no-shadow': 'off',
     'prettier/prettier': ['error'],
+    // '@typescript-eslint/naming-convention': [
+    //   'error',
+    //   {
+    //     selector: 'default',
+    //     format: ['camelCase'],
+    //   },
+    //   {
+    //     selector: 'variable',
+    //     format: ['camelCase', 'UPPER_CASE'],
+    //   },
+    //   {
+    //     selector: 'parameter',
+    //     format: ['camelCase'],
+    //     leadingUnderscore: 'allow',
+    //   },
+    //   {
+    //     selector: 'memberLike',
+    //     modifiers: ['private'],
+    //     format: ['camelCase'],
+    //     leadingUnderscore: 'require',
+    //   },
+    //   {
+    //     selector: 'typeLike',
+    //     format: ['PascalCase'],
+    //   },
+    //   {
+    //     selector: 'class',
+    //     format: ['PascalCase'],
+    //   },
+    // ],
   },
 
   overrides: [
