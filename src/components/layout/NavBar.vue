@@ -79,7 +79,7 @@
                 v-if="botStore.botCount === 1"
                 class="dropdown-item"
                 to="/"
-                @click.native="clickLogout()"
+                @click="clickLogout()"
                 >Sign Out</router-link
               >
             </b-nav-item-dropdown>
@@ -107,7 +107,7 @@
                 v-if="botStore.botCount === 1"
                 class="nav-link navbar-nav"
                 to="/"
-                @click.native="clickLogout()"
+                @click="clickLogout()"
                 >Sign Out</router-link
               >
             </div>
@@ -189,7 +189,7 @@ const setTitle = () => {
 };
 
 onBeforeUnmount(() => {
-  if (pingInterval) {
+  if (pingInterval.value) {
     clearInterval(pingInterval.value);
   }
 });

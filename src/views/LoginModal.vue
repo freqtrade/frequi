@@ -9,7 +9,12 @@
       title="Login to your bot"
       @ok="handleOk"
     >
-      <login ref="loginForm" in-modal :existing-auth="loginInfo" @loginResult="handleLoginResult" />
+      <login
+        ref="loginForm"
+        in-modal
+        :existing-auth="loginInfo"
+        @login-result="handleLoginResult"
+      />
     </b-modal>
   </div>
 </template>

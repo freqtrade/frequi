@@ -85,7 +85,7 @@
             v-if="btFormMode !== 'visualize' && showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
             :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
-            @selectionChange="botStore.activeBot.setBacktestResultKey"
+            @selection-change="botStore.activeBot.setBacktestResultKey"
           />
         </transition>
       </div>
