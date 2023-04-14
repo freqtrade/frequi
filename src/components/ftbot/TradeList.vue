@@ -148,7 +148,6 @@ const rows = computed(() => {
 });
 
 const tableFields: TableField[] = [
-  props.multiBotView ? { key: 'botName', label: 'Bot' } : { key: 'actions' },
   { key: 'trade_id', label: 'ID' },
   { key: 'pair', label: 'Pair' },
   { key: 'amount', label: 'Amount' },
@@ -182,6 +181,10 @@ const tableFields: TableField[] = [
   { key: 'open_timestamp', label: 'Open date' },
   ...(props.activeTrades ? openFields : closedFields),
 ];
+if (props.multiBotView) {
+  tableFields.unshift({ key: 'botName', label: 'Bot' });
+}
+
 const feOrderType = ref<string | undefined>(undefined);
 const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
   feTrade.value = item;
