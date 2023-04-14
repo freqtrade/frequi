@@ -1,9 +1,9 @@
-export function isUndefined(val): boolean {
-  return val === undefined || val === null;
+export function isNotUndefined<T>(val: T | undefined | null): val is T {
+  return !(val === undefined || val === null);
 }
 
 export function formatPercent(value: number, decimals = 3): string {
-  return !isUndefined(value) ? `${(value * 100).toFixed(decimals)}%` : '';
+  return isNotUndefined(value) ? `${(value * 100).toFixed(decimals)}%` : '';
 }
 
 /**
@@ -12,10 +12,9 @@ export function formatPercent(value: number, decimals = 3): string {
  * @param decimals number of decimals (Defaults to 15)
  * @returns Formatted string
  */
-export function formatPrice(value: number, decimals = 15): string {
+export function formatPrice(value: number | null, decimals = 15): string {
   // const format = new Intl.NumberFormat('', {maximumFractionDigits: decimals}
-  // return !isUndefined(value) ? parseFloat(value.toFixed(decimals)).toString() : '';
-  return !isUndefined(value)
+  return isNotUndefined(value)
     ? value.toLocaleString('fullwide', {
         useGrouping: false,
         maximumFractionDigits: decimals,
@@ -30,12 +29,12 @@ export function formatPrice(value: number, decimals = 15): string {
  * @param decimals Decimals
  * @returns
  */
-export function formatPriceCurrency(price, currency: string, decimals = 3) {
+export function formatPriceCurrency(price: number | null, currency: string, decimals = 3) {
   return `${formatPrice(price, decimals)} ${currency}`;
 }
 
 export default {
-  isUndefined,
+  isNotUndefined,
   formatPrice,
   formatPercent,
 };
