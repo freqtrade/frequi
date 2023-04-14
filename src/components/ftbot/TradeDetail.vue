@@ -99,7 +99,15 @@
         <details v-if="trade.orders">
           <summary>Orders {{ trade.orders.length > 1 ? `[${trade.orders.length}]` : '' }}</summary>
           <div v-for="(order, key) in trade.orders" :key="key">
-            <span>
+            <span
+              :title="`${order.ft_order_side} ${order.order_type} order for ${formatPriceCurrency(
+                order.amount,
+                trade.base_currency ?? '',
+              )} at ${formatPriceCurrency(
+                order.safe_price,
+                trade.quote_currency ?? '',
+              )}, filled ${formatPrice(order.filled)}`"
+            >
               (#{{ key + 1 }})
               <DateTimeTZ
                 v-if="order.order_timestamp"
