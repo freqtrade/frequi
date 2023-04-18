@@ -24,7 +24,7 @@ export interface SubStores {
   [key: string]: BotSubStore;
 }
 
-export const useBotStore = defineStore('wrapper', {
+export const useBotStore = defineStore('ftbot-wrapper', {
   state: () => {
     return {
       selectedBot: '',
@@ -194,7 +194,6 @@ export const useBotStore = defineStore('wrapper', {
         console.warn(`bot ${botId} not found! could not remove`);
       }
     },
-
     selectFirstBot() {
       if (this.hasBots) {
         const selBotId = localStorage.getItem(AUTH_SELECTED_BOT);
