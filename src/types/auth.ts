@@ -42,8 +42,3 @@ export interface BotDescriptor {
 export interface BotDescriptors {
   [key: string]: BotDescriptor;
 }
-
-export interface RenameBotPayload {
-  botId: string;
-  botName: string;
-}

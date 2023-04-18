@@ -11,7 +11,6 @@ import {
   MultiDeletePayload,
   MultiForcesellPayload,
   ProfitInterface,
-  RenameBotPayload,
   Trade,
 } from '@/types';
 import { defineStore } from 'pinia';
@@ -169,14 +168,14 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       this.botStores = { ...this.botStores };
       this.availableBots = { ...this.availableBots };
     },
-    renameBot(bot: RenameBotPayload) {
-      if (!Object.keys(this.availableBots).includes(bot.botId)) {
+    updateBot(botId: string, bot: Partial<BotDescriptor>) {
+      if (!Object.keys(this.availableBots).includes(botId)) {
         // TODO: handle error!
         console.error('Bot not found');
         return;
       }
-      this.botStores[bot.botId].updateBot({ botName: bot.botName });
-      this.availableBots[bot.botId].botName = bot.botName;
+      this.botStores[botId].updateBot(bot);
+      Object.assign(this.availableBots[botId], bot);
     },
     removeBot(botId: string) {
       if (Object.keys(this.availableBots).includes(botId)) {

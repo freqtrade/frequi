@@ -44,8 +44,7 @@ export default defineComponent({
     const newName = ref<string>(props.bot.botName);
 
     const save = () => {
-      botStore.renameBot({
-        botId: props.bot.botId,
+      botStore.updateBot(props.bot.botId, {
         botName: newName.value,
       });
 
