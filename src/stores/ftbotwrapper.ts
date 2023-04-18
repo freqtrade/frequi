@@ -175,7 +175,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         console.error('Bot not found');
         return;
       }
-      this.botStores[bot.botId].rename(bot.botName);
+      this.botStores[bot.botId].updateBot({ botName: bot.botName });
       this.availableBots[bot.botId].botName = bot.botName;
     },
     removeBot(botId: string) {

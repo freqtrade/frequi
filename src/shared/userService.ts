@@ -1,6 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { AuthPayload, AuthResponse, BotDescriptors, AuthStorage, AuthStorageMulti } from '@/types';
+import {
+  AuthPayload,
+  AuthResponse,
+  BotDescriptors,
+  AuthStorage,
+  AuthStorageMulti,
+  BotDescriptor,
+} from '@/types';
 
 const AUTH_LOGIN_INFO = 'ftAuthLoginInfo';
 const APIBASE = '/api/v1';
@@ -13,9 +20,11 @@ export class UserService {
     this.botId = botId;
   }
 
-  public renameBot(newName: string): void {
+  public updateBot(newName: Partial<BotDescriptor>): void {
     const newInfo = this.getLoginInfo();
-    newInfo.botName = newName;
+
+    Object.assign(newInfo, newName);
+
     this.storeLoginInfo(newInfo);
   }
 

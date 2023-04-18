@@ -34,6 +34,7 @@ import {
   ForceEnterPayload,
   TradeResponse,
   ClosedTrade,
+  BotDescriptor,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -175,8 +176,8 @@ export function createBotSubStore(botId: string, botName: string) {
       getLoginInfo() {
         return userService.getLoginInfo();
       },
-      rename(name: string) {
-        userService.renameBot(name);
+      updateBot(updatedBotInfo: Partial<BotDescriptor>) {
+        userService.updateBot(updatedBotInfo);
       },
       setAutoRefresh(newRefreshValue) {
         this.autoRefresh = newRefreshValue;
