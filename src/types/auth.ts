@@ -38,7 +38,7 @@ export interface BotDescriptor {
   botName: string;
   botId: string;
   botUrl: string;
-  sortId?: number;
+  sortId: number;
 }
 
 export interface BotDescriptors {

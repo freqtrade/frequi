@@ -155,10 +155,12 @@ const handleSubmit = async () => {
       emitLoginResult(true);
     } else {
       // Add new bot
+      const sortId = Object.keys(botStore.availableBots).length + 1;
       botStore.addBot({
         botName: auth.value.botName,
         botId,
         botUrl: auth.value.url,
+        sortId: sortId,
       });
       // switch to newly added bot
       botStore.selectBot(botId);

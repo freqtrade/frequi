@@ -43,7 +43,7 @@ import ReorderIcon from 'vue-material-design-icons/ReorderHorizontal.vue';
 import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { AuthStorageWithBotId, BotDescriptor } from '@/types';
-import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
+import { useSortable } from '@vueuse/integrations/useSortable';
 
 defineProps({
   small: { default: false, type: Boolean },
