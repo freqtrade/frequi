@@ -99,12 +99,12 @@ export class UserService {
   public static getAvailableBots(): BotDescriptors {
     const allInfo = UserService.getAllLoginInfos();
     const response: BotDescriptors = {};
-    Object.entries(allInfo).forEach(([k, v]) => {
+    Object.entries(allInfo).forEach(([k, v], idx) => {
       response[k] = {
         botId: k,
         botName: v.botName,
         botUrl: v.apiUrl,
-        sortId: v.sortId ?? 0,
+        sortId: v.sortId ?? idx,
       };
     });
     return response;
