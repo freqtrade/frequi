@@ -1096,10 +1096,10 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bootstrap-vue-next@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.8.2.tgz#ab42332042965b9951dbcb537772c5610909a09a"
-  integrity sha512-q3YWRdbo256VAZGG/w8qDmExtM7/ypBXg4y5SfMmfg7Zokjsb5SEU17JiBwQA0lbmdfu2RryMgNtOd+WqCFXPw==
+bootstrap-vue-next@^0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.8.5.tgz#9a12ec212f8f19da318c92e92e130d0c569f0ee6"
+  integrity sha512-FEU16VKzpsrRyirKV/P4jagD0devfUKYmf6m/8+YDvanSBtkpbPZpB9Q3pe8ZBy7Be6qLkVeQUW1ZyqrVQkQng==
   dependencies:
     "@floating-ui/vue" "^0.2.1"
     "@vueuse/core" "^9.13.0"
