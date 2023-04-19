@@ -22,6 +22,7 @@ export interface AuthStorage {
   refreshToken: string;
   accessToken: string;
   autoRefresh: boolean;
+  sortId?: number;
 }
 
 export interface AuthStorageWithBotId extends AuthStorage {
@@ -37,6 +38,7 @@ export interface BotDescriptor {
   botName: string;
   botId: string;
   botUrl: string;
+  sortId?: number;
 }
 
 export interface BotDescriptors {

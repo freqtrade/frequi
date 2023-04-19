@@ -1,17 +1,19 @@
 <template>
   <div v-if="botStore.botCount > 0">
     <h3 v-if="!small">Available bots</h3>
-    <b-list-group>
+    <b-list-group ref="sortContainer">
       <b-list-group-item
-        v-for="bot in botStore.availableBots"
+        v-for="bot in botListComp"
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
         button
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
+        class="d-flex"
         @click="botStore.selectBot(bot.botId)"
       >
+        <ReorderIcon v-if="!small" class="handle me-2" />
         <bot-rename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"
@@ -36,10 +38,12 @@
 import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
+import ReorderIcon from 'vue-material-design-icons/ReorderHorizontal.vue';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { AuthStorageWithBotId } from '@/types';
+import { AuthStorageWithBotId, BotDescriptor } from '@/types';
+import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 
 defineProps({
   small: { default: false, type: Boolean },
@@ -49,6 +53,21 @@ const botStore = useBotStore();
 
 const editingBots = ref<string[]>([]);
 const loginModal = ref<typeof LoginModal>();
+const sortContainer = ref<HTMLElement | null>(null);
+const botListComp = computed<BotDescriptor[]>(() => {
+  //Convert to array
+  return Object.values(botStore.availableBots).sort((a, b) => (a.sortId ?? 0) - (b.sortId ?? 0));
+});
+
+useSortable(sortContainer, botListComp, {
+  handle: '.handle',
+  onUpdate: (e) => {
+    const oldBotId = botListComp.value[e.oldIndex].botId;
+    const newBotId = botListComp.value[e.newIndex].botId;
+    botStore.updateBot(oldBotId, { sortId: e.newIndex });
+    botStore.updateBot(newBotId, { sortId: e.oldIndex });
+  },
+});
 
 const editBot = (botId: string) => {
   if (!editingBots.value.includes(botId)) {

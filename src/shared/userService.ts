@@ -20,10 +20,9 @@ export class UserService {
     this.botId = botId;
   }
 
-  public updateBot(newName: Partial<BotDescriptor>): void {
+  public updateBot(newValues: Partial<BotDescriptor>): void {
     const newInfo = this.getLoginInfo();
-
-    Object.assign(newInfo, newName);
+    Object.assign(newInfo, newValues);
 
     this.storeLoginInfo(newInfo);
   }
@@ -105,6 +104,7 @@ export class UserService {
         botId: k,
         botName: v.botName,
         botUrl: v.apiUrl,
+        sortId: v.sortId ?? 0,
       };
     });
     return response;
