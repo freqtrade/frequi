@@ -20,6 +20,7 @@ import {
 import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
 import { defineComponent, computed, ComputedRef } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
+import { dataZoomPartial } from '@/shared/charts/chartZoom';
 
 use([
   BarChart,
@@ -140,15 +141,15 @@ export default defineComponent({
             type: 'inside',
             // xAxisIndex: [0],
             start: 0,
+
             end: 100,
           },
           {
-            show: true,
             // xAxisIndex: [0],
-            type: 'slider',
             bottom: 10,
             start: 0,
             end: 100,
+            ...dataZoomPartial,
           },
         ],
         series: [

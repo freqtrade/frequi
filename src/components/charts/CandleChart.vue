@@ -31,6 +31,7 @@ import {
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
+import { dataZoomPartial } from '@/shared/charts/chartZoom';
 
 use([
   AxisPointerComponent,
@@ -609,12 +610,11 @@ export default defineComponent({
             end: 100,
           },
           {
-            show: true,
             xAxisIndex: [0, 1],
-            type: 'slider',
             bottom: 10,
             start: 80,
             end: 100,
+            ...dataZoomPartial,
           },
         ],
         // visualMap: {

@@ -28,6 +28,7 @@ import { ClosedTrade } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
 import { defineComponent, computed } from 'vue';
 import { timestampms } from '@/shared/formatters';
+import { dataZoomPartial } from '@/shared/charts/chartZoom';
 
 use([
   BarChart,
@@ -133,11 +134,10 @@ export default defineComponent({
             end: 100,
           },
           {
-            show: true,
-            type: 'slider',
             bottom: 10,
             start: datazoomStart,
             end: 100,
+            ...dataZoomPartial,
           },
         ],
         visualMap: [
