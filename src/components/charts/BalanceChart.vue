@@ -53,7 +53,16 @@ const balanceChartOptions = computed((): EChartsOption => {
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: {
       dimensions: ['balance', 'currency', 'est_stake', 'free', 'used', 'stake'],
-      source: props.currencies as unknown[] as Record<string, number>[],
+      source: props.currencies.map((currency) => {
+        return {
+          balance: currency.balance,
+          currency: currency.currency,
+          est_stake: currency.est_stake,
+          free: currency.free,
+          used: currency.used,
+          stake: currency.stake,
+        };
+      }),
     },
     tooltip: {
       trigger: 'item',
