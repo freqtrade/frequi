@@ -4,7 +4,7 @@
       <label class="me-auto h3">Balance</label>
       <div class="float-end d-flex flex-row">
         <b-button
-          v-if="botStore.activeBot.botApiVersion >= 2.26"
+          v-if="canUseBotBalance"
           size="sm"
           :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
           @click="showBotOnly = !showBotOnly"
@@ -46,7 +46,7 @@
           <!-- this is a computed prop that adds up all the expenses in the visible rows -->
           <td>
             <strong>{{
-              showBotOnly
+              showBotOnly && canUseBotBalance
                 ? formatCurrency(botStore.activeBot.balance.total_bot)
                 : formatCurrency(botStore.activeBot.balance.total)
             }}</strong>
@@ -76,13 +76,15 @@ const smallBalance = computed<number>(() => {
   return Number((1.1 ** botStore.activeBot.stakeCurrencyDecimals).toFixed(8));
 });
 
+const canUseBotBalance = computed(() => {
+  return botStore.activeBot.botApiVersion >= 2.26;
+});
+
 const balanceCurrencies = computed(() => {
   return botStore.activeBot.balance.currencies?.filter(
     (v) =>
       (!hideSmallBalances.value || v.est_stake >= smallBalance.value) &&
-      (botStore.activeBot.botApiVersion < 2.26 ||
-        !showBotOnly.value ||
-        (v.is_bot_managed ?? true) === true),
+      (!canUseBotBalance.value || !showBotOnly.value || (v.is_bot_managed ?? true) === true),
   );
 });
 
@@ -94,12 +96,12 @@ const tableFields = computed<TableField[]>(() => {
   return [
     { key: 'currency', label: 'Currency' },
     {
-      key: showBotOnly.value ? 'bot_owned' : 'free',
+      key: showBotOnly.value && canUseBotBalance.value ? 'bot_owned' : 'free',
       label: 'Available',
       formatter: formatCurrency,
     },
     {
-      key: showBotOnly.value ? 'est_stake_bot' : 'est_stake',
+      key: showBotOnly.value && canUseBotBalance.value ? 'est_stake_bot' : 'est_stake',
       label: `in ${botStore.activeBot.balance.stake}`,
       formatter: formatCurrency,
     },
