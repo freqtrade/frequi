@@ -53,7 +53,7 @@ const balanceChartOptions = computed((): EChartsOption => {
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: {
       dimensions: ['balance', 'currency', 'est_stake', 'free', 'used', 'stake'],
-      source: props.currencies,
+      source: props.currencies as unknown[] as Record<string, number>[],
     },
     tooltip: {
       trigger: 'item',

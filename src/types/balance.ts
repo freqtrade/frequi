@@ -1,5 +1,4 @@
 export interface BalanceRecords {
-  [key: string]: string | number;
   balance: number;
   currency: string;
   est_stake: number;
@@ -7,11 +6,11 @@ export interface BalanceRecords {
   used: number;
   stake: string;
   // Properties added in v 2.x
-  // Temporarily disabled to fix type errors
-  // side: string;
-  // leverage: number;
-  // is_position: boolean;
-  // position: number;
+  side: string;
+  leverage: number;
+  is_position: boolean;
+  position: number;
+  bot_managed?: boolean;
 }
 
 export interface BalanceInterface {
