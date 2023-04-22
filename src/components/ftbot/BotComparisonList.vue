@@ -106,7 +106,7 @@ const tableItems = computed<TableItem[]>(() => {
       profitOpen,
       wins: v.winning_trades,
       losses: v.losing_trades,
-      balance: botStore.allBalance[k]?.total,
+      balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
     });
     if (v.profit_closed_coin !== undefined) {
