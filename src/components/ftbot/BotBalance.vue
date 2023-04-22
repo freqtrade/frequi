@@ -68,7 +68,7 @@ const balanceCurrencies = computed(() => {
 });
 
 const formatCurrency = (value) => {
-  return value ? formatPrice(value, 5) : '';
+  return value ? formatPrice(value, botStore.activeBot.stakeCurrencyDecimals) : '';
 };
 
 const tableFields = computed(() => {
