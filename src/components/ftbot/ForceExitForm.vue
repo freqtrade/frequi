@@ -15,7 +15,6 @@
           <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
         </p>
         <b-form-group
-          v-if="botStore.activeBot.botApiVersion > 1.12"
           :label="`*Amount in ${trade.base_currency} [optional]`"
           label-for="stake-input"
           invalid-feedback="Amount must be empty or a positive number"
@@ -40,7 +39,6 @@
         </b-form-group>
 
         <b-form-group
-          v-if="botStore.activeBot.botApiVersion > 1.1"
           label="*OrderType"
           label-for="ordertype-input"
           invalid-feedback="OrderType"
@@ -114,12 +112,10 @@ const handleSubmit = () => {
 };
 const resetForm = () => {
   amount.value = props.trade.amount;
-  if (botStore.activeBot.botApiVersion > 1.1) {
-    ordertype.value =
-      botStore.activeBot.botState?.order_types?.force_exit ||
-      botStore.activeBot.botState?.order_types?.exit ||
-      'limit';
-  }
+  ordertype.value =
+    botStore.activeBot.botState?.order_types?.force_exit ||
+    botStore.activeBot.botState?.order_types?.exit ||
+    'limit';
 };
 
 const handleEntry = () => {

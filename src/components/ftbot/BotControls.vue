@@ -42,11 +42,7 @@ forceexit
       <ForceExitIcon />
     </button>
     <button
-      v-if="
-        botStore.activeBot.botState &&
-        (botStore.activeBot.botState.force_entry_enable ||
-          botStore.activeBot.botState.forcebuy_enabled)
-      "
+      v-if="botStore.activeBot.botState && botStore.activeBot.botState.force_entry_enable"
       class="btn btn-secondary btn-sm ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
