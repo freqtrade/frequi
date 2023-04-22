@@ -26,7 +26,7 @@
         >
       </div>
     </div>
-    <BalanceChart v-if="balanceCurrencies" :currencies="balanceCurrencies" />
+    <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />
     <div>
       <p v-if="botStore.activeBot.balance.note">
         <strong>{{ botStore.activeBot.balance.note }}</strong>
@@ -67,6 +67,7 @@ import { formatPercent, formatPrice } from '@/shared/formatters';
 import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
+import { BalanceValues } from '@/types';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);
@@ -91,6 +92,20 @@ const balanceCurrencies = computed(() => {
 const formatCurrency = (value) => {
   return value ? formatPrice(value, botStore.activeBot.stakeCurrencyDecimals) : '';
 };
+
+const chartValues = computed<BalanceValues[]>(() => {
+  return balanceCurrencies.value?.map((v) => {
+    return {
+      balance: v.balance,
+      currency: v.currency,
+      est_stake:
+        showBotOnly.value && canUseBotBalance.value ? v.est_stake_bot ?? v.est_stake : v.est_stake,
+      free: showBotOnly.value && canUseBotBalance.value ? v.bot_owned ?? v.free : v.free,
+      used: v.used,
+      stake: v.stake,
+    };
+  });
+});
 
 const tableFields = computed<TableField[]>(() => {
   return [

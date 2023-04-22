@@ -41,3 +41,13 @@ export interface BalanceInterface {
   starting_capital_fiat_ratio: number;
   starting_capital_fiat_pct: number;
 }
+
+export interface BalanceValues {
+  [key: string]: number | string;
+  balance: number;
+  currency: string;
+  est_stake: number;
+  free: number;
+  used: number;
+  stake: string;
+}

@@ -22,7 +22,7 @@ import {
   TooltipComponent,
 } from 'echarts/components';
 
-import { BalanceRecords } from '@/types';
+import { BalanceValues } from '@/types';
 import { formatPriceCurrency } from '@/shared/formatters';
 import { computed } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
@@ -38,7 +38,7 @@ use([
 ]);
 
 const props = defineProps({
-  currencies: { required: true, type: Array as () => BalanceRecords[] },
+  currencies: { required: true, type: Array as () => BalanceValues[] },
   showTitle: { required: false, type: Boolean },
 });
 const settingsStore = useSettingsStore();
@@ -53,16 +53,7 @@ const balanceChartOptions = computed((): EChartsOption => {
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: {
       dimensions: ['balance', 'currency', 'est_stake', 'free', 'used', 'stake'],
-      source: props.currencies.map((currency) => {
-        return {
-          balance: currency.balance,
-          currency: currency.currency,
-          est_stake: currency.est_stake,
-          free: currency.free,
-          used: currency.used,
-          stake: currency.stake,
-        };
-      }),
+      source: props.currencies,
     },
     tooltip: {
       trigger: 'item',
