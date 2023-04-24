@@ -44,6 +44,30 @@
         >
         </b-table>
       </b-card>
+      <b-card
+        v-if="backtestResult.periodic_breakdown"
+        header="`Periodic breakdown"
+        class="row mt-2 w-100"
+      >
+        <b-form-radio-group
+          id="order-direction"
+          v-model="periodicBreakdownPeriod"
+          :options="periodicBreakdownSelections"
+          name="radios-btn-default"
+          size="sm"
+          buttons
+          style="min-width: 10em"
+          button-variant="outline-primary"
+        ></b-form-radio-group>
+        <b-table
+          small
+          hover
+          stacked="sm"
+          :items="periodicBreakdownItems"
+          :fields="periodicBreakdownFields"
+        >
+        </b-table>
+      </b-card>
 
       <b-card header="Single trades" class="row mt-2 w-100">
         <TradeList
@@ -61,7 +85,7 @@
 import TradeList from '@/components/ftbot/TradeList.vue';
 import { StrategyBacktestResult, Trade } from '@/types';
 
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import {
   timestampms,
   formatPercent,
@@ -361,6 +385,30 @@ const perPairFields = computed(() => {
     { key: 'wins', label: 'Wins' },
     { key: 'draws', label: 'Draws' },
     { key: 'losses', label: 'Losses' },
+  ];
+});
+
+const periodicBreakdownSelections = [
+  { value: 'day', text: 'Days' },
+  { value: 'week', text: 'Weeks' },
+  { value: 'month', text: 'Months' },
+];
+
+const periodicBreakdownPeriod = ref<string>('day');
+
+const periodicBreakdownItems = computed<TableItem[]>(() => {
+  return props.backtestResult?.periodic_breakdown
+    ? props.backtestResult?.periodic_breakdown[periodicBreakdownPeriod.value] ??
+        ([] as unknown as TableItem[])
+    : [];
+});
+
+const periodicBreakdownFields = computed<TableField[]>(() => {
+  return [
+    { key: 'date', label: 'Date' },
+    { key: 'wins', label: 'Wins' },
+    { key: 'draws', label: 'Draws' },
+    { key: 'loses', label: 'Losses' },
   ];
 });
 
