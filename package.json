@@ -50,7 +50,7 @@
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue/compiler-sfc": "3.2.47",
     "@vue/eslint-config-prettier": "^7.1.0",
-    "@vue/eslint-config-typescript": "^11.0.2",
+    "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/runtime-dom": "^3.2.47",
     "@vue/test-utils": "^2.3.2",
     "cypress": "^12.10.0",
