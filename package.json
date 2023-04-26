@@ -59,7 +59,7 @@
     "eslint-plugin-vue": "^9.11.0",
     "mutationobserver-shim": "^0.3.7",
     "portal-vue": "^3.0.0",
-    "prettier": "^2.8.7",
+    "prettier": "^2.8.8",
     "sass": "^1.62.0",
     "typescript": "~5.0.4",
     "vite": "^4.2.2",
