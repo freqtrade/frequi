@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-22.04 ]
-        node: [ "16", "18", "19"]
+        node: [ "16", "18", "19", "20"]
 
     steps:
     - uses: actions/checkout@v3
