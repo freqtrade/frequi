@@ -60,7 +60,7 @@
     "mutationobserver-shim": "^0.3.7",
     "portal-vue": "^3.0.0",
     "prettier": "^2.8.8",
-    "sass": "^1.62.0",
+    "sass": "^1.62.1",
     "typescript": "~5.0.4",
     "vite": "^4.3.3",
     "vitest": "^0.30.1",
