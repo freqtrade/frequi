@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-grow-1 chart-wrapper">
-    <v-chart v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
+    <e-charts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>
 
@@ -85,7 +85,6 @@ const props = defineProps({
   },
 });
 const candleChart = ref<typeof ECharts>();
-
 const chartOptions = ref<EChartsOption>({});
 
 const strategy = computed(() => {
@@ -116,7 +115,7 @@ const chartTitle = computed(() => {
   return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
 });
 
-const updateChart = (initial = false) => {
+function updateChart(initial = false) {
   if (!hasData.value) {
     return;
   }
@@ -484,9 +483,9 @@ const updateChart = (initial = false) => {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
     noMerge: !initial,
   });
-};
+}
 
-const initializeChartOptions = () => {
+function initializeChartOptions() {
   // Ensure we start empty.
   candleChart.value?.setOption({}, { noMerge: true });
 
@@ -627,9 +626,9 @@ const initializeChartOptions = () => {
 
   console.log('Initialized');
   updateChart(true);
-};
+}
 
-const updateSliderPosition = () => {
+function updateSliderPosition() {
   if (!props.sliderPosition) return;
 
   const start = format(
@@ -650,7 +649,7 @@ const updateSliderPosition = () => {
       endValue: end,
     });
   }
-};
+}
 
 // const buyData = ref<number[][]>([]);
 // const sellData = ref<number[][]>([]);
