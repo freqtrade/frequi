@@ -6,15 +6,15 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { Trade, PairHistory, PlotConfig, ChartSliderPosition, IndicatorConfig } from '@/types';
-import randomColor from '@/shared/randomColor';
+import { Trade, PairHistory, PlotConfig, ChartSliderPosition } from '@/types';
+import { generateCandleSeries } from '@/shared/charts/candleChartSeries';
 import heikinashi from '@/shared/charts/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
 import { format } from 'date-fns-tz';
 
 import { use } from 'echarts/core';
-import { EChartsOption, SeriesOption, ScatterSeriesOption } from 'echarts';
+import { EChartsOption, ScatterSeriesOption } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { CandlestickChart, LineChart, BarChart, ScatterChart } from 'echarts/charts';
 import {
@@ -110,30 +110,6 @@ const filteredTrades = computed(() => {
 const chartTitle = computed(() => {
   return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
 });
-
-function generateCandleSeries(
-  colDate: number,
-  col: number,
-  key: string,
-  value: IndicatorConfig,
-  axis = 0,
-): SeriesOption {
-  const sp: SeriesOption = {
-    name: key,
-    type: value.type || 'line',
-    xAxisIndex: axis,
-    yAxisIndex: axis,
-    itemStyle: {
-      color: value.color || randomColor(),
-    },
-    encode: {
-      x: colDate,
-      y: col,
-    },
-    showSymbol: false,
-  };
-  return sp;
-}
 
 function updateChart(initial = false) {
   if (!hasData.value) {
