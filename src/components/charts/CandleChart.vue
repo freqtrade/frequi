@@ -8,7 +8,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { Trade, PairHistory, PlotConfig, ChartSliderPosition } from '@/types';
 import randomColor from '@/shared/randomColor';
-import heikinashi from '@/shared/heikinashi';
+import heikinashi from '@/shared/charts/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
 import { format } from 'date-fns-tz';
