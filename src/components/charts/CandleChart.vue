@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { Trade, PairHistory, PlotConfig, ChartSliderPosition } from '@/types';
+import { Trade, PairHistory, PlotConfig, ChartSliderPosition, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import heikinashi from '@/shared/charts/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
@@ -110,6 +110,30 @@ const filteredTrades = computed(() => {
 const chartTitle = computed(() => {
   return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
 });
+
+function generateCandleSeries(
+  colDate: number,
+  col: number,
+  key: string,
+  value: IndicatorConfig,
+  axis = 0,
+): SeriesOption {
+  const sp: SeriesOption = {
+    name: key,
+    type: value.type || 'line',
+    xAxisIndex: axis,
+    yAxisIndex: axis,
+    itemStyle: {
+      color: value.color || randomColor(),
+    },
+    encode: {
+      x: colDate,
+      y: col,
+    },
+    showSymbol: false,
+  };
+  return sp;
+}
 
 function updateChart(initial = false) {
   if (!hasData.value) {
@@ -317,22 +341,8 @@ function updateChart(initial = false) {
         if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
           chartOptions.value.legend.data.push(key);
         }
-        const sp: SeriesOption = {
-          name: key,
-          type: value.type || 'line',
-          xAxisIndex: 0,
-          yAxisIndex: 0,
-          itemStyle: {
-            color: value.color,
-          },
-          encode: {
-            x: colDate,
-            y: col,
-          },
-          showSymbol: false,
-        };
         if (Array.isArray(chartOptions.value?.series)) {
-          chartOptions.value?.series.push(sp);
+          chartOptions.value?.series.push(generateCandleSeries(colDate, col, key, value));
         }
       } else {
         console.log(`element ${key} for main plot not found in columns.`);
@@ -398,22 +408,8 @@ function updateChart(initial = false) {
           if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
             chartOptions.value.legend.data.push(sk);
           }
-          const sp: SeriesOption = {
-            name: sk,
-            type: sv.type || 'line',
-            xAxisIndex: plotIndex,
-            yAxisIndex: plotIndex,
-            itemStyle: {
-              color: sv.color || randomColor(),
-            },
-            encode: {
-              x: colDate,
-              y: col,
-            },
-            showSymbol: false,
-          };
           if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
-            chartOptions.value.series.push(sp);
+            chartOptions.value.series.push(generateCandleSeries(colDate, col, sk, sv, plotIndex));
           }
         } else {
           console.log(`element ${sk} was not found in the columns.`);
