@@ -99,10 +99,6 @@ const timeframe = computed(() => {
   return props.dataset ? props.dataset.timeframe : '';
 });
 
-const datasetColumns = computed(() => {
-  return props.dataset ? props.dataset.columns : [];
-});
-
 const hasData = computed(() => {
   return props.dataset !== null && typeof props.dataset === 'object';
 });
@@ -122,25 +118,23 @@ function updateChart(initial = false) {
   if (chartOptions.value?.title) {
     chartOptions.value.title[0].text = chartTitle.value;
   }
-  const colDate = props.dataset.columns.findIndex((el) => el === '__date_ts');
-  const colOpen = props.dataset.columns.findIndex((el) => el === 'open');
-  const colHigh = props.dataset.columns.findIndex((el) => el === 'high');
-  const colLow = props.dataset.columns.findIndex((el) => el === 'low');
-  const colClose = props.dataset.columns.findIndex((el) => el === 'close');
-  const colVolume = props.dataset.columns.findIndex((el) => el === 'volume');
-  const colEntryData = props.dataset.columns.findIndex(
+  const columns = props.dataset.columns;
+
+  const colDate = columns.findIndex((el) => el === '__date_ts');
+  const colOpen = columns.findIndex((el) => el === 'open');
+  const colHigh = columns.findIndex((el) => el === 'high');
+  const colLow = columns.findIndex((el) => el === 'low');
+  const colClose = columns.findIndex((el) => el === 'close');
+  const colVolume = columns.findIndex((el) => el === 'volume');
+  const colEntryData = columns.findIndex(
     (el) => el === '_buy_signal_close' || el === '_enter_long_signal_close',
   );
-  const colExitData = props.dataset.columns.findIndex(
+  const colExitData = columns.findIndex(
     (el) => el === '_sell_signal_close' || el === '_exit_long_signal_close',
   );
 
-  const colShortEntryData = props.dataset.columns.findIndex(
-    (el) => el === '_enter_short_signal_close',
-  );
-  const colShortExitData = props.dataset.columns.findIndex(
-    (el) => el === '_exit_short_signal_close',
-  );
+  const colShortEntryData = columns.findIndex((el) => el === '_enter_short_signal_close');
+  const colShortExitData = columns.findIndex((el) => el === '_exit_short_signal_close');
 
   const subplotCount =
     'subplots' in props.plotConfig ? Object.keys(props.plotConfig.subplots).length + 1 : 1;
@@ -165,12 +159,13 @@ function updateChart(initial = false) {
     }
   }
   const dataset = props.heikinAshi
-    ? heikinashi(datasetColumns.value, props.dataset.data)
+    ? heikinashi(columns, props.dataset.data)
     : props.dataset.data.slice();
   // Add new rows to end to allow slight "scroll past"
   const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2].length : 0);
   newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
   dataset.push(newArray);
+
   const options: EChartsOption = {
     dataset: {
       source: dataset,
@@ -317,7 +312,7 @@ function updateChart(initial = false) {
 
   if ('main_plot' in props.plotConfig) {
     Object.entries(props.plotConfig.main_plot).forEach(([key, value]) => {
-      const col = props.dataset.columns.findIndex((el) => el === key);
+      const col = columns.findIndex((el) => el === key);
       if (col > 1) {
         if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
           chartOptions.value.legend.data.push(key);
@@ -398,7 +393,7 @@ function updateChart(initial = false) {
       }
       Object.entries(value).forEach(([sk, sv]) => {
         // entries per subplot
-        const col = props.dataset.columns.findIndex((el) => el === sk);
+        const col = columns.findIndex((el) => el === sk);
         if (col > 0) {
           if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
             chartOptions.value.legend.data.push(sk);
