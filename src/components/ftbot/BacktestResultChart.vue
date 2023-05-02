@@ -37,6 +37,7 @@
           showRightBar ? 'col-md-8' : 'col-md-10'
         } candle-chart-container px-0 h-100 align-self-stretch`"
         :slider-position="sliderPosition"
+        :freqai-model="freqaiModel"
       >
       </CandleChartContainer>
       <TradeListNav
@@ -65,6 +66,7 @@ import { ChartSliderPosition, Trade } from '@/types';
 defineProps({
   timeframe: { required: true, type: String },
   strategy: { required: true, type: String },
+  freqaiModel: { required: false, default: undefined, type: String },
   timerange: { required: true, type: String },
   pairlist: { required: true, type: Array as () => string[] },
   trades: { required: true, type: Array as () => Trade[] },

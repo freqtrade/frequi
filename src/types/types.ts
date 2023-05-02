@@ -203,6 +203,7 @@ export interface PairHistoryPayload {
   timeframe: string;
   timerange: string;
   strategy: string;
+  freqaimodel?: string;
 }
 
 export interface PairHistory {

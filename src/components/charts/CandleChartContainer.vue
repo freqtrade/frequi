@@ -111,6 +111,7 @@ const props = defineProps({
   timerange: { required: false, default: '', type: String },
   /** Only required if historicView is true */
   strategy: { required: false, default: '', type: String },
+  freqaiModel: { required: false, default: undefined, type: String },
   sliderPosition: {
     required: false,
     type: Object as () => ChartSliderPosition,
@@ -176,6 +177,7 @@ const refresh = () => {
         timeframe: props.timeframe,
         timerange: props.timerange,
         strategy: props.strategy,
+        freqaimodel: props.freqaiModel,
       });
     } else {
       botStore.activeBot.getPairCandles({
