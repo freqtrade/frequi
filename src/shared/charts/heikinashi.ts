@@ -1,4 +1,4 @@
-export default function heikinAshiDataset(columns: string[], data: Array<number[]>) {
+export function heikinAshiDataset(columns: string[], data: Array<number[]>): number[][] {
   const openIdx = columns.indexOf('open');
   const closeIdx = columns.indexOf('close');
   const highIdx = columns.indexOf('high');
@@ -26,3 +26,5 @@ export default function heikinAshiDataset(columns: string[], data: Array<number[
     return candle;
   });
 }
+
+export default heikinAshiDataset;
