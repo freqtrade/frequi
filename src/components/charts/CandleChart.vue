@@ -14,14 +14,14 @@ import {
   IndicatorConfig,
   ChartType,
 } from '@/types';
-import { generateCandleSeries } from '@/shared/charts/candleChartSeries';
+import { generateCandleSeries, generateAreaCandleSeries } from '@/shared/charts/candleChartSeries';
 import heikinashi from '@/shared/charts/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
 import ECharts from 'vue-echarts';
 import { format } from 'date-fns-tz';
 
 import { use } from 'echarts/core';
-import { EChartsOption, LineSeriesOption, ScatterSeriesOption } from 'echarts';
+import { EChartsOption, ScatterSeriesOption } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { CandlestickChart, LineChart, BarChart, ScatterChart } from 'echarts/charts';
 import {
@@ -178,7 +178,6 @@ function updateChart(initial = false) {
     // Enhance dataset with diff columns for area plots
     dataset = calculateDiff(columns, dataset, colFrom, colTo);
   });
-  console.log(columns, dataset[dataset.length - 1]);
   // Add new rows to end to allow slight "scroll past"
   const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2].length : 0);
   newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
@@ -343,31 +342,10 @@ function updateChart(initial = false) {
             const fillColKey = `${key}-${value.fill_to}`;
             const fillCol = columns.findIndex((el) => el === fillColKey);
             const fillValue: IndicatorConfig = {
-              // color: value.color;
+              color: value.color,
               type: ChartType.line,
             };
-            const areaSeries = generateCandleSeries(
-              colDate,
-              fillCol,
-              fillColKey,
-              fillValue,
-            ) as LineSeriesOption;
-            const areaOptions: LineSeriesOption = {
-              stack: key,
-              lineStyle: {
-                opacity: 0,
-              },
-              showSymbol: false,
-              areaStyle: {
-                color: value.color,
-                opacity: 0.2,
-              },
-              tooltip: {
-                show: false, // hide value on tooltip
-              },
-            };
-
-            Object.assign(areaSeries, areaOptions);
+            const areaSeries = generateAreaCandleSeries(colDate, fillCol, key, fillValue, 0);
 
             chartOptions.value.series[chartOptions.value.series.length - 1]['stack'] = key;
             chartOptions.value?.series.push(areaSeries);
