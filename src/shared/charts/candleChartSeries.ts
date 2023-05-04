@@ -1,6 +1,8 @@
 import { IndicatorConfig } from '@/types';
-import { SeriesOption } from 'echarts';
+import { BarSeriesOption, LineSeriesOption, ScatterSeriesOption } from 'echarts';
 import randomColor from '../randomColor';
+
+export type SupportedSeriesTypes = LineSeriesOption | BarSeriesOption | ScatterSeriesOption;
 
 export function generateCandleSeries(
   colDate: number,
@@ -8,8 +10,8 @@ export function generateCandleSeries(
   key: string,
   value: IndicatorConfig,
   axis = 0,
-): SeriesOption {
-  const sp: SeriesOption = {
+): SupportedSeriesTypes {
+  const sp: SupportedSeriesTypes = {
     name: key,
     type: value.type || 'line',
     xAxisIndex: axis,
