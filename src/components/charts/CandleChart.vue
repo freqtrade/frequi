@@ -6,7 +6,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { Trade, PairHistory, PlotConfig, ChartSliderPosition } from '@/types';
+import {
+  Trade,
+  PairHistory,
+  PlotConfig,
+  ChartSliderPosition,
+  IndicatorConfig,
+  ChartType,
+} from '@/types';
 import { generateCandleSeries } from '@/shared/charts/candleChartSeries';
 import heikinashi from '@/shared/charts/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
@@ -14,7 +21,7 @@ import ECharts from 'vue-echarts';
 import { format } from 'date-fns-tz';
 
 import { use } from 'echarts/core';
-import { EChartsOption, ScatterSeriesOption } from 'echarts';
+import { EChartsOption, LineSeriesOption, ScatterSeriesOption } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { CandlestickChart, LineChart, BarChart, ScatterChart } from 'echarts/charts';
 import {
@@ -32,6 +39,7 @@ import {
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
 import { dataZoomPartial } from '@/shared/charts/chartZoom';
+import { getDiffColumns, calculateDiff } from '@/shared/charts/areaPlotDataset';
 
 use([
   AxisPointerComponent,
@@ -111,6 +119,10 @@ const chartTitle = computed(() => {
   return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
 });
 
+const diffCols = computed(() => {
+  return getDiffColumns(props.plotConfig);
+});
+
 function updateChart(initial = false) {
   if (!hasData.value) {
     return;
@@ -158,9 +170,15 @@ function updateChart(initial = false) {
       });
     }
   }
-  const dataset = props.heikinAshi
+  let dataset = props.heikinAshi
     ? heikinashi(columns, props.dataset.data)
     : props.dataset.data.slice();
+
+  diffCols.value.forEach(([colFrom, colTo]) => {
+    // Enhance dataset with diff columns for area plots
+    dataset = calculateDiff(columns, dataset, colFrom, colTo);
+  });
+  console.log(columns, dataset[dataset.length - 1]);
   // Add new rows to end to allow slight "scroll past"
   const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2].length : 0);
   newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
@@ -319,6 +337,42 @@ function updateChart(initial = false) {
         }
         if (Array.isArray(chartOptions.value?.series)) {
           chartOptions.value?.series.push(generateCandleSeries(colDate, col, key, value));
+
+          if (value.fill_to) {
+            // Assign
+            const fillColKey = `${key}-${value.fill_to}`;
+            const fillCol = columns.findIndex((el) => el === fillColKey);
+            const fillValue: IndicatorConfig = {
+              // color: value.color;
+              type: ChartType.line,
+            };
+            const areaSeries = generateCandleSeries(
+              colDate,
+              fillCol,
+              fillColKey,
+              fillValue,
+            ) as LineSeriesOption;
+            const areaOptions: LineSeriesOption = {
+              stack: key,
+              lineStyle: {
+                opacity: 0,
+              },
+              showSymbol: false,
+              areaStyle: {
+                color: value.color,
+                opacity: 0.2,
+              },
+              tooltip: {
+                show: false, // hide value on tooltip
+              },
+            };
+
+            Object.assign(areaSeries, areaOptions);
+
+            chartOptions.value.series[chartOptions.value.series.length - 1]['stack'] = key;
+            chartOptions.value?.series.push(areaSeries);
+          }
+          chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
         }
       } else {
         console.log(`element ${key} for main plot not found in columns.`);
