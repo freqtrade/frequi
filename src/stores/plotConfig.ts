@@ -1,43 +1,58 @@
-import {
-  getAllPlotConfigNames,
-  getCustomPlotConfig,
-  getPlotConfigName,
-  storeCustomPlotConfig,
-  storePlotConfigName,
-} from '@/shared/storage';
-import { PlotConfigStorage, EMPTY_PLOTCONFIG, PlotConfig } from '@/types';
+import { EMPTY_PLOTCONFIG, PlotConfig, PlotConfigStorage } from '@/types';
 import { defineStore } from 'pinia';
+
+const FT_PLOT_CONFIG_KEY = 'ftPlotConfig';
+
+function migratePlotConfigs() {
+  // Legacy config names
+  const PLOT_CONFIG = 'ft_custom_plot_config';
+  const PLOT_CONFIG_NAME = 'ft_selected_plot_config';
+
+  const allConfigs = JSON.parse(localStorage.getItem(PLOT_CONFIG) || '{}');
+  if (Object.keys(allConfigs).length > 0) {
+    console.log('migrating plot configs');
+    const res = {
+      customPlotConfigs: allConfigs,
+      plotConfigName: localStorage.getItem(PLOT_CONFIG_NAME) || 'default',
+    };
+    localStorage.setItem(FT_PLOT_CONFIG_KEY, JSON.stringify(res));
+    // TODO: Remove old settings to avoid constant migration
+    // localStorage.removeItem(PLOT_CONFIG);
+    // localStorage.removeItem(PLOT_CONFIG_NAME);
+  }
+}
+// migratePlotConfigs();
 
 export const usePlotConfigStore = defineStore('plotConfig', {
   state: () => {
     return {
-      customPlotConfig: {} as PlotConfigStorage,
-      plotConfigName: getPlotConfigName(),
-      availablePlotConfigNames: getAllPlotConfigNames(),
-      plotConfig: { ...EMPTY_PLOTCONFIG },
+      customPlotConfigs: {} as PlotConfigStorage,
+      plotConfigName: 'default',
     };
   },
   getters: {
+    availablePlotConfigNames: (state) => Object.keys(state.customPlotConfigs),
+    plotConfig: (state) => state.customPlotConfigs[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
     // plotConfig: (state) => state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
   },
   actions: {
-    saveCustomPlotConfig(plotConfig: PlotConfigStorage) {
-      this.customPlotConfig = plotConfig;
-      storeCustomPlotConfig(plotConfig);
-      this.availablePlotConfigNames = getAllPlotConfigNames();
+    saveCustomPlotConfig(name: string, plotConfig: PlotConfig) {
+      this.customPlotConfigs[name] = plotConfig;
     },
     setPlotConfigName(plotConfigName: string) {
       this.plotConfigName = plotConfigName;
-      storePlotConfigName(plotConfigName);
     },
     plotConfigChanged(plotConfigName = '') {
       console.log('plotConfigChanged');
       this.setPlotConfigName(plotConfigName ? plotConfigName : this.plotConfigName);
-      this.plotConfig = getCustomPlotConfig(this.plotConfigName);
     },
     setPlotConfig(plotConfig: PlotConfig) {
       console.log('emit...');
-      this.plotConfig = { ...plotConfig };
+      // this.plotConfig = { ...plotConfig };
     },
+  },
+  persist: {
+    key: FT_PLOT_CONFIG_KEY,
+    paths: ['plotConfigName', 'customPlotConfigs'],
   },
 });

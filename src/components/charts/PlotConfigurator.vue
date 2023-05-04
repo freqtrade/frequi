@@ -310,7 +310,7 @@ async function loadPlotConfigFromStrategy() {
 }
 
 function savePlotConfig() {
-  plotStore.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
+  plotStore.saveCustomPlotConfig(plotConfigNameLoc.value, plotConfig.value);
 }
 
 onMounted(() => {

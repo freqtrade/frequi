@@ -1,5 +1,5 @@
 import { PlotConfig, EMPTY_PLOTCONFIG, PlotConfigStorage } from '@/types';
-
+// TODO: Outdated, this module can be removed
 const PLOT_CONFIG = 'ft_custom_plot_config';
 const PLOT_CONFIG_NAME = 'ft_selected_plot_config';
 
