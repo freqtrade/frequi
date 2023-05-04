@@ -85,16 +85,16 @@
 </template>
 
 <script setup lang="ts">
-import { Trade, PairHistory, LoadingStatus, ChartSliderPosition } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
-import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
-import vSelect from 'vue-select';
-import { useSettingsStore } from '@/stores/settings';
+import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { usePlotConfigStore } from '@/stores/plotConfig';
+import { useSettingsStore } from '@/stores/settings';
+import { ChartSliderPosition, LoadingStatus, PairHistory, Trade } from '@/types';
+import vSelect from 'vue-select';
 
-import { ref, computed, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
   trades: { required: false, default: () => [], type: Array as () => Trade[] },
