@@ -5,30 +5,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import {
-  Trade,
-  PairHistory,
-  PlotConfig,
-  ChartSliderPosition,
-  IndicatorConfig,
-  ChartType,
-} from '@/types';
-import { generateCandleSeries, generateAreaCandleSeries } from '@/shared/charts/candleChartSeries';
+import { generateAreaCandleSeries, generateCandleSeries } from '@/shared/charts/candleChartSeries';
 import heikinashi from '@/shared/charts/heikinashi';
 import { getTradeEntries } from '@/shared/charts/tradeChartData';
-import ECharts from 'vue-echarts';
+import {
+  ChartSliderPosition,
+  ChartType,
+  IndicatorConfig,
+  PairHistory,
+  PlotConfig,
+  Trade,
+} from '@/types';
 import { format } from 'date-fns-tz';
+import { computed, onMounted, ref, watch } from 'vue';
+import ECharts from 'vue-echarts';
 
-import { use } from 'echarts/core';
+import { calculateDiff, getDiffColumns } from '@/shared/charts/areaPlotDataset';
+import { dataZoomPartial } from '@/shared/charts/chartZoom';
 import { EChartsOption, ScatterSeriesOption } from 'echarts';
-import { CanvasRenderer } from 'echarts/renderers';
-import { CandlestickChart, LineChart, BarChart, ScatterChart } from 'echarts/charts';
+import { BarChart, CandlestickChart, LineChart, ScatterChart } from 'echarts/charts';
 import {
   AxisPointerComponent,
   CalendarComponent,
-  DatasetComponent,
   DataZoomComponent,
+  DatasetComponent,
   GridComponent,
   LegendComponent,
   TimelineComponent,
@@ -38,8 +38,8 @@ import {
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
-import { dataZoomPartial } from '@/shared/charts/chartZoom';
-import { getDiffColumns, calculateDiff } from '@/shared/charts/areaPlotDataset';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
 
 use([
   AxisPointerComponent,
