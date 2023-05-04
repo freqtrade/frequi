@@ -35,13 +35,7 @@
           >
 
           <div class="ms-2">
-            <b-form-select
-              v-model="plotStore.plotConfigName"
-              :options="plotStore.availablePlotConfigNames"
-              size="sm"
-              @change="plotStore.plotConfigChanged"
-            >
-            </b-form-select>
+            <plot-config-select></plot-config-select>
           </div>
 
           <div class="ms-2 me-0 me-md-1">
@@ -94,6 +88,7 @@
 import { Trade, PairHistory, LoadingStatus, ChartSliderPosition } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
+import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import vSelect from 'vue-select';
 import { useSettingsStore } from '@/stores/settings';
 import { usePlotConfigStore } from '@/stores/plotConfig';
