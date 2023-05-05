@@ -36,12 +36,15 @@
     <template v-if="allowEdit && (addNew || editing)">
       <b-button
         size="sm"
-        title="Add new config"
+        title="Add new Plot configuration"
         class="ms-1"
         variant="primary"
         @click="saveNewName"
       >
         <CheckIcon :size="16" />
+      </b-button>
+      <b-button size="sm" title="Abort" class="ms-1" variant="secondary">
+        <CloseIcon :size="16" @click="abort" />
       </b-button>
     </template>
   </div>
@@ -53,6 +56,8 @@ import { usePlotConfigStore } from '@/stores/plotConfig';
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
+import CloseIcon from 'vue-material-design-icons/Close.vue';
+
 import { ref } from 'vue';
 
 defineProps({
@@ -65,6 +70,12 @@ const plotStore = usePlotConfigStore();
 const addNew = ref(false);
 const plotName = ref<string>(plotStore.plotConfigName);
 const editing = ref<boolean>(false);
+
+function abort() {
+  editing.value = false;
+  addNew.value = false;
+  plotName.value = plotStore.plotConfigName;
+}
 
 function addNewClick() {
   plotName.value = '';
