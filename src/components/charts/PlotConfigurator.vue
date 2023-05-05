@@ -136,6 +136,7 @@ import { showAlert } from '@/stores/alerts';
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
+import { deepClone } from '@/shared/deepClone';
 
 defineProps({
   columns: { required: true, type: Array as () => string[] },
@@ -194,7 +195,6 @@ function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   // Reset random color
   addNewIndicator.value = false;
-  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 
 const selIndicator = computed({
@@ -251,7 +251,6 @@ function removeIndicator() {
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   console.log(plotStore.editablePlotConfig);
   selIndicatorName.value = '';
-  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 function addSubplot() {
   plotStore.editablePlotConfig.subplots = {
@@ -260,26 +259,22 @@ function addSubplot() {
   };
   selSubPlot.value = newSubplotName.value;
   newSubplotName.value = '';
-
-  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 
 function delSubplot() {
   delete plotStore.editablePlotConfig.subplots[selSubPlot.value];
   plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
   selSubPlot.value = '';
-  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 function loadPlotConfig() {
   // Reset from store
-  plotStore.editablePlotConfig = plotStore.customPlotConfigs[plotStore.plotConfigName];
+  plotStore.editablePlotConfig = deepClone(plotStore.customPlotConfigs[plotStore.plotConfigName]);
 }
 
 function loadConfigFromString() {
   // this.plotConfig = JSON.parse();
   if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
     plotStore.editablePlotConfig = tempPlotConfig.value;
-    plotStore.setPlotConfig(plotStore.editablePlotConfig);
   }
 }
 function clearConfig() {
@@ -295,7 +290,6 @@ async function loadPlotConfigFromStrategy() {
     await botStore.activeBot.getStrategyPlotConfig();
     if (botStore.activeBot.strategyPlotConfig) {
       plotStore.editablePlotConfig = botStore.activeBot.strategyPlotConfig;
-      plotStore.setPlotConfig(plotStore.editablePlotConfig);
     }
   } catch (data) {
     //
@@ -309,7 +303,7 @@ function savePlotConfig() {
 
 onMounted(() => {
   // Deep clone and assign to editable
-  plotStore.editablePlotConfig = JSON.parse(JSON.stringify(plotStore.plotConfig));
+  plotStore.editablePlotConfig = deepClone(plotStore.plotConfig);
   plotStore.isEditing = true;
   plotConfigNameLoc.value = plotStore.plotConfigName;
 });

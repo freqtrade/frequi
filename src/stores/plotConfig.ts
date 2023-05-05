@@ -42,18 +42,13 @@ export const usePlotConfigStore = defineStore('plotConfig', {
   },
   actions: {
     saveCustomPlotConfig(name: string, plotConfig: PlotConfig) {
+      // This will autosave to storage due to pinia-persist
       this.customPlotConfigs[name] = plotConfig;
     },
-    setPlotConfigName(plotConfigName: string) {
-      this.plotConfigName = plotConfigName;
-    },
     plotConfigChanged(plotConfigName = '') {
-      console.log('plotConfigChanged');
-      this.setPlotConfigName(plotConfigName ? plotConfigName : this.plotConfigName);
-    },
-    setPlotConfig(plotConfig: PlotConfig) {
-      console.log('emit...');
-      // this.plotConfig = { ...plotConfig };
+      if (plotConfigName) {
+        this.plotConfigName = plotConfigName;
+      }
     },
   },
   persist: {
