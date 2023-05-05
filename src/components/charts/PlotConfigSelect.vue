@@ -51,12 +51,12 @@
 </template>
 
 <script setup lang="ts">
-import CheckIcon from 'vue-material-design-icons/Check.vue';
 import { usePlotConfigStore } from '@/stores/plotConfig';
-import EditIcon from 'vue-material-design-icons/Pencil.vue';
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
+import CheckIcon from 'vue-material-design-icons/Check.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
+import DeleteIcon from 'vue-material-design-icons/Delete.vue';
+import EditIcon from 'vue-material-design-icons/Pencil.vue';
+import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
 
 import { ref } from 'vue';
 
