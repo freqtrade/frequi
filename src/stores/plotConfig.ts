@@ -1,3 +1,4 @@
+import { deepClone } from '@/shared/deepClone';
 import { EMPTY_PLOTCONFIG, PlotConfig, PlotConfigStorage } from '@/types';
 import { defineStore } from 'pinia';
 
@@ -37,7 +38,7 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     plotConfig: (state) =>
       (state.isEditing
         ? state.editablePlotConfig
-        : state.customPlotConfigs[state.plotConfigName]) || { ...EMPTY_PLOTCONFIG },
+        : state.customPlotConfigs[state.plotConfigName]) || deepClone(EMPTY_PLOTCONFIG),
     // plotConfig: (state) => state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
   },
   actions: {
@@ -45,9 +46,26 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       // This will autosave to storage due to pinia-persist
       this.customPlotConfigs[name] = plotConfig;
     },
+    deletePlotConfig(plotConfigName: string) {
+      delete this.customPlotConfigs[plotConfigName];
+    },
+    renamePlotConfig(oldName: string, newName: string) {
+      this.customPlotConfigs[newName] = this.customPlotConfigs[oldName];
+      delete this.customPlotConfigs[oldName];
+      this.plotConfigName = newName;
+    },
+    newPlotConfig(plotConfigName: string) {
+      this.editablePlotConfig = deepClone(EMPTY_PLOTCONFIG);
+      this.plotConfigName = plotConfigName;
+    },
+
     plotConfigChanged(plotConfigName = '') {
       if (plotConfigName) {
         this.plotConfigName = plotConfigName;
+      }
+      console.log('plotConfigChanged', this.plotConfigName);
+      if (this.isEditing) {
+        this.editablePlotConfig = deepClone(this.customPlotConfigs[this.plotConfigName]);
       }
     },
   },

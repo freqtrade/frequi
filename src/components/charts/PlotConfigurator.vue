@@ -1,7 +1,7 @@
 <template>
   <div v-if="columns">
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input id="idPlotConfigName" v-model="plotConfigNameLoc" size="sm"> </b-form-input>
+      <plot-config-select allow-edit></plot-config-select>
     </b-form-group>
     <div class="col-mb-3">
       <hr />
@@ -15,7 +15,7 @@
       <b-input-group size="sm">
         <b-form-input id="newSubPlot" v-model="newSubplotName" class="addPlot"></b-form-input>
         <b-input-group-append>
-          <b-button :disabled="!newSubplotName" @click="addSubplot">+</b-button>
+          <b-button variant="primary" :disabled="!newSubplotName" @click="addSubplot">+</b-button>
           <b-button v-if="selSubPlot && selSubPlot != 'main_plot'" @click="delSubplot">-</b-button>
         </b-input-group-append>
       </b-input-group>
@@ -130,6 +130,7 @@
 
 <script setup lang="ts">
 import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
+import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
 
@@ -262,6 +263,7 @@ function delSubplot() {
   plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
   selSubPlot.value = '';
 }
+
 function loadPlotConfig() {
   // Reset from store
   plotStore.editablePlotConfig = deepClone(plotStore.customPlotConfigs[plotStore.plotConfigName]);
