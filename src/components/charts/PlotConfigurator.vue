@@ -185,10 +185,10 @@ function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
   const name = Object.keys(newIndicator)[0];
   const indicator = newIndicator[name];
   if (isMainPlot.value) {
-    console.log(`Adding ${name} to MainPlot`);
+    // console.log(`Adding ${name} to MainPlot`);
     plotStore.editablePlotConfig.main_plot[name] = { ...indicator };
   } else {
-    console.log(`Adding ${name} to ${selSubPlot.value}`);
+    // console.log(`Adding ${name} to ${selSubPlot.value}`);
     plotStore.editablePlotConfig.subplots[selSubPlot.value][name] = { ...indicator };
   }
 
@@ -210,7 +210,6 @@ const selIndicator = computed({
     return {};
   },
   set(newValue: Record<string, IndicatorConfig>) {
-    // console.log('newValue', newValue);
     const name = Object.keys(newValue)[0];
     // this.currentPlotConfig[this.selIndicatorName] = { ...newValue[name] };
     // this.emitPlotConfig();
@@ -238,8 +237,6 @@ const plotConfigJson = computed({
 });
 
 function removeIndicator() {
-  console.log(plotStore.editablePlotConfig);
-  // const { plotConfig } = this;
   if (isMainPlot.value) {
     console.log(`Removing ${selIndicatorName.value} from MainPlot`);
     delete plotStore.editablePlotConfig.main_plot[selIndicatorName.value];
@@ -249,7 +246,6 @@ function removeIndicator() {
   }
 
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
-  console.log(plotStore.editablePlotConfig);
   selIndicatorName.value = '';
 }
 function addSubplot() {
@@ -272,7 +268,6 @@ function loadPlotConfig() {
 }
 
 function loadConfigFromString() {
-  // this.plotConfig = JSON.parse();
   if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
     plotStore.editablePlotConfig = tempPlotConfig.value;
   }
