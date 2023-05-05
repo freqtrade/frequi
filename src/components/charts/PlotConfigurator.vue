@@ -83,7 +83,7 @@
         variant="secondary"
         size="sm"
         title="Load configuration from text box below"
-        @click="resetConfig"
+        @click="clearConfig"
         >Reset</b-button
       >
       <b-button
@@ -130,11 +130,10 @@
 
 <script setup lang="ts">
 import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
-import { getCustomPlotConfig } from '@/shared/storage';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
 
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 
@@ -145,8 +144,6 @@ defineProps({
 
 const plotStore = usePlotConfigStore();
 const botStore = useBotStore();
-
-const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
 
 const plotConfigNameLoc = ref('default');
 const newSubplotName = ref('');
@@ -163,43 +160,41 @@ const isMainPlot = computed(() => {
 
 const currentPlotConfig = computed(() => {
   if (isMainPlot.value) {
-    return plotConfig.value.main_plot;
+    return plotStore.editablePlotConfig.main_plot;
   }
 
-  return plotConfig.value.subplots[selSubPlot.value];
+  return plotStore.editablePlotConfig.subplots[selSubPlot.value];
 });
 const subplots = computed((): string[] => {
   // Subplot keys (for selection window)
-  return ['main_plot', ...Object.keys(plotConfig.value.subplots)];
+  return ['main_plot', ...Object.keys(plotStore.editablePlotConfig.subplots)];
 });
 const usedColumns = computed((): string[] => {
   if (isMainPlot.value) {
-    return Object.keys(plotConfig.value.main_plot);
+    return Object.keys(plotStore.editablePlotConfig.main_plot);
   }
-  if (selSubPlot.value in plotConfig.value.subplots) {
-    return Object.keys(plotConfig.value.subplots[selSubPlot.value]);
+  if (selSubPlot.value in plotStore.editablePlotConfig.subplots) {
+    return Object.keys(plotStore.editablePlotConfig.subplots[selSubPlot.value]);
   }
   return [];
 });
 
 function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
-  console.log(plotConfig.value);
-
   // const { plotConfig.value } = this;
   const name = Object.keys(newIndicator)[0];
   const indicator = newIndicator[name];
   if (isMainPlot.value) {
     console.log(`Adding ${name} to MainPlot`);
-    plotConfig.value.main_plot[name] = { ...indicator };
+    plotStore.editablePlotConfig.main_plot[name] = { ...indicator };
   } else {
     console.log(`Adding ${name} to ${selSubPlot.value}`);
-    plotConfig.value.subplots[selSubPlot.value][name] = { ...indicator };
+    plotStore.editablePlotConfig.subplots[selSubPlot.value][name] = { ...indicator };
   }
 
-  plotConfig.value = { ...plotConfig.value };
+  plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   // Reset random color
   addNewIndicator.value = false;
-  plotStore.setPlotConfig(plotConfig.value);
+  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 
 const selIndicator = computed({
@@ -229,7 +224,7 @@ const selIndicator = computed({
 
 const plotConfigJson = computed({
   get() {
-    return JSON.stringify(plotConfig.value, null, 2);
+    return JSON.stringify(plotStore.editablePlotConfig, null, 2);
   },
   set(newValue: string) {
     try {
@@ -243,54 +238,53 @@ const plotConfigJson = computed({
 });
 
 function removeIndicator() {
-  console.log(plotConfig.value);
+  console.log(plotStore.editablePlotConfig);
   // const { plotConfig } = this;
   if (isMainPlot.value) {
     console.log(`Removing ${selIndicatorName.value} from MainPlot`);
-    delete plotConfig.value.main_plot[selIndicatorName.value];
+    delete plotStore.editablePlotConfig.main_plot[selIndicatorName.value];
   } else {
     console.log(`Removing ${selIndicatorName.value} from ${selSubPlot.value}`);
-    delete plotConfig.value.subplots[selSubPlot.value][selIndicatorName.value];
+    delete plotStore.editablePlotConfig.subplots[selSubPlot.value][selIndicatorName.value];
   }
 
-  plotConfig.value = { ...plotConfig.value };
-  console.log(plotConfig.value);
+  plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
+  console.log(plotStore.editablePlotConfig);
   selIndicatorName.value = '';
-  plotStore.setPlotConfig(plotConfig.value);
+  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 function addSubplot() {
-  plotConfig.value.subplots = {
-    ...plotConfig.value.subplots,
+  plotStore.editablePlotConfig.subplots = {
+    ...plotStore.editablePlotConfig.subplots,
     [newSubplotName.value]: {},
   };
   selSubPlot.value = newSubplotName.value;
   newSubplotName.value = '';
 
-  plotStore.setPlotConfig(plotConfig.value);
+  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 
 function delSubplot() {
-  delete plotConfig.value.subplots[selSubPlot.value];
-  plotConfig.value.subplots = { ...plotConfig.value.subplots };
+  delete plotStore.editablePlotConfig.subplots[selSubPlot.value];
+  plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
   selSubPlot.value = '';
-  plotStore.setPlotConfig(plotConfig.value);
+  plotStore.setPlotConfig(plotStore.editablePlotConfig);
 }
 function loadPlotConfig() {
-  plotConfig.value = getCustomPlotConfig(plotConfigNameLoc.value);
-  console.log(plotConfig.value);
-  console.log('loading config');
-  plotStore.setPlotConfig(plotConfig.value);
+  // Reset from store
+  plotStore.editablePlotConfig = plotStore.customPlotConfigs[plotStore.plotConfigName];
 }
 
 function loadConfigFromString() {
   // this.plotConfig = JSON.parse();
   if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
-    plotConfig.value = tempPlotConfig.value;
-    plotStore.setPlotConfig(plotConfig.value);
+    plotStore.editablePlotConfig = tempPlotConfig.value;
+    plotStore.setPlotConfig(plotStore.editablePlotConfig);
   }
 }
-function resetConfig() {
-  plotConfig.value = { ...EMPTY_PLOTCONFIG };
+function clearConfig() {
+  // Use empty config
+  plotStore.editablePlotConfig = { ...EMPTY_PLOTCONFIG };
 }
 async function loadPlotConfigFromStrategy() {
   if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy.strategy) {
@@ -300,8 +294,8 @@ async function loadPlotConfigFromStrategy() {
   try {
     await botStore.activeBot.getStrategyPlotConfig();
     if (botStore.activeBot.strategyPlotConfig) {
-      plotConfig.value = botStore.activeBot.strategyPlotConfig;
-      plotStore.setPlotConfig(plotConfig.value);
+      plotStore.editablePlotConfig = botStore.activeBot.strategyPlotConfig;
+      plotStore.setPlotConfig(plotStore.editablePlotConfig);
     }
   } catch (data) {
     //
@@ -310,13 +304,18 @@ async function loadPlotConfigFromStrategy() {
 }
 
 function savePlotConfig() {
-  plotStore.saveCustomPlotConfig(plotConfigNameLoc.value, plotConfig.value);
+  plotStore.saveCustomPlotConfig(plotConfigNameLoc.value, plotStore.editablePlotConfig);
 }
 
 onMounted(() => {
-  // console.log('Config Mounted', props);
-  plotConfig.value = plotStore.plotConfig;
+  // Deep clone and assign to editable
+  plotStore.editablePlotConfig = JSON.parse(JSON.stringify(plotStore.plotConfig));
+  plotStore.isEditing = true;
   plotConfigNameLoc.value = plotStore.plotConfigName;
+});
+onUnmounted(() => {
+  // TODO: Unmounted is not called when closing in Chart view
+  plotStore.isEditing = false;
 });
 </script>
 

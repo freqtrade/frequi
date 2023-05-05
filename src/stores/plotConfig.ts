@@ -28,11 +28,16 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     return {
       customPlotConfigs: {} as PlotConfigStorage,
       plotConfigName: 'default',
+      isEditing: false,
+      editablePlotConfig: { ...EMPTY_PLOTCONFIG } as PlotConfig,
     };
   },
   getters: {
     availablePlotConfigNames: (state) => Object.keys(state.customPlotConfigs),
-    plotConfig: (state) => state.customPlotConfigs[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
+    plotConfig: (state) =>
+      (state.isEditing
+        ? state.editablePlotConfig
+        : state.customPlotConfigs[state.plotConfigName]) || { ...EMPTY_PLOTCONFIG },
     // plotConfig: (state) => state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
   },
   actions: {
