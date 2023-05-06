@@ -13,7 +13,7 @@
     <b-button
       size="sm"
       title="Abort"
-      class="ms-1"
+      class="ms-1 mt-auto"
       variant="secondary"
       @click="$emit('indicatorSelected', null)"
     >

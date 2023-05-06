@@ -51,7 +51,10 @@
         size="sm"
         class="ms-1 col"
         :disabled="addNewIndicator"
-        @click="addNewIndicator = !addNewIndicator"
+        @click="
+          addNewIndicator = !addNewIndicator;
+          selIndicatorName = '';
+        "
       >
         Add new indicator
       </b-button>
@@ -158,6 +161,7 @@ import { deepClone } from '@/shared/deepClone';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import randomColor from '@/shared/randomColor';
 
 defineProps({
   columns: { required: true, type: Array as () => string[] },
@@ -322,7 +326,11 @@ function addNewIndicatorSelected(indicator?: string) {
   addNewIndicator.value = false;
 
   if (indicator) {
-    addIndicator({ [indicator]: {} });
+    addIndicator({
+      [indicator]: {
+        color: randomColor(),
+      },
+    });
     selIndicatorName.value = indicator;
   }
 }
