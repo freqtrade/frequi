@@ -21,8 +21,8 @@
         </b-form-select>
       </b-form-group>
     </div>
-    <div class="d-xl-flex flex-row flex-grow-1 justify-content-between mt-1">
-      <b-form-group class="" label="Type" label-for="plotTypeSelector">
+    <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
+      <b-form-group class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
         <b-form-select
           id="plotTypeSelector"
           v-model="graphType"
@@ -32,7 +32,7 @@
         >
         </b-form-select>
       </b-form-group>
-      <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 flex-shrink-1">
+      <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
         <b-input-group>
           <b-input-group-prepend>
             <div :style="{ 'background-color': selColor }" class="colorbox me-1"></div>
@@ -57,23 +57,23 @@
     <div class="d-flex flex-row mt-2">
       <b-button
         v-if="addNew"
-        class="flex-grow-1"
-        variant="primary"
-        title="Add "
-        size="sm"
-        @click="emitIndicator"
-      >
-        Save indicator
-      </b-button>
-      <b-button
-        v-if="addNew"
-        class="ms-1 flex-grow-1"
+        class="col"
         variant="secondary"
         title="Add "
         size="sm"
         @click="clickCancel"
       >
         Cancel
+      </b-button>
+      <b-button
+        v-if="addNew"
+        class="ms-1 col"
+        variant="primary"
+        title="Add "
+        size="sm"
+        @click="emitIndicator"
+      >
+        Save indicator
       </b-button>
     </div>
   </div>

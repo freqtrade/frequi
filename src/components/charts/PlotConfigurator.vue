@@ -32,25 +32,26 @@
         </b-form-select>
       </b-form-group>
     </div>
-    <div>
-      <b-button
-        variant="primary"
-        title="Add indicator to plot"
-        size="sm"
-        :disabled="addNewIndicator"
-        @click="addNewIndicator = !addNewIndicator"
-      >
-        Add new indicator
-      </b-button>
+    <div class="d-flex flex-row mt-1">
       <b-button
         variant="secondary"
         title="Remove indicator to plot"
         size="sm"
         :disabled="!selIndicatorName"
-        class="ms-1"
+        class="col"
         @click="removeIndicator"
       >
         Remove indicator
+      </b-button>
+      <b-button
+        variant="primary"
+        title="Add indicator to plot"
+        size="sm"
+        class="ms-1 col"
+        :disabled="addNewIndicator"
+        @click="addNewIndicator = !addNewIndicator"
+      >
+        Add new indicator
       </b-button>
     </div>
 
