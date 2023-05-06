@@ -28,7 +28,6 @@
           v-model="graphType"
           size="sm"
           :options="availableGraphTypes"
-          @change="emitIndicator()"
         >
         </b-form-select>
       </b-form-group>
@@ -139,9 +138,12 @@ watch(
       graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
     }
   },
+  {
+    immediate: true,
+  },
 );
 
-watch(selColor, () => {
+watch([selColor, graphType], () => {
   if (!props.addNew) {
     emitIndicator();
   }

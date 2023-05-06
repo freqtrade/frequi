@@ -15,7 +15,9 @@
       <b-input-group size="sm">
         <b-form-input id="newSubPlot" v-model="newSubplotName" class="addPlot"></b-form-input>
         <b-input-group-append>
-          <b-button variant="primary" :disabled="!newSubplotName" @click="addSubplot">+</b-button>
+          <b-button variant="primary" :disabled="!newSubplotName" @click="addSubplot"
+            ><AddIcon :size="16"
+          /></b-button>
           <b-button v-if="selSubPlot && selSubPlot != 'main_plot'" @click="delSubplot">-</b-button>
         </b-input-group-append>
       </b-input-group>
@@ -103,7 +105,7 @@
         size="sm"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
-        >Show</b-button
+        >{{ showConfig ? 'Hide' : 'Show' }}</b-button
       >
 
       <b-button
@@ -143,6 +145,7 @@ import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
+import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
 
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
