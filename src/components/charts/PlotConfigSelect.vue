@@ -43,8 +43,8 @@
       >
         <CheckIcon :size="16" />
       </b-button>
-      <b-button size="sm" title="Abort" class="ms-1" variant="secondary">
-        <CloseIcon :size="16" @click="abort" />
+      <b-button size="sm" title="Abort" class="ms-1" variant="secondary" @click="abort">
+        <CloseIcon :size="16" />
       </b-button>
     </template>
   </div>
