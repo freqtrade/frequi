@@ -1,25 +1,11 @@
 <template>
   <div>
     <div v-if="addNew">
-      <b-form-group label="Add indicator" label-for="indicatorSelector">
-        <b-input-group size="sm">
-          <b-form-input v-model="indicatorFilter" placeholder="Filter indicators"></b-form-input>
-          <b-input-group-append>
-            <Reset
-              class="pointer align-self-center ms-1"
-              :size="18"
-              @click="indicatorFilter = ''"
-            ></Reset>
-          </b-input-group-append>
-        </b-input-group>
-        <b-form-select
-          id="indicatorSelector"
-          v-model="selAvailableIndicator"
-          :options="filteredIndicators"
-          :select-size="4"
-        >
-        </b-form-select>
-      </b-form-group>
+      <PlotIndicatorSelect
+        v-model="selAvailableIndicator"
+        :columns="columns"
+        @indicator-selected="selAvailableIndicator = $event"
+      />
     </div>
     <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
       <b-form-group class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
@@ -71,7 +57,7 @@
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
-import Reset from 'vue-material-design-icons/CloseCircleOutline.vue';
+import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
 import { computed, ref, watch } from 'vue';
 
@@ -85,15 +71,8 @@ const emit = defineEmits(['update:modelValue']);
 const selColor = ref(randomColor());
 const graphType = ref<ChartType>(ChartType.line);
 const availableGraphTypes = ref(Object.keys(ChartType));
-const indicatorFilter = ref('');
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
-
-const filteredIndicators = computed(() => {
-  return props.columns.filter((col) =>
-    col.toLowerCase().includes(indicatorFilter.value.toLowerCase()),
-  );
-});
 
 function newColor() {
   selColor.value = randomColor();
