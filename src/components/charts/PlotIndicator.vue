@@ -21,23 +21,22 @@
         </b-form-select>
       </b-form-group>
     </div>
-
-    <b-form-group label="Type" label-for="plotTypeSelector">
-      <b-form-select
-        id="plotTypeSelector"
-        v-model="graphType"
-        size="sm"
-        :options="availableGraphTypes"
-        @change="emitIndicator()"
-      >
-      </b-form-select>
-    </b-form-group>
-    <hr />
-    <b-form-group label="Color" label-for="colsel" size="sm">
-      <b-input-group>
-        <b-input-group-prepend>
-          <div :style="{ 'background-color': selColor }" class="colorbox me-2"></div>
-          <!-- <b-form-input
+    <div class="d-xl-flex flex-row flex-grow-1 justify-content-between mt-1">
+      <b-form-group class="" label="Type" label-for="plotTypeSelector">
+        <b-form-select
+          id="plotTypeSelector"
+          v-model="graphType"
+          size="sm"
+          :options="availableGraphTypes"
+          @change="emitIndicator()"
+        >
+        </b-form-select>
+      </b-form-group>
+      <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 flex-shrink-1">
+        <b-input-group>
+          <b-input-group-prepend>
+            <div :style="{ 'background-color': selColor }" class="colorbox me-1"></div>
+            <!-- <b-form-input
             id="colsel"
             v-model="selColor"
             size="sm"
@@ -46,15 +45,16 @@
             :style="{ 'background-color': selColor }"
           >
           </b-form-input> -->
-        </b-input-group-prepend>
+          </b-input-group-prepend>
 
-        <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
-        <b-input-group-append>
-          <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>
-    <div class="d-flex d-flex-columns">
+          <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
+          <b-input-group-append>
+            <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
+    </div>
+    <div class="d-flex flex-row mt-2">
       <b-button
         v-if="addNew"
         class="flex-grow-1"
@@ -105,9 +105,9 @@ const filteredIndicators = computed(() => {
   );
 });
 
-const newColor = () => {
+function newColor() {
   selColor.value = randomColor();
-};
+}
 
 const combinedIndicator = computed(() => {
   if (cancelled.value || !selAvailableIndicator.value) {
@@ -120,14 +120,14 @@ const combinedIndicator = computed(() => {
     },
   };
 });
-const emitIndicator = () => {
+function emitIndicator() {
   emit('update:modelValue', combinedIndicator.value);
-};
+}
 
-const clickCancel = () => {
+function clickCancel() {
   cancelled.value = true;
   emitIndicator();
-};
+}
 
 watch(
   () => props.modelValue,
@@ -150,7 +150,7 @@ watch(selColor, () => {
 
 <style scoped>
 .colorbox {
-  border-radius: 50%;
+  border-radius: 50% !important;
   margin-top: auto;
   margin-bottom: auto;
   height: 25px;
