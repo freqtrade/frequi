@@ -13,7 +13,7 @@
 }
 
 .v-select * {
-    font-size: 0.8rem;
+    font-size: 0.8rem !important;
 }
 
 .modal.show {
@@ -31,6 +31,10 @@
 
 .card {
     padding: 0px;
+}
+
+.vs__open-indicator {
+    transform: none !important;
 }
 
 [data-theme="dark"] {
@@ -137,8 +141,9 @@
     }
 
     // Styles for searchable select
-    .vs__dropdown-toggle {
+    .vs__dropdown-toggle, .vs__clear {
         border-color: lighten($bg-dark, 20%);
+        color: $fg-color;
         // border: 1px solid $fg-color;
     }
 
