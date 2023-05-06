@@ -35,17 +35,7 @@
         <b-input-group>
           <b-input-group-prepend>
             <div :style="{ 'background-color': selColor }" class="colorbox me-1"></div>
-            <!-- <b-form-input
-            id="colsel"
-            v-model="selColor"
-            size="sm"
-            class="colorbox"
-            type="color"
-            :style="{ 'background-color': selColor }"
-          >
-          </b-form-input> -->
           </b-input-group-prepend>
-
           <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
           <b-input-group-append>
             <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
@@ -90,6 +80,7 @@ const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
   addNew: { required: true, type: Boolean },
 });
+
 const emit = defineEmits(['update:modelValue']);
 const selColor = ref(randomColor());
 const graphType = ref<ChartType>(ChartType.line);

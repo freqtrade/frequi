@@ -57,7 +57,7 @@
       </b-button>
     </div>
 
-    <PlotIndicator
+    <plot-indicator
       v-if="selIndicatorName || addNewIndicator"
       v-model="selIndicator"
       class="mt-1"
