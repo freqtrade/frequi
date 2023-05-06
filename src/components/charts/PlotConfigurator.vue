@@ -147,7 +147,7 @@ import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
 import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
 
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 import { deepClone } from '@/shared/deepClone';
@@ -310,6 +310,11 @@ async function loadPlotConfigFromStrategy() {
 function savePlotConfig() {
   plotStore.saveCustomPlotConfig(plotConfigNameLoc.value, plotStore.editablePlotConfig);
 }
+
+watch(selSubPlot, () => {
+  // Deselect Indicator when switching selected plot
+  selIndicatorName.value = '';
+});
 
 onMounted(() => {
   // Deep clone and assign to editable
