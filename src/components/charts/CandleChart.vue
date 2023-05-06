@@ -20,7 +20,7 @@ import { format } from 'date-fns-tz';
 import { computed, onMounted, ref, watch } from 'vue';
 import ECharts from 'vue-echarts';
 
-import { calculateDiff, getDiffColumns } from '@/shared/charts/areaPlotDataset';
+import { calculateDiff, getDiffColumnsFromPlotConfig } from '@/shared/charts/areaPlotDataset';
 import { dataZoomPartial } from '@/shared/charts/chartZoom';
 import { EChartsOption, ScatterSeriesOption } from 'echarts';
 import { BarChart, CandlestickChart, LineChart, ScatterChart } from 'echarts/charts';
@@ -120,7 +120,7 @@ const chartTitle = computed(() => {
 });
 
 const diffCols = computed(() => {
-  return getDiffColumns(props.plotConfig);
+  return getDiffColumnsFromPlotConfig(props.plotConfig);
 });
 
 function updateChart(initial = false) {

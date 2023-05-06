@@ -23,7 +23,7 @@ export function calculateDiff(
   });
 }
 
-export function getDiffColumns(plotConfig: PlotConfig): string[][] {
+export function getDiffColumnsFromPlotConfig(plotConfig: PlotConfig): string[][] {
   const result: string[][] = [];
   if ('main_plot' in plotConfig) {
     Object.entries(plotConfig.main_plot).forEach(([key, value]) => {
@@ -41,8 +41,5 @@ export function getDiffColumns(plotConfig: PlotConfig): string[][] {
       });
     });
   }
-  console.log('getDiffColumns', result);
   return result;
 }
-
-export default calculateDiff;
