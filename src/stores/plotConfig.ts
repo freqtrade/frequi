@@ -17,12 +17,11 @@ function migratePlotConfigs() {
       plotConfigName: localStorage.getItem(PLOT_CONFIG_NAME) || 'default',
     };
     localStorage.setItem(FT_PLOT_CONFIG_KEY, JSON.stringify(res));
-    // TODO: Remove old settings to avoid constant migration
-    // localStorage.removeItem(PLOT_CONFIG);
-    // localStorage.removeItem(PLOT_CONFIG_NAME);
+    localStorage.removeItem(PLOT_CONFIG);
+    localStorage.removeItem(PLOT_CONFIG_NAME);
   }
 }
-// migratePlotConfigs();
+migratePlotConfigs();
 
 export const usePlotConfigStore = defineStore('plotConfig', {
   state: () => {
