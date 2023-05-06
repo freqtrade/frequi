@@ -48,6 +48,10 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     },
     deletePlotConfig(plotConfigName: string) {
       delete this.customPlotConfigs[plotConfigName];
+      if (this.plotConfigName === plotConfigName) {
+        this.plotConfigName =
+          this.availablePlotConfigNames[this.availablePlotConfigNames.length - 1];
+      }
     },
     renamePlotConfig(oldName: string, newName: string) {
       this.customPlotConfigs[newName] = this.customPlotConfigs[oldName];
@@ -56,6 +60,7 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     },
     newPlotConfig(plotConfigName: string) {
       this.editablePlotConfig = deepClone(EMPTY_PLOTCONFIG);
+      this.saveCustomPlotConfig(plotConfigName, this.editablePlotConfig);
       this.plotConfigName = plotConfigName;
     },
 
