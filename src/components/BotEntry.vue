@@ -54,59 +54,39 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import LoginIcon from 'vue-material-design-icons/Login.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import OnlineIcon from 'vue-material-design-icons/Circle.vue';
 import LoggedOutIcon from 'vue-material-design-icons/Cancel.vue';
 import { BotDescriptor } from '@/types';
-import { defineComponent, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'BotEntry',
-  components: {
-    DeleteIcon,
-    EditIcon,
-    LoginIcon,
-    OnlineIcon,
-    LoggedOutIcon,
+const props = defineProps({
+  bot: { required: true, type: Object as () => BotDescriptor },
+  noButtons: { default: false, type: Boolean },
+});
+defineEmits(['edit', 'editLogin']);
+const botStore = useBotStore();
+
+const changeEvent = (v) => {
+  botStore.botStores[props.bot.botId].setAutoRefresh(v);
+};
+const botRemoveModalVisible = ref(false);
+
+const confirmRemoveBot = () => {
+  botRemoveModalVisible.value = false;
+  botStore.removeBot(props.bot.botId);
+  console.log('removing bot.');
+};
+const autoRefreshLoc = computed({
+  get() {
+    return botStore.botStores[props.bot.botId].autoRefresh;
   },
-  props: {
-    bot: { required: true, type: Object as () => BotDescriptor },
-    noButtons: { default: false, type: Boolean },
-  },
-  emits: ['edit', 'editLogin'],
-  setup(props) {
-    const botStore = useBotStore();
-
-    const changeEvent = (v) => {
-      botStore.botStores[props.bot.botId].setAutoRefresh(v);
-    };
-    const botRemoveModalVisible = ref(false);
-
-    const confirmRemoveBot = () => {
-      botRemoveModalVisible.value = false;
-      botStore.removeBot(props.bot.botId);
-      console.log('removing bot.');
-    };
-    const autoRefreshLoc = computed({
-      get() {
-        return botStore.botStores[props.bot.botId].autoRefresh;
-      },
-      set() {
-        // pass
-      },
-    });
-
-    return {
-      botStore,
-      changeEvent,
-      autoRefreshLoc,
-      confirmRemoveBot,
-      botRemoveModalVisible,
-    };
+  set() {
+    // pass
   },
 });
 </script>
