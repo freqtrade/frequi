@@ -24,7 +24,7 @@
     </b-form-group>
     <hr />
     <div>
-      <b-form-group label="Used indicators" label-for="selectedIndicators">
+      <b-form-group label="Indicators in this plot" label-for="selectedIndicators">
         <b-form-select
           id="selectedIndicators"
           v-model="selIndicatorName"
