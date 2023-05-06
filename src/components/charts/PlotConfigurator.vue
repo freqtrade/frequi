@@ -57,12 +57,18 @@
       </b-button>
     </div>
 
+    <PlotIndicatorSelect
+      v-if="addNewIndicator"
+      :columns="columns"
+      class="mt-1"
+      @indicator-selected="addNewIndicatorSelected"
+    />
+
     <plot-indicator
-      v-if="selIndicatorName || addNewIndicator"
+      v-if="selIndicatorName"
       v-model="selIndicator"
       class="mt-1"
       :columns="columns"
-      :add-new="addNewIndicator"
     />
     <hr />
 
@@ -141,16 +147,17 @@
 </template>
 
 <script setup lang="ts">
-import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
 import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
+import { EMPTY_PLOTCONFIG, IndicatorConfig, PlotConfig } from '@/types';
 import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
+import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
-import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
+import { deepClone } from '@/shared/deepClone';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
-import { deepClone } from '@/shared/deepClone';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 defineProps({
   columns: { required: true, type: Array as () => string[] },
@@ -309,6 +316,15 @@ async function loadPlotConfigFromStrategy() {
 
 function savePlotConfig() {
   plotStore.saveCustomPlotConfig(plotConfigNameLoc.value, plotStore.editablePlotConfig);
+}
+
+function addNewIndicatorSelected(indicator?: string) {
+  addNewIndicator.value = false;
+
+  if (indicator) {
+    addIndicator({ [indicator]: {} });
+    selIndicatorName.value = indicator;
+  }
 }
 
 watch(selSubPlot, () => {

@@ -1,12 +1,5 @@
 <template>
   <div>
-    <div v-if="addNew">
-      <PlotIndicatorSelect
-        v-model="selAvailableIndicator"
-        :columns="columns"
-        @indicator-selected="selAvailableIndicator = $event"
-      />
-    </div>
     <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
       <b-form-group class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
         <b-form-select
@@ -29,42 +22,18 @@
         </b-input-group>
       </b-form-group>
     </div>
-    <div class="d-flex flex-row mt-2">
-      <b-button
-        v-if="addNew"
-        class="col"
-        variant="secondary"
-        title="Add "
-        size="sm"
-        @click="clickCancel"
-      >
-        Cancel
-      </b-button>
-      <b-button
-        v-if="addNew"
-        class="ms-1 col"
-        variant="primary"
-        title="Add "
-        size="sm"
-        @click="emitIndicator"
-      >
-        Save indicator
-      </b-button>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
-import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
   modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
   columns: { required: true, type: Array as () => string[] },
-  addNew: { required: true, type: Boolean },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -93,19 +62,15 @@ function emitIndicator() {
   emit('update:modelValue', combinedIndicator.value);
 }
 
-function clickCancel() {
-  cancelled.value = true;
-  emitIndicator();
-}
-
 watch(
   () => props.modelValue,
   () => {
     [selAvailableIndicator.value] = Object.keys(props.modelValue);
     cancelled.value = false;
     if (selAvailableIndicator.value && props.modelValue) {
-      selColor.value = props.modelValue[selAvailableIndicator.value].color || randomColor();
-      graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
+      const xx = props.modelValue[selAvailableIndicator.value];
+      selColor.value = xx.color || randomColor();
+      graphType.value = xx.type || ChartType.line;
     }
   },
   {
@@ -114,9 +79,7 @@ watch(
 );
 
 watch([selColor, graphType], () => {
-  if (!props.addNew) {
-    emitIndicator();
-  }
+  emitIndicator();
 });
 </script>
 
