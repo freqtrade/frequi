@@ -64,32 +64,41 @@
     />
     <hr />
 
-    <div>
-      <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
+    <div class="d-flex flex-row">
+      <b-button
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        title="Reset to last saved configuration"
+        @click="loadPlotConfig"
+        >Reset</b-button
+      >
+
+      <!--
+        Does Resetting a config to "nothing" make sense, or can this be done via "delete / create"?
+        <b-button
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        title="Start with empty configuration"
+        @click="clearConfig"
+        >Reset</b-button
+      > -->
       <b-button
         :disabled="
           (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
           !botStore.activeBot.isBotOnline
         "
-        class="ms-1"
+        class="ms-1 col"
         variant="secondary"
         size="sm"
         @click="loadPlotConfigFromStrategy"
       >
         From strategy
       </b-button>
-
-      <b-button
-        class="ms-1"
-        variant="secondary"
-        size="sm"
-        title="Load configuration from text box below"
-        @click="clearConfig"
-        >Reset</b-button
-      >
       <b-button
         id="showButton"
-        class="ms-1"
+        class="ms-1 col"
         variant="secondary"
         size="sm"
         title="Show configuration for easy transfer to a strategy"
@@ -98,16 +107,7 @@
       >
 
       <b-button
-        v-if="showConfig"
-        class="ms-1"
-        variant="secondary"
-        size="sm"
-        title="Load configuration from text box below"
-        @click="loadConfigFromString"
-        >Load from String</b-button
-      >
-      <b-button
-        class="ms-1"
+        class="ms-1 col"
         variant="primary"
         size="sm"
         data-toggle="tooltip"
@@ -116,6 +116,15 @@
         >Save</b-button
       >
     </div>
+    <b-button
+      v-if="showConfig"
+      class="ms-1 mt-1"
+      variant="secondary"
+      size="sm"
+      title="Load configuration from text box below"
+      @click="loadConfigFromString"
+      >Load from String</b-button
+    >
     <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
       <b-form-textarea
         id="TextArea"
