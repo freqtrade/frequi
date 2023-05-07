@@ -298,10 +298,12 @@ function loadConfigFromString() {
     plotStore.editablePlotConfig = tempPlotConfig.value;
   }
 }
-function clearConfig() {
-  // Use empty config
-  plotStore.editablePlotConfig = { ...EMPTY_PLOTCONFIG };
-}
+
+// function clearConfig() {
+//   // Use empty config
+//   plotStore.editablePlotConfig = { ...EMPTY_PLOTCONFIG };
+// }
+
 async function loadPlotConfigFromStrategy() {
   if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy.strategy) {
     showAlert(`No strategy selected, can't load plot config.`);
