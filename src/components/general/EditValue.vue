@@ -4,11 +4,13 @@
       <slot v-if="!editing"> </slot>
       <b-form-input v-else v-model="localName" size="sm"> </b-form-input>
     </div>
-    <div class="flex-grow-2 mt-auto">
+    <div
+      class="flex-grow-2 mt-auto d-flex gap-1 ms-1"
+      :class="alignVertical ? 'flex-column' : 'flex-row'"
+    >
       <template v-if="allowEdit && !(addNew || editing)">
         <b-button
           size="sm"
-          class="ms-1"
           variant="secondary"
           :title="`Edit this ${editableName}.`"
           @click="editing = true"
@@ -17,7 +19,6 @@
         </b-button>
         <b-button
           size="sm"
-          class="ms-1"
           variant="secondary"
           :title="`Delete this ${editableName}.`"
           @click="$emit('delete', modelValue)"
@@ -29,7 +30,6 @@
         v-if="allowAdd && !(addNew || editing)"
         size="sm"
         :title="`Add new ${editableName}.`"
-        class="ms-1"
         variant="primary"
         @click="addNewClick"
         ><AddIcon :size="16" />
@@ -38,7 +38,6 @@
         <b-button
           size="sm"
           :title="`Add new '${editableName}`"
-          class="ms-1"
           variant="primary"
           @click="saveNewName"
         >
@@ -77,6 +76,10 @@ const props = defineProps({
   editableName: {
     type: String,
     required: true,
+  },
+  alignVertical: {
+    type: Boolean,
+    default: false,
   },
 });
 
