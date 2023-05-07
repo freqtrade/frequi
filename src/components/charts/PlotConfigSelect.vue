@@ -15,7 +15,7 @@
         size="sm"
         class="ms-1"
         variant="secondary"
-        title="Edit this plot configuration"
+        :title="`Edit this ${editableName}.`"
         @click="editing = true"
       >
         <EditIcon :size="16" />
@@ -24,19 +24,24 @@
         size="sm"
         class="ms-1"
         variant="secondary"
-        title="Delete this plot configuration"
+        :title="`Delete this ${editableName}.`"
         @click="plotStore.deletePlotConfig(plotStore.plotConfigName)"
       >
         <DeleteIcon :size="16" />
       </b-button>
-      <b-button size="sm" title="Add new config" class="ms-1" variant="primary" @click="addNewClick"
+      <b-button
+        size="sm"
+        :title="`Add new ${editableName}.`"
+        class="ms-1"
+        variant="primary"
+        @click="addNewClick"
         ><AddIcon :size="16" />
       </b-button>
     </template>
     <template v-if="allowEdit && (addNew || editing)">
       <b-button
         size="sm"
-        title="Add new Plot configuration"
+        :title="`Add new '${editableName}`"
         class="ms-1"
         variant="primary"
         @click="saveNewName"
@@ -64,6 +69,10 @@ defineProps({
   allowEdit: {
     type: Boolean,
     default: false,
+  },
+  editableName: {
+    type: String,
+    default: 'plot configuration',
   },
 });
 const plotStore = usePlotConfigStore();
