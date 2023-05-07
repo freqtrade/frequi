@@ -4,7 +4,7 @@
       <slot v-if="!editing"> </slot>
       <b-form-input v-else v-model="localName" size="sm"> </b-form-input>
     </div>
-    <div class="flex-grow-2">
+    <div class="flex-grow-2 mt-auto">
       <template v-if="allowEdit && !(addNew || editing)">
         <b-button
           size="sm"
@@ -34,7 +34,7 @@
         @click="addNewClick"
         ><AddIcon :size="16" />
       </b-button>
-      <template v-if="allowEdit && (addNew || editing)">
+      <template v-if="addNew || editing">
         <b-button
           size="sm"
           :title="`Add new '${editableName}`"
@@ -59,7 +59,7 @@ import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -101,6 +101,12 @@ function addNewClick() {
   addNew.value = true;
   editing.value = true;
 }
+watch(
+  () => props.modelValue,
+  () => {
+    localName.value = props.modelValue;
+  },
+);
 
 function saveNewName() {
   editing.value = false;
