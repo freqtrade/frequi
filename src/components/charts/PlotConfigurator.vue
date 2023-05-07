@@ -351,6 +351,14 @@ watch(selSubPlot, () => {
   selIndicatorName.value = '';
 });
 
+watch(
+  () => plotStore.plotConfigName,
+  () => {
+    selIndicatorName.value = '';
+    // selSubPlot.value = '';
+  },
+);
+
 onMounted(() => {
   // Deep clone and assign to editable
   plotStore.editablePlotConfig = deepClone(plotStore.plotConfig);
