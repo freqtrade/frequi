@@ -1,51 +1,54 @@
 <template>
   <div class="d-flex flex-row">
-    <slot v-if="!editing"> </slot>
-    <b-form-input v-else v-model="localName" size="sm"> </b-form-input>
-
-    <template v-if="allowEdit && !(addNew || editing)">
+    <div class="flex-grow-1">
+      <slot v-if="!editing"> </slot>
+      <b-form-input v-else v-model="localName" size="sm"> </b-form-input>
+    </div>
+    <div class="flex-grow-2">
+      <template v-if="allowEdit && !(addNew || editing)">
+        <b-button
+          size="sm"
+          class="ms-1"
+          variant="secondary"
+          :title="`Edit this ${editableName}.`"
+          @click="editing = true"
+        >
+          <EditIcon :size="16" />
+        </b-button>
+        <b-button
+          size="sm"
+          class="ms-1"
+          variant="secondary"
+          :title="`Delete this ${editableName}.`"
+          @click="$emit('delete', modelValue)"
+        >
+          <DeleteIcon :size="16" />
+        </b-button>
+      </template>
       <b-button
+        v-if="allowAdd && !(addNew || editing)"
         size="sm"
-        class="ms-1"
-        variant="secondary"
-        :title="`Edit this ${editableName}.`"
-        @click="editing = true"
-      >
-        <EditIcon :size="16" />
-      </b-button>
-      <b-button
-        size="sm"
-        class="ms-1"
-        variant="secondary"
-        :title="`Delete this ${editableName}.`"
-        @click="$emit('delete', modelValue)"
-      >
-        <DeleteIcon :size="16" />
-      </b-button>
-    </template>
-    <b-button
-      v-if="allowAdd && !(addNew || editing)"
-      size="sm"
-      :title="`Add new ${editableName}.`"
-      class="ms-1"
-      variant="primary"
-      @click="addNewClick"
-      ><AddIcon :size="16" />
-    </b-button>
-    <template v-if="allowEdit && (addNew || editing)">
-      <b-button
-        size="sm"
-        :title="`Add new '${editableName}`"
+        :title="`Add new ${editableName}.`"
         class="ms-1"
         variant="primary"
-        @click="saveNewName"
-      >
-        <CheckIcon :size="16" />
+        @click="addNewClick"
+        ><AddIcon :size="16" />
       </b-button>
-      <b-button size="sm" title="Abort" class="ms-1" variant="secondary" @click="abort">
-        <CloseIcon :size="16" />
-      </b-button>
-    </template>
+      <template v-if="allowEdit && (addNew || editing)">
+        <b-button
+          size="sm"
+          :title="`Add new '${editableName}`"
+          class="ms-1"
+          variant="primary"
+          @click="saveNewName"
+        >
+          <CheckIcon :size="16" />
+        </b-button>
+        <b-button size="sm" title="Abort" class="ms-1" variant="secondary" @click="abort">
+          <CloseIcon :size="16" />
+        </b-button>
+      </template>
+    </div>
   </div>
 </template>
 
