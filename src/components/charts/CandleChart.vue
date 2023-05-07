@@ -330,7 +330,7 @@ function updateChart(initial = false) {
   if ('main_plot' in props.plotConfig) {
     Object.entries(props.plotConfig.main_plot).forEach(([key, value]) => {
       const col = columns.findIndex((el) => el === key);
-      if (col > 1) {
+      if (col > 0) {
         if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
           chartOptions.value.legend.data.push(key);
         }
