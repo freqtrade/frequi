@@ -2,6 +2,7 @@
   <edit-value
     v-model="plotStore.plotConfigName"
     :allow-edit="allowEdit"
+    :allow-add="allowEdit"
     editable-name="plot configuration"
     @rename="plotStore.renamePlotConfig"
     @delete="plotStore.deletePlotConfig"

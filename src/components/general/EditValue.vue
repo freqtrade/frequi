@@ -22,15 +22,16 @@
       >
         <DeleteIcon :size="16" />
       </b-button>
-      <b-button
-        size="sm"
-        :title="`Add new ${editableName}.`"
-        class="ms-1"
-        variant="primary"
-        @click="addNewClick"
-        ><AddIcon :size="16" />
-      </b-button>
     </template>
+    <b-button
+      v-if="allowAdd && !(addNew || editing)"
+      size="sm"
+      :title="`Add new ${editableName}.`"
+      class="ms-1"
+      variant="primary"
+      @click="addNewClick"
+      ><AddIcon :size="16" />
+    </b-button>
     <template v-if="allowEdit && (addNew || editing)">
       <b-button
         size="sm"
@@ -63,6 +64,10 @@ const props = defineProps({
     required: true,
   },
   allowEdit: {
+    type: Boolean,
+    default: false,
+  },
+  allowAdd: {
     type: Boolean,
     default: false,
   },
