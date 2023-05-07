@@ -5,23 +5,22 @@
     </b-form-group>
     <div class="col-mb-3">
       <hr />
-
-      <b-form-group label="Target" label-for="FieldSel">
-        <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="3">
-        </b-form-select>
+      <b-form-group label="Target Plot" label-for="FieldSel">
+        <edit-value
+          v-model="selSubPlot"
+          :allow-edit="!isMainPlot"
+          allow-add
+          editable-name="plot configuration"
+          align-vertical
+          @new="addSubplot"
+          @delete="deleteSubplot"
+          @rename="renameSubplot"
+        >
+          <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
+          </b-form-select>
+        </edit-value>
       </b-form-group>
     </div>
-    <b-form-group label="Add new plot" label-for="newSubPlot">
-      <b-input-group size="sm">
-        <b-form-input id="newSubPlot" v-model="newSubplotName" class="addPlot"></b-form-input>
-        <b-input-group-append>
-          <b-button variant="primary" :disabled="!newSubplotName" @click="addSubplot"
-            ><AddIcon :size="16"
-          /></b-button>
-          <b-button v-if="selSubPlot && selSubPlot != 'main_plot'" @click="delSubplot">-</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>
     <hr />
     <div>
       <b-form-group label="Indicators in this plot" label-for="selectedIndicators">
@@ -150,11 +149,11 @@
 </template>
 
 <script setup lang="ts">
+import EditValue from '@/components/general/EditValue.vue';
 import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
-import { EMPTY_PLOTCONFIG, IndicatorConfig, PlotConfig } from '@/types';
-import AddIcon from 'vue-material-design-icons/PlusBoxOutline.vue';
+import { IndicatorConfig, PlotConfig } from '@/types';
 import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
 import { deepClone } from '@/shared/deepClone';
@@ -172,7 +171,6 @@ const plotStore = usePlotConfigStore();
 const botStore = useBotStore();
 
 const plotConfigNameLoc = ref('default');
-const newSubplotName = ref('');
 const selIndicatorName = ref('');
 const addNewIndicator = ref(false);
 const showConfig = ref(false);
@@ -273,19 +271,24 @@ function removeIndicator() {
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   selIndicatorName.value = '';
 }
-function addSubplot() {
+function addSubplot(newSubplotName: string) {
   plotStore.editablePlotConfig.subplots = {
     ...plotStore.editablePlotConfig.subplots,
-    [newSubplotName.value]: {},
+    [newSubplotName]: {},
   };
-  selSubPlot.value = newSubplotName.value;
-  newSubplotName.value = '';
+  selSubPlot.value = newSubplotName;
 }
 
-function delSubplot() {
-  delete plotStore.editablePlotConfig.subplots[selSubPlot.value];
-  plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
-  selSubPlot.value = '';
+function deleteSubplot(subplotName: string) {
+  delete plotStore.editablePlotConfig.subplots[subplotName];
+  // plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
+  selSubPlot.value = subplots.value[subplots.value.length - 1];
+}
+
+function renameSubplot(oldName: string, newName: string) {
+  plotStore.editablePlotConfig.subplots[newName] = plotStore.editablePlotConfig.subplots[oldName];
+  delete plotStore.editablePlotConfig.subplots[oldName];
+  selSubPlot.value = newName;
 }
 
 function loadPlotConfig() {
