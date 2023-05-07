@@ -27,6 +27,7 @@
         <b-form-select
           id="selectedIndicators"
           v-model="selIndicatorName"
+          :disabled="addNewIndicator"
           :options="usedColumns"
           :select-size="4"
         >
@@ -79,6 +80,7 @@
         class="ms-1 col"
         variant="secondary"
         size="sm"
+        :disabled="addNewIndicator"
         title="Reset to last saved configuration"
         @click="loadPlotConfig"
         >Reset</b-button
@@ -90,6 +92,7 @@
         class="ms-1 col"
         variant="secondary"
         size="sm"
+        :disabled="addNewIndicator"
         title="Start with empty configuration"
         @click="clearConfig"
         >Reset</b-button
@@ -97,7 +100,8 @@
       <b-button
         :disabled="
           (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
-          !botStore.activeBot.isBotOnline
+          !botStore.activeBot.isBotOnline ||
+          addNewIndicator
         "
         class="ms-1 col"
         variant="secondary"
@@ -111,6 +115,7 @@
         class="ms-1 col"
         variant="secondary"
         size="sm"
+        :disabled="addNewIndicator"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
         >{{ showConfig ? 'Hide' : 'Show' }}</b-button
@@ -121,6 +126,7 @@
         variant="primary"
         size="sm"
         data-toggle="tooltip"
+        :disabled="addNewIndicator"
         title="Save configuration"
         @click="savePlotConfig"
         >Save</b-button
