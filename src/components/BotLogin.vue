@@ -86,7 +86,7 @@
 import { useUserService } from '@/shared/userService';
 import { AuthPayload, AuthStorageWithBotId } from '@/types';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
@@ -106,7 +106,6 @@ const botStore = useBotStore();
 const nameState = ref<boolean | ''>('');
 const pwdState = ref<boolean | ''>('');
 const urlState = ref<boolean | ''>('');
-const urlDuplicate = ref(false);
 const errorMessage = ref<string>('');
 const errorMessageCORS = ref<boolean>(false);
 const formRef = ref<HTMLFormElement>();
@@ -122,15 +121,16 @@ const emitLoginResult = (value: boolean) => {
   emit('loginResult', value);
 };
 
+const urlDuplicate = computed<boolean>(() => {
+  const bots = Object.values(botStore.availableBots).find((bot) => bot.botUrl === auth.value.url);
+  return bots !== undefined;
+});
+
 const checkFormValidity = () => {
   const valid = formRef.value?.checkValidity();
   nameState.value = valid || auth.value.username !== '';
   pwdState.value = valid || auth.value.password !== '';
   urlState.value = valid || auth.value.url !== '';
-  if (urlState.value) {
-    const bots = Object.values(botStore.availableBots).find((bot) => bot.botUrl === auth.value.url);
-    urlDuplicate.value = bots !== undefined;
-  }
   return valid;
 };
 
@@ -142,7 +142,6 @@ const resetLogin = () => {
   nameState.value = '';
   pwdState.value = '';
   urlState.value = '';
-  urlDuplicate.value = false;
   errorMessage.value = '';
   botEdit.value = false;
 };
