@@ -22,13 +22,20 @@
         </b-input-group>
       </b-form-group>
     </div>
+    <PlotIndicatorSelect
+      v-if="graphType === ChartType.line"
+      v-model="fillTo"
+      :columns="columns"
+      class="mt-1"
+      label="Select indicator to add"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
-
+import PlotIndicatorSelect from '@/components/charts/PlotIndicatorSelect.vue';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
@@ -42,22 +49,28 @@ const graphType = ref<ChartType>(ChartType.line);
 const availableGraphTypes = ref(Object.keys(ChartType));
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
+const fillTo = ref('');
 
 function newColor() {
   selColor.value = randomColor();
 }
 
-const combinedIndicator = computed(() => {
+const combinedIndicator = computed<IndicatorConfig>(() => {
   if (cancelled.value || !selAvailableIndicator.value) {
     return {};
   }
+  const val: IndicatorConfig = {
+    color: selColor.value,
+    type: graphType.value,
+  };
+  if (fillTo.value && graphType.value === ChartType.line) {
+    val.fill_to = fillTo.value;
+  }
   return {
-    [selAvailableIndicator.value]: {
-      color: selColor.value,
-      type: graphType.value,
-    },
+    [selAvailableIndicator.value]: val,
   };
 });
+
 function emitIndicator() {
   emit('update:modelValue', combinedIndicator.value);
 }
@@ -71,6 +84,7 @@ watch(
       const xx = props.modelValue[selAvailableIndicator.value];
       selColor.value = xx.color || randomColor();
       graphType.value = xx.type || ChartType.line;
+      fillTo.value = xx.fill_to || '';
     }
   },
   {
@@ -78,7 +92,7 @@ watch(
   },
 );
 
-watch([selColor, graphType], () => {
+watch([selColor, graphType, fillTo], () => {
   emitIndicator();
 });
 </script>
