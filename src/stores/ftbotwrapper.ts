@@ -283,7 +283,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     },
     async pingAll() {
       await Promise.all(
-        Object.entries(this.botStores).map(async ([_, v]) => {
+        Object.values(this.botStores).map(async (v) => {
           try {
             await v.fetchPing();
           } catch {
@@ -293,7 +293,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       );
     },
     allGetState() {
-      Object.entries(this.botStores).map(async ([_, v]) => {
+      Object.values(this.botStores).map(async (v) => {
         try {
           await v.getState();
         } catch {

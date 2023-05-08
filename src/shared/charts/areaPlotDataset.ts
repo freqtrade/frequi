@@ -33,7 +33,7 @@ export function getDiffColumnsFromPlotConfig(plotConfig: PlotConfig): string[][]
     });
   }
   if ('subplots' in plotConfig) {
-    Object.entries(plotConfig.subplots).forEach(([_, subplots]) => {
+    Object.values(plotConfig.subplots).forEach((subplots) => {
       Object.entries(subplots).forEach(([key, value]) => {
         if (value.fill_to) {
           result.push([key, value.fill_to]);
