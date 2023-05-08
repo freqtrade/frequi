@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite';
 import createVuePlugin from '@vitejs/plugin-vue';
 import { resolve } from 'path';
+import Icons from 'unplugin-icons/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [createVuePlugin({})],
+  plugins: [
+    createVuePlugin({}),
+    Icons({
+      compiler: 'vue3',
+    }),
+  ],
   resolve: {
     dedupe: ['vue'],
     alias: {

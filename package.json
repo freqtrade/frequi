@@ -44,6 +44,7 @@
   "devDependencies": {
     "@cypress/vite-dev-server": "^5.0.5",
     "@cypress/vue": "^5.0.5",
+    "@iconify-json/mdi": "^1.1.50",
     "@types/echarts": "^4.9.17",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
@@ -62,6 +63,7 @@
     "prettier": "^2.8.8",
     "sass": "^1.62.1",
     "typescript": "~5.0.4",
+    "unplugin-icons": "^0.16.1",
     "vite": "^4.3.4",
     "vitest": "^0.31.0",
     "vue-tsc": "^1.6.4"
