@@ -23,6 +23,14 @@
           :state="urlState === '' ? null : urlState"
           @keydown.enter="handleOk"
         ></b-form-input>
+        <b-alert
+          v-if="urlDuplicate"
+          class="mt-2 p-1 alert-wrap"
+          :model-value="true"
+          variant="warning"
+        >
+          This URL is already in use by another bot.
+        </b-alert>
       </b-form-group>
       <b-form-group
         :state="nameState"
@@ -98,6 +106,7 @@ const botStore = useBotStore();
 const nameState = ref<boolean | ''>('');
 const pwdState = ref<boolean | ''>('');
 const urlState = ref<boolean | ''>('');
+const urlDuplicate = ref(false);
 const errorMessage = ref<string>('');
 const errorMessageCORS = ref<boolean>(false);
 const formRef = ref<HTMLFormElement>();
@@ -117,6 +126,11 @@ const checkFormValidity = () => {
   const valid = formRef.value?.checkValidity();
   nameState.value = valid || auth.value.username !== '';
   pwdState.value = valid || auth.value.password !== '';
+  urlState.value = valid || auth.value.url !== '';
+  if (urlState.value) {
+    const bots = Object.values(botStore.availableBots).find((bot) => bot.botUrl === auth.value.url);
+    urlDuplicate.value = bots !== undefined;
+  }
   return valid;
 };
 
@@ -128,6 +142,7 @@ const resetLogin = () => {
   nameState.value = '';
   pwdState.value = '';
   urlState.value = '';
+  urlDuplicate.value = false;
   errorMessage.value = '';
   botEdit.value = false;
 };
