@@ -348,7 +348,7 @@ function updateChart(initial = false) {
             const areaSeries = generateAreaCandleSeries(colDate, fillCol, key, fillValue, 0);
 
             chartOptions.value.series[chartOptions.value.series.length - 1]['stack'] = key;
-            chartOptions.value?.series.push(areaSeries);
+            chartOptions.value.series.push(areaSeries);
           }
           chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
         }
@@ -418,6 +418,26 @@ function updateChart(initial = false) {
           }
           if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
             chartOptions.value.series.push(generateCandleSeries(colDate, col, sk, sv, plotIndex));
+            if (sv.fill_to) {
+              // Assign
+              const fillColKey = `${sk}-${sv.fill_to}`;
+              const fillCol = columns.findIndex((el) => el === fillColKey);
+              const fillValue: IndicatorConfig = {
+                color: sv.color,
+                type: ChartType.line,
+              };
+              const areaSeries = generateAreaCandleSeries(
+                colDate,
+                fillCol,
+                sk,
+                fillValue,
+                plotIndex,
+              );
+
+              chartOptions.value.series[chartOptions.value.series.length - 1]['stack'] = sk;
+              chartOptions.value.series.push(areaSeries);
+            }
+            chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
           }
         } else {
           console.log(`element ${sk} was not found in the columns.`);
