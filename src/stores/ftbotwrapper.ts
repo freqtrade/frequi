@@ -234,7 +234,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         // Ensure all bots status is correct.
         await this.pingAll();
 
-        const botStoreUpdates: Promise<any>[] = [];
+        const botStoreUpdates: Promise<BotState>[] = [];
         this.allBotStores.forEach((bot) => {
           if (bot.isBotOnline && !bot.botStatusAvailable) {
             botStoreUpdates.push(bot.getState());
