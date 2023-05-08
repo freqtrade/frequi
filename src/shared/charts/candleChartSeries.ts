@@ -49,6 +49,7 @@ export function generateAreaCandleSeries(
 
   const areaOptions: LineSeriesOption = {
     stack: key,
+    stackStrategy: 'all',
     lineStyle: {
       opacity: 0,
     },
