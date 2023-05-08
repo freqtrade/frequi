@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row">
-    <b-form-group class="flex-grow-1" label="Select indicator to add" label-for="indicatorSelector">
+    <b-form-group class="flex-grow-1" :label="label" label-for="indicatorSelector">
       <v-select
         v-model="selAvailableIndicator"
         :options="columns"
@@ -10,35 +10,40 @@
       >
       </v-select>
     </b-form-group>
-    <b-button
-      size="sm"
-      title="Abort"
-      class="ms-1 mt-auto"
-      variant="secondary"
-      @click="$emit('indicatorSelected', null)"
-    >
+    <b-button size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
       <CloseIcon :size="16" />
     </b-button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import vSelect from 'vue-select';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
 
-defineProps({
+const props = defineProps({
+  modelValue: { required: false, default: '', type: String },
   columns: { required: true, type: Array as () => string[] },
+  label: { required: true, type: String },
 });
-const emit = defineEmits(['indicatorSelected']);
+const emit = defineEmits(['update:modelValue', 'indicatorSelected']);
 
-const selAvailableIndicator = ref('');
+const selAvailableIndicator = ref(props.modelValue || '');
 
 function emitIndicator() {
-  if (selAvailableIndicator.value) {
-    emit('indicatorSelected', selAvailableIndicator.value);
-  }
+  emit('indicatorSelected', selAvailableIndicator.value);
+  emit('update:modelValue', selAvailableIndicator.value);
 }
+function abort() {
+  selAvailableIndicator.value = '';
+  emitIndicator();
+}
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    selAvailableIndicator.value = newValue;
+  },
+);
 </script>
 
 <style scoped></style>

@@ -64,6 +64,7 @@
       v-if="addNewIndicator"
       :columns="columns"
       class="mt-1"
+      label="Select indicator to add"
       @indicator-selected="addNewIndicatorSelected"
     />
 
