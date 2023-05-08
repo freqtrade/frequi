@@ -96,7 +96,10 @@ const formatCurrency = (value) => {
 const chartValues = computed<BalanceValues[]>(() => {
   return balanceCurrencies.value?.map((v) => {
     return {
-      balance: v.balance,
+      balance:
+        showBotOnly.value && canUseBotBalance.value && v.bot_owned != undefined
+          ? v.bot_owned
+          : v.balance,
       currency: v.currency,
       est_stake:
         showBotOnly.value && canUseBotBalance.value ? v.est_stake_bot ?? v.est_stake : v.est_stake,
