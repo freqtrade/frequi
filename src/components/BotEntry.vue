@@ -11,18 +11,18 @@
         switch
         @change="changeEvent"
       >
-        <OnlineIcon
+        <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
-          :size="18"
-          class="ms-2 me-1 align-middle"
-          :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
-        ></OnlineIcon>
-        <LoggedOutIcon
-          v-else
-          class="offline"
-          title="Login info expired, please login again."
-        ></LoggedOutIcon>
+        >
+          <OnlineIcon
+            class="ms-2 me-1 align-middle"
+            :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
+          ></OnlineIcon>
+        </div>
+        <div v-else title="Login info expired, please login again.">
+          <LoggedOutIcon class="offline" />
+        </div>
       </b-form-checkbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
         <b-button
@@ -32,13 +32,13 @@
           title="Edit bot"
           @click="$emit('edit')"
         >
-          <EditIcon :size="16" />
+          <EditIcon />
         </b-button>
         <b-button v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
-          <LoginIcon :size="16" />
+          <LoginIcon />
         </b-button>
         <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
-          <DeleteIcon :size="16" title="Delete Bot" />
+          <DeleteIcon />
         </b-button>
       </div>
     </div>
@@ -55,11 +55,11 @@
 </template>
 
 <script setup lang="ts">
-import EditIcon from 'vue-material-design-icons/Pencil.vue';
-import LoginIcon from 'vue-material-design-icons/Login.vue';
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import OnlineIcon from 'vue-material-design-icons/Circle.vue';
-import LoggedOutIcon from 'vue-material-design-icons/Cancel.vue';
+import EditIcon from '~icons/mdi/Pencil.vue';
+import LoginIcon from '~icons/mdi/Login.vue';
+import DeleteIcon from '~icons/mdi/Delete.vue';
+import OnlineIcon from '~icons/mdi/Circle.vue';
+import LoggedOutIcon from '~icons/mdi/Cancel.vue';
 import { BotDescriptor } from '@/types';
 import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
