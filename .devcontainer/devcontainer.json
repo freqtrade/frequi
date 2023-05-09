@@ -1,35 +1,41 @@
 /* cSpell:disable */
 {
-	"name": "frequi",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	"forwardPorts": [
-		3000
-	],
-	"mounts": [
-		"source=frequi-bashhistory,target=/home/node/commandhistory,type=volume"
-	],
-	"remoteUser": "node",
-	"settings": {
-		// "editor.formatOnSave": true,
-		"editor.codeActionsOnSave": {
-			"source.fixAll.eslint": true
-		},
-		"emmet.includeLanguages": {
-			"vue": "html",
-			"vue-html": "html"
-		},
-		"workbench.iconTheme": "vscode-icons",
-	},
-	"extensions": [
-		"vue.volar",
-		"dbaeumer.vscode-eslint",
-		"yzhang.markdown-all-in-one",
-		"marquesmps.dockerfile-validator",
-		"streetsidesoftware.code-spell-checker",
-		"vscode-icons-team.vscode-icons",
-		"hediet.vscode-drawio",
-	],
-	"postCreateCommand": "yarn install",
+  "name": "frequi",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [
+    3000
+  ],
+  "mounts": [
+    "source=frequi-bashhistory,target=/home/node/commandhistory,type=volume"
+  ],
+  "remoteUser": "node",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        },
+        "emmet.includeLanguages": {
+          "vue": "html",
+          "vue-html": "html"
+        },
+        "workbench.iconTheme": "vscode-icons"
+      },
+      "extensions": [
+        "vue.volar",
+        "dbaeumer.vscode-eslint",
+        "yzhang.markdown-all-in-one",
+        "marquesmps.dockerfile-validator",
+        "streetsidesoftware.code-spell-checker",
+        "vscode-icons-team.vscode-icons",
+        "hediet.vscode-drawio",
+        "ZixuanChen.vitest-explorer",
+        "antfu.iconify"
+      ]
+    }
+  },
+  "postCreateCommand": "yarn install",
 }
