@@ -9,16 +9,16 @@
           :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
           @click="showBotOnly = !showBotOnly"
         >
-          <RobotIcon v-if="showBotOnly" :size="16" />
-          <AccountIcon v-else :size="16" />
+          <RobotIcon v-if="showBotOnly" />
+          <AccountIcon v-else />
         </b-button>
         <b-button
           size="sm"
           :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           @click="hideSmallBalances = !hideSmallBalances"
         >
-          <HideIcon v-if="hideSmallBalances" :size="16" />
-          <ShowIcon v-else :size="16" />
+          <HideIcon v-if="hideSmallBalances" />
+          <ShowIcon v-else />
         </b-button>
 
         <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance"

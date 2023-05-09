@@ -13,7 +13,7 @@
             title="Delete trade"
             @click="removePairLock(row.item)"
           >
-            <DeleteIcon :size="16" />
+            <DeleteIcon />
           </b-button>
         </template>
       </b-table>

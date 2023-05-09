@@ -36,7 +36,7 @@ const cancelOpenOrderHandler = (item: Trade) => {
       title="Actions"
       @click="popoverOpen = !popoverOpen"
     >
-      <ActionIcon :size="16" title="Actions" />
+      <ActionIcon />
     </b-button>
     <b-popover
       :target="`btn-actions-${id}`"
@@ -57,7 +57,7 @@ const cancelOpenOrderHandler = (item: Trade) => {
         @cancel-open-order="cancelOpenOrderHandler"
       />
       <b-button class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
-        <CancelIcon :size="16" title="Close popup" class="me-1" />Close Actions menu
+        <CancelIcon class="me-1" />Close Actions menu
       </b-button>
     </b-popover>
   </div>
