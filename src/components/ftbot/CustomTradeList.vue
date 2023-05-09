@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPrice } from '@/shared/formatters';
 import { Trade } from '@/types';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
 import { computed, ref } from 'vue';
@@ -60,19 +59,6 @@ const rows = computed(() => props.trades.length);
 const filteredTrades = computed(() => {
   return props.trades.slice((currentPage.value - 1) * perPage, currentPage.value * perPage);
 });
-const formatPriceWithDecimals = (price) => {
-  return formatPrice(price, props.stakeCurrencyDecimals);
-};
-
-const handleContextMenuEvent = (item, index, event) => {
-  // stop browser context menu from appearing
-  if (!props.activeTrades) {
-    return;
-  }
-  event.preventDefault();
-  // log the selected item to the console
-  console.log(item);
-};
 
 const tradeClick = (trade) => {
   botStore.activeBot.setDetailTrade(trade);
