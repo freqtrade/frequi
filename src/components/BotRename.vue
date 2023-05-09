@@ -11,11 +11,11 @@
 
     <div class="d-flex ms-2">
       <b-button type="submit" size="sm" title="Save">
-        <CheckIcon />
+        <i-mdi-check />
       </b-button>
 
       <b-button class="ms-1" size="sm" title="Cancel" @click="$emit('cancelled')">
-        <CloseIcon />
+        <i-mdi-close />
       </b-button>
     </div>
   </form>
@@ -25,15 +25,9 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
 import { defineComponent, ref } from 'vue';
-import CheckIcon from '~icons/mdi/check';
-import CloseIcon from '~icons/mdi/close';
 
 export default defineComponent({
   name: 'BotRename',
-  components: {
-    CheckIcon,
-    CloseIcon,
-  },
   props: {
     bot: { type: Object as () => BotDescriptor, required: true },
   },

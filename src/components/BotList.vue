@@ -13,7 +13,7 @@
         class="d-flex"
         @click="botStore.selectBot(bot.botId)"
       >
-        <ReorderIcon v-if="!small" class="handle me-2 fs-4" />
+        <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
         <bot-rename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"
@@ -38,7 +38,6 @@
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
 import LoginModal from '@/views/LoginModal.vue';
-import ReorderIcon from '~icons/mdi/reorder-horizontal';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { AuthStorageWithBotId, BotDescriptor } from '@/types';
