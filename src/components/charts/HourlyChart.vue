@@ -1,5 +1,5 @@
 <template>
-  <v-chart
+  <e-charts
     v-if="trades.length > 0"
     :option="hourlyChartOptions"
     autoresize
@@ -7,10 +7,10 @@
   />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import ECharts from 'vue-echarts';
 import { useSettingsStore } from '@/stores/settings';
-import { defineComponent, computed } from 'vue';
+import { computed } from 'vue';
 
 import { Trade } from '@/types';
 import { timestampHour } from '@/shared/formatters';
@@ -45,121 +45,112 @@ use([
 const CHART_PROFIT = 'Profit %';
 const CHART_TRADE_COUNT = 'Trade Count';
 
-export default defineComponent({
-  name: 'HourlyChart',
-  components: {
-    'v-chart': ECharts,
-  },
-  props: {
-    trades: { required: true, type: Array as () => Trade[] },
-    showTitle: { default: true, type: Boolean },
-  },
-  setup(props) {
-    const settingsStore = useSettingsStore();
+const props = defineProps({
+  trades: { required: true, type: Array as () => Trade[] },
+  showTitle: { default: true, type: Boolean },
+});
+const settingsStore = useSettingsStore();
 
-    const hourlyData = computed(() => {
-      const res = new Array(24);
-      for (let i = 0; i < 24; i += 1) {
-        res[i] = { hour: i, hourDesc: `${i}h`, profit: 0.0, count: 0.0 };
-      }
+const hourlyData = computed(() => {
+  const res = new Array(24);
+  for (let i = 0; i < 24; i += 1) {
+    res[i] = { hour: i, hourDesc: `${i}h`, profit: 0.0, count: 0.0 };
+  }
 
-      for (let i = 0, len = props.trades.length; i < len; i += 1) {
-        const trade = props.trades[i];
-        if (trade.close_timestamp) {
-          const hour = timestampHour(trade.close_timestamp);
+  for (let i = 0, len = props.trades.length; i < len; i += 1) {
+    const trade = props.trades[i];
+    if (trade.close_timestamp) {
+      const hour = timestampHour(trade.close_timestamp);
 
-          res[hour].profit += trade.profit_ratio;
-          res[hour].count += 1;
-        }
-      }
-      return res;
-    });
-    const hourlyChartOptions = computed((): EChartsOption => {
-      return {
-        title: {
-          text: 'Hourly Profit',
-          show: props.showTitle,
+      res[hour].profit += trade.profit_ratio;
+      res[hour].count += 1;
+    }
+  }
+  return res;
+});
+const hourlyChartOptions = computed((): EChartsOption => {
+  return {
+    title: {
+      text: 'Hourly Profit',
+      show: props.showTitle,
+    },
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    dataset: {
+      dimensions: ['hourDesc', 'profit', 'count'],
+      source: hourlyData.value,
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'line',
+        label: {
+          backgroundColor: '#6a7985',
         },
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        dataset: {
-          dimensions: ['hourDesc', 'profit', 'count'],
-          source: hourlyData.value,
+      },
+    },
+    legend: {
+      data: [CHART_PROFIT, CHART_TRADE_COUNT],
+      right: '5%',
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: [
+      {
+        type: 'value',
+        name: CHART_PROFIT,
+        splitLine: {
+          show: false,
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'line',
-            label: {
-              backgroundColor: '#6a7985',
-            },
-          },
-        },
-        legend: {
-          data: [CHART_PROFIT, CHART_TRADE_COUNT],
-          right: '5%',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: [
+        nameRotate: 90,
+        nameLocation: 'middle',
+        nameGap: 30,
+      },
+      {
+        type: 'value',
+        name: CHART_TRADE_COUNT,
+        nameRotate: 90,
+        nameLocation: 'middle',
+        nameGap: 30,
+      },
+    ],
+    visualMap: [
+      {
+        dimension: 1,
+        seriesIndex: 0,
+        show: false,
+        pieces: [
           {
-            type: 'value',
-            name: CHART_PROFIT,
-            splitLine: {
-              show: false,
-            },
-            nameRotate: 90,
-            nameLocation: 'middle',
-            nameGap: 30,
+            max: 0.0,
+            min: -2,
+            color: 'red',
           },
           {
-            type: 'value',
-            name: CHART_TRADE_COUNT,
-            nameRotate: 90,
-            nameLocation: 'middle',
-            nameGap: 30,
+            min: 0.0,
+            max: 2,
+            color: 'green',
           },
         ],
-        visualMap: [
-          {
-            dimension: 1,
-            seriesIndex: 0,
-            show: false,
-            pieces: [
-              {
-                max: 0.0,
-                min: -2,
-                color: 'red',
-              },
-              {
-                min: 0.0,
-                max: 2,
-                color: 'green',
-              },
-            ],
-          },
-        ],
-        series: [
-          {
-            type: 'line',
-            name: CHART_PROFIT,
-            animation: false,
-            // symbol: 'none',
-          },
-          {
-            type: 'bar',
-            name: CHART_TRADE_COUNT,
-            animation: false,
-            itemStyle: {
-              color: 'rgba(150,150,150,0.3)',
-            },
-            yAxisIndex: 1,
-          },
-        ],
-      };
-    });
-    return { settingsStore, hourlyChartOptions };
-  },
+      },
+    ],
+    series: [
+      {
+        type: 'line',
+        name: CHART_PROFIT,
+        animation: false,
+        // symbol: 'none',
+      },
+      {
+        type: 'bar',
+        name: CHART_TRADE_COUNT,
+        animation: false,
+        itemStyle: {
+          color: 'rgba(150,150,150,0.3)',
+        },
+        yAxisIndex: 1,
+      },
+    ],
+  };
 });
 </script>
 
