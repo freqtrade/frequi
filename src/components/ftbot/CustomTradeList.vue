@@ -33,70 +33,50 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { formatPrice } from '@/shared/formatters';
 import { Trade } from '@/types';
 import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
-import { defineComponent, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'CustomTradeList',
-  components: {
-    CustomTradeListEntry,
-  },
-  props: {
-    trades: { required: true, type: Array as () => Trade[] },
-    title: { default: 'Trades', type: String },
-    stakeCurrency: { required: false, default: '', type: String },
-    activeTrades: { default: false, type: Boolean },
-    showFilter: { default: false, type: Boolean },
-    multiBotView: { default: false, type: Boolean },
-    emptyText: { default: 'No Trades to show.', type: String },
-    stakeCurrencyDecimals: { default: 3, type: Number },
-  },
-  setup(props) {
-    const botStore = useBotStore();
-    const currentPage = ref(1);
-    const filterText = ref('');
-    const perPage = props.activeTrades ? 200 : 25;
-
-    const rows = computed(() => props.trades.length);
-
-    const filteredTrades = computed(() => {
-      return props.trades.slice((currentPage.value - 1) * perPage, currentPage.value * perPage);
-    });
-    const formatPriceWithDecimals = (price) => {
-      return formatPrice(price, props.stakeCurrencyDecimals);
-    };
-
-    const handleContextMenuEvent = (item, index, event) => {
-      // stop browser context menu from appearing
-      if (!props.activeTrades) {
-        return;
-      }
-      event.preventDefault();
-      // log the selected item to the console
-      console.log(item);
-    };
-
-    const tradeClick = (trade) => {
-      botStore.activeBot.setDetailTrade(trade);
-    };
-
-    return {
-      currentPage,
-      filterText,
-      perPage,
-      filteredTrades,
-      formatPriceWithDecimals,
-      handleContextMenuEvent,
-      tradeClick,
-      botStore,
-      rows,
-    };
-  },
+const props = defineProps({
+  trades: { required: true, type: Array as () => Trade[] },
+  title: { default: 'Trades', type: String },
+  stakeCurrency: { required: false, default: '', type: String },
+  activeTrades: { default: false, type: Boolean },
+  showFilter: { default: false, type: Boolean },
+  multiBotView: { default: false, type: Boolean },
+  emptyText: { default: 'No Trades to show.', type: String },
+  stakeCurrencyDecimals: { default: 3, type: Number },
 });
+const botStore = useBotStore();
+const currentPage = ref(1);
+const filterText = ref('');
+const perPage = props.activeTrades ? 200 : 25;
+
+const rows = computed(() => props.trades.length);
+
+const filteredTrades = computed(() => {
+  return props.trades.slice((currentPage.value - 1) * perPage, currentPage.value * perPage);
+});
+const formatPriceWithDecimals = (price) => {
+  return formatPrice(price, props.stakeCurrencyDecimals);
+};
+
+const handleContextMenuEvent = (item, index, event) => {
+  // stop browser context menu from appearing
+  if (!props.activeTrades) {
+    return;
+  }
+  event.preventDefault();
+  // log the selected item to the console
+  console.log(item);
+};
+
+const tradeClick = (trade) => {
+  botStore.activeBot.setDetailTrade(trade);
+};
 </script>
 
 <style lang="scss" scoped>

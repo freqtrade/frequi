@@ -11,32 +11,23 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { formatPrice } from '@/shared/formatters';
-import { defineComponent, computed } from 'vue';
+import { computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 
-export default defineComponent({
-  name: 'BotPerformance',
-  setup() {
-    const botStore = useBotStore();
-    const tableFields = computed<TableField[]>(() => {
-      return [
-        { key: 'pair', label: 'Pair' },
-        { key: 'profit', label: 'Profit %' },
-        {
-          key: 'profit_abs',
-          label: `Profit ${botStore.activeBot.botState?.stake_currency}`,
-          formatter: (v: unknown) => formatPrice(v as number, 5),
-        },
-        { key: 'count', label: 'Count' },
-      ];
-    });
-    return {
-      tableFields,
-      botStore,
-    };
-  },
+const botStore = useBotStore();
+const tableFields = computed<TableField[]>(() => {
+  return [
+    { key: 'pair', label: 'Pair' },
+    { key: 'profit', label: 'Profit %' },
+    {
+      key: 'profit_abs',
+      label: `Profit ${botStore.activeBot.botState?.stake_currency}`,
+      formatter: (v: unknown) => formatPrice(v as number, 5),
+    },
+    { key: 'count', label: 'Count' },
+  ];
 });
 </script>

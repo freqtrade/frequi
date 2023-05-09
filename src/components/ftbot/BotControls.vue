@@ -64,87 +64,68 @@ forceexit
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceSellPayload } from '@/types';
-import { computed, defineComponent, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import ForceEntryForm from './ForceEntryForm.vue';
 
-export default defineComponent({
-  name: 'BotControls',
-  components: {
-    ForceEntryForm,
-    MessageBox,
-  },
-  setup() {
-    const botStore = useBotStore();
-    const forceEnter = ref<boolean>(false);
-    const msgBox = ref<typeof MessageBox>();
+const botStore = useBotStore();
+const forceEnter = ref<boolean>(false);
+const msgBox = ref<typeof MessageBox>();
 
-    const isRunning = computed((): boolean => {
-      return botStore.activeBot.botState?.state === 'running';
-    });
-
-    const handleStopBot = () => {
-      const msg: MsgBoxObject = {
-        title: 'Stop Bot',
-        message: 'Stop the bot loop from running?',
-        accept: () => {
-          botStore.activeBot.stopBot();
-        },
-      };
-      msgBox.value?.show(msg);
-    };
-
-    const handleStopBuy = () => {
-      const msg: MsgBoxObject = {
-        title: 'Stop Buying',
-        message: 'Freqtrade will continue to handle open trades.',
-        accept: () => {
-          botStore.activeBot.stopBuy();
-        },
-      };
-      msgBox.value?.show(msg);
-    };
-
-    const handleReloadConfig = () => {
-      const msg: MsgBoxObject = {
-        title: 'Reload',
-        message: 'Reload configuration (including strategy)?',
-        accept: () => {
-          console.log('reload...');
-          botStore.activeBot.reloadConfig();
-        },
-      };
-      msgBox.value?.show(msg);
-    };
-
-    const handleForceExit = () => {
-      const msg: MsgBoxObject = {
-        title: 'ForceExit all',
-        message: 'Really forceexit ALL trades?',
-        accept: () => {
-          const payload: ForceSellPayload = {
-            tradeid: 'all',
-            // TODO: support ordertype (?)
-          };
-          botStore.activeBot.forceexit(payload);
-        },
-      };
-      msgBox.value?.show(msg);
-    };
-    return {
-      handleStopBot,
-      handleStopBuy,
-      handleReloadConfig,
-      handleForceExit,
-      forceEnter,
-      botStore,
-      isRunning,
-      msgBox,
-    };
-  },
+const isRunning = computed((): boolean => {
+  return botStore.activeBot.botState?.state === 'running';
 });
+
+const handleStopBot = () => {
+  const msg: MsgBoxObject = {
+    title: 'Stop Bot',
+    message: 'Stop the bot loop from running?',
+    accept: () => {
+      botStore.activeBot.stopBot();
+    },
+  };
+  msgBox.value?.show(msg);
+};
+
+const handleStopBuy = () => {
+  const msg: MsgBoxObject = {
+    title: 'Stop Buying',
+    message: 'Freqtrade will continue to handle open trades.',
+    accept: () => {
+      botStore.activeBot.stopBuy();
+    },
+  };
+  msgBox.value?.show(msg);
+};
+
+const handleReloadConfig = () => {
+  const msg: MsgBoxObject = {
+    title: 'Reload',
+    message: 'Reload configuration (including strategy)?',
+    accept: () => {
+      console.log('reload...');
+      botStore.activeBot.reloadConfig();
+    },
+  };
+  msgBox.value?.show(msg);
+};
+
+const handleForceExit = () => {
+  const msg: MsgBoxObject = {
+    title: 'ForceExit all',
+    message: 'Really forceexit ALL trades?',
+    accept: () => {
+      const payload: ForceSellPayload = {
+        tradeid: 'all',
+        // TODO: support ordertype (?)
+      };
+      botStore.activeBot.forceexit(payload);
+    },
+  };
+  msgBox.value?.show(msg);
+};
 </script>

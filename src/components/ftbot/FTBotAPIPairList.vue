@@ -91,73 +91,58 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { defineComponent, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-export default defineComponent({
-  name: 'FTBotAPIPairList',
-  setup() {
-    const newblacklistpair = ref('');
-    const blackListShow = ref(false);
-    const blacklistSelect = ref<number[]>([]);
-    const botStore = useBotStore();
+const newblacklistpair = ref('');
+const blackListShow = ref(false);
+const blacklistSelect = ref<number[]>([]);
+const botStore = useBotStore();
 
-    const initBlacklist = () => {
-      if (botStore.activeBot.whitelist.length === 0) {
-        botStore.activeBot.getWhitelist();
-      }
-      if (botStore.activeBot.blacklist.length === 0) {
-        botStore.activeBot.getBlacklist();
-      }
-    };
+const initBlacklist = () => {
+  if (botStore.activeBot.whitelist.length === 0) {
+    botStore.activeBot.getWhitelist();
+  }
+  if (botStore.activeBot.blacklist.length === 0) {
+    botStore.activeBot.getBlacklist();
+  }
+};
 
-    const addBlacklistPair = () => {
-      if (newblacklistpair.value) {
-        blackListShow.value = false;
+const addBlacklistPair = () => {
+  if (newblacklistpair.value) {
+    blackListShow.value = false;
 
-        botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
-        newblacklistpair.value = '';
-      }
-    };
+    botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
+    newblacklistpair.value = '';
+  }
+};
 
-    const blacklistSelectClick = (key) => {
-      console.log(key);
-      const index = blacklistSelect.value.indexOf(key);
-      if (index > -1) {
-        blacklistSelect.value.splice(index, 1);
-      } else {
-        blacklistSelect.value.push(key);
-      }
-    };
+const blacklistSelectClick = (key) => {
+  console.log(key);
+  const index = blacklistSelect.value.indexOf(key);
+  if (index > -1) {
+    blacklistSelect.value.splice(index, 1);
+  } else {
+    blacklistSelect.value.push(key);
+  }
+};
 
-    const deletePairs = () => {
-      if (blacklistSelect.value.length === 0) {
-        console.log('nothing to delete');
-        return;
-      }
-      // const pairlist = blacklistSelect.value;
-      const pairlist = botStore.activeBot.blacklist.filter(
-        (value, index) => blacklistSelect.value.indexOf(index) > -1,
-      );
-      console.log('Deleting pairs: ', pairlist);
-      botStore.activeBot.deleteBlacklist(pairlist);
-      blacklistSelect.value = [];
-    };
-    onMounted(() => {
-      initBlacklist();
-    });
-    return {
-      addBlacklistPair,
-      deletePairs,
-      initBlacklist,
-      blacklistSelectClick,
-      botStore,
-      newblacklistpair,
-      blackListShow,
-      blacklistSelect,
-    };
-  },
+const deletePairs = () => {
+  if (blacklistSelect.value.length === 0) {
+    console.log('nothing to delete');
+    return;
+  }
+  // const pairlist = blacklistSelect.value;
+  const pairlist = botStore.activeBot.blacklist.filter(
+    (value, index) => blacklistSelect.value.indexOf(index) > -1,
+  );
+  console.log('Deleting pairs: ', pairlist);
+  botStore.activeBot.deleteBlacklist(pairlist);
+  blacklistSelect.value = [];
+};
+onMounted(() => {
+  initBlacklist();
 });
 </script>
 

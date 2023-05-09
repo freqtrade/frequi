@@ -28,24 +28,15 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, onMounted } from 'vue';
+<script setup lang="ts">
+import { onMounted } from 'vue';
 import { timestampms } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  setup() {
-    const botStore = useBotStore();
+const botStore = useBotStore();
 
-    onMounted(() => {
-      botStore.activeBot.getBacktestHistory();
-    });
-
-    return {
-      timestampms,
-      botStore,
-    };
-  },
+onMounted(() => {
+  botStore.activeBot.getBacktestHistory();
 });
 </script>
 

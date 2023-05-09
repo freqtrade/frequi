@@ -16,32 +16,21 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { formatPercent } from '@/shared/formatters';
 import { StrategyBacktestResult } from '@/types';
 
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'BacktestResultSelect',
-  props: {
-    backtestHistory: {
-      required: true,
-      type: Object as () => Record<string, StrategyBacktestResult>,
-    },
-    selectedBacktestResultKey: { required: false, default: '', type: String },
+defineProps({
+  backtestHistory: {
+    required: true,
+    type: Object as () => Record<string, StrategyBacktestResult>,
   },
-  emits: ['selectionChange'],
-  setup(_, { emit }) {
-    const setBacktestResult = (key) => {
-      emit('selectionChange', key);
-    };
-    return {
-      formatPercent,
-      setBacktestResult,
-    };
-  },
+  selectedBacktestResultKey: { required: false, default: '', type: String },
 });
+const emit = defineEmits(['selectionChange']);
+const setBacktestResult = (key) => {
+  emit('selectionChange', key);
+};
 </script>
 
 <style scoped></style>
