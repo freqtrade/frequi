@@ -5,33 +5,23 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { defineComponent, onMounted, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 
-export default defineComponent({
-  name: 'LogViewer',
-  setup() {
-    const botStore = useBotStore();
+const botStore = useBotStore();
 
-    onMounted(async () => {
-      botStore.activeBot.getLogs();
-    });
+onMounted(async () => {
+  botStore.activeBot.getLogs();
+});
 
-    const formattedLogs = computed(() => {
-      let result = '';
-      for (let i = 0, len = botStore.activeBot.lastLogs.length; i < len; i += 1) {
-        const log = botStore.activeBot.lastLogs[i];
-        result += `${log[0]} - ${log[2]} - ${log[3]} - ${log[4]}\n`;
-      }
-      return result;
-    });
-
-    return {
-      botStore,
-      formattedLogs,
-    };
-  },
+const formattedLogs = computed(() => {
+  let result = '';
+  for (let i = 0, len = botStore.activeBot.lastLogs.length; i < len; i += 1) {
+    const log = botStore.activeBot.lastLogs[i];
+    result += `${log[0]} - ${log[2]} - ${log[3]} - ${log[4]}\n`;
+  }
+  return result;
 });
 </script>
 

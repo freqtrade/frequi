@@ -17,27 +17,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'ReloadControl',
-  setup() {
-    const botStore = useBotStore();
-    const autoRefreshLoc = computed({
-      get() {
-        return botStore.globalAutoRefresh;
-      },
-      set(newValue: boolean) {
-        botStore.setGlobalAutoRefresh(newValue);
-      },
-    });
-
-    return {
-      botStore,
-      autoRefreshLoc,
-    };
+const botStore = useBotStore();
+const autoRefreshLoc = computed({
+  get() {
+    return botStore.globalAutoRefresh;
+  },
+  set(newValue: boolean) {
+    botStore.setGlobalAutoRefresh(newValue);
   },
 });
 </script>

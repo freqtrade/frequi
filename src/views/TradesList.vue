@@ -40,29 +40,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { defineComponent } from 'vue';
 
-export default defineComponent({
-  name: 'TradesList',
-  components: {
-    CustomTradeList,
-    TradeDetail,
-  },
-  props: {
-    history: { default: false, type: Boolean },
-  },
-  setup() {
-    const botStore = useBotStore();
-
-    return {
-      botStore,
-    };
-  },
+defineProps({
+  history: { default: false, type: Boolean },
 });
+const botStore = useBotStore();
 </script>
 
 <style scoped></style>

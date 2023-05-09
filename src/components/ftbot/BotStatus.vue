@@ -79,23 +79,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
-import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'BotStatus',
-  components: { DateTimeTZ },
-  setup() {
-    const botStore = useBotStore();
-    return {
-      formatPercent,
-      formatPriceCurrency,
-      botStore,
-    };
-  },
-});
+const botStore = useBotStore();
 </script>
