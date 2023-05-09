@@ -30,7 +30,7 @@
         size="sm"
         class="align-self-start mt-1 ms-1"
         @click="botStore.activeBot.setDetailTrade(null)"
-        ><BackIcon /> Back</b-button
+        ><i-mdi-arrow-left /> Back</b-button
       >
       <TradeDetail
         :trade="botStore.activeBot.tradeDetail"
@@ -45,14 +45,12 @@ import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
 import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { defineComponent } from 'vue';
-import BackIcon from '~icons/mdi/arrow-left';
 
 export default defineComponent({
   name: 'TradesList',
   components: {
     CustomTradeList,
     TradeDetail,
-    BackIcon,
   },
   props: {
     history: { default: false, type: Boolean },

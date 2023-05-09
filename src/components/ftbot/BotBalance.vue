@@ -9,16 +9,16 @@
           :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
           @click="showBotOnly = !showBotOnly"
         >
-          <RobotIcon v-if="showBotOnly" />
-          <AccountIcon v-else />
+          <i-mdi-robot v-if="showBotOnly" />
+          <i-mdi-bank v-else />
         </b-button>
         <b-button
           size="sm"
           :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           @click="hideSmallBalances = !hideSmallBalances"
         >
-          <HideIcon v-if="hideSmallBalances" />
-          <ShowIcon v-else />
+          <i-mdi-eye-off v-if="hideSmallBalances" />
+          <i-mdi-eye v-else />
         </b-button>
 
         <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance"
@@ -64,10 +64,6 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import { BalanceValues } from '@/types';
 import { TableField } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
-import AccountIcon from '~icons/mdi/bank';
-import HideIcon from '~icons/mdi/eye-off';
-import ShowIcon from '~icons/mdi/eye';
-import RobotIcon from '~icons/mdi/robot';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);

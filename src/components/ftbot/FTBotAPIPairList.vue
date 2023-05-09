@@ -43,7 +43,7 @@
           :disabled="blacklistSelect.length === 0"
           @click="deletePairs"
         >
-          <DeleteIcon />
+          <i-mdi-delete />
         </b-button>
       </div>
       <b-popover
@@ -94,11 +94,9 @@
 <script lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { defineComponent, onMounted, ref } from 'vue';
-import DeleteIcon from '~icons/mdi/delete';
 
 export default defineComponent({
   name: 'FTBotAPIPairList',
-  components: { DeleteIcon },
   setup() {
     const newblacklistpair = ref('');
     const blackListShow = ref(false);

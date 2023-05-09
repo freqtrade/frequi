@@ -7,7 +7,7 @@
       title="Forceexit"
       @click="$emit('forceExit', trade)"
     >
-      <ForceSellIcon class="me-1" />Forceexit
+      <i-mdi-close-box class="me-1" />Forceexit
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
@@ -16,7 +16,7 @@
       title="Forceexit limit"
       @click="$emit('forceExit', trade, 'limit')"
     >
-      <ForceSellIcon class="me-1" />Forceexit limit
+      <i-mdi-close-box class="me-1" />Forceexit limit
     </b-button>
     <b-button
       v-if="botApiVersion > 1.1"
@@ -25,7 +25,7 @@
       title="Forceexit market"
       @click="$emit('forceExit', trade, 'market')"
     >
-      <ForceSellIcon class="me-1" />Forceexit market
+      <i-mdi-close-box class="me-1" />Forceexit market
     </b-button>
     <b-button
       v-if="botApiVersion > 2.16"
@@ -34,7 +34,7 @@
       title="Forceexit partial"
       @click="$emit('forceExitPartial', trade)"
     >
-      <ForceSellPartialIcon class="me-1" />Forceexit partial
+      <i-mdi-close-box-multiple class="me-1" />Forceexit partial
     </b-button>
     <b-button
       v-if="botApiVersion >= 2.24 && trade.open_order_id"
@@ -43,7 +43,7 @@
       title="Cancel open orders"
       @click="$emit('cancelOpenOrder', trade)"
     >
-      <CancelIcon class="me-1" />Cancel open order
+      <i-mdi-cancel class="me-1" />Cancel open order
     </b-button>
 
     <b-button
@@ -52,7 +52,7 @@
       title="Delete trade"
       @click="$emit('deleteTrade', trade)"
     >
-      <DeleteIcon class="me-1" />
+      <i-mdi-delete class="me-1" />
       Delete
     </b-button>
   </div>
@@ -60,10 +60,6 @@
 
 <script setup lang="ts">
 import { Trade } from '@/types';
-import CancelIcon from '~icons/mdi/cancel';
-import ForceSellIcon from '~icons/mdi/close-box';
-import ForceSellPartialIcon from '~icons/mdi/close-box-multiple';
-import DeleteIcon from '~icons/mdi/delete';
 
 defineProps({
   botApiVersion: {

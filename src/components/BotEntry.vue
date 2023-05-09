@@ -15,13 +15,13 @@
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
         >
-          <OnlineIcon
+          <i-mdi-circle
             class="ms-2 me-1 align-middle"
             :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
-          ></OnlineIcon>
+          />
         </div>
         <div v-else title="Login info expired, please login again.">
-          <LoggedOutIcon class="offline" />
+          <i-mdi-cancel class="offline" />
         </div>
       </b-form-checkbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
@@ -32,13 +32,13 @@
           title="Edit bot"
           @click="$emit('edit')"
         >
-          <EditIcon />
+          <i-mdi-cancel />
         </b-button>
         <b-button v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
-          <LoginIcon />
+          <i-mdi-login />
         </b-button>
         <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
-          <DeleteIcon />
+          <i-mdi-delete />
         </b-button>
       </div>
     </div>
@@ -58,11 +58,6 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
 import { computed, ref } from 'vue';
-import LoggedOutIcon from '~icons/mdi/cancel';
-import OnlineIcon from '~icons/mdi/circle';
-import DeleteIcon from '~icons/mdi/delete';
-import LoginIcon from '~icons/mdi/login';
-import EditIcon from '~icons/mdi/pencil';
 
 const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },

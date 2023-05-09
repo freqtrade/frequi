@@ -15,7 +15,7 @@
           :title="`Edit this ${editableName}.`"
           @click="editing = true"
         >
-          <EditIcon />
+          <i-mdi-pencil />
         </b-button>
         <b-button
           size="sm"
@@ -23,7 +23,7 @@
           :title="`Delete this ${editableName}.`"
           @click="$emit('delete', modelValue)"
         >
-          <DeleteIcon />
+          <i-mdi-delete />
         </b-button>
       </template>
       <b-button
@@ -32,7 +32,7 @@
         :title="`Add new ${editableName}.`"
         variant="primary"
         @click="addNewClick"
-        ><AddIcon />
+        ><i-mdi-plus-box-outline />
       </b-button>
       <template v-if="addNew || editing">
         <b-button
@@ -41,10 +41,10 @@
           variant="primary"
           @click="saveNewName"
         >
-          <CheckIcon />
+          <i-mdi-check />
         </b-button>
         <b-button size="sm" title="Abort" class="ms-1" variant="secondary" @click="abort">
-          <CloseIcon />
+          <i-mdi-close />
         </b-button>
       </template>
     </div>
@@ -52,12 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import CheckIcon from '~icons/mdi/check';
-import CloseIcon from '~icons/mdi/close';
-import DeleteIcon from '~icons/mdi/delete';
-import EditIcon from '~icons/mdi/pencil';
-import AddIcon from '~icons/mdi/plus-box-outline';
-
 import { ref, watch } from 'vue';
 
 const props = defineProps({

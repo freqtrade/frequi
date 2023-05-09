@@ -7,7 +7,7 @@ forceexit
       title="Start Trading"
       @click="botStore.activeBot.startBot()"
     >
-      <PlayIcon height="24" width="24" />
+      <i-mdi-play height="24" width="24" />
     </button>
     <button
       class="btn btn-secondary btn-sm ms-1"
@@ -15,7 +15,7 @@ forceexit
       title="Stop Trading - Also stops handling open trades."
       @click="handleStopBot()"
     >
-      <StopIcon height="24" width="24" />
+      <i-mdi-stop height="24" width="24" />
     </button>
     <button
       class="btn btn-secondary btn-sm ms-1"
@@ -23,7 +23,7 @@ forceexit
       title="StopBuy - Stops buying, but still handles open trades"
       @click="handleStopBuy()"
     >
-      <PauseIcon height="24" width="24" />
+      <i-mdi-pause height="24" width="24" />
     </button>
     <button
       class="btn btn-secondary btn-sm ms-1"
@@ -31,7 +31,7 @@ forceexit
       title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
       @click="handleReloadConfig()"
     >
-      <ReloadIcon height="24" width="24" />
+      <i-mdi-reload height="24" width="24" />
     </button>
     <button
       class="btn btn-secondary btn-sm ms-1"
@@ -39,7 +39,7 @@ forceexit
       title="Force exit all"
       @click="handleForceExit()"
     >
-      <ForceExitIcon height="24" width="24" />
+      <i-mdi-close-box-multiple height="24" width="24" />
     </button>
     <button
       v-if="botStore.activeBot.botState && botStore.activeBot.botState.force_entry_enable"
@@ -48,7 +48,7 @@ forceexit
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
       @click="forceEnter = true"
     >
-      <ForceEntryIcon style="font-size: 20px" />
+      <i-mdi-plus-box-multiple-outline style="font-size: 20px" />
     </button>
     <button
       v-if="botStore.activeBot.isWebserverMode && false"
@@ -57,7 +57,7 @@ forceexit
       title="Start Trading mode"
       @click="botStore.activeBot.startTrade()"
     >
-      <PlayIcon class="fs-4" />
+      <i-mdi-play class="fs-4" />
     </button>
     <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
     <MessageBox ref="msgBox" />
@@ -69,12 +69,6 @@ import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceSellPayload } from '@/types';
 import { computed, defineComponent, ref } from 'vue';
-import ForceExitIcon from '~icons/mdi/close-box-multiple';
-import PauseIcon from '~icons/mdi/pause';
-import PlayIcon from '~icons/mdi/play';
-import ForceEntryIcon from '~icons/mdi/plus-box-multiple-outline';
-import ReloadIcon from '~icons/mdi/reload';
-import StopIcon from '~icons/mdi/stop';
 
 import ForceEntryForm from './ForceEntryForm.vue';
 
@@ -82,12 +76,6 @@ export default defineComponent({
   name: 'BotControls',
   components: {
     ForceEntryForm,
-    PlayIcon,
-    StopIcon,
-    PauseIcon,
-    ReloadIcon,
-    ForceExitIcon,
-    ForceEntryIcon,
     MessageBox,
   },
   setup() {

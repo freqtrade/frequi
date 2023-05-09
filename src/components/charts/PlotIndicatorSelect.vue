@@ -11,7 +11,7 @@
       </v-select>
     </b-form-group>
     <b-button size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
-      <CloseIcon />
+      <i-mdi-close />
     </b-button>
   </div>
 </template>
@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import vSelect from 'vue-select';
-import CloseIcon from '~icons/mdi/close';
 
 const props = defineProps({
   modelValue: { required: false, default: '', type: String },
