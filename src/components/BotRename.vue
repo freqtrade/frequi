@@ -21,33 +21,24 @@
   </form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 
-export default defineComponent({
-  name: 'BotRename',
-  props: {
-    bot: { type: Object as () => BotDescriptor, required: true },
-  },
-  emits: ['cancelled', 'saved'],
-  setup(props, { emit }) {
-    const botStore = useBotStore();
-
-    const newName = ref<string>(props.bot.botName);
-
-    const save = () => {
-      botStore.updateBot(props.bot.botId, {
-        botName: newName.value,
-      });
-
-      emit('saved');
-    };
-    return {
-      newName,
-      save,
-    };
-  },
+const props = defineProps({
+  bot: { type: Object as () => BotDescriptor, required: true },
 });
+const emit = defineEmits(['cancelled', 'saved']);
+const botStore = useBotStore();
+
+const newName = ref<string>(props.bot.botName);
+
+const save = () => {
+  botStore.updateBot(props.bot.botId, {
+    botName: newName.value,
+  });
+
+  emit('saved');
+};
 </script>
