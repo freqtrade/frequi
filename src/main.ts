@@ -2,7 +2,8 @@ import { createPinia, PiniaVuePlugin } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createApp } from 'vue';
 import App from './App.vue';
-import { BootstrapVue3 } from './plugins/bootstrap-vue';
+// Eensure Bootstrap css still loads
+import './plugins/bootstrap-vue';
 import { GridLayout } from './plugins/vue-grid-layout';
 import router from './router';
 
@@ -14,7 +15,6 @@ pinia.use(piniaPluginPersistedstate);
 myApp.use(pinia);
 
 myApp.use(router);
-myApp.use(BootstrapVue3);
 myApp.use(GridLayout);
 
 // Vue.config.productionTip = false;
