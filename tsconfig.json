@@ -16,6 +16,7 @@
     "types": [
       "cypress",
       "vite/client",
+      "unplugin-icons/types/vue",
     ],
     "paths": {
       "@/*": [

@@ -12,19 +12,17 @@
       title="Auto Refresh All bots"
       @click="botStore.allRefreshFull"
     >
-      <RefreshIcon :size="16" />
+      <i-mdi-refresh />
     </b-button>
   </div>
 </template>
 
 <script lang="ts">
-import RefreshIcon from 'vue-material-design-icons/Refresh.vue';
 import { defineComponent, computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 export default defineComponent({
   name: 'ReloadControl',
-  components: { RefreshIcon },
   setup() {
     const botStore = useBotStore();
     const autoRefreshLoc = computed({

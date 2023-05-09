@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
-import TradeActions from './TradeActions.vue';
-import CancelIcon from 'vue-material-design-icons/Cancel.vue';
 import { Trade } from '@/types';
 import { ref } from 'vue';
+import TradeActions from './TradeActions.vue';
 
 defineProps({
   trade: { type: Object as () => Trade, required: true },
@@ -36,7 +34,7 @@ const cancelOpenOrderHandler = (item: Trade) => {
       title="Actions"
       @click="popoverOpen = !popoverOpen"
     >
-      <ActionIcon :size="16" title="Actions" />
+      <i-mdi-gesture-tap />
     </b-button>
     <b-popover
       :target="`btn-actions-${id}`"
@@ -57,7 +55,7 @@ const cancelOpenOrderHandler = (item: Trade) => {
         @cancel-open-order="cancelOpenOrderHandler"
       />
       <b-button class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
-        <CancelIcon :size="16" title="Close popup" class="me-1" />Close Actions menu
+        <i-mdi-cancel class="me-1" />Close Actions menu
       </b-button>
     </b-popover>
   </div>

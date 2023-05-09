@@ -1,13 +1,12 @@
 <template>
   <b-link variant="outline-primary" class="nav-link" @click="toggleNight">
-    <ThemeLightDark :size="16" />
+    <i-mdi-brightness-6 />
   </b-link>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import ThemeLightDark from 'vue-material-design-icons/Brightness6.vue';
 import { useSettingsStore } from '@/stores/settings';
+import { onMounted, ref } from 'vue';
 
 const activeTheme = ref('');
 const settingsStore = useSettingsStore();

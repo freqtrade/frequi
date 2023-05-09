@@ -1,8 +1,6 @@
 <template>
   <div>
-    <b-button @click="openLoginModal()"
-      ><LoginIcon :size="16" class="me-1" />{{ loginText }}</b-button
-    >
+    <b-button @click="openLoginModal()"><i-mdi-login class="me-1" />{{ loginText }}</b-button>
     <b-modal
       id="modal-prevent-closing"
       v-model="loginViewOpen"
@@ -23,7 +21,6 @@
 import Login from '@/components/BotLogin.vue';
 import { AuthStorageWithBotId } from '@/types';
 import { nextTick, ref } from 'vue';
-import LoginIcon from 'vue-material-design-icons/Login.vue';
 
 defineProps({
   loginText: { required: false, default: 'Login', type: String },

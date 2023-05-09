@@ -13,7 +13,7 @@
             title="Delete trade"
             @click="removePairLock(row.item)"
           >
-            <DeleteIcon :size="16" />
+            <i-mdi-delete />
           </b-button>
         </template>
       </b-table>
@@ -25,14 +25,12 @@
 import { timestampms } from '@/shared/formatters';
 import { Lock } from '@/types';
 
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { showAlert } from '@/stores/alerts';
-import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PairLockList',
-  components: { DeleteIcon },
   setup() {
     const botStore = useBotStore();
 

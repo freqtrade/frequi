@@ -9,16 +9,16 @@
           :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
           @click="showBotOnly = !showBotOnly"
         >
-          <RobotIcon v-if="showBotOnly" :size="16" />
-          <AccountIcon v-else :size="16" />
+          <i-mdi-robot v-if="showBotOnly" />
+          <i-mdi-bank v-else />
         </b-button>
         <b-button
           size="sm"
           :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           @click="hideSmallBalances = !hideSmallBalances"
         >
-          <HideIcon v-if="hideSmallBalances" :size="16" />
-          <ShowIcon v-else :size="16" />
+          <i-mdi-eye-off v-if="hideSmallBalances" />
+          <i-mdi-eye v-else />
         </b-button>
 
         <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance"
@@ -58,16 +58,12 @@
 </template>
 
 <script setup lang="ts">
-import HideIcon from 'vue-material-design-icons/EyeOff.vue';
-import ShowIcon from 'vue-material-design-icons/Eye.vue';
-import RobotIcon from 'vue-material-design-icons/Robot.vue';
-import AccountIcon from 'vue-material-design-icons/Bank.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
-import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { TableField } from 'bootstrap-vue-next';
 import { BalanceValues } from '@/types';
+import { TableField } from 'bootstrap-vue-next';
+import { computed, ref } from 'vue';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);
