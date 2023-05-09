@@ -21,9 +21,9 @@
           <i-mdi-eye v-else />
         </b-button>
 
-        <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance"
-          >&#x21bb;</b-button
-        >
+        <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance">
+          <i-mdi-refresh />
+        </b-button>
       </div>
     </div>
     <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />

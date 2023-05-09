@@ -2,7 +2,9 @@
   <div>
     <div class="mb-2">
       <label class="me-auto h3">Daily Stats</label>
-      <b-button class="float-end" size="sm" @click="botStore.activeBot.getDaily">&#x21bb;</b-button>
+      <b-button class="float-end" size="sm" @click="botStore.activeBot.getDaily">
+        <i-mdi-refresh />
+      </b-button>
     </div>
     <div>
       <DailyChart

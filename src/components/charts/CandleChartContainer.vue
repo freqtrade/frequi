@@ -15,7 +15,9 @@
           >
           </v-select>
 
-          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
+          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">
+            <i-mdi-refresh />
+          </b-button>
           <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
             >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
           >

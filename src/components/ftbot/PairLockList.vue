@@ -2,7 +2,9 @@
   <div>
     <div class="mb-2">
       <label class="me-auto h3">Pair Locks</label>
-      <b-button class="float-end" size="sm" @click="botStore.activeBot.getLocks">&#x21bb;</b-button>
+      <b-button class="float-end" size="sm" @click="botStore.activeBot.getLocks">
+        <i-mdi-refresh />
+      </b-button>
     </div>
     <div>
       <b-table class="table-sm" :items="botStore.activeBot.activeLocks" :fields="tableFields">

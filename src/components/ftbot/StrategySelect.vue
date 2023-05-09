@@ -8,7 +8,9 @@
       >
       </b-form-select>
       <div class="ms-2">
-        <b-button @click="botStore.activeBot.getStrategyList">&#x21bb;</b-button>
+        <b-button @click="botStore.activeBot.getStrategyList">
+          <i-mdi-refresh />
+        </b-button>
       </div>
     </div>
 

@@ -17,7 +17,9 @@
           </b-input-group-prepend>
           <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
           <b-input-group-append>
-            <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
+            <b-button variant="primary" size="sm" @click="newColor">
+              <i-mdi-dice-multiple />
+            </b-button>
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
