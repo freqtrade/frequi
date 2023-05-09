@@ -33,7 +33,7 @@
           class="me-1"
           :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
           size="sm"
-          >+
+          ><i-mdi-plus-box-outline />
         </b-button>
         <b-button
           v-if="botStore.activeBot.botApiVersion >= 1.12"
@@ -81,7 +81,7 @@
           class="pair black"
           :active="blacklistSelect.indexOf(key) > -1"
           @click="blacklistSelectClick(key)"
-          ><span class="check">&#x2714;</span>{{ pair }}</b-list-group-item
+          ><span class="check"><i-mdi-check-circle /></span>{{ pair }}</b-list-group-item
         >
       </b-list-group>
     </div>
@@ -149,14 +149,15 @@ onMounted(() => {
 <style scoped lang="scss">
 .check {
   // Hidden checkbox on blacklist selection
-  background: #41b883;
+  // background: white;
+  color: #41b883;
   opacity: 0;
-  border-radius: 50%;
+  // border-radius: 50%;
   z-index: 5;
   width: 1.3em;
   height: 1.3em;
-  top: -0.2em;
-  left: -0.2em;
+  top: -0.3em;
+  left: -0.3em;
   position: absolute;
   transition: opacity 0.2s;
 }

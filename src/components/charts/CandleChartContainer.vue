@@ -42,7 +42,7 @@
 
           <div class="ms-2 me-0 me-md-1">
             <b-button size="sm" title="Plot configurator" @click="showConfigurator">
-              &#9881;
+              <i-mdi-cog width="12" height="12" />
             </b-button>
           </div>
         </div>
