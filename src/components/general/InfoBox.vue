@@ -1,11 +1,10 @@
 <template>
   <div :title="hint">
-    <InfoIcon />
+    <i-mdi-information-outline />
   </div>
 </template>
 
 <script setup>
-import InfoIcon from '~icons/mdi/information-outline';
 defineProps({
   hint: { type: String, required: true },
 });
