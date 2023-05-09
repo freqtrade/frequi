@@ -58,16 +58,16 @@
 </template>
 
 <script setup lang="ts">
-import HideIcon from 'vue-material-design-icons/EyeOff.vue';
-import ShowIcon from 'vue-material-design-icons/Eye.vue';
-import RobotIcon from 'vue-material-design-icons/Robot.vue';
-import AccountIcon from 'vue-material-design-icons/Bank.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
-import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { TableField } from 'bootstrap-vue-next';
 import { BalanceValues } from '@/types';
+import { TableField } from 'bootstrap-vue-next';
+import { computed, ref } from 'vue';
+import AccountIcon from '~icons/mdi/bank';
+import HideIcon from '~icons/mdi/eye-off';
+import ShowIcon from '~icons/mdi/eye';
+import RobotIcon from '~icons/mdi/robot';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);

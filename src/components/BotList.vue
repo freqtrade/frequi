@@ -13,7 +13,7 @@
         class="d-flex"
         @click="botStore.selectBot(bot.botId)"
       >
-        <ReorderIcon v-if="!small" class="handle me-2" />
+        <ReorderIcon v-if="!small" class="handle me-2 fs-4" />
         <bot-rename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"
@@ -35,15 +35,15 @@
 </template>
 
 <script setup lang="ts">
-import LoginModal from '@/views/LoginModal.vue';
 import BotEntry from '@/components/BotEntry.vue';
 import BotRename from '@/components/BotRename.vue';
-import ReorderIcon from 'vue-material-design-icons/ReorderHorizontal.vue';
+import LoginModal from '@/views/LoginModal.vue';
+import ReorderIcon from '~icons/mdi/reorder-horizontal';
 
-import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
+import { computed, ref } from 'vue';
 
 defineProps({
   small: { default: false, type: Boolean },

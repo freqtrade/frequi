@@ -43,7 +43,7 @@
           :disabled="blacklistSelect.length === 0"
           @click="deletePairs"
         >
-          <DeleteIcon :size="16" title="Delete Bot" />
+          <DeleteIcon />
         </b-button>
       </div>
       <b-popover
@@ -92,9 +92,9 @@
 </template>
 
 <script lang="ts">
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import { defineComponent, ref, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { defineComponent, onMounted, ref } from 'vue';
+import DeleteIcon from '~icons/mdi/delete';
 
 export default defineComponent({
   name: 'FTBotAPIPairList',

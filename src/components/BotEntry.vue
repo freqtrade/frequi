@@ -55,14 +55,14 @@
 </template>
 
 <script setup lang="ts">
-import EditIcon from '~icons/mdi/Pencil.vue';
-import LoginIcon from '~icons/mdi/Login.vue';
-import DeleteIcon from '~icons/mdi/Delete.vue';
-import OnlineIcon from '~icons/mdi/Circle.vue';
-import LoggedOutIcon from '~icons/mdi/Cancel.vue';
+import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
 import { computed, ref } from 'vue';
-import { useBotStore } from '@/stores/ftbotwrapper';
+import LoggedOutIcon from '~icons/mdi/cancel';
+import OnlineIcon from '~icons/mdi/circle';
+import DeleteIcon from '~icons/mdi/delete';
+import LoginIcon from '~icons/mdi/login';
+import EditIcon from '~icons/mdi/pencil';
 
 const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },

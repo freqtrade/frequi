@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ActionIcon from 'vue-material-design-icons/GestureTap.vue';
-import TradeActions from './TradeActions.vue';
-import CancelIcon from 'vue-material-design-icons/Cancel.vue';
 import { Trade } from '@/types';
 import { ref } from 'vue';
+import CancelIcon from '~icons/mdi/cancel';
+import ActionIcon from '~icons/mdi/gesture-tap';
+import TradeActions from './TradeActions.vue';
 
 defineProps({
   trade: { type: Object as () => Trade, required: true },

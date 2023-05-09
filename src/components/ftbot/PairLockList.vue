@@ -25,10 +25,10 @@
 import { timestampms } from '@/shared/formatters';
 import { Lock } from '@/types';
 
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import { showAlert } from '@/stores/alerts';
-import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { defineComponent } from 'vue';
+import DeleteIcon from '~icons/mdi/delete';
 
 export default defineComponent({
   name: 'PairLockList',
