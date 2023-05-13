@@ -32,7 +32,7 @@
           title="Edit bot"
           @click="$emit('edit')"
         >
-          <i-mdi-cancel />
+          <i-mdi-pencil />
         </b-button>
         <b-button v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
           <i-mdi-login />
