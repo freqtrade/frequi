@@ -212,7 +212,7 @@ export interface PairHistory {
   timeframe: string;
   timeframe_ms: number;
   columns: string[];
-  data: Array<number[]>;
+  data: number[][];
   length: number;
   /** Number of buy signals in this response */
   buy_signals: number;

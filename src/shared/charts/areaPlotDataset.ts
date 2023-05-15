@@ -6,7 +6,7 @@ import { PlotConfig } from '@/types';
  */
 export function calculateDiff(
   columns: string[],
-  data: Array<number[]>,
+  data: number[][],
   colFrom: string,
   colTo: string,
 ): number[][] {
@@ -14,10 +14,15 @@ export function calculateDiff(
   const toIdx = columns.indexOf(colTo);
   columns.push(`${colFrom}-${colTo}`);
 
-  return data.map((original, idx) => {
+  return data.map((original) => {
     // Prevent mutation of original data
     const candle = original.slice();
-    const diff = idx === 0 ? 0 : candle[toIdx] - candle[fromIdx];
+    const diff =
+      candle === null || candle[toIdx] === null || candle[fromIdx] === null
+        ? null
+        : candle[toIdx] - candle[fromIdx];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     candle.push(diff);
     return candle;
   });
