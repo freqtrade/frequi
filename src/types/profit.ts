@@ -26,8 +26,10 @@ export interface ProfitInterface {
   trade_count: number;
   closed_trade_count: number;
   first_trade_date: string;
+  first_trade_humanized: string;
   first_trade_timestamp: number;
   latest_trade_date: string;
+  latest_trade_humanized: string;
   latest_trade_timestamp: number;
   avg_duration: string;
   best_pair: string;
