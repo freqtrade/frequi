@@ -8,21 +8,31 @@ defineProps({
   id: { type: Number, required: true },
   botApiVersion: { type: Number, required: true },
 });
-const emit = defineEmits(['forceExit', 'forceExitPartial', 'cancelOpenOrder', 'deleteTrade']);
+const emit = defineEmits([
+  'forceExit',
+  'forceExitPartial',
+  'cancelOpenOrder',
+  'reloadTrade',
+  'deleteTrade',
+]);
 const popoverOpen = ref(false);
 
-const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
+function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
   popoverOpen.value = false;
   emit('forceExit', item, ordertype);
-};
-const forceExitPartialHandler = (item: Trade) => {
+}
+function forceExitPartialHandler(item: Trade) {
   popoverOpen.value = false;
   emit('forceExitPartial', item);
-};
-const cancelOpenOrderHandler = (item: Trade) => {
+}
+function cancelOpenOrderHandler(item: Trade) {
   popoverOpen.value = false;
   emit('cancelOpenOrder', item);
-};
+}
+function handleReloadTrade(item: Trade) {
+  popoverOpen.value = false;
+  emit('reloadTrade', item);
+}
 </script>
 
 <template>
@@ -53,6 +63,7 @@ const cancelOpenOrderHandler = (item: Trade) => {
           $emit('deleteTrade', trade);
         "
         @cancel-open-order="cancelOpenOrderHandler"
+        @reload-trade="handleReloadTrade"
       />
       <b-button class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
         <i-mdi-cancel class="me-1" />Close Actions menu

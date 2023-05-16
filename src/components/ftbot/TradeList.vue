@@ -35,6 +35,7 @@
           @force-exit="forceExitHandler"
           @force-exit-partial="forceExitPartialHandler"
           @cancel-open-order="cancelOpenOrderHandler"
+          @reload-trade="reloadTradeHandler"
         />
       </template>
       <template #cell(pair)="row">
@@ -240,6 +241,10 @@ const cancelOpenOrderHandler = (item: Trade) => {
   confirmExitValue.value = ModalReasons.cancelOpenOrder;
   removeTradeVisible.value = true;
 };
+
+function reloadTradeHandler(item: Trade) {
+  botStore.reloadTradeMulti({ tradeid: String(item.trade_id), botId: item.botId });
+}
 
 const handleContextMenuEvent = (item, index, event) => {
   // stop browser context menu from appearing

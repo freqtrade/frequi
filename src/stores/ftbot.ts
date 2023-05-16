@@ -631,6 +631,18 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
+      async reloadTrade(tradeid: string) {
+        try {
+          const res = await api.post<never, AxiosResponse<Trade>>(`/trades/${tradeid}/reload`);
+          return Promise.resolve(res);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+          }
+          showAlert(`Failed to reload trade ${tradeid}`, 'danger');
+          return Promise.reject(error);
+        }
+      },
       async startTrade() {
         try {
           const res = await api.post('/start_trade', {});

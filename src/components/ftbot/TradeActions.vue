@@ -45,7 +45,15 @@
     >
       <i-mdi-cancel class="me-1" />Cancel open order
     </b-button>
-
+    <b-button
+      v-if="botApiVersion >= 2.28"
+      class="btn-xs text-start mt-1"
+      size="sm"
+      title="Reload"
+      @click="$emit('reloadTrade', trade)"
+    >
+      <i-mdi-reload-alert class="me-1" />Reload Trade
+    </b-button>
     <b-button
       class="btn-xs text-start mt-1"
       size="sm"
@@ -71,7 +79,7 @@ defineProps({
     required: true,
   },
 });
-defineEmits(['forceExit', 'forceExitPartial', 'cancelOpenOrder', 'deleteTrade']);
+defineEmits(['forceExit', 'forceExitPartial', 'cancelOpenOrder', 'reloadTrade', 'deleteTrade']);
 </script>
 
 <style scoped lang="scss"></style>

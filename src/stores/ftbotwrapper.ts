@@ -8,8 +8,10 @@ import {
   DailyPayload,
   DailyRecord,
   DailyReturnValue,
+  MultiCancelOpenOrderPayload,
   MultiDeletePayload,
   MultiForcesellPayload,
+  MultiReloadTradePayload,
   ProfitInterface,
   Trade,
 } from '@/types';
@@ -317,8 +319,11 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     async deleteTradeMulti(deletePayload: MultiDeletePayload) {
       return this.botStores[deletePayload.botId].deleteTrade(deletePayload.tradeid);
     },
-    async cancelOpenOrderMulti(deletePayload: MultiDeletePayload) {
+    async cancelOpenOrderMulti(deletePayload: MultiCancelOpenOrderPayload) {
       return this.botStores[deletePayload.botId].cancelOpenOrder(deletePayload.tradeid);
+    },
+    async reloadTradeMulti(deletePayload: MultiReloadTradePayload) {
+      return this.botStores[deletePayload.botId].reloadTrade(deletePayload.tradeid);
     },
   },
 });

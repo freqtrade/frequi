@@ -25,10 +25,14 @@ export interface MultiForcesellPayload extends ForceSellPayload {
 }
 
 /** Interface only used internally to ensure the right bot is being called in a multibot environment. */
-export interface MultiDeletePayload {
+export interface MultiBotIdPayload {
   tradeid: string;
   botId: string;
 }
+
+export type MultiDeletePayload = MultiBotIdPayload;
+export type MultiReloadTradePayload = MultiBotIdPayload;
+export type MultiCancelOpenOrderPayload = MultiBotIdPayload;
 
 export interface PerformanceEntry {
   count: number;
