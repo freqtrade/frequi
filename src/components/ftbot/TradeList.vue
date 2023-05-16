@@ -76,14 +76,9 @@
         :per-page="perPage"
         aria-controls="my-table"
       ></b-pagination>
-      <b-form-input
-        v-if="showFilter"
-        v-model="filterText"
-        type="text"
-        placeholder="Filter"
-        size="sm"
-        style="width: unset"
-      />
+      <b-form-group v-if="showFilter" label-for="trade-filter">
+        <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
+      </b-form-group>
     </div>
     <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
     <b-modal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
