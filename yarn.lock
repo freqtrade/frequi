@@ -970,10 +970,10 @@
     "@vue/compiler-dom" "^3.0.1"
     "@vue/server-renderer" "^3.0.1"
 
-"@vuepic/vue-datepicker@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-5.0.1.tgz#14b2d1db92352a57d43d1ab882a2bdbb0cf06d5e"
-  integrity sha512-bIH0LjFmtoE8BG9rFsbq3A9Fec93w6SvyULk3fZkhcMG6CjiIaffR6NWol7bLWuxScYZ0rbC2NceM4Xio9xnqw==
+"@vuepic/vue-datepicker@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-5.1.1.tgz#0311d88c6ec0f70e321bb19d4889de40545ce8f1"
+  integrity sha512-4z2M61JJOJIvmxaFjV1iMZDTBPZI68sLr0mkZ4/XlnGpAaIDK5M5wrqT7iOsPA6hS/b16tLFvkBBSJJD5NfIfg==
   dependencies:
     date-fns "^2.30.0"
     date-fns-tz "^1.3.7"
