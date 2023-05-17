@@ -15,12 +15,7 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.2.tgz#3bb6f37a6b188056fe9e2f363b6aa735ed65d7ca"
   integrity sha512-vy9fM3pIxZmX07dL+VX1aZe7ynZ+YyB0jY+jE6r3hOK6GNY2t6W8rzpFC4tgpbXUYABkFQwgJq2XYXlxbXAI0g==
 
-"@babel/parser@^7.16.4":
-  version "7.20.5"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.20.5.tgz#7f3c7335fe417665d929f34ae5dceae4c04015e8"
-  integrity sha512-r27t/cy/m9uKLXQNWWebeCUHgnAZq0CpG1OwKRxzJMP1vpSU4bSIK2hq+/cp0bQxetkXx38n09rNu8jVkcK/zA==
-
-"@babel/parser@^7.20.15", "@babel/parser@^7.21.3":
+"@babel/parser@^7.16.4", "@babel/parser@^7.20.15", "@babel/parser@^7.21.3":
   version "7.21.8"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.21.8.tgz#642af7d0333eab9c0ad70b14ac5e76dbde7bfdf8"
   integrity sha512-6zavDGdzG3gUqAdWvlLFfk+36RilI+Pwyuuh7HItyeScCWP3k6i8vKclAQ0bM/0y/Kz/xiwvxhMv9MgTJP5gmA==
@@ -713,13 +708,13 @@
     estree-walker "^2.0.2"
     source-map "^0.6.1"
 
-"@vue/compiler-core@3.3.0-beta.3":
-  version "3.3.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.3.0-beta.3.tgz#3cc98d9ef25d2f890717f8a15fe65870910e984f"
-  integrity sha512-mv2rPo4JHou6ebm7+U/wO1HpA6W1zDfTqbt4fqjoXrMwU4DWNgRcLKTXG6G3cXV4mOe+2YgWspfxEzo7fPTMKg==
+"@vue/compiler-core@3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.3.2.tgz#39567bd15c7f97add97bfc4d44e814df36eb797b"
+  integrity sha512-CKZWo1dzsQYTNTft7whzjL0HsrEpMfiK7pjZ2WFE3bC1NA7caUjWioHSK+49y/LK7Bsm4poJZzAMnvZMQ7OTeg==
   dependencies:
     "@babel/parser" "^7.21.3"
-    "@vue/shared" "3.3.0-beta.3"
+    "@vue/shared" "3.3.2"
     estree-walker "^2.0.2"
     source-map-js "^1.0.2"
 
@@ -731,7 +726,7 @@
     "@vue/compiler-core" "3.2.41"
     "@vue/shared" "3.2.41"
 
-"@vue/compiler-dom@3.2.47", "@vue/compiler-dom@^3.0.1":
+"@vue/compiler-dom@3.2.47":
   version "3.2.47"
   resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.2.47.tgz#a0b06caf7ef7056939e563dcaa9cbde30794f305"
   integrity sha512-dBBnEHEPoftUiS03a4ggEig74J2YBZ2UIeyfpcRM2tavgMWo4bsEfgCGsu+uJIL/vax9S+JztH8NmQerUo7shQ==
@@ -739,13 +734,13 @@
     "@vue/compiler-core" "3.2.47"
     "@vue/shared" "3.2.47"
 
-"@vue/compiler-dom@3.3.0-beta.3", "@vue/compiler-dom@^3.3.0-beta.3":
-  version "3.3.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.3.0-beta.3.tgz#8b1d76428413d51d76a7b3f567ccea47428d5ebe"
-  integrity sha512-e7VpjN9wYiuJdJos6Uoe501CzdMkfaEr/27Ks4Ss7Irtcj5YA/S1OROZ35Xl2Pc3ctx6beq5RpcOvnMqh0hcaA==
+"@vue/compiler-dom@3.3.2", "@vue/compiler-dom@^3.0.1", "@vue/compiler-dom@^3.3.0-beta.3":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.3.2.tgz#2012ef4879375a4ca4ee68012a9256398b848af2"
+  integrity sha512-6gS3auANuKXLw0XH6QxkWqyPYPunziS2xb6VRenM3JY7gVfZcJvkCBHkb5RuNY1FCbBO3lkIi0CdXUCW1c7SXw==
   dependencies:
-    "@vue/compiler-core" "3.3.0-beta.3"
-    "@vue/shared" "3.3.0-beta.3"
+    "@vue/compiler-core" "3.3.2"
+    "@vue/shared" "3.3.2"
 
 "@vue/compiler-sfc@3.2.41":
   version "3.2.41"
@@ -779,17 +774,17 @@
     postcss "^8.1.10"
     source-map "^0.6.1"
 
-"@vue/compiler-sfc@^3.3.0-beta.3":
-  version "3.3.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.3.0-beta.3.tgz#8d60a57eaf6a8675463c4640124dafecf78c8961"
-  integrity sha512-6shZNooetShjSMHJvgVoE0EM8pOMV5vnrzsHoCU06stzV+kqRJQpbN7xf2s9wK2fgHMIBSMINrM9AuZiQnNCJg==
+"@vue/compiler-sfc@3.3.2", "@vue/compiler-sfc@^3.3.0-beta.3":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.3.2.tgz#d6467acba8446655bcee7e751441232e5ddebcbf"
+  integrity sha512-jG4jQy28H4BqzEKsQqqW65BZgmo3vzdLHTBjF+35RwtDdlFE+Fk1VWJYUnDMMqkFBo6Ye1ltSKVOMPgkzYj7SQ==
   dependencies:
     "@babel/parser" "^7.20.15"
-    "@vue/compiler-core" "3.3.0-beta.3"
-    "@vue/compiler-dom" "3.3.0-beta.3"
-    "@vue/compiler-ssr" "3.3.0-beta.3"
-    "@vue/reactivity-transform" "3.3.0-beta.3"
-    "@vue/shared" "3.3.0-beta.3"
+    "@vue/compiler-core" "3.3.2"
+    "@vue/compiler-dom" "3.3.2"
+    "@vue/compiler-ssr" "3.3.2"
+    "@vue/reactivity-transform" "3.3.2"
+    "@vue/shared" "3.3.2"
     estree-walker "^2.0.2"
     magic-string "^0.30.0"
     postcss "^8.1.10"
@@ -811,13 +806,13 @@
     "@vue/compiler-dom" "3.2.47"
     "@vue/shared" "3.2.47"
 
-"@vue/compiler-ssr@3.3.0-beta.3":
-  version "3.3.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.3.0-beta.3.tgz#179e2c0a4de617addfb6ebc0776225265f5c7829"
-  integrity sha512-egJ0lEVAod3Hpnw96cJ/0a9qv5f5h5/VCBpKYT8scqkzoMsikh8AJant2omokBCL/Ut5UAMLVQlA5b66+2Ys/g==
+"@vue/compiler-ssr@3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.3.2.tgz#75ac4ccafa2d78c91d2e257ad243c86409493cc4"
+  integrity sha512-K8OfY5FQtZaSOJHHe8xhEfIfLrefL/Y9frv4k4NsyQL3+0lRKxr9QuJhfdBDjkl7Fhz8CzKh63mULvmOfx3l2w==
   dependencies:
-    "@vue/compiler-dom" "3.3.0-beta.3"
-    "@vue/shared" "3.3.0-beta.3"
+    "@vue/compiler-dom" "3.3.2"
+    "@vue/shared" "3.3.2"
 
 "@vue/devtools-api@^6.5.0":
   version "6.5.0"
@@ -863,14 +858,14 @@
     estree-walker "^2.0.2"
     magic-string "^0.25.7"
 
-"@vue/reactivity-transform@3.3.0-beta.3":
-  version "3.3.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@vue/reactivity-transform/-/reactivity-transform-3.3.0-beta.3.tgz#424a70d43fb4893131b2c1fba9a9e6806ebeabe0"
-  integrity sha512-aM3TgBca9QMMu/9B9ASRVvckeZpAdJO9nmQh5UCznhoDYjVxQPS+sCQvH6TLOjPB1MDQMVQYg4ZiPqfVVo7NbA==
+"@vue/reactivity-transform@3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/reactivity-transform/-/reactivity-transform-3.3.2.tgz#e1991d52d7ecefb65b214d8a3385a9dbe2cca74c"
+  integrity sha512-iu2WaQvlJHdnONrsyv4ibIEnSsuKF+aHFngGj/y1lwpHQtalpVhKg9wsKMoiKXS9zPNjG9mNKzJS9vudvjzvyg==
   dependencies:
     "@babel/parser" "^7.20.15"
-    "@vue/compiler-core" "3.3.0-beta.3"
-    "@vue/shared" "3.3.0-beta.3"
+    "@vue/compiler-core" "3.3.2"
+    "@vue/shared" "3.3.2"
     estree-walker "^2.0.2"
     magic-string "^0.30.0"
 
