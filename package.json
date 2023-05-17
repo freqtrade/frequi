@@ -56,7 +56,7 @@
     "cypress": "^12.12.0",
     "eslint": "^8.40.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.12.0",
+    "eslint-plugin-vue": "^9.13.0",
     "mutationobserver-shim": "^0.3.7",
     "portal-vue": "^3.0.0",
     "prettier": "^2.8.8",
