@@ -32,7 +32,7 @@
     "pinia": "^2.0.36",
     "pinia-plugin-persistedstate": "^3.1.0",
     "sortablejs": "^1.15.0",
-    "vue": "^3.2.47",
+    "vue": "^3.3.2",
     "vue-class-component": "^7.2.5",
     "vue-demi": "^0.14.1",
     "vue-echarts": "^6.5.5",
