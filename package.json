@@ -51,7 +51,7 @@
     "@vue/compiler-sfc": "3.2.47",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
-    "@vue/runtime-dom": "^3.2.47",
+    "@vue/runtime-dom": "^3.3.2",
     "@vue/test-utils": "^2.3.2",
     "cypress": "^12.12.0",
     "eslint": "^8.40.0",
