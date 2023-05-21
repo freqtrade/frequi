@@ -17,8 +17,14 @@ import {
   TooltipComponent,
 } from 'echarts/components';
 
-import { ClosedTrade, CumProfitData, CumProfitDataPerDate } from '@/types';
-import { computed, ComputedRef } from 'vue';
+import {
+  ClosedTrade,
+  CumProfitData,
+  CumProfitDataPerDate,
+  CumProfitChartData,
+  Trade,
+} from '@/types';
+import { computed } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 import { dataZoomPartial } from '@/shared/charts/chartZoom';
 
@@ -40,6 +46,7 @@ const CHART_PROFIT = 'Profit';
 
 const props = defineProps({
   trades: { required: true, type: Array as () => ClosedTrade[] },
+  openTrades: { required: true, type: Array as () => Trade[] },
   showTitle: { default: true, type: Boolean },
   profitColumn: { default: 'profit_abs', type: String },
 });
@@ -47,7 +54,11 @@ const settingsStore = useSettingsStore();
 // const botList = ref<string[]>([]);
 // const cumulativeData = ref<{ date: number; profit: any }[]>([]);
 
-const cumulativeData: ComputedRef<{ date: number; profit: number }[]> = computed(() => {
+const openProfit = computed<number>(() => {
+  return props.openTrades.reduce((a, v) => a + v[props.profitColumn], 0);
+});
+
+const cumulativeData = computed<CumProfitChartData[]>(() => {
   const res: CumProfitData[] = [];
   const resD: CumProfitDataPerDate = {};
   const closedTrades = props.trades
@@ -75,16 +86,29 @@ const cumulativeData: ComputedRef<{ date: number; profit: number }[]> = computed
       res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
     }
   }
-  // console.log(resD);
 
-  return Object.entries(resD).map(([k, v]) => {
-    const obj = { date: parseInt(k, 10), profit: v.profit };
-    // TODO: The below could allow "lines" per bot"
-    // this.botList.forEach((botId) => {
-    // obj[botId] = v[botId];
-    // });
-    return obj;
-  });
+  const valueArray: CumProfitChartData[] = Object.entries(resD).map(
+    ([k, v]: [string, CumProfitData]) => {
+      const obj = { date: parseInt(k, 10), profit: v.profit };
+      // TODO: The below could allow "lines" per bot"
+      // this.botList.forEach((botId) => {
+      // obj[botId] = v[botId];
+      // });
+      return obj;
+    },
+  );
+
+  if (props.openTrades.length > 0 && valueArray.length > 0) {
+    const lastPoint = valueArray[valueArray.length - 1];
+    if (lastPoint) {
+      const resultWitHOpen = (lastPoint.profit ?? 0) + openProfit.value;
+      valueArray.push({ date: lastPoint.date, currentProfit: lastPoint.profit });
+      // Add one day to date to ensure it's showing properly
+      const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
+      valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
+    }
+  }
+  return valueArray;
 });
 
 const chartOptions = computed((): EChartsOption => {
@@ -95,7 +119,7 @@ const chartOptions = computed((): EChartsOption => {
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: {
-      dimensions: ['date', 'profit'],
+      dimensions: ['date', 'profit', 'currentProfit'],
       source: cumulativeData.value,
     },
     tooltip: {
@@ -148,6 +172,27 @@ const chartOptions = computed((): EChartsOption => {
     ],
     series: [
       {
+        // Keep  current-profit before profit, so the starting symbol is behind
+        type: 'line',
+        name: 'currentProfit',
+
+        animation: true,
+        tooltip: {
+          show: false,
+        },
+        lineStyle: {
+          color: openProfit.value > 0 ? 'green' : 'red',
+          type: 'dotted',
+        },
+        itemStyle: {
+          color: openProfit.value > 0 ? 'green' : 'red',
+        },
+        encode: {
+          x: 'date',
+          y: 'currentProfit',
+        },
+      },
+      {
         type: 'line',
         name: CHART_PROFIT,
         animation: true,
@@ -158,10 +203,15 @@ const chartOptions = computed((): EChartsOption => {
         itemStyle: {
           color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
         },
+        encode: {
+          x: 'date',
+          y: 'profit',
+        },
         // symbol: 'none',
       },
     ],
   };
+
   // TODO: maybe have profit lines per bot?
   // this.botList.forEach((botId: string) => {
   //   console.log('bot', botId);

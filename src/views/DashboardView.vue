@@ -86,7 +86,11 @@
         drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Cumulative Profit">
-          <CumProfitChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
+          <CumProfitChart
+            :trades="botStore.allTradesSelectedBots"
+            :open-trades="botStore.allOpenTradesSelectedBots"
+            :show-title="false"
+          />
         </DraggableContainer>
       </grid-item>
       <grid-item
