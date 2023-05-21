@@ -13,9 +13,16 @@
       <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
         <b-input-group>
           <b-input-group-prepend>
-            <div :style="{ 'background-color': selColor }" class="colorbox me-1"></div>
+            <b-form-input
+              v-model="selColor"
+              type="color"
+              size="sm"
+              class="p-0"
+              style="max-width: 29px"
+            ></b-form-input>
           </b-input-group-prepend>
-          <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
+          <b-form-input id="colsel" v-model="selColor" size="sm" class="flex-grow-1">
+          </b-form-input>
           <b-input-group-append>
             <b-button variant="primary" size="sm" @click="newColor">
               <i-mdi-dice-multiple />
@@ -39,6 +46,7 @@ import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
 import PlotIndicatorSelect from '@/components/charts/PlotIndicatorSelect.vue';
 import { computed, ref, watch } from 'vue';
+import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps({
   modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
@@ -94,21 +102,15 @@ watch(
   },
 );
 
-watch([selColor, graphType, fillTo], () => {
-  emitIndicator();
-});
+watchDebounced(
+  [selColor, graphType, fillTo],
+  () => {
+    emitIndicator();
+  },
+  {
+    debounce: 200,
+  },
+);
 </script>
 
-<style scoped>
-.colorbox {
-  border-radius: 50% !important;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 25px;
-  width: 25px;
-  vertical-align: center;
-}
-.pointer {
-  cursor: pointer;
-}
-</style>
+<style scoped></style>
