@@ -24,4 +24,8 @@ export function defaultMocks() {
   cy.intercept('GET', '**/api/v1/show_config', {
     fixture: 'show_config.json',
   }).as('ShowConf');
+
+  cy.intercept('GET', '**/api/v1/pair_candles?*', {
+    fixture: 'pair_candles_btc_1m.json',
+  }).as('PairCandles');
 }

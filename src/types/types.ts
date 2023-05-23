@@ -25,10 +25,14 @@ export interface MultiForcesellPayload extends ForceSellPayload {
 }
 
 /** Interface only used internally to ensure the right bot is being called in a multibot environment. */
-export interface MultiDeletePayload {
+export interface MultiBotIdPayload {
   tradeid: string;
   botId: string;
 }
+
+export type MultiDeletePayload = MultiBotIdPayload;
+export type MultiReloadTradePayload = MultiBotIdPayload;
+export type MultiCancelOpenOrderPayload = MultiBotIdPayload;
 
 export interface PerformanceEntry {
   count: number;
@@ -121,8 +125,7 @@ export interface EntryPricing extends PriceBase {
 export interface BotState {
   version: string;
   strategy_version?: string;
-  /** Api version - was not provided prior to 1.1 (or 2021.11) */
-  api_version?: number;
+  api_version: number;
   dry_run: boolean;
   /** Futures, margin or spot */
   trading_mode?: TradingMode;
@@ -136,8 +139,6 @@ export interface BotState {
   unfilledtimeout: UnfilledTimeout;
   order_types: OrderTypes;
   exchange: string;
-  /** @deprecated replaced by force_entry_enable in 2.x */
-  forcebuy_enabled?: boolean;
   force_entry_enable?: boolean;
   max_open_trades: number;
   minimal_roi: object;
@@ -206,6 +207,7 @@ export interface PairHistoryPayload {
   timeframe: string;
   timerange: string;
   strategy: string;
+  freqaimodel?: string;
 }
 
 export interface PairHistory {
@@ -214,7 +216,7 @@ export interface PairHistory {
   timeframe: string;
   timeframe_ms: number;
   columns: string[];
-  data: Array<number[]>;
+  data: number[][];
   length: number;
   /** Number of buy signals in this response */
   buy_signals: number;

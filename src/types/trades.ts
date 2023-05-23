@@ -134,7 +134,7 @@ export interface ClosedTrade extends TradeBase {
   fee_close_cost?: number;
   fee_close_currency?: string;
 
-  sell_reason: string;
+  exit_reason: string;
   min_rate: number;
   max_rate: number;
 }

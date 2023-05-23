@@ -15,7 +15,9 @@
           >
           </v-select>
 
-          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">&#x21bb;</b-button>
+          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">
+            <i-mdi-refresh />
+          </b-button>
           <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
             >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
           >
@@ -35,18 +37,12 @@
           >
 
           <div class="ms-2">
-            <b-form-select
-              v-model="plotStore.plotConfigName"
-              :options="plotStore.availablePlotConfigNames"
-              size="sm"
-              @change="plotStore.plotConfigChanged"
-            >
-            </b-form-select>
+            <plot-config-select></plot-config-select>
           </div>
 
           <div class="ms-2 me-0 me-md-1">
             <b-button size="sm" title="Plot configurator" @click="showConfigurator">
-              &#9881;
+              <i-mdi-cog width="12" height="12" />
             </b-button>
           </div>
         </div>
@@ -91,15 +87,16 @@
 </template>
 
 <script setup lang="ts">
-import { Trade, PairHistory, LoadingStatus, ChartSliderPosition } from '@/types';
 import CandleChart from '@/components/charts/CandleChart.vue';
+import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
-import vSelect from 'vue-select';
-import { useSettingsStore } from '@/stores/settings';
 import { usePlotConfigStore } from '@/stores/plotConfig';
+import { useSettingsStore } from '@/stores/settings';
+import { ChartSliderPosition, LoadingStatus, PairHistory, Trade } from '@/types';
+import vSelect from 'vue-select';
 
-import { ref, computed, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
   trades: { required: false, default: () => [], type: Array as () => Trade[] },
@@ -111,6 +108,7 @@ const props = defineProps({
   timerange: { required: false, default: '', type: String },
   /** Only required if historicView is true */
   strategy: { required: false, default: '', type: String },
+  freqaiModel: { required: false, default: undefined, type: String },
   sliderPosition: {
     required: false,
     type: Object as () => ChartSliderPosition,
@@ -176,6 +174,7 @@ const refresh = () => {
         timeframe: props.timeframe,
         timerange: props.timerange,
         strategy: props.strategy,
+        freqaimodel: props.freqaiModel,
       });
     } else {
       botStore.activeBot.getPairCandles({

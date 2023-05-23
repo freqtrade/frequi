@@ -99,14 +99,17 @@ export class UserService {
   public static getAvailableBots(): BotDescriptors {
     const allInfo = UserService.getAllLoginInfos();
     const response: BotDescriptors = {};
-    Object.entries(allInfo).forEach(([k, v], idx) => {
-      response[k] = {
-        botId: k,
-        botName: v.botName,
-        botUrl: v.apiUrl,
-        sortId: v.sortId ?? idx,
-      };
-    });
+    Object.keys(allInfo)
+      .sort((a, b) => (allInfo[a].sortId ?? 0) - (allInfo[b].sortId ?? 0))
+      .forEach((k, idx) => {
+        response[k] = {
+          botId: k,
+          botName: allInfo[k].botName,
+          botUrl: allInfo[k].apiUrl,
+          sortId: allInfo[k].sortId ?? idx,
+        };
+      });
+
     return response;
   }
 

@@ -6,7 +6,7 @@
       aria-label="Refresh"
       @click="botStore.activeBot.getBacktestHistory"
     >
-      &#x21bb;
+      <i-mdi-refresh />
     </button>
     <p>
       Load Historic results from disk. You can click on multiple results to load all of them into
@@ -28,24 +28,15 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, onMounted } from 'vue';
+<script setup lang="ts">
+import { onMounted } from 'vue';
 import { timestampms } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  setup() {
-    const botStore = useBotStore();
+const botStore = useBotStore();
 
-    onMounted(() => {
-      botStore.activeBot.getBacktestHistory();
-    });
-
-    return {
-      timestampms,
-      botStore,
-    };
-  },
+onMounted(() => {
+  botStore.activeBot.getBacktestHistory();
 });
 </script>
 

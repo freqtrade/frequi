@@ -3,49 +3,54 @@
     <!-- Only visible on xs (phone) viewport! -->
     <hr class="my-0" />
     <div class="d-flex flex-align-center justify-content-between px-2">
-      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/open_trades">
-        <OpenTradesIcon />
+      <router-link
+        v-if="!botStore.canRunBacktest"
+        class="nav-link navbar-nav align-items-center"
+        to="/open_trades"
+      >
+        <i-mdi-folder-open height="24" width="24" />
         Trades
       </router-link>
-      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/trade_history">
-        <ClosedTradesIcon />
+      <router-link
+        v-if="!botStore.canRunBacktest"
+        class="nav-link navbar-nav align-items-center"
+        to="/trade_history"
+      >
+        <i-mdi-folder-lock height="24" width="24" />
         History
       </router-link>
-      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/pairlist">
-        <PairListIcon />
+      <router-link
+        v-if="!botStore.canRunBacktest"
+        class="nav-link navbar-nav align-items-center"
+        to="/pairlist"
+      >
+        <i-mdi-view-list height="24" width="24" />
         Pairlist
       </router-link>
-      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/balance">
-        <BalanceIcon />
+      <router-link
+        v-if="!botStore.canRunBacktest"
+        class="nav-link navbar-nav align-items-center"
+        to="/balance"
+      >
+        <i-mdi-bank height="24" width="24" />
         Balance
       </router-link>
-      <router-link v-if="!botStore.canRunBacktest" class="nav-link navbar-nav" to="/dashboard">
-        <DashboardIcon />
+      <router-link
+        v-if="!botStore.canRunBacktest"
+        class="nav-link navbar-nav align-items-center"
+        to="/dashboard"
+      >
+        <i-mdi-view-dashboard-outline height="24" width="24" />
         Dashboard
       </router-link>
     </div>
   </footer>
 </template>
 
-<script lang="ts">
-import OpenTradesIcon from 'vue-material-design-icons/FolderOpen.vue';
-import ClosedTradesIcon from 'vue-material-design-icons/FolderLock.vue';
-import BalanceIcon from 'vue-material-design-icons/Bank.vue';
-import PairListIcon from 'vue-material-design-icons/ViewList.vue';
-import DashboardIcon from 'vue-material-design-icons/ViewDashboardOutline.vue';
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'NavFooter',
-  components: { OpenTradesIcon, ClosedTradesIcon, BalanceIcon, PairListIcon, DashboardIcon },
-  setup() {
-    const botStore = useBotStore();
-    return {
-      botStore,
-    };
-  },
-});
+const botStore = useBotStore();
 </script>
 
 <style lang="scss" scoped>

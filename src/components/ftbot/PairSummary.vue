@@ -11,7 +11,7 @@
     >
       <div>
         {{ comb.pair }}
-        <span v-if="comb.locks" :title="comb.lockReason"> &#128274; </span>
+        <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
       </div>
 
       <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />

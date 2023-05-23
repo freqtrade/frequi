@@ -1,133 +1,89 @@
 <template>
   <div>
-    <div v-if="addNew">
-      <b-form-group label="Add indicator" label-for="indicatorSelector">
-        <b-input-group size="sm">
-          <b-form-input v-model="indicatorFilter" placeholder="Filter indicators"></b-form-input>
-          <b-input-group-append>
-            <Reset
-              class="pointer align-self-center ms-1"
-              :size="18"
-              @click="indicatorFilter = ''"
-            ></Reset>
-          </b-input-group-append>
-        </b-input-group>
+    <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
+      <b-form-group class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
         <b-form-select
-          id="indicatorSelector"
-          v-model="selAvailableIndicator"
-          :options="filteredIndicators"
-          :select-size="4"
+          id="plotTypeSelector"
+          v-model="graphType"
+          size="sm"
+          :options="availableGraphTypes"
         >
         </b-form-select>
       </b-form-group>
+      <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
+        <b-input-group>
+          <b-input-group-prepend>
+            <b-form-input
+              v-model="selColor"
+              type="color"
+              size="sm"
+              class="p-0"
+              style="max-width: 29px"
+            ></b-form-input>
+          </b-input-group-prepend>
+          <b-form-input id="colsel" v-model="selColor" size="sm" class="flex-grow-1">
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="primary" size="sm" @click="newColor">
+              <i-mdi-dice-multiple />
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
     </div>
-
-    <b-form-group label="Type" label-for="plotTypeSelector">
-      <b-form-select
-        id="plotTypeSelector"
-        v-model="graphType"
-        size="sm"
-        :options="availableGraphTypes"
-        @change="emitIndicator()"
-      >
-      </b-form-select>
-    </b-form-group>
-    <hr />
-    <b-form-group label="Color" label-for="colsel" size="sm">
-      <b-input-group>
-        <b-input-group-prepend>
-          <div :style="{ 'background-color': selColor }" class="colorbox me-2"></div>
-          <!-- <b-form-input
-            id="colsel"
-            v-model="selColor"
-            size="sm"
-            class="colorbox"
-            type="color"
-            :style="{ 'background-color': selColor }"
-          >
-          </b-form-input> -->
-        </b-input-group-prepend>
-
-        <b-form-input id="colsel" v-model="selColor" size="sm"> </b-form-input>
-        <b-input-group-append>
-          <b-button variant="primary" size="sm" @click="newColor">&#x21bb;</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>
-    <div class="d-flex d-flex-columns">
-      <b-button
-        v-if="addNew"
-        class="flex-grow-1"
-        variant="primary"
-        title="Add "
-        size="sm"
-        @click="emitIndicator"
-      >
-        Save indicator
-      </b-button>
-      <b-button
-        v-if="addNew"
-        class="ms-1 flex-grow-1"
-        variant="secondary"
-        title="Add "
-        size="sm"
-        @click="clickCancel"
-      >
-        Cancel
-      </b-button>
-    </div>
+    <PlotIndicatorSelect
+      v-if="graphType === ChartType.line"
+      v-model="fillTo"
+      :columns="columns"
+      class="mt-1"
+      label="Select indicator to add"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
-import Reset from 'vue-material-design-icons/CloseCircleOutline.vue';
-
+import PlotIndicatorSelect from '@/components/charts/PlotIndicatorSelect.vue';
 import { computed, ref, watch } from 'vue';
+import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps({
   modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
   columns: { required: true, type: Array as () => string[] },
-  addNew: { required: true, type: Boolean },
 });
+
 const emit = defineEmits(['update:modelValue']);
 const selColor = ref(randomColor());
 const graphType = ref<ChartType>(ChartType.line);
 const availableGraphTypes = ref(Object.keys(ChartType));
-const indicatorFilter = ref('');
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
+const fillTo = ref('');
 
-const filteredIndicators = computed(() => {
-  return props.columns.filter((col) =>
-    col.toLowerCase().includes(indicatorFilter.value.toLowerCase()),
-  );
-});
-
-const newColor = () => {
+function newColor() {
   selColor.value = randomColor();
-};
+}
 
-const combinedIndicator = computed(() => {
+const combinedIndicator = computed<IndicatorConfig>(() => {
   if (cancelled.value || !selAvailableIndicator.value) {
     return {};
   }
+  const val: IndicatorConfig = {
+    color: selColor.value,
+    type: graphType.value,
+  };
+  if (fillTo.value && graphType.value === ChartType.line) {
+    val.fill_to = fillTo.value;
+  }
   return {
-    [selAvailableIndicator.value]: {
-      color: selColor.value,
-      type: graphType.value,
-    },
+    [selAvailableIndicator.value]: val,
   };
 });
-const emitIndicator = () => {
-  emit('update:modelValue', combinedIndicator.value);
-};
 
-const clickCancel = () => {
-  cancelled.value = true;
-  emitIndicator();
-};
+function emitIndicator() {
+  emit('update:modelValue', combinedIndicator.value);
+}
 
 watch(
   () => props.modelValue,
@@ -135,29 +91,26 @@ watch(
     [selAvailableIndicator.value] = Object.keys(props.modelValue);
     cancelled.value = false;
     if (selAvailableIndicator.value && props.modelValue) {
-      selColor.value = props.modelValue[selAvailableIndicator.value].color || randomColor();
-      graphType.value = props.modelValue[selAvailableIndicator.value].type || ChartType.line;
+      const xx = props.modelValue[selAvailableIndicator.value];
+      selColor.value = xx.color || randomColor();
+      graphType.value = xx.type || ChartType.line;
+      fillTo.value = xx.fill_to || '';
     }
+  },
+  {
+    immediate: true,
   },
 );
 
-watch(selColor, () => {
-  if (!props.addNew) {
+watchDebounced(
+  [selColor, graphType, fillTo],
+  () => {
     emitIndicator();
-  }
-});
+  },
+  {
+    debounce: 200,
+  },
+);
 </script>
 
-<style scoped>
-.colorbox {
-  border-radius: 50%;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 25px;
-  width: 25px;
-  vertical-align: center;
-}
-.pointer {
-  cursor: pointer;
-}
-</style>
+<style scoped></style>

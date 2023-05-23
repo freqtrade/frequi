@@ -1,11 +1,10 @@
 <template>
   <div :title="hint">
-    <InfoIcon :size="18" />
+    <i-mdi-information-outline />
   </div>
 </template>
 
-<script setup>
-import InfoIcon from 'vue-material-design-icons/InformationOutline.vue';
+<script setup lang="ts">
 defineProps({
   hint: { type: String, required: true },
 });

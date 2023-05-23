@@ -33,7 +33,7 @@
           class="me-1"
           :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
           size="sm"
-          >+
+          ><i-mdi-plus-box-outline />
         </b-button>
         <b-button
           v-if="botStore.activeBot.botApiVersion >= 1.12"
@@ -43,7 +43,7 @@
           :disabled="blacklistSelect.length === 0"
           @click="deletePairs"
         >
-          <DeleteIcon :size="16" title="Delete Bot" />
+          <i-mdi-delete />
         </b-button>
       </div>
       <b-popover
@@ -81,7 +81,7 @@
           class="pair black"
           :active="blacklistSelect.indexOf(key) > -1"
           @click="blacklistSelectClick(key)"
-          ><span class="check">&#x2714;</span>{{ pair }}</b-list-group-item
+          ><span class="check"><i-mdi-check-circle /></span>{{ pair }}</b-list-group-item
         >
       </b-list-group>
     </div>
@@ -91,89 +91,73 @@
   </div>
 </template>
 
-<script lang="ts">
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import { defineComponent, ref, onMounted } from 'vue';
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { onMounted, ref } from 'vue';
 
-export default defineComponent({
-  name: 'FTBotAPIPairList',
-  components: { DeleteIcon },
-  setup() {
-    const newblacklistpair = ref('');
-    const blackListShow = ref(false);
-    const blacklistSelect = ref<number[]>([]);
-    const botStore = useBotStore();
+const newblacklistpair = ref('');
+const blackListShow = ref(false);
+const blacklistSelect = ref<number[]>([]);
+const botStore = useBotStore();
 
-    const initBlacklist = () => {
-      if (botStore.activeBot.whitelist.length === 0) {
-        botStore.activeBot.getWhitelist();
-      }
-      if (botStore.activeBot.blacklist.length === 0) {
-        botStore.activeBot.getBlacklist();
-      }
-    };
+const initBlacklist = () => {
+  if (botStore.activeBot.whitelist.length === 0) {
+    botStore.activeBot.getWhitelist();
+  }
+  if (botStore.activeBot.blacklist.length === 0) {
+    botStore.activeBot.getBlacklist();
+  }
+};
 
-    const addBlacklistPair = () => {
-      if (newblacklistpair.value) {
-        blackListShow.value = false;
+const addBlacklistPair = () => {
+  if (newblacklistpair.value) {
+    blackListShow.value = false;
 
-        botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
-        newblacklistpair.value = '';
-      }
-    };
+    botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
+    newblacklistpair.value = '';
+  }
+};
 
-    const blacklistSelectClick = (key) => {
-      console.log(key);
-      const index = blacklistSelect.value.indexOf(key);
-      if (index > -1) {
-        blacklistSelect.value.splice(index, 1);
-      } else {
-        blacklistSelect.value.push(key);
-      }
-    };
+const blacklistSelectClick = (key) => {
+  console.log(key);
+  const index = blacklistSelect.value.indexOf(key);
+  if (index > -1) {
+    blacklistSelect.value.splice(index, 1);
+  } else {
+    blacklistSelect.value.push(key);
+  }
+};
 
-    const deletePairs = () => {
-      if (blacklistSelect.value.length === 0) {
-        console.log('nothing to delete');
-        return;
-      }
-      // const pairlist = blacklistSelect.value;
-      const pairlist = botStore.activeBot.blacklist.filter(
-        (value, index) => blacklistSelect.value.indexOf(index) > -1,
-      );
-      console.log('Deleting pairs: ', pairlist);
-      botStore.activeBot.deleteBlacklist(pairlist);
-      blacklistSelect.value = [];
-    };
-    onMounted(() => {
-      initBlacklist();
-    });
-    return {
-      addBlacklistPair,
-      deletePairs,
-      initBlacklist,
-      blacklistSelectClick,
-      botStore,
-      newblacklistpair,
-      blackListShow,
-      blacklistSelect,
-    };
-  },
+const deletePairs = () => {
+  if (blacklistSelect.value.length === 0) {
+    console.log('nothing to delete');
+    return;
+  }
+  // const pairlist = blacklistSelect.value;
+  const pairlist = botStore.activeBot.blacklist.filter(
+    (value, index) => blacklistSelect.value.indexOf(index) > -1,
+  );
+  console.log('Deleting pairs: ', pairlist);
+  botStore.activeBot.deleteBlacklist(pairlist);
+  blacklistSelect.value = [];
+};
+onMounted(() => {
+  initBlacklist();
 });
 </script>
 
 <style scoped lang="scss">
 .check {
   // Hidden checkbox on blacklist selection
-  background: #41b883;
+  // background: white;
+  color: #41b883;
   opacity: 0;
-  border-radius: 50%;
+  // border-radius: 50%;
   z-index: 5;
   width: 1.3em;
   height: 1.3em;
-  top: -0.2em;
-  left: -0.2em;
+  top: -0.3em;
+  left: -0.3em;
   position: absolute;
   transition: opacity 0.2s;
 }

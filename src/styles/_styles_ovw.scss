@@ -13,7 +13,7 @@
 }
 
 .v-select * {
-    font-size: 0.8rem;
+    font-size: 0.8rem !important;
 }
 
 .modal.show {
@@ -22,11 +22,19 @@
 }
 
 .btn-primary {
-    color: #ffffff
+    color: #ffffff !important;
 }
 
 .text-bg-primary {
     color: #ffffff !important;
+}
+
+.card {
+    padding: 0px;
+}
+
+.vs__open-indicator {
+    transform: none !important;
 }
 
 [data-theme="dark"] {
@@ -133,8 +141,9 @@
     }
 
     // Styles for searchable select
-    .vs__dropdown-toggle {
+    .vs__dropdown-toggle, .vs__clear {
         border-color: lighten($bg-dark, 20%);
+        color: $fg-color;
         // border: 1px solid $fg-color;
     }
 
@@ -189,7 +198,11 @@
     .form-select {
         color: $fg-color;
         border-color: lighten($bg-dark, 20%);
-        background: $bg-dark url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23dedede' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px
+        background: $bg-dark;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dedede' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        background-size: 16px 12px;
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
     }
 
     .b-toast .toast {

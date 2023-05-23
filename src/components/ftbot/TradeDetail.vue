@@ -128,25 +128,16 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import ValuePair from '@/components/general/ValuePair.vue';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { Trade } from '@/types';
 
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'TradeDetail',
-  components: { ValuePair, TradeProfit, DateTimeTZ },
-  props: {
-    trade: { required: true, type: Object as () => Trade },
-    stakeCurrency: { required: true, type: String },
-  },
-  setup() {
-    return { timestampms, formatPercent, formatPrice, formatPriceCurrency };
-  },
+defineProps({
+  trade: { required: true, type: Object as () => Trade },
+  stakeCurrency: { required: true, type: String },
 });
 </script>
 <style scoped>

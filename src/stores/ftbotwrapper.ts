@@ -8,8 +8,10 @@ import {
   DailyPayload,
   DailyRecord,
   DailyReturnValue,
+  MultiCancelOpenOrderPayload,
   MultiDeletePayload,
   MultiForcesellPayload,
+  MultiReloadTradePayload,
   ProfitInterface,
   Trade,
 } from '@/types';
@@ -234,7 +236,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         // Ensure all bots status is correct.
         await this.pingAll();
 
-        const botStoreUpdates: Promise<any>[] = [];
+        const botStoreUpdates: Promise<BotState>[] = [];
         this.allBotStores.forEach((bot) => {
           if (bot.isBotOnline && !bot.botStatusAvailable) {
             botStoreUpdates.push(bot.getState());
@@ -283,7 +285,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     },
     async pingAll() {
       await Promise.all(
-        Object.entries(this.botStores).map(async ([_, v]) => {
+        Object.values(this.botStores).map(async (v) => {
           try {
             await v.fetchPing();
           } catch {
@@ -293,7 +295,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       );
     },
     allGetState() {
-      Object.entries(this.botStores).map(async ([_, v]) => {
+      Object.values(this.botStores).map(async (v) => {
         try {
           await v.getState();
         } catch {
@@ -317,8 +319,11 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     async deleteTradeMulti(deletePayload: MultiDeletePayload) {
       return this.botStores[deletePayload.botId].deleteTrade(deletePayload.tradeid);
     },
-    async cancelOpenOrderMulti(deletePayload: MultiDeletePayload) {
+    async cancelOpenOrderMulti(deletePayload: MultiCancelOpenOrderPayload) {
       return this.botStores[deletePayload.botId].cancelOpenOrder(deletePayload.tradeid);
+    },
+    async reloadTradeMulti(deletePayload: MultiReloadTradePayload) {
+      return this.botStores[deletePayload.botId].reloadTrade(deletePayload.tradeid);
     },
   },
 });

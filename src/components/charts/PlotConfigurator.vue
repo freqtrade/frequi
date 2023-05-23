@@ -1,120 +1,147 @@
 <template>
   <div v-if="columns">
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <b-form-input id="idPlotConfigName" v-model="plotConfigNameLoc" size="sm"> </b-form-input>
+      <plot-config-select allow-edit></plot-config-select>
     </b-form-group>
     <div class="col-mb-3">
       <hr />
-
-      <b-form-group label="Target" label-for="FieldSel">
-        <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="3">
-        </b-form-select>
+      <b-form-group label="Target Plot" label-for="FieldSel">
+        <edit-value
+          v-model="selSubPlot"
+          :allow-edit="!isMainPlot"
+          allow-add
+          editable-name="plot configuration"
+          align-vertical
+          @new="addSubplot"
+          @delete="deleteSubplot"
+          @rename="renameSubplot"
+        >
+          <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
+          </b-form-select>
+        </edit-value>
       </b-form-group>
     </div>
-    <b-form-group label="Add new plot" label-for="newSubPlot">
-      <b-input-group size="sm">
-        <b-form-input id="newSubPlot" v-model="newSubplotName" class="addPlot"></b-form-input>
-        <b-input-group-append>
-          <b-button :disabled="!newSubplotName" @click="addSubplot">+</b-button>
-          <b-button v-if="selSubPlot && selSubPlot != 'main_plot'" @click="delSubplot">-</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>
     <hr />
     <div>
-      <b-form-group label="Used indicators" label-for="selectedIndicators">
+      <b-form-group label="Indicators in this plot" label-for="selectedIndicators">
         <b-form-select
           id="selectedIndicators"
           v-model="selIndicatorName"
+          :disabled="addNewIndicator"
           :options="usedColumns"
           :select-size="4"
         >
         </b-form-select>
       </b-form-group>
     </div>
-    <div>
-      <b-button
-        variant="primary"
-        title="Add indicator to plot"
-        size="sm"
-        :disabled="addNewIndicator"
-        @click="addNewIndicator = !addNewIndicator"
-      >
-        Add new indicator
-      </b-button>
+    <div class="d-flex flex-row mt-1">
       <b-button
         variant="secondary"
         title="Remove indicator to plot"
         size="sm"
         :disabled="!selIndicatorName"
-        class="ms-1"
+        class="col"
         @click="removeIndicator"
       >
         Remove indicator
       </b-button>
+      <b-button
+        variant="primary"
+        title="Add indicator to plot"
+        size="sm"
+        class="ms-1 col"
+        :disabled="addNewIndicator"
+        @click="
+          addNewIndicator = !addNewIndicator;
+          selIndicatorName = '';
+        "
+      >
+        Add new indicator
+      </b-button>
     </div>
 
-    <PlotIndicator
-      v-if="selIndicatorName || addNewIndicator"
+    <PlotIndicatorSelect
+      v-if="addNewIndicator"
+      :columns="columns"
+      class="mt-1"
+      label="Select indicator to add"
+      @indicator-selected="addNewIndicatorSelected"
+    />
+
+    <plot-indicator
+      v-if="selIndicatorName"
       v-model="selIndicator"
       class="mt-1"
       :columns="columns"
-      :add-new="addNewIndicator"
     />
     <hr />
 
-    <div>
-      <b-button class="ms-1" variant="secondary" size="sm" @click="loadPlotConfig">Load</b-button>
+    <div class="d-flex flex-row">
+      <b-button
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        :disabled="addNewIndicator"
+        title="Reset to last saved configuration"
+        @click="loadPlotConfig"
+        >Reset</b-button
+      >
+
+      <!--
+        Does Resetting a config to "nothing" make sense, or can this be done via "delete / create"?
+        <b-button
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        :disabled="addNewIndicator"
+        title="Start with empty configuration"
+        @click="clearConfig"
+        >Reset</b-button
+      > -->
       <b-button
         :disabled="
           (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
-          !botStore.activeBot.isBotOnline
+          !botStore.activeBot.isBotOnline ||
+          addNewIndicator
         "
-        class="ms-1"
+        class="ms-1 col"
         variant="secondary"
         size="sm"
         @click="loadPlotConfigFromStrategy"
       >
         From strategy
       </b-button>
-
-      <b-button
-        class="ms-1"
-        variant="secondary"
-        size="sm"
-        title="Load configuration from text box below"
-        @click="resetConfig"
-        >Reset</b-button
-      >
       <b-button
         id="showButton"
-        class="ms-1"
+        class="ms-1 col"
         variant="secondary"
         size="sm"
+        :disabled="addNewIndicator"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
-        >Show</b-button
+        >{{ showConfig ? 'Hide' : 'Show' }}</b-button
       >
 
       <b-button
-        v-if="showConfig"
-        class="ms-1"
-        variant="secondary"
-        size="sm"
-        title="Load configuration from text box below"
-        @click="loadConfigFromString"
-        >Load from String</b-button
-      >
-      <b-button
-        class="ms-1"
+        class="ms-1 col"
         variant="primary"
         size="sm"
         data-toggle="tooltip"
+        :disabled="addNewIndicator"
         title="Save configuration"
         @click="savePlotConfig"
         >Save</b-button
       >
     </div>
+    <b-button
+      v-if="showConfig"
+      class="ms-1 mt-1"
+      variant="secondary"
+      size="sm"
+      title="Load configuration from text box below"
+      @click="loadConfigFromString"
+      >Load from String</b-button
+    >
     <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
       <b-form-textarea
         id="TextArea"
@@ -129,14 +156,18 @@
 </template>
 
 <script setup lang="ts">
-import { PlotConfig, EMPTY_PLOTCONFIG, IndicatorConfig } from '@/types';
-import { getCustomPlotConfig } from '@/shared/storage';
+import EditValue from '@/components/general/EditValue.vue';
+import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/stores/alerts';
+import { IndicatorConfig, PlotConfig } from '@/types';
+import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
-import { computed, ref, onMounted } from 'vue';
+import { deepClone } from '@/shared/deepClone';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import randomColor from '@/shared/randomColor';
 
 defineProps({
   columns: { required: true, type: Array as () => string[] },
@@ -146,10 +177,7 @@ defineProps({
 const plotStore = usePlotConfigStore();
 const botStore = useBotStore();
 
-const plotConfig = ref<PlotConfig>(EMPTY_PLOTCONFIG);
-
 const plotConfigNameLoc = ref('default');
-const newSubplotName = ref('');
 const selIndicatorName = ref('');
 const addNewIndicator = ref(false);
 const showConfig = ref(false);
@@ -163,43 +191,40 @@ const isMainPlot = computed(() => {
 
 const currentPlotConfig = computed(() => {
   if (isMainPlot.value) {
-    return plotConfig.value.main_plot;
+    return plotStore.editablePlotConfig.main_plot;
   }
 
-  return plotConfig.value.subplots[selSubPlot.value];
+  return plotStore.editablePlotConfig.subplots[selSubPlot.value];
 });
 const subplots = computed((): string[] => {
   // Subplot keys (for selection window)
-  return ['main_plot', ...Object.keys(plotConfig.value.subplots)];
+  return ['main_plot', ...Object.keys(plotStore.editablePlotConfig.subplots)];
 });
 const usedColumns = computed((): string[] => {
   if (isMainPlot.value) {
-    return Object.keys(plotConfig.value.main_plot);
+    return Object.keys(plotStore.editablePlotConfig.main_plot);
   }
-  if (selSubPlot.value in plotConfig.value.subplots) {
-    return Object.keys(plotConfig.value.subplots[selSubPlot.value]);
+  if (selSubPlot.value in plotStore.editablePlotConfig.subplots) {
+    return Object.keys(plotStore.editablePlotConfig.subplots[selSubPlot.value]);
   }
   return [];
 });
 
 function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
-  console.log(plotConfig.value);
-
   // const { plotConfig.value } = this;
   const name = Object.keys(newIndicator)[0];
   const indicator = newIndicator[name];
   if (isMainPlot.value) {
-    console.log(`Adding ${name} to MainPlot`);
-    plotConfig.value.main_plot[name] = { ...indicator };
+    // console.log(`Adding ${name} to MainPlot`);
+    plotStore.editablePlotConfig.main_plot[name] = { ...indicator };
   } else {
-    console.log(`Adding ${name} to ${selSubPlot.value}`);
-    plotConfig.value.subplots[selSubPlot.value][name] = { ...indicator };
+    // console.log(`Adding ${name} to ${selSubPlot.value}`);
+    plotStore.editablePlotConfig.subplots[selSubPlot.value][name] = { ...indicator };
   }
 
-  plotConfig.value = { ...plotConfig.value };
+  plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   // Reset random color
   addNewIndicator.value = false;
-  plotStore.setPlotConfig(plotConfig.value);
 }
 
 const selIndicator = computed({
@@ -215,7 +240,6 @@ const selIndicator = computed({
     return {};
   },
   set(newValue: Record<string, IndicatorConfig>) {
-    // console.log('newValue', newValue);
     const name = Object.keys(newValue)[0];
     // this.currentPlotConfig[this.selIndicatorName] = { ...newValue[name] };
     // this.emitPlotConfig();
@@ -229,7 +253,7 @@ const selIndicator = computed({
 
 const plotConfigJson = computed({
   get() {
-    return JSON.stringify(plotConfig.value, null, 2);
+    return JSON.stringify(plotStore.editablePlotConfig, null, 2);
   },
   set(newValue: string) {
     try {
@@ -243,55 +267,53 @@ const plotConfigJson = computed({
 });
 
 function removeIndicator() {
-  console.log(plotConfig.value);
-  // const { plotConfig } = this;
   if (isMainPlot.value) {
     console.log(`Removing ${selIndicatorName.value} from MainPlot`);
-    delete plotConfig.value.main_plot[selIndicatorName.value];
+    delete plotStore.editablePlotConfig.main_plot[selIndicatorName.value];
   } else {
     console.log(`Removing ${selIndicatorName.value} from ${selSubPlot.value}`);
-    delete plotConfig.value.subplots[selSubPlot.value][selIndicatorName.value];
+    delete plotStore.editablePlotConfig.subplots[selSubPlot.value][selIndicatorName.value];
   }
 
-  plotConfig.value = { ...plotConfig.value };
-  console.log(plotConfig.value);
+  plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   selIndicatorName.value = '';
-  plotStore.setPlotConfig(plotConfig.value);
 }
-function addSubplot() {
-  plotConfig.value.subplots = {
-    ...plotConfig.value.subplots,
-    [newSubplotName.value]: {},
+function addSubplot(newSubplotName: string) {
+  plotStore.editablePlotConfig.subplots = {
+    ...plotStore.editablePlotConfig.subplots,
+    [newSubplotName]: {},
   };
-  selSubPlot.value = newSubplotName.value;
-  newSubplotName.value = '';
-
-  plotStore.setPlotConfig(plotConfig.value);
+  selSubPlot.value = newSubplotName;
 }
 
-function delSubplot() {
-  delete plotConfig.value.subplots[selSubPlot.value];
-  plotConfig.value.subplots = { ...plotConfig.value.subplots };
-  selSubPlot.value = '';
-  plotStore.setPlotConfig(plotConfig.value);
+function deleteSubplot(subplotName: string) {
+  delete plotStore.editablePlotConfig.subplots[subplotName];
+  // plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
+  selSubPlot.value = subplots.value[subplots.value.length - 1];
 }
+
+function renameSubplot(oldName: string, newName: string) {
+  plotStore.editablePlotConfig.subplots[newName] = plotStore.editablePlotConfig.subplots[oldName];
+  delete plotStore.editablePlotConfig.subplots[oldName];
+  selSubPlot.value = newName;
+}
+
 function loadPlotConfig() {
-  plotConfig.value = getCustomPlotConfig(plotConfigNameLoc.value);
-  console.log(plotConfig.value);
-  console.log('loading config');
-  plotStore.setPlotConfig(plotConfig.value);
+  // Reset from store
+  plotStore.editablePlotConfig = deepClone(plotStore.customPlotConfigs[plotStore.plotConfigName]);
 }
 
 function loadConfigFromString() {
-  // this.plotConfig = JSON.parse();
   if (tempPlotConfig.value !== undefined && tempPlotConfigValid.value) {
-    plotConfig.value = tempPlotConfig.value;
-    plotStore.setPlotConfig(plotConfig.value);
+    plotStore.editablePlotConfig = tempPlotConfig.value;
   }
 }
-function resetConfig() {
-  plotConfig.value = { ...EMPTY_PLOTCONFIG };
-}
+
+// function clearConfig() {
+//   // Use empty config
+//   plotStore.editablePlotConfig = { ...EMPTY_PLOTCONFIG };
+// }
+
 async function loadPlotConfigFromStrategy() {
   if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy.strategy) {
     showAlert(`No strategy selected, can't load plot config.`);
@@ -300,8 +322,7 @@ async function loadPlotConfigFromStrategy() {
   try {
     await botStore.activeBot.getStrategyPlotConfig();
     if (botStore.activeBot.strategyPlotConfig) {
-      plotConfig.value = botStore.activeBot.strategyPlotConfig;
-      plotStore.setPlotConfig(plotConfig.value);
+      plotStore.editablePlotConfig = botStore.activeBot.strategyPlotConfig;
     }
   } catch (data) {
     //
@@ -310,13 +331,44 @@ async function loadPlotConfigFromStrategy() {
 }
 
 function savePlotConfig() {
-  plotStore.saveCustomPlotConfig({ [plotConfigNameLoc.value]: plotConfig.value });
+  plotStore.saveCustomPlotConfig(plotConfigNameLoc.value, plotStore.editablePlotConfig);
 }
 
+function addNewIndicatorSelected(indicator?: string) {
+  addNewIndicator.value = false;
+
+  if (indicator) {
+    addIndicator({
+      [indicator]: {
+        color: randomColor(),
+      },
+    });
+    selIndicatorName.value = indicator;
+  }
+}
+
+watch(selSubPlot, () => {
+  // Deselect Indicator when switching selected plot
+  selIndicatorName.value = '';
+});
+
+watch(
+  () => plotStore.plotConfigName,
+  () => {
+    selIndicatorName.value = '';
+    // selSubPlot.value = '';
+  },
+);
+
 onMounted(() => {
-  // console.log('Config Mounted', props);
-  plotConfig.value = plotStore.plotConfig;
+  // Deep clone and assign to editable
+  plotStore.editablePlotConfig = deepClone(plotStore.plotConfig);
+  plotStore.isEditing = true;
   plotConfigNameLoc.value = plotStore.plotConfigName;
+});
+onUnmounted(() => {
+  // TODO: Unmounted is not called when closing in Chart view
+  plotStore.isEditing = false;
 });
 </script>
 

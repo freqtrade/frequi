@@ -520,7 +520,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getState() {
         try {
-          const { data } = await api.get('/show_config');
+          const { data } = await api.get<BotState>('/show_config');
           this.botState = data;
           this.botStatusAvailable = true;
           this.startWebSocket();
@@ -654,6 +654,18 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
+      async reloadTrade(tradeid: string) {
+        try {
+          const res = await api.post<never, AxiosResponse<Trade>>(`/trades/${tradeid}/reload`);
+          return Promise.resolve(res);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+          }
+          showAlert(`Failed to reload trade ${tradeid}`, 'danger');
+          return Promise.reject(error);
+        }
+      },
       async startTrade() {
         try {
           const res = await api.post('/start_trade', {});
@@ -692,10 +704,7 @@ export function createBotSubStore(botId: string, botName: string) {
           } catch (error) {
             if (axios.isAxiosError(error)) {
               console.error(error.response);
-              showAlert(
-                `Error occured entering: '${(error as any).response?.data?.error}'`,
-                'danger',
-              );
+              showAlert(`Error occured entering: '${error.response?.data?.error}'`, 'danger');
             }
             return Promise.reject(error);
           }
@@ -730,9 +739,7 @@ export function createBotSubStore(botId: string, botName: string) {
             if (axios.isAxiosError(error)) {
               console.error(error.response);
               showAlert(
-                `Error occured while adding pairs to Blacklist: '${
-                  (error as any).response?.data?.error
-                }'`,
+                `Error occured while adding pairs to Blacklist: '${error.response?.data?.error}'`,
                 'danger',
               );
             }
@@ -778,9 +785,7 @@ export function createBotSubStore(botId: string, botName: string) {
             if (axios.isAxiosError(error)) {
               console.error(error.response);
               showAlert(
-                `Error occured while removing pairs from Blacklist: '${
-                  (error as any).response?.data?.error
-                }'`,
+                `Error occured while removing pairs from Blacklist: '${error.response?.data?.error}'`,
                 'danger',
               );
             }
@@ -876,6 +881,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       _handleWebsocketMessage(ws, event: MessageEvent<any>) {
         const msg: FTWsMessage = JSON.parse(event.data);
         switch (msg.type) {
@@ -899,6 +905,7 @@ export function createBotSubStore(botId: string, botName: string) {
           }
           default:
             // Unhandled events ...
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             console.log(`Received event ${(msg as any).type}`);
             break;
         }

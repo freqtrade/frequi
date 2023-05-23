@@ -27,13 +27,7 @@
     <p>
       Currently <strong>{{ botStore.activeBot.botState.state }}</strong
       >,
-      <strong
-        >force entry:
-        {{
-          botStore.activeBot.botState.force_entry_enable ||
-          botStore.activeBot.botState.forcebuy_enabled
-        }}</strong
-      >
+      <strong>force entry: {{ botStore.activeBot.botState.force_entry_enable }}</strong>
     </p>
     <p>
       <strong>{{ botStore.activeBot.botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
@@ -85,23 +79,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
-import { defineComponent } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-export default defineComponent({
-  name: 'BotStatus',
-  components: { DateTimeTZ },
-  setup() {
-    const botStore = useBotStore();
-    return {
-      formatPercent,
-      formatPriceCurrency,
-      botStore,
-    };
-  },
-});
+const botStore = useBotStore();
 </script>

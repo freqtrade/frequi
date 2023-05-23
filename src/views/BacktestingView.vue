@@ -316,6 +316,7 @@
         :timerange="timerange"
         :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
+        :freqai-model="freqAI.enabled ? freqAI.model : undefined"
       />
     </div>
   </div>

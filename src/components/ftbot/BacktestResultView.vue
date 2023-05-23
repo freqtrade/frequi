@@ -44,6 +44,15 @@
         >
         </b-table>
       </b-card>
+      <b-card
+        v-if="backtestResult.periodic_breakdown"
+        header="Periodic breakdown"
+        class="row mt-2 w-100"
+      >
+        <BacktestResultPeriodBreakdown
+          :periodic-breakdown="backtestResult.periodic_breakdown"
+        ></BacktestResultPeriodBreakdown>
+      </b-card>
 
       <b-card header="Single trades" class="row mt-2 w-100">
         <TradeList
@@ -60,6 +69,7 @@
 <script setup lang="ts">
 import TradeList from '@/components/ftbot/TradeList.vue';
 import { StrategyBacktestResult, Trade } from '@/types';
+import BacktestResultPeriodBreakdown from './BacktestResultPeriodBreakdown.vue';
 
 import { computed } from 'vue';
 import {

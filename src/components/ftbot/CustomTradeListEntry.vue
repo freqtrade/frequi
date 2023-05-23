@@ -15,39 +15,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { formatPercent, formatPrice } from '@/shared/formatters';
+<script setup lang="ts">
 import { Trade } from '@/types';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import TradeProfit from './TradeProfit.vue';
 
-export default defineComponent({
-  components: {
-    DateTimeTZ,
-    TradeProfit,
+defineProps({
+  trade: {
+    type: Object as () => Trade,
+    required: true,
   },
-  props: {
-    trade: {
-      type: Object as () => Trade,
-      required: true,
-    },
-    stakeCurrencyDecimals: {
-      type: Number,
-      required: true,
-    },
-    showDetails: {
-      type: Boolean,
-      default: false,
-    },
+  stakeCurrencyDecimals: {
+    type: Number,
+    required: true,
   },
-  setup() {
-    return {
-      formatPrice,
-      formatPercent,
-    };
+  showDetails: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

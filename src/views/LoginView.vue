@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <b-card header="Freqtrade bot Login">
-      <Login ref="loginForm" />
+      <BotLogin ref="loginForm" />
     </b-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import Login from '@/components/BotLogin.vue';
+import BotLogin from '@/components/BotLogin.vue';
 </script>
 
 <style scoped>

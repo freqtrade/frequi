@@ -6,31 +6,24 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import NavBar from '@/components/layout/NavBar.vue';
 import NavFooter from '@/components/layout/NavFooter.vue';
 import BodyLayout from '@/components/layout/BodyLayout.vue';
 import { setTimezone } from './shared/formatters';
-import { defineComponent, onMounted, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useSettingsStore } from './stores/settings';
-export default defineComponent({
-  name: 'App',
-  components: { NavBar, BodyLayout, NavFooter },
-  setup() {
-    const settingsStore = useSettingsStore();
-    onMounted(() => {
-      setTimezone(settingsStore.timezone);
-    });
-    watch(
-      () => settingsStore.timezone,
-      (tz) => {
-        console.log('timezone changed', tz);
-        setTimezone(tz);
-      },
-    );
-    return {};
-  },
+const settingsStore = useSettingsStore();
+onMounted(() => {
+  setTimezone(settingsStore.timezone);
 });
+watch(
+  () => settingsStore.timezone,
+  (tz) => {
+    console.log('timezone changed', tz);
+    setTimezone(tz);
+  },
+);
 </script>
 
 <style scoped>

@@ -4,20 +4,29 @@
       <label class="me-auto h3">Balance</label>
       <div class="float-end d-flex flex-row">
         <b-button
+          v-if="canUseBotBalance"
           size="sm"
-          title="Hide small balances"
+          :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
+          @click="showBotOnly = !showBotOnly"
+        >
+          <i-mdi-robot v-if="showBotOnly" />
+          <i-mdi-bank v-else />
+        </b-button>
+        <b-button
+          size="sm"
+          :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           @click="hideSmallBalances = !hideSmallBalances"
         >
-          <HideIcon v-if="hideSmallBalances" :size="16" />
-          <ShowIcon v-else :size="16" />
+          <i-mdi-eye-off v-if="hideSmallBalances" />
+          <i-mdi-eye v-else />
         </b-button>
 
-        <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance"
-          >&#x21bb;</b-button
-        >
+        <b-button class="float-end" size="sm" @click="botStore.activeBot.getBalance">
+          <i-mdi-refresh />
+        </b-button>
       </div>
     </div>
-    <BalanceChart v-if="balanceCurrencies" :currencies="balanceCurrencies" />
+    <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />
     <div>
       <p v-if="botStore.activeBot.balance.note">
         <strong>{{ botStore.activeBot.balance.note }}</strong>
@@ -36,7 +45,11 @@
           </td>
           <!-- this is a computed prop that adds up all the expenses in the visible rows -->
           <td>
-            <strong>{{ formatCurrency(botStore.activeBot.balance.total) }}</strong>
+            <strong>{{
+              showBotOnly && canUseBotBalance
+                ? formatCurrency(botStore.activeBot.balance.total_bot)
+                : formatCurrency(botStore.activeBot.balance.total)
+            }}</strong>
           </td>
         </template>
       </b-table>
@@ -45,38 +58,64 @@
 </template>
 
 <script setup lang="ts">
-import HideIcon from 'vue-material-design-icons/EyeOff.vue';
-import ShowIcon from 'vue-material-design-icons/Eye.vue';
 import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
-import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { BalanceValues } from '@/types';
+import { TableField } from 'bootstrap-vue-next';
+import { computed, ref } from 'vue';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);
+const showBotOnly = ref(true);
 
-const smallBalance = computed((): number => {
-  return Number((0.1 ** botStore.activeBot.stakeCurrencyDecimals).toFixed(8));
+const smallBalance = computed<number>(() => {
+  return Number((1.1 ** botStore.activeBot.stakeCurrencyDecimals).toFixed(8));
+});
+
+const canUseBotBalance = computed(() => {
+  return botStore.activeBot.botApiVersion >= 2.26;
 });
 
 const balanceCurrencies = computed(() => {
-  if (!hideSmallBalances.value) {
-    return botStore.activeBot.balance.currencies;
-  }
-
-  return botStore.activeBot.balance.currencies?.filter((v) => v.est_stake >= smallBalance.value);
+  return botStore.activeBot.balance.currencies?.filter(
+    (v) =>
+      (!hideSmallBalances.value || v.est_stake >= smallBalance.value) &&
+      (!canUseBotBalance.value || !showBotOnly.value || (v.is_bot_managed ?? true) === true),
+  );
 });
 
 const formatCurrency = (value) => {
-  return value ? formatPrice(value, 5) : '';
+  return value ? formatPrice(value, botStore.activeBot.stakeCurrencyDecimals) : '';
 };
 
-const tableFields = computed(() => {
+const chartValues = computed<BalanceValues[]>(() => {
+  return balanceCurrencies.value?.map((v) => {
+    return {
+      balance:
+        showBotOnly.value && canUseBotBalance.value && v.bot_owned != undefined
+          ? v.bot_owned
+          : v.balance,
+      currency: v.currency,
+      est_stake:
+        showBotOnly.value && canUseBotBalance.value ? v.est_stake_bot ?? v.est_stake : v.est_stake,
+      free: showBotOnly.value && canUseBotBalance.value ? v.bot_owned ?? v.free : v.free,
+      used: v.used,
+      stake: v.stake,
+    };
+  });
+});
+
+const tableFields = computed<TableField[]>(() => {
   return [
     { key: 'currency', label: 'Currency' },
-    { key: 'free', label: 'Available', formatter: formatCurrency },
     {
-      key: 'est_stake',
+      key: showBotOnly.value && canUseBotBalance.value ? 'bot_owned' : 'free',
+      label: 'Available',
+      formatter: formatCurrency,
+    },
+    {
+      key: showBotOnly.value && canUseBotBalance.value ? 'est_stake_bot' : 'est_stake',
       label: `in ${botStore.activeBot.balance.stake}`,
       formatter: formatCurrency,
     },

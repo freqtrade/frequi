@@ -10,20 +10,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import InfoBox from '@/components/general/InfoBox.vue';
 
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'ValuePair',
-  components: { InfoBox },
-  props: {
-    description: { type: String, required: true },
-    help: { type: String, default: '', required: false },
-    classLabel: { type: String, default: 'col-4 fw-bold mb-0' },
-    classValue: { type: String, default: 'col-8' },
-  },
+defineProps({
+  description: { type: String, required: true },
+  help: { type: String, default: '', required: false },
+  classLabel: { type: String, default: 'col-4 fw-bold mb-0' },
+  classValue: { type: String, default: 'col-8' },
 });
 </script>
 

@@ -11,18 +11,18 @@
         switch
         @change="changeEvent"
       >
-        <OnlineIcon
+        <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
-          :size="18"
-          class="ms-2 me-1 align-middle"
-          :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
-        ></OnlineIcon>
-        <LoggedOutIcon
-          v-else
-          class="offline"
-          title="Login info expired, please login again."
-        ></LoggedOutIcon>
+        >
+          <i-mdi-circle
+            class="ms-2 me-1 align-middle"
+            :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
+          />
+        </div>
+        <div v-else title="Login info expired, please login again.">
+          <i-mdi-cancel class="offline" />
+        </div>
       </b-form-checkbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
         <b-button
@@ -32,13 +32,13 @@
           title="Edit bot"
           @click="$emit('edit')"
         >
-          <EditIcon :size="16" />
+          <i-mdi-pencil />
         </b-button>
         <b-button v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
-          <LoginIcon :size="16" />
+          <i-mdi-login />
         </b-button>
         <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
-          <DeleteIcon :size="16" title="Delete Bot" />
+          <i-mdi-delete />
         </b-button>
       </div>
     </div>
@@ -54,59 +54,34 @@
   </div>
 </template>
 
-<script lang="ts">
-import EditIcon from 'vue-material-design-icons/Pencil.vue';
-import LoginIcon from 'vue-material-design-icons/Login.vue';
-import DeleteIcon from 'vue-material-design-icons/Delete.vue';
-import OnlineIcon from 'vue-material-design-icons/Circle.vue';
-import LoggedOutIcon from 'vue-material-design-icons/Cancel.vue';
-import { BotDescriptor } from '@/types';
-import { defineComponent, computed, ref } from 'vue';
+<script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { BotDescriptor } from '@/types';
+import { computed, ref } from 'vue';
 
-export default defineComponent({
-  name: 'BotEntry',
-  components: {
-    DeleteIcon,
-    EditIcon,
-    LoginIcon,
-    OnlineIcon,
-    LoggedOutIcon,
+const props = defineProps({
+  bot: { required: true, type: Object as () => BotDescriptor },
+  noButtons: { default: false, type: Boolean },
+});
+defineEmits(['edit', 'editLogin']);
+const botStore = useBotStore();
+
+const changeEvent = (v) => {
+  botStore.botStores[props.bot.botId].setAutoRefresh(v);
+};
+const botRemoveModalVisible = ref(false);
+
+const confirmRemoveBot = () => {
+  botRemoveModalVisible.value = false;
+  botStore.removeBot(props.bot.botId);
+  console.log('removing bot.');
+};
+const autoRefreshLoc = computed({
+  get() {
+    return botStore.botStores[props.bot.botId].autoRefresh;
   },
-  props: {
-    bot: { required: true, type: Object as () => BotDescriptor },
-    noButtons: { default: false, type: Boolean },
-  },
-  emits: ['edit', 'editLogin'],
-  setup(props) {
-    const botStore = useBotStore();
-
-    const changeEvent = (v) => {
-      botStore.botStores[props.bot.botId].setAutoRefresh(v);
-    };
-    const botRemoveModalVisible = ref(false);
-
-    const confirmRemoveBot = () => {
-      botRemoveModalVisible.value = false;
-      botStore.removeBot(props.bot.botId);
-      console.log('removing bot.');
-    };
-    const autoRefreshLoc = computed({
-      get() {
-        return botStore.botStores[props.bot.botId].autoRefresh;
-      },
-      set() {
-        // pass
-      },
-    });
-
-    return {
-      botStore,
-      changeEvent,
-      autoRefreshLoc,
-      confirmRemoveBot,
-      botRemoveModalVisible,
-    };
+  set() {
+    // pass
   },
 });
 </script>

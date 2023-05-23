@@ -56,7 +56,6 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-        v-if="botStore.activeBot.botApiVersion > 1.12"
         :label="`*Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
         label-for="stake-input"
         invalid-feedback="Stake-amount must be empty or a positive number"
@@ -86,7 +85,6 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-        v-if="botStore.activeBot.botApiVersion > 1.1"
         label="OrderType"
         label-for="ordertype-input"
         invalid-feedback="OrderType"
@@ -202,14 +200,12 @@ const resetForm = () => {
   selectedPair.value = props.pair;
   price.value = undefined;
   stakeAmount.value = undefined;
-  if (botStore.activeBot.botApiVersion > 1.1) {
-    ordertype.value =
-      botStore.activeBot.botState?.order_types?.forcebuy ||
-      botStore.activeBot.botState?.order_types?.force_entry ||
-      botStore.activeBot.botState?.order_types?.buy ||
-      botStore.activeBot.botState?.order_types?.entry ||
-      'limit';
-  }
+  ordertype.value =
+    botStore.activeBot.botState?.order_types?.forcebuy ||
+    botStore.activeBot.botState?.order_types?.force_entry ||
+    botStore.activeBot.botState?.order_types?.buy ||
+    botStore.activeBot.botState?.order_types?.entry ||
+    'limit';
 };
 
 const handleEntry = () => {

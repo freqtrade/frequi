@@ -7,6 +7,7 @@ export enum ChartType {
 export interface IndicatorConfig {
   color?: string;
   type?: ChartType;
+  fill_to?: string;
 }
 
 export interface PlotConfig {
