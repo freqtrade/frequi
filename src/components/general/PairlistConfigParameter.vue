@@ -1,0 +1,51 @@
+<template>
+  <b-form-group
+    label-cols="4"
+    label-cols-lg="6"
+    label-size="md"
+    class="pb-1"
+    :description="param.help"
+  >
+    <b-form-input
+      v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
+      v-model="paramValue"
+      size="sm"
+    ></b-form-input>
+
+    <b-form-checkbox
+      v-if="param.type === PairlistParamType.boolean"
+      v-model="paramValue"
+    ></b-form-checkbox>
+
+    <b-form-select
+      v-if="param.type === PairlistParamType.option"
+      v-model="paramValue"
+      :options="param.options"
+    ></b-form-select>
+
+    <template #label>
+      <label> {{ param.description }}</label>
+    </template>
+  </b-form-group>
+</template>
+
+<script setup lang="ts">
+import { PairlistParameter, PairlistParamType } from '@/types';
+import { computed } from 'vue';
+
+const props = defineProps<{
+  param: PairlistParameter;
+  modelValue: string | undefined;
+}>();
+
+const emit = defineEmits(['update:modelValue']);
+
+const paramValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  },
+});
+</script>

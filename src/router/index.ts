@@ -68,6 +68,11 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/pairlist_config',
+    name: 'Pairlist Configuration',
+    component: () => import('@/views/PairlistConfigView.vue'),
+  },
+  {
     path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404View.vue'),

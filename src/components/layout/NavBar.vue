@@ -23,6 +23,9 @@
           <router-link v-if="botStore.canRunBacktest" class="nav-link navbar-nav" to="/backtest"
             >Backtest</router-link
           >
+          <router-link class="nav-link navbar-nav" to="/pairlist_config"
+            >Pairlist Config</router-link
+          >
           <theme-select />
         </b-navbar-nav>
 

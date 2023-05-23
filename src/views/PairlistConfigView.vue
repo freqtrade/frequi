@@ -1,0 +1,108 @@
+<template>
+  <div>
+    <div>
+      <b-form-select v-model="selectedConfig" :options="configsSelectOptions"></b-form-select>
+      <b-button @click="showConfigurator = !showConfigurator">Configure</b-button>
+      <b-button :disabled="evaluating" @click="test">Test</b-button>
+
+      <PairlistConfigurator
+        v-model="showConfigurator"
+        :config="selectedConfig"
+        @save-config="addConfig"
+      />
+    </div>
+    <p>{{ progressMessage }}</p>
+    <div class="mt-4">{{ whitelist }}</div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { ref, computed } from 'vue';
+import PairlistConfigurator from '@/components/ftbot/PairlistConfigurator.vue';
+import { PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
+
+const botStore = useBotStore();
+const showConfigurator = ref(false);
+const configs = ref<PairlistConfig[]>([]);
+const selectedConfig = ref<PairlistConfig>({ name: '', pairlists: [] });
+const whitelist = ref<string[]>([]);
+const evaluating = ref(false);
+const progressMessage = ref('');
+
+const addConfig = (config: PairlistConfig) => {
+  const i = configs.value.findIndex((c) => c.name === config.name);
+
+  if (i > -1) {
+    configs.value[i] = config;
+  } else {
+    configs.value.push(config);
+  }
+  selectedConfig.value = config;
+};
+
+const configsSelectOptions = computed(() => {
+  const options = configs.value.map((c) => {
+    return { value: c, text: c.name };
+  });
+
+  const val: PairlistConfig = {
+    name: '',
+    pairlists: [],
+  };
+
+  return [{ text: 'New config...', value: val }, ...options];
+});
+
+const test = async () => {
+  if (!selectedConfig.value) return;
+
+  const pairlists: PairlistPayloadItem[] = [];
+
+  selectedConfig.value.pairlists.forEach((config) => {
+    const pairlist = {
+      method: config.name,
+    };
+    for (const key in config.params) {
+      const param = config.params[key];
+      if (param.value) {
+        pairlist[key] = convertToParamType(param.type, param.value);
+      }
+    }
+    pairlists.push(pairlist);
+  });
+
+  const payload = {
+    pairlists: pairlists,
+    stake_currency: botStore.activeBot.stakeCurrency,
+    blacklist: [],
+  };
+
+  evaluating.value = true;
+  whitelist.value = [];
+  const res = await botStore.activeBot.evaluatePairlist(payload);
+  console.log(res);
+  const evalIntervalId = setInterval(async () => {
+    const res = await botStore.activeBot.getPairlistEvalStatus();
+
+    if (res.whitelist) {
+      whitelist.value = res.whitelist;
+      clearInterval(evalIntervalId);
+      evaluating.value = false;
+      progressMessage.value = '';
+    } else if (res.detail) {
+      progressMessage.value = res.detail;
+    }
+  }, 1000);
+};
+
+const convertToParamType = (type: PairlistParamType, value: string) => {
+  if (type === PairlistParamType.number) {
+    return Number(value);
+  } else if (type === PairlistParamType.boolean) {
+    return Boolean(value);
+  } else {
+    return String(value);
+  }
+};
+</script>

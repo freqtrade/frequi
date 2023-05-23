@@ -42,7 +42,12 @@ import { showAlert } from './alerts';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 import { showNotification } from '@/shared/notifications';
-import { FreqAIModelListResult } from '../types/types';
+import {
+  FreqAIModelListResult,
+  PairlistEvalResponse,
+  PairlistsPayload,
+  PairlistsResponse,
+} from '../types/types';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -535,6 +540,24 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
+      async getPairlists() {
+        try {
+          const { data } = await api.get<PairlistsResponse>('/pairlists/available');
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getPairlistEvalStatus() {
+        try {
+          const { data } = await api.get<PairlistEvalResponse>('/pairlists/evaluate');
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
       // // Post methods
       // // TODO: Migrate calls to API to a seperate module unrelated to pinia?
       async startBot() {
@@ -937,6 +960,21 @@ export function createBotSubStore(botId: string, botName: string) {
             },
           },
         );
+      },
+      async evaluatePairlist(payload: PairlistsPayload) {
+        try {
+          const { data } = await api.post<WhitelistResponse, AxiosResponse<StatusResponse>>(
+            '/pairlists/evaluate',
+            payload,
+          );
+          return Promise.resolve(data);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+          }
+          showAlert('Error testing pairlist', 'danger');
+          return Promise.reject(error);
+        }
       },
     },
   });
