@@ -4,7 +4,7 @@
       <b-row align-v="center">
         <b-col>
           <b-row align-v="center">
-            <b-col cols="auto"><ReorderIcon class="handle me-2" /></b-col>
+            <b-col cols="auto"><i-mdi-reorder-horizontal class="handle me-2 fs-4" /></b-col>
             <b-col
               ><b-button variant="link" @click="visible = !visible">
                 <h6 class="mb-0">{{ pairlist.name }}</h6>
@@ -34,7 +34,6 @@
 import { Pairlist } from '@/types';
 import { computed, ref } from 'vue';
 import PairlistConfigParameter from '../general/PairlistConfigParameter.vue';
-import ReorderIcon from 'vue-material-design-icons/ReorderHorizontal.vue';
 
 const props = defineProps<{
   modelValue: Pairlist;
