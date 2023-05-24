@@ -279,9 +279,12 @@ export interface PairlistsResponse {
 }
 
 export interface PairlistEvalResponse {
-  detail?: string;
-  method?: string[];
-  whitelist?: string[];
+  error?: string;
+  status: string;
+  result?: {
+    method: string[];
+    whitelist: string[];
+  };
 }
 
 export interface Pairlist {

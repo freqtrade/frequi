@@ -136,7 +136,7 @@ watch(
 
 <style lang="scss">
 .pairlist {
-  padding: 1rem 1rem;
+  padding: 1rem 0;
   width: 100%;
   border: 1px solid white;
   text-align: left;

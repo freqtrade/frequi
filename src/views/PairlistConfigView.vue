@@ -2,6 +2,7 @@
   <div>
     <div>
       <b-form-select v-model="selectedConfig" :options="configsSelectOptions"></b-form-select>
+      <p>{{ progressMessage }}</p>
       <b-button :disabled="evaluating" @click="test">Test</b-button>
       <div>
         <code v-if="whitelist.length > 0">{{ whitelist }}</code>
@@ -57,16 +58,18 @@ const test = async () => {
   whitelist.value = [];
   const res = await botStore.activeBot.evaluatePairlist(payload);
   console.log(res);
+  progressMessage.value = res.status;
   const evalIntervalId = setInterval(async () => {
     const res = await botStore.activeBot.getPairlistEvalStatus();
-
-    if (res.whitelist) {
-      whitelist.value = res.whitelist;
+    if (res.status === 'success' && res.result) {
+      whitelist.value = res.result.whitelist;
       clearInterval(evalIntervalId);
       evaluating.value = false;
       progressMessage.value = '';
-    } else if (res.detail) {
-      progressMessage.value = res.detail;
+    } else if (res.error) {
+      progressMessage.value = res.error;
+      clearInterval(evalIntervalId);
+      evaluating.value = false;
     }
   }, 1000);
 };
