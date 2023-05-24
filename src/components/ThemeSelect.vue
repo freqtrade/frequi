@@ -1,5 +1,5 @@
 <template>
-  <b-link variant="outline-primary" class="nav-link" @click="toggleNight">
+  <b-link variant="primary" class="nav-link" @click="toggleNight">
     <i-mdi-brightness-6 />
   </b-link>
 </template>
