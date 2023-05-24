@@ -50,7 +50,7 @@ const CHART_PROFIT = 'Profit';
 
 const props = defineProps({
   trades: { required: true, type: Array as () => ClosedTrade[] },
-  openTrades: { required: true, type: Array as () => Trade[] },
+  openTrades: { required: false, type: Array as () => Trade[], default: () => [] },
   showTitle: { default: true, type: Boolean },
   profitColumn: { default: 'profit_abs', type: String },
 });
