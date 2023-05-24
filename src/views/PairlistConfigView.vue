@@ -2,17 +2,12 @@
   <div>
     <div>
       <b-form-select v-model="selectedConfig" :options="configsSelectOptions"></b-form-select>
-      <b-button @click="showConfigurator = !showConfigurator">Configure</b-button>
       <b-button :disabled="evaluating" @click="test">Test</b-button>
-
-      <PairlistConfigurator
-        v-model="showConfigurator"
-        :config="selectedConfig"
-        @save-config="addConfig"
-      />
+      <div>
+        <code v-if="whitelist.length > 0">{{ whitelist }}</code>
+      </div>
+      <PairlistConfigurator :config="selectedConfig" @save-config="addConfig" />
     </div>
-    <p>{{ progressMessage }}</p>
-    <div class="mt-4">{{ whitelist }}</div>
   </div>
 </template>
 
@@ -23,7 +18,6 @@ import PairlistConfigurator from '@/components/ftbot/PairlistConfigurator.vue';
 import { PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
 
 const botStore = useBotStore();
-const showConfigurator = ref(false);
 const configs = ref<PairlistConfig[]>([]);
 const selectedConfig = ref<PairlistConfig>({ name: '', pairlists: [] });
 const whitelist = ref<string[]>([]);
@@ -57,26 +51,7 @@ const configsSelectOptions = computed(() => {
 const test = async () => {
   if (!selectedConfig.value) return;
 
-  const pairlists: PairlistPayloadItem[] = [];
-
-  selectedConfig.value.pairlists.forEach((config) => {
-    const pairlist = {
-      method: config.name,
-    };
-    for (const key in config.params) {
-      const param = config.params[key];
-      if (param.value) {
-        pairlist[key] = convertToParamType(param.type, param.value);
-      }
-    }
-    pairlists.push(pairlist);
-  });
-
-  const payload = {
-    pairlists: pairlists,
-    stake_currency: botStore.activeBot.stakeCurrency,
-    blacklist: [],
-  };
+  const payload = configToPayload();
 
   evaluating.value = true;
   whitelist.value = [];
@@ -104,5 +79,28 @@ const convertToParamType = (type: PairlistParamType, value: string) => {
   } else {
     return String(value);
   }
+};
+
+const configToPayload = () => {
+  const pairlists: PairlistPayloadItem[] = [];
+
+  selectedConfig.value.pairlists.forEach((config) => {
+    const pairlist = {
+      method: config.name,
+    };
+    for (const key in config.params) {
+      const param = config.params[key];
+      if (param.value) {
+        pairlist[key] = convertToParamType(param.type, param.value);
+      }
+    }
+    pairlists.push(pairlist);
+  });
+
+  return {
+    pairlists: pairlists,
+    stake_currency: botStore.activeBot.stakeCurrency,
+    blacklist: [],
+  };
 };
 </script>
