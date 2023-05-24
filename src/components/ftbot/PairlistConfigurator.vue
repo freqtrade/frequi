@@ -35,6 +35,7 @@
           </b-col>
           <b-col cols="auto">
             <b-button @click="save">Save</b-button>
+            <b-button :disabled="evaluating" @click="test">Test</b-button>
           </b-col>
         </b-row>
         <div ref="pairlistConfigsEl" style="height: 100%">
@@ -56,10 +57,17 @@
 import { computed, onMounted, ref, toRaw, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import PairlistConfigItem from './PairlistConfigItem.vue';
-import { Pairlist, PairlistConfig } from '@/types';
+import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 
-const emit = defineEmits(['update:modelValue', 'saveConfig']);
+const emit = defineEmits([
+  'update:modelValue',
+  'saveConfig',
+  'started',
+  'progress',
+  'done',
+  'error',
+]);
 const props = defineProps<{
   config: PairlistConfig;
 }>();
@@ -70,6 +78,7 @@ const availablePairlists = ref<Pairlist[]>([]);
 const config = ref<PairlistConfig>(props.config);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
+const evaluating = ref(false);
 
 // v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
 const pairlists = computed(() =>
@@ -126,6 +135,59 @@ const removeFromConfig = (index: number) => {
 
 const save = async () => {
   emit('saveConfig', config.value);
+};
+
+const test = async () => {
+  const payload = configToPayload();
+
+  evaluating.value = true;
+  const res = await botStore.activeBot.evaluatePairlist(payload);
+  emit('started', res);
+  const evalIntervalId = setInterval(async () => {
+    const res = await botStore.activeBot.getPairlistEvalStatus();
+    if (res.status === 'success' && res.result) {
+      emit('done', res);
+      clearInterval(evalIntervalId);
+      evaluating.value = false;
+    } else if (res.error) {
+      emit('error', res);
+      clearInterval(evalIntervalId);
+      evaluating.value = false;
+    }
+  }, 1000);
+};
+
+const convertToParamType = (type: PairlistParamType, value: string) => {
+  if (type === PairlistParamType.number) {
+    return Number(value);
+  } else if (type === PairlistParamType.boolean) {
+    return Boolean(value);
+  } else {
+    return String(value);
+  }
+};
+
+const configToPayload = () => {
+  const pairlists: PairlistPayloadItem[] = [];
+
+  config.value.pairlists.forEach((config) => {
+    const pairlist = {
+      method: config.name,
+    };
+    for (const key in config.params) {
+      const param = config.params[key];
+      if (param.value) {
+        pairlist[key] = convertToParamType(param.type, param.value);
+      }
+    }
+    pairlists.push(pairlist);
+  });
+
+  return {
+    pairlists: pairlists,
+    stake_currency: botStore.activeBot.stakeCurrency,
+    blacklist: [],
+  };
 };
 
 watch(

@@ -970,16 +970,13 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async evaluatePairlist(payload: PairlistsPayload) {
         try {
-          const { data } = await api.post<WhitelistResponse, AxiosResponse<StatusResponse>>(
+          const { data } = await api.post<AxiosResponse<StatusResponse>>(
             '/pairlists/evaluate',
             payload,
           );
           return Promise.resolve(data);
         } catch (error) {
-          if (axios.isAxiosError(error)) {
-            console.error(error.response);
-          }
-          showAlert('Error testing pairlist', 'danger');
+          console.error(error);
           return Promise.reject(error);
         }
       },
