@@ -22,7 +22,7 @@
     "@vueuse/integrations": "^10.1.2",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
-    "bootstrap-vue-next": "^0.8.11",
+    "bootstrap-vue-next": "^0.8.13",
     "core-js": "^3.30.2",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
