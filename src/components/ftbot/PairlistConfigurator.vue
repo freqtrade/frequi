@@ -100,7 +100,9 @@ useSortable(pairlistConfigsEl, config.value.pairlists, {
   onAdd: (e) => {
     const pairlist = availablePairlists.value[e.oldIndex];
     addToConfig(pairlist, e.newIndex);
-    e.item.remove();
+    // quick fix from: https://github.com/SortableJS/Sortable/issues/1515
+    e.clone.replaceWith(e.item);
+    e.clone.remove();
   },
 });
 
