@@ -3,34 +3,31 @@
 </template>
 
 <script setup lang="ts">
-import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
+import ECharts from 'vue-echarts';
 
-import { use } from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers';
-import { LineChart, BarChart } from 'echarts/charts';
+import { BarChart, LineChart } from 'echarts/charts';
 import {
-  DatasetComponent,
   DataZoomComponent,
+  DatasetComponent,
   LegendComponent,
   TitleComponent,
   TooltipComponent,
 } from 'echarts/components';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
 
+import { dataZoomPartial } from '@/shared/charts/chartZoom';
+import { useSettingsStore } from '@/stores/settings';
 import {
   ClosedTrade,
+  CumProfitChartData,
   CumProfitData,
   CumProfitDataPerDate,
-  CumProfitChartData,
   Trade,
 } from '@/types';
-import { computed } from 'vue';
-import { useSettingsStore } from '@/stores/settings';
-import { dataZoomPartial } from '@/shared/charts/chartZoom';
-import { ref } from 'vue';
-import { onMounted } from 'vue';
-import { watch } from 'vue';
 import { watchThrottled } from '@vueuse/core';
+import { computed, onMounted, ref } from 'vue';
 
 use([
   BarChart,
