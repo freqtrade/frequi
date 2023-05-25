@@ -1,6 +1,6 @@
 <template>
   <main>
-    <BotAlerts />
+    <BotAlerts style="position: absolute; top: 10px; right: 10px; width: 480px; z-index: 100" />
     <router-view />
   </main>
 </template>
