@@ -102,7 +102,7 @@ const pairlistsComp = computed(() =>
 );
 
 const configJSON = computed(() => {
-  return JSON.stringify(configToPayloadItems(), null, 4);
+  return JSON.stringify(configToPayloadItems(), null, 2);
 });
 
 useSortable(availablePairlistsEl, availablePairlists.value, {
