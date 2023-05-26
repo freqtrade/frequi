@@ -1,18 +1,31 @@
 <template>
   <div>
-    <div>
-      <b-form-select v-model="selectedConfig" :options="configsSelectOptions"></b-form-select>
-      <div>
-        <code v-if="whitelist.length > 0">{{ whitelist }}</code>
-      </div>
-      <PairlistConfigurator
-        :config="selectedConfig"
-        @save-config="addConfig"
-        @started="evalStarted"
-        @error="evalError"
-        @done="evalDone"
-      />
-    </div>
+    <b-button-group class="py-3">
+      <b-button
+        v-model="currentView"
+        :active="currentView === 'configurator'"
+        @click="currentView = 'configurator'"
+        >Configurator</b-button
+      >
+      <b-button
+        v-model="currentView"
+        :disabled="whitelist.length == 0"
+        :active="currentView === 'results'"
+        @click="currentView = 'results'"
+        >Results</b-button
+      >
+    </b-button-group>
+
+    <PairlistConfigurator
+      v-if="currentView == 'configurator'"
+      :selected-config="selectedConfig"
+      @save-config="addConfig"
+      @started="evalStarted"
+      @error="evalError"
+      @done="evalDone"
+    />
+
+    <PairlistConfigResults v-if="currentView == 'results'" :whitelist="whitelist" />
   </div>
 </template>
 
@@ -20,6 +33,7 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ref, computed } from 'vue';
 import PairlistConfigurator from '@/components/ftbot/PairlistConfigurator.vue';
+import PairlistConfigResults from '@/components/ftbot/PairlistConfigResults.vue';
 import { PairlistConfig, PairlistEvalResponse, StatusResponse } from '@/types';
 import { showAlert } from '@/stores/alerts';
 
@@ -27,6 +41,7 @@ const botStore = useBotStore();
 const configs = ref<PairlistConfig[]>([]);
 const selectedConfig = ref<PairlistConfig>({ name: '', pairlists: [] });
 const whitelist = ref<string[]>([]);
+const currentView = ref<'configurator' | 'results'>('configurator');
 
 const addConfig = (config: PairlistConfig) => {
   const i = configs.value.findIndex((c) => c.name === config.name);
@@ -55,6 +70,7 @@ const configsSelectOptions = computed(() => {
 const evalDone = (res: PairlistEvalResponse) => {
   if (res.result?.whitelist) {
     whitelist.value = res.result.whitelist;
+    currentView.value = 'results';
   }
 };
 const evalError = (res: PairlistEvalResponse) => {

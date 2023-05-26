@@ -1,11 +1,5 @@
 <template>
-  <b-form-group
-    label-cols="4"
-    label-cols-lg="6"
-    label-size="md"
-    class="pb-1"
-    :description="param.help"
-  >
+  <b-form-group label-cols="4" label-size="md" class="pb-1 text-start" :description="param.help">
     <b-form-input
       v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
       v-model="paramValue"

@@ -1,7 +1,7 @@
 <template>
   <b-card no-body class="mb-2">
     <template #header>
-      <b-row align-v="center">
+      <b-row align-v="center" class="text-start">
         <b-col>
           <b-row align-v="center">
             <b-col cols="auto"><i-mdi-reorder-horizontal class="handle me-2 fs-4" /></b-col>

@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row align-v="stretch">
-      <b-col cols="2">
+      <b-col cols="12" md="3">
         <div ref="availablePairlistsEl" class="available-pairlists">
           <b-row
             v-for="pairlist in availablePairlists"
@@ -17,7 +17,7 @@
                 class="p-0"
                 style="border: none"
                 variant="outline-light"
-                @click="addToConfig(pairlist, config.pairlists.length)"
+                @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
                 ><i-mdi-arrow-right-bold-box class="fs-4"
               /></b-button>
             </b-col>
@@ -35,20 +35,30 @@
           </b-col>
           <b-col cols="auto">
             <b-button @click="save">Save</b-button>
-            <b-button :disabled="evaluating" @click="test">Test</b-button>
           </b-col>
         </b-row>
         <div ref="pairlistConfigsEl" style="height: 100%">
           <PairlistConfigItem
-            v-for="(pairlist, i) in pairlists"
+            v-for="(pairlist, i) in pairlistsComp"
             :key="pairlist.id"
             v-model="config.pairlists[i]"
             :index="i"
             @remove="removeFromConfig"
           />
+          <b-button
+            :disabled="evaluating || config.pairlists.length == 0"
+            variant="primary"
+            size="lg"
+            squared
+            class="mt-2 evaluate"
+            @click="test"
+            >Evaluate</b-button
+          >
         </div>
       </b-col>
-      <b-col cols="3">JSON DUMP</b-col>
+      <b-col cols="12" md="3">
+        <pre class="text-start"><code>{{ configJSON }}</code></pre>
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -69,19 +79,19 @@ const emit = defineEmits([
   'error',
 ]);
 const props = defineProps<{
-  config: PairlistConfig;
+  selectedConfig: PairlistConfig;
 }>();
 
 const botStore = useBotStore();
 
 const availablePairlists = ref<Pairlist[]>([]);
-const config = ref<PairlistConfig>(props.config);
+const config = ref<PairlistConfig>(props.selectedConfig);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
 const evaluating = ref(false);
 
 // v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
-const pairlists = computed(() =>
+const pairlistsComp = computed(() =>
   config.value.pairlists.map((p) => {
     if (p.id) {
       return p;
@@ -90,6 +100,10 @@ const pairlists = computed(() =>
     }
   }),
 );
+
+const configJSON = computed(() => {
+  return JSON.stringify(configToPayloadItems(), null, 4);
+});
 
 useSortable(availablePairlistsEl, availablePairlists.value, {
   group: {
@@ -144,7 +158,7 @@ const test = async () => {
   const res = await botStore.activeBot.evaluatePairlist(payload);
   emit('started', res);
   const evalIntervalId = setInterval(async () => {
-    const res = await botStore.activeBot.getPairlistEvalStatus();
+    const res = await botStore.activeBot.getPairlistEvalStatus(evalIntervalId);
     if (res.status === 'success' && res.result) {
       emit('done', res);
       clearInterval(evalIntervalId);
@@ -168,8 +182,16 @@ const convertToParamType = (type: PairlistParamType, value: string) => {
 };
 
 const configToPayload = () => {
-  const pairlists: PairlistPayloadItem[] = [];
+  const pairlists: PairlistPayloadItem[] = configToPayloadItems();
+  return {
+    pairlists: pairlists,
+    stake_currency: botStore.activeBot.stakeCurrency,
+    blacklist: [],
+  };
+};
 
+const configToPayloadItems = () => {
+  const pairlists: PairlistPayloadItem[] = [];
   config.value.pairlists.forEach((config) => {
     const pairlist = {
       method: config.name,
@@ -183,17 +205,13 @@ const configToPayload = () => {
     pairlists.push(pairlist);
   });
 
-  return {
-    pairlists: pairlists,
-    stake_currency: botStore.activeBot.stakeCurrency,
-    blacklist: [],
-  };
+  return pairlists;
 };
 
 watch(
-  () => props.config,
+  () => props.selectedConfig,
   () => {
-    config.value = structuredClone(toRaw(props.config));
+    config.value = structuredClone(toRaw(props.selectedConfig));
   },
 );
 </script>
