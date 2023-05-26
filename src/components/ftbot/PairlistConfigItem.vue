@@ -13,7 +13,7 @@
           </b-row>
         </b-col>
         <b-col cols="auto">
-          <b-button size="sm" @click="emit('remove', index)">x</b-button>
+          <b-button size="sm" @click="emit('remove', index)"><i-mdi-close></i-mdi-close></b-button>
         </b-col>
       </b-row>
     </template>
