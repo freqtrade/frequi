@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row align-v="stretch">
-      <b-col cols="12" md="3">
+      <b-col cols="12" md="3" style="height: 760px; overflow-y: scroll">
         <div ref="availablePairlistsEl" class="available-pairlists">
           <b-row
             v-for="pairlist in availablePairlists"
