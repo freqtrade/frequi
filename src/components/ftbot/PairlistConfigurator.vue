@@ -52,8 +52,10 @@
             squared
             class="mt-2 evaluate"
             @click="test"
-            >Evaluate</b-button
           >
+            <b-spinner v-if="evaluating" small></b-spinner>
+            <span>{{ evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
+          </b-button>
         </div>
       </b-col>
       <b-col cols="12" md="3">
