@@ -25,7 +25,7 @@
       @done="evalDone"
     />
 
-    <PairlistConfigResults v-if="currentView == 'results'" :whitelist="whitelist" />
+    <PairlistConfigResults v-if="currentView == 'results'" :input-whitelist="whitelist" />
   </div>
 </template>
 
