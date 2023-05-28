@@ -58,7 +58,10 @@ const settingsStore = useSettingsStore();
 const chart = ref<typeof ECharts>();
 
 const openProfit = computed<number>(() => {
-  return props.openTrades.reduce((a, v) => a + v[props.profitColumn], 0);
+  return props.openTrades.reduce(
+    (a, v) => a + (v['total_profit_abs'] ?? v[props.profitColumn] ?? 0),
+    0,
+  );
 });
 
 const cumulativeData = computed<CumProfitChartData[]>(() => {
