@@ -88,9 +88,14 @@ const tableItems = computed<TableItem[]>(() => {
   Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitInterface]) => {
     const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
     const profitOpenRatio =
-      botStore.allOpenTrades[k].reduce((a, b) => a + b.profit_ratio * b.stake_amount, 0) /
-      allStakes;
-    const profitOpen = botStore.allOpenTrades[k].reduce((a, b) => a + (b.profit_abs ?? 0), 0);
+      botStore.allOpenTrades[k].reduce(
+        (a, b) => a + (b.total_profit_ratio ?? b.profit_ratio) * b.stake_amount,
+        0,
+      ) / allStakes;
+    const profitOpen = botStore.allOpenTrades[k].reduce(
+      (a, b) => a + (b.total_profit_abs ?? b.profit_abs ?? 0),
+      0,
+    );
 
     // TODO: handle one inactive bot ...
     val.push({
@@ -111,7 +116,7 @@ const tableItems = computed<TableItem[]>(() => {
     });
     if (v.profit_closed_coin !== undefined) {
       summary.profitClosed += v.profit_closed_coin;
-      summary.profitOpen += v.profit_all_coin;
+      summary.profitOpen += profitOpen;
       summary.wins += v.winning_trades;
       summary.losses += v.losing_trades;
       // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
