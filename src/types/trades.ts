@@ -116,8 +116,10 @@ export interface Trade extends TradeBase {
   stoploss_entry_dist_ratio?: number;
   current_rate?: number;
 
+  /* Total Profit, both open and realized*/
   total_profit_abs?: number;
   total_profit_fiat?: number;
+  /* Relative Total profit, bot open and realized */
   total_profit_ratio?: number;
 }
 
