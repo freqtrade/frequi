@@ -37,7 +37,7 @@
             <b-button @click="save">Save</b-button>
           </b-col>
         </b-row>
-        <div ref="pairlistConfigsEl" style="height: 100%">
+        <div ref="pairlistConfigsEl" class="h-100">
           <PairlistConfigItem
             v-for="(pairlist, i) in pairlistsComp"
             :key="pairlist.id"
