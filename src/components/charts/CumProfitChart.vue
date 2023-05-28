@@ -128,9 +128,7 @@ function updateChart(initial = false) {
         name: 'currentProfit',
 
         animation: initial,
-        tooltip: {
-          show: false,
-        },
+
         lineStyle: {
           color: openProfit.value > 0 ? 'green' : 'red',
           type: 'dotted',
@@ -193,9 +191,14 @@ function initializeChart() {
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
-
     tooltip: {
       trigger: 'axis',
+      formatter: (params) => {
+        const profit = params[0].data.profit;
+        const currentProfit = params[0].data['currentProfit'];
+        const profitText = currentProfit ? `Current Profit: ${currentProfit}` : `Profit: ${profit}`;
+        return profitText;
+      },
       axisPointer: {
         type: 'line',
         label: {
