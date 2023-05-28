@@ -51,7 +51,7 @@ const pairlist = defineModel<Pairlist>({ required: true });
   padding: 0;
 }
 
-.collapsing {
+:deep(.collapsing) {
   -webkit-transition: none;
   transition: none;
   display: none;
