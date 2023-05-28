@@ -7,7 +7,7 @@
             v-for="pairlist in availablePairlists"
             :key="pairlist.name"
             align-v="center"
-            class="pairlist"
+            class="pairlist mb-2 py-3 text-start"
           >
             <b-col>
               {{ pairlist.name }}
@@ -220,11 +220,7 @@ watch(
 
 <style lang="scss">
 .pairlist {
-  padding: 1rem 0;
-  width: 100%;
   border: 1px solid white;
-  text-align: left;
-  margin: 5px 0;
 }
 
 .pairlist:hover {
