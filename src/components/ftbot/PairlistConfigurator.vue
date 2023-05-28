@@ -129,7 +129,15 @@ useSortable(pairlistConfigsEl, config.value.pairlists, {
 });
 
 onMounted(async () => {
-  availablePairlists.value = (await botStore.activeBot.getPairlists()).pairlists;
+  availablePairlists.value = (await botStore.activeBot.getPairlists()).pairlists.sort((a, b) =>
+    // Sort by is_pairlist_generator (by name), then by name.
+    // TODO: this might need to be improved
+    a.is_pairlist_generator === b.is_pairlist_generator
+      ? a.name.localeCompare(b.name)
+      : a.is_pairlist_generator
+      ? -1
+      : 1,
+  );
 });
 
 const addToConfig = (pairlist: Pairlist, index: number) => {
