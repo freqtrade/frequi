@@ -46,7 +46,7 @@ const visible = ref(false);
 const pairlist = defineModel<Pairlist>({ required: true });
 </script>
 
-<style>
+<style lang="scss" scoped>
 .hidden {
   padding: 0;
 }
