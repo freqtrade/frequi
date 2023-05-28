@@ -1,28 +1,27 @@
 <template>
   <b-container fluid>
     <b-row align-v="stretch">
-      <b-col cols="12" md="3" style="height: 760px; overflow-y: scroll">
-        <div ref="availablePairlistsEl" class="available-pairlists">
-          <b-row
+      <b-col cols="12" md="3" class="overflow-auto" style="height: 760px">
+        <b-list-group ref="availablePairlistsEl" class="available-pairlists">
+          <b-list-group-item
             v-for="pairlist in availablePairlists"
             :key="pairlist.name"
             align-v="center"
-            class="pairlist mb-2 py-3 text-start"
+            class="pairlist d-flex text-start"
           >
-            <b-col>
-              {{ pairlist.name }}
-            </b-col>
-            <b-col cols="auto">
-              <b-button
-                class="p-0"
-                style="border: none"
-                variant="outline-light"
-                @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
-                ><i-mdi-arrow-right-bold-box class="fs-4"
-              /></b-button>
-            </b-col>
-          </b-row>
-        </div>
+            <div class="d-flex flex-grow-1 align-items-start flex-column">
+              <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
+              <span class="fw-lighter">{{ pairlist.description }}</span>
+            </div>
+            <b-button
+              class="p-0"
+              style="border: none"
+              variant="outline-light"
+              @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
+              ><i-mdi-arrow-right-bold-box class="fs-4"
+            /></b-button>
+          </b-list-group-item>
+        </b-list-group>
       </b-col>
       <b-col>
         <b-row>
@@ -132,7 +131,15 @@ useSortable(pairlistConfigsEl, config.value.pairlists, {
 });
 
 onMounted(async () => {
-  availablePairlists.value = (await botStore.activeBot.getPairlists()).pairlists;
+  availablePairlists.value = (await botStore.activeBot.getPairlists()).pairlists.sort((a, b) =>
+    // Sort by is_pairlist_generator (by name), then by name.
+    // TODO: this might need to be improved
+    a.is_pairlist_generator === b.is_pairlist_generator
+      ? a.name.localeCompare(b.name)
+      : a.is_pairlist_generator
+      ? -1
+      : 1,
+  );
 });
 
 const addToConfig = (pairlist: Pairlist, index: number) => {

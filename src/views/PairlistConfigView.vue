@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <b-button-group class="py-3">
       <b-button
         v-model="currentView"

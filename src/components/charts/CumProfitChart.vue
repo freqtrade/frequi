@@ -3,34 +3,32 @@
 </template>
 
 <script setup lang="ts">
-import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
+import ECharts from 'vue-echarts';
 
-import { use } from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers';
-import { LineChart, BarChart } from 'echarts/charts';
+import { BarChart, LineChart } from 'echarts/charts';
 import {
-  DatasetComponent,
   DataZoomComponent,
+  DatasetComponent,
   LegendComponent,
   TitleComponent,
   TooltipComponent,
 } from 'echarts/components';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
 
+import { dataZoomPartial } from '@/shared/charts/chartZoom';
+import { useSettingsStore } from '@/stores/settings';
 import {
   ClosedTrade,
+  CumProfitChartData,
   CumProfitData,
   CumProfitDataPerDate,
-  CumProfitChartData,
   Trade,
 } from '@/types';
-import { computed } from 'vue';
-import { useSettingsStore } from '@/stores/settings';
-import { dataZoomPartial } from '@/shared/charts/chartZoom';
-import { ref } from 'vue';
-import { onMounted } from 'vue';
-import { watch } from 'vue';
 import { watchThrottled } from '@vueuse/core';
+import { computed, onMounted, ref, watch } from 'vue';
+import { formatPrice } from '@/shared/formatters';
 
 use([
   BarChart,
@@ -50,7 +48,7 @@ const CHART_PROFIT = 'Profit';
 
 const props = defineProps({
   trades: { required: true, type: Array as () => ClosedTrade[] },
-  openTrades: { required: true, type: Array as () => Trade[] },
+  openTrades: { required: false, type: Array as () => Trade[], default: () => [] },
   showTitle: { default: true, type: Boolean },
   profitColumn: { default: 'profit_abs', type: String },
 });
@@ -61,7 +59,10 @@ const settingsStore = useSettingsStore();
 const chart = ref<typeof ECharts>();
 
 const openProfit = computed<number>(() => {
-  return props.openTrades.reduce((a, v) => a + v[props.profitColumn], 0);
+  return props.openTrades.reduce(
+    (a, v) => a + (v['total_profit_abs'] ?? v[props.profitColumn] ?? 0),
+    0,
+  );
 });
 
 const cumulativeData = computed<CumProfitChartData[]>(() => {
@@ -131,9 +132,7 @@ function updateChart(initial = false) {
         name: 'currentProfit',
 
         animation: initial,
-        tooltip: {
-          show: false,
-        },
+
         lineStyle: {
           color: openProfit.value > 0 ? 'green' : 'red',
           type: 'dotted',
@@ -196,9 +195,16 @@ function initializeChart() {
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
-
     tooltip: {
       trigger: 'axis',
+      formatter: (params) => {
+        const profit = params[0].data.profit;
+        const currentProfit = params[0].data['currentProfit'];
+        const profitText = currentProfit
+          ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
+          : `Profit: ${formatPrice(profit, 3)}`;
+        return profitText;
+      },
       axisPointer: {
         type: 'line',
         label: {
@@ -209,6 +215,7 @@ function initializeChart() {
     legend: {
       data: [CHART_PROFIT],
       right: '5%',
+      selectedMode: false,
     },
     useUTC: false,
     xAxis: {
@@ -261,12 +268,11 @@ watchThrottled(
   },
   { throttle: 60 * 1000 },
 );
-watchThrottled(
+watch(
   () => props.trades,
   () => {
     updateChart();
   },
-  { throttle: 60 * 1000 },
 );
 </script>
 

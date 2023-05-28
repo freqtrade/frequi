@@ -32,29 +32,21 @@
 
 <script setup lang="ts">
 import { Pairlist } from '@/types';
-import { computed, ref } from 'vue';
-import PairlistConfigParameter from '../general/PairlistConfigParameter.vue';
+import { ref } from 'vue';
+import PairlistConfigParameter from './PairlistConfigParameter.vue';
 
-const props = defineProps<{
-  modelValue: Pairlist;
+defineProps<{
   index: number;
 }>();
 
-const emit = defineEmits(['update:modelValue', 'remove']);
+const emit = defineEmits(['remove']);
 
 const visible = ref(false);
 
-const pairlist = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value: Pairlist) {
-    emit('update:modelValue', value);
-  },
-});
+const pairlist = defineModel<Pairlist>({ required: true });
 </script>
 
-<style>
+<style lang="scss" scoped>
 .hidden {
   padding: 0;
 }
