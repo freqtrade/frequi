@@ -25,21 +25,10 @@
 
 <script setup lang="ts">
 import { PairlistParameter, PairlistParamType } from '@/types';
-import { computed } from 'vue';
 
-const props = defineProps<{
+defineProps<{
   param: PairlistParameter;
-  modelValue: string | undefined;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
-
-const paramValue = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit('update:modelValue', value);
-  },
-});
+const paramValue = defineModel<string>();
 </script>

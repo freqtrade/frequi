@@ -9,7 +9,11 @@ import { BootstrapVueNextResolver } from 'unplugin-vue-components/resolvers';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    createVuePlugin({}),
+    createVuePlugin({
+      script: {
+        defineModel: true,
+      },
+    }),
     Components({
       resolvers: [IconsResolve(), BootstrapVueNextResolver()],
       dirs: [],
