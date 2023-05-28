@@ -199,7 +199,9 @@ function initializeChart() {
       formatter: (params) => {
         const profit = params[0].data.profit;
         const currentProfit = params[0].data['currentProfit'];
-        const profitText = currentProfit ? `Current Profit: ${currentProfit}` : `Profit: ${profit}`;
+        const profitText = currentProfit
+          ? `Profit (with unrealized profit): ${currentProfit}`
+          : `Profit: ${profit}`;
         return profitText;
       },
       axisPointer: {
