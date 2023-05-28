@@ -200,7 +200,7 @@ function initializeChart() {
         const profit = params[0].data.profit;
         const currentProfit = params[0].data['currentProfit'];
         const profitText = currentProfit
-          ? `Profit (with unrealized profit): ${currentProfit}`
+          ? `Projected profit (including unrealized): ${currentProfit}`
           : `Profit: ${profit}`;
         return profitText;
       },
