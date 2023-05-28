@@ -27,7 +27,7 @@ import {
   Trade,
 } from '@/types';
 import { watchThrottled } from '@vueuse/core';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 use([
   BarChart,
@@ -258,12 +258,11 @@ watchThrottled(
   },
   { throttle: 60 * 1000 },
 );
-watchThrottled(
+watch(
   () => props.trades,
   () => {
     updateChart();
   },
-  { throttle: 60 * 1000 },
 );
 </script>
 
