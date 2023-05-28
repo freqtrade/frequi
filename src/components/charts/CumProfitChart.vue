@@ -28,6 +28,7 @@ import {
 } from '@/types';
 import { watchThrottled } from '@vueuse/core';
 import { computed, onMounted, ref, watch } from 'vue';
+import { formatPrice } from '@/shared/formatters';
 
 use([
   BarChart,
@@ -200,8 +201,8 @@ function initializeChart() {
         const profit = params[0].data.profit;
         const currentProfit = params[0].data['currentProfit'];
         const profitText = currentProfit
-          ? `Projected profit (including unrealized): ${currentProfit}`
-          : `Profit: ${profit}`;
+          ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
+          : `Profit: ${formatPrice(profit, 3)}`;
         return profitText;
       },
       axisPointer: {
@@ -214,6 +215,7 @@ function initializeChart() {
     legend: {
       data: [CHART_PROFIT],
       right: '5%',
+      selectedMode: false,
     },
     useUTC: false,
     xAxis: {
