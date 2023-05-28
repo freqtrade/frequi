@@ -47,7 +47,7 @@ import {
   PairlistEvalResponse,
   PairlistsPayload,
   PairlistsResponse,
-} from '../types/types';
+} from '../types';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
