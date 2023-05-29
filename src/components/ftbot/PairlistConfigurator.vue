@@ -38,6 +38,13 @@
           </b-col>
         </b-row>
         <div ref="pairlistConfigsEl" class="h-100">
+          <b-alert
+            :model-value="config.pairlists.length > 0 && !firstPairlistIsGenerator"
+            variant="danger"
+          >
+            First entry in the pairlist must be a Generating pairlist, like StaticPairList or
+            VolumePairList.
+          </b-alert>
           <PairlistConfigItem
             v-for="(pairlist, i) in pairlistsComp"
             :key="pairlist.id"
@@ -153,7 +160,7 @@ onMounted(async () => {
   );
 });
 
-const addToConfig = (pairlist: Pairlist, index: number) => {
+function addToConfig(pairlist: Pairlist, index: number) {
   pairlist = structuredClone(toRaw(pairlist));
   for (const param in pairlist.params) {
     pairlist.params[param].value = pairlist.params[param].default
@@ -161,17 +168,17 @@ const addToConfig = (pairlist: Pairlist, index: number) => {
       : '';
   }
   config.value.pairlists.splice(index, 0, pairlist);
-};
+}
 
-const removeFromConfig = (index: number) => {
+function removeFromConfig(index: number) {
   config.value.pairlists.splice(index, 1);
-};
+}
 
-const save = async () => {
+async function save() {
   emit('saveConfig', config.value);
-};
+}
 
-const test = async () => {
+async function test() {
   const payload = configToPayload();
 
   evaluating.value = true;
@@ -189,9 +196,9 @@ const test = async () => {
       evaluating.value = false;
     }
   }, 1000);
-};
+}
 
-const convertToParamType = (type: PairlistParamType, value: string) => {
+function convertToParamType(type: PairlistParamType, value: string) {
   if (type === PairlistParamType.number) {
     return Number(value);
   } else if (type === PairlistParamType.boolean) {
@@ -199,18 +206,18 @@ const convertToParamType = (type: PairlistParamType, value: string) => {
   } else {
     return String(value);
   }
-};
+}
 
-const configToPayload = () => {
+function configToPayload() {
   const pairlists: PairlistPayloadItem[] = configToPayloadItems();
   return {
     pairlists: pairlists,
     stake_currency: botStore.activeBot.stakeCurrency,
     blacklist: [],
   };
-};
+}
 
-const configToPayloadItems = () => {
+function configToPayloadItems() {
   const pairlists: PairlistPayloadItem[] = [];
   config.value.pairlists.forEach((config) => {
     const pairlist = {
@@ -226,7 +233,7 @@ const configToPayloadItems = () => {
   });
 
   return pairlists;
-};
+}
 
 watch(
   () => props.selectedConfig,
