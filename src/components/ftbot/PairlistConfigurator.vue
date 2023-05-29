@@ -34,13 +34,21 @@
       <b-col>
         <b-row>
           <b-col>
-            <b-form-input
-              v-model="pairlistStore.config.name"
-              class="mb-2"
-              placeholder="Configuration name..."
-            ></b-form-input>
+            <b-row>
+              <b-col>
+                <b-form-select v-model="pairlistStore.config" :options="configsSelectOptions" />
+              </b-col>
+              <b-col
+                ><b-form-input
+                  v-model="pairlistStore.config.name"
+                  class="mb-2"
+                  placeholder="Configuration name..."
+                ></b-form-input
+              ></b-col>
+            </b-row>
           </b-col>
           <b-col cols="auto">
+            <b-button>New</b-button>
             <b-button @click="pairlistStore.saveConfig()">Save</b-button>
           </b-col>
         </b-row>
