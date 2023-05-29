@@ -51,6 +51,10 @@
         color: $fg-color;
     }
 
+    .border {
+        border-color: lighten($bg-dark, 40%) !important;
+    }
+
     .card {
         border-color: lighten($bg-dark, 10%);
         background-color: $bg-dark;

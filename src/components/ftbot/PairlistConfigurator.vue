@@ -65,12 +65,12 @@
       </b-col>
       <b-col cols="12" md="3">
         <i-mdi-content-copy
-          v-if="isSupported"
+          v-if="isSupported && pairlistValid"
           role="button"
-          class="position-absolute end-0 me-3"
+          class="position-absolute end-0 mt-1 me-3"
           @click="copy(configJSON)"
         />
-        <pre class="text-start"><code>{{ configJSON }}</code></pre>
+        <pre class="text-start border p-1"><code>{{ configJSON }}</code></pre>
       </b-col>
     </b-row>
   </b-container>
