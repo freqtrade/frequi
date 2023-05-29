@@ -7,7 +7,7 @@
             v-for="pairlist in availablePairlists"
             :key="pairlist.name"
             align-v="center"
-            class="pairlist d-flex text-start"
+            class="pairlist d-flex text-start align-items-center"
           >
             <div class="d-flex flex-grow-1 align-items-start flex-column">
               <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
@@ -18,8 +18,9 @@
               style="border: none"
               variant="outline-light"
               @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
-              ><i-mdi-arrow-right-bold-box class="fs-4"
-            /></b-button>
+            >
+              <i-mdi-arrow-right-bold-box-outline class="fs-4" />
+            </b-button>
           </b-list-group-item>
         </b-list-group>
       </b-col>
@@ -37,6 +38,13 @@
           </b-col>
         </b-row>
         <div ref="pairlistConfigsEl" class="h-100">
+          <b-alert
+            :model-value="config.pairlists.length > 0 && !firstPairlistIsGenerator"
+            variant="warning"
+          >
+            First entry in the pairlist must be a Generating pairlist, like StaticPairList or
+            VolumePairList.
+          </b-alert>
           <PairlistConfigItem
             v-for="(pairlist, i) in pairlistsComp"
             :key="pairlist.id"
@@ -45,12 +53,12 @@
             @remove="removeFromConfig"
           />
           <b-button
-            :disabled="evaluating || config.pairlists.length == 0"
+            :disabled="evaluating || !pairlistValid"
             variant="primary"
             size="lg"
             squared
             class="mt-2 evaluate"
-            @click="test"
+            @click="evaluateClick"
           >
             <b-spinner v-if="evaluating" small></b-spinner>
             <span>{{ evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
@@ -58,7 +66,13 @@
         </div>
       </b-col>
       <b-col cols="12" md="3">
-        <pre class="text-start"><code>{{ configJSON }}</code></pre>
+        <i-mdi-content-copy
+          v-if="isSupported && pairlistValid"
+          role="button"
+          class="position-absolute end-0 mt-1 me-3"
+          @click="copy(configJSON)"
+        />
+        <pre class="text-start border p-1"><code>{{ configJSON }}</code></pre>
       </b-col>
     </b-row>
   </b-container>
@@ -70,6 +84,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import PairlistConfigItem from './PairlistConfigItem.vue';
 import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
+import { useClipboard } from '@vueuse/core';
 
 const emit = defineEmits([
   'update:modelValue',
@@ -90,6 +105,18 @@ const config = ref<PairlistConfig>(props.selectedConfig);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
 const evaluating = ref(false);
+
+const firstPairlistIsGenerator = computed<boolean>(() => {
+  // First pairlist must be a generator
+  if (config.value.pairlists[0]?.is_pairlist_generator) {
+    return true;
+  }
+  return false;
+});
+
+const pairlistValid = computed<boolean>(() => {
+  return firstPairlistIsGenerator.value && config.value.pairlists.length > 0;
+});
 
 // v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
 const pairlistsComp = computed(() =>
@@ -142,7 +169,7 @@ onMounted(async () => {
   );
 });
 
-const addToConfig = (pairlist: Pairlist, index: number) => {
+function addToConfig(pairlist: Pairlist, index: number) {
   pairlist = structuredClone(toRaw(pairlist));
   for (const param in pairlist.params) {
     pairlist.params[param].value = pairlist.params[param].default
@@ -150,17 +177,19 @@ const addToConfig = (pairlist: Pairlist, index: number) => {
       : '';
   }
   config.value.pairlists.splice(index, 0, pairlist);
-};
+}
 
-const removeFromConfig = (index: number) => {
+function removeFromConfig(index: number) {
   config.value.pairlists.splice(index, 1);
-};
+}
 
-const save = async () => {
+async function save() {
   emit('saveConfig', config.value);
-};
+}
 
-const test = async () => {
+const { copy, isSupported } = useClipboard();
+
+async function evaluateClick() {
   const payload = configToPayload();
 
   evaluating.value = true;
@@ -178,9 +207,9 @@ const test = async () => {
       evaluating.value = false;
     }
   }, 1000);
-};
+}
 
-const convertToParamType = (type: PairlistParamType, value: string) => {
+function convertToParamType(type: PairlistParamType, value: string) {
   if (type === PairlistParamType.number) {
     return Number(value);
   } else if (type === PairlistParamType.boolean) {
@@ -188,18 +217,18 @@ const convertToParamType = (type: PairlistParamType, value: string) => {
   } else {
     return String(value);
   }
-};
+}
 
-const configToPayload = () => {
+function configToPayload() {
   const pairlists: PairlistPayloadItem[] = configToPayloadItems();
   return {
     pairlists: pairlists,
     stake_currency: botStore.activeBot.stakeCurrency,
     blacklist: [],
   };
-};
+}
 
-const configToPayloadItems = () => {
+function configToPayloadItems() {
   const pairlists: PairlistPayloadItem[] = [];
   config.value.pairlists.forEach((config) => {
     const pairlist = {
@@ -215,7 +244,7 @@ const configToPayloadItems = () => {
   });
 
   return pairlists;
-};
+}
 
 watch(
   () => props.selectedConfig,
