@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row align-v="stretch">
-      <b-col cols="12" md="3" class="overflow-auto" style="height: 760px">
+      <b-col cols="12" md="3" class="overflow-auto">
         <b-list-group ref="availablePairlistsEl" class="available-pairlists">
           <b-list-group-item
             v-for="pairlist in availablePairlists"
@@ -39,14 +39,25 @@
             <b-button @click="save">Save</b-button>
           </b-col>
         </b-row>
+        <b-button
+          :disabled="evaluating || !pairlistValid"
+          variant="primary"
+          size="lg"
+          squared
+          class="mb-2 evaluate"
+          @click="evaluateClick"
+        >
+          <b-spinner v-if="evaluating" small></b-spinner>
+          <span>{{ evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
+        </b-button>
+        <b-alert
+          :model-value="config.pairlists.length > 0 && !firstPairlistIsGenerator"
+          variant="warning"
+        >
+          First entry in the pairlist must be a Generating pairlist, like StaticPairList or
+          VolumePairList.
+        </b-alert>
         <div ref="pairlistConfigsEl" class="h-100">
-          <b-alert
-            :model-value="config.pairlists.length > 0 && !firstPairlistIsGenerator"
-            variant="warning"
-          >
-            First entry in the pairlist must be a Generating pairlist, like StaticPairList or
-            VolumePairList.
-          </b-alert>
           <PairlistConfigItem
             v-for="(pairlist, i) in pairlistsComp"
             :key="pairlist.id"
@@ -54,17 +65,6 @@
             :index="i"
             @remove="removeFromConfig"
           />
-          <b-button
-            :disabled="evaluating || !pairlistValid"
-            variant="primary"
-            size="lg"
-            squared
-            class="mt-2 evaluate"
-            @click="evaluateClick"
-          >
-            <b-spinner v-if="evaluating" small></b-spinner>
-            <span>{{ evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
-          </b-button>
         </div>
       </b-col>
       <b-col cols="12" md="3">
