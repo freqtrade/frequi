@@ -40,7 +40,7 @@
         <div ref="pairlistConfigsEl" class="h-100">
           <b-alert
             :model-value="config.pairlists.length > 0 && !firstPairlistIsGenerator"
-            variant="danger"
+            variant="warning"
           >
             First entry in the pairlist must be a Generating pairlist, like StaticPairList or
             VolumePairList.
