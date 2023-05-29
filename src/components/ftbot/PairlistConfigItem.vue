@@ -4,9 +4,14 @@
       <div class="d-flex text-start align-items-center">
         <div class="d-flex flex-grow-1 align-items-center">
           <i-mdi-reorder-horizontal role="button" class="handle me-2 fs-4" />
-          <b-button variant="link" @click="visible = !visible">
-            <h6 class="mb-0">{{ pairlist.name }}</h6>
-          </b-button>
+          <div
+            role="button"
+            class="d-flex flex-grow-1 align-items-start flex-column"
+            @click="visible = !visible"
+          >
+            <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
+            <span class="fw-lighter">{{ pairlist.description }}</span>
+          </div>
         </div>
         <b-button size="sm" @click="emit('remove', index)">
           <i-mdi-close />
