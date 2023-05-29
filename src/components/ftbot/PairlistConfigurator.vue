@@ -46,7 +46,7 @@
             @remove="removeFromConfig"
           />
           <b-button
-            :disabled="evaluating || config.pairlists.length == 0"
+            :disabled="evaluating || !pairlistValid"
             variant="primary"
             size="lg"
             squared
@@ -89,6 +89,18 @@ const config = ref<PairlistConfig>(props.selectedConfig);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
 const evaluating = ref(false);
+
+const firstPairlistIsGenerator = computed<boolean>(() => {
+  // First pairlist must be a generator
+  if (config.value.pairlists[0]?.is_pairlist_generator) {
+    return true;
+  }
+  return false;
+});
+
+const pairlistValid = computed<boolean>(() => {
+  return firstPairlistIsGenerator.value && config.value.pairlists.length > 0;
+});
 
 // v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
 const pairlistsComp = computed(() =>
