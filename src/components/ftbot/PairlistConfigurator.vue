@@ -7,6 +7,7 @@
             v-for="pairlist in availablePairlists"
             :key="pairlist.name"
             align-v="center"
+            :class="{ 'no-drag': config.pairlists.length == 0 && !pairlist.is_pairlist_generator }"
             class="pairlist d-flex text-start align-items-center"
           >
             <div class="d-flex flex-grow-1 align-items-start flex-column">
@@ -17,6 +18,7 @@
               class="p-0"
               style="border: none"
               variant="outline-light"
+              :disabled="config.pairlists.length == 0 && !pairlist.is_pairlist_generator"
               @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
             >
               <i-mdi-arrow-right-bold-box-outline class="fs-4" />
@@ -140,6 +142,7 @@ useSortable(availablePairlistsEl, availablePairlists.value, {
     put: false,
   },
   sort: false,
+  filter: '.no-drag',
 });
 
 useSortable(pairlistConfigsEl, config.value.pairlists, {
@@ -254,9 +257,17 @@ watch(
 );
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .pairlist {
   border: 1px solid white;
+}
+
+.pairlist.no-drag {
+  color: gray;
+}
+
+.pairlist.no-drag:hover {
+  cursor: default;
 }
 
 .pairlist:hover {
