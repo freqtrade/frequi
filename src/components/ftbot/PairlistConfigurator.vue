@@ -7,7 +7,10 @@
             v-for="pairlist in availablePairlists"
             :key="pairlist.name"
             align-v="center"
-            :class="{ 'no-drag': config.pairlists.length == 0 && !pairlist.is_pairlist_generator }"
+            :class="{
+              'no-drag':
+                pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
+            }"
             class="pairlist d-flex text-start align-items-center py-2 px-3"
           >
             <div class="d-flex flex-grow-1 align-items-start flex-column">
@@ -18,8 +21,10 @@
               class="p-0"
               style="border: none"
               variant="outline-light"
-              :disabled="config.pairlists.length == 0 && !pairlist.is_pairlist_generator"
-              @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
+              :disabled="
+                pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator
+              "
+              @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
             >
               <i-mdi-arrow-right-bold-box-outline class="fs-4" />
             </b-button>
@@ -30,28 +35,30 @@
         <b-row>
           <b-col>
             <b-form-input
-              v-model="config.name"
+              v-model="pairlistStore.config.name"
               class="mb-2"
               placeholder="Configuration name..."
             ></b-form-input>
           </b-col>
           <b-col cols="auto">
-            <b-button @click="save">Save</b-button>
+            <b-button @click="pairlistStore.saveConfig()">Save</b-button>
           </b-col>
         </b-row>
         <b-button
-          :disabled="evaluating || !pairlistValid"
+          :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
           variant="primary"
           size="lg"
           squared
           class="mb-2 evaluate"
           @click="evaluateClick"
         >
-          <b-spinner v-if="evaluating" small></b-spinner>
-          <span>{{ evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
+          <b-spinner v-if="pairlistStore.evaluating" small></b-spinner>
+          <span>{{ pairlistStore.evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
         </b-button>
         <b-alert
-          :model-value="config.pairlists.length > 0 && !firstPairlistIsGenerator"
+          :model-value="
+            pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
+          "
           variant="warning"
         >
           First entry in the pairlist must be a Generating pairlist, like StaticPairList or
@@ -61,62 +68,38 @@
           <PairlistConfigItem
             v-for="(pairlist, i) in pairlistsComp"
             :key="pairlist.id"
-            v-model="config.pairlists[i]"
+            v-model="pairlistStore.config.pairlists[i]"
             :index="i"
-            @remove="removeFromConfig"
+            @remove="pairlistStore.removeFromConfig"
           />
         </div>
       </b-col>
       <b-col cols="12" md="3">
-        <CopyableTextfield :content="configJSON" :is-valid="pairlistValid" />
+        <CopyableTextfield :content="configJSON" :is-valid="pairlistStore.pairlistValid" />
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, toRaw, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
-import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
+import { Pairlist, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
-const emit = defineEmits([
-  'update:modelValue',
-  'saveConfig',
-  'started',
-  'progress',
-  'done',
-  'error',
-]);
-const props = defineProps<{
-  selectedConfig: PairlistConfig;
-}>();
-
 const botStore = useBotStore();
+const pairlistStore = usePairlistConfigStore();
 
 const availablePairlists = ref<Pairlist[]>([]);
-const config = ref<PairlistConfig>(props.selectedConfig);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
-const evaluating = ref(false);
-
-const firstPairlistIsGenerator = computed<boolean>(() => {
-  // First pairlist must be a generator
-  if (config.value.pairlists[0]?.is_pairlist_generator) {
-    return true;
-  }
-  return false;
-});
-
-const pairlistValid = computed<boolean>(() => {
-  return firstPairlistIsGenerator.value && config.value.pairlists.length > 0;
-});
 
 // v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
 const pairlistsComp = computed(() =>
-  config.value.pairlists.map((p) => {
+  pairlistStore.config.pairlists.map((p) => {
     if (p.id) {
       return p;
     } else {
@@ -129,6 +112,15 @@ const configJSON = computed(() => {
   return JSON.stringify(configToPayloadItems(), null, 2);
 });
 
+const configsSelectOptions = computed(() =>
+  pairlistStore.savedConfigs.map((c) => {
+    return {
+      text: c.name,
+      value: c,
+    };
+  }),
+);
+
 useSortable(availablePairlistsEl, availablePairlists.value, {
   group: {
     name: 'configurator',
@@ -139,15 +131,15 @@ useSortable(availablePairlistsEl, availablePairlists.value, {
   filter: '.no-drag',
 });
 
-useSortable(pairlistConfigsEl, config.value.pairlists, {
+useSortable(pairlistConfigsEl, pairlistStore.config.pairlists, {
   handle: '.handle',
   group: 'configurator',
   onUpdate: async (e) => {
-    moveArrayElement(config.value.pairlists, e.oldIndex, e.newIndex);
+    moveArrayElement(pairlistStore.config.pairlists, e.oldIndex, e.newIndex);
   },
   onAdd: (e) => {
     const pairlist = availablePairlists.value[e.oldIndex];
-    addToConfig(pairlist, e.newIndex);
+    pairlistStore.addToConfig(pairlist, e.newIndex);
     // quick fix from: https://github.com/SortableJS/Sortable/issues/1515
     e.clone.replaceWith(e.item);
     e.clone.remove();
@@ -166,42 +158,9 @@ onMounted(async () => {
   );
 });
 
-function addToConfig(pairlist: Pairlist, index: number) {
-  pairlist = structuredClone(toRaw(pairlist));
-  for (const param in pairlist.params) {
-    pairlist.params[param].value = pairlist.params[param].default
-      ? pairlist.params[param].default.toString()
-      : '';
-  }
-  config.value.pairlists.splice(index, 0, pairlist);
-}
-
-function removeFromConfig(index: number) {
-  config.value.pairlists.splice(index, 1);
-}
-
-async function save() {
-  emit('saveConfig', config.value);
-}
-
 async function evaluateClick() {
   const payload = configToPayload();
-
-  evaluating.value = true;
-  const res = await botStore.activeBot.evaluatePairlist(payload);
-  emit('started', res);
-  const evalIntervalId = setInterval(async () => {
-    const res = await botStore.activeBot.getPairlistEvalStatus(evalIntervalId);
-    if (res.status === 'success' && res.result) {
-      emit('done', res);
-      clearInterval(evalIntervalId);
-      evaluating.value = false;
-    } else if (res.error) {
-      emit('error', res);
-      clearInterval(evalIntervalId);
-      evaluating.value = false;
-    }
-  }, 1000);
+  pairlistStore.startPairlistEvaluation(payload);
 }
 
 function convertToParamType(type: PairlistParamType, value: string) {
@@ -225,7 +184,7 @@ function configToPayload() {
 
 function configToPayloadItems() {
   const pairlists: PairlistPayloadItem[] = [];
-  config.value.pairlists.forEach((config) => {
+  pairlistStore.config.pairlists.forEach((config) => {
     const pairlist = {
       method: config.name,
     };
@@ -240,13 +199,6 @@ function configToPayloadItems() {
 
   return pairlists;
 }
-
-watch(
-  () => props.selectedConfig,
-  () => {
-    config.value = structuredClone(toRaw(props.selectedConfig));
-  },
-);
 </script>
 
 <style lang="scss" scoped>

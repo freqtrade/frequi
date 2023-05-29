@@ -18,8 +18,8 @@
         </b-list-group>
       </b-col>
       <b-col>
-        <!-- probably needs changes in backend to work properly -->
-        <CandleChartContainer :available-pairs="inputWhitelist" timeframe="5m" />
+        <!-- TODO: fix layout issues -->
+        <ChartView />
       </b-col>
       <b-col cols="12" md="2">
         <CopyableTextfield
@@ -42,22 +42,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import CandleChartContainer from '../charts/CandleChartContainer.vue';
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+import ChartView from '@/views/ChartsView.vue';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
-const props = defineProps<{
-  inputWhitelist: string[];
-}>();
 const botStore = useBotStore();
+const pairlistStore = usePairlistConfigStore();
 
-const whitelist = ref(
-  props.inputWhitelist.map((p) => {
-    return {
-      enabled: true,
-      pair: p,
-    };
-  }),
+const whitelist = ref<{ enabled: boolean; pair: string }[]>([]);
+
+watch(
+  () => pairlistStore.whitelist,
+  () => {
+    whitelist.value = pairlistStore.whitelist.map((p) => {
+      return {
+        enabled: true,
+        pair: p,
+      };
+    });
+  },
 );
 </script>

@@ -549,14 +549,13 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async getPairlistEvalStatus(timerIntervalId: number) {
+      async getPairlistEvalStatus() {
         try {
           const { data } = await api.get<PairlistEvalResponse>('/pairlists/evaluate');
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
           return Promise.reject(error);
-          clearInterval(timerIntervalId);
         }
       },
       // // Post methods
