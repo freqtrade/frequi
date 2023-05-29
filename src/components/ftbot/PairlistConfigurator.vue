@@ -58,12 +58,18 @@
             size="lg"
             squared
             class="mt-2 evaluate"
-            @click="test"
+            @click="evaluateClick"
             >Evaluate</b-button
           >
         </div>
       </b-col>
       <b-col cols="12" md="3">
+        <i-mdi-content-copy
+          v-if="isSupported"
+          role="button"
+          class="position-absolute end-0 me-3"
+          @click="copy(configJSON)"
+        />
         <pre class="text-start"><code>{{ configJSON }}</code></pre>
       </b-col>
     </b-row>
@@ -76,6 +82,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import PairlistConfigItem from './PairlistConfigItem.vue';
 import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
+import { useClipboard } from '@vueuse/core';
 
 const emit = defineEmits([
   'update:modelValue',
@@ -178,7 +185,9 @@ async function save() {
   emit('saveConfig', config.value);
 }
 
-async function test() {
+const { copy, isSupported } = useClipboard();
+
+async function evaluateClick() {
   const payload = configToPayload();
 
   evaluating.value = true;
