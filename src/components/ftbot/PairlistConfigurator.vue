@@ -7,7 +7,7 @@
             v-for="pairlist in availablePairlists"
             :key="pairlist.name"
             align-v="center"
-            class="pairlist d-flex text-start"
+            class="pairlist d-flex text-start align-items-center"
           >
             <div class="d-flex flex-grow-1 align-items-start flex-column">
               <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
@@ -18,8 +18,9 @@
               style="border: none"
               variant="outline-light"
               @click="addToConfig(pairlist, selectedConfig.pairlists.length)"
-              ><i-mdi-arrow-right-bold-box class="fs-4"
-            /></b-button>
+            >
+              <i-mdi-arrow-right-bold-box-outline class="fs-4" />
+            </b-button>
           </b-list-group-item>
         </b-list-group>
       </b-col>
