@@ -4,7 +4,9 @@
       <b-row align-v="center" class="text-start">
         <b-col>
           <b-row align-v="center">
-            <b-col cols="auto"><i-mdi-reorder-horizontal class="handle me-2 fs-4" /></b-col>
+            <b-col cols="auto">
+              <i-mdi-reorder-horizontal role="button" class="handle me-2 fs-4" />
+            </b-col>
             <b-col
               ><b-button variant="link" @click="visible = !visible">
                 <h6 class="mb-0">{{ pairlist.name }}</h6>
@@ -13,7 +15,9 @@
           </b-row>
         </b-col>
         <b-col cols="auto">
-          <b-button size="sm" @click="emit('remove', index)"><i-mdi-close></i-mdi-close></b-button>
+          <b-button size="sm" @click="emit('remove', index)">
+            <i-mdi-close />
+          </b-button>
         </b-col>
       </b-row>
     </template>
