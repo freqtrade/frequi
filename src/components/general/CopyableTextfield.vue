@@ -1,9 +1,9 @@
 <template>
-  <div class="position-relative">
+  <div class="copy-container position-relative">
     <i-mdi-content-copy
       v-if="isSupported && isValid"
       role="button"
-      class="position-absolute end-0 mt-1 me-2"
+      class="copy-button position-absolute end-0 mt-1 me-2"
       @click="copy(content)"
     />
     <pre class="text-start border p-1"><code>{{ content }}</code></pre>
@@ -21,4 +21,16 @@ defineProps({
 const { copy, isSupported } = useClipboard();
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.copy-container {
+  .copy-button {
+    opacity: 0;
+  }
+
+  &:hover {
+    .copy-button {
+      opacity: 1;
+    }
+  }
+}
+</style>
