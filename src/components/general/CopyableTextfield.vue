@@ -1,0 +1,24 @@
+<template>
+  <div class="position-relative">
+    <i-mdi-content-copy
+      v-if="isSupported && isValid"
+      role="button"
+      class="position-absolute end-0 mt-1 me-2"
+      @click="copy(content)"
+    />
+    <pre class="text-start border p-1"><code>{{ content }}</code></pre>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useClipboard } from '@vueuse/core';
+
+defineProps({
+  content: { type: String, required: true },
+  isValid: { type: Boolean, default: true },
+});
+
+const { copy, isSupported } = useClipboard();
+</script>
+
+<style scoped></style>

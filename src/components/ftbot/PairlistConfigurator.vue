@@ -68,13 +68,7 @@
         </div>
       </b-col>
       <b-col cols="12" md="3">
-        <i-mdi-content-copy
-          v-if="isSupported && pairlistValid"
-          role="button"
-          class="position-absolute end-0 mt-1 me-3"
-          @click="copy(configJSON)"
-        />
-        <pre class="text-start border p-1"><code>{{ configJSON }}</code></pre>
+        <CopyableTextfield :content="configJSON" :is-valid="pairlistValid" />
       </b-col>
     </b-row>
   </b-container>
@@ -86,7 +80,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import PairlistConfigItem from './PairlistConfigItem.vue';
 import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
-import { useClipboard } from '@vueuse/core';
+import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
 const emit = defineEmits([
   'update:modelValue',
@@ -189,8 +183,6 @@ function removeFromConfig(index: number) {
 async function save() {
   emit('saveConfig', config.value);
 }
-
-const { copy, isSupported } = useClipboard();
 
 async function evaluateClick() {
   const payload = configToPayload();

@@ -22,9 +22,15 @@
         <CandleChartContainer :available-pairs="inputWhitelist" timeframe="5m" />
       </b-col>
       <b-col cols="12" md="2">
-        <pre
-          class="text-start"
-        ><code>{{ whitelist.filter(p => p.enabled === true).map(p => p.pair) }}</code></pre>
+        <CopyableTextfield
+          :content="
+            JSON.stringify(
+              whitelist.filter((p) => p.enabled === true).map((p) => p.pair),
+              null,
+              2,
+            )
+          "
+        />
       </b-col>
     </b-row>
     <b-row v-else>
@@ -39,6 +45,7 @@
 import { ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import CandleChartContainer from '../charts/CandleChartContainer.vue';
+import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
 const props = defineProps<{
   inputWhitelist: string[];
