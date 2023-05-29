@@ -8,7 +8,7 @@
             :key="pairlist.name"
             align-v="center"
             :class="{ 'no-drag': config.pairlists.length == 0 && !pairlist.is_pairlist_generator }"
-            class="pairlist d-flex text-start align-items-center"
+            class="pairlist d-flex text-start align-items-center py-2 px-3"
           >
             <div class="d-flex flex-grow-1 align-items-start flex-column">
               <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
