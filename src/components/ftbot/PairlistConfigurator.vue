@@ -32,37 +32,38 @@
         </b-list-group>
       </b-col>
       <b-col>
-        <b-row>
-          <b-col>
-            <b-row>
-              <b-col>
-                <b-form-select v-model="pairlistStore.config" :options="configsSelectOptions" />
-              </b-col>
-              <b-col
-                ><b-form-input
-                  v-model="pairlistStore.config.name"
-                  class="mb-2"
-                  placeholder="Configuration name..."
-                ></b-form-input
-              ></b-col>
-            </b-row>
-          </b-col>
-          <b-col cols="auto">
-            <b-button>New</b-button>
-            <b-button @click="pairlistStore.saveConfig()">Save</b-button>
-          </b-col>
-        </b-row>
-        <b-button
-          :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
-          variant="primary"
-          size="lg"
-          squared
-          class="mb-2 evaluate"
-          @click="evaluateClick"
-        >
-          <b-spinner v-if="pairlistStore.evaluating" small></b-spinner>
-          <span>{{ pairlistStore.evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
-        </b-button>
+        <b-input-group class="mb-2">
+          <template #prepend>
+            <b-dropdown text="Configs">
+              <b-dropdown-item
+                v-for="config in pairlistStore.savedConfigs"
+                :key="config.name"
+                @click="pairlistStore.selectConfig(config)"
+                >{{ config.name }}</b-dropdown-item
+              >
+            </b-dropdown>
+          </template>
+
+          <b-form-input v-model="pairlistStore.config.name" placeholder="Configuration name..." />
+
+          <template #append>
+            <b-button @click="pairlistStore.saveConfig()"
+              ><i-mdi-content-save class="fs-4"
+            /></b-button>
+            <b-button @click="pairlistStore.newConfig()"><i-mdi-plus class="fs-4" /></b-button>
+            <b-button
+              :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
+              variant="primary"
+              size="lg"
+              squared
+              class="evaluate"
+              @click="evaluateClick"
+            >
+              <b-spinner v-if="pairlistStore.evaluating" small></b-spinner>
+              <span>{{ pairlistStore.evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
+            </b-button>
+          </template>
+        </b-input-group>
         <b-alert
           :model-value="
             pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
@@ -94,7 +95,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
-import { Pairlist, PairlistParamType, PairlistPayloadItem } from '@/types';
+import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
