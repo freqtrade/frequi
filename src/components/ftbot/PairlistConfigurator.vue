@@ -42,15 +42,15 @@
                 >{{ config.name }}</b-dropdown-item
               >
             </b-dropdown>
+            <b-button @click="pairlistStore.saveConfig()"
+              ><i-mdi-content-save class="fs-4"
+            /></b-button>
+            <b-button @click="pairlistStore.newConfig()"><i-mdi-plus class="fs-4" /></b-button>
           </template>
 
           <b-form-input v-model="pairlistStore.config.name" placeholder="Configuration name..." />
 
           <template #append>
-            <b-button @click="pairlistStore.saveConfig()"
-              ><i-mdi-content-save class="fs-4"
-            /></b-button>
-            <b-button @click="pairlistStore.newConfig()"><i-mdi-plus class="fs-4" /></b-button>
             <b-button
               :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
               variant="primary"
