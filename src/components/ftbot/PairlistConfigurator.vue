@@ -85,7 +85,10 @@
         </div>
       </b-col>
       <b-col cols="12" md="3">
-        <CopyableTextfield :content="configJSON" :is-valid="pairlistStore.pairlistValid" />
+        <CopyableTextfield
+          :content="pairlistStore.configJSON"
+          :is-valid="pairlistStore.pairlistValid"
+        />
       </b-col>
     </b-row>
   </b-container>
@@ -97,7 +100,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
 import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
-import { Pairlist, PairlistParamType, PairlistPayloadItem } from '@/types';
+import { Pairlist } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
@@ -118,10 +121,6 @@ const pairlistsComp = computed(() =>
     }
   }),
 );
-
-const configJSON = computed(() => {
-  return JSON.stringify(configToPayloadItems(), null, 2);
-});
 
 useSortable(availablePairlistsEl, availablePairlists.value, {
   group: {
@@ -161,45 +160,7 @@ onMounted(async () => {
 });
 
 async function evaluateClick() {
-  const payload = configToPayload();
-  pairlistStore.startPairlistEvaluation(payload);
-}
-
-function convertToParamType(type: PairlistParamType, value: string) {
-  if (type === PairlistParamType.number) {
-    return Number(value);
-  } else if (type === PairlistParamType.boolean) {
-    return Boolean(value);
-  } else {
-    return String(value);
-  }
-}
-
-function configToPayload() {
-  const pairlists: PairlistPayloadItem[] = configToPayloadItems();
-  return {
-    pairlists: pairlists,
-    stake_currency: botStore.activeBot.stakeCurrency,
-    blacklist: pairlistStore.blacklist,
-  };
-}
-
-function configToPayloadItems() {
-  const pairlists: PairlistPayloadItem[] = [];
-  pairlistStore.config.pairlists.forEach((config) => {
-    const pairlist = {
-      method: config.name,
-    };
-    for (const key in config.params) {
-      const param = config.params[key];
-      if (param.value) {
-        pairlist[key] = convertToParamType(param.type, param.value);
-      }
-    }
-    pairlists.push(pairlist);
-  });
-
-  return pairlists;
+  pairlistStore.startPairlistEvaluation();
 }
 </script>
 

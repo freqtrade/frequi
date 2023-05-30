@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia';
 import { useBotStore } from './ftbotwrapper';
 
-import { Pairlist, PairlistConfig, PairlistsPayload } from '@/types';
+import {
+  Pairlist,
+  PairlistConfig,
+  PairlistParamType,
+  PairlistPayloadItem,
+  PairlistsPayload,
+} from '@/types';
 import { computed, ref, toRaw } from 'vue';
 import { showAlert } from './alerts';
 
@@ -29,23 +35,9 @@ export const usePairlistConfigStore = defineStore(
       return firstPairlistIsGenerator.value && config.value.pairlists.length > 0;
     });
 
-    async function startPairlistEvaluation(payload: PairlistsPayload) {
-      evaluating.value = true;
-      await botStore.activeBot.evaluatePairlist(payload);
-
-      intervalId.value = setInterval(async () => {
-        const res = await botStore.activeBot.getPairlistEvalStatus();
-        if (res.status === 'success' && res.result) {
-          clearInterval(intervalId.value);
-          evaluating.value = false;
-          whitelist.value = res.result.whitelist;
-        } else if (res.error) {
-          showAlert(res.error, 'danger');
-          clearInterval(intervalId.value);
-          evaluating.value = false;
-        }
-      }, 1000);
-    }
+    const configJSON = computed(() => {
+      return JSON.stringify(configToPayloadItems(), null, 2);
+    });
 
     function addToConfig(pairlist: Pairlist, index: number) {
       pairlist = structuredClone(toRaw(pairlist));
@@ -87,10 +79,68 @@ export const usePairlistConfigStore = defineStore(
       blacklist.value.splice(index, 1);
     }
 
+    async function startPairlistEvaluation() {
+      const payload: PairlistsPayload = configToPayload();
+
+      evaluating.value = true;
+      await botStore.activeBot.evaluatePairlist(payload);
+
+      intervalId.value = setInterval(async () => {
+        const res = await botStore.activeBot.getPairlistEvalStatus();
+        if (res.status === 'success' && res.result) {
+          clearInterval(intervalId.value);
+          evaluating.value = false;
+          whitelist.value = res.result.whitelist;
+        } else if (res.error) {
+          showAlert(res.error, 'danger');
+          clearInterval(intervalId.value);
+          evaluating.value = false;
+        }
+      }, 1000);
+    }
+
+    function convertToParamType(type: PairlistParamType, value: string) {
+      if (type === PairlistParamType.number) {
+        return Number(value);
+      } else if (type === PairlistParamType.boolean) {
+        return Boolean(value);
+      } else {
+        return String(value);
+      }
+    }
+
+    function configToPayload() {
+      const pairlists: PairlistPayloadItem[] = configToPayloadItems();
+      return {
+        pairlists: pairlists,
+        stake_currency: botStore.activeBot.stakeCurrency,
+        blacklist: blacklist.value,
+      };
+    }
+
+    function configToPayloadItems() {
+      const pairlists: PairlistPayloadItem[] = [];
+      config.value.pairlists.forEach((config) => {
+        const pairlist = {
+          method: config.name,
+        };
+        for (const key in config.params) {
+          const param = config.params[key];
+          if (param.value) {
+            pairlist[key] = convertToParamType(param.type, param.value);
+          }
+        }
+        pairlists.push(pairlist);
+      });
+
+      return pairlists;
+    }
+
     return {
       evaluating,
       whitelist,
       config,
+      configJSON,
       savedConfigs,
       blacklist,
       startPairlistEvaluation,
