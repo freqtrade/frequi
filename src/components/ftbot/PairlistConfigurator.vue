@@ -64,6 +64,7 @@
             </b-button>
           </template>
         </b-input-group>
+        <PairlistConfigBlacklist />
         <b-alert
           :model-value="
             pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
@@ -95,7 +96,8 @@ import { computed, onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
-import { Pairlist, PairlistConfig, PairlistParamType, PairlistPayloadItem } from '@/types';
+import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
+import { Pairlist, PairlistParamType, PairlistPayloadItem } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
@@ -178,7 +180,7 @@ function configToPayload() {
   return {
     pairlists: pairlists,
     stake_currency: botStore.activeBot.stakeCurrency,
-    blacklist: [],
+    blacklist: pairlistStore.blacklist,
   };
 }
 

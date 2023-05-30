@@ -13,6 +13,7 @@ export const usePairlistConfigStore = defineStore(
     const evaluating = ref<boolean>(false);
     const intervalId = ref<number>();
     const whitelist = ref<string[]>([]);
+    const blacklist = ref<string[]>([]);
     const config = ref<PairlistConfig>({ name: '', pairlists: [] });
     const savedConfigs = ref<PairlistConfig[]>([]);
 
@@ -78,17 +79,28 @@ export const usePairlistConfigStore = defineStore(
       config.value = structuredClone(toRaw(selected));
     }
 
+    function addToBlacklist() {
+      blacklist.value.push('');
+    }
+
+    function removeFromBlacklist(index: number) {
+      blacklist.value.splice(index, 1);
+    }
+
     return {
       evaluating,
       whitelist,
       config,
       savedConfigs,
+      blacklist,
       startPairlistEvaluation,
       addToConfig,
       removeFromConfig,
       saveConfig,
       selectConfig,
       newConfig,
+      addToBlacklist,
+      removeFromBlacklist,
       firstPairlistIsGenerator,
       pairlistValid,
     };
@@ -96,7 +108,7 @@ export const usePairlistConfigStore = defineStore(
   {
     persist: {
       key: 'pairlist-configs',
-      paths: ['savedConfigs'],
+      paths: ['savedConfigs', 'blacklist'],
     },
   },
 );
