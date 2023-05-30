@@ -121,15 +121,6 @@ const configJSON = computed(() => {
   return JSON.stringify(configToPayloadItems(), null, 2);
 });
 
-const configsSelectOptions = computed(() =>
-  pairlistStore.savedConfigs.map((c) => {
-    return {
-      text: c.name,
-      value: c,
-    };
-  }),
-);
-
 useSortable(availablePairlistsEl, availablePairlists.value, {
   group: {
     name: 'configurator',
