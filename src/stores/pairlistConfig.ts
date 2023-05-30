@@ -39,6 +39,10 @@ export const usePairlistConfigStore = defineStore(
       return JSON.stringify(configToPayloadItems(), null, 2);
     });
 
+    const isSavedConfig = computed(
+      () => savedConfigs.value.findIndex((c) => c.name === config.value.name) > -1,
+    );
+
     function addToConfig(pairlist: Pairlist, index: number) {
       pairlist = structuredClone(toRaw(pairlist));
       for (const param in pairlist.params) {
@@ -161,6 +165,7 @@ export const usePairlistConfigStore = defineStore(
       newConfig,
       addToBlacklist,
       removeFromBlacklist,
+      isSavedConfig,
       firstPairlistIsGenerator,
       pairlistValid,
     };

@@ -2,7 +2,7 @@
   <b-input-group class="mb-2">
     <template #prepend>
       <b-button
-        :disabled="!pairlistStore.config.name"
+        :disabled="!pairlistStore.isSavedConfig"
         variant="danger"
         @click="pairlistStore.deleteConfig()"
         ><i-mdi-close class="fs-4"
