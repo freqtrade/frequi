@@ -63,6 +63,15 @@ export const usePairlistConfigStore = defineStore(
       }
     }
 
+    function deleteConfig() {
+      const i = savedConfigs.value.findIndex((c) => c.name === config.value.name);
+      console.log(i);
+      if (i > -1) {
+        savedConfigs.value.splice(i, 1);
+        config.value = { name: '', pairlists: [] };
+      }
+    }
+
     function newConfig() {
       config.value = { name: '', pairlists: [] };
     }
@@ -147,6 +156,7 @@ export const usePairlistConfigStore = defineStore(
       addToConfig,
       removeFromConfig,
       saveConfig,
+      deleteConfig,
       selectConfig,
       newConfig,
       addToBlacklist,
