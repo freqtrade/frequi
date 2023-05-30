@@ -1,66 +1,58 @@
 <template>
-  <b-container fluid>
-    <b-row align-v="stretch">
-      <b-col cols="12" md="3" class="overflow-auto">
-        <b-list-group ref="availablePairlistsEl" class="available-pairlists">
-          <b-list-group-item
-            v-for="pairlist in availablePairlists"
-            :key="pairlist.name"
-            align-v="center"
-            :class="{
-              'no-drag':
-                pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
-            }"
-            class="pairlist d-flex text-start align-items-center py-2 px-3"
-          >
-            <div class="d-flex flex-grow-1 align-items-start flex-column">
-              <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
-              <span class="fw-lighter">{{ pairlist.description }}</span>
-            </div>
-            <b-button
-              class="p-0"
-              style="border: none"
-              variant="outline-light"
-              :disabled="
-                pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator
-              "
-              @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
-            >
-              <i-mdi-arrow-right-bold-box-outline class="fs-4" />
-            </b-button>
-          </b-list-group-item>
-        </b-list-group>
-      </b-col>
-      <b-col>
-        <PairlistConfigActions />
-        <PairlistConfigBlacklist />
-        <b-alert
-          :model-value="
-            pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
-          "
-          variant="warning"
-        >
-          First entry in the pairlist must be a Generating pairlist, like StaticPairList or
-          VolumePairList.
-        </b-alert>
-        <div ref="pairlistConfigsEl" class="h-100">
-          <PairlistConfigItem
-            v-for="(pairlist, i) in pairlistsComp"
-            :key="pairlist.id"
-            v-model="pairlistStore.config.pairlists[i]"
-            :index="i"
-            @remove="pairlistStore.removeFromConfig"
-          />
+  <div class="d-flex px-3 gap-3 flex-column flex-lg-row">
+    <b-list-group ref="availablePairlistsEl" class="available-pairlists">
+      <b-list-group-item
+        v-for="pairlist in availablePairlists"
+        :key="pairlist.name"
+        :class="{
+          'no-drag': pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
+        }"
+        class="pairlist d-flex text-start align-items-center py-2 px-3"
+      >
+        <div class="d-flex flex-grow-1 align-items-start flex-column">
+          <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
+          <span class="fw-lighter">{{ pairlist.description }}</span>
         </div>
-      </b-col>
-      <b-col cols="12" md="3">
-        <CopyableTextfield
-          :content="pairlistStore.configJSON"
-          :is-valid="pairlistStore.pairlistValid"
+        <b-button
+          class="p-0"
+          style="border: none"
+          variant="outline-light"
+          :disabled="pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator"
+          @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
+        >
+          <i-mdi-arrow-right-bold-box-outline class="fs-4" />
+        </b-button>
+      </b-list-group-item>
+    </b-list-group>
+    <div class="flex-fill">
+      <PairlistConfigActions />
+      <PairlistConfigBlacklist />
+      <b-alert
+        :model-value="
+          pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
+        "
+        variant="warning"
+      >
+        First entry in the pairlist must be a Generating pairlist, like StaticPairList or
+        VolumePairList.
+      </b-alert>
+      <div ref="pairlistConfigsEl" class="h-100">
+        <PairlistConfigItem
+          v-for="(pairlist, i) in pairlistsComp"
+          :key="pairlist.id"
+          v-model="pairlistStore.config.pairlists[i]"
+          :index="i"
+          @remove="pairlistStore.removeFromConfig"
         />
-      </b-col>
-    </b-row>
-  </b-container>
+      </div>
+    </div>
+    <div class="col-12 col-lg-3">
+      <CopyableTextfield
+        :content="pairlistStore.configJSON"
+        :is-valid="pairlistStore.pairlistValid"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

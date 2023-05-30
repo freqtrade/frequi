@@ -1,16 +1,12 @@
 <template>
   <b-card no-body class="mb-2">
     <template #header>
-      <div class="d-flex text-start align-items-center">
-        <div class="d-flex flex-grow-1 align-items-center">
-          <div
-            role="button"
-            class="d-flex flex-grow-1 align-items-center flex-column"
-            @click="visible = !visible"
-          >
-            <span class="fw-bold fd-italic">Blacklist</span>
-          </div>
-        </div>
+      <div
+        class="d-flex flex-column align-items-center fw-bold fd-italic"
+        role="button"
+        @click="visible = !visible"
+      >
+        Blacklist
       </div>
     </template>
     <b-card-body :class="{ hidden: !visible }">
