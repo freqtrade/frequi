@@ -32,42 +32,7 @@
         </b-list-group>
       </b-col>
       <b-col>
-        <b-input-group class="mb-2">
-          <template #prepend>
-            <b-dropdown text="Configs">
-              <b-dropdown-item
-                v-for="config in pairlistStore.savedConfigs"
-                :key="config.name"
-                @click="pairlistStore.selectConfig(config)"
-                >{{ config.name }}</b-dropdown-item
-              >
-            </b-dropdown>
-            <b-button :disabled="!pairlistStore.config.name" @click="pairlistStore.saveConfig()"
-              ><i-mdi-content-save class="fs-4"
-            /></b-button>
-            <b-button
-              :disabled="pairlistStore.config.pairlists.length == 0"
-              @click="pairlistStore.newConfig()"
-              ><i-mdi-plus class="fs-4"
-            /></b-button>
-          </template>
-
-          <b-form-input v-model="pairlistStore.config.name" placeholder="Configuration name..." />
-
-          <template #append>
-            <b-button
-              :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
-              variant="primary"
-              size="lg"
-              squared
-              class="evaluate"
-              @click="evaluateClick"
-            >
-              <b-spinner v-if="pairlistStore.evaluating" small></b-spinner>
-              <span>{{ pairlistStore.evaluating ? 'Evaluating...' : 'Evaluate' }}</span>
-            </b-button>
-          </template>
-        </b-input-group>
+        <PairlistConfigActions />
         <PairlistConfigBlacklist />
         <b-alert
           :model-value="
@@ -104,6 +69,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
 import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
+import PairlistConfigActions from './PairlistConfigActions.vue';
 import { Pairlist } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
@@ -162,10 +128,6 @@ onMounted(async () => {
       : 1,
   );
 });
-
-async function evaluateClick() {
-  pairlistStore.startPairlistEvaluation();
-}
 </script>
 
 <style lang="scss" scoped>
