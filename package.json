@@ -16,7 +16,7 @@
     "cy:run-ct": "cypress run --component"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.7",
+    "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^5.1.2",
     "@vueuse/core": "^10.1.2",
     "@vueuse/integrations": "^10.1.2",
