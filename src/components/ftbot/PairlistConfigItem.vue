@@ -3,7 +3,12 @@
     <template #header>
       <div class="d-flex text-start align-items-center">
         <div class="d-flex flex-grow-1 align-items-center">
-          <i-mdi-reorder-horizontal role="button" class="handle me-2 fs-4" />
+          <i-mdi-reorder-horizontal
+            role="button"
+            class="handle me-2 fs-4 flex-shrink-0"
+            width="24"
+            height="24"
+          />
           <div
             role="button"
             class="d-flex flex-grow-1 align-items-start flex-column"
