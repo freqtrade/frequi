@@ -7,13 +7,27 @@
           <div
             role="button"
             class="d-flex flex-grow-1 align-items-start flex-column"
-            @click="visible = !visible"
+            @click="toggleVisible"
           >
             <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
             <span class="fw-lighter">{{ pairlist.description }}</span>
           </div>
         </div>
-        <b-button size="sm" @click="emit('remove', index)">
+        <i-mdi-chevron-down
+          v-if="!visible"
+          :class="hasParameters && !visible ? 'visible' : 'invisible'"
+          role="button"
+          class="fs-4"
+          @click="toggleVisible"
+        />
+        <i-mdi-chevron-up
+          v-if="visible"
+          :class="hasParameters && visible ? 'visible' : 'invisible'"
+          role="button"
+          class="fs-4"
+          @click="toggleVisible"
+        />
+        <b-button size="sm" class="ms-1" @click="emit('remove', index)">
           <i-mdi-close />
         </b-button>
       </div>
@@ -37,6 +51,7 @@
 import { Pairlist } from '@/types';
 import { ref } from 'vue';
 import PairlistConfigParameter from './PairlistConfigParameter.vue';
+import { computed } from 'vue';
 
 defineProps<{
   index: number;
@@ -47,6 +62,14 @@ const emit = defineEmits(['remove']);
 const visible = ref(false);
 
 const pairlist = defineModel<Pairlist>({ required: true });
+
+const hasParameters = computed(() => Object.keys(pairlist.value.params).length > 0);
+
+function toggleVisible() {
+  if (hasParameters.value) {
+    visible.value = !visible.value;
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>
