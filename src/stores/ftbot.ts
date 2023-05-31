@@ -35,6 +35,8 @@ import {
   TradeResponse,
   ClosedTrade,
   BotDescriptor,
+  BgTaskStarted,
+  BackgroundTaskStatus,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -549,9 +551,30 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async getPairlistEvalStatus() {
+      async evaluatePairlist(payload: PairlistsPayload) {
         try {
-          const { data } = await api.get<PairlistEvalResponse>('/pairlists/evaluate');
+          const { data } = await api.post<PairlistsPayload, AxiosResponse<BgTaskStarted>>(
+            '/pairlists/evaluate',
+            payload,
+          );
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getPairlistEvalResult(jobId: string) {
+        try {
+          const { data } = await api.get<PairlistEvalResponse>(`/pairlists/evaluate/${jobId}`);
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getBackgroundJobStatus(jobId: string) {
+        try {
+          const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
@@ -967,18 +990,6 @@ export function createBotSubStore(botId: string, botName: string) {
             },
           },
         );
-      },
-      async evaluatePairlist(payload: PairlistsPayload) {
-        try {
-          const { data } = await api.post<AxiosResponse<StatusResponse>>(
-            '/pairlists/evaluate',
-            payload,
-          );
-          return Promise.resolve(data);
-        } catch (error) {
-          console.error(error);
-          return Promise.reject(error);
-        }
       },
     },
   });

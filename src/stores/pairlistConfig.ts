@@ -95,18 +95,22 @@ export const usePairlistConfigStore = defineStore(
       const payload: PairlistsPayload = configToPayload();
 
       evaluating.value = true;
-      await botStore.activeBot.evaluatePairlist(payload);
+      const { job_id: jobId } = await botStore.activeBot.evaluatePairlist(payload);
+      console.log('jobId', jobId);
 
       intervalId.value = setInterval(async () => {
-        const res = await botStore.activeBot.getPairlistEvalStatus();
-        if (res.status === 'success' && res.result) {
+        const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
+        if (!res.running) {
           clearInterval(intervalId.value);
+          const wl = await botStore.activeBot.getPairlistEvalResult(jobId);
           evaluating.value = false;
-          whitelist.value = res.result.whitelist;
-        } else if (res.error) {
-          showAlert(res.error, 'danger');
-          clearInterval(intervalId.value);
-          evaluating.value = false;
+          if (wl.status === 'success') {
+            whitelist.value = wl.result.whitelist;
+          } else if (wl.error) {
+            showAlert(wl.error, 'danger');
+            clearInterval(intervalId.value);
+            evaluating.value = false;
+          }
         }
       }, 1000);
     }

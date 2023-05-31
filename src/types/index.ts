@@ -1,5 +1,6 @@
 export * from './auth';
 export * from './backtest';
+export * from './backgroundtasks';
 export * from './balance';
 export * from './blacklist';
 export * from './botComparison';

@@ -1,14 +1,12 @@
+import { BackgroundTaskResult } from './backgroundtasks';
+import { WhitelistResponse } from './blacklist';
+
 export interface PairlistsResponse {
   pairlists: Pairlist[];
 }
 
-export interface PairlistEvalResponse {
-  error?: string;
-  status: string;
-  result?: {
-    method: string[];
-    whitelist: string[];
-  };
+export interface PairlistEvalResponse extends BackgroundTaskResult {
+  result: WhitelistResponse;
 }
 
 export interface Pairlist {
