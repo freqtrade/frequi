@@ -23,21 +23,19 @@
         />
       </div>
     </template>
-    <b-card-body class="p-0">
-      <b-collapse v-model="visible">
-        <div class="p-3">
-          <b-input-group v-for="(item, i) in pairlistStore.blacklist" :key="i" class="mb-2">
-            <b-form-input v-model="pairlistStore.blacklist[i]" />
-            <b-input-group-append>
-              <b-button size="sm" @click="pairlistStore.removeFromBlacklist(i)"
-                ><i-mdi-close
-              /></b-button>
-            </b-input-group-append>
-          </b-input-group>
-          <b-button @click="pairlistStore.addToBlacklist()">Add</b-button>
-        </div>
-      </b-collapse>
-    </b-card-body>
+    <b-collapse v-model="visible">
+      <b-card-body>
+        <b-input-group v-for="(item, i) in pairlistStore.blacklist" :key="i" class="mb-2">
+          <b-form-input v-model="pairlistStore.blacklist[i]" />
+          <b-input-group-append>
+            <b-button size="sm" @click="pairlistStore.removeFromBlacklist(i)"
+              ><i-mdi-close
+            /></b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-button @click="pairlistStore.addToBlacklist()">Add</b-button>
+      </b-card-body>
+    </b-collapse>
   </b-card>
 </template>
 <script setup>
