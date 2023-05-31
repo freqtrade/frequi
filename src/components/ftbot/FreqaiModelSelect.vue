@@ -41,5 +41,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style></style>
