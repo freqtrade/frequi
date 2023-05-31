@@ -18,6 +18,13 @@
             <span class="fw-lighter">{{ pairlist.description }}</span>
           </div>
         </div>
+        <i-mdi-close
+          role="button"
+          width="24"
+          height="24"
+          class="mx-2"
+          @click="pairlistStore.removeFromConfig(index)"
+        />
         <i-mdi-chevron-down
           v-if="!visible"
           :class="hasParameters && !visible ? 'visible' : 'invisible'"
@@ -32,23 +39,18 @@
           class="fs-4"
           @click="toggleVisible"
         />
-        <b-button size="sm" class="ms-1" @click="emit('remove', index)">
-          <i-mdi-close />
-        </b-button>
       </div>
     </template>
-    <b-card-body class="p-0">
-      <b-collapse v-model="visible">
-        <div class="p-3">
-          <PairlistConfigParameter
-            v-for="(parameter, key) in pairlist.params"
-            :key="key"
-            v-model="pairlist.params[key].value"
-            :param="parameter"
-          />
-        </div>
-      </b-collapse>
-    </b-card-body>
+    <b-collapse v-model="visible">
+      <b-card-body>
+        <PairlistConfigParameter
+          v-for="(parameter, key) in pairlist.params"
+          :key="key"
+          v-model="pairlist.params[key].value"
+          :param="parameter"
+        />
+      </b-card-body>
+    </b-collapse>
   </b-card>
 </template>
 
@@ -57,12 +59,13 @@ import { Pairlist } from '@/types';
 import { ref } from 'vue';
 import PairlistConfigParameter from './PairlistConfigParameter.vue';
 import { computed } from 'vue';
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+
+const pairlistStore = usePairlistConfigStore();
 
 defineProps<{
   index: number;
 }>();
-
-const emit = defineEmits(['remove']);
 
 const visible = ref(false);
 
