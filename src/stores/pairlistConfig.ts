@@ -108,7 +108,6 @@ export const usePairlistConfigStore = defineStore(
             whitelist.value = wl.result.whitelist;
           } else if (wl.error) {
             showAlert(wl.error, 'danger');
-            clearInterval(intervalId.value);
             evaluating.value = false;
           }
         }
