@@ -18,14 +18,16 @@
         </b-button>
       </div>
     </template>
-    <b-card-body :class="{ hidden: !visible }">
+    <b-card-body class="p-0">
       <b-collapse v-model="visible">
-        <PairlistConfigParameter
-          v-for="(parameter, key) in pairlist.params"
-          :key="key"
-          v-model="pairlist.params[key].value"
-          :param="parameter"
-        />
+        <div class="p-3">
+          <PairlistConfigParameter
+            v-for="(parameter, key) in pairlist.params"
+            :key="key"
+            v-model="pairlist.params[key].value"
+            :param="parameter"
+          />
+        </div>
       </b-collapse>
     </b-card-body>
   </b-card>
@@ -47,14 +49,4 @@ const visible = ref(false);
 const pairlist = defineModel<Pairlist>({ required: true });
 </script>
 
-<style lang="scss" scoped>
-.hidden {
-  padding: 0;
-}
-
-:deep(.collapsing) {
-  -webkit-transition: none;
-  transition: none;
-  display: none;
-}
-</style>
+<style lang="scss" scoped></style>
