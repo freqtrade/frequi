@@ -24,7 +24,7 @@
         </b-button>
       </b-list-group-item>
     </b-list-group>
-    <div class="flex-fill">
+    <div class="d-flex flex-column flex-fill">
       <PairlistConfigActions />
       <PairlistConfigBlacklist />
       <b-alert
@@ -36,7 +36,7 @@
         First entry in the pairlist must be a Generating pairlist, like StaticPairList or
         VolumePairList.
       </b-alert>
-      <div ref="pairlistConfigsEl" class="h-100">
+      <div ref="pairlistConfigsEl" class="flex-grow-1">
         <PairlistConfigItem
           v-for="(pairlist, i) in pairlistsComp"
           :key="pairlist.id"
