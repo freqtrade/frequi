@@ -10,8 +10,8 @@
         class="pairlist d-flex text-start align-items-center py-2 px-3"
       >
         <div class="d-flex flex-grow-1 align-items-start flex-column">
-          <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
-          <span class="fw-lighter">{{ pairlist.description }}</span>
+          <span class="fw-bold">{{ pairlist.name }}</span>
+          <span class="text-small">{{ pairlist.description }}</span>
         </div>
         <b-button
           class="p-0"

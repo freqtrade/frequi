@@ -14,8 +14,8 @@
             class="d-flex flex-grow-1 align-items-start flex-column"
             @click="toggleVisible"
           >
-            <span class="fw-bold fd-italic">{{ pairlist.name }}</span>
-            <span class="fw-lighter">{{ pairlist.description }}</span>
+            <span class="fw-bold">{{ pairlist.name }}</span>
+            <span class="text-small">{{ pairlist.description }}</span>
           </div>
         </div>
         <i-mdi-close
