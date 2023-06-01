@@ -14,7 +14,7 @@
           <span class="text-small">{{ pairlist.description }}</span>
         </div>
         <b-button
-          class="p-0"
+          class="p-0 add-pairlist"
           style="border: none"
           variant="outline-light"
           :disabled="pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator"
@@ -148,8 +148,16 @@ onMounted(async () => {
   }
 }
 
+[data-theme='light'] .add-pairlist {
+  color: black;
+}
+
 .empty {
   border: 3px dashed rgba(255, 255, 255, 0.65);
+
+  [data-theme='light'] & {
+    border: 3px dashed rgba(0, 0, 0, 0.5);
+  }
 
   &:after {
     content: 'Drag pairlist here';
