@@ -7,7 +7,7 @@
           v-for="(pair, i) in whitelist"
           :key="pair.pair"
           button
-          class="d-flex justify-content-between align-items-center py-1"
+          class="d-flex py-2"
           :active="pair.pair === botStore.activeBot.selectedPair"
           :title="pair.pair"
           @click="botStore.activeBot.selectedPair = pair.pair"
