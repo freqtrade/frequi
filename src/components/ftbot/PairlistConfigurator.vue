@@ -36,7 +36,11 @@
         First entry in the pairlist must be a Generating pairlist, like StaticPairList or
         VolumePairList.
       </b-alert>
-      <div ref="pairlistConfigsEl" class="flex-grow-1">
+      <div
+        ref="pairlistConfigsEl"
+        class="d-flex flex-column flex-grow-1 position-relative"
+        :class="{ empty: configEmpty }"
+      >
         <PairlistConfigItem
           v-for="(pairlist, i) in pairlistsComp"
           :key="pairlist.id"
@@ -84,6 +88,10 @@ const pairlistsComp = computed(() =>
   }),
 );
 
+const configEmpty = computed(() => {
+  return pairlistStore.config.pairlists.length == 0;
+});
+
 useSortable(availablePairlistsEl, availablePairlists.value, {
   group: {
     name: 'configurator',
@@ -92,6 +100,7 @@ useSortable(availablePairlistsEl, availablePairlists.value, {
   },
   sort: false,
   filter: '.no-drag',
+  dragClass: 'dragging',
 });
 
 useSortable(pairlistConfigsEl, pairlistStore.config.pairlists, {
@@ -124,22 +133,32 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .pairlist {
-  border: 1px solid white;
+  &:hover {
+    cursor: grab;
+  }
+  &.no-drag {
+    color: gray;
+  }
+  &.no-drag:hover {
+    cursor: default;
+  }
+  &.dragging {
+    border: 1px solid white;
+    border-radius: 0;
+  }
 }
 
-.pairlist.no-drag {
-  color: gray;
-}
+.empty {
+  border: 3px dashed rgba(255, 255, 255, 0.65);
 
-.pairlist.no-drag:hover {
-  cursor: default;
-}
-
-.pairlist:hover {
-  cursor: grab;
-}
-
-[data-theme='light'] .pairlist {
-  border-color: black;
+  &:after {
+    content: 'Drag pairlist here';
+    position: absolute;
+    align-self: center;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    line-height: 0;
+    top: 50%;
+  }
 }
 </style>
