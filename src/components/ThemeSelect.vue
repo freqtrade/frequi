@@ -1,5 +1,5 @@
 <template>
-  <b-link variant="primary" class="nav-link" @click="toggleNight">
+  <b-link class="nav-link" @click="toggleNight">
     <i-mdi-brightness-6 />
   </b-link>
 </template>
@@ -11,7 +11,7 @@ import { onMounted, ref } from 'vue';
 const activeTheme = ref('');
 const settingsStore = useSettingsStore();
 
-const setTheme = (themeName) => {
+const setTheme = (themeName: string) => {
   // If theme is already active, do nothing.
   if (activeTheme.value === themeName) {
     return;
