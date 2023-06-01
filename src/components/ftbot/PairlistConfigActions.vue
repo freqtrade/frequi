@@ -26,14 +26,14 @@
         @click="pairlistStore.saveConfig(configName)"
         ><i-mdi-content-save width="24" height="24"
       /></b-button>
-      <b-button
-        title="Clone config"
-        variant="dark"
-        :disabled="!pairlistStore.config.name || !pairlistStore.isSavedConfig"
-        @click="pairlistStore.cloneConfig()"
-        ><i-mdi-content-copy width="24" height="24"
-      /></b-button>
     </b-button-group>
+    <b-button
+      title="Clone config"
+      variant="dark"
+      :disabled="!pairlistStore.config.name || !pairlistStore.isSavedConfig"
+      @click="pairlistStore.cloneConfig()"
+      ><i-mdi-content-copy width="24" height="24"
+    /></b-button>
     <b-button
       title="New config"
       variant="dark"
