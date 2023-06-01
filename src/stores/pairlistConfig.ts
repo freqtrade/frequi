@@ -57,14 +57,22 @@ export const usePairlistConfigStore = defineStore(
       config.value.pairlists.splice(index, 1);
     }
 
-    function saveConfig() {
+    function saveConfig(name: string) {
       const i = savedConfigs.value.findIndex((c) => c.name === config.value.name);
+      config.value.name = name;
 
       if (i > -1) {
         savedConfigs.value[i] = config.value;
       } else {
         savedConfigs.value.push(config.value);
       }
+    }
+
+    function cloneConfig() {
+      config.value = {
+        name: '',
+        pairlists: structuredClone(toRaw(config.value.pairlists)),
+      };
     }
 
     function deleteConfig() {
@@ -162,6 +170,7 @@ export const usePairlistConfigStore = defineStore(
       addToConfig,
       removeFromConfig,
       saveConfig,
+      cloneConfig,
       deleteConfig,
       selectConfig,
       newConfig,
