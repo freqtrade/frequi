@@ -1,5 +1,6 @@
 import { BackgroundTaskResult } from './backgroundtasks';
 import { WhitelistResponse } from './blacklist';
+import { TradingMode } from './types';
 
 export interface PairlistsResponse {
   pairlists: Pairlist[];
@@ -47,4 +48,6 @@ export interface PairlistsPayload {
   pairlists: PairlistPayloadItem[];
   blacklist: string[];
   stake_currency: string;
+  exchange?: string;
+  trading_mode?: TradingMode;
 }

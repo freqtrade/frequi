@@ -18,6 +18,7 @@ export const usePairlistConfigStore = defineStore(
 
     const evaluating = ref<boolean>(false);
     const intervalId = ref<number>();
+    const stakeCurrency = ref<string>(botStore.activeBot?.stakeCurrency ?? 'USDT');
     const whitelist = ref<string[]>([]);
     const blacklist = ref<string[]>([]);
     const config = ref<PairlistConfig>({ name: '', pairlists: [] });
@@ -132,11 +133,11 @@ export const usePairlistConfigStore = defineStore(
       }
     }
 
-    function configToPayload() {
+    function configToPayload(): PairlistsPayload {
       const pairlists: PairlistPayloadItem[] = configToPayloadItems();
       return {
         pairlists: pairlists,
-        stake_currency: botStore.activeBot.stakeCurrency,
+        stake_currency: stakeCurrency.value,
         blacklist: blacklist.value,
       };
     }
@@ -179,6 +180,7 @@ export const usePairlistConfigStore = defineStore(
       isSavedConfig,
       firstPairlistIsGenerator,
       pairlistValid,
+      stakeCurrency,
     };
   },
   {
