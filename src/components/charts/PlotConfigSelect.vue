@@ -3,10 +3,12 @@
     v-model="plotStore.plotConfigName"
     :allow-edit="allowEdit"
     :allow-add="allowEdit"
+    :allow-duplicate="allowEdit"
     editable-name="plot configuration"
     @rename="plotStore.renamePlotConfig"
     @delete="plotStore.deletePlotConfig"
     @new="plotStore.newPlotConfig"
+    @duplicate="plotStore.duplicatePlotConfig"
   >
     <b-form-select
       v-model="plotStore.plotConfigName"

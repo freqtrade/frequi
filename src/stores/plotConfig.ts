@@ -72,6 +72,11 @@ export const usePlotConfigStore = defineStore('plotConfig', {
         this.editablePlotConfig = deepClone(this.customPlotConfigs[this.plotConfigName]);
       }
     },
+    duplicatePlotConfig(oldName: string, newName: string) {
+      console.log(oldName, newName);
+      this.customPlotConfigs[newName] = deepClone(this.customPlotConfigs[oldName]);
+      this.plotConfigChanged(newName);
+    },
   },
   persist: {
     key: FT_PLOT_CONFIG_KEY,
