@@ -25,6 +25,7 @@
       </b-list-group-item>
     </b-list-group>
     <div class="d-flex flex-column flex-fill">
+      <exchange-select v-model="selectedExchange" />
       <PairlistConfigActions />
       <PairlistConfigBlacklist />
       <b-alert
@@ -66,12 +67,16 @@ import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
 import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
 import PairlistConfigActions from './PairlistConfigActions.vue';
-import { Pairlist } from '@/types';
+import { ExchangeSelection, Pairlist } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
+import ExchangeSelect from './ExchangeSelect.vue';
 
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();
+const selectedExchange = ref<ExchangeSelection>({
+  exchange: '',
+});
 
 const availablePairlists = ref<Pairlist[]>([]);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);

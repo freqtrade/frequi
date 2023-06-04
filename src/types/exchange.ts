@@ -16,3 +16,8 @@ export interface Exchange {
 export interface ExchangeListResult {
   exchanges: Exchange[];
 }
+
+export interface ExchangeSelection {
+  exchange: string;
+  trade_mode?: TradeMode;
+}
