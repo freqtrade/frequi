@@ -81,7 +81,7 @@ export enum TradingMode {
 }
 
 export enum MarginMode {
-  NONE = 'none',
+  NONE = '',
   ISOLATED = 'isolated',
   // CROSS = 'cross',
 }

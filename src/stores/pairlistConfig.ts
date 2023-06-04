@@ -26,10 +26,13 @@ export const usePairlistConfigStore = defineStore(
     const blacklist = ref<string[]>([]);
     const customExchange = ref<boolean>(false);
     const selectedExchange = ref<ExchangeSelection>({
-      exchange: '',
+      exchange: botStore.activeBot?.botState.exchange ?? '',
       trade_mode: {
-        trading_mode: TradingMode.SPOT,
-        margin_mode: MarginMode.NONE,
+        trading_mode: botStore.activeBot?.botState.trading_mode ?? TradingMode.SPOT,
+        margin_mode:
+          botStore.activeBot?.botState.trading_mode === TradingMode.FUTURES
+            ? MarginMode.ISOLATED
+            : MarginMode.NONE,
       },
     });
 

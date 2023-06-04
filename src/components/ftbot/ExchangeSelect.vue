@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { ExchangeSelection } from '@/types';
 
 const exchangeModel = defineModel({
@@ -44,19 +44,32 @@ const exchangeList = computed(() => {
     .map((e) => e.name);
 });
 
-const tradeModes = computed<Record<string, unknown>[]>(() => {
-  const val = botStore.activeBot.exchangeList
-    .find((ex) => ex.name === exchangeModel.value.exchange)
-    ?.trade_modes.map((tm) => {
-      return (
-        {
-          text: `${tm.margin_mode} ${tm.trading_mode}`,
-          value: tm,
-        } ?? []
-      );
-    });
-  return (val ?? []) as Record<string, unknown>[];
+const tradeModesTyped = computed(() => {
+  const val = botStore.activeBot.exchangeList.find(
+    (ex) => ex.name === exchangeModel.value.exchange,
+  )?.trade_modes;
+  return val ?? [];
 });
+
+const tradeModes = computed<Record<string, unknown>[]>(() => {
+  return tradeModesTyped.value.map((tm) => {
+    return (
+      {
+        text: `${tm.margin_mode} ${tm.trading_mode}`,
+        value: tm,
+      } ?? []
+    );
+  }) as Record<string, unknown>[];
+});
+
+watch(
+  () => exchangeModel.value.exchange,
+  () => {
+    if (tradeModesTyped.value.length < 2) {
+      exchangeModel.value.trade_mode = tradeModesTyped.value[0];
+    }
+  },
+);
 
 onMounted(() => {
   if (botStore.activeBot.exchangeList.length === 0) {
