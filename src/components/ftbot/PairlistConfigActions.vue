@@ -53,7 +53,7 @@
     </b-button>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import { ref, watch } from 'vue';
 const pairlistStore = usePairlistConfigStore();

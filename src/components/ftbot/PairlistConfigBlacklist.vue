@@ -38,7 +38,7 @@
     </b-collapse>
   </b-card>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 const pairlistStore = usePairlistConfigStore();
