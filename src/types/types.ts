@@ -80,6 +80,12 @@ export enum TradingMode {
   FUTURES = 'futures',
 }
 
+export enum MarginMode {
+  NONE = 'none',
+  ISOLATED = 'isolated',
+  // CROSS = 'cross',
+}
+
 export interface UnfilledTimeout {
   /** @deprecated replaced by entry in 2.x */
   buy?: number;

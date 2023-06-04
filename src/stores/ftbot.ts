@@ -37,6 +37,12 @@ import {
   BotDescriptor,
   BgTaskStarted,
   BackgroundTaskStatus,
+  Exchange,
+  ExchangeListResult,
+  FreqAIModelListResult,
+  PairlistEvalResponse,
+  PairlistsPayload,
+  PairlistsResponse,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -44,12 +50,6 @@ import { showAlert } from './alerts';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 import { showNotification } from '@/shared/notifications';
-import {
-  FreqAIModelListResult,
-  PairlistEvalResponse,
-  PairlistsPayload,
-  PairlistsResponse,
-} from '../types';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
@@ -91,6 +91,7 @@ export function createBotSubStore(botId: string, botName: string) {
         strategyPlotConfig: undefined as PlotConfig | undefined,
         strategyList: [] as string[],
         freqaiModelList: [] as string[],
+        exchangeList: [] as Exchange[],
         strategy: {} as StrategyResult,
         pairlist: [] as string[],
         currentLocks: undefined as LockResponse | undefined,
@@ -443,6 +444,16 @@ export function createBotSubStore(botId: string, botName: string) {
           const { data } = await api.get<FreqAIModelListResult>('/freqaimodels');
           this.freqaiModelList = data.freqaimodels;
           return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getExchangeList() {
+        try {
+          const { data } = await api.get<ExchangeListResult>('/exchanges');
+          this.exchangeList = data.exchanges;
+          return Promise.resolve(data.exchanges);
         } catch (error) {
           console.error(error);
           return Promise.reject(error);

@@ -41,7 +41,7 @@
     font-size: 0.8rem;
 }
 
-[data-theme="dark"] {
+[data-bs-theme="dark"] {
     $bg-dark: rgb(18, 18, 18);
 
     $bg-darker: darken($bg-dark, 5%);
@@ -235,11 +235,14 @@
     background-color: unset !important;
 }
 
-html.ft-theme-transition,
-html.ft-theme-transition *,
-html.ft-theme-transition *:before,
-html.ft-theme-transition *:after {
-    transition: background 750ms ease-in-out,
-        border-color 750ms ease-in-out;
+body.ft-theme-transition,
+body.ft-theme-transition *,
+body.ft-theme-transition *:before,
+body.ft-theme-transition *:after {
+    transition:
+        background 750ms ease-in-out,
+        border-color 750ms ease-in-out,
+        background-color 750ms ease-in-out,
+        ;
     transition-delay: 0 !important;
 }
