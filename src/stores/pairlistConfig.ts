@@ -2,11 +2,14 @@ import { defineStore } from 'pinia';
 import { useBotStore } from './ftbotwrapper';
 
 import {
+  ExchangeSelection,
+  MarginMode,
   Pairlist,
   PairlistConfig,
   PairlistParamType,
   PairlistPayloadItem,
   PairlistsPayload,
+  TradingMode,
 } from '@/types';
 import { computed, ref, toRaw } from 'vue';
 import { showAlert } from './alerts';
@@ -21,6 +24,15 @@ export const usePairlistConfigStore = defineStore(
     const stakeCurrency = ref<string>(botStore.activeBot?.stakeCurrency ?? 'USDT');
     const whitelist = ref<string[]>([]);
     const blacklist = ref<string[]>([]);
+    const customExchange = ref<boolean>(false);
+    const selectedExchange = ref<ExchangeSelection>({
+      exchange: '',
+      trade_mode: {
+        trading_mode: TradingMode.SPOT,
+        margin_mode: MarginMode.NONE,
+      },
+    });
+
     const config = ref<PairlistConfig>({ name: '', pairlists: [] });
     const savedConfigs = ref<PairlistConfig[]>([]);
 
@@ -104,23 +116,28 @@ export const usePairlistConfigStore = defineStore(
       const payload: PairlistsPayload = configToPayload();
 
       evaluating.value = true;
-      const { job_id: jobId } = await botStore.activeBot.evaluatePairlist(payload);
-      console.log('jobId', jobId);
+      try {
+        const { job_id: jobId } = await botStore.activeBot.evaluatePairlist(payload);
+        console.log('jobId', jobId);
 
-      intervalId.value = setInterval(async () => {
-        const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
-        if (!res.running) {
-          clearInterval(intervalId.value);
-          const wl = await botStore.activeBot.getPairlistEvalResult(jobId);
-          evaluating.value = false;
-          if (wl.status === 'success') {
-            whitelist.value = wl.result.whitelist;
-          } else if (wl.error) {
-            showAlert(wl.error, 'danger');
+        intervalId.value = setInterval(async () => {
+          const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
+          if (!res.running) {
+            clearInterval(intervalId.value);
+            const wl = await botStore.activeBot.getPairlistEvalResult(jobId);
             evaluating.value = false;
+            if (wl.status === 'success') {
+              whitelist.value = wl.result.whitelist;
+            } else if (wl.error) {
+              showAlert(wl.error, 'danger');
+              evaluating.value = false;
+            }
           }
-        }
-      }, 1000);
+        }, 1000);
+      } catch (error) {
+        showAlert('Evaluation failed', 'danger');
+        evaluating.value = false;
+      }
     }
 
     function convertToParamType(type: PairlistParamType, value: string) {
@@ -135,11 +152,19 @@ export const usePairlistConfigStore = defineStore(
 
     function configToPayload(): PairlistsPayload {
       const pairlists: PairlistPayloadItem[] = configToPayloadItems();
-      return {
+      const config: PairlistsPayload = {
         pairlists: pairlists,
         stake_currency: stakeCurrency.value,
         blacklist: blacklist.value,
       };
+      console.log('asdf');
+      if (customExchange.value) {
+        console.log('setting custom exchange props');
+        config.exchange = selectedExchange.value.exchange;
+        config.trading_mode = selectedExchange.value.trade_mode.trading_mode;
+        config.margin_mode = selectedExchange.value.trade_mode.margin_mode;
+      }
+      return config;
     }
 
     function configToPayloadItems() {
@@ -181,6 +206,8 @@ export const usePairlistConfigStore = defineStore(
       firstPairlistIsGenerator,
       pairlistValid,
       stakeCurrency,
+      customExchange,
+      selectedExchange,
     };
   },
   {

@@ -1,6 +1,6 @@
 import { BackgroundTaskResult } from './backgroundtasks';
 import { WhitelistResponse } from './blacklist';
-import { TradingMode } from './types';
+import { MarginMode, TradingMode } from './types';
 
 export interface PairlistsResponse {
   pairlists: Pairlist[];
@@ -50,4 +50,5 @@ export interface PairlistsPayload {
   stake_currency: string;
   exchange?: string;
   trading_mode?: TradingMode;
+  margin_mode?: MarginMode;
 }

@@ -19,5 +19,5 @@ export interface ExchangeListResult {
 
 export interface ExchangeSelection {
   exchange: string;
-  trade_mode?: TradeMode;
+  trade_mode: Partial<TradeMode>;
 }
