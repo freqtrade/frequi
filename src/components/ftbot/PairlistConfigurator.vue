@@ -157,14 +157,14 @@ onMounted(async () => {
   }
 }
 
-[data-theme='light'] .add-pairlist {
+[data-bs-theme='light'] .add-pairlist {
   color: black;
 }
 
 .empty {
   border: 3px dashed rgba(255, 255, 255, 0.65);
 
-  [data-theme='light'] & {
+  [data-bs-theme='light'] & {
     border: 3px dashed rgba(0, 0, 0, 0.5);
   }
 
