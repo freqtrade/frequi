@@ -73,9 +73,9 @@ export const usePairlistConfigStore = defineStore(
       config.value.pairlists.splice(index, 1);
     }
 
-    function saveConfig(name: string) {
+    function renameOrSaveConfig(oldName: string, newName: string) {
       const i = savedConfigs.value.findIndex((c) => c.name === config.value.name);
-      config.value.name = name;
+      config.value.name = newName;
 
       if (i > -1) {
         savedConfigs.value[i] = config.value;
@@ -84,11 +84,19 @@ export const usePairlistConfigStore = defineStore(
       }
     }
 
-    function cloneConfig() {
-      config.value = {
-        name: '',
+    function newConfig(name: string) {
+      const c = { name: name, pairlists: [] };
+      savedConfigs.value.push(c);
+      config.value = c;
+    }
+
+    function duplicateConfig(oldName: string, newName: string) {
+      const c = {
+        name: newName,
         pairlists: structuredClone(toRaw(config.value.pairlists)),
       };
+      savedConfigs.value.push(c);
+      config.value = c;
     }
 
     function deleteConfig() {
@@ -97,14 +105,6 @@ export const usePairlistConfigStore = defineStore(
         savedConfigs.value.splice(i, 1);
         config.value = { name: '', pairlists: [] };
       }
-    }
-
-    function newConfig() {
-      config.value = { name: '', pairlists: [] };
-    }
-
-    function selectConfig(selected: PairlistConfig) {
-      config.value = structuredClone(toRaw(selected));
     }
 
     function addToBlacklist() {
@@ -198,10 +198,9 @@ export const usePairlistConfigStore = defineStore(
       startPairlistEvaluation,
       addToConfig,
       removeFromConfig,
-      saveConfig,
-      cloneConfig,
+      renameOrSaveConfig,
+      duplicateConfig,
       deleteConfig,
-      selectConfig,
       newConfig,
       addToBlacklist,
       removeFromBlacklist,
