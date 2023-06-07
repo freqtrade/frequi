@@ -29,19 +29,18 @@ const exchangeModel = defineModel({
 const botStore = useBotStore();
 
 const exchangeList = computed(() => {
-  return botStore.activeBot.exchangeList
-    .filter((ex) => ex.valid === true)
-    .sort((a, b) => {
-      // Sort by supported (alphabetically), then by name (alphabetically).
-      if (a.supported && !b.supported) {
-        return -1;
-      } else if (!a.supported && b.supported) {
-        return 1;
-      } else {
-        return a.name.localeCompare(b.name);
-      }
-    })
-    .map((e) => e.name);
+  const supported = botStore.activeBot.exchangeList
+    .filter((ex) => ex.valid && ex.supported)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const unsupported = botStore.activeBot.exchangeList
+    .filter((ex) => ex.valid && !ex.supported)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return [
+    { label: 'Supported', options: supported.map((e) => e.name) },
+    { label: 'Unsupported', options: unsupported.map((e) => e.name) },
+  ];
 });
 
 const tradeModesTyped = computed(() => {
