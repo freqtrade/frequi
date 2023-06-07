@@ -30,7 +30,7 @@
       title="Evaluate pairlist"
       :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
       variant="primary"
-      class="col-lg-2"
+      class="px-5"
       size="sm"
       @click="pairlistStore.startPairlistEvaluation()"
     >
