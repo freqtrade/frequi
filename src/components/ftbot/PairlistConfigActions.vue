@@ -1,5 +1,12 @@
 <template>
   <div class="d-flex mb-2 gap-2">
+    <b-button
+      title="Save configuration"
+      size="sm"
+      @click="pairlistStore.saveConfig(pairlistStore.config.name)"
+    >
+      <i-mdi-content-save />
+    </b-button>
     <edit-value
       v-model="pairlistStore.config.name"
       editable-name="config"
@@ -8,18 +15,15 @@
       :allow-edit="true"
       class="d-flex flex-grow-1"
       @delete="pairlistStore.deleteConfig"
-      @duplicate="(oldName:string,newName:string) => pairlistStore.duplicateConfig(oldName, newName)"
+      @duplicate="(oldName:string,newName:string) => pairlistStore.duplicateConfig(newName)"
       @new="(name:string) => pairlistStore.newConfig(name)"
-      @rename="(oldName: string, newName:string) => pairlistStore.renameOrSaveConfig(oldName,newName)"
+      @rename="(oldName: string, newName:string) => pairlistStore.saveConfig(newName)"
     >
       <b-form-select
-        v-model="pairlistStore.config"
+        v-model="pairlistStore.configName"
         size="sm"
-        :options="
-          pairlistStore.savedConfigs.map((c) => {
-            return { text: c.name, value: c };
-          })
-        "
+        :options="pairlistStore.savedConfigs.map((c) => c.name)"
+        @change="(config) => pairlistStore.selectOrCreateConfig(config)"
       />
     </edit-value>
     <b-button

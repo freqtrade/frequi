@@ -137,6 +137,9 @@ onMounted(async () => {
       ? -1
       : 1,
   );
+  pairlistStore.selectOrCreateConfig(
+    pairlistStore.savedConfigs.length > 0 ? pairlistStore.savedConfigs[0].name : 'default',
+  );
 });
 </script>
 

@@ -11,7 +11,7 @@ import {
   PairlistsPayload,
   TradingMode,
 } from '@/types';
-import { computed, ref, toRaw } from 'vue';
+import { computed, ref, toRaw, watch } from 'vue';
 import { showAlert } from './alerts';
 
 export const usePairlistConfigStore = defineStore(
@@ -38,6 +38,7 @@ export const usePairlistConfigStore = defineStore(
 
     const config = ref<PairlistConfig>({ name: '', pairlists: [] });
     const savedConfigs = ref<PairlistConfig[]>([]);
+    const configName = ref<string>('');
 
     const firstPairlistIsGenerator = computed<boolean>(() => {
       // First pairlist must be a generator
@@ -73,37 +74,48 @@ export const usePairlistConfigStore = defineStore(
       config.value.pairlists.splice(index, 1);
     }
 
-    function renameOrSaveConfig(oldName: string, newName: string) {
+    function saveConfig(name = '') {
       const i = savedConfigs.value.findIndex((c) => c.name === config.value.name);
-      config.value.name = newName;
+      config.value.name = name;
 
       if (i > -1) {
-        savedConfigs.value[i] = config.value;
+        savedConfigs.value[i] = structuredClone(toRaw(config.value));
       } else {
-        savedConfigs.value.push(config.value);
+        savedConfigs.value.push(structuredClone(toRaw(config.value)));
       }
     }
 
     function newConfig(name: string) {
       const c = { name: name, pairlists: [] };
       savedConfigs.value.push(c);
-      config.value = c;
+      config.value = structuredClone(c);
     }
 
-    function duplicateConfig(oldName: string, newName: string) {
+    function duplicateConfig(name = '') {
       const c = {
-        name: newName,
-        pairlists: structuredClone(toRaw(config.value.pairlists)),
+        name: name,
+        pairlists: toRaw(config.value.pairlists),
       };
       savedConfigs.value.push(c);
-      config.value = c;
+      config.value = structuredClone(c);
     }
 
     function deleteConfig() {
       const i = savedConfigs.value.findIndex((c) => c.name === config.value.name);
       if (i > -1) {
         savedConfigs.value.splice(i, 1);
-        config.value = { name: '', pairlists: [] };
+        selectOrCreateConfig(
+          savedConfigs.value.length > 0 ? savedConfigs.value[0].name : 'default',
+        );
+      }
+    }
+
+    function selectOrCreateConfig(name: string) {
+      const c = savedConfigs.value.find((c) => name === c.name);
+      if (c) {
+        config.value = structuredClone(toRaw(c));
+      } else {
+        newConfig(name);
       }
     }
 
@@ -188,6 +200,16 @@ export const usePairlistConfigStore = defineStore(
       return pairlists;
     }
 
+    watch(
+      () => config.value,
+      () => {
+        configName.value = config.value.name;
+      },
+      {
+        deep: true,
+      },
+    );
+
     return {
       evaluating,
       whitelist,
@@ -195,13 +217,15 @@ export const usePairlistConfigStore = defineStore(
       configJSON,
       savedConfigs,
       blacklist,
+      configName,
       startPairlistEvaluation,
       addToConfig,
       removeFromConfig,
-      renameOrSaveConfig,
+      saveConfig,
       duplicateConfig,
       deleteConfig,
       newConfig,
+      selectOrCreateConfig,
       addToBlacklist,
       removeFromBlacklist,
       isSavedConfig,
@@ -214,7 +238,7 @@ export const usePairlistConfigStore = defineStore(
   },
   {
     persist: {
-      key: 'pairlist-configs',
+      key: 'ftPairlistConfig',
       paths: ['savedConfigs', 'blacklist'],
     },
   },
