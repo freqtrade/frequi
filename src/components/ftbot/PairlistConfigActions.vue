@@ -3,6 +3,7 @@
     <b-button
       title="Save configuration"
       size="sm"
+      variant="primary"
       @click="pairlistStore.saveConfig(pairlistStore.config.name)"
     >
       <i-mdi-content-save />
