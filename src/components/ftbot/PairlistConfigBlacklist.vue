@@ -32,7 +32,12 @@
             ><i-mdi-content-copy
           /></b-button>
         </div>
-        <b-input-group v-for="(item, i) in pairlistStore.config.blacklist" :key="i" class="mb-2">
+        <b-input-group
+          v-for="(item, i) in pairlistStore.config.blacklist"
+          :key="i"
+          class="mb-2"
+          size="sm"
+        >
           <b-form-input v-model="pairlistStore.config.blacklist[i]" />
           <b-input-group-append>
             <b-button size="sm" @click="pairlistStore.removeFromBlacklist(i)"
@@ -40,7 +45,7 @@
             /></b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-button @click="pairlistStore.addToBlacklist()">Add</b-button>
+        <b-button size="sm" @click="pairlistStore.addToBlacklist()">Add</b-button>
       </b-card-body>
     </b-collapse>
   </b-card>

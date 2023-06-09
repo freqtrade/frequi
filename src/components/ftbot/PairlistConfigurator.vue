@@ -26,14 +26,21 @@
     </b-list-group>
     <div class="d-flex flex-column flex-fill">
       <PairlistConfigActions />
-      <b-form-checkbox v-model="pairlistStore.customExchange" class="mb-2"
-        >Custom Exchange</b-form-checkbox
-      >
-      <exchange-select
-        v-if="pairlistStore.customExchange"
-        v-model="pairlistStore.selectedExchange"
-        class="mb-2"
-      />
+
+      <div class="d-flex align-items-center gap-2 my-2">
+        <span class="col-auto">Stake currency: </span>
+        <b-form-input v-model="pairlistStore.stakeCurrency" size="sm" />
+      </div>
+
+      <div class="mb-2">
+        <b-form-checkbox v-model="pairlistStore.customExchange" class="mb-2"
+          >Custom Exchange</b-form-checkbox
+        >
+        <exchange-select
+          v-if="pairlistStore.customExchange"
+          v-model="pairlistStore.selectedExchange"
+        />
+      </div>
       <PairlistConfigBlacklist />
       <b-alert
         :model-value="
