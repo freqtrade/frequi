@@ -27,11 +27,7 @@
       <b-card-body>
         <div class="d-flex mb-4 align-items-center gap-2">
           <span class="col-auto">Copy from:</span
-          ><b-form-select
-            v-model="copyFromConfig"
-            size="sm"
-            :options="pairlistStore.savedConfigs.map((c) => c.name)"
-          />
+          ><b-form-select v-model="copyFromConfig" size="sm" :options="configNames" />
           <b-button title="Copy" size="sm" @click="pairlistStore.duplicateBlacklist(copyFromConfig)"
             ><i-mdi-content-copy
           /></b-button>
@@ -50,10 +46,14 @@
   </b-card>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 const pairlistStore = usePairlistConfigStore();
-const copyFromConfig = ref(pairlistStore.config.name);
+const copyFromConfig = ref('');
 const visible = ref(false);
+
+const configNames = computed(() =>
+  pairlistStore.savedConfigs.filter((c) => c.name !== pairlistStore.config.name).map((c) => c.name),
+);
 </script>
 <style lang="scss" scoped></style>
