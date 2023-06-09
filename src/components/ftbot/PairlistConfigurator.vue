@@ -154,7 +154,7 @@ onMounted(async () => {
       : 1,
   );
   pairlistStore.selectOrCreateConfig(
-    pairlistStore.savedConfigs.length > 0 ? pairlistStore.savedConfigs[0].name : 'default',
+    pairlistStore.isSavedConfig(pairlistStore.configName) ? pairlistStore.configName : 'default',
   );
 });
 

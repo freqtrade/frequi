@@ -55,9 +55,8 @@ export const usePairlistConfigStore = defineStore(
       return JSON.stringify(configToPayloadItems(), null, 2);
     });
 
-    const isSavedConfig = computed(
-      () => savedConfigs.value.findIndex((c) => c.name === config.value.name) > -1,
-    );
+    const isSavedConfig = (name: string) =>
+      savedConfigs.value.findIndex((c) => c.name === name) > -1;
 
     function addToConfig(pairlist: Pairlist, index: number) {
       pairlist = structuredClone(toRaw(pairlist));
@@ -249,7 +248,7 @@ export const usePairlistConfigStore = defineStore(
   {
     persist: {
       key: 'ftPairlistConfig',
-      paths: ['savedConfigs'],
+      paths: ['savedConfigs', 'configName'],
     },
   },
 );
