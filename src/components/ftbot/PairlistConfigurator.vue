@@ -59,16 +59,24 @@
       </div>
     </div>
     <div class="col-12 col-lg-3">
+      <b-form-radio-group v-model="selectedView" class="mb-2" size="sm" buttons>
+        <b-form-radio button value="Config"> Config</b-form-radio>
+        <b-form-radio button value="Results" :disabled="pairlistStore.whitelist.length === 0">
+          Results</b-form-radio
+        >
+      </b-form-radio-group>
       <CopyableTextfield
+        v-if="selectedView === 'Config'"
         :content="pairlistStore.configJSON"
         :is-valid="pairlistStore.pairlistValid"
       />
+      <CopyableTextfield v-if="selectedView === 'Results'" :content="pairlistStore.whitelist" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';
@@ -85,6 +93,7 @@ const pairlistStore = usePairlistConfigStore();
 const availablePairlists = ref<Pairlist[]>([]);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
+const selectedView = ref<'Config' | 'Results'>('Config');
 
 // v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
 const pairlistsComp = computed(() =>
@@ -141,6 +150,13 @@ onMounted(async () => {
     pairlistStore.savedConfigs.length > 0 ? pairlistStore.savedConfigs[0].name : 'default',
   );
 });
+
+watch(
+  () => pairlistStore.whitelist,
+  () => {
+    selectedView.value = 'Results';
+  },
+);
 </script>
 
 <style lang="scss" scoped>
