@@ -23,7 +23,6 @@ export const usePairlistConfigStore = defineStore(
     const intervalId = ref<number>();
     const stakeCurrency = ref<string>(botStore.activeBot?.stakeCurrency ?? 'USDT');
     const whitelist = ref<string[]>([]);
-    const blacklist = ref<string[]>([]);
     const customExchange = ref<boolean>(false);
     const selectedExchange = ref<ExchangeSelection>({
       exchange: botStore.activeBot?.botState.exchange ?? '',
@@ -36,7 +35,7 @@ export const usePairlistConfigStore = defineStore(
       },
     });
 
-    const config = ref<PairlistConfig>({ name: '', pairlists: [] });
+    const config = ref<PairlistConfig>(makeConfig());
     const savedConfigs = ref<PairlistConfig[]>([]);
     const configName = ref<string>('');
 
@@ -86,16 +85,17 @@ export const usePairlistConfigStore = defineStore(
     }
 
     function newConfig(name: string) {
-      const c = { name: name, pairlists: [] };
+      const c = makeConfig({ name });
       savedConfigs.value.push(c);
       config.value = structuredClone(c);
     }
 
     function duplicateConfig(name = '') {
-      const c = {
-        name: name,
-        pairlists: toRaw(config.value.pairlists),
-      };
+      const c = makeConfig({
+        name,
+        pairlists: toRaw(config.value.pairlists) as [],
+        blacklist: toRaw(config.value.blacklist) as [],
+      });
       savedConfigs.value.push(c);
       config.value = structuredClone(c);
     }
@@ -119,12 +119,23 @@ export const usePairlistConfigStore = defineStore(
       }
     }
 
+    function makeConfig({ name = '', pairlists = [], blacklist = [] } = {}): PairlistConfig {
+      return { name, pairlists, blacklist };
+    }
+
     function addToBlacklist() {
-      blacklist.value.push('');
+      config.value.blacklist.push('');
     }
 
     function removeFromBlacklist(index: number) {
-      blacklist.value.splice(index, 1);
+      config.value.blacklist.splice(index, 1);
+    }
+
+    function duplicateBlacklist(configName: string) {
+      const conf = savedConfigs.value.find((c) => c.name === configName);
+      if (conf) {
+        config.value.blacklist = structuredClone(toRaw(conf.blacklist));
+      }
     }
 
     async function startPairlistEvaluation() {
@@ -167,19 +178,18 @@ export const usePairlistConfigStore = defineStore(
 
     function configToPayload(): PairlistsPayload {
       const pairlists: PairlistPayloadItem[] = configToPayloadItems();
-      const config: PairlistsPayload = {
+      const c: PairlistsPayload = {
         pairlists: pairlists,
         stake_currency: stakeCurrency.value,
-        blacklist: blacklist.value,
+        blacklist: config.value.blacklist,
       };
-      console.log('asdf');
       if (customExchange.value) {
         console.log('setting custom exchange props');
-        config.exchange = selectedExchange.value.exchange;
-        config.trading_mode = selectedExchange.value.trade_mode.trading_mode;
-        config.margin_mode = selectedExchange.value.trade_mode.margin_mode;
+        c.exchange = selectedExchange.value.exchange;
+        c.trading_mode = selectedExchange.value.trade_mode.trading_mode;
+        c.margin_mode = selectedExchange.value.trade_mode.margin_mode;
       }
-      return config;
+      return c;
     }
 
     function configToPayloadItems() {
@@ -216,7 +226,6 @@ export const usePairlistConfigStore = defineStore(
       config,
       configJSON,
       savedConfigs,
-      blacklist,
       configName,
       startPairlistEvaluation,
       addToConfig,
@@ -228,6 +237,7 @@ export const usePairlistConfigStore = defineStore(
       selectOrCreateConfig,
       addToBlacklist,
       removeFromBlacklist,
+      duplicateBlacklist,
       isSavedConfig,
       firstPairlistIsGenerator,
       pairlistValid,
@@ -239,7 +249,7 @@ export const usePairlistConfigStore = defineStore(
   {
     persist: {
       key: 'ftPairlistConfig',
-      paths: ['savedConfigs', 'blacklist'],
+      paths: ['savedConfigs'],
     },
   },
 );

@@ -20,6 +20,7 @@ export interface Pairlist {
 
 export interface PairlistConfig {
   name: string;
+  blacklist: string[];
   pairlists: Pairlist[];
 }
 
