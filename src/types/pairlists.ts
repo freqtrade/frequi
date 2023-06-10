@@ -31,14 +31,44 @@ export enum PairlistParamType {
   option = 'option',
 }
 
-export interface PairlistParameter {
+export type PairlistParamValue = string | number | boolean;
+
+interface PairlistParameterBase {
   description: string;
   help: string;
   type: PairlistParamType;
+}
+
+export interface StringPairlistParameter extends PairlistParameterBase {
+  type: PairlistParamType.string;
   value?: string;
   default: string;
-  options?: string[];
 }
+
+export interface NumberPairlistParameter extends PairlistParameterBase {
+  type: PairlistParamType.number;
+  value?: number;
+  default: number;
+}
+
+export interface BooleanPairlistParameter extends PairlistParameterBase {
+  type: PairlistParamType.boolean;
+  value?: boolean;
+  default: boolean;
+}
+
+export interface OptionPairlistParameter extends PairlistParameterBase {
+  type: PairlistParamType.option;
+  options: string[];
+  value?: string;
+  default: string;
+}
+
+export type PairlistParameter =
+  | StringPairlistParameter
+  | NumberPairlistParameter
+  | BooleanPairlistParameter
+  | OptionPairlistParameter;
 
 export interface PairlistPayloadItem {
   method: string;

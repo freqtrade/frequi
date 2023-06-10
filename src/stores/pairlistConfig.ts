@@ -7,6 +7,7 @@ import {
   Pairlist,
   PairlistConfig,
   PairlistParamType,
+  PairlistParamValue,
   PairlistPayloadItem,
   PairlistsPayload,
   TradingMode,
@@ -165,7 +166,7 @@ export const usePairlistConfigStore = defineStore(
       }
     }
 
-    function convertToParamType(type: PairlistParamType, value: string) {
+    function convertToParamType(type: PairlistParamType, value: PairlistParamValue) {
       if (type === PairlistParamType.number) {
         return Number(value);
       } else if (type === PairlistParamType.boolean) {

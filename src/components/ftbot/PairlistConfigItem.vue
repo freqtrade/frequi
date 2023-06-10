@@ -55,11 +55,10 @@
 </template>
 
 <script setup lang="ts">
-import { Pairlist } from '@/types';
-import { ref } from 'vue';
-import PairlistConfigParameter from './PairlistConfigParameter.vue';
-import { computed } from 'vue';
+import PairlistConfigParameter from '@/components/ftbot/PairlistConfigParameter.vue';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+import { Pairlist } from '@/types';
+import { computed, ref } from 'vue';
 
 const pairlistStore = usePairlistConfigStore();
 
