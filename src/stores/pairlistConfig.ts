@@ -14,6 +14,7 @@ import {
 } from '@/types';
 import { computed, ref, toRaw, watch } from 'vue';
 import { showAlert } from './alerts';
+import { isNotUndefined } from '@/shared/formatters';
 
 export const usePairlistConfigStore = defineStore(
   'pairlistConfig',
@@ -62,8 +63,8 @@ export const usePairlistConfigStore = defineStore(
     function addToConfig(pairlist: Pairlist, index: number) {
       pairlist = structuredClone(toRaw(pairlist));
       for (const param in pairlist.params) {
-        pairlist.params[param].value = pairlist.params[param].default
-          ? pairlist.params[param].default.toString()
+        pairlist.params[param].value = isNotUndefined(pairlist.params[param].default)
+          ? pairlist.params[param].default
           : '';
       }
       config.value.pairlists.splice(index, 0, pairlist);
