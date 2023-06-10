@@ -383,9 +383,7 @@ function updateChart(initial = false) {
       if (Array.isArray(chartOptions.value.xAxis) && chartOptions.value.xAxis.length <= plotIndex) {
         chartOptions.value.xAxis.push({
           type: 'time',
-          scale: true,
           gridIndex: currGridIdx,
-          boundaryGap: false,
           axisLine: { onZero: false },
           axisTick: { show: false },
           axisLabel: { show: false },
@@ -559,8 +557,6 @@ function initializeChartOptions() {
     xAxis: [
       {
         type: 'time',
-        scale: true,
-        boundaryGap: false,
         axisLine: { onZero: false },
         axisTick: { show: true },
         axisLabel: { show: true },
@@ -576,8 +572,6 @@ function initializeChartOptions() {
       {
         type: 'time',
         gridIndex: 1,
-        scale: true,
-        boundaryGap: false,
         axisLine: { onZero: false },
         axisTick: { show: false },
         axisLabel: { show: false },
