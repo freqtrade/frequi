@@ -11,7 +11,7 @@
           />
           <div
             role="button"
-            class="d-flex flex-grow-1 align-items-start flex-column"
+            class="d-flex flex-grow-1 align-items-start flex-column user-select-none"
             @click="toggleVisible"
           >
             <span class="fw-bold">{{ pairlist.name }}</span>
@@ -26,22 +26,22 @@
           @click="pairlistStore.removeFromConfig(index)"
         />
         <i-mdi-chevron-down
-          v-if="!visible"
-          :class="hasParameters && !visible ? 'visible' : 'invisible'"
+          v-if="!showParameters"
+          :class="hasParameters && !showParameters ? 'visible' : 'invisible'"
           role="button"
           class="fs-4"
           @click="toggleVisible"
         />
         <i-mdi-chevron-up
-          v-if="visible"
-          :class="hasParameters && visible ? 'visible' : 'invisible'"
+          v-if="showParameters"
+          :class="hasParameters && showParameters ? 'visible' : 'invisible'"
           role="button"
           class="fs-4"
           @click="toggleVisible"
         />
       </div>
     </template>
-    <b-collapse v-model="visible">
+    <b-collapse v-model="showParameters">
       <b-card-body>
         <PairlistConfigParameter
           v-for="(parameter, key) in pairlist.params"
@@ -66,7 +66,7 @@ defineProps<{
   index: number;
 }>();
 
-const visible = ref(false);
+const showParameters = ref(false);
 
 const pairlist = defineModel<Pairlist>({ required: true });
 
@@ -74,7 +74,7 @@ const hasParameters = computed(() => Object.keys(pairlist.value.params).length >
 
 function toggleVisible() {
   if (hasParameters.value) {
-    visible.value = !visible.value;
+    showParameters.value = !showParameters.value;
   }
 }
 </script>
