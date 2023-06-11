@@ -24,7 +24,10 @@
             >Backtest</router-link
           >
           <router-link
-            v-if="botStore.activeBot?.isWebserverMode ?? false"
+            v-if="
+              (botStore.activeBot?.isWebserverMode ?? false) &&
+              botStore.activeBot.botApiVersion >= 2.3
+            "
             class="nav-link navbar-nav"
             to="/pairlist_config"
             >Pairlist Config</router-link
