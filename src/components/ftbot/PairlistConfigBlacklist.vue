@@ -12,14 +12,12 @@
           :class="!visible ? 'visible' : 'invisible'"
           role="button"
           class="fs-4"
-          @click="visible = !visible"
         />
         <i-mdi-chevron-up
           v-if="visible"
           :class="visible ? 'visible' : 'invisible'"
           role="button"
           class="fs-4"
-          @click="visible = !visible"
         />
       </div>
     </template>
