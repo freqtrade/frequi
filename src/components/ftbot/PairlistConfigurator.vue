@@ -26,20 +26,21 @@
     </b-list-group>
     <div class="d-flex flex-column flex-fill">
       <PairlistConfigActions />
+      <div class="border rounded-1 p-2 mb-2">
+        <div class="d-flex align-items-center gap-2 my-2">
+          <span class="col-auto">Stake currency: </span>
+          <b-form-input v-model="pairlistStore.stakeCurrency" size="sm" />
+        </div>
 
-      <div class="d-flex align-items-center gap-2 my-2">
-        <span class="col-auto">Stake currency: </span>
-        <b-form-input v-model="pairlistStore.stakeCurrency" size="sm" />
-      </div>
-
-      <div class="mb-2">
-        <b-form-checkbox v-model="pairlistStore.customExchange" class="mb-2"
-          >Custom Exchange</b-form-checkbox
-        >
-        <exchange-select
-          v-if="pairlistStore.customExchange"
-          v-model="pairlistStore.selectedExchange"
-        />
+        <div class="mb-2 border rounded-1 p-2 text-start">
+          <b-form-checkbox v-model="pairlistStore.customExchange" class="mb-2">
+            Custom Exchange
+          </b-form-checkbox>
+          <exchange-select
+            v-if="pairlistStore.customExchange"
+            v-model="pairlistStore.selectedExchange"
+          />
+        </div>
       </div>
       <PairlistConfigBlacklist />
       <b-alert
@@ -53,7 +54,7 @@
       </b-alert>
       <div
         ref="pairlistConfigsEl"
-        class="d-flex flex-column flex-grow-1 position-relative"
+        class="d-flex flex-column flex-grow-1 position-relative border rounded-1 p-1"
         :class="{ empty: configEmpty }"
       >
         <PairlistConfigItem
@@ -188,12 +189,6 @@ watch(
 }
 
 .empty {
-  border: 3px dashed rgba(255, 255, 255, 0.65);
-
-  [data-bs-theme='light'] & {
-    border: 3px dashed rgba(0, 0, 0, 0.5);
-  }
-
   &:after {
     content: 'Drag pairlist here';
     position: absolute;
