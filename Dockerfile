@@ -1,4 +1,4 @@
-FROM node:20.2.0-alpine as ui-builder
+FROM node:20.3.0-alpine as ui-builder
 
 RUN mkdir /app
 
