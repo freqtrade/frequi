@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex px-3 gap-3 flex-column flex-lg-row">
+  <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-row">
     <b-list-group ref="availablePairlistsEl" class="available-pairlists">
       <b-list-group-item
         v-for="pairlist in availablePairlists"
@@ -66,19 +66,26 @@
         />
       </div>
     </div>
-    <div class="col-12 col-lg-3">
+    <div class="d-flex flex-column col-12 col-lg-3">
       <b-form-radio-group v-model="selectedView" class="mb-2" size="sm" buttons>
         <b-form-radio button value="Config"> Config</b-form-radio>
         <b-form-radio button value="Results" :disabled="pairlistStore.whitelist.length === 0">
           Results</b-form-radio
         >
       </b-form-radio-group>
-      <CopyableTextfield
-        v-if="selectedView === 'Config'"
-        :content="pairlistStore.configJSON"
-        :is-valid="pairlistStore.pairlistValid"
-      />
-      <CopyableTextfield v-if="selectedView === 'Results'" :content="pairlistStore.whitelist" />
+      <div class="position-relative flex-fill overflow-auto">
+        <CopyableTextfield
+          v-if="selectedView === 'Config'"
+          class="position-absolute w-100"
+          :content="pairlistStore.configJSON"
+          :is-valid="pairlistStore.pairlistValid"
+        />
+        <CopyableTextfield
+          v-if="selectedView === 'Results'"
+          class="position-absolute w-100"
+          :content="pairlistStore.whitelist"
+        />
+      </div>
     </div>
   </div>
 </template>

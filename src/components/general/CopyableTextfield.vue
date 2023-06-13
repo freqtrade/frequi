@@ -6,7 +6,7 @@
       class="copy-button position-absolute end-0 mt-1 me-2"
       @click="copy(content)"
     />
-    <pre class="text-start border p-1"><code>{{ content }}</code></pre>
+    <pre class="text-start border p-1 mb-0"><code>{{ content }}</code></pre>
   </div>
 </template>
 
