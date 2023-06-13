@@ -58,7 +58,7 @@
         :class="{ empty: configEmpty }"
       >
         <PairlistConfigItem
-          v-for="(pairlist, i) in pairlistsComp"
+          v-for="(pairlist, i) in pairlistStore.config.pairlists"
           :key="pairlist.id"
           v-model="pairlistStore.config.pairlists[i]"
           :index="i"
@@ -102,17 +102,6 @@ const availablePairlists = ref<Pairlist[]>([]);
 const pairlistConfigsEl = ref<HTMLElement | null>(null);
 const availablePairlistsEl = ref<HTMLElement | null>(null);
 const selectedView = ref<'Config' | 'Results'>('Config');
-
-// v-for updates with sorting, deleting and adding items seem to get wonky without unique keys for every item
-const pairlistsComp = computed(() =>
-  pairlistStore.config.pairlists.map((p) => {
-    if (p.id) {
-      return p;
-    } else {
-      return { id: Date.now().toString(36) + Math.random().toString(36).substring(2), ...p };
-    }
-  }),
-);
 
 const configEmpty = computed(() => {
   return pairlistStore.config.pairlists.length == 0;

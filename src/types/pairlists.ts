@@ -15,6 +15,7 @@ export interface Pairlist {
   is_pairlist_generator: boolean;
   name: string;
   description: string;
+  showParameters: boolean;
   params: Record<string, PairlistParameter>;
 }
 

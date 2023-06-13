@@ -62,6 +62,10 @@ export const usePairlistConfigStore = defineStore(
 
     function addToConfig(pairlist: Pairlist, index: number) {
       pairlist = structuredClone(toRaw(pairlist));
+      pairlist.showParameters = false;
+      if (!pairlist.id) {
+        pairlist.id = Date.now().toString(36) + Math.random().toString(36).substring(2);
+      }
       for (const param in pairlist.params) {
         pairlist.params[param].value = isNotUndefined(pairlist.params[param].default)
           ? pairlist.params[param].default

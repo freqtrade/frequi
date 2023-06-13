@@ -26,22 +26,22 @@
           @click="pairlistStore.removeFromConfig(index)"
         />
         <i-mdi-chevron-down
-          v-if="!showParameters"
-          :class="hasParameters && !showParameters ? 'visible' : 'invisible'"
+          v-if="!pairlist.showParameters"
+          :class="hasParameters && !pairlist.showParameters ? 'visible' : 'invisible'"
           role="button"
           class="fs-4"
           @click="toggleVisible"
         />
         <i-mdi-chevron-up
-          v-if="showParameters"
-          :class="hasParameters && showParameters ? 'visible' : 'invisible'"
+          v-if="pairlist.showParameters"
+          :class="hasParameters && pairlist.showParameters ? 'visible' : 'invisible'"
           role="button"
           class="fs-4"
           @click="toggleVisible"
         />
       </div>
     </template>
-    <b-collapse v-model="showParameters">
+    <b-collapse v-model="pairlist.showParameters">
       <b-card-body>
         <PairlistConfigParameter
           v-for="(parameter, key) in pairlist.params"
@@ -58,7 +58,7 @@
 import PairlistConfigParameter from '@/components/ftbot/PairlistConfigParameter.vue';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import { Pairlist } from '@/types';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const pairlistStore = usePairlistConfigStore();
 
@@ -66,15 +66,13 @@ defineProps<{
   index: number;
 }>();
 
-const showParameters = ref(false);
-
 const pairlist = defineModel<Pairlist>({ required: true });
 
 const hasParameters = computed(() => Object.keys(pairlist.value.params).length > 0);
 
 function toggleVisible() {
   if (hasParameters.value) {
-    showParameters.value = !showParameters.value;
+    pairlist.value.showParameters = !pairlist.value.showParameters;
   }
 }
 </script>
