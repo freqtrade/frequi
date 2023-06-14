@@ -23,7 +23,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "bootstrap-vue-next": "^0.8.13",
-    "core-js": "^3.30.2",
+    "core-js": "^3.31.0",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "echarts": "^5.4.2",
