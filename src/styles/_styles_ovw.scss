@@ -248,7 +248,6 @@ body.ft-theme-transition *:after {
 }
 
 .position-lg-absolute{
-    position: inherit;
     @include media-breakpoint-up(lg){
         position: absolute !important;
     }
