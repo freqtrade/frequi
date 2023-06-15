@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex mb-2 gap-2">
+  <div class="d-flex flex-column flex-sm-row mb-2 gap-2">
     <b-button
       title="Save configuration"
       size="sm"
