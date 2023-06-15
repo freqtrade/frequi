@@ -37,6 +37,10 @@
     transform: none !important;
 }
 
+.text-small {
+    font-size: 0.8rem;
+}
+
 [data-bs-theme="dark"] {
     $bg-dark: rgb(18, 18, 18);
 
@@ -49,6 +53,10 @@
     body {
         background: $bg-darker;
         color: $fg-color;
+    }
+
+    .border {
+        border-color: lighten($bg-dark, 40%) !important;
     }
 
     .card {
@@ -237,4 +245,10 @@ body.ft-theme-transition *:after {
         background-color 750ms ease-in-out,
         ;
     transition-delay: 0 !important;
+}
+
+.position-lg-absolute{
+    @include media-breakpoint-up(lg){
+        position: absolute !important;
+    }
 }
