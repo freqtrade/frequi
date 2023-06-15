@@ -76,13 +76,13 @@
       <div class="position-relative flex-fill overflow-auto">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
-          class="position-absolute w-100"
+          class="position-lg-absolute w-100"
           :content="pairlistStore.configJSON"
           :is-valid="pairlistStore.pairlistValid"
         />
         <CopyableTextfield
           v-if="selectedView === 'Results'"
-          class="position-absolute w-100"
+          class="position-lg-absolute w-100"
           :content="pairlistStore.whitelist"
         />
       </div>
