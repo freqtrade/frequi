@@ -1,0 +1,323 @@
+{
+    "pairlists": [
+        {
+            "name": "AgeFilter",
+            "description": "Filter pairs by age (days listed).",
+            "is_pairlist_generator": false,
+            "params": {
+                "min_days_listed": {
+                    "type": "number",
+                    "default": 10,
+                    "description": "Minimum Days Listed",
+                    "help": "Minimum number of days a pair must have been listed on the exchange."
+                },
+                "max_days_listed": {
+                    "type": "number",
+                    "default": null,
+                    "description": "Maximum Days Listed",
+                    "help": "Maximum number of days a pair must have been listed on the exchange."
+                }
+            }
+        },
+        {
+            "name": "OffsetFilter",
+            "description": "Offset pair list filter.",
+            "is_pairlist_generator": false,
+            "params": {
+                "offset": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Offset",
+                    "help": "Offset of the pairlist."
+                },
+                "number_assets": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Number of assets",
+                    "help": "Number of assets to use from the pairlist, starting from offset."
+                }
+            }
+        },
+        {
+            "name": "PerformanceFilter",
+            "description": "Filter pairs by performance.",
+            "is_pairlist_generator": false,
+            "params": {
+                "minutes": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Minutes",
+                    "help": "Consider trades from the last X minutes. 0 means all trades."
+                },
+                "min_profit": {
+                    "type": "number",
+                    "default": null,
+                    "description": "Minimum profit",
+                    "help": "Minimum profit in percent. Pairs with less profit are removed."
+                }
+            }
+        },
+        {
+            "name": "PrecisionFilter",
+            "description": "Filters low-value coins which would not allow setting stoplosses.",
+            "is_pairlist_generator": false,
+            "params": {}
+        },
+        {
+            "name": "PriceFilter",
+            "description": "Filter pairs by price.",
+            "is_pairlist_generator": false,
+            "params": {
+                "low_price_ratio": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Low price ratio",
+                    "help": "Remove pairs where a price move of 1 price unit (pip) is above this ratio."
+                },
+                "min_price": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Minimum price",
+                    "help": "Remove pairs with a price below this value."
+                },
+                "max_price": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Maximum price",
+                    "help": "Remove pairs with a price above this value."
+                },
+                "max_value": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Maximum value",
+                    "help": "Remove pairs with a value (price * amount) above this value."
+                }
+            }
+        },
+        {
+            "name": "ProducerPairList",
+            "description": "Get a pairlist from an upstream bot.",
+            "is_pairlist_generator": true,
+            "params": {
+                "number_assets": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Number of assets",
+                    "help": "Number of assets to use from the pairlist"
+                },
+                "producer_name": {
+                    "type": "string",
+                    "default": "default",
+                    "description": "Producer name",
+                    "help": "Name of the producer to use. Requires additional external_message_consumer configuration."
+                }
+            }
+        },
+        {
+            "name": "RangeStabilityFilter",
+            "description": "Filters pairs by their rate of change.",
+            "is_pairlist_generator": false,
+            "params": {
+                "lookback_days": {
+                    "type": "number",
+                    "default": 10,
+                    "description": "Lookback Days",
+                    "help": "Number of days to look back at."
+                },
+                "min_rate_of_change": {
+                    "type": "number",
+                    "default": 0.01,
+                    "description": "Minimum Rate of Change",
+                    "help": "Minimum rate of change to filter pairs."
+                },
+                "max_rate_of_change": {
+                    "type": "number",
+                    "default": null,
+                    "description": "Maximum Rate of Change",
+                    "help": "Maximum rate of change to filter pairs."
+                },
+                "refresh_period": {
+                    "type": "number",
+                    "default": 1800,
+                    "description": "Refresh period",
+                    "help": "Refresh period in seconds"
+                }
+            }
+        },
+        {
+            "name": "RemotePairList",
+            "description": "Retrieve pairs from a remote API.",
+            "is_pairlist_generator": true,
+            "params": {
+                "number_assets": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Number of assets",
+                    "help": "Number of assets to use from the pairlist."
+                },
+                "pairlist_url": {
+                    "type": "string",
+                    "default": "",
+                    "description": "URL to fetch pairlist from",
+                    "help": "URL to fetch pairlist from"
+                },
+                "refresh_period": {
+                    "type": "number",
+                    "default": 1800,
+                    "description": "Refresh period",
+                    "help": "Refresh period in seconds"
+                },
+                "keep_pairlist_on_failure": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Keep last pairlist on failure",
+                    "help": "Keep last pairlist on failure"
+                },
+                "read_timeout": {
+                    "type": "number",
+                    "default": 60,
+                    "description": "Read timeout",
+                    "help": "Request timeout for remote pairlist"
+                },
+                "bearer_token": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Bearer token",
+                    "help": "Bearer token - used for auth against the upstream service."
+                }
+            }
+        },
+        {
+            "name": "ShuffleFilter",
+            "description": "Randomize pairlist order.",
+            "is_pairlist_generator": false,
+            "params": {
+                "shuffle_frequency": {
+                    "type": "option",
+                    "default": "candle",
+                    "options": [
+                        "candle",
+                        "iteration"
+                    ],
+                    "description": "Shuffle frequency",
+                    "help": "Shuffle frequency. Can be either 'candle' or 'iteration'."
+                },
+                "seed": {
+                    "type": "number",
+                    "default": null,
+                    "description": "Random Seed",
+                    "help": "Seed for random number generator. Not used in live mode."
+                }
+            }
+        },
+        {
+            "name": "SpreadFilter",
+            "description": "Filter by bid/ask difference.",
+            "is_pairlist_generator": false,
+            "params": {
+                "max_spread_ratio": {
+                    "type": "number",
+                    "default": 0.005,
+                    "description": "Max spread ratio",
+                    "help": "Max spread ratio for a pair to be considered."
+                }
+            }
+        },
+        {
+            "name": "StaticPairList",
+            "description": "Use pairlist as configured in config.",
+            "is_pairlist_generator": true,
+            "params": {
+                "allow_inactive": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Allow inactive pairs",
+                    "help": "Allow inactive pairs to be in the whitelist."
+                }
+            }
+        },
+        {
+            "name": "VolatilityFilter",
+            "description": "Filter pairs by their recent volatility.",
+            "is_pairlist_generator": false,
+            "params": {
+                "lookback_days": {
+                    "type": "number",
+                    "default": 10,
+                    "description": "Lookback Days",
+                    "help": "Number of days to look back at."
+                },
+                "min_volatility": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Minimum Volatility",
+                    "help": "Minimum volatility a pair must have to be considered."
+                },
+                "max_volatility": {
+                    "type": "number",
+                    "default": null,
+                    "description": "Maximum Volatility",
+                    "help": "Maximum volatility a pair must have to be considered."
+                },
+                "refresh_period": {
+                    "type": "number",
+                    "default": 1800,
+                    "description": "Refresh period",
+                    "help": "Refresh period in seconds"
+                }
+            }
+        },
+        {
+            "name": "VolumePairList",
+            "description": "Provides dynamic pair list based on trade volumes.",
+            "is_pairlist_generator": true,
+            "params": {
+                "number_assets": {
+                    "type": "number",
+                    "default": 30,
+                    "description": "Number of assets",
+                    "help": "Number of assets to use from the pairlist"
+                },
+                "sort_key": {
+                    "type": "option",
+                    "default": "quoteVolume",
+                    "options": [
+                        "quoteVolume"
+                    ],
+                    "description": "Sort key",
+                    "help": "Sort key to use for sorting the pairlist."
+                },
+                "min_value": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Minimum value",
+                    "help": "Minimum value to use for filtering the pairlist."
+                },
+                "refresh_period": {
+                    "type": "number",
+                    "default": 1800,
+                    "description": "Refresh period",
+                    "help": "Refresh period in seconds"
+                },
+                "lookback_days": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Lookback Days",
+                    "help": "Number of days to look back at."
+                },
+                "lookback_timeframe": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Lookback Timeframe",
+                    "help": "Timeframe to use for lookback."
+                },
+                "lookback_period": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Lookback Period",
+                    "help": "Number of periods to look back at."
+                }
+            }
+        }
+    ]
+}
