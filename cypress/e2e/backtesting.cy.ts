@@ -2,7 +2,7 @@ import { setLoginInfo, defaultMocks } from './helpers';
 
 function backtestMocks() {
   cy.intercept('GET', '**/api/v1/show_config', {
-    fixture: 'backtest/show_config_backtest.json',
+    fixture: 'backtest/show_config_webserver.json',
   }).as('ShowConf');
   cy.intercept('GET', '**/api/v1/strategies', { fixture: 'backtest/strategies.json' }).as(
     'Strategies',
