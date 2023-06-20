@@ -37,7 +37,7 @@ const LONG_COLOR = '#0066FF';
 //const LONG_ADJUST_COLOR = '#00A9FF';
 
 /** Return trade entries for charting */
-export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
+export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   const tradeData: (number | string)[][] = [];
   // Return schema:
   // 0: Timeframe
@@ -47,8 +47,8 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
   // 4: color
   // 5: label
   // 6: tooltip
-  for (let i = 0, len = filteredTrades.length; i < len; i += 1) {
-    const trade: Trade = filteredTrades[i];
+  for (let i = 0, len = trades.length; i < len; i += 1) {
+    const trade: Trade = trades[i];
     if (
       // Trade is open or closed and within timerange
       roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= dataset.data_stop_ts ||
@@ -123,9 +123,10 @@ export function generateTradeSeries(
   nameTrades: string,
   theme: string,
   dataset: PairHistory,
-  filteredTrades: Trade[],
+  trades: Trade[],
 ): ScatterSeriesOption {
-  const { tradeData } = getTradeEntries(dataset, filteredTrades);
+  const { tradeData } = getTradeEntries(dataset, trades);
+
   const tradesSeries: ScatterSeriesOption = {
     name: nameTrades,
     type: 'scatter',
