@@ -1,6 +1,7 @@
 import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import { roundTimeframe } from '@/shared/timemath';
 import { Order, PairHistory, Trade, BTOrder } from '@/types';
+import { ScatterSeriesOption } from 'echarts';
 
 function buildTooltipCost(trade: Trade, order: Order | BTOrder): string {
   return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
@@ -112,4 +113,48 @@ export function getTradeEntries(dataset: PairHistory, filteredTrades: Trade[]) {
     }
   }
   return { tradeData };
+}
+
+/**
+ *  Generate Series displaying trades
+ *  This may include trades, orders, and eventually other things related to the trade.
+ */
+export function generateTradeSeries(
+  nameTrades: string,
+  theme: string,
+  dataset: PairHistory,
+  filteredTrades: Trade[],
+): ScatterSeriesOption {
+  const { tradeData } = getTradeEntries(dataset, filteredTrades);
+  const tradesSeries: ScatterSeriesOption = {
+    name: nameTrades,
+    type: 'scatter',
+    xAxisIndex: 0,
+    yAxisIndex: 0,
+    encode: {
+      x: 0,
+      y: 1,
+      label: 5,
+      tooltip: 6,
+    },
+    label: {
+      show: true,
+      fontSize: 12,
+      backgroundColor: theme !== 'dark' ? '#fff' : '#000',
+      padding: 2,
+      color: theme === 'dark' ? '#fff' : '#000',
+    },
+    labelLayout: { rotate: 75, align: 'left', dx: 10 },
+    itemStyle: {
+      // color: tradeSellColor,
+      color: (v) => v.data[4],
+      opacity: 0.9,
+    },
+    symbol: (v) => v[2],
+    symbolRotate: (v) => v[3],
+    symbolSize: 13,
+    data: tradeData,
+  };
+
+  return tradesSeries;
 }
