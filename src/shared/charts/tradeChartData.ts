@@ -127,6 +127,8 @@ export function generateTradeSeries(
 ): ScatterSeriesOption {
   const { tradeData } = getTradeEntries(dataset, trades);
 
+  const openTrades = trades.filter((t) => t.is_open);
+
   const tradesSeries: ScatterSeriesOption = {
     name: nameTrades,
     type: 'scatter',
@@ -158,6 +160,35 @@ export function generateTradeSeries(
     symbolSize: 13,
     data: tradeData,
   };
-
+  // Show distance to stoploss
+  if (openTrades.length > 0) {
+    // Ensure to import and "use" whatever feature in candleChart! (MarkLine, MarkArea, ...)
+    tradesSeries.markLine = {
+      symbol: 'none',
+      itemStyle: {
+        color: '#ff000055',
+      },
+      label: {
+        show: true,
+        position: 'middle',
+      },
+      lineStyle: {
+        type: 'solid',
+      },
+      data: openTrades.map((t) => {
+        return [
+          {
+            name: 'Stoploss',
+            yAxis: t.stop_loss_abs,
+            xAxis: t.open_timestamp,
+          },
+          {
+            yAxis: t.stop_loss_abs,
+            xAxis: t.close_timestamp ?? dataset.data_stop_ts,
+          },
+        ];
+      }),
+    };
+  }
   return tradesSeries;
 }
