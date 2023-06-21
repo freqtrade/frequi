@@ -4,7 +4,7 @@
       v-if="isSupported && isValid"
       role="button"
       class="copy-button position-absolute end-0 mt-1 me-2"
-      @click="copy(content)"
+      @click="copy(typeof content === 'string' ? content : JSON.stringify(content))"
     />
     <pre class="text-start border p-1 mb-0"><code>{{ content }}</code></pre>
   </div>
@@ -14,7 +14,7 @@
 import { useClipboard } from '@vueuse/core';
 
 defineProps({
-  content: { type: String, required: true },
+  content: { type: [String, Array<string>], required: true },
   isValid: { type: Boolean, default: true },
 });
 
