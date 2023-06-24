@@ -973,31 +973,34 @@ export function createBotSubStore(botId: string, botName: string) {
             onMessage: this._handleWebsocketMessage,
             onConnected: () => {
               console.log('subscribing');
-              this.websocketStarted = true;
-              const subscriptions = [
-                FtWsMessageTypes.whitelist,
-                FtWsMessageTypes.entryFill,
-                FtWsMessageTypes.exitFill,
-                FtWsMessageTypes.entryCancel,
-                FtWsMessageTypes.exitCancel,
-                /*'new_candle' /*'analyzed_df'*/
-              ];
-              if (this.botApiVersion >= 2.21) {
-                subscriptions.push(FtWsMessageTypes.newCandle);
-              }
+              if (this.isWebserverMode !== true) {
+                //
+                this.websocketStarted = true;
+                const subscriptions = [
+                  FtWsMessageTypes.whitelist,
+                  FtWsMessageTypes.entryFill,
+                  FtWsMessageTypes.exitFill,
+                  FtWsMessageTypes.entryCancel,
+                  FtWsMessageTypes.exitCancel,
+                  /*'new_candle' /*'analyzed_df'*/
+                ];
+                if (this.botApiVersion >= 2.21) {
+                  subscriptions.push(FtWsMessageTypes.newCandle);
+                }
 
-              send(
-                JSON.stringify({
-                  type: 'subscribe',
-                  data: subscriptions,
-                }),
-              );
-              send(
-                JSON.stringify({
-                  type: FtWsMessageTypes.whitelist,
-                  data: '',
-                }),
-              );
+                send(
+                  JSON.stringify({
+                    type: 'subscribe',
+                    data: subscriptions,
+                  }),
+                );
+                send(
+                  JSON.stringify({
+                    type: FtWsMessageTypes.whitelist,
+                    data: '',
+                  }),
+                );
+              }
             },
           },
         );
