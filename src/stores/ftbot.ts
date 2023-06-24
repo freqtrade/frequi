@@ -919,6 +919,9 @@ export function createBotSubStore(botId: string, botName: string) {
       _handleWebsocketMessage(ws, event: MessageEvent<any>) {
         const msg: FTWsMessage = JSON.parse(event.data);
         switch (msg.type) {
+          case FtWsMessageTypes.exception:
+            showAlert(`WSException: ${msg.data}`, 'danger');
+            break;
           case FtWsMessageTypes.whitelist:
             this.whitelist = msg.data;
             break;

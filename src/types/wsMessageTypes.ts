@@ -1,4 +1,6 @@
 export enum FtWsMessageTypes {
+  exception = 'exception',
+
   whitelist = 'whitelist',
   entryFill = 'entry_fill',
   entryCancel = 'entry_cancel',
@@ -56,7 +58,13 @@ export interface FtNewCandleMessage extends FtBaseWsMessage {
   // ...
 }
 
+export interface FtErrorMessage extends FtBaseWsMessage {
+  type: FtWsMessageTypes.exception;
+  data: string;
+}
+
 export type FTWsMessage =
+  | FtErrorMessage
   | FtWhitelistMessage
   | FtEntryFillMessage
   | FTEntryCancelMessage
