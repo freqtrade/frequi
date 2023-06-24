@@ -10,6 +10,7 @@ import { BarChart, LineChart } from 'echarts/charts';
 import {
   DataZoomComponent,
   DatasetComponent,
+  GridComponent,
   LegendComponent,
   TitleComponent,
   TooltipComponent,
@@ -38,6 +39,7 @@ use([
 
   DatasetComponent,
   DataZoomComponent,
+  GridComponent,
   LegendComponent,
   TitleComponent,
   TooltipComponent,
