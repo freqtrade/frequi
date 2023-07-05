@@ -1073,7 +1073,7 @@
     date-fns "^2.30.0"
     date-fns-tz "^1.3.7"
 
-"@vueuse/core@10.2.0", "@vueuse/core@^10.1.2":
+"@vueuse/core@10.2.0":
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.2.0.tgz#65cf5222bf0178ff5ddec20a113d7ca6c30481e1"
   integrity sha512-aHBnoCteIS3hFu7ZZkVB93SanVDY6t4TIb7XDLxJT/HQdAZz+2RdIEJ8rj5LUoEJr7Damb5+sJmtpCwGez5ozQ==
@@ -1081,6 +1081,16 @@
     "@types/web-bluetooth" "^0.0.17"
     "@vueuse/metadata" "10.2.0"
     "@vueuse/shared" "10.2.0"
+    vue-demi ">=0.14.5"
+
+"@vueuse/core@^10.1.2", "@vueuse/core@^10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.2.1.tgz#a62b54cdaf1496138a9f8a7df7f9d644892b421f"
+  integrity sha512-c441bfMbkAwTNwVRHQ0zdYZNETK//P84rC01aP2Uy/aRFCiie9NE/k9KdIXbno0eDYP5NPUuWv0aA/I4Unr/7w==
+  dependencies:
+    "@types/web-bluetooth" "^0.0.17"
+    "@vueuse/metadata" "10.2.1"
+    "@vueuse/shared" "10.2.1"
     vue-demi ">=0.14.5"
 
 "@vueuse/integrations@^10.2.0":
@@ -1097,10 +1107,22 @@
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.2.0.tgz#a026425972786b83f5db6588d8252df42e07c247"
   integrity sha512-IR7Mkq6QSgZ38q/2ZzOt+Zz1OpcEsnwE64WBumDQ+RGKrosFCtUA2zgRrOqDEzPBXrVB+4HhFkwDjQMu0fDBKw==
 
+"@vueuse/metadata@10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.2.1.tgz#0865066def62ed97629c417ec79678d508d22934"
+  integrity sha512-3Gt68mY/i6bQvFqx7cuGBzrCCQu17OBaGWS5JdwISpMsHnMKKjC2FeB5OAfMcCQ0oINfADP3i9A4PPRo0peHdQ==
+
 "@vueuse/shared@10.2.0":
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-10.2.0.tgz#9309b8e1ed660e24643482065ef0e59d223c3f69"
   integrity sha512-dIeA8+g9Av3H5iF4NXR/sft4V6vys76CpZ6hxwj8eMXybXk2WRl3scSsOVi+kQ9SX38COR7AH7WwY83UcuxbSg==
+  dependencies:
+    vue-demi ">=0.14.5"
+
+"@vueuse/shared@10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-10.2.1.tgz#0fd0a5dd014b7713b7fe03347b30fad69bb15b30"
+  integrity sha512-QWHq2bSuGptkcxx4f4M/fBYC3Y8d3M2UYyLsyzoPgEoVzJURQ0oJeWXu79OiLlBb8gTKkqe4mO85T/sf39mmiw==
   dependencies:
     vue-demi ">=0.14.5"
 
