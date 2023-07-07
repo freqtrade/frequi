@@ -47,7 +47,7 @@ jobs:
         # we have already installed everything
         install: false
         # to run component tests we need to use "cypress run-ct"
-        command: yarn cypress run-ct
+        command: yarn cypress run --component
 
     - name: Cypress run
       uses: cypress-io/github-action@v5
