@@ -16,9 +16,9 @@
       :allow-edit="true"
       class="d-flex flex-grow-1"
       @delete="pairlistStore.deleteConfig"
-      @duplicate="(oldName:string,newName:string) => pairlistStore.duplicateConfig(newName)"
-      @new="(name:string) => pairlistStore.newConfig(name)"
-      @rename="(oldName: string, newName:string) => pairlistStore.saveConfig(newName)"
+      @duplicate="(oldName: string, newName: string) => pairlistStore.duplicateConfig(newName)"
+      @new="(name: string) => pairlistStore.newConfig(name)"
+      @rename="(oldName: string, newName: string) => pairlistStore.saveConfig(newName)"
     >
       <b-form-select
         v-model="pairlistStore.configName"
