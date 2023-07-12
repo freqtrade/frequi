@@ -29,7 +29,10 @@
           small
           hover
           stacked="sm"
-          :items="(backtestResult.exit_reason_summary || backtestResult.sell_reason_summary) as unknown as TableItem[]"
+          :items="
+            (backtestResult.exit_reason_summary ||
+              backtestResult.sell_reason_summary) as unknown as TableItem[]
+          "
           :fields="perExitReason"
         >
         </b-table>
@@ -49,9 +52,8 @@
         header="Periodic breakdown"
         class="row mt-2 w-100"
       >
-        <BacktestResultPeriodBreakdown
-          :periodic-breakdown="backtestResult.periodic_breakdown"
-        ></BacktestResultPeriodBreakdown>
+        <BacktestResultPeriodBreakdown :periodic-breakdown="backtestResult.periodic_breakdown">
+        </BacktestResultPeriodBreakdown>
       </b-card>
 
       <b-card header="Single trades" class="row mt-2 w-100">
