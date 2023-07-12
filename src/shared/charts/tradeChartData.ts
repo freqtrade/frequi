@@ -144,8 +144,10 @@ export function generateTradeSeries(
       backgroundColor: theme !== 'dark' ? '#fff' : '#000',
       padding: 2,
       color: theme === 'dark' ? '#fff' : '#000',
+      rotate: 75,
+      offset: [10, 0],
+      align: 'left',
     },
-    labelLayout: { rotate: 75, align: 'left', dx: 10 },
     itemStyle: {
       // color: tradeSellColor,
       color: (v) => v.data[4],

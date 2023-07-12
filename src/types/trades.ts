@@ -18,6 +18,7 @@ export interface Order extends BTOrder {
   order_type: string;
   is_open: boolean;
   order_timestamp?: number;
+  ft_fee_base?: number;
 }
 
 interface TradeBase {

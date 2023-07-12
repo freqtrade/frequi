@@ -123,7 +123,7 @@ const emitLoginResult = (value: boolean) => {
 
 const urlDuplicate = computed<boolean>(() => {
   const bots = Object.values(botStore.availableBots).find((bot) => bot.botUrl === auth.value.url);
-  return bots !== undefined;
+  return !botEdit.value && bots !== undefined;
 });
 
 const checkFormValidity = () => {
