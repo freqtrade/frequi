@@ -107,16 +107,23 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
     },
   );
 
-  if (props.openTrades.length > 0 && valueArray.length > 0) {
-    const lastPoint = valueArray[valueArray.length - 1];
-    if (lastPoint) {
-      const resultWitHOpen = (lastPoint.profit ?? 0) + openProfit.value;
-      valueArray.push({ date: lastPoint.date, currentProfit: lastPoint.profit });
-      // Add one day to date to ensure it's showing properly
-      const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
-      valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
+  if (props.openTrades.length > 0) {
+    let lastProfit = 0;
+    let lastDate = 0;
+    if (valueArray.length > 0) {
+      const lastPoint = valueArray[valueArray.length - 1];
+      lastProfit = lastPoint.profit ?? 0;
+      lastDate = lastPoint.date ?? 0;
+    } else {
+      lastDate = props.openTrades[0].open_timestamp;
     }
+    const resultWitHOpen = (lastProfit ?? 0) + openProfit.value;
+    valueArray.push({ date: lastDate, currentProfit: lastProfit });
+    // Add one day to date to ensure it's showing properly
+    const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
+    valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
   }
+  console.log(valueArray);
   return valueArray;
 });
 
