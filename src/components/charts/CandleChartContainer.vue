@@ -158,14 +158,16 @@ const noDatasetText = computed((): string => {
   }
 });
 const showPlotConfigModal = ref(false);
-const showConfigurator = () => {
+
+function showConfigurator() {
   if (props.plotConfigModal) {
     showPlotConfigModal.value = !showPlotConfigModal.value;
   } else {
     showPlotConfig.value = !showPlotConfig.value;
   }
-};
-const refresh = () => {
+}
+
+function refresh() {
   console.log('refresh', pair.value, props.timeframe);
   if (pair.value && props.timeframe) {
     if (props.historicView) {
@@ -184,7 +186,7 @@ const refresh = () => {
       });
     }
   }
-};
+}
 
 watch(
   () => props.availablePairs,
