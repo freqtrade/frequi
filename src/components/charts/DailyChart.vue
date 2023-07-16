@@ -106,12 +106,12 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
           {
             max: 0.0,
             min: absoluteMin.value,
-            color: 'red',
+            color: settingsStore.colorLoss,
           },
           {
             min: 0.0,
             max: absoluteMax.value,
-            color: 'green',
+            color: settingsStore.colorProfit,
           },
         ],
       },

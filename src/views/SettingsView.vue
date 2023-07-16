@@ -11,6 +11,14 @@
         <b-form-group description="Reset dynamic layouts to how they were.">
           <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
         </b-form-group>
+        <b-form-group description="Color Preference">
+          <b-form-radio-group
+            id="settings-color-preference-radio-group"
+            v-model="settingsStore.colorPreference"
+            :options="colorPreferenceOptions"
+            name="color-preference-options"
+          ></b-form-radio-group>
+        </b-form-group>
         <b-form-group
           label="Show open trades in header"
           description="Decide if open trades should be visualized"
@@ -70,6 +78,10 @@ const openTradesOptions = [
   { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
   { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
   { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
+];
+const colorPreferenceOptions = [
+  { value: 'greenUp', text: 'Green Up/Red Down' },
+  { value: 'redUp', text: 'Green Down/Red Up' },
 ];
 
 //

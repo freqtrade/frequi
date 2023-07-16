@@ -11,17 +11,26 @@ import NavBar from '@/components/layout/NavBar.vue';
 import NavFooter from '@/components/layout/NavFooter.vue';
 import BodyLayout from '@/components/layout/BodyLayout.vue';
 import { setTimezone } from './shared/formatters';
+import { setProfitLossColorsCSS } from './shared/colorPreference';
 import { onMounted, watch } from 'vue';
 import { useSettingsStore } from './stores/settings';
 const settingsStore = useSettingsStore();
 onMounted(() => {
   setTimezone(settingsStore.timezone);
+  setProfitLossColorsCSS(settingsStore.colorPreference);
+  settingsStore.updateProfitLossColor();
 });
 watch(
   () => settingsStore.timezone,
   (tz) => {
     console.log('timezone changed', tz);
     setTimezone(tz);
+  },
+);
+watch(
+  () => settingsStore.colorPreference,
+  (preference) => {
+    setProfitLossColorsCSS(preference);
   },
 );
 </script>

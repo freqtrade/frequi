@@ -32,6 +32,9 @@ export const useSettingsStore = defineStore('uiSettings', {
       useHeikinAshiCandles: false,
       notifications: notificationDefaults,
       profitDistributionBins: 20,
+      colorPreference: 'greenUp',
+      colorProfit: '#12bb7b',
+      colorLoss: '#ef5350',
     };
   },
   getters: {
@@ -57,6 +60,12 @@ export const useSettingsStore = defineStore('uiSettings', {
           //
         }
       }
+    },
+    updateProfitLossColor() {
+      const [colorProfit, colorLoss] =
+        this.colorPreference === 'greenUp' ? ['#12bb7b', '#ef5350'] : ['#ef5350', '#12bb7b'];
+      this.colorProfit = colorProfit;
+      this.colorLoss = colorLoss;
     },
   },
   persist: {

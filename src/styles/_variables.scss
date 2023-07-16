@@ -1,5 +1,11 @@
 // variables created for the project and not overwrite of bootstrap
 $fontsize-small: 0.8rem;
 
-$color-profit: #12bb7b;
-$color-loss: #ef5350;
+:root {
+  // default profit loss colors, could be overwriten by setProfitLossColorsCSS
+  --color-profit: #12bb7b;
+  --color-loss: #ef5350;
+}
+
+$color-profit: var(--color-profit);
+$color-loss: var(--color-loss);

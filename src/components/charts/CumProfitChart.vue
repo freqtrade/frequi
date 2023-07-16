@@ -121,6 +121,7 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
 });
 
 function updateChart(initial = false) {
+  const { colorProfit, colorLoss } = settingsStore;
   const chartOptionsLoc: EChartsOption = {
     dataset: {
       dimensions: ['date', 'profit', 'currentProfit'],
@@ -136,11 +137,11 @@ function updateChart(initial = false) {
         animation: initial,
 
         lineStyle: {
-          color: openProfit.value > 0 ? 'green' : 'red',
+          color: openProfit.value > 0 ? colorProfit : colorLoss,
           type: 'dotted',
         },
         itemStyle: {
-          color: openProfit.value > 0 ? 'green' : 'red',
+          color: openProfit.value > 0 ? colorProfit : colorLoss,
         },
         encode: {
           x: 'date',

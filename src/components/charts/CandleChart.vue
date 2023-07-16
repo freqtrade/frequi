@@ -68,17 +68,6 @@ const MARGINRIGHT = '1%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
 
-// Binance colors
-const upColor = '#26A69A';
-const upBorderColor = '#26A69A';
-const downColor = '#EF5350';
-const downBorderColor = '#EF5350';
-
-const buySignalColor = '#00ff26';
-const shortEntrySignalColor = '#00ff26';
-const sellSignalColor = '#faba25';
-const shortexitSignalColor = '#faba25';
-
 const props = defineProps({
   trades: { required: false, default: () => [], type: Array as () => Trade[] },
   dataset: { required: true, type: Object as () => PairHistory },
@@ -91,7 +80,23 @@ const props = defineProps({
     type: Object as () => ChartSliderPosition,
     default: () => undefined,
   },
+  colorPreference: { required: false, type: String, default: 'greenUp' },
 });
+
+// Candle Colors
+const colorProfit = props.colorPreference === 'greenUp' ? '#26A69A' : '#EF5350';
+const colorLoss = props.colorPreference === 'greenUp' ? '#EF5350' : '#26A69A';
+const upColor = colorProfit;
+const upBorderColor = colorProfit;
+const downColor = colorLoss;
+const downBorderColor = colorLoss;
+
+// Buy / Sell Signal Colors
+const buySignalColor = '#00ff26';
+const shortEntrySignalColor = '#00ff26';
+const sellSignalColor = '#faba25';
+const shortexitSignalColor = '#faba25';
+
 const candleChart = ref<typeof ECharts>();
 const chartOptions = ref<EChartsOption>({});
 

@@ -140,11 +140,11 @@ const chartOptions = computed((): EChartsOption => {
         pieces: [
           {
             max: 0.0,
-            color: '#f84960',
+            color: settingsStore.colorLoss,
           },
           {
             min: 0.0,
-            color: '#2ed191',
+            color: settingsStore.colorProfit,
           },
         ],
       },

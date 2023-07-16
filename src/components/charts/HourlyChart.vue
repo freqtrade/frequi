@@ -123,12 +123,12 @@ const hourlyChartOptions = computed((): EChartsOption => {
           {
             max: 0.0,
             min: -2,
-            color: 'red',
+            color: settingsStore.colorLoss,
           },
           {
             min: 0.0,
             max: 2,
-            color: 'green',
+            color: settingsStore.colorProfit,
           },
         ],
       },
