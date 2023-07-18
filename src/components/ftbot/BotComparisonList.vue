@@ -18,35 +18,35 @@
         <span>{{ row.value }}</span>
       </div>
     </template>
-    <template #cell(profitOpen)="row">
+    <template #cell(profitOpen)="{ item }">
       <profit-pill
-        v-if="row.item.profitOpen && row.item.botId != 'Summary'"
-        :profit-ratio="row.item.profitOpenRatio"
-        :profit-abs="row.item.profitOpen"
-        :stake-currency="row.item.stakeCurrency"
+        v-if="item.profitOpen && item.botId != 'Summary'"
+        :profit-ratio="item.profitOpenRatio"
+        :profit-abs="item.profitOpen"
+        :stake-currency="item.stakeCurrency"
       />
     </template>
-    <template #cell(profitClosed)="row">
+    <template #cell(profitClosed)="{ item }">
       <profit-pill
-        v-if="row.item.profitClosed && row.item.botId != 'Summary'"
-        :profit-ratio="row.item.profitClosedRatio"
-        :profit-abs="row.item.profitClosed"
-        :stake-currency="row.item.stakeCurrency"
+        v-if="item.profitClosed && item.botId != 'Summary'"
+        :profit-ratio="item.profitClosedRatio"
+        :profit-abs="item.profitClosed"
+        :stake-currency="item.stakeCurrency"
       />
     </template>
 
-    <template #cell(balance)="row">
-      <div v-if="row.item.balance">
-        <span :title="row.item.stakeCurrency"
-          >{{ formatPrice(row.item.balance, row.item.stakeCurrencyDecimals) }}
+    <template #cell(balance)="{ item }">
+      <div v-if="item.balance">
+        <span :title="item.stakeCurrency"
+          >{{ formatPrice(item.balance, item.stakeCurrencyDecimals) }}
         </span>
-        <span class="text-small">{{ row.item.stakeCurrency }}</span>
+        <span class="text-small">{{ item.stakeCurrency }}</span>
       </div>
     </template>
-    <template #cell(winVsLoss)="row">
-      <div v-if="row.item.losses !== undefined">
-        <span class="text-profit">{{ row.item.wins }}</span> /
-        <span class="text-loss">{{ row.item.losses }}</span>
+    <template #cell(winVsLoss)="{ item }">
+      <div v-if="item.losses !== undefined">
+        <span class="text-profit">{{ item.wins }}</span> /
+        <span class="text-loss">{{ item.losses }}</span>
       </div>
     </template>
   </b-table>
