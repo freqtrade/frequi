@@ -31,9 +31,12 @@
             :stake-currency="botStore.activeBot.stakeCurrency"
           />
         </div>
-        <b-button size="sm" @click="ordersVisible[i] = !ordersVisible[i]"
-          ><i-mdi-chevron-right v-if="!ordersVisible[i]" />
-          <i-mdi-chevron-down v-if="ordersVisible[i]" />
+        <b-button
+          size="sm"
+          variant="secondary-outline"
+          @click="ordersVisible[i] = !ordersVisible[i]"
+          ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
+          <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
         </b-button>
         <b-collapse v-model="ordersVisible[i]">
           <ul class="px-3 m-0">
