@@ -26,7 +26,7 @@
     "core-js": "^3.31.1",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
-    "echarts": "^5.4.2",
+    "echarts": "^5.4.3",
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.29.0",
     "pinia": "^2.1.4",
