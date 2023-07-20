@@ -79,6 +79,7 @@ import {
   formatPercent,
   formatPrice,
   humanizeDurationFromSeconds,
+  isNotUndefined,
 } from '@/shared/formatters';
 import { TableField, TableItem } from 'bootstrap-vue-next';
 
@@ -113,6 +114,10 @@ const worstPair = computed((): string => {
   }
   const value = trades[0];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
+});
+
+const pairSummary = computed(() => {
+  return props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1];
 });
 
 const backtestResultStats = computed(() => {
@@ -198,14 +203,19 @@ const backtestResultStats = computed(() => {
 
     {
       metric: 'Win/Draw/Loss',
-      value: `${
-        props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1].wins
-      } / ${
-        props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1]
-          .draws
-      } / ${
-        props.backtestResult.results_per_pair[props.backtestResult.results_per_pair.length - 1]
-          .losses
+      value: `${pairSummary.value.wins} / ${pairSummary.value.draws} / ${
+        pairSummary.value.losses
+      } ${
+        isNotUndefined(pairSummary.value.winrate)
+          ? '(WR: ' +
+            formatPercent(
+              props.backtestResult.results_per_pair[
+                props.backtestResult.results_per_pair.length - 1
+              ].winrate ?? 0,
+              2,
+            ) +
+            ')'
+          : ''
       }`,
     },
     {
