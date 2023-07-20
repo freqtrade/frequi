@@ -12,7 +12,7 @@
       <div class="d-flex flex-row">
         <b-form-checkbox
           v-if="row.item.botId && botStore.botCount > 1"
-          v-model="botStore.botStores[row.item.botId].isSelected"
+          v-model="botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected"
           title="Show bot in Dashboard"
         />
         <span>{{ row.value }}</span>
@@ -21,24 +21,29 @@
     <template #cell(profitOpen)="{ item }">
       <profit-pill
         v-if="item.profitOpen && item.botId != 'Summary'"
-        :profit-ratio="item.profitOpenRatio"
-        :profit-abs="item.profitOpen"
-        :stake-currency="item.stakeCurrency"
+        :profit-ratio="(item as unknown as ComparisonTableItems).profitOpenRatio"
+        :profit-abs="(item as unknown as ComparisonTableItems).profitOpen"
+        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
       />
     </template>
     <template #cell(profitClosed)="{ item }">
       <profit-pill
         v-if="item.profitClosed && item.botId != 'Summary'"
-        :profit-ratio="item.profitClosedRatio"
-        :profit-abs="item.profitClosed"
-        :stake-currency="item.stakeCurrency"
+        :profit-ratio="(item as unknown as ComparisonTableItems).profitClosedRatio"
+        :profit-abs="(item as unknown as ComparisonTableItems).profitClosed"
+        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
       />
     </template>
 
     <template #cell(balance)="{ item }">
       <div v-if="item.balance">
-        <span :title="item.stakeCurrency"
-          >{{ formatPrice(item.balance, item.stakeCurrencyDecimals) }}
+        <span :title="(item as unknown as ComparisonTableItems).stakeCurrency"
+          >{{
+            formatPrice(
+              (item as unknown as ComparisonTableItems).balance ?? 0,
+              (item as unknown as ComparisonTableItems).stakeCurrencyDecimals,
+            )
+          }}
         </span>
         <span class="text-small">{{ item.stakeCurrency }}</span>
       </div>
