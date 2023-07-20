@@ -12,32 +12,36 @@
         v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
         button
-        class="d-flex flex-wrap justify-content-between align-items-center py-1"
+        class="d-flex flex-column py-1"
         :title="`${trade.pair}`"
         :active="trade.open_timestamp === selectedTrade.open_timestamp"
         @click="onTradeSelect(trade)"
       >
-        <div class="d-flex flex-column">
-          <div>
-            <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
-              trade.is_short ? 'S-' : 'L-'
-            }}</span>
-            <DateTimeTZ :date="trade.open_timestamp" />
+        <div class="d-flex">
+          <div class="d-flex flex-column">
+            <div>
+              <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
+                trade.is_short ? 'S-' : 'L-'
+              }}</span>
+              <DateTimeTZ :date="trade.open_timestamp" />
+            </div>
+            <TradeProfit :trade="trade" class="my-1" />
+            <ProfitPill
+              v-if="backtestMode"
+              :profit-ratio="trade.profit_ratio"
+              :stake-currency="botStore.activeBot.stakeCurrency"
+            />
           </div>
-          <TradeProfit :trade="trade" class="my-1" />
-          <ProfitPill
-            v-if="backtestMode"
-            :profit-ratio="trade.profit_ratio"
-            :stake-currency="botStore.activeBot.stakeCurrency"
-          />
+          <div class="d-flex flex-fill justify-content-end">
+            <b-button
+              size="sm"
+              variant="secondary-outline"
+              @click="ordersVisible[i] = !ordersVisible[i]"
+              ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
+              <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
+            </b-button>
+          </div>
         </div>
-        <b-button
-          size="sm"
-          variant="secondary-outline"
-          @click="ordersVisible[i] = !ordersVisible[i]"
-          ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
-          <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
-        </b-button>
         <b-collapse v-model="ordersVisible[i]">
           <ul class="px-3 m-0">
             <li
