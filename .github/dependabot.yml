@@ -23,7 +23,7 @@ updates:
     day: "wednesday"
     time: "03:00"
     timezone: "UTC"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 20
   target-branch: main
 
 - package-ecosystem: "github-actions"
