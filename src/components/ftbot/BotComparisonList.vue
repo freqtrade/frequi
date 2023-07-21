@@ -12,7 +12,9 @@
       <div class="d-flex flex-row">
         <b-form-checkbox
           v-if="row.item.botId && botStore.botCount > 1"
-          v-model="botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected"
+          v-model="
+            botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected
+          "
           title="Show bot in Dashboard"
         />
         <span>{{ row.value }}</span>

@@ -60,7 +60,7 @@
         {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
       </template>
       <template #cell(profit)="row">
-        <trade-profit :trade="(row.item as unknown as Trade)" />
+        <trade-profit :trade="row.item as unknown as Trade" />
       </template>
       <template #cell(open_timestamp)="row">
         <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
