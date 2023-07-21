@@ -32,15 +32,14 @@
               :stake-currency="botStore.activeBot.stakeCurrency"
             />
           </div>
-          <div class="d-flex flex-fill justify-content-end">
-            <b-button
-              size="sm"
-              variant="secondary-outline"
-              @click="ordersVisible[i] = !ordersVisible[i]"
-              ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
-              <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
-            </b-button>
-          </div>
+          <b-button
+            size="sm"
+            class="ms-auto"
+            variant="secondary-outline"
+            @click="ordersVisible[i] = !ordersVisible[i]"
+            ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
+            <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
+          </b-button>
         </div>
         <b-collapse v-model="ordersVisible[i]">
           <ul class="px-3 m-0">
