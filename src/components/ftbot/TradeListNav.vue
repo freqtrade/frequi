@@ -12,7 +12,7 @@
         v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
         button
-        class="d-flex flex-column py-1"
+        class="d-flex flex-column py-1 pe-1 align-items-stretch"
         :title="`${trade.pair}`"
         :active="trade.open_timestamp === selectedTrade.open_timestamp"
         @click="onTradeSelect(trade)"
