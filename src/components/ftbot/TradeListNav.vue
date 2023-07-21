@@ -9,26 +9,48 @@
         >Trade Navigation {{ sortNewestFirst ? '&#8595;' : '&#8593;' }}
       </b-list-group-item>
       <b-list-group-item
-        v-for="trade in sortedTrades"
+        v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
         button
-        class="d-flex flex-wrap justify-content-between align-items-center py-1"
+        class="d-flex flex-column py-1 pe-1 align-items-stretch"
         :title="`${trade.pair}`"
         :active="trade.open_timestamp === selectedTrade.open_timestamp"
         @click="onTradeSelect(trade)"
       >
-        <div>
-          <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
-            trade.is_short ? 'S-' : 'L-'
-          }}</span>
-          <DateTimeTZ :date="trade.open_timestamp" />
+        <div class="d-flex">
+          <div class="d-flex flex-column">
+            <div>
+              <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
+                trade.is_short ? 'S-' : 'L-'
+              }}</span>
+              <DateTimeTZ :date="trade.open_timestamp" />
+            </div>
+            <TradeProfit :trade="trade" class="my-1" />
+            <ProfitPill
+              v-if="backtestMode"
+              :profit-ratio="trade.profit_ratio"
+              :stake-currency="botStore.activeBot.stakeCurrency"
+            />
+          </div>
+          <b-button
+            size="sm"
+            class="ms-auto"
+            variant="secondary-outline"
+            @click="ordersVisible[i] = !ordersVisible[i]"
+            ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
+            <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
+          </b-button>
         </div>
-        <TradeProfit :trade="trade" />
-        <ProfitPill
-          v-if="backtestMode"
-          :profit-ratio="trade.profit_ratio"
-          :stake-currency="botStore.activeBot.stakeCurrency"
-        />
+        <b-collapse v-model="ordersVisible[i]">
+          <ul class="px-3 m-0">
+            <li
+              v-for="order in trade.orders?.filter((o) => o.order_filled_timestamp !== null)"
+              :key="order.order_timestamp"
+            >
+              {{ order.ft_order_side }} {{ order.amount }} at {{ order.safe_price }}
+            </li>
+          </ul>
+        </b-collapse>
       </b-list-group-item>
       <b-list-group-item v-if="trades.length === 0">No trades to show...</b-list-group-item>
     </b-list-group>
@@ -39,7 +61,7 @@
 import { Trade } from '@/types';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
@@ -67,6 +89,15 @@ const sortedTrades = computed(() => {
         : a.open_timestamp - b.open_timestamp,
     );
 });
+
+const ordersVisible = ref(sortedTrades.value.map(() => false));
+
+watch(
+  () => botStore.activeBot.selectedPair,
+  () => {
+    ordersVisible.value = sortedTrades.value.map(() => false);
+  },
+);
 </script>
 
 <style scoped>
