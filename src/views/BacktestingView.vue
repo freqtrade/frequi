@@ -167,7 +167,7 @@
               <div class="d-flex">
                 <b-form-checkbox
                   id="stake-amount-bool"
-                  v-model="stakeAmountUnlimited"
+                  v-model="btStore.stakeAmountUnlimited"
                   class="col-md-6"
                   >Unlimited stake</b-form-checkbox
                 >
@@ -178,7 +178,7 @@
                   type="number"
                   placeholder="Use strategy default"
                   step="0.01"
-                  :disabled="stakeAmountUnlimited"
+                  :disabled="btStore.stakeAmountUnlimited"
                 ></b-form-input>
               </div>
             </b-form-group>
@@ -191,7 +191,7 @@
             >
               <b-form-checkbox
                 id="enable-protections"
-                v-model="enableProtections"
+                v-model="btStore.enableProtections"
               ></b-form-checkbox>
             </b-form-group>
             <b-form-group
@@ -365,8 +365,6 @@ const timeframe = computed((): string => {
 
 const showLeftBar = ref(false);
 
-const enableProtections = ref(false);
-const stakeAmountUnlimited = ref(false);
 const btFormMode = ref('run');
 const pollInterval = ref<number | null>(null);
 
@@ -392,13 +390,13 @@ const clickBacktest = () => {
   const btPayload: BacktestPayload = {
     strategy: btStore.strategy,
     timerange: btStore.timerange,
-    enable_protections: enableProtections.value,
+    enable_protections: btStore.enableProtections,
   };
   const openTradesInt = parseInt(btStore.maxOpenTrades, 10);
   if (openTradesInt) {
     btPayload.max_open_trades = openTradesInt;
   }
-  if (stakeAmountUnlimited.value) {
+  if (btStore.stakeAmountUnlimited) {
     btPayload.stake_amount = 'unlimited';
   } else {
     const stakeAmountLoc = Number(btStore.stakeAmount);

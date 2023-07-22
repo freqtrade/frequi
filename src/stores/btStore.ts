@@ -11,6 +11,8 @@ export const useBtStore = defineStore('btStore', {
       stakeAmount: '',
       startingCapital: '',
       allowCache: true,
+      enableProtections: false,
+      stakeAmountUnlimited: false,
       freqAI: {
         enabled: false,
         model: '',
