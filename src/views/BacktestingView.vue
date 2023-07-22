@@ -253,7 +253,7 @@
               ></b-form-input>
             </b-form-group> -->
             <hr />
-            <TimeRangeSelect v-model="timerange" class="mt-2"></TimeRangeSelect>
+            <TimeRangeSelect v-model="btStore.timerange" class="mt-2"></TimeRangeSelect>
           </b-form-group>
         </b-card>
 
@@ -313,7 +313,7 @@
       <BacktestResultChart
         :timeframe="timeframe"
         :strategy="btStore.strategy"
-        :timerange="timerange"
+        :timerange="btStore.timerange"
         :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
         :freqai-model="freqAI.enabled ? freqAI.model : undefined"
@@ -357,7 +357,6 @@ const timeframe = computed((): string => {
   }
 });
 
-const timerange = ref('');
 const showLeftBar = ref(false);
 const freqAI = ref({
   enabled: false,
@@ -381,7 +380,7 @@ const selectBacktestResult = () => {
   btStore.selectedDetailTimeframe =
     botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
   // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
-  timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
+  btStore.timerange = botStore.activeBot.selectedBacktestResult.timerange;
 };
 
 watch(
@@ -394,7 +393,7 @@ watch(
 const clickBacktest = () => {
   const btPayload: BacktestPayload = {
     strategy: btStore.strategy,
-    timerange: timerange.value,
+    timerange: btStore.timerange,
     enable_protections: enableProtections.value,
   };
   const openTradesInt = parseInt(maxOpenTrades.value, 10);
