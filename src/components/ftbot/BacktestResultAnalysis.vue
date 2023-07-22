@@ -169,9 +169,16 @@ const backtestResultStats = computed(() => {
       value: `${props.backtestResult.calmar ? props.backtestResult.calmar.toFixed(2) : 'N/A'}`,
     },
     {
-      metric: 'Expectancy',
+      metric: `Expectancy ${props.backtestResult.expectancy_ratio ? '(ratio)' : ''}`,
       value: `${
-        props.backtestResult.expectancy ? props.backtestResult.expectancy.toFixed(2) : 'N/A'
+        props.backtestResult.expectancy
+          ? props.backtestResult.expectancy_ratio
+            ? props.backtestResult.expectancy.toFixed(2) +
+              ' (' +
+              props.backtestResult.expectancy_ratio.toFixed(2) +
+              ')'
+            : props.backtestResult.expectancy.toFixed(2)
+          : 'N/A'
       }`,
     },
     {

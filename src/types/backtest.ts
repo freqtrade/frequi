@@ -162,6 +162,7 @@ export interface StrategyBacktestResult {
   sharpe?: number;
   calmar?: number;
   expectancy?: number;
+  expectancy_ratio?: number;
 
   winner_holding_avg: string;
   winner_holding_avg_s: number;
