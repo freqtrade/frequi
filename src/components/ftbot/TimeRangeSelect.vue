@@ -61,7 +61,7 @@ const timeRange = computed(() => {
   return '';
 });
 
-const updateInput = () => {
+function updateInput() {
   const tr = props.modelValue.split('-');
   if (tr[0]) {
     dateFrom.value = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
@@ -74,7 +74,7 @@ const updateInput = () => {
     dateTo.value = '';
   }
   emit('update:modelValue', timeRange.value);
-};
+}
 
 watch(
   () => timeRange.value,
