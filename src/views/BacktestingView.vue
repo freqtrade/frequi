@@ -105,7 +105,7 @@
         class="flex-fill"
       />
 
-      <BacktestGraphsView
+      <BacktestGraphs
         v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
       />
@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
+import BacktestGraphs from '@/components/ftbot/BacktestGraphs.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
