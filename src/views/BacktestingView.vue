@@ -94,213 +94,18 @@
         v-if="btFormMode == 'historicResults'"
         class="flex-fill row d-flex flex-column bt-config"
       >
-        <backtest-history-load />
+        <BacktestHistoryLoad />
       </div>
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column bt-config">
-        <div class="mb-2">
-          <span>Strategy</span>
-          <StrategySelect v-model="strategy"></StrategySelect>
-        </div>
-        <b-card :disabled="botStore.activeBot.backtestRunning">
-          <!-- Backtesting parameters -->
-          <b-form-group
-            label-cols-lg="2"
-            label="Backtest params"
-            label-size="sm"
-            label-class="fw-bold pt-0"
-            class="mb-0"
-          >
-            <b-form-group
-              label-cols-sm="5"
-              label="Timeframe:"
-              label-align-sm="right"
-              label-for="timeframe-select"
-            >
-              <TimeframeSelect id="timeframe-select" v-model="selectedTimeframe" />
-            </b-form-group>
-            <b-form-group
-              label-cols-sm="5"
-              label="Detail Timeframe:"
-              label-align-sm="right"
-              label-for="timeframe-detail-select"
-              title="Detail timeframe, to simulate intra-candle results. Not setting this will not use this functionality."
-            >
-              <TimeframeSelect
-                id="timeframe-detail-select"
-                v-model="selectedDetailTimeframe"
-                :below-timeframe="selectedTimeframe"
-              />
-            </b-form-group>
-
-            <b-form-group
-              label-cols-sm="5"
-              label="Max open trades:"
-              label-align-sm="right"
-              label-for="max-open-trades"
-            >
-              <b-form-input
-                id="max-open-trades"
-                v-model="maxOpenTrades"
-                placeholder="Use strategy default"
-                type="number"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group
-              label-cols-sm="5"
-              label="Starting capital:"
-              label-align-sm="right"
-              label-for="starting-capital"
-            >
-              <b-form-input
-                id="starting-capital"
-                v-model="startingCapital"
-                type="number"
-                step="0.001"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group
-              label-cols-sm="5"
-              label="Stake amount:"
-              label-align-sm="right"
-              label-for="stake-amount"
-            >
-              <div class="d-flex">
-                <b-form-checkbox
-                  id="stake-amount-bool"
-                  v-model="stakeAmountUnlimited"
-                  class="col-md-6"
-                  >Unlimited stake</b-form-checkbox
-                >
-
-                <b-form-input
-                  id="stake-amount"
-                  v-model="stakeAmount"
-                  type="number"
-                  placeholder="Use strategy default"
-                  step="0.01"
-                  :disabled="stakeAmountUnlimited"
-                ></b-form-input>
-              </div>
-            </b-form-group>
-
-            <b-form-group
-              label-cols-sm="5"
-              label="Enable Protections:"
-              label-align-sm="right"
-              label-for="enable-protections"
-            >
-              <b-form-checkbox
-                id="enable-protections"
-                v-model="enableProtections"
-              ></b-form-checkbox>
-            </b-form-group>
-            <b-form-group
-              v-if="botStore.activeBot.botApiVersion >= 2.22"
-              label-cols-sm="5"
-              label="Cache Backtest results:"
-              label-align-sm="right"
-              label-for="enable-cache"
-            >
-              <b-form-checkbox id="enable-cache" v-model="allowCache"></b-form-checkbox>
-            </b-form-group>
-            <template v-if="botStore.activeBot.botApiVersion >= 2.22">
-              <b-form-group
-                label-cols-sm="5"
-                label="Enable FreqAI:"
-                label-align-sm="right"
-                label-for="enable-freqai"
-              >
-                <template #label>
-                  <div class="d-flex justify-content-center">
-                    <span class="me-2">Enable FreqAI:</span>
-                    <InfoBox
-                      hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
-                    />
-                  </div>
-                </template>
-                <b-form-checkbox id="enable-freqai" v-model="freqAI.enabled"></b-form-checkbox>
-              </b-form-group>
-              <b-form-group
-                v-if="freqAI.enabled"
-                label-cols-sm="5"
-                label="FreqAI identifier:"
-                label-align-sm="right"
-                label-for="freqai-identifier"
-              >
-                <b-form-input
-                  id="freqai-identifier"
-                  v-model="freqAI.identifier"
-                  placeholder="Use config default"
-                ></b-form-input>
-              </b-form-group>
-              <b-form-group
-                v-if="freqAI.enabled"
-                label-cols-sm="5"
-                label="FreqAI Model"
-                label-align-sm="right"
-                label-for="freqai-model"
-              >
-                <FreqaiModelSelect id="freqai-model" v-model="freqAI.model"></FreqaiModelSelect>
-              </b-form-group>
-            </template>
-
-            <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
-              <b-form-input
-                id="fee"
-                type="number"
-                placeholder="Use exchange default"
-                step="0.01"
-              ></b-form-input>
-            </b-form-group> -->
-            <hr />
-            <TimeRangeSelect v-model="timerange" class="mt-2"></TimeRangeSelect>
-          </b-form-group>
-        </b-card>
-
-        <h3 class="mt-3">Backtesting summary</h3>
-        <div
-          class="d-flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center"
-        >
-          <b-button
-            id="start-backtest"
-            variant="primary"
-            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-            class="mx-1"
-            @click="clickBacktest"
-          >
-            Start backtest
-          </b-button>
-          <b-button
-            variant="primary"
-            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-            class="mx-1"
-            @click="botStore.activeBot.pollBacktest"
-          >
-            Load backtest result
-          </b-button>
-          <b-button
-            variant="primary"
-            class="mx-1"
-            :disabled="!botStore.activeBot.backtestRunning"
-            @click="botStore.activeBot.stopBacktest"
-            >Stop Backtest</b-button
-          >
-          <b-button
-            variant="primary"
-            class="mx-1"
-            :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-            @click="botStore.activeBot.removeBacktest"
-            >Reset Backtest</b-button
-          >
-        </div>
+        <BacktestRun />
       </div>
-      <BacktestResultView
+      <BacktestResultAnalysis
         v-if="hasBacktestResult && btFormMode == 'results'"
         :backtest-result="botStore.activeBot.selectedBacktestResult"
         class="flex-fill"
       />
 
-      <BacktestGraphsView
+      <BacktestGraphs
         v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
       />
@@ -312,35 +117,31 @@
     >
       <BacktestResultChart
         :timeframe="timeframe"
-        :strategy="strategy"
-        :timerange="timerange"
+        :strategy="btStore.strategy"
+        :timerange="btStore.timerange"
         :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
-        :freqai-model="freqAI.enabled ? freqAI.model : undefined"
+        :freqai-model="btStore.freqAI.enabled ? btStore.freqAI.model : undefined"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
-import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
-import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
-import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import FreqaiModelSelect from '@/components/ftbot/FreqaiModelSelect.vue';
-import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
+import BacktestGraphs from '@/components/ftbot/BacktestGraphs.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
-import BacktestGraphsView from '@/components/ftbot/BacktestGraphsView.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
-import InfoBox from '@/components/general/InfoBox.vue';
-
-import { BacktestPayload } from '@/types';
+import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
+import BacktestResultAnalysis from '@/components/ftbot/BacktestResultAnalysis.vue';
+import BacktestRun from '@/components/ftbot/BacktestRun.vue';
 
 import { formatPercent } from '@/shared/formatters';
-import { computed, ref, onMounted, watch } from 'vue';
+import { useBtStore } from '@/stores/btStore';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const botStore = useBotStore();
+const btStore = useBtStore();
 
 const hasBacktestResult = computed(() =>
   botStore.activeBot.backtestHistory
@@ -355,33 +156,20 @@ const timeframe = computed((): string => {
   }
 });
 
-const strategy = ref('');
-const selectedTimeframe = ref('');
-const selectedDetailTimeframe = ref('');
-const timerange = ref('');
 const showLeftBar = ref(false);
-const freqAI = ref({
-  enabled: false,
-  model: '',
-  identifier: '',
-});
-const enableProtections = ref(false);
-const stakeAmountUnlimited = ref(false);
-const allowCache = ref(true);
-const maxOpenTrades = ref('');
-const stakeAmount = ref('');
-const startingCapital = ref('');
+
 const btFormMode = ref('run');
 const pollInterval = ref<number | null>(null);
 
 const selectBacktestResult = () => {
   // Set parameters for this result
-  strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
-  botStore.activeBot.getStrategy(strategy.value);
-  selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
-  selectedDetailTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+  btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
+  botStore.activeBot.getStrategy(btStore.strategy);
+  btStore.selectedTimeframe = botStore.activeBot.selectedBacktestResult.timeframe;
+  btStore.selectedDetailTimeframe =
+    botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
   // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
-  timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
+  btStore.timerange = botStore.activeBot.selectedBacktestResult.timerange;
 };
 
 watch(
@@ -390,49 +178,6 @@ watch(
     selectBacktestResult();
   },
 );
-
-const clickBacktest = () => {
-  const btPayload: BacktestPayload = {
-    strategy: strategy.value,
-    timerange: timerange.value,
-    enable_protections: enableProtections.value,
-  };
-  const openTradesInt = parseInt(maxOpenTrades.value, 10);
-  if (openTradesInt) {
-    btPayload.max_open_trades = openTradesInt;
-  }
-  if (stakeAmountUnlimited.value) {
-    btPayload.stake_amount = 'unlimited';
-  } else {
-    const stakeAmountLoc = Number(stakeAmount.value);
-    if (stakeAmountLoc) {
-      btPayload.stake_amount = stakeAmountLoc.toString();
-    }
-  }
-
-  const startingCapitalLoc = Number(startingCapital.value);
-  if (startingCapitalLoc) {
-    btPayload.dry_run_wallet = startingCapitalLoc;
-  }
-
-  if (selectedTimeframe.value) {
-    btPayload.timeframe = selectedTimeframe.value;
-  }
-  if (selectedDetailTimeframe.value) {
-    btPayload.timeframe_detail = selectedDetailTimeframe.value;
-  }
-  if (!allowCache.value) {
-    btPayload.backtest_cache = 'none';
-  }
-  if (freqAI.value.enabled) {
-    btPayload.freqaimodel = freqAI.value.model;
-    if (freqAI.value.identifier !== '') {
-      btPayload.freqai = { identifier: freqAI.value.identifier };
-    }
-  }
-
-  botStore.activeBot.startBacktest(btPayload);
-};
 
 onMounted(() => botStore.activeBot.getState());
 watch(
