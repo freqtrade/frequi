@@ -99,7 +99,7 @@
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column bt-config">
         <div class="mb-2">
           <span>Strategy</span>
-          <StrategySelect v-model="strategy"></StrategySelect>
+          <StrategySelect v-model="btStore.strategy"></StrategySelect>
         </div>
         <b-card :disabled="botStore.activeBot.backtestRunning">
           <!-- Backtesting parameters -->
@@ -312,7 +312,7 @@
     >
       <BacktestResultChart
         :timeframe="timeframe"
-        :strategy="strategy"
+        :strategy="btStore.strategy"
         :timerange="timerange"
         :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
@@ -339,8 +339,10 @@ import { BacktestPayload } from '@/types';
 import { formatPercent } from '@/shared/formatters';
 import { computed, ref, onMounted, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { useBtStore } from '@/stores/btStore';
 
 const botStore = useBotStore();
+const btStore = useBtStore();
 
 const hasBacktestResult = computed(() =>
   botStore.activeBot.backtestHistory
@@ -355,7 +357,6 @@ const timeframe = computed((): string => {
   }
 });
 
-const strategy = ref('');
 const selectedTimeframe = ref('');
 const selectedDetailTimeframe = ref('');
 const timerange = ref('');
@@ -376,8 +377,8 @@ const pollInterval = ref<number | null>(null);
 
 const selectBacktestResult = () => {
   // Set parameters for this result
-  strategy.value = botStore.activeBot.selectedBacktestResult.strategy_name;
-  botStore.activeBot.getStrategy(strategy.value);
+  btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
+  botStore.activeBot.getStrategy(btStore.strategy);
   selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
   selectedDetailTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
   // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
@@ -393,7 +394,7 @@ watch(
 
 const clickBacktest = () => {
   const btPayload: BacktestPayload = {
-    strategy: strategy.value,
+    strategy: btStore.strategy,
     timerange: timerange.value,
     enable_protections: enableProtections.value,
   };
