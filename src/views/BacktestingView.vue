@@ -94,10 +94,10 @@
         v-if="btFormMode == 'historicResults'"
         class="flex-fill row d-flex flex-column bt-config"
       >
-        <backtest-history-load />
+        <BacktestHistoryLoad />
       </div>
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column bt-config">
-        <backtest-run />
+        <BacktestRun />
       </div>
       <BacktestResultAnalysis
         v-if="hasBacktestResult && btFormMode == 'results'"
