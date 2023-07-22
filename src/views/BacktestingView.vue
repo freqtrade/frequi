@@ -99,7 +99,7 @@
       <div v-if="btFormMode == 'run'" class="flex-fill row d-flex flex-column bt-config">
         <backtest-run />
       </div>
-      <BacktestResultView
+      <BacktestResultAnalysis
         v-if="hasBacktestResult && btFormMode == 'results'"
         :backtest-result="botStore.activeBot.selectedBacktestResult"
         class="flex-fill"
@@ -132,7 +132,7 @@ import BacktestGraphs from '@/components/ftbot/BacktestGraphs.vue';
 import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
-import BacktestResultView from '@/components/ftbot/BacktestResultView.vue';
+import BacktestResultAnalysis from '@/components/ftbot/BacktestResultAnalysis.vue';
 import BacktestRun from '@/components/ftbot/BacktestRun.vue';
 
 import { formatPercent } from '@/shared/formatters';
