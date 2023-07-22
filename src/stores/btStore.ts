@@ -5,6 +5,7 @@ export const useBtStore = defineStore('btStore', {
     return {
       strategy: '',
       selectedTimeframe: '',
+      selectedDetailTimeframe: '',
       freqAI: {
         enabled: false,
         model: '',

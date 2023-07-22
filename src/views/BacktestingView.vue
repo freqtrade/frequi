@@ -116,7 +116,7 @@
               label-align-sm="right"
               label-for="timeframe-select"
             >
-              <TimeframeSelect id="timeframe-select" v-model="selectedTimeframe" />
+              <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" />
             </b-form-group>
             <b-form-group
               label-cols-sm="5"
@@ -127,8 +127,8 @@
             >
               <TimeframeSelect
                 id="timeframe-detail-select"
-                v-model="selectedDetailTimeframe"
-                :below-timeframe="selectedTimeframe"
+                v-model="btStore.selectedDetailTimeframe"
+                :below-timeframe="btStore.selectedTimeframe"
               />
             </b-form-group>
 
@@ -357,8 +357,6 @@ const timeframe = computed((): string => {
   }
 });
 
-const selectedTimeframe = ref('');
-const selectedDetailTimeframe = ref('');
 const timerange = ref('');
 const showLeftBar = ref(false);
 const freqAI = ref({
@@ -379,8 +377,9 @@ const selectBacktestResult = () => {
   // Set parameters for this result
   btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
   botStore.activeBot.getStrategy(btStore.strategy);
-  selectedTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe;
-  selectedDetailTimeframe.value = botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+  btStore.selectedTimeframe = botStore.activeBot.selectedBacktestResult.timeframe;
+  btStore.selectedDetailTimeframe =
+    botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
   // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
   timerange.value = botStore.activeBot.selectedBacktestResult.timerange;
 };
@@ -416,11 +415,11 @@ const clickBacktest = () => {
     btPayload.dry_run_wallet = startingCapitalLoc;
   }
 
-  if (selectedTimeframe.value) {
-    btPayload.timeframe = selectedTimeframe.value;
+  if (btStore.selectedTimeframe) {
+    btPayload.timeframe = btStore.selectedTimeframe;
   }
-  if (selectedDetailTimeframe.value) {
-    btPayload.timeframe_detail = selectedDetailTimeframe.value;
+  if (btStore.selectedDetailTimeframe) {
+    btPayload.timeframe_detail = btStore.selectedDetailTimeframe;
   }
   if (!allowCache.value) {
     btPayload.backtest_cache = 'none';
