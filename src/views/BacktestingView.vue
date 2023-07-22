@@ -218,10 +218,13 @@
                     />
                   </div>
                 </template>
-                <b-form-checkbox id="enable-freqai" v-model="freqAI.enabled"></b-form-checkbox>
+                <b-form-checkbox
+                  id="enable-freqai"
+                  v-model="btStore.freqAI.enabled"
+                ></b-form-checkbox>
               </b-form-group>
               <b-form-group
-                v-if="freqAI.enabled"
+                v-if="btStore.freqAI.enabled"
                 label-cols-sm="5"
                 label="FreqAI identifier:"
                 label-align-sm="right"
@@ -229,18 +232,21 @@
               >
                 <b-form-input
                   id="freqai-identifier"
-                  v-model="freqAI.identifier"
+                  v-model="btStore.freqAI.identifier"
                   placeholder="Use config default"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
-                v-if="freqAI.enabled"
+                v-if="btStore.freqAI.enabled"
                 label-cols-sm="5"
                 label="FreqAI Model"
                 label-align-sm="right"
                 label-for="freqai-model"
               >
-                <FreqaiModelSelect id="freqai-model" v-model="freqAI.model"></FreqaiModelSelect>
+                <FreqaiModelSelect
+                  id="freqai-model"
+                  v-model="btStore.freqAI.model"
+                ></FreqaiModelSelect>
               </b-form-group>
             </template>
 
@@ -316,7 +322,7 @@
         :timerange="btStore.timerange"
         :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
         :trades="botStore.activeBot.selectedBacktestResult.trades"
-        :freqai-model="freqAI.enabled ? freqAI.model : undefined"
+        :freqai-model="btStore.freqAI.enabled ? btStore.freqAI.model : undefined"
       />
     </div>
   </div>
@@ -358,11 +364,6 @@ const timeframe = computed((): string => {
 });
 
 const showLeftBar = ref(false);
-const freqAI = ref({
-  enabled: false,
-  model: '',
-  identifier: '',
-});
 const enableProtections = ref(false);
 const stakeAmountUnlimited = ref(false);
 const allowCache = ref(true);
@@ -423,10 +424,10 @@ const clickBacktest = () => {
   if (!allowCache.value) {
     btPayload.backtest_cache = 'none';
   }
-  if (freqAI.value.enabled) {
-    btPayload.freqaimodel = freqAI.value.model;
-    if (freqAI.value.identifier !== '') {
-      btPayload.freqai = { identifier: freqAI.value.identifier };
+  if (btStore.freqAI.enabled) {
+    btPayload.freqaimodel = btStore.freqAI.model;
+    if (btStore.freqAI.identifier !== '') {
+      btPayload.freqai = { identifier: btStore.freqAI.identifier };
     }
   }
 
