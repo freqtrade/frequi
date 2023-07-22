@@ -56,7 +56,6 @@ const props = defineProps({
 });
 const settingsStore = useSettingsStore();
 // const botList = ref<string[]>([]);
-// const cumulativeData = ref<{ date: number; profit: any }[]>([]);
 
 const chart = ref<typeof ECharts>();
 
