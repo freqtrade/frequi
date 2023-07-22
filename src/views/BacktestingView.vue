@@ -140,7 +140,7 @@
             >
               <b-form-input
                 id="max-open-trades"
-                v-model="maxOpenTrades"
+                v-model="btStore.maxOpenTrades"
                 placeholder="Use strategy default"
                 type="number"
               ></b-form-input>
@@ -153,7 +153,7 @@
             >
               <b-form-input
                 id="starting-capital"
-                v-model="startingCapital"
+                v-model="btStore.startingCapital"
                 type="number"
                 step="0.001"
               ></b-form-input>
@@ -174,7 +174,7 @@
 
                 <b-form-input
                   id="stake-amount"
-                  v-model="stakeAmount"
+                  v-model="btStore.stakeAmount"
                   type="number"
                   placeholder="Use strategy default"
                   step="0.01"
@@ -201,7 +201,7 @@
               label-align-sm="right"
               label-for="enable-cache"
             >
-              <b-form-checkbox id="enable-cache" v-model="allowCache"></b-form-checkbox>
+              <b-form-checkbox id="enable-cache" v-model="btStore.allowCache"></b-form-checkbox>
             </b-form-group>
             <template v-if="botStore.activeBot.botApiVersion >= 2.22">
               <b-form-group
@@ -364,12 +364,9 @@ const timeframe = computed((): string => {
 });
 
 const showLeftBar = ref(false);
+
 const enableProtections = ref(false);
 const stakeAmountUnlimited = ref(false);
-const allowCache = ref(true);
-const maxOpenTrades = ref('');
-const stakeAmount = ref('');
-const startingCapital = ref('');
 const btFormMode = ref('run');
 const pollInterval = ref<number | null>(null);
 
@@ -397,20 +394,20 @@ const clickBacktest = () => {
     timerange: btStore.timerange,
     enable_protections: enableProtections.value,
   };
-  const openTradesInt = parseInt(maxOpenTrades.value, 10);
+  const openTradesInt = parseInt(btStore.maxOpenTrades, 10);
   if (openTradesInt) {
     btPayload.max_open_trades = openTradesInt;
   }
   if (stakeAmountUnlimited.value) {
     btPayload.stake_amount = 'unlimited';
   } else {
-    const stakeAmountLoc = Number(stakeAmount.value);
+    const stakeAmountLoc = Number(btStore.stakeAmount);
     if (stakeAmountLoc) {
       btPayload.stake_amount = stakeAmountLoc.toString();
     }
   }
 
-  const startingCapitalLoc = Number(startingCapital.value);
+  const startingCapitalLoc = Number(btStore.startingCapital);
   if (startingCapitalLoc) {
     btPayload.dry_run_wallet = startingCapitalLoc;
   }
@@ -421,7 +418,7 @@ const clickBacktest = () => {
   if (btStore.selectedDetailTimeframe) {
     btPayload.timeframe_detail = btStore.selectedDetailTimeframe;
   }
-  if (!allowCache.value) {
+  if (!btStore.allowCache) {
     btPayload.backtest_cache = 'none';
   }
   if (btStore.freqAI.enabled) {

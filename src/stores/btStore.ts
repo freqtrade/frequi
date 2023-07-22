@@ -7,6 +7,10 @@ export const useBtStore = defineStore('btStore', {
       selectedTimeframe: '',
       selectedDetailTimeframe: '',
       timerange: '',
+      maxOpenTrades: '',
+      stakeAmount: '',
+      startingCapital: '',
+      allowCache: true,
       freqAI: {
         enabled: false,
         model: '',
