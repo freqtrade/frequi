@@ -13,7 +13,7 @@
     :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
     :col-num="12"
     @layout-updated="layoutUpdatedEvent"
-    @breakpoint-changed="breakpointChanged"
+    @update:breakpoint="breakpointChanged"
   >
     <template #default="{ gridItemProps }">
       <grid-item
@@ -177,8 +177,8 @@ const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const currentBreakpoint = ref('');
 
-const breakpointChanged = (newBreakpoint) => {
-  //   // console.log('breakpoint:', newBreakpoint);
+const breakpointChanged = (newBreakpoint: string) => {
+  // console.log('breakpoint:', newBreakpoint);
   currentBreakpoint.value = newBreakpoint;
 };
 const isResizableLayout = computed(() =>

@@ -169,7 +169,7 @@ const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const currentBreakpoint = ref('');
 
-const breakpointChanged = (newBreakpoint) => {
+const breakpointChanged = (newBreakpoint: string) => {
   // console.log('breakpoint:', newBreakpoint);
   currentBreakpoint.value = newBreakpoint;
 };
