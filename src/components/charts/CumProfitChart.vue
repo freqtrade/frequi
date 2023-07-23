@@ -125,7 +125,7 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
   return valueArray;
 });
 
-function updateChart(initial = false) {
+function generateChart(initial = false) {
   const chartOptionsLoc: EChartsOption = {
     dataset: {
       dimensions: ['date', 'profit', 'currentProfit'],
@@ -171,7 +171,6 @@ function updateChart(initial = false) {
       },
     ],
   };
-
   // TODO: maybe have profit lines per bot?
   // this.botList.forEach((botId: string) => {
   //   console.log('bot', botId);
@@ -188,6 +187,10 @@ function updateChart(initial = false) {
   //     // symbol: 'none',
   //   });
   // });
+  return chartOptionsLoc;
+}
+function updateChart(initial = false) {
+  const chartOptionsLoc = generateChart(initial);
   chart.value?.setOption(chartOptionsLoc, {
     replaceMerge: ['series', 'dataset'],
     noMerge: !initial,
@@ -260,6 +263,11 @@ function initializeChart() {
       },
     ],
   };
+  const chartOptionsLoc1 = generateChart(true);
+  // Merge the series and dataset, but not the rest
+  chartOptionsLoc.series = chartOptionsLoc1.series;
+  chartOptionsLoc.dataset = chartOptionsLoc1.dataset;
+
   chart.value?.setOption(chartOptionsLoc, { noMerge: true });
   updateChart(true);
 }
