@@ -36,7 +36,7 @@
       v-model="fillTo"
       :columns="columns"
       class="mt-1"
-      label="Select indicator to add"
+      label="Area chart - Fill to (leave empty for line chart)"
     />
   </div>
 </template>
