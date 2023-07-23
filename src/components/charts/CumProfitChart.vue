@@ -122,7 +122,6 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
     const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
     valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
   }
-  console.log(valueArray);
   return valueArray;
 });
 
