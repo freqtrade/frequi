@@ -23,21 +23,45 @@
         <strong>{{ res.strategy }}</strong>
         backtested on: {{ timestampms(res.backtest_start_time * 1000) }}
         <small>{{ res.filename }}</small>
+        <b-button
+          v-if="botStore.activeBot.botApiVersion >= 2.31"
+          class="ms-1"
+          size="sm"
+          title="Delete this Result."
+          @click.stop="deleteBacktestResult(res)"
+        >
+          <i-mdi-delete />
+        </b-button>
       </b-list-group-item>
     </b-list-group>
   </div>
+  <MessageBox ref="msgBox" />
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import { timestampms } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { BacktestHistoryEntry } from '@/types';
 
 const botStore = useBotStore();
+const msgBox = ref<typeof MessageBox>();
 
 onMounted(() => {
   botStore.activeBot.getBacktestHistory();
 });
+
+function deleteBacktestResult(result: BacktestHistoryEntry) {
+  const msg: MsgBoxObject = {
+    title: 'Stop Bot',
+    message: `Delete result ${result.filename} from disk?`,
+    accept: () => {
+      botStore.activeBot.deleteBacktestHistoryResult(result);
+    },
+  };
+  msgBox.value?.show(msg);
+}
 </script>
 
 <style lang="scss" scoped></style>

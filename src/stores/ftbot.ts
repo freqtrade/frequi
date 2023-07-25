@@ -880,8 +880,8 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async getBacktestHistory() {
-        const result = await api.get<BacktestHistoryEntry[]>('/backtest/history');
-        this.backtestHistoryList = result.data;
+        const { data } = await api.get<BacktestHistoryEntry[]>('/backtest/history');
+        this.backtestHistoryList = data;
       },
       updateBacktestResult(backtestResult: BacktestResult) {
         this.backtestResult = backtestResult;
@@ -901,6 +901,17 @@ export function createBotSubStore(botId: string, botName: string) {
         });
         if (result.data.backtest_result) {
           this.updateBacktestResult(result.data.backtest_result);
+        }
+      },
+      async deleteBacktestHistoryResult(btHistoryEntry: BacktestHistoryEntry) {
+        try {
+          const { data } = await api.delete<BacktestHistoryEntry[]>(
+            `/backtest/history/${btHistoryEntry.filename}`,
+          );
+          this.backtestHistoryList = data;
+        } catch (err) {
+          console.error(err);
+          return Promise.reject(err);
         }
       },
       setBacktestResultKey(key: string) {
