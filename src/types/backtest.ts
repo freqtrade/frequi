@@ -140,7 +140,6 @@ export interface StrategyBacktestResult {
   canceled_entry_orders?: number;
   replaced_entry_orders?: number;
 
-  // Daily stats ...
   draw_days: number;
   drawdown_end: string;
   drawdown_end_ts: number;
@@ -148,6 +147,8 @@ export interface StrategyBacktestResult {
   drawdown_start_ts: number;
   loser_holding_avg: string;
   loser_holding_avg_s: number;
+  max_consecutive_wins?: number;
+  max_consecutive_losses?: number;
   losing_days: number;
   max_drawdown: number;
   max_drawdown_account: number;

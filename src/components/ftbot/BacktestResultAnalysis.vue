@@ -238,6 +238,13 @@ const backtestResultStats = computed(() => {
       metric: 'Avg. Duration Losers',
       value: humanizeDurationFromSeconds(props.backtestResult.loser_holding_avg_s),
     },
+    {
+      metric: 'Max Consecutive Wins / Loss',
+      value:
+        props.backtestResult.max_consecutive_wins === undefined
+          ? 'N/A'
+          : `${props.backtestResult.max_consecutive_wins} / ${props.backtestResult.max_consecutive_losses}`,
+    },
     { metric: 'Rejected entry signals', value: props.backtestResult.rejected_signals },
     {
       metric: 'Entry/Exit timeouts',
