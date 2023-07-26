@@ -7,12 +7,12 @@
         :key="key"
         button
         :active="key === selectedBacktestResultKey"
-        class="d-flex justify-content-between align-items-center py-1"
+        class="d-flex justify-content-between align-items-center py-1 pe-1"
         @click="setBacktestResult(key)"
       >
         {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
         <b-button
-          class="ms-1"
+          class="ms-2"
           size="sm"
           title="Delete this Result."
           @click.stop="emit('removeResult', key)"
