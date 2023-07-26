@@ -86,6 +86,7 @@
             :backtest-history="botStore.activeBot.backtestHistory"
             :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
             @selection-change="botStore.activeBot.setBacktestResultKey"
+            @remove-result="botStore.activeBot.removeBacktestResultFromMemory"
           />
         </transition>
       </div>

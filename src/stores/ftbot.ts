@@ -917,6 +917,17 @@ export function createBotSubStore(botId: string, botName: string) {
       setBacktestResultKey(key: string) {
         this.selectedBacktestResultKey = key;
       },
+      removeBacktestResultFromMemory(key: string) {
+        if (this.selectedBacktestResultKey === key) {
+          // Get first key from backtestHistory that is not the key to be deleted
+          const keys = Object.keys(this.backtestHistory);
+          const index = keys.findIndex((k) => k !== key);
+          if (index !== -1) {
+            this.selectedBacktestResultKey = keys[index];
+          }
+        }
+        delete this.backtestHistory[key];
+      },
       async getSysInfo() {
         try {
           const { data } = await api.get<SysInfoResponse>('/sysinfo');

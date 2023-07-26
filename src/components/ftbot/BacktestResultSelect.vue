@@ -11,6 +11,14 @@
         @click="setBacktestResult(key)"
       >
         {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
+        <b-button
+          class="ms-1"
+          size="sm"
+          title="Delete this Result."
+          @click.stop="emit('removeResult', key)"
+        >
+          <i-mdi-delete />
+        </b-button>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -27,8 +35,12 @@ defineProps({
   },
   selectedBacktestResultKey: { required: false, default: '', type: String },
 });
-const emit = defineEmits(['selectionChange']);
-const setBacktestResult = (key) => {
+const emit = defineEmits<{
+  selectionChange: [value: string];
+  removeResult: [value: string];
+}>();
+
+const setBacktestResult = (key: string) => {
   emit('selectionChange', key);
 };
 </script>
