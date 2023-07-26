@@ -168,7 +168,6 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const result = await api.get('/ping');
           const now = Date.now();
-          // TODO: Name collision!
           this.ping = `${result.data.status} ${now.toString()}`;
           this.setIsBotOnline(true);
           return Promise.resolve();
