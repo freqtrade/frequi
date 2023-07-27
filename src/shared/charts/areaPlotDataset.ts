@@ -12,18 +12,22 @@ export function calculateDiff(
 ): number[][] {
   const fromIdx = columns.indexOf(colFrom);
   const toIdx = columns.indexOf(colTo);
-  columns.push(`${colFrom}-${colTo}`);
-
+  const hasBothColumns = fromIdx > 0 && toIdx > 0;
+  if (hasBothColumns) {
+    columns.push(`${colFrom}-${colTo}`);
+  }
   return data.map((original) => {
     // Prevent mutation of original data
     const candle = original.slice();
-    const diff =
-      candle === null || candle[toIdx] === null || candle[fromIdx] === null
-        ? null
-        : candle[toIdx] - candle[fromIdx];
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    candle.push(diff);
+    if (hasBothColumns) {
+      const diff =
+        candle === null || candle[toIdx] === null || candle[fromIdx] === null
+          ? null
+          : candle[toIdx] - candle[fromIdx];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      candle.push(diff);
+    }
     return candle;
   });
 }

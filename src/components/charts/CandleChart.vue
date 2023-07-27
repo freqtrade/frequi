@@ -130,7 +130,8 @@ function updateChart(initial = false) {
   if (chartOptions.value?.title) {
     chartOptions.value.title[0].text = chartTitle.value;
   }
-  const columns = props.dataset.columns;
+  // Avoid mutation of dataset.columns array
+  const columns = props.dataset.columns.slice();
 
   const colDate = columns.findIndex((el) => el === '__date_ts');
   const colOpen = columns.findIndex((el) => el === 'open');
