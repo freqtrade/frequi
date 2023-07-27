@@ -362,29 +362,36 @@ export function createBotSubStore(botId: string, botName: string) {
           reject(error);
         });
       },
-      getPairHistory(payload: PairHistoryPayload) {
+      async getPairHistory(payload: PairHistoryPayload) {
         if (payload.pair && payload.timeframe) {
           this.historyStatus = LoadingStatus.loading;
-          return api
-            .get('/pair_history', {
+          try {
+            const { data } = await api.get('/pair_history', {
               params: { ...payload },
               timeout: 50000,
-            })
-            .then((result) => {
-              this.history = {
-                [`${payload.pair}__${payload.timeframe}`]: {
-                  pair: payload.pair,
-                  timeframe: payload.timeframe,
-                  timerange: payload.timerange,
-                  data: result.data,
-                },
-              };
-              this.historyStatus = LoadingStatus.success;
-            })
-            .catch((err) => {
-              console.error(err);
-              this.historyStatus = LoadingStatus.error;
             });
+            this.history = {
+              [`${payload.pair}__${payload.timeframe}`]: {
+                pair: payload.pair,
+                timeframe: payload.timeframe,
+                timerange: payload.timerange,
+                data: data,
+              },
+            };
+            this.historyStatus = LoadingStatus.success;
+          } catch (err) {
+            console.error(err);
+            this.historyStatus = LoadingStatus.error;
+            if (axios.isAxiosError(err)) {
+              console.error(err.response);
+              const errMsg = err.response?.data?.detail ?? 'Error fetching history';
+              showAlert(errMsg, 'danger');
+            }
+
+            return new Promise((resolve, reject) => {
+              reject(err);
+            });
+          }
         }
         // Error branchs
         const error = 'pair or timeframe or timerange not specified';
