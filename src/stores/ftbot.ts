@@ -442,6 +442,11 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+            const errMsg = error.response?.data?.detail ?? 'Error fetching history';
+            showAlert(errMsg, 'warning');
+          }
           return Promise.reject(error);
         }
       },
