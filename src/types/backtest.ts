@@ -182,9 +182,16 @@ export interface StrategyBacktestResult {
   backtest_run_end_ts: number;
 }
 
+export interface BacktestMetadata {
+  /** Start time of the backtest run */
+  backtest_run_start_ts: number;
+  run_id: string;
+}
+
 export interface BacktestResult {
   strategy: Record<string, StrategyBacktestResult>;
   strategy_comparison: Array<Record<string, string | number>>;
+  metadata: Record<string, BacktestMetadata>;
 }
 
 export enum BacktestSteps {
