@@ -163,10 +163,13 @@ export function generateTradeSeries(
   // Show distance to stoploss
   if (openTrades.length > 0) {
     // Ensure to import and "use" whatever feature in candleChart! (MarkLine, MarkArea, ...)
+    // Offset to avoid having the line at the very end of the chart
+    const offset = dataset.timeframe_ms * 10;
+
     tradesSeries.markLine = {
       symbol: 'none',
       itemStyle: {
-        color: '#ff000055',
+        color: '#ff0000AA',
       },
       label: {
         show: true,
@@ -180,7 +183,10 @@ export function generateTradeSeries(
           {
             name: 'Stoploss',
             yAxis: t.stop_loss_abs,
-            xAxis: t.open_timestamp,
+            xAxis:
+              dataset.data_stop_ts - offset > t.open_timestamp
+                ? t.open_timestamp
+                : dataset.data_stop_ts - offset,
           },
           {
             yAxis: t.stop_loss_abs,
