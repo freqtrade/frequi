@@ -188,12 +188,16 @@ export interface BacktestMetadata {
   run_id: string;
 }
 
+export interface BacktestMetadataWithStrategyName extends BacktestMetadata {
+  strategyName: string;
+}
+
 /**
  * Represents the in-memory result of a backtest.
  */
 export interface BacktestResultInMemory {
   strategy: StrategyBacktestResult;
-  metadata: BacktestMetadata;
+  metadata: BacktestMetadataWithStrategyName;
 }
 
 export interface BacktestResult {

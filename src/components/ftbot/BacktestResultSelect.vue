@@ -10,8 +10,15 @@
         class="d-flex justify-content-between align-items-center py-1 pe-1"
         @click="setBacktestResult(key)"
       >
-        {{ key }} {{ result.strategy.total_trades }}
-        {{ formatPercent(result.strategy.profit_total) }}
+        <div class="d-flex flex-column">
+          <div class="fw-bold">
+            {{ result.metadata.strategyName }} - {{ result.strategy.timeframe }}
+          </div>
+          <div class="text-small">
+            TradeCount: {{ result.strategy.total_trades }} - Profit:
+            {{ formatPercent(result.strategy.profit_total) }}
+          </div>
+        </div>
         <b-button
           class="ms-2"
           size="sm"

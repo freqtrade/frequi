@@ -44,6 +44,7 @@ import {
   PairlistsPayload,
   PairlistsResponse,
   BacktestResultInMemory,
+  BacktestMetadataWithStrategyName,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -900,7 +901,10 @@ export function createBotSubStore(botId: string, botName: string) {
         this.backtestResult = backtestResult;
         // TODO: Properly identify duplicates to avoid pushing the same multiple times
         Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
-          const metadata = backtestResult.metadata[key];
+          const metadata: BacktestMetadataWithStrategyName = {
+            ...backtestResult.metadata[key],
+            strategyName: key,
+          };
           console.log(key, strat, metadata);
 
           const stratKey = `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
