@@ -43,6 +43,7 @@ import {
   PairlistEvalResponse,
   PairlistsPayload,
   PairlistsResponse,
+  BacktestResultInMemory,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -102,7 +103,7 @@ export function createBotSubStore(botId: string, botName: string) {
         backtestTradeCount: 0,
         backtestResult: undefined as BacktestResult | undefined,
         selectedBacktestResultKey: '',
-        backtestHistory: {} as Record<string, StrategyBacktestResult>,
+        backtestHistory: {} as Record<string, BacktestResultInMemory>,
         backtestHistoryList: [] as BacktestHistoryEntry[],
         sysInfo: {} as SysInfoResponse,
       };
@@ -114,7 +115,8 @@ export function createBotSubStore(botId: string, botName: string) {
       stakeCurrencyDecimals: (state) => state.botState?.stake_currency_decimals || 3,
       canRunBacktest: (state) => state.botState?.runmode === RunModes.WEBSERVER,
       isWebserverMode: (state) => state.botState?.runmode === RunModes.WEBSERVER,
-      selectedBacktestResult: (state) => state.backtestHistory[state.selectedBacktestResultKey],
+      selectedBacktestResult: (state) =>
+        state.backtestHistory[state.selectedBacktestResultKey]?.strategy || {},
       shortAllowed: (state) => state.botState?.short_allowed || false,
       openTradeCount: (state) => state.openTrades.length,
       isTrading: (state) =>
@@ -898,11 +900,16 @@ export function createBotSubStore(botId: string, botName: string) {
         this.backtestResult = backtestResult;
         // TODO: Properly identify duplicates to avoid pushing the same multiple times
         Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
-          console.log(key, strat);
+          const metadata = backtestResult.metadata[key];
+          console.log(key, strat, metadata);
 
           const stratKey = `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
+          const btResult: BacktestResultInMemory = {
+            metadata,
+            strategy: strat,
+          };
           // this.backtestHistory[stratKey] = strat;
-          this.backtestHistory = { ...this.backtestHistory, ...{ [stratKey]: strat } };
+          this.backtestHistory = { ...this.backtestHistory, ...{ [stratKey]: btResult } };
           this.selectedBacktestResultKey = stratKey;
         });
       },

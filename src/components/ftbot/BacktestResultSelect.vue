@@ -3,14 +3,15 @@
     <h3>Available results:</h3>
     <b-list-group class="ms-2">
       <b-list-group-item
-        v-for="[key, strat] in Object.entries(backtestHistory)"
+        v-for="[key, result] in Object.entries(backtestHistory)"
         :key="key"
         button
         :active="key === selectedBacktestResultKey"
         class="d-flex justify-content-between align-items-center py-1 pe-1"
         @click="setBacktestResult(key)"
       >
-        {{ key }} {{ strat.total_trades }} {{ formatPercent(strat.profit_total) }}
+        {{ key }} {{ result.strategy.total_trades }}
+        {{ formatPercent(result.strategy.profit_total) }}
         <b-button
           class="ms-2"
           size="sm"
@@ -26,12 +27,12 @@
 
 <script setup lang="ts">
 import { formatPercent } from '@/shared/formatters';
-import { StrategyBacktestResult } from '@/types';
+import { BacktestResultInMemory } from '@/types';
 
 defineProps({
   backtestHistory: {
     required: true,
-    type: Object as () => Record<string, StrategyBacktestResult>,
+    type: Object as () => Record<string, BacktestResultInMemory>,
   },
   selectedBacktestResultKey: { required: false, default: '', type: String },
 });

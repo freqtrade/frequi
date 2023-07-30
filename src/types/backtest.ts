@@ -188,6 +188,14 @@ export interface BacktestMetadata {
   run_id: string;
 }
 
+/**
+ * Represents the in-memory result of a backtest.
+ */
+export interface BacktestResultInMemory {
+  strategy: StrategyBacktestResult;
+  metadata: BacktestMetadata;
+}
+
 export interface BacktestResult {
   strategy: Record<string, StrategyBacktestResult>;
   strategy_comparison: Array<Record<string, string | number>>;
