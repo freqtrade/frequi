@@ -26,12 +26,12 @@
       @row-clicked="onRowClicked"
       @row-selected="onRowSelected"
     >
-      <template #cell(actions)="row">
+      <template #cell(actions)="{ index, item }">
         <TradeActionsPopover
-          :id="row.index"
-          :trade="row.item"
+          :id="index"
+          :trade="item as unknown as Trade"
           :bot-api-version="botStore.activeBot.botApiVersion"
-          @delete-trade="removeTradeHandler(row.item)"
+          @delete-trade="removeTradeHandler(item as unknown as Trade)"
           @force-exit="forceExitHandler"
           @force-exit-partial="forceExitPartialHandler"
           @cancel-open-order="cancelOpenOrderHandler"
@@ -60,13 +60,13 @@
         {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
       </template>
       <template #cell(profit)="row">
-        <trade-profit :trade="row.item" />
+        <trade-profit :trade="row.item as unknown as Trade" />
       </template>
       <template #cell(open_timestamp)="row">
-        <DateTimeTZ :date="row.item.open_timestamp" />
+        <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
       </template>
       <template #cell(close_timestamp)="row">
-        <DateTimeTZ :date="row.item.close_timestamp" />
+        <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
       </template>
     </b-table>
     <div class="w-100 d-flex justify-content-between">
