@@ -186,6 +186,7 @@ export interface BacktestMetadata {
   /** Start time of the backtest run */
   backtest_run_start_ts: number;
   run_id: string;
+  filename?: string;
   notes?: string;
 }
 
