@@ -903,6 +903,8 @@ export function createBotSubStore(botId: string, botName: string) {
           const metadata: BacktestMetadataWithStrategyName = {
             ...(backtestResult.metadata[key] ?? {}),
             strategyName: key,
+            notes: backtestResult.metadata[key]?.notes ?? ``,
+            editing: false,
           };
           // console.log(key, strat, metadata);
 
