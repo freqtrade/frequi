@@ -196,6 +196,16 @@ export interface BacktestMetadataWithStrategyName extends BacktestMetadata {
   editing: boolean;
 }
 
+export interface BacktestMetadataPatch {
+  notes: string;
+  strategy: string;
+}
+
+export interface BacktestResultUpdate extends BacktestMetadataPatch {
+  run_id: string;
+  filename: string;
+}
+
 /**
  * Represents the in-memory result of a backtest.
  */

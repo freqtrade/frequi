@@ -37,11 +37,7 @@
         <template v-if="result.metadata.editing">
           <b-form-input v-model="result.metadata.notes" size="sm"> </b-form-input>
 
-          <b-button
-            size="sm"
-            title="Confirm"
-            @click.stop="result.metadata.editing = !result.metadata.editing"
-          >
+          <b-button size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
             <i-mdi-check />
           </b-button>
         </template>
@@ -52,10 +48,9 @@
 
 <script setup lang="ts">
 import { formatPercent } from '@/shared/formatters';
-import { BacktestResultInMemory } from '@/types';
-import { ref } from 'vue';
+import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
 
-const props = defineProps({
+defineProps({
   backtestHistory: {
     required: true,
     type: Object as () => Record<string, BacktestResultInMemory>,
@@ -65,11 +60,24 @@ const props = defineProps({
 const emit = defineEmits<{
   selectionChange: [value: string];
   removeResult: [value: string];
+  updateResult: [value: BacktestResultUpdate];
 }>();
 
 const setBacktestResult = (key: string) => {
   emit('selectionChange', key);
 };
+
+function confirmInput(run_id: string, result: BacktestResultInMemory) {
+  result.metadata.editing = !result.metadata.editing;
+  if (result.metadata.filename) {
+    emit('updateResult', {
+      run_id: run_id,
+      notes: result.metadata.notes ?? '',
+      filename: result.metadata.filename,
+      strategy: result.metadata.strategyName,
+    });
+  }
+}
 </script>
 
 <style scoped></style>
