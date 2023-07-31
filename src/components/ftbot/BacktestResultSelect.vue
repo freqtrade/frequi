@@ -24,6 +24,7 @@
             </div>
           </div>
           <b-button
+            v-if="canUseModify"
             size="sm"
             title="Modify"
             @click.stop="result.metadata.editing = !result.metadata.editing"
@@ -56,6 +57,7 @@ defineProps({
     type: Object as () => Record<string, BacktestResultInMemory>,
   },
   selectedBacktestResultKey: { required: false, default: '', type: String },
+  canUseModify: { required: false, default: false, type: Boolean },
 });
 const emit = defineEmits<{
   selectionChange: [value: string];

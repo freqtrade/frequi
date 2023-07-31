@@ -244,4 +244,5 @@ export interface BacktestHistoryEntry {
   strategy: string;
   run_id: string;
   backtest_start_time: number;
+  notes?: string;
 }
