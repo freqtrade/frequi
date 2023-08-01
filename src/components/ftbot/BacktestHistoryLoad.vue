@@ -23,6 +23,11 @@
         <strong>{{ res.strategy }}</strong>
         backtested on: {{ timestampms(res.backtest_start_time * 1000) }}
         <small>{{ res.filename }}</small>
+        <InfoBox
+          v-if="botStore.activeBot.botApiVersion >= 2.32"
+          :class="res.notes ? 'opacity-100' : 'opacity-0'"
+          :hint="res.notes ?? ''"
+        ></InfoBox>
         <b-button
           v-if="botStore.activeBot.botApiVersion >= 2.31"
           class="ms-1"
@@ -44,6 +49,7 @@ import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import { timestampms } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BacktestHistoryEntry } from '@/types';
+import InfoBox from '../general/InfoBox.vue';
 
 const botStore = useBotStore();
 const msgBox = ref<typeof MessageBox>();
