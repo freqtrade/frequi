@@ -36,7 +36,8 @@
           </b-button>
         </template>
         <template v-if="result.metadata.editing">
-          <b-form-input v-model="result.metadata.notes" size="sm"> </b-form-input>
+          <b-form-input v-model="result.metadata.notes" placeholder="notes" size="sm">
+          </b-form-input>
 
           <b-button size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
             <i-mdi-check />

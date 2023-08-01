@@ -900,7 +900,6 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       updateBacktestResult(backtestResult: BacktestResult) {
         this.backtestResult = backtestResult;
-        // TODO: Properly identify duplicates to avoid pushing the same multiple times
         Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
           const metadata: BacktestMetadataWithStrategyName = {
             ...(backtestResult.metadata[key] ?? {}),
