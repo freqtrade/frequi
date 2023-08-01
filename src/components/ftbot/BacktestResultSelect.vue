@@ -19,7 +19,7 @@
               TradeCount: {{ result.strategy.total_trades }} - Profit:
               {{ formatPercent(result.strategy.profit_total) }}
             </div>
-            <div class="text-small">
+            <div v-if="canUseModify" class="text-small">
               {{ result.metadata.notes }}
             </div>
           </div>
