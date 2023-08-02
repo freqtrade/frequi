@@ -6,6 +6,7 @@
     "progress": 1.0,
     "trade_count": null,
     "backtest_result": {
+        "metadata": {},
         "strategy": {
             "SampleStrategy": {
                 "trades": [

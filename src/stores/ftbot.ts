@@ -905,7 +905,7 @@ export function createBotSubStore(botId: string, botName: string) {
             ...(backtestResult.metadata[key] ?? {}),
             strategyName: key,
           };
-          console.log(key, strat, metadata);
+          // console.log(key, strat, metadata);
 
           const stratKey = `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
           const btResult: BacktestResultInMemory = {
