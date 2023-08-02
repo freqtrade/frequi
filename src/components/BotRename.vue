@@ -24,15 +24,18 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
   bot: { type: Object as () => BotDescriptor, required: true },
 });
 const emit = defineEmits(['cancelled', 'saved']);
 const botStore = useBotStore();
+const newName = ref<string>('');
 
-const newName = ref<string>(props.bot.botName);
+onMounted(() => {
+  newName.value = props.bot.botName;
+});
 
 const save = () => {
   botStore.updateBot(props.bot.botId, {

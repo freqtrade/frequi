@@ -120,7 +120,7 @@ const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
 const pair = ref('');
-const showPlotConfig = ref(props.plotConfigModal);
+const showPlotConfig = ref<boolean>();
 
 const dataset = computed((): PairHistory => {
   if (props.historicView) {
@@ -207,6 +207,7 @@ watch(
 );
 
 onMounted(() => {
+  showPlotConfig.value = props.plotConfigModal;
   if (botStore.activeBot.selectedPair) {
     pair.value = botStore.activeBot.selectedPair;
   } else if (props.availablePairs.length > 0) {
