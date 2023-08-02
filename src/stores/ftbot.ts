@@ -10,7 +10,6 @@ import {
   LockResponse,
   ProfitInterface,
   BacktestResult,
-  StrategyBacktestResult,
   BacktestSteps,
   LogLine,
   SysInfoResponse,

@@ -97,7 +97,7 @@ import TradeProfit from './TradeProfit.vue';
 import TradeActionsPopover from './TradeActionsPopover.vue';
 import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
 import { TableField, TableItem } from 'bootstrap-vue-next';
@@ -143,43 +143,47 @@ const rows = computed(() => {
   return props.trades.length;
 });
 
-const tableFields: TableField[] = [
-  { key: 'trade_id', label: 'ID' },
-  { key: 'pair', label: 'Pair' },
-  { key: 'amount', label: 'Amount' },
-  {
-    key: 'stake_amount',
-    label: 'Stake amount',
-  },
-  {
-    key: 'open_rate',
-    label: 'Open rate',
-    formatter: (value: unknown) => formatPrice(value as number),
-  },
-  {
-    key: props.activeTrades ? 'current_rate' : 'close_rate',
-    label: props.activeTrades ? 'Current rate' : 'Close rate',
-    formatter: (value: unknown) => formatPrice(value as number),
-  },
-  {
-    key: 'profit',
-    label: props.activeTrades ? 'Current profit %' : 'Profit %',
+let tableFields: TableField[] = [];
 
-    formatter: (value: unknown, key?: string, item?: unknown) => {
-      if (!item) {
-        return '';
-      }
-      const typedItem = item as Trade;
-      const percent = formatPercent(typedItem.profit_ratio, 2);
-      return `${percent} ${`(${formatPriceWithDecimals(typedItem.profit_abs)})`}`;
+onMounted(() => {
+  tableFields = [
+    { key: 'trade_id', label: 'ID' },
+    { key: 'pair', label: 'Pair' },
+    { key: 'amount', label: 'Amount' },
+    {
+      key: 'stake_amount',
+      label: 'Stake amount',
     },
-  },
-  { key: 'open_timestamp', label: 'Open date' },
-  ...(props.activeTrades ? openFields : closedFields),
-];
-if (props.multiBotView) {
-  tableFields.unshift({ key: 'botName', label: 'Bot' });
-}
+    {
+      key: 'open_rate',
+      label: 'Open rate',
+      formatter: (value: unknown) => formatPrice(value as number),
+    },
+    {
+      key: props.activeTrades ? 'current_rate' : 'close_rate',
+      label: props.activeTrades ? 'Current rate' : 'Close rate',
+      formatter: (value: unknown) => formatPrice(value as number),
+    },
+    {
+      key: 'profit',
+      label: props.activeTrades ? 'Current profit %' : 'Profit %',
+
+      formatter: (value: unknown, key?: string, item?: unknown) => {
+        if (!item) {
+          return '';
+        }
+        const typedItem = item as Trade;
+        const percent = formatPercent(typedItem.profit_ratio, 2);
+        return `${percent} ${`(${formatPriceWithDecimals(typedItem.profit_abs)})`}`;
+      },
+    },
+    { key: 'open_timestamp', label: 'Open date' },
+    ...(props.activeTrades ? openFields : closedFields),
+  ];
+  if (props.multiBotView) {
+    tableFields.unshift({ key: 'botName', label: 'Bot' });
+  }
+});
 
 const feOrderType = ref<string | undefined>(undefined);
 const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
