@@ -11,7 +11,7 @@
         @click="setBacktestResult(key)"
       >
         <template v-if="!result.metadata.editing">
-          <div class="d-flex flex-column me-2">
+          <div class="d-flex flex-column me-2 text-start">
             <div class="fw-bold">
               {{ result.metadata.strategyName }} - {{ result.strategy.timeframe }}
             </div>
@@ -19,7 +19,7 @@
               TradeCount: {{ result.strategy.total_trades }} - Profit:
               {{ formatPercent(result.strategy.profit_total) }}
             </div>
-            <div v-if="canUseModify" class="text-small">
+            <div v-if="canUseModify" class="text-small" style="white-space: pre-wrap">
               {{ result.metadata.notes }}
             </div>
           </div>
@@ -36,8 +36,8 @@
           </b-button>
         </template>
         <template v-if="result.metadata.editing">
-          <b-form-input v-model="result.metadata.notes" placeholder="notes" size="sm">
-          </b-form-input>
+          <b-form-textarea v-model="result.metadata.notes" placeholder="notes" size="sm">
+          </b-form-textarea>
 
           <b-button size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
             <i-mdi-check />
