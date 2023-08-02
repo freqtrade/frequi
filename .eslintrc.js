@@ -30,6 +30,7 @@ module.exports = {
     // disable eslint no-shadow as it's causing false positives on typescript enums
     'no-shadow': 'off',
     'prettier/prettier': ['error'],
+    '@typescript-eslint/no-explicit-any': 'warn',
     // '@typescript-eslint/naming-convention': [
     //   'error',
     //   {
