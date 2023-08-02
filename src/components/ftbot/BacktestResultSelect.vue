@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex flex-column align-items-center">
+  <div class="container d-flex flex-column align-items-stretch">
     <h3>Available results:</h3>
     <b-list-group class="ms-2">
       <b-list-group-item
@@ -23,17 +23,25 @@
               {{ result.metadata.notes }}
             </div>
           </div>
-          <b-button
-            v-if="canUseModify"
-            size="sm"
-            title="Modify"
-            @click.stop="result.metadata.editing = !result.metadata.editing"
-          >
-            <i-mdi-pencil />
-          </b-button>
-          <b-button size="sm" title="Delete this Result." @click.stop="emit('removeResult', key)">
-            <i-mdi-delete />
-          </b-button>
+          <div class="d-flex">
+            <b-button
+              v-if="canUseModify"
+              class="flex-nowrap"
+              size="sm"
+              title="Modify"
+              @click.stop="result.metadata.editing = !result.metadata.editing"
+            >
+              <i-mdi-pencil />
+            </b-button>
+            <b-button
+              size="sm"
+              class="flex-nowrap"
+              title="Delete this Result."
+              @click.stop="emit('removeResult', key)"
+            >
+              <i-mdi-delete />
+            </b-button>
+          </div>
         </template>
         <template v-if="result.metadata.editing">
           <b-form-textarea v-model="result.metadata.notes" placeholder="notes" size="sm">
