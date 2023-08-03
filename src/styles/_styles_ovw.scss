@@ -214,13 +214,14 @@
     }
 
     .b-toast .toast {
-        background: $bg-dark;
+        color: black;
+        // background: $bg-dark;
         border-color: lighten($bg-dark, 20%);
     }
 
     .toast-header {
         color: $fg-color;
-        background: darken($bg-dark, 10%);
+        // background: darken($bg-dark, 10%);
         border-color: lighten($bg-dark, 20%);
     }
 
