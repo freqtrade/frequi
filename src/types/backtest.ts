@@ -186,10 +186,24 @@ export interface BacktestMetadata {
   /** Start time of the backtest run */
   backtest_run_start_ts: number;
   run_id: string;
+  filename?: string;
+  notes?: string;
 }
 
+/** Only used in memory */
 export interface BacktestMetadataWithStrategyName extends BacktestMetadata {
   strategyName: string;
+  editing: boolean;
+}
+
+export interface BacktestMetadataPatch {
+  notes: string;
+  strategy: string;
+}
+
+export interface BacktestResultUpdate extends BacktestMetadataPatch {
+  run_id: string;
+  filename: string;
 }
 
 /**
@@ -230,4 +244,5 @@ export interface BacktestHistoryEntry {
   strategy: string;
   run_id: string;
   backtest_start_time: number;
+  notes?: string;
 }

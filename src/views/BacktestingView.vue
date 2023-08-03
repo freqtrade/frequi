@@ -85,8 +85,10 @@
             v-if="btFormMode !== 'visualize' && showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
             :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
+            :can-use-modify="botStore.activeBot.botApiVersion >= 2.32"
             @selection-change="botStore.activeBot.setBacktestResultKey"
             @remove-result="botStore.activeBot.removeBacktestResultFromMemory"
+            @update-result="botStore.activeBot.saveBacktestResultMetadata"
           />
         </transition>
       </div>

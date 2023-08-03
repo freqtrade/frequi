@@ -44,6 +44,8 @@ import {
   PairlistsResponse,
   BacktestResultInMemory,
   BacktestMetadataWithStrategyName,
+  BacktestMetadataPatch,
+  BacktestResultUpdate,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -898,15 +900,19 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       updateBacktestResult(backtestResult: BacktestResult) {
         this.backtestResult = backtestResult;
-        // TODO: Properly identify duplicates to avoid pushing the same multiple times
         Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
           const metadata: BacktestMetadataWithStrategyName = {
             ...(backtestResult.metadata[key] ?? {}),
             strategyName: key,
+            notes: backtestResult.metadata[key]?.notes ?? ``,
+            editing: false,
           };
           // console.log(key, strat, metadata);
 
-          const stratKey = `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
+          // Never versions will always have run_id
+          const stratKey =
+            backtestResult.metadata[key].run_id ??
+            `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
           const btResult: BacktestResultInMemory = {
             metadata,
             strategy: strat,
@@ -930,6 +936,25 @@ export function createBotSubStore(botId: string, botName: string) {
             `/backtest/history/${btHistoryEntry.filename}`,
           );
           this.backtestHistoryList = data;
+        } catch (err) {
+          console.error(err);
+          return Promise.reject(err);
+        }
+      },
+      async saveBacktestResultMetadata(payload: BacktestResultUpdate) {
+        try {
+          const { data } = await api.patch<
+            BacktestMetadataPatch,
+            AxiosResponse<BacktestHistoryEntry[]>
+          >(`/backtest/history/${payload.filename}`, payload);
+          console.log(data);
+          data.forEach((entry) => {
+            if (entry.run_id in this.backtestHistory) {
+              this.backtestHistory[entry.run_id].metadata.notes = entry.notes;
+              console.log('updating ...');
+            }
+          });
+          // Update metadata in backtestHistoryList
         } catch (err) {
           console.error(err);
           return Promise.reject(err);

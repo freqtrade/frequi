@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex flex-column align-items-center">
+  <div class="container d-flex flex-column align-items-stretch">
     <h3>Available results:</h3>
     <b-list-group class="ms-2">
       <b-list-group-item
@@ -10,23 +10,47 @@
         class="d-flex justify-content-between align-items-center py-1 pe-1"
         @click="setBacktestResult(key)"
       >
-        <div class="d-flex flex-column">
-          <div class="fw-bold">
-            {{ result.metadata.strategyName }} - {{ result.strategy.timeframe }}
+        <template v-if="!result.metadata.editing">
+          <div class="d-flex flex-column me-2 text-start">
+            <div class="fw-bold">
+              {{ result.metadata.strategyName }} - {{ result.strategy.timeframe }}
+            </div>
+            <div class="text-small">
+              TradeCount: {{ result.strategy.total_trades }} - Profit:
+              {{ formatPercent(result.strategy.profit_total) }}
+            </div>
+            <div v-if="canUseModify" class="text-small" style="white-space: pre-wrap">
+              {{ result.metadata.notes }}
+            </div>
           </div>
-          <div class="text-small">
-            TradeCount: {{ result.strategy.total_trades }} - Profit:
-            {{ formatPercent(result.strategy.profit_total) }}
+          <div class="d-flex">
+            <b-button
+              v-if="canUseModify"
+              class="flex-nowrap"
+              size="sm"
+              title="Modify"
+              @click.stop="result.metadata.editing = !result.metadata.editing"
+            >
+              <i-mdi-pencil />
+            </b-button>
+            <b-button
+              size="sm"
+              class="flex-nowrap"
+              title="Delete this Result."
+              @click.stop="emit('removeResult', key)"
+            >
+              <i-mdi-delete />
+            </b-button>
           </div>
-        </div>
-        <b-button
-          class="ms-2"
-          size="sm"
-          title="Delete this Result."
-          @click.stop="emit('removeResult', key)"
-        >
-          <i-mdi-delete />
-        </b-button>
+        </template>
+        <template v-if="result.metadata.editing">
+          <b-form-textarea v-model="result.metadata.notes" placeholder="notes" size="sm">
+          </b-form-textarea>
+
+          <b-button size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
+            <i-mdi-check />
+          </b-button>
+        </template>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -34,7 +58,7 @@
 
 <script setup lang="ts">
 import { formatPercent } from '@/shared/formatters';
-import { BacktestResultInMemory } from '@/types';
+import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
 
 defineProps({
   backtestHistory: {
@@ -42,15 +66,29 @@ defineProps({
     type: Object as () => Record<string, BacktestResultInMemory>,
   },
   selectedBacktestResultKey: { required: false, default: '', type: String },
+  canUseModify: { required: false, default: false, type: Boolean },
 });
 const emit = defineEmits<{
   selectionChange: [value: string];
   removeResult: [value: string];
+  updateResult: [value: BacktestResultUpdate];
 }>();
 
 const setBacktestResult = (key: string) => {
   emit('selectionChange', key);
 };
+
+function confirmInput(run_id: string, result: BacktestResultInMemory) {
+  result.metadata.editing = !result.metadata.editing;
+  if (result.metadata.filename) {
+    emit('updateResult', {
+      run_id: run_id,
+      notes: result.metadata.notes ?? '',
+      filename: result.metadata.filename,
+      strategy: result.metadata.strategyName,
+    });
+  }
+}
 </script>
 
 <style scoped></style>
