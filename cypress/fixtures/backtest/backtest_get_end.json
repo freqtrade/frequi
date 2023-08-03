@@ -6,7 +6,13 @@
     "progress": 1.0,
     "trade_count": null,
     "backtest_result": {
-        "metadata": {},
+        "metadata": {
+            "SampleStrategy": {
+                "strategy": "SampleStrategy",
+                "run_id": "0afc3cf414b6da90210f458078a6b06055b0c4e7",
+                "filename": "backtest-result-2023-08-03_04-02-20"
+            }
+        },
         "strategy": {
             "SampleStrategy": {
                 "trades": [
