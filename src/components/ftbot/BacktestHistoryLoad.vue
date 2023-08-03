@@ -12,12 +12,13 @@
       Load Historic results from disk. You can click on multiple results to load all of them into
       freqUI.
     </p>
-    <b-list-group v-if="botStore.activeBot.backtestHistoryList" class="ms-2">
+    <b-list-group v-if="botStore.activeBot.backtestHistoryList" class="ms-2 mb-1">
       <b-list-group-item
         v-for="(res, idx) in botStore.activeBot.backtestHistoryList"
         :key="idx"
-        class="d-flex justify-content-between align-items-center py-1 mb-1"
+        class="d-flex justify-content-between align-items-center py-1"
         button
+        :disabled="res.run_id in botStore.activeBot.backtestHistory"
         @click="botStore.activeBot.getBacktestHistoryResult(res)"
       >
         <strong>{{ res.strategy }}</strong>
@@ -33,6 +34,7 @@
           class="ms-1"
           size="sm"
           title="Delete this Result."
+          :disabled="res.run_id in botStore.activeBot.backtestHistory"
           @click.stop="deleteBacktestResult(res)"
         >
           <i-mdi-delete />

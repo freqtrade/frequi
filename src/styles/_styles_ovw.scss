@@ -80,6 +80,12 @@
         background: $bg-dark;
     }
 
+    .list-group-item.disabled,
+    .list-group-item:disabled {
+        color: darken($fg-color, 40%);
+        background: $bg-dark;
+    }
+
     // .custom-select {
     //     color: $fg-color;
     //     // background: $bg-dark;
