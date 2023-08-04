@@ -70,7 +70,9 @@
     <div class="d-md-flex">
       <!-- Left bar -->
       <div
-        :class="`${showLeftBar ? 'col-md-3' : ''} sticky-top sticky-offset me-3 d-flex flex-column`"
+        :class="`${showLeftBar ? 'col-md-3' : ''}`"
+        class="sticky-top sticky-offset me-3 d-flex flex-column absolute"
+        style="max-height: calc(100vh - 60px)"
       >
         <b-button
           v-if="btFormMode !== 'visualize'"
