@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid" style="max-height: calc(100vh - 60px)">
-    <div class="container-fluid">
-      <div class="row mb-2"></div>
+    <div class="container-fluid pt-2">
       <p v-if="!botStore.activeBot.canRunBacktest">
         Bot must be in webserver mode to enable Backtesting.
       </p>
