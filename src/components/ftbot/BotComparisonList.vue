@@ -122,11 +122,14 @@ const tableItems = computed<TableItem[]>(() => {
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
     });
     if (v.profit_closed_coin !== undefined) {
-      summary.profitClosed += v.profit_closed_coin;
-      summary.profitOpen += profitOpen;
-      summary.wins += v.winning_trades;
-      summary.losses += v.losing_trades;
-      // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
+      if (botStore.botStores[k].isSelected) {
+        // Summary should only include selected bots
+        summary.profitClosed += v.profit_closed_coin;
+        summary.profitOpen += profitOpen;
+        summary.wins += v.winning_trades;
+        summary.losses += v.losing_trades;
+        // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
+      }
     }
   });
   val.push(summary);
