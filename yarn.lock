@@ -37,7 +37,7 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@cypress/request@^2.88.12":
+"@cypress/request@^2.88.11":
   version "2.88.12"
   resolved "https://registry.yarnpkg.com/@cypress/request/-/request-2.88.12.tgz#ba4911431738494a85e93fb04498cb38bc55d590"
   integrity sha512-tOn+0mDZxASFM+cuAP9szGUGPI1HwWVSvdzm7V4cCsPdFTx6qMj29CwaQmRAMIEhORIUBFBsYROYJcveK4uOjA==
@@ -273,10 +273,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@iconify-json/mdi@^1.1.53":
-  version "1.1.53"
-  resolved "https://registry.yarnpkg.com/@iconify-json/mdi/-/mdi-1.1.53.tgz#633588d1d56780192c0dc55e9d92d976e6a5e6bf"
-  integrity sha512-qG72Tc9Bd4w7fha+kMEySVTbH4Obgb9xA1mQl+WReFhtZ3PjcVpIWLgZGTewuIfZY8RAbd8zfAqhZ7qEYZWrhg==
+"@iconify-json/mdi@^1.1.54":
+  version "1.1.54"
+  resolved "https://registry.yarnpkg.com/@iconify-json/mdi/-/mdi-1.1.54.tgz#343477417c15fceeaf0f32012d58a4a8d9791786"
+  integrity sha512-3QAsxte90EalbN2e8J30OqSSZz9qN2x+kmykQwsPahoW2dOtSvj+BR9YdiUd9A5XKk2nuU4UH5Gj/cq6WZ6CzQ==
   dependencies:
     "@iconify/types" "*"
 
