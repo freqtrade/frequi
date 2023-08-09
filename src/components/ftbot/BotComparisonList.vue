@@ -47,7 +47,9 @@
             )
           }}
         </span>
-        <span class="text-small">{{ item.stakeCurrency }}</span>
+        <span class="text-small">{{
+          ` ${item.stakeCurrency}${item.isDryRun ? ' (dry)' : ''}`
+        }}</span>
       </div>
     </template>
     <template #cell(winVsLoss)="{ item }">
@@ -120,6 +122,7 @@ const tableItems = computed<TableItem[]>(() => {
       losses: v.losing_trades,
       balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
+      isDryRun: botStore.allBotState[k]?.dry_run,
     });
     if (v.profit_closed_coin !== undefined) {
       if (botStore.botStores[k].isSelected) {
