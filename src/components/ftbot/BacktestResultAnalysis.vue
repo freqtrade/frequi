@@ -5,8 +5,8 @@
     </div>
 
     <div class="d-flex flex-column text-start ms-0 me-2 gap-2">
-      <div class="d-flex flex-column flex-xl-row justify-content-center">
-        <div class="px-0 px-xl-0 pe-xl-1">
+      <div class="d-flex flex-column flex-xl-row">
+        <div class="px-0 px-xl-0 pe-xl-1 flex-fill">
           <b-card header="Strategy settings">
             <b-table
               small
@@ -17,7 +17,7 @@
             </b-table>
           </b-card>
         </div>
-        <div class="px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1">
+        <div class="px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1 flex-fill">
           <b-card header="Metrics">
             <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
             </b-table>
