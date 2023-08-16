@@ -16,7 +16,7 @@
       <b-list-group-item
         v-for="(res, idx) in botStore.activeBot.backtestHistoryList"
         :key="idx"
-        class="d-flex justify-content-between align-items-center py-1"
+        class="d-flex justify-content-between align-items-center py-1 pe-2"
         button
         :disabled="res.run_id in botStore.activeBot.backtestHistory"
         @click="botStore.activeBot.getBacktestHistoryResult(res)"
