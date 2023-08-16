@@ -1,12 +1,12 @@
 <template>
-  <div class="container-fluid px-0 backtestresult-container">
-    <div class="row d-flex justify-content-center">
+  <div class="px-0 mw-100">
+    <div class="d-flex justify-content-center">
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
 
-    <div class="row text-start ms-0">
-      <div class="row w-100">
-        <div class="col-12 col-xl-6 px-0 px-xl-0 pe-xl-1">
+    <div class="d-flex flex-column text-start ms-0 me-2 gap-2">
+      <div class="d-flex flex-column flex-xl-row justify-content-center">
+        <div class="px-0 px-xl-0 pe-xl-1">
           <b-card header="Strategy settings">
             <b-table
               small
@@ -17,14 +17,14 @@
             </b-table>
           </b-card>
         </div>
-        <div class="col-12 col-xl-6 px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1">
+        <div class="px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1">
           <b-card header="Metrics">
             <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
             </b-table>
           </b-card>
         </div>
       </div>
-      <b-card header="Results per Exit-reason" class="row mt-2 w-100">
+      <b-card header="Results per Exit-reason">
         <b-table
           small
           hover
@@ -37,7 +37,7 @@
         >
         </b-table>
       </b-card>
-      <b-card header="Results per pair" class="row mt-2 w-100">
+      <b-card header="Results per pair">
         <b-table
           small
           hover
@@ -47,18 +47,13 @@
         >
         </b-table>
       </b-card>
-      <b-card
-        v-if="backtestResult.periodic_breakdown"
-        header="Periodic breakdown"
-        class="row mt-2 w-100"
-      >
+      <b-card v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
         <BacktestResultPeriodBreakdown :periodic-breakdown="backtestResult.periodic_breakdown">
         </BacktestResultPeriodBreakdown>
       </b-card>
 
-      <b-card header="Single trades" class="row mt-2 w-100">
+      <b-card header="Single trades">
         <TradeList
-          class="row trade-history mt-2 w-100"
           :trades="backtestResult.trades"
           :show-filter="true"
           :stake-currency="backtestResult.stake_currency"
@@ -437,10 +432,4 @@ const backtestsettingFields: TableField[] = [
 ];
 </script>
 
-<style lang="scss" scoped>
-.backtestresult-container {
-  @media (min-width: 1200px) {
-    max-width: 1200px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

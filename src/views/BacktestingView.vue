@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column pt-1 me-1" style="max-height: calc(100vh - 60px)">
+  <div class="d-flex flex-column pt-1 me-1" style="height: calc(100vh - 60px)">
     <div>
       <div class="d-flex flex-row">
         <h2 class="ms-5">Backtesting</h2>
@@ -93,7 +93,7 @@
         </transition>
       </div>
       <!-- End Left bar -->
-      <div class="d-flex flex-column overflow-auto flex-fill">
+      <div class="d-flex flex-column flex-fill mw-100">
         <div class="d-md-flex">
           <div
             v-if="btFormMode == 'historicResults'"
