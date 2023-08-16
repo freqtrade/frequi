@@ -15,7 +15,7 @@ const periodicBreakdownSelections = [
   { value: 'month', text: 'Months' },
 ];
 
-const periodicBreakdownPeriod = ref<string>('day');
+const periodicBreakdownPeriod = ref<string>('month');
 
 const periodicBreakdownFields = computed<TableField[]>(() => {
   return [
