@@ -143,10 +143,10 @@ const rows = computed(() => {
   return props.trades.length;
 });
 
-let tableFields: TableField[] = [];
+const tableFields = ref<TableField[]>([]);
 
 onMounted(() => {
-  tableFields = [
+  tableFields.value = [
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },
@@ -181,7 +181,7 @@ onMounted(() => {
     ...(props.activeTrades ? openFields : closedFields),
   ];
   if (props.multiBotView) {
-    tableFields.unshift({ key: 'botName', label: 'Bot' });
+    tableFields.value.unshift({ key: 'botName', label: 'Bot' });
   }
 });
 
