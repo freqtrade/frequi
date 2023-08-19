@@ -143,7 +143,9 @@ const rows = computed(() => {
   return props.trades.length;
 });
 
-const tableFields = ref<TableField[]>([]);
+// This using "TableField[]" below causes
+// Error: Debug Failure. No error for last overload signature
+const tableFields = ref<any[]>([]);
 
 onMounted(() => {
   tableFields.value = [
@@ -167,7 +169,6 @@ onMounted(() => {
     {
       key: 'profit',
       label: props.activeTrades ? 'Current profit %' : 'Profit %',
-
       formatter: (value: unknown, key?: string, item?: unknown) => {
         if (!item) {
           return '';
