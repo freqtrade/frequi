@@ -71,10 +71,10 @@
     node-html-parser "5.3.3"
     semver "^7.3.2"
 
-"@cypress/vue@^5.0.5":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-5.0.5.tgz#dabd4c8a4c2ade95d1be8a3289fdcd11793abee5"
-  integrity sha512-gjE0LKixK6XT4lPDFaEc8G6qNzm8YELgmbOiMVDxbVMuTtjYjorWQcIgzQ62uBX90/s7JrldXJ0W23gskoH4Ng==
+"@cypress/vue@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-6.0.0.tgz#db89b09260be21d2cb4faa2e5a86e584f346c929"
+  integrity sha512-KMfRw8y/kXn/RJqaDdFnYnW7YLk47313UE3Yip+sLDjILJ2kA0WEiEa6MYKe58v8TNRtwcRpUH5xAYVNs1N6/A==
 
 "@cypress/xvfb@^1.2.4":
   version "1.2.4"
