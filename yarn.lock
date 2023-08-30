@@ -61,15 +61,15 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/vite-dev-server@^5.0.5":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@cypress/vite-dev-server/-/vite-dev-server-5.0.5.tgz#46b4bb6443857f45825815220b9e7a34fc724403"
-  integrity sha512-ZR6Smfe2Jpe7V//yrISgbe4CfLfjpMuqr9ryCmx7NV3XiKJVBMIYmDUQ0lVIR6m7JaHv0/rElM8dTA6R987olQ==
+"@cypress/vite-dev-server@^5.0.6":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@cypress/vite-dev-server/-/vite-dev-server-5.0.6.tgz#07d9a5c14c5f606a54bd058d112f85bf17031929"
+  integrity sha512-vqa6ImiMPnANJD1qQLytiLKi0oSZ2z+ZbYCybtGUmgZng/ITfZfsrNr7xd8Z8lUJboEXucK2eA3mPMdQvj05YQ==
   dependencies:
     debug "^4.3.4"
     find-up "6.3.0"
     node-html-parser "5.3.3"
-    semver "^7.3.2"
+    semver "^7.5.3"
 
 "@cypress/vue@^6.0.0":
   version "6.0.0"
@@ -3224,7 +3224,7 @@ sass@^1.66.1:
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
-semver@^7.3.2, semver@^7.3.6, semver@^7.3.7, semver@^7.3.8, semver@^7.5.3, semver@^7.5.4:
+semver@^7.3.6, semver@^7.3.7, semver@^7.3.8, semver@^7.5.3, semver@^7.5.4:
   version "7.5.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.4.tgz#483986ec4ed38e1c6c48c34894a9182dbff68a6e"
   integrity sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==
