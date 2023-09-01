@@ -50,7 +50,7 @@
             </b-tab>
 
             <b-tab title="Pairlist" lazy>
-              <FTBotAPIPairList />
+              <PairListLive />
             </b-tab>
             <b-tab title="Pair Locks" lazy>
               <PairLockList />
@@ -154,7 +154,7 @@ import BotStatus from '@/components/ftbot/BotStatus.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import DailyStats from '@/components/ftbot/DailyStats.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
-import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
+import PairListLive from '@/components/ftbot/PairListLive.vue';
 import PairLockList from '@/components/ftbot/PairLockList.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 import BotPerformance from '@/components/ftbot/BotPerformance.vue';

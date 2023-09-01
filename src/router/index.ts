@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/pairlist',
-    component: () => import('@/components/ftbot/FTBotAPIPairList.vue'),
+    component: () => import('@/components/ftbot/PairListLive.vue'),
   },
   {
     path: '/settings',
