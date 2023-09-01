@@ -1,14 +1,16 @@
 <template>
   <e-charts
     v-if="dailyStats.data"
+    ref="dailyChart"
     :option="dailyChartOptions"
     :theme="settingsStore.chartTheme"
+    :style="{ height: width * 0.6 + 'px' }"
     autoresize
   />
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef } from 'vue';
+import { computed, ComputedRef, ref } from 'vue';
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
 
@@ -27,6 +29,7 @@ import {
 import { DailyReturnValue } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
 import { EChartsOption } from 'echarts';
+import { useElementSize } from '@vueuse/core';
 
 use([
   BarChart,
@@ -56,6 +59,10 @@ const props = defineProps({
 });
 
 const settingsStore = useSettingsStore();
+
+const dailyChart = ref(null);
+const { width } = useElementSize(dailyChart);
+
 const absoluteMin = computed(() =>
   props.dailyStats.data.reduce(
     (min, p) => (p.abs_profit < min ? p.abs_profit : min),
@@ -156,8 +163,6 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
 
 <style lang="scss" scoped>
 .echarts {
-  width: 100%;
-  height: 100%;
   min-height: 240px;
 }
 </style>
