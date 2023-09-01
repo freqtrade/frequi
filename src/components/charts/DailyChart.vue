@@ -132,7 +132,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
         nameRotate: 90,
         nameLocation: 'middle',
-        nameGap: 40,
+        nameGap: 35,
       },
       {
         type: 'value',

@@ -6,7 +6,7 @@
         <i-mdi-refresh />
       </b-button>
     </div>
-    <div>
+    <div class="ps-1">
       <DailyChart
         v-if="botStore.activeBot.dailyStats.data"
         :daily-stats="botStore.activeBot.dailyStatsSorted"
