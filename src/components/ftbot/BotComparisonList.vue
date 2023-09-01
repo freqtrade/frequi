@@ -132,6 +132,9 @@ const tableItems = computed<TableItem[]>(() => {
         summary.wins += v.winning_trades;
         summary.losses += v.losing_trades;
         // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
+        // This will always take the last bot's stake currency
+        // And therefore may result in wrong values.
+        summary.stakeCurrency = botStore.allBotState[k]?.stake_currency || summary.stakeCurrency;
       }
     }
   });
