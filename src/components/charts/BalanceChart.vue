@@ -10,25 +10,25 @@
 </template>
 
 <script setup lang="ts">
-import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
+import ECharts from 'vue-echarts';
 
-import { use } from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers';
 import { PieChart } from 'echarts/charts';
-import { LabelLayout } from 'echarts/features';
 import {
   DatasetComponent,
   LegendComponent,
   TitleComponent,
   TooltipComponent,
 } from 'echarts/components';
+import { use } from 'echarts/core';
+import { LabelLayout } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
 
-import { BalanceValues } from '@/types';
 import { formatPriceCurrency } from '@/shared/formatters';
-import { computed, ref } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
+import { BalanceValues } from '@/types';
 import { useElementSize } from '@vueuse/core';
+import { computed, ref } from 'vue';
 
 use([
   PieChart,

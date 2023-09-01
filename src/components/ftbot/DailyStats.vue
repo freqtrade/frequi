@@ -20,11 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
 import DailyChart from '@/components/charts/DailyChart.vue';
 import { formatPercent } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
+import { computed, onMounted } from 'vue';
 
 const botStore = useBotStore();
 const dailyFields = computed<TableField[]>(() => {
