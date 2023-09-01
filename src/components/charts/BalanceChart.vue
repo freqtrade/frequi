@@ -1,8 +1,10 @@
 <template>
   <e-charts
     v-if="currencies"
+    ref="balanceChart"
     :option="balanceChartOptions"
     :theme="settingsStore.chartTheme"
+    :style="{ height: width * 0.6 + 'px' }"
     autoresize
   />
 </template>
@@ -24,8 +26,9 @@ import {
 
 import { BalanceValues } from '@/types';
 import { formatPriceCurrency } from '@/shared/formatters';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
+import { useElementSize } from '@vueuse/core';
 
 use([
   PieChart,
@@ -36,6 +39,9 @@ use([
   TooltipComponent,
   LabelLayout,
 ]);
+
+const balanceChart = ref(null);
+const { width } = useElementSize(balanceChart);
 
 const props = defineProps({
   currencies: { required: true, type: Array as () => BalanceValues[] },
@@ -93,8 +99,6 @@ const balanceChartOptions = computed((): EChartsOption => {
 
 <style lang="scss" scoped>
 .echarts {
-  width: 100%;
-  height: 100%;
-  min-height: 240px;
+  min-height: 20px;
 }
 </style>
