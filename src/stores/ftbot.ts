@@ -1004,7 +1004,7 @@ export function createBotSubStore(botId: string, botName: string) {
             // TODO: check for active bot ...
             if (pair === this.selectedPair) {
               // Reload pair candles
-              this.getPairCandles({ pair, timeframe, limit: 500 });
+              this.getPairCandles({ pair, timeframe });
             }
             break;
           }
