@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import DailyChart from '@/components/charts/DailyChart.vue';
-import { formatPercent } from '@/shared/formatters';
+import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 import { computed, onMounted } from 'vue';
@@ -33,12 +33,13 @@ const dailyFields = computed<TableField[]>(() => {
     {
       key: 'abs_profit',
       label: 'Profit',
-      // formatter: (value: unknown) => formatPrice(value as number),
+      formatter: (value: unknown) =>
+        formatPrice(value as number, botStore.activeBot.stakeCurrencyDecimals),
     },
     {
       key: 'fiat_value',
       label: `In ${botStore.activeBot.dailyStats.fiat_display_currency}`,
-      // formatter: (value: unknown) => formatPrice(value as number, 2),
+      formatter: (value: unknown) => formatPrice(value as number, 2),
     },
     { key: 'trade_count', label: 'Trades' },
   ];
