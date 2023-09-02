@@ -5,9 +5,9 @@ import {
   BotDescriptors,
   BotState,
   ClosedTrade,
-  DailyPayload,
-  DailyRecord,
-  DailyReturnValue,
+  TimeSummaryPayload,
+  TimeSummaryRecord,
+  TimeSummaryReturnValue,
   MultiCancelOpenOrderPayload,
   MultiDeletePayload,
   MultiForcesellPayload,
@@ -121,9 +121,9 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       });
       return result;
     },
-    allDailyStatsSelectedBots: (state): DailyReturnValue => {
+    allDailyStatsSelectedBots: (state): TimeSummaryReturnValue => {
       // Return aggregated daily stats for all bots - sorted ascending.
-      const resp: Record<string, DailyRecord> = {};
+      const resp: Record<string, TimeSummaryRecord> = {};
       Object.entries(state.botStores).forEach(([, botStore]) => {
         if (botStore.isSelected) {
           botStore.dailyStats?.data?.forEach((d) => {
@@ -138,7 +138,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         }
       });
 
-      const dailyReturn: DailyReturnValue = {
+      const dailyReturn: TimeSummaryReturnValue = {
         stake_currency: 'USDT',
         fiat_display_currency: 'USD',
         data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
@@ -303,8 +303,8 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         }
       });
     },
-    async allGetDaily(payload: DailyPayload) {
-      const updates: Promise<DailyReturnValue>[] = [];
+    async allGetDaily(payload: TimeSummaryPayload) {
+      const updates: Promise<TimeSummaryReturnValue>[] = [];
 
       this.allBotStores.forEach((bot) => {
         if (bot.isBotOnline) {

@@ -1,8 +1,8 @@
-export interface DailyPayload {
+export interface TimeSummaryPayload {
   timescale?: number;
 }
 
-export interface DailyRecord {
+export interface TimeSummaryRecord {
   /** Date in the format yyyy-mm-dd */
   [key: string]: string | number;
   date: string;
@@ -14,8 +14,8 @@ export interface DailyRecord {
   trade_count: number;
 }
 
-export interface DailyReturnValue {
-  data: DailyRecord[];
+export interface TimeSummaryReturnValue {
+  data: TimeSummaryRecord[];
   fiat_display_currency: string;
   stake_currency: string;
 }

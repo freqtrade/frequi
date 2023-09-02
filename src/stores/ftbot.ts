@@ -6,7 +6,7 @@ import {
   PlotConfig,
   StrategyResult,
   BalanceInterface,
-  DailyReturnValue,
+  TimeSummaryReturnValue,
   LockResponse,
   ProfitInterface,
   BacktestResult,
@@ -16,7 +16,7 @@ import {
   LoadingStatus,
   BacktestHistoryEntry,
   RunModes,
-  DailyPayload,
+  TimeSummaryPayload,
   BlacklistResponse,
   WhitelistResponse,
   StrategyListResult,
@@ -81,7 +81,7 @@ export function createBotSubStore(botId: string, botName: string) {
         profit: {} as ProfitInterface,
         botState: {} as BotState,
         balance: {} as BalanceInterface,
-        dailyStats: {} as DailyReturnValue,
+        dailyStats: {} as TimeSummaryReturnValue,
         pairlistMethods: [] as string[],
         detailTradeId: null as number | null,
         selectedPair: '',
@@ -155,7 +155,7 @@ export function createBotSubStore(botId: string, botName: string) {
       botName: (state) => state.botState?.bot_name || 'freqtrade',
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
       activeLocks: (state) => state.currentLocks?.locks || [],
-      dailyStatsSorted: (state): DailyReturnValue => {
+      dailyStatsSorted: (state): TimeSummaryReturnValue => {
         return {
           ...state.dailyStats,
           data: state.dailyStats.data
@@ -535,10 +535,12 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async getDaily(payload: DailyPayload = {}) {
+      async getDaily(payload: TimeSummaryPayload = {}) {
         const { timescale = 20 } = payload;
         try {
-          const { data } = await api.get<DailyReturnValue>('/daily', { params: { timescale } });
+          const { data } = await api.get<TimeSummaryReturnValue>('/daily', {
+            params: { timescale },
+          });
           this.dailyStats = data;
           return Promise.resolve(data);
         } catch (error) {
