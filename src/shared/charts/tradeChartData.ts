@@ -47,11 +47,12 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   // 4: color
   // 5: label
   // 6: tooltip
+  const stop_ts_adjusted = dataset.data_stop_ts + dataset.timeframe_ms;
   for (let i = 0, len = trades.length; i < len; i += 1) {
     const trade: Trade = trades[i];
     if (
       // Trade is open or closed and within timerange
-      roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= dataset.data_stop_ts ||
+      roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= stop_ts_adjusted ||
       !trade.close_timestamp ||
       (trade.close_timestamp && trade.close_timestamp >= dataset.data_start_ts)
     ) {
@@ -61,7 +62,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
           if (
             order.order_filled_timestamp &&
             roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp) <=
-              dataset.data_stop_ts &&
+              stop_ts_adjusted &&
             order.order_filled_timestamp > dataset.data_start_ts
           ) {
             // Trade entry
@@ -79,7 +80,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             } else if (i === trade.orders.length - 1 && trade.close_timestamp) {
               if (
                 roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp) <=
-                  dataset.data_stop_ts &&
+                  stop_ts_adjusted &&
                 trade.close_timestamp > dataset.data_start_ts &&
                 trade.is_open === false
               ) {
@@ -190,7 +191,7 @@ export function generateTradeSeries(
           },
           {
             yAxis: t.stop_loss_abs,
-            xAxis: t.close_timestamp ?? dataset.data_stop_ts,
+            xAxis: t.close_timestamp ?? dataset.data_stop_ts + dataset.timeframe_ms,
           },
         ];
       }),
