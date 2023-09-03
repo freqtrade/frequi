@@ -45,7 +45,7 @@
             <b-tab title="Balance" lazy>
               <Balance />
             </b-tab>
-            <b-tab title="Daily Stats" lazy>
+            <b-tab title="Time Breakdown" lazy>
               <PeriodBreakdown />
             </b-tab>
 
