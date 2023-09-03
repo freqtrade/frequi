@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mb-2">
-      <label class="me-auto h3">Period Breakdown</label>
+      <label class="me-auto h3">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</label>
       <b-button class="float-end" size="sm" @click="refreshSummary">
         <i-mdi-refresh />
       </b-button>
