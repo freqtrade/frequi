@@ -14,6 +14,7 @@ import {
   MultiReloadTradePayload,
   ProfitInterface,
   Trade,
+  TimeSummaryOptions,
 } from '@/types';
 import { defineStore } from 'pinia';
 import { createBotSubStore } from './ftbot';
@@ -247,7 +248,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         const updates: Promise<void>[] = [];
         updates.push(this.allRefreshFrequent(false));
         updates.push(this.allRefreshSlow(true));
-        // updates.push(this.getDaily());
+        // updates.push(this.getTimeSummary());
         // updates.push(this.getBalance());
         await Promise.all(updates);
         console.log('refreshing_end');
@@ -308,7 +309,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
 
       this.allBotStores.forEach((bot) => {
         if (bot.isBotOnline) {
-          updates.push(bot.getDaily(payload));
+          updates.push(bot.getTimeSummary(TimeSummaryOptions.daily, payload));
         }
       });
       await Promise.all(updates);

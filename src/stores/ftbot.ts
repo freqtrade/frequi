@@ -46,6 +46,7 @@ import {
   BacktestMetadataWithStrategyName,
   BacktestMetadataPatch,
   BacktestResultUpdate,
+  TimeSummaryOptions,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -82,6 +83,8 @@ export function createBotSubStore(botId: string, botName: string) {
         botState: {} as BotState,
         balance: {} as BalanceInterface,
         dailyStats: {} as TimeSummaryReturnValue,
+        weeklyStats: {} as TimeSummaryReturnValue,
+        monthlyStats: {} as TimeSummaryReturnValue,
         pairlistMethods: [] as string[],
         detailTradeId: null as number | null,
         selectedPair: '',
@@ -155,14 +158,6 @@ export function createBotSubStore(botId: string, botName: string) {
       botName: (state) => state.botState?.bot_name || 'freqtrade',
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
       activeLocks: (state) => state.currentLocks?.locks || [],
-      dailyStatsSorted: (state): TimeSummaryReturnValue => {
-        return {
-          ...state.dailyStats,
-          data: state.dailyStats.data
-            ? Object.values(state.dailyStats.data).sort((a, b) => (a.date > b.date ? 1 : -1))
-            : [],
-        };
-      },
     },
     actions: {
       botAdded() {
@@ -535,13 +530,20 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async getDaily(payload: TimeSummaryPayload = {}) {
+      async getTimeSummary(aggregation: TimeSummaryOptions, payload: TimeSummaryPayload = {}) {
         const { timescale = 20 } = payload;
         try {
-          const { data } = await api.get<TimeSummaryReturnValue>('/daily', {
+          const { data } = await api.get<TimeSummaryReturnValue>(`/${aggregation}`, {
             params: { timescale },
           });
-          this.dailyStats = data;
+          if (aggregation === TimeSummaryOptions.daily) {
+            this.dailyStats = data;
+          } else if (aggregation === TimeSummaryOptions.weekly) {
+            this.weeklyStats = data;
+          } else if (aggregation === TimeSummaryOptions.monthly) {
+            this.monthlyStats = data;
+          }
+
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);

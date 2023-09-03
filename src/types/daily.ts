@@ -1,3 +1,8 @@
+export enum TimeSummaryOptions {
+  daily = 'daily',
+  weekly = 'weekly',
+  monthly = 'monthly',
+}
 export interface TimeSummaryPayload {
   timescale?: number;
 }

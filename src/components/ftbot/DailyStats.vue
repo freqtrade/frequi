@@ -1,20 +1,29 @@
 <template>
   <div>
     <div class="mb-2">
-      <label class="me-auto h3">Daily Stats</label>
-      <b-button class="float-end" size="sm" @click="botStore.activeBot.getDaily">
+      <label class="me-auto h3">Period Breakdown</label>
+      <b-button class="float-end" size="sm" @click="refreshSummary">
         <i-mdi-refresh />
       </b-button>
     </div>
+    <b-form-radio-group
+      v-if="hasWeekly"
+      id="order-direction"
+      v-model="periodicBreakdownPeriod"
+      :options="periodicBreakdownSelections"
+      name="radios-btn-default"
+      size="sm"
+      buttons
+      style="min-width: 10em"
+      button-variant="outline-primary"
+      @change="refreshSummary"
+    ></b-form-radio-group>
+
     <div class="ps-1">
-      <DailyChart
-        v-if="botStore.activeBot.dailyStats.data"
-        :daily-stats="botStore.activeBot.dailyStatsSorted"
-      />
+      <DailyChart v-if="selectedStats" :daily-stats="selectedStatsSorted" :show-title="false" />
     </div>
     <div>
-      <b-table class="table-sm" :items="botStore.activeBot.dailyStats.data" :fields="dailyFields">
-      </b-table>
+      <b-table class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </b-table>
     </div>
   </div>
 </template>
@@ -24,9 +33,44 @@ import DailyChart from '@/components/charts/DailyChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+
+import { TimeSummaryOptions } from '@/types';
 
 const botStore = useBotStore();
+
+const hasWeekly = computed(() => botStore.activeBot.botApiVersion >= 2.33);
+
+const periodicBreakdownSelections = computed(() => {
+  const vals = [{ value: TimeSummaryOptions.daily, text: 'Days' }];
+  if (hasWeekly.value) {
+    vals.push({ value: TimeSummaryOptions.weekly, text: 'Weeks' });
+    vals.push({ value: TimeSummaryOptions.monthly, text: 'Months' });
+  }
+  return vals;
+});
+const periodicBreakdownPeriod = ref<TimeSummaryOptions>(TimeSummaryOptions.daily);
+
+const selectedStats = computed(() => {
+  switch (periodicBreakdownPeriod.value) {
+    case TimeSummaryOptions.weekly:
+      return botStore.activeBot.weeklyStats;
+    case TimeSummaryOptions.monthly:
+      return botStore.activeBot.monthlyStats;
+  }
+  return botStore.activeBot.dailyStats;
+});
+
+const selectedStatsSorted = computed(() => {
+  // Sorted version for chart
+  return {
+    ...selectedStats.value,
+    data: selectedStats.value.data
+      ? Object.values(selectedStats.value.data).sort((a, b) => (a.date > b.date ? 1 : -1))
+      : [],
+  };
+});
+
 const dailyFields = computed<TableField[]>(() => {
   const res: TableField[] = [
     { key: 'date', label: 'Day' },
@@ -51,7 +95,12 @@ const dailyFields = computed<TableField[]>(() => {
     });
   return res;
 });
+
+function refreshSummary() {
+  botStore.activeBot.getTimeSummary(periodicBreakdownPeriod.value);
+}
+
 onMounted(() => {
-  botStore.activeBot.getDaily();
+  refreshSummary();
 });
 </script>

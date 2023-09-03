@@ -26,7 +26,7 @@ import {
   VisualMapComponent,
 } from 'echarts/components';
 
-import { DailyReturnValue } from '@/types';
+import { TimeSummaryReturnValue } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
 import { EChartsOption } from 'echarts';
 import { useElementSize } from '@vueuse/core';
@@ -49,7 +49,7 @@ const CHART_TRADE_COUNT = 'Trade Count';
 
 const props = defineProps({
   dailyStats: {
-    type: Object as () => DailyReturnValue,
+    type: Object as () => TimeSummaryReturnValue,
     required: true,
   },
   showTitle: {
