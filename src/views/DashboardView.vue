@@ -235,7 +235,7 @@ const responsiveGridLayouts = computed(() => {
 });
 
 onMounted(async () => {
-  await botStore.allGetDaily({ timescale: 30 });
+  botStore.allGetDaily({ timescale: 30 });
   // botStore.activeBot.getTrades();
   botStore.activeBot.getOpenTrades();
   botStore.activeBot.getProfit();
