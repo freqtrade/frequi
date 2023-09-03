@@ -20,7 +20,11 @@
     ></b-form-radio-group>
 
     <div class="ps-1">
-      <DailyChart v-if="selectedStats" :daily-stats="selectedStatsSorted" :show-title="false" />
+      <TimePeriodChart
+        v-if="selectedStats"
+        :daily-stats="selectedStatsSorted"
+        :show-title="false"
+      />
     </div>
     <div>
       <b-table class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </b-table>
@@ -29,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import DailyChart from '@/components/charts/DailyChart.vue';
+import TimePeriodChart from '@/components/charts/TimePeriodChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';

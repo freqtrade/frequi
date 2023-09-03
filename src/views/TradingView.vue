@@ -46,7 +46,7 @@
               <Balance />
             </b-tab>
             <b-tab title="Daily Stats" lazy>
-              <DailyStats />
+              <PeriodBreakdown />
             </b-tab>
 
             <b-tab title="Pairlist" lazy>
@@ -152,7 +152,7 @@ import Balance from '@/components/ftbot/BotBalance.vue';
 import BotControls from '@/components/ftbot/BotControls.vue';
 import BotStatus from '@/components/ftbot/BotStatus.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
-import DailyStats from '@/components/ftbot/DailyStats.vue';
+import PeriodBreakdown from '@/components/ftbot/PeriodBreakdown.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
 import PairListLive from '@/components/ftbot/PairListLive.vue';
 import PairLockList from '@/components/ftbot/PairLockList.vue';

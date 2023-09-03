@@ -28,7 +28,7 @@
         drag-allow-from=".drag-header"
       >
         <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
-          <DailyChart
+          <TimePeriodChart
             v-if="botStore.allDailyStatsSelectedBots"
             :daily-stats="botStore.allDailyStatsSelectedBots"
             :show-title="false"
@@ -159,7 +159,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 
-import DailyChart from '@/components/charts/DailyChart.vue';
+import TimePeriodChart from '@/components/charts/TimePeriodChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
