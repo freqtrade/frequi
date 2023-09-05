@@ -49,7 +49,7 @@ export interface ProfitInterface {
   /** Initial bot start date*/
   bot_start_timestamp?: number;
   bot_start_date?: string;
-  win_rate?: number;
+  winrate?: number;
   expectancy?: number;
   expectancy_ratio?: number;
 }
