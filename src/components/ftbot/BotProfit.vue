@@ -1,22 +1,20 @@
 <template>
-  <b-table
-    v-if="botStore.activeBot.profit"
-    small
-    borderless
-    :items="profitItems"
-    :fields="profitFields"
-  >
+  <b-table class="text-start" small borderless :items="profitItems" :fields="profitFields">
   </b-table>
 </template>
 
 <script setup lang="ts">
 import { formatPercent, formatPriceCurrency, timestampms } from '@/shared/formatters';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
+import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
 import { computed } from 'vue';
 
-const botStore = useBotStore();
+const props = defineProps({
+  profit: { required: true, type: Object as () => ProfitInterface },
+  stakeCurrency: { required: true, type: String },
+  stakeCurrencyDecimals: { required: true, type: Number },
+});
 
 const profitFields: TableField[] = [
   { key: 'metric', label: 'Metric' },
@@ -24,93 +22,74 @@ const profitFields: TableField[] = [
 ];
 
 const profitItems = computed<TableItem[]>(() => {
+  if (!props.profit) return [];
   return [
     {
       metric: 'Total Trade count',
-      value: `${botStore.activeBot.profit.trade_count}`,
+      value: `${props.profit.trade_count}`,
     },
     {
       metric: 'Bot started',
-      value: timestampms(botStore.activeBot.profit.bot_start_timestamp ?? 0),
+      value: timestampms(props.profit.bot_start_timestamp ?? 0),
     },
     {
       metric: 'First trade opened',
-      value: timestampms(botStore.activeBot.profit.first_trade_timestamp),
+      value: timestampms(props.profit.first_trade_timestamp),
     },
     {
       metric: 'Latest trade opened',
-      value: timestampms(botStore.activeBot.profit.latest_trade_timestamp),
+      value: timestampms(props.profit.latest_trade_timestamp),
     },
     {
       metric: 'Win / Loss',
-      value: `${botStore.activeBot.profit.winning_trades} / ${botStore.activeBot.profit.losing_trades}`,
+      value: `${props.profit.winning_trades} / ${props.profit.losing_trades}`,
     },
     {
       metric: 'Winrate',
-      value: `${
-        botStore.activeBot.profit.winrate ? formatPercent(botStore.activeBot.profit.winrate) : 'N/A'
-      }`,
+      value: `${props.profit.winrate ? formatPercent(props.profit.winrate) : 'N/A'}`,
     },
     {
       metric: 'Expectancy (ratio)',
-      value: `${
-        botStore.activeBot.profit.expectancy
-          ? botStore.activeBot.profit.expectancy.toFixed(2)
-          : 'N/A'
-      } (${
-        botStore.activeBot.profit.expectancy_ratio
-          ? botStore.activeBot.profit.expectancy_ratio.toFixed(2)
-          : 'N/A'
+      value: `${props.profit.expectancy ? props.profit.expectancy.toFixed(2) : 'N/A'} (${
+        props.profit.expectancy_ratio ? props.profit.expectancy_ratio.toFixed(2) : 'N/A'
       })`,
     },
     {
       metric: 'Avg Duration',
-      value: `${botStore.activeBot.profit.avg_duration}`,
+      value: `${props.profit.avg_duration}`,
     },
     {
       metric: 'Best performing',
-      value: `${botStore.activeBot.profit.best_pair}: ${formatPercent(
-        botStore.activeBot.profit.best_pair_profit_ratio,
-        2,
-      )}`,
+      value: `${props.profit.best_pair}: ${formatPercent(props.profit.best_pair_profit_ratio, 2)}`,
     },
     {
       metric: 'Trading volume',
       value: `${formatPriceCurrency(
-        botStore.activeBot.profit.trading_volume ?? 0,
-        botStore.activeBot.botState.stake_currency,
-        botStore.activeBot.botState.stake_currency_decimals ?? 3,
+        props.profit.trading_volume ?? 0,
+        props.stakeCurrency,
+        props.stakeCurrencyDecimals,
       )}`,
     },
     {
       metric: 'Profit factor',
-      value: `${
-        botStore.activeBot.profit.profit_factor
-          ? botStore.activeBot.profit.profit_factor.toFixed(2)
-          : 'N/A'
-      }`,
+      value: `${props.profit.profit_factor ? props.profit.profit_factor.toFixed(2) : 'N/A'}`,
     },
     {
       metric: 'Max Drawdown',
-      value: `${
-        botStore.activeBot.profit.max_drawdown
-          ? formatPercent(botStore.activeBot.profit.max_drawdown, 2)
-          : 'N/A'
-      } (${
-        botStore.activeBot.profit.max_drawdown_abs
+      value: `${props.profit.max_drawdown ? formatPercent(props.profit.max_drawdown, 2) : 'N/A'} (${
+        props.profit.max_drawdown_abs
           ? formatPriceCurrency(
-              botStore.activeBot.profit.max_drawdown_abs,
-              botStore.activeBot.botState.stake_currency,
-              botStore.activeBot.botState.stake_currency_decimals ?? 3,
+              props.profit.max_drawdown_abs,
+              props.stakeCurrency,
+              props.stakeCurrencyDecimals,
             )
           : 'N/A'
       }) ${
-        botStore.activeBot.profit.max_drawdown_start_timestamp &&
-        botStore.activeBot.profit.max_drawdown_end_timestamp
+        props.profit.max_drawdown_start_timestamp && props.profit.max_drawdown_end_timestamp
           ? 'from ' +
-            timestampms(botStore.activeBot.profit.max_drawdown_start_timestamp) +
+            timestampms(props.profit.max_drawdown_start_timestamp) +
             ' to ' +
-            timestampms(botStore.activeBot.profit.max_drawdown_end_timestamp)
+            timestampms(props.profit.max_drawdown_end_timestamp)
           : ''
       }`,
     },

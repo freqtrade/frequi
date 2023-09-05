@@ -76,7 +76,12 @@
         }}
       </span>
     </p>
-    <BotProfit />
+    <BotProfit
+      class="mx-1"
+      :profit="botStore.activeBot.profit"
+      :stake-currency="botStore.activeBot.botState.stake_currency"
+      :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
+    />
   </div>
 </template>
 
