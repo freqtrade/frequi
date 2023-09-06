@@ -1,15 +1,15 @@
 <template>
   <b-table class="text-start" small borderless :items="profitItems" :fields="profitFields">
+    <template #cell(value)="row">
+      <DateTimeTZ v-if="row.item.isTs" :date="row.value as number"></DateTimeTZ>
+      <template v-else>{{ row.value }}</template>
+    </template>
   </b-table>
 </template>
 
 <script setup lang="ts">
-import {
-  formatPercent,
-  formatPriceCurrency,
-  timestampms,
-  timestampmsOrNa,
-} from '@/shared/formatters';
+import { formatPercent, formatPriceCurrency, timestampms } from '@/shared/formatters';
+import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
 import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
@@ -58,15 +58,18 @@ const profitItems = computed<TableItem[]>(() => {
     },
     {
       metric: 'Bot started',
-      value: timestampmsOrNa(props.profit.bot_start_timestamp ?? 0),
+      value: props.profit.bot_start_timestamp,
+      isTs: true,
     },
     {
       metric: 'First Trade opened',
-      value: timestampmsOrNa(props.profit.first_trade_timestamp),
+      value: props.profit.first_trade_timestamp,
+      isTs: true,
     },
     {
       metric: 'Latest Trade opened',
-      value: timestampmsOrNa(props.profit.latest_trade_timestamp),
+      value: props.profit.latest_trade_timestamp,
+      isTs: true,
     },
     {
       metric: 'Win / Loss',
