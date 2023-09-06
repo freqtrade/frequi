@@ -4,7 +4,12 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPriceCurrency, timestampms } from '@/shared/formatters';
+import {
+  formatPercent,
+  formatPriceCurrency,
+  timestampms,
+  timestampmsOrNa,
+} from '@/shared/formatters';
 
 import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
@@ -26,42 +31,46 @@ const profitItems = computed<TableItem[]>(() => {
   return [
     {
       metric: 'ROI open trades',
-      value: `${formatPriceCurrency(
-        props.profit.profit_closed_coin,
-        props.stakeCurrency,
-        props.stakeCurrencyDecimals,
-      )} (${formatPercent(props.profit.profit_closed_ratio_mean, 2)})`,
+      value: props.profit.profit_closed_coin
+        ? `${formatPriceCurrency(
+            props.profit.profit_closed_coin,
+            props.stakeCurrency,
+            props.stakeCurrencyDecimals,
+          )} (${formatPercent(props.profit.profit_closed_ratio_mean, 2)})`
+        : 'N/A',
       // (&sum; ${formatPercent(props.profit.profit_closed_ratio_sum,  2,)})`
     },
     {
       metric: 'ROI all trades',
-      value: `${formatPriceCurrency(
-        props.profit.profit_all_coin,
-        props.stakeCurrency,
-        props.stakeCurrencyDecimals,
-      )} (${formatPercent(props.profit.profit_all_ratio_mean, 2)})`,
+      value: props.profit.profit_all_coin
+        ? `${formatPriceCurrency(
+            props.profit.profit_all_coin,
+            props.stakeCurrency,
+            props.stakeCurrencyDecimals,
+          )} (${formatPercent(props.profit.profit_all_ratio_mean, 2)})`
+        : 'N/A',
       //  (&sum; ${formatPercent(props.profit.profit_all_ratio_sum,2,)})`
     },
 
     {
       metric: 'Total Trade count',
-      value: `${props.profit.trade_count}`,
+      value: `${props.profit.trade_count ?? 0}`,
     },
     {
       metric: 'Bot started',
-      value: timestampms(props.profit.bot_start_timestamp ?? 0),
+      value: timestampmsOrNa(props.profit.bot_start_timestamp ?? 0),
     },
     {
       metric: 'First Trade opened',
-      value: timestampms(props.profit.first_trade_timestamp),
+      value: timestampmsOrNa(props.profit.first_trade_timestamp),
     },
     {
       metric: 'Latest Trade opened',
-      value: timestampms(props.profit.latest_trade_timestamp),
+      value: timestampmsOrNa(props.profit.latest_trade_timestamp),
     },
     {
       metric: 'Win / Loss',
-      value: `${props.profit.winning_trades} / ${props.profit.losing_trades}`,
+      value: `${props.profit.winning_trades ?? 0} / ${props.profit.losing_trades ?? 0}`,
     },
     {
       metric: 'Winrate',
@@ -75,11 +84,13 @@ const profitItems = computed<TableItem[]>(() => {
     },
     {
       metric: 'Avg. Duration',
-      value: `${props.profit.avg_duration}`,
+      value: `${props.profit.avg_duration ?? 'N/A'}`,
     },
     {
       metric: 'Best performing',
-      value: `${props.profit.best_pair}: ${formatPercent(props.profit.best_pair_profit_ratio, 2)}`,
+      value: props.profit.best_pair
+        ? `${props.profit.best_pair}: ${formatPercent(props.profit.best_pair_profit_ratio, 2)}`
+        : 'N/A',
     },
     {
       metric: 'Trading volume',
