@@ -39,6 +39,15 @@ export function timestampms(ts: number | Date): string {
 }
 
 /**
+ * Convert a timestamp / Date object to String.
+ * Returns 'N/A' if ts is null
+ * @param ts Timestamp as number or date (in utc!!)
+ */
+export function timestampmsOrNa(ts: number | Date | null): string {
+  return ts ? formatDate(toDate(ts), 'yyyy-MM-dd HH:mm:ss') : 'N/A';
+}
+
+/**
  * Convert a timestamp / Date object to String
  * @param ts Timestamp as number or date (in utc!!)
  * @param timezone timezone to use
