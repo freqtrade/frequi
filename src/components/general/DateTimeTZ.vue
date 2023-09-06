@@ -3,7 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { timestampms, timestampmsWithTimezone, timestampToDateString } from '@/shared/formatters';
+import {
+  timestampmsOrNa,
+  timestampmsWithTimezone,
+  timestampToDateString,
+} from '@/shared/formatters';
 
 import { computed } from 'vue';
 
@@ -19,7 +23,7 @@ const formattedDate = computed((): string => {
   if (props.showTimezone) {
     return timestampmsWithTimezone(props.date);
   }
-  return timestampms(props.date);
+  return timestampmsOrNa(props.date);
 });
 
 const timezoneTooltip = computed((): string => {
