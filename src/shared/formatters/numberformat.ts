@@ -30,7 +30,7 @@ export function formatPrice(value: number | null, decimals = 15): string {
  * @returns
  */
 export function formatPriceCurrency(price: number | null, currency: string, decimals = 3) {
-  return `${formatPrice(price, decimals)} ${currency}`;
+  return `${formatPrice(price, decimals)} ${currency ?? ''}`;
 }
 
 export default {
