@@ -25,6 +25,25 @@ const profitItems = computed<TableItem[]>(() => {
   if (!props.profit) return [];
   return [
     {
+      metric: 'ROI open trades',
+      value: `${formatPriceCurrency(
+        props.profit.profit_closed_coin,
+        props.stakeCurrency,
+        props.stakeCurrencyDecimals,
+      )} (${formatPercent(props.profit.profit_closed_ratio_mean, 2)})`,
+      // (&sum; ${formatPercent(props.profit.profit_closed_ratio_sum,  2,)})`
+    },
+    {
+      metric: 'ROI all trades',
+      value: `${formatPriceCurrency(
+        props.profit.profit_all_coin,
+        props.stakeCurrency,
+        props.stakeCurrencyDecimals,
+      )} (${formatPercent(props.profit.profit_all_ratio_mean, 2)})`,
+      //  (&sum; ${formatPercent(props.profit.profit_all_ratio_sum,2,)})`
+    },
+
+    {
       metric: 'Total Trade count',
       value: `${props.profit.trade_count}`,
     },
@@ -33,11 +52,11 @@ const profitItems = computed<TableItem[]>(() => {
       value: timestampms(props.profit.bot_start_timestamp ?? 0),
     },
     {
-      metric: 'First trade opened',
+      metric: 'First Trade opened',
       value: timestampms(props.profit.first_trade_timestamp),
     },
     {
-      metric: 'Latest trade opened',
+      metric: 'Latest Trade opened',
       value: timestampms(props.profit.latest_trade_timestamp),
     },
     {
@@ -55,7 +74,7 @@ const profitItems = computed<TableItem[]>(() => {
       })`,
     },
     {
-      metric: 'Avg Duration',
+      metric: 'Avg. Duration',
       value: `${props.profit.avg_duration}`,
     },
     {
