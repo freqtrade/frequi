@@ -32,6 +32,8 @@ describe('timeformatter.ts', () => {
     expect(timestampmsWithTimezone(1651057500000)).toEqual('2022-04-27 11:05:00 (UTC)');
     setTimezone('UTC');
     expect(timestampmsWithTimezone(1651057500000)).toEqual('2022-04-27 11:05:00 (UTC)');
+    expect(timestampmsWithTimezone(0)).toEqual('N/A');
+    expect(timestampmsWithTimezone(null)).toEqual('N/A');
   });
   it('timestampms convert correctly', () => {
     setTimezone('UTC');

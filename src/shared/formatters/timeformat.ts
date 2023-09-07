@@ -53,7 +53,10 @@ export function timestampmsOrNa(ts: number | Date | null): string {
  * @param timezone timezone to use
  * @returns formatted date in desired timezone (or globally configured timezone)
  */
-export function timestampmsWithTimezone(ts: number | Date, timezone?: string): string {
+export function timestampmsWithTimezone(ts: number | Date | null, timezone?: string): string {
+  if (!ts) {
+    return 'N/A';
+  }
   return formatDate(toDate(ts), 'yyyy-MM-dd HH:mm:ss (z)', timezone);
 }
 
