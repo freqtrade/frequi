@@ -19,6 +19,7 @@
     "closed_trade_count": 149,
     "first_trade_date": "a year ago",
     "first_trade_timestamp": 1626021644985,
+    "bot_start_timestamp": 1625021644985,
     "latest_trade_date": "5 days ago",
     "latest_trade_timestamp": 1661828800529,
     "avg_duration": "7:59:54",
