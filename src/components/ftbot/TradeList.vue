@@ -40,11 +40,7 @@
       </template>
       <template #cell(pair)="row">
         <span>
-          {{
-            `${row.item.pair}${
-              row.item.open_order_id === undefined || row.item.open_order_id === null ? '' : '*'
-            }`
-          }}
+          {{ `${row.item.pair}${row.item.open_order_id || row.item.has_open_orders ? '*' : ''}` }}
         </span>
       </template>
       <template #cell(trade_id)="row">
