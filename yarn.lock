@@ -888,10 +888,10 @@
     "@typescript-eslint/parser" "^5.59.1"
     vue-eslint-parser "^9.1.1"
 
-"@vue/language-core@1.8.8":
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-1.8.8.tgz#5a8aa8363f4dfacdfcd7808a9926744d7c310ae6"
-  integrity sha512-i4KMTuPazf48yMdYoebTkgSOJdFraE4pQf0B+FTOFkbB+6hAfjrSou/UmYWRsWyZV6r4Rc6DDZdI39CJwL0rWw==
+"@vue/language-core@1.8.11":
+  version "1.8.11"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-1.8.11.tgz#d10cc6f8f32e30991e0430f0d91db9416dc2e9a6"
+  integrity sha512-+MZOBGqGwfld6hpo0DB47x8eNM0dNqk15ZdfOhj19CpvuYuOWCeVdOEGZunKDyo3QLkTn3kLOSysJzg7FDOQBA==
   dependencies:
     "@volar/language-core" "~1.10.0"
     "@volar/source-map" "~1.10.0"
@@ -958,13 +958,13 @@
     js-beautify "1.14.9"
     vue-component-type-helpers "1.8.4"
 
-"@vue/typescript@1.8.8":
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/@vue/typescript/-/typescript-1.8.8.tgz#8efb375d448862134492a044f4e96afada547500"
-  integrity sha512-jUnmMB6egu5wl342eaUH236v8tdcEPXXkPgj+eI/F6JwW/lb+yAU6U07ZbQ3MVabZRlupIlPESB7ajgAGixhow==
+"@vue/typescript@1.8.11":
+  version "1.8.11"
+  resolved "https://registry.yarnpkg.com/@vue/typescript/-/typescript-1.8.11.tgz#b2de6760a0e6d829a5328cd0123b1763ce3e66ef"
+  integrity sha512-skUmMDiPUUtu1flPmf2YybF+PX8IzBtMioQOaNn6Ck/RhdrPJGj1AX/7s3Buf9G6ln+/KHR1XQuti/FFxw5XVA==
   dependencies:
     "@volar/typescript" "~1.10.0"
-    "@vue/language-core" "1.8.8"
+    "@vue/language-core" "1.8.11"
 
 "@vuepic/vue-datepicker@^6.1.0":
   version "6.1.0"
@@ -3695,13 +3695,13 @@ vue-template-compiler@^2.7.14:
     de-indent "^1.0.2"
     he "^1.2.0"
 
-vue-tsc@^1.8.8:
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-1.8.8.tgz#67317693eb2ef6747e89e6d834eeb6d2deb8871d"
-  integrity sha512-bSydNFQsF7AMvwWsRXD7cBIXaNs/KSjvzWLymq/UtKE36697sboX4EccSHFVxvgdBlI1frYPc/VMKJNB7DFeDQ==
+vue-tsc@^1.8.11:
+  version "1.8.11"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-1.8.11.tgz#4a972e58a9eaae72d73e63e0bedacb56391b7cb4"
+  integrity sha512-BzfiMdPqDHBlysx4g26NkfVHSQwGD/lTRausmxN9sFyjXz34OWfsbkh0YsVkX84Hu65In1fFlxHiG39Tr4Vojg==
   dependencies:
-    "@vue/language-core" "1.8.8"
-    "@vue/typescript" "1.8.8"
+    "@vue/language-core" "1.8.11"
+    "@vue/typescript" "1.8.11"
     semver "^7.3.8"
 
 vue3-drr-grid-layout@^1.9.7:
