@@ -940,7 +940,7 @@
     date-fns "^2.30.0"
     date-fns-tz "^1.3.7"
 
-"@vueuse/core@10.4.1", "@vueuse/core@^10.2.1", "@vueuse/core@^10.4.1":
+"@vueuse/core@10.4.1", "@vueuse/core@^10.4.1":
   version "10.4.1"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.4.1.tgz#fc2c8a83a571c207aaedbe393b22daa6d35123f2"
   integrity sha512-DkHIfMIoSIBjMgRRvdIvxsyboRZQmImofLyOHADqiVbQVilP8VVHDhBX2ZqoItOgu7dWa8oXiNnScOdPLhdEXg==
@@ -1164,13 +1164,13 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bootstrap-vue-next@0.10.7:
-  version "0.10.7"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.10.7.tgz#1920e9a8eaeffe77b18946fd099c9e91164d665a"
-  integrity sha512-tGQ8g3Ke5gnB3F1honiLFUjHx/TKtTm66//+2ZihKT1lAN0hyt8GDb54cnLdOd14dNNgQTV/zaYobC2wWI297A==
+bootstrap-vue-next@0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.12.3.tgz#6b9f1925d93ef328975a855d742295125c55bdba"
+  integrity sha512-AW4HCdabc9j0kutmS33U5SRHbJp5l9ERhl6iXn9MHLmM50xw9LoVC5BcM8/Nq6j6+uxFYUcPNXCYU79ep4OTrw==
   dependencies:
     "@floating-ui/vue" "^1.0.2"
-    "@vueuse/core" "^10.2.1"
+    "@vueuse/core" "^10.4.1"
 
 bootstrap@^5.3.1:
   version "5.3.1"
