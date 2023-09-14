@@ -39,12 +39,24 @@ export function timestampms(ts: number | Date): string {
 }
 
 /**
+ * Convert a timestamp / Date object to String.
+ * Returns 'N/A' if ts is null
+ * @param ts Timestamp as number or date (in utc!!)
+ */
+export function timestampmsOrNa(ts: number | Date | null): string {
+  return ts ? formatDate(toDate(ts), 'yyyy-MM-dd HH:mm:ss') : 'N/A';
+}
+
+/**
  * Convert a timestamp / Date object to String
  * @param ts Timestamp as number or date (in utc!!)
  * @param timezone timezone to use
  * @returns formatted date in desired timezone (or globally configured timezone)
  */
-export function timestampmsWithTimezone(ts: number | Date, timezone?: string): string {
+export function timestampmsWithTimezone(ts: number | Date | null, timezone?: string): string {
+  if (!ts) {
+    return 'N/A';
+  }
   return formatDate(toDate(ts), 'yyyy-MM-dd HH:mm:ss (z)', timezone);
 }
 

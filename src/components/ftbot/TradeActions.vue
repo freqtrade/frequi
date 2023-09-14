@@ -37,7 +37,7 @@
       <i-mdi-close-box-multiple class="me-1" />Forceexit partial
     </b-button>
     <b-button
-      v-if="botApiVersion >= 2.24 && trade.open_order_id"
+      v-if="botApiVersion >= 2.24 && (trade.open_order_id || trade.has_open_orders)"
       class="btn-xs text-start mt-1"
       size="sm"
       title="Cancel open orders"

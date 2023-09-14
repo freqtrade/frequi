@@ -1,21 +1,28 @@
 <template>
-  <!-- TODO We could move the list into a component since we are reusing the same code for both lists. -->
   <div>
     <div>
       <h3>Whitelist Methods</h3>
 
-      <div v-if="botStore.activeBot.pairlistMethods.length" class="list">
-        <b-list-group v-for="(method, key) in botStore.activeBot.pairlistMethods" :key="key">
-          <b-list-group-item href="#" class="pair white">{{ method }}</b-list-group-item>
-        </b-list-group>
+      <div v-if="botStore.activeBot.pairlistMethods.length" class="list wide">
+        <div
+          v-for="(method, key) in botStore.activeBot.pairlistMethods"
+          :key="key"
+          class="pair white align-middle border border-secondary"
+        >
+          {{ method }}
+        </div>
       </div>
     </div>
     <!-- Show Whitelist -->
     <h3 :title="`${botStore.activeBot.whitelist.length} pairs`">Whitelist</h3>
     <div v-if="botStore.activeBot.whitelist.length" class="list">
-      <b-list-group v-for="(pair, key) in botStore.activeBot.whitelist" :key="key">
-        <b-list-group-item class="pair white">{{ pair }}</b-list-group-item>
-      </b-list-group>
+      <div
+        v-for="(pair, key) in botStore.activeBot.whitelist"
+        :key="key"
+        class="pair white align-middle border border-secondary text-small"
+      >
+        {{ pair }}
+      </div>
     </div>
     <p v-else>List Unavailable. Please Login and make sure server is running.</p>
     <hr />
@@ -76,14 +83,15 @@
       </b-popover>
     </div>
     <div v-if="botStore.activeBot.blacklist.length" class="list">
-      <b-list-group v-for="(pair, key) in botStore.activeBot.blacklist" :key="key">
-        <b-list-group-item
-          class="pair black"
-          :active="blacklistSelect.indexOf(key) > -1"
-          @click="blacklistSelectClick(key)"
-          ><span class="check"><i-mdi-check-circle /></span>{{ pair }}</b-list-group-item
-        >
-      </b-list-group>
+      <div
+        v-for="(pair, key) in botStore.activeBot.blacklist"
+        :key="key"
+        class="pair black border border-secondary"
+        :class="blacklistSelect.indexOf(key) > -1 ? 'active' : ''"
+        @click="blacklistSelectClick(key)"
+      >
+        <span class="check"><i-mdi-check-circle /></span>{{ pair }}
+      </div>
     </div>
     <p v-else>BlackList Unavailable. Please Login and make sure server is running.</p>
     <!-- Pagination -->
@@ -119,7 +127,6 @@ const addBlacklistPair = () => {
 };
 
 const blacklistSelectClick = (key) => {
-  console.log(key);
   const index = blacklistSelect.value.indexOf(key);
   if (index > -1) {
     blacklistSelect.value.splice(index, 1);
@@ -162,7 +169,7 @@ onMounted(() => {
   transition: opacity 0.2s;
 }
 
-.list-group-item.active .check {
+.pair.active .check {
   opacity: 1;
 }
 
@@ -172,14 +179,14 @@ onMounted(() => {
   grid-gap: 0.5rem;
   padding-bottom: 1rem;
 }
+.wide {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
 
 .pair {
-  border: 1px solid #ccc;
   background: #41b883;
   padding: 0.5rem;
   border-radius: 5px;
-  text-align: center;
-  position: relative;
   cursor: pointer;
 }
 

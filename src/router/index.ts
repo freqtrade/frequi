@@ -42,17 +42,17 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/open_trades',
-    component: () => import('@/views/TradesList.vue'),
+    component: () => import('@/views/TradesListView.vue'),
   },
 
   {
     path: '/trade_history',
-    component: () => import('@/views/TradesList.vue'),
+    component: () => import('@/views/TradesListView.vue'),
     props: { history: true },
   },
   {
     path: '/pairlist',
-    component: () => import('@/components/ftbot/FTBotAPIPairList.vue'),
+    component: () => import('@/components/ftbot/PairListLive.vue'),
   },
   {
     path: '/settings',

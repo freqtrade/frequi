@@ -9,6 +9,9 @@ function tradeMocks() {
   cy.intercept('GET', '**/api/v1/blacklist', { fixture: 'blacklist.json' }).as('Blacklist');
   cy.intercept('GET', '**/api/v1/locks', { fixture: 'locks_empty.json' }).as('Locks');
   cy.intercept('GET', '**/api/v1/performance', { fixture: 'performance.json' }).as('Performance');
+  cy.intercept('POST', '**/api/v1/reload_config', { fixture: 'reload_config.json' }).as(
+    'ReloadConfig',
+  );
 }
 
 describe('Trade', () => {
@@ -60,5 +63,18 @@ describe('Trade', () => {
     cy.get('.drag-header').contains('Closed Trades').scrollIntoView().should('be.visible');
     cy.get('span').contains('TRX/USDT').should('be.visible');
     cy.get('td').contains('8070.5').should('be.visible');
+    // Scroll to top
+    cy.contains('Multi Pane').scrollIntoView().should('be.visible');
+    cy.get('button[title*="Reload Config "]').click();
+
+    // Reload Modal open
+    cy.get('.modal-dialog > .modal-content > .modal-footer > .btn-primary')
+      .filter(':visible')
+      .contains('Ok')
+      .should('be.visible')
+      .click();
+
+    // Alert is visible
+    cy.contains('Config reloaded successfully.').scrollIntoView().should('be.visible');
   });
 });

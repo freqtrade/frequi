@@ -18,22 +18,24 @@
           <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">
             <i-mdi-refresh />
           </b-button>
-          <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
-            >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
-          >
-          <small v-if="dataset" class="ms-2 text-nowrap" title="Long exit signals"
-            >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
-          >
-          <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
-            >Short entries: {{ dataset.enter_short_signals }}</small
-          >
-          <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-nowrap"
-            >Short exits: {{ dataset.exit_short_signals }}</small
-          >
+          <div class="d-flex flex-row flex-wrap">
+            <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
+              >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
+            >
+            <small v-if="dataset" class="ms-2 text-nowrap" title="Long exit signals"
+              >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
+            >
+            <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
+              >Short entries: {{ dataset.enter_short_signals }}</small
+            >
+            <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-nowrap"
+              >Short exits: {{ dataset.exit_short_signals }}</small
+            >
+          </div>
         </div>
         <div class="ms-auto d-flex align-items-center w-auto">
           <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
-            >Heikin Ashi</b-form-checkbox
+            ><span class="text-nowrap">Heikin Ashi</span></b-form-checkbox
           >
 
           <div class="ms-2">
@@ -121,7 +123,7 @@ const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
 const pair = ref('');
-const showPlotConfig = ref(props.plotConfigModal);
+const showPlotConfig = ref<boolean>();
 
 const dataset = computed((): PairHistory => {
   if (props.historicView) {
@@ -159,14 +161,16 @@ const noDatasetText = computed((): string => {
   }
 });
 const showPlotConfigModal = ref(false);
-const showConfigurator = () => {
+
+function showConfigurator() {
   if (props.plotConfigModal) {
     showPlotConfigModal.value = !showPlotConfigModal.value;
   } else {
     showPlotConfig.value = !showPlotConfig.value;
   }
-};
-const refresh = () => {
+}
+
+function refresh() {
   console.log('refresh', pair.value, props.timeframe);
   if (pair.value && props.timeframe) {
     if (props.historicView) {
@@ -181,11 +185,10 @@ const refresh = () => {
       botStore.activeBot.getPairCandles({
         pair: pair.value,
         timeframe: props.timeframe,
-        limit: 500,
       });
     }
   }
-};
+}
 
 watch(
   () => props.availablePairs,
@@ -206,6 +209,7 @@ watch(
 );
 
 onMounted(() => {
+  showPlotConfig.value = props.plotConfigModal;
   if (botStore.activeBot.selectedPair) {
     pair.value = botStore.activeBot.selectedPair;
   } else if (props.availablePairs.length > 0) {

@@ -61,20 +61,24 @@ const timeRange = computed(() => {
   return '';
 });
 
-const updateInput = () => {
+function updateInput() {
   const tr = props.modelValue.split('-');
   if (tr[0]) {
-    dateFrom.value = timestampToDateString(dateFromString(tr[0], 'yyyyMMdd'));
+    dateFrom.value = timestampToDateString(
+      tr[0].length === 8 ? dateFromString(tr[0], 'yyyyMMdd') : parseInt(tr[0]) * 1000,
+    );
   } else {
     dateFrom.value = '';
   }
   if (tr.length > 1 && tr[1]) {
-    dateTo.value = timestampToDateString(dateFromString(tr[1], 'yyyyMMdd'));
+    dateTo.value = timestampToDateString(
+      tr[1].length === 8 ? dateFromString(tr[1], 'yyyyMMdd') : parseInt(tr[1]) * 1000,
+    );
   } else {
     dateTo.value = '';
   }
   emit('update:modelValue', timeRange.value);
-};
+}
 
 watch(
   () => timeRange.value,

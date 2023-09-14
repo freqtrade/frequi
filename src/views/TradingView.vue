@@ -45,12 +45,12 @@
             <b-tab title="Balance" lazy>
               <Balance />
             </b-tab>
-            <b-tab title="Daily Stats" lazy>
-              <DailyStats />
+            <b-tab title="Time Breakdown" lazy>
+              <PeriodBreakdown />
             </b-tab>
 
             <b-tab title="Pairlist" lazy>
-              <FTBotAPIPairList />
+              <PairListLive />
             </b-tab>
             <b-tab title="Pair Locks" lazy>
               <PairLockList />
@@ -152,9 +152,9 @@ import Balance from '@/components/ftbot/BotBalance.vue';
 import BotControls from '@/components/ftbot/BotControls.vue';
 import BotStatus from '@/components/ftbot/BotStatus.vue';
 import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
-import DailyStats from '@/components/ftbot/DailyStats.vue';
+import PeriodBreakdown from '@/components/ftbot/PeriodBreakdown.vue';
 import DraggableContainer from '@/components/layout/DraggableContainer.vue';
-import FTBotAPIPairList from '@/components/ftbot/FTBotAPIPairList.vue';
+import PairListLive from '@/components/ftbot/PairListLive.vue';
 import PairLockList from '@/components/ftbot/PairLockList.vue';
 import PairSummary from '@/components/ftbot/PairSummary.vue';
 import BotPerformance from '@/components/ftbot/BotPerformance.vue';
@@ -169,7 +169,7 @@ const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const currentBreakpoint = ref('');
 
-const breakpointChanged = (newBreakpoint) => {
+const breakpointChanged = (newBreakpoint: string) => {
   // console.log('breakpoint:', newBreakpoint);
   currentBreakpoint.value = newBreakpoint;
 };

@@ -13,7 +13,7 @@
     :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
     :col-num="12"
     @layout-updated="layoutUpdatedEvent"
-    @breakpoint-changed="breakpointChanged"
+    @update:breakpoint="breakpointChanged"
   >
     <template #default="{ gridItemProps }">
       <grid-item
@@ -28,7 +28,7 @@
         drag-allow-from=".drag-header"
       >
         <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
-          <DailyChart
+          <TimePeriodChart
             v-if="botStore.allDailyStatsSelectedBots"
             :daily-stats="botStore.allDailyStatsSelectedBots"
             :show-title="false"
@@ -159,7 +159,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 
-import DailyChart from '@/components/charts/DailyChart.vue';
+import TimePeriodChart from '@/components/charts/TimePeriodChart.vue';
 import CumProfitChart from '@/components/charts/CumProfitChart.vue';
 import TradesLogChart from '@/components/charts/TradesLog.vue';
 import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
@@ -177,8 +177,8 @@ const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const currentBreakpoint = ref('');
 
-const breakpointChanged = (newBreakpoint) => {
-  //   // console.log('breakpoint:', newBreakpoint);
+const breakpointChanged = (newBreakpoint: string) => {
+  // console.log('breakpoint:', newBreakpoint);
   currentBreakpoint.value = newBreakpoint;
 };
 const isResizableLayout = computed(() =>
@@ -235,7 +235,7 @@ const responsiveGridLayouts = computed(() => {
 });
 
 onMounted(async () => {
-  await botStore.allGetDaily({ timescale: 30 });
+  botStore.allGetDaily({ timescale: 30 });
   // botStore.activeBot.getTrades();
   botStore.activeBot.getOpenTrades();
   botStore.activeBot.getProfit();

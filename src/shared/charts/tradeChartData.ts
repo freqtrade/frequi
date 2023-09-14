@@ -47,11 +47,12 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   // 4: color
   // 5: label
   // 6: tooltip
+  const stop_ts_adjusted = dataset.data_stop_ts + dataset.timeframe_ms;
   for (let i = 0, len = trades.length; i < len; i += 1) {
     const trade: Trade = trades[i];
     if (
       // Trade is open or closed and within timerange
-      roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= dataset.data_stop_ts ||
+      roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= stop_ts_adjusted ||
       !trade.close_timestamp ||
       (trade.close_timestamp && trade.close_timestamp >= dataset.data_start_ts)
     ) {
@@ -61,7 +62,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
           if (
             order.order_filled_timestamp &&
             roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp) <=
-              dataset.data_stop_ts &&
+              stop_ts_adjusted &&
             order.order_filled_timestamp > dataset.data_start_ts
           ) {
             // Trade entry
@@ -79,7 +80,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             } else if (i === trade.orders.length - 1 && trade.close_timestamp) {
               if (
                 roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp) <=
-                  dataset.data_stop_ts &&
+                  stop_ts_adjusted &&
                 trade.close_timestamp > dataset.data_start_ts &&
                 trade.is_open === false
               ) {
@@ -127,6 +128,8 @@ export function generateTradeSeries(
 ): ScatterSeriesOption {
   const { tradeData } = getTradeEntries(dataset, trades);
 
+  const openTrades = trades.filter((t) => t.is_open);
+
   const tradesSeries: ScatterSeriesOption = {
     name: nameTrades,
     type: 'scatter',
@@ -158,6 +161,41 @@ export function generateTradeSeries(
     symbolSize: 13,
     data: tradeData,
   };
+  // Show distance to stoploss
+  if (openTrades.length > 0) {
+    // Ensure to import and "use" whatever feature in candleChart! (MarkLine, MarkArea, ...)
+    // Offset to avoid having the line at the very end of the chart
+    const offset = dataset.timeframe_ms * 10;
 
+    tradesSeries.markLine = {
+      symbol: 'none',
+      itemStyle: {
+        color: '#ff0000AA',
+      },
+      label: {
+        show: true,
+        position: 'middle',
+      },
+      lineStyle: {
+        type: 'solid',
+      },
+      data: openTrades.map((t) => {
+        return [
+          {
+            name: 'Stoploss',
+            yAxis: t.stop_loss_abs,
+            xAxis:
+              dataset.data_stop_ts - offset > t.open_timestamp
+                ? t.open_timestamp
+                : dataset.data_stop_ts - offset,
+          },
+          {
+            yAxis: t.stop_loss_abs,
+            xAxis: t.close_timestamp ?? dataset.data_stop_ts + dataset.timeframe_ms,
+          },
+        ];
+      }),
+    };
+  }
   return tradesSeries;
 }

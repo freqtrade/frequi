@@ -92,7 +92,10 @@ interface TradeBase {
   initial_stop_loss_ratio?: number;
   initial_stop_loss_pct?: number;
 
+  /** deprecated, to be replaced with "has_open_orders" */
   open_order_id?: string;
+  /** Added only recently, replaces open_order_id */
+  has_open_orders?: boolean;
   /** Short properties - only available in API versions 2.x and up */
   is_short?: boolean;
   leverage?: number;

@@ -12,41 +12,50 @@
       <div class="d-flex flex-row">
         <b-form-checkbox
           v-if="row.item.botId && botStore.botCount > 1"
-          v-model="botStore.botStores[row.item.botId].isSelected"
+          v-model="
+            botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected
+          "
           title="Show bot in Dashboard"
         />
         <span>{{ row.value }}</span>
       </div>
     </template>
-    <template #cell(profitOpen)="row">
+    <template #cell(profitOpen)="{ item }">
       <profit-pill
-        v-if="row.item.profitOpen && row.item.botId != 'Summary'"
-        :profit-ratio="row.item.profitOpenRatio"
-        :profit-abs="row.item.profitOpen"
-        :stake-currency="row.item.stakeCurrency"
+        v-if="item.profitOpen && item.botId != 'Summary'"
+        :profit-ratio="(item as unknown as ComparisonTableItems).profitOpenRatio"
+        :profit-abs="(item as unknown as ComparisonTableItems).profitOpen"
+        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
       />
     </template>
-    <template #cell(profitClosed)="row">
+    <template #cell(profitClosed)="{ item }">
       <profit-pill
-        v-if="row.item.profitClosed && row.item.botId != 'Summary'"
-        :profit-ratio="row.item.profitClosedRatio"
-        :profit-abs="row.item.profitClosed"
-        :stake-currency="row.item.stakeCurrency"
+        v-if="item.profitClosed && item.botId != 'Summary'"
+        :profit-ratio="(item as unknown as ComparisonTableItems).profitClosedRatio"
+        :profit-abs="(item as unknown as ComparisonTableItems).profitClosed"
+        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
       />
     </template>
 
-    <template #cell(balance)="row">
-      <div v-if="row.item.balance">
-        <span :title="row.item.stakeCurrency"
-          >{{ formatPrice(row.item.balance, row.item.stakeCurrencyDecimals) }}
+    <template #cell(balance)="{ item }">
+      <div v-if="item.balance">
+        <span :title="(item as unknown as ComparisonTableItems).stakeCurrency"
+          >{{
+            formatPrice(
+              (item as unknown as ComparisonTableItems).balance ?? 0,
+              (item as unknown as ComparisonTableItems).stakeCurrencyDecimals,
+            )
+          }}
         </span>
-        <span class="text-small">{{ row.item.stakeCurrency }}</span>
+        <span class="text-small">{{
+          ` ${item.stakeCurrency}${item.isDryRun ? ' (dry)' : ''}`
+        }}</span>
       </div>
     </template>
-    <template #cell(winVsLoss)="row">
-      <div v-if="row.item.losses !== undefined">
-        <span class="text-profit">{{ row.item.wins }}</span> /
-        <span class="text-loss">{{ row.item.losses }}</span>
+    <template #cell(winVsLoss)="{ item }">
+      <div v-if="item.losses !== undefined">
+        <span class="text-profit">{{ item.wins }}</span> /
+        <span class="text-loss">{{ item.losses }}</span>
       </div>
     </template>
   </b-table>
@@ -113,13 +122,20 @@ const tableItems = computed<TableItem[]>(() => {
       losses: v.losing_trades,
       balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
+      isDryRun: botStore.allBotState[k]?.dry_run,
     });
     if (v.profit_closed_coin !== undefined) {
-      summary.profitClosed += v.profit_closed_coin;
-      summary.profitOpen += profitOpen;
-      summary.wins += v.winning_trades;
-      summary.losses += v.losing_trades;
-      // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
+      if (botStore.botStores[k].isSelected) {
+        // Summary should only include selected bots
+        summary.profitClosed += v.profit_closed_coin;
+        summary.profitOpen += profitOpen;
+        summary.wins += v.winning_trades;
+        summary.losses += v.losing_trades;
+        // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
+        // This will always take the last bot's stake currency
+        // And therefore may result in wrong values.
+        summary.stakeCurrency = botStore.allBotState[k]?.stake_currency || summary.stakeCurrency;
+      }
     }
   });
   val.push(summary);

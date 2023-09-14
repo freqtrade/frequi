@@ -33,23 +33,26 @@
       </p>
       <b-table class="table-sm" :items="balanceCurrencies" :fields="tableFields">
         <template #custom-foot>
-          <td><strong>Total</strong></td>
-          <td>
+          <td class="pt-1"><strong>Total</strong></td>
+          <td class="pt-1">
             <span
               class="font-italic"
               :title="`Increase over initial capital of ${formatCurrency(
                 botStore.activeBot.balance.starting_capital,
               )} ${botStore.activeBot.balance.stake}`"
-              >{{ formatPercent(botStore.activeBot.balance.starting_capital_ratio) }}</span
             >
+              {{ formatPercent(botStore.activeBot.balance.starting_capital_ratio) }}
+            </span>
           </td>
           <!-- this is a computed prop that adds up all the expenses in the visible rows -->
-          <td>
-            <strong>{{
-              showBotOnly && canUseBotBalance
-                ? formatCurrency(botStore.activeBot.balance.total_bot)
-                : formatCurrency(botStore.activeBot.balance.total)
-            }}</strong>
+          <td class="pt-1">
+            <strong>
+              {{
+                showBotOnly && canUseBotBalance
+                  ? formatCurrency(botStore.activeBot.balance.total_bot)
+                  : formatCurrency(botStore.activeBot.balance.total)
+              }}
+            </strong>
           </td>
         </template>
       </b-table>

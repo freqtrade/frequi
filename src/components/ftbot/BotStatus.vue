@@ -76,13 +76,20 @@
         }}
       </span>
     </p>
+    <BotProfit
+      class="mx-1"
+      :profit="botStore.activeBot.profit"
+      :stake-currency="botStore.activeBot.botState.stake_currency"
+      :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
+import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 
+import BotProfit from '@/components/ftbot/BotProfit.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 const botStore = useBotStore();

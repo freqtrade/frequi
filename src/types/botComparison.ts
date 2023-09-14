@@ -11,4 +11,5 @@ export interface ComparisonTableItems {
   losses: number;
   balance?: number;
   stakeCurrencyDecimals?: number;
+  isDryRun?: boolean;
 }

@@ -56,7 +56,6 @@ const props = defineProps({
 });
 const settingsStore = useSettingsStore();
 // const botList = ref<string[]>([]);
-// const cumulativeData = ref<{ date: number; profit: any }[]>([]);
 
 const chart = ref<typeof ECharts>();
 
@@ -107,20 +106,26 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
     },
   );
 
-  if (props.openTrades.length > 0 && valueArray.length > 0) {
-    const lastPoint = valueArray[valueArray.length - 1];
-    if (lastPoint) {
-      const resultWitHOpen = (lastPoint.profit ?? 0) + openProfit.value;
-      valueArray.push({ date: lastPoint.date, currentProfit: lastPoint.profit });
-      // Add one day to date to ensure it's showing properly
-      const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
-      valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
+  if (props.openTrades.length > 0) {
+    let lastProfit = 0;
+    let lastDate = 0;
+    if (valueArray.length > 0) {
+      const lastPoint = valueArray[valueArray.length - 1];
+      lastProfit = lastPoint.profit ?? 0;
+      lastDate = lastPoint.date ?? 0;
+    } else {
+      lastDate = props.openTrades[0].open_timestamp;
     }
+    const resultWitHOpen = (lastProfit ?? 0) + openProfit.value;
+    valueArray.push({ date: lastDate, currentProfit: lastProfit });
+    // Add one day to date to ensure it's showing properly
+    const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
+    valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
   }
   return valueArray;
 });
 
-function updateChart(initial = false) {
+function generateChart(initial = false) {
   const { colorProfit, colorLoss } = settingsStore;
   const chartOptionsLoc: EChartsOption = {
     dataset: {
@@ -167,7 +172,6 @@ function updateChart(initial = false) {
       },
     ],
   };
-
   // TODO: maybe have profit lines per bot?
   // this.botList.forEach((botId: string) => {
   //   console.log('bot', botId);
@@ -184,6 +188,10 @@ function updateChart(initial = false) {
   //     // symbol: 'none',
   //   });
   // });
+  return chartOptionsLoc;
+}
+function updateChart(initial = false) {
+  const chartOptionsLoc = generateChart(initial);
   chart.value?.setOption(chartOptionsLoc, {
     replaceMerge: ['series', 'dataset'],
     noMerge: !initial,
@@ -256,6 +264,11 @@ function initializeChart() {
       },
     ],
   };
+  const chartOptionsLoc1 = generateChart(true);
+  // Merge the series and dataset, but not the rest
+  chartOptionsLoc.series = chartOptionsLoc1.series;
+  chartOptionsLoc.dataset = chartOptionsLoc1.dataset;
+
   chart.value?.setOption(chartOptionsLoc, { noMerge: true });
   updateChart(true);
 }

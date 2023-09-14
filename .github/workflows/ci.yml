@@ -21,10 +21,10 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-22.04 ]
-        node: [ "16", "18", "19", "20"]
+        node: [ "16", "18", "20"]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: actions/setup-node@v3
       with:
@@ -42,7 +42,7 @@ jobs:
       run: yarn test:unit
 
     - name: Run Component tests
-      uses: cypress-io/github-action@v5
+      uses: cypress-io/github-action@v6
       with:
         # we have already installed everything
         install: false
@@ -50,7 +50,7 @@ jobs:
         command: yarn cypress run --component
 
     - name: Cypress run
-      uses: cypress-io/github-action@v5
+      uses: cypress-io/github-action@v6
       with:
         # build: yarn build
         start: yarn serve --host

@@ -13,7 +13,7 @@
             class="btn-xs ms-1"
             size="sm"
             title="Delete trade"
-            @click="removePairLock(row.item)"
+            @click="removePairLock(row.item as unknown as Lock)"
           >
             <i-mdi-delete />
           </b-button>

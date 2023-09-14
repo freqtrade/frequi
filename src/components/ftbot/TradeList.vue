@@ -26,12 +26,12 @@
       @row-clicked="onRowClicked"
       @row-selected="onRowSelected"
     >
-      <template #cell(actions)="row">
+      <template #cell(actions)="{ index, item }">
         <TradeActionsPopover
-          :id="row.index"
-          :trade="row.item"
+          :id="index"
+          :trade="item as unknown as Trade"
           :bot-api-version="botStore.activeBot.botApiVersion"
-          @delete-trade="removeTradeHandler(row.item)"
+          @delete-trade="removeTradeHandler(item as unknown as Trade)"
           @force-exit="forceExitHandler"
           @force-exit-partial="forceExitPartialHandler"
           @cancel-open-order="cancelOpenOrderHandler"
@@ -40,11 +40,7 @@
       </template>
       <template #cell(pair)="row">
         <span>
-          {{
-            `${row.item.pair}${
-              row.item.open_order_id === undefined || row.item.open_order_id === null ? '' : '*'
-            }`
-          }}
+          {{ `${row.item.pair}${row.item.open_order_id || row.item.has_open_orders ? '*' : ''}` }}
         </span>
       </template>
       <template #cell(trade_id)="row">
@@ -60,13 +56,13 @@
         {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
       </template>
       <template #cell(profit)="row">
-        <trade-profit :trade="row.item" />
+        <trade-profit :trade="row.item as unknown as Trade" />
       </template>
       <template #cell(open_timestamp)="row">
-        <DateTimeTZ :date="row.item.open_timestamp" />
+        <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
       </template>
       <template #cell(close_timestamp)="row">
-        <DateTimeTZ :date="row.item.close_timestamp" />
+        <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
       </template>
     </b-table>
     <div class="w-100 d-flex justify-content-between">
@@ -97,7 +93,7 @@ import TradeProfit from './TradeProfit.vue';
 import TradeActionsPopover from './TradeActionsPopover.vue';
 import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
 import { TableField, TableItem } from 'bootstrap-vue-next';
@@ -143,43 +139,48 @@ const rows = computed(() => {
   return props.trades.length;
 });
 
-const tableFields: TableField[] = [
-  { key: 'trade_id', label: 'ID' },
-  { key: 'pair', label: 'Pair' },
-  { key: 'amount', label: 'Amount' },
-  {
-    key: 'stake_amount',
-    label: 'Stake amount',
-  },
-  {
-    key: 'open_rate',
-    label: 'Open rate',
-    formatter: (value: unknown) => formatPrice(value as number),
-  },
-  {
-    key: props.activeTrades ? 'current_rate' : 'close_rate',
-    label: props.activeTrades ? 'Current rate' : 'Close rate',
-    formatter: (value: unknown) => formatPrice(value as number),
-  },
-  {
-    key: 'profit',
-    label: props.activeTrades ? 'Current profit %' : 'Profit %',
+// This using "TableField[]" below causes
+// Error: Debug Failure. No error for last overload signature
+const tableFields = ref<any[]>([]);
 
-    formatter: (value: unknown, key?: string, item?: unknown) => {
-      if (!item) {
-        return '';
-      }
-      const typedItem = item as Trade;
-      const percent = formatPercent(typedItem.profit_ratio, 2);
-      return `${percent} ${`(${formatPriceWithDecimals(typedItem.profit_abs)})`}`;
+onMounted(() => {
+  tableFields.value = [
+    { key: 'trade_id', label: 'ID' },
+    { key: 'pair', label: 'Pair' },
+    { key: 'amount', label: 'Amount' },
+    {
+      key: 'stake_amount',
+      label: 'Stake amount',
     },
-  },
-  { key: 'open_timestamp', label: 'Open date' },
-  ...(props.activeTrades ? openFields : closedFields),
-];
-if (props.multiBotView) {
-  tableFields.unshift({ key: 'botName', label: 'Bot' });
-}
+    {
+      key: 'open_rate',
+      label: 'Open rate',
+      formatter: (value: unknown) => formatPrice(value as number),
+    },
+    {
+      key: props.activeTrades ? 'current_rate' : 'close_rate',
+      label: props.activeTrades ? 'Current rate' : 'Close rate',
+      formatter: (value: unknown) => formatPrice(value as number),
+    },
+    {
+      key: 'profit',
+      label: props.activeTrades ? 'Current profit %' : 'Profit %',
+      formatter: (value: unknown, key?: string, item?: unknown) => {
+        if (!item) {
+          return '';
+        }
+        const typedItem = item as Trade;
+        const percent = formatPercent(typedItem.profit_ratio, 2);
+        return `${percent} ${`(${formatPriceWithDecimals(typedItem.profit_abs)})`}`;
+      },
+    },
+    { key: 'open_timestamp', label: 'Open date' },
+    ...(props.activeTrades ? openFields : closedFields),
+  ];
+  if (props.multiBotView) {
+    tableFields.value.unshift({ key: 'botName', label: 'Bot' });
+  }
+});
 
 const feOrderType = ref<string | undefined>(undefined);
 const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {

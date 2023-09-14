@@ -30,6 +30,6 @@ defineProps<{
   param: PairlistParameter;
 }>();
 
-//TODO: type should really be PairlistParamValue
+// TODO: type should really be PairlistParamValue
 const paramValue = defineModel<any>();
 </script>

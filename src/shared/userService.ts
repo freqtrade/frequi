@@ -232,7 +232,6 @@ export class UserService {
    * Call on startup to migrate old login info to new login
    */
   public static migrateLogin() {
-    // TODO: this is actually never called!
     const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
     const AUTH_ACCESS_TOKEN = 'auth_access_token';
     const AUTH_API_URL = 'auth_api_url';

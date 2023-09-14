@@ -80,6 +80,12 @@
         background: $bg-dark;
     }
 
+    .list-group-item.disabled,
+    .list-group-item:disabled {
+        color: darken($fg-color, 40%);
+        background: $bg-dark;
+    }
+
     // .custom-select {
     //     color: $fg-color;
     //     // background: $bg-dark;
@@ -214,13 +220,14 @@
     }
 
     .b-toast .toast {
-        background: $bg-dark;
+        color: black;
+        // background: $bg-dark;
         border-color: lighten($bg-dark, 20%);
     }
 
     .toast-header {
         color: $fg-color;
-        background: darken($bg-dark, 10%);
+        // background: darken($bg-dark, 10%);
         border-color: lighten($bg-dark, 20%);
     }
 

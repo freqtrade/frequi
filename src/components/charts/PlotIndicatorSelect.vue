@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import vSelect from 'vue-select';
 
 const props = defineProps({
@@ -27,7 +27,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:modelValue', 'indicatorSelected']);
 
-const selAvailableIndicator = ref(props.modelValue || '');
+const selAvailableIndicator = ref('');
 
 function emitIndicator() {
   emit('indicatorSelected', selAvailableIndicator.value);
@@ -37,6 +37,11 @@ function abort() {
   selAvailableIndicator.value = '';
   emitIndicator();
 }
+
+onMounted(() => {
+  selAvailableIndicator.value = props.modelValue;
+});
+
 watch(
   () => props.modelValue,
   (newValue) => {
