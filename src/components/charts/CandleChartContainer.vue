@@ -72,7 +72,7 @@
     </div>
     <transition name="fade" mode="in-out">
       <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25 config-sidebar">
-        <PlotConfigurator :columns="datasetColumns" :as-modal="false" />
+        <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
       </div>
     </transition>
     <b-modal
@@ -83,7 +83,7 @@
       ok-only
       hide-backdrop
     >
-      <PlotConfigurator v-if="showPlotConfigModal" :columns="datasetColumns" />
+      <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
     </b-modal>
   </div>
 </template>
