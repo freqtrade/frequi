@@ -15,7 +15,13 @@
           >
           </v-select>
 
-          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">
+          <b-button
+            title="Refresh chart"
+            class="ms-2"
+            :disabled="!!!pair"
+            size="sm"
+            @click="refresh"
+          >
             <i-mdi-refresh />
           </b-button>
           <div class="d-flex flex-row flex-wrap">
