@@ -357,6 +357,7 @@ watch(
   () => {
     selIndicatorName.value = '';
     // selSubPlot.value = '';
+    plotConfigNameLoc.value = plotStore.plotConfigName;
   },
 );
 
