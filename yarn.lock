@@ -1164,10 +1164,10 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bootstrap-vue-next@0.12.3:
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.12.3.tgz#6b9f1925d93ef328975a855d742295125c55bdba"
-  integrity sha512-AW4HCdabc9j0kutmS33U5SRHbJp5l9ERhl6iXn9MHLmM50xw9LoVC5BcM8/Nq6j6+uxFYUcPNXCYU79ep4OTrw==
+bootstrap-vue-next@^0.12.3:
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.12.4.tgz#26e307048f492c793d316debf8ce5c15527bb531"
+  integrity sha512-0rJOLFLyE9CgZpq10BN0JNkciWkAkFg1N7lubeyWPjE6K3wn4Th1rCkZqfDvts5f38npMWMfulR5MLDbSpuA3A==
   dependencies:
     "@floating-ui/vue" "^1.0.2"
     "@vueuse/core" "^10.4.1"
@@ -2247,10 +2247,10 @@ human-signals@^4.3.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-4.3.1.tgz#ab7f811e851fca97ffbd2c1fe9a958964de321b2"
   integrity sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==
 
-humanize-duration@^3.29.0:
-  version "3.29.0"
-  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.29.0.tgz#beffaf7938388cd0f38c494f8970d6faebecf3c0"
-  integrity sha512-G5wZGwYTLaQAmYqhfK91aw3xt6wNbJW1RnWDh4qP1PvF4T/jnkjx2RVhG5kzB2PGsYGTn+oSDBQp+dMdILLxcg==
+humanize-duration@^3.30.0:
+  version "3.30.0"
+  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.30.0.tgz#9be623d331116583ff90aeb6ccfdc2e79d6d7372"
+  integrity sha512-NxpT0fhQTFuMTLnuu1Xp+ozNpYirQnbV3NlOjEKBYlE3uvMRu3LDuq8EPc3gVXxVYnchQfqVM4/+T9iwHPLLeA==
 
 ieee754@^1.1.13:
   version "1.2.1"
