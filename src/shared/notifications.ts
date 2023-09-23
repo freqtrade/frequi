@@ -1,4 +1,4 @@
-import { showAlert } from '@/stores/alerts';
+import { showAlert } from '@/shared/alerts';
 import { useSettingsStore } from '@/stores/settings';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 

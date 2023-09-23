@@ -27,7 +27,7 @@
 import { timestampms } from '@/shared/formatters';
 import { Lock } from '@/types';
 
-import { showAlert } from '@/stores/alerts';
+import { showAlert } from '@/shared/alerts';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 const botStore = useBotStore();
