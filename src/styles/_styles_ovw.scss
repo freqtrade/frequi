@@ -237,20 +237,30 @@
     }
 
     .toast {
-    // Colors to match the "alert" styling.
+        // Colors to match the "alert" styling.
+        background-color: var(--toast-bg-color) !important;
+
+        .toast-header {
+            background-color: var(--toast-bg-color-header) !important;
+            color: $fg-color;
+        }
         &.text-bg-danger {
-            background-color: rgb(44, 11, 14) !important;
+            --toast-bg-color: rgb(44, 11, 14) !important;
+            --toast-bg-color-header:rgb(24, 6, 7) !important;
             color: rgb(234, 134, 143) !important;
         }
 
         &.text-bg-warning {
-            background-color: rgb(41, 39, 1) !important;
+            --toast-bg-color: rgb(41, 39, 1) !important;
+            --toast-bg-color-header: rgb(29, 27, 1) !important;
+                // background-color: rgb(41, 39, 1) !important;
             color: rgb(255, 218, 106) !important;
         }
 
         &.text-bg-success {
 
-            background-color: rgb(5, 27, 17) !important;
+            --toast-bg-color: rgb(5, 27, 17) !important;
+            --toast-bg-color-header: rgb(3, 19, 12) !important;
             color: rgb(118, 183, 152) !important;
         }
     }
