@@ -6,3 +6,11 @@ export function showAlert(message: string, severity: AlertSeverity = 'warning', 
 
   show(message, { title: `${bot ? 'Bot: ' + bot : 'Notification'}`, variant: severity });
 }
+
+export function useAlertForBot(botName: string) {
+  return {
+    showAlert: (message: string, severity: AlertSeverity = 'warning') => {
+      showAlert(message, severity, botName);
+    },
+  };
+}

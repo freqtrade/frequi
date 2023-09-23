@@ -50,7 +50,7 @@ import {
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
-import { showAlert } from '../shared/alerts';
+import { useAlertForBot } from '../shared/alerts';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 import { showNotification } from '@/shared/notifications';
@@ -58,6 +58,8 @@ import { showNotification } from '@/shared/notifications';
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);
   const { api } = useApi(userService, botId);
+
+  const { showAlert } = useAlertForBot(botName);
 
   const useBotStore = defineStore(botId, {
     state: () => {
