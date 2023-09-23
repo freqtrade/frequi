@@ -41,6 +41,23 @@
     font-size: 0.8rem;
 }
 
+.toast {
+    // Colors to match the "alert" styling.
+    &.text-bg-danger {
+        background-color: rgb(238, 215, 218) !important;
+        color: rgb(88, 21, 28) !important;
+    }
+    &.text-bg-warning {
+        background-color: rgb(255, 243, 205) !important;
+        color: rgb(102, 77, 3) !important;
+    }
+    &.text-bg-success {
+
+        background-color: rgb(209, 231, 221) !important;
+        color: rgb(10, 54, 34) !important;
+    }
+}
+
 [data-bs-theme="dark"] {
     $bg-dark: rgb(18, 18, 18);
 
@@ -219,18 +236,24 @@
         background-position: right 0.75rem center;
     }
 
-    .b-toast .toast {
-        color: black;
-        // background: $bg-dark;
-        border-color: lighten($bg-dark, 20%);
-    }
+    .toast {
+    // Colors to match the "alert" styling.
+        &.text-bg-danger {
+            background-color: rgb(44, 11, 14) !important;
+            color: rgb(234, 134, 143) !important;
+        }
 
-    .toast-header {
-        color: $fg-color;
-        // background: darken($bg-dark, 10%);
-        border-color: lighten($bg-dark, 20%);
-    }
+        &.text-bg-warning {
+            background-color: rgb(41, 39, 1) !important;
+            color: rgb(255, 218, 106) !important;
+        }
 
+        &.text-bg-success {
+
+            background-color: rgb(5, 27, 17) !important;
+            color: rgb(118, 183, 152) !important;
+        }
+    }
     .vue-grid-item>.vue-resizable-handle {
         // Stupid workaround to have the Shevron actually show.
         background-color: darken($fg-color, 50%);

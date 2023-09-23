@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="d-flex flex-column vh-100">
     <NavBar />
+    <BToaster></BToaster>
     <BodyLayout class="flex-fill overflow-auto" />
     <NavFooter />
   </div>
