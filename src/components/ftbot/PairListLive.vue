@@ -57,6 +57,7 @@
         title="Add to blacklist"
         target="blacklist-add-btn"
         triggers="click"
+        container="body"
         :show="blackListShow"
       >
         <form ref="form" @submit.prevent>
