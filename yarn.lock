@@ -848,10 +848,10 @@
     "@volar/typescript" "~1.10.0"
     "@vue/language-core" "1.8.15"
 
-"@vuepic/vue-datepicker@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-6.1.0.tgz#b6f8b347469fb145e8836d58a77d615ef3265700"
-  integrity sha512-hma+oPTM7wgiVfJKdlp9yiXaiNZUIrSJANoAvwGr4sXBTNaa6udRMqmLkNcdSUgHGxrcV5hZkfI7g27s1dUtIQ==
+"@vuepic/vue-datepicker@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-7.0.0.tgz#672b784af6c5d8673f6beb1df00c3a2d588d39d5"
+  integrity sha512-9qM5RsnjDDe82qQusEC4s+56yTEXj1Z0ZKV4k01u1v+BSr/eBySwlsEwRqObPpP/yehZ6oXdC2KGcERPyX0bnA==
   dependencies:
     date-fns "^2.30.0"
     date-fns-tz "^1.3.7"
