@@ -41,5 +41,7 @@ describe('Chart', () => {
     cy.wait('@PairCandles');
     // Disable Heikin Ashi
     cy.get('.form-check').contains('Heikin Ashi').click();
+    // Default plotconfig exists
+    cy.get('.form-select').get('option').contains('default').should('exist');
   });
 });

@@ -81,5 +81,11 @@ export const usePlotConfigStore = defineStore('plotConfig', {
   persist: {
     key: FT_PLOT_CONFIG_KEY,
     paths: ['plotConfigName', 'customPlotConfigs'],
+    afterRestore: (context) => {
+      if (Object.keys(context.store.customPlotConfigs).length === 0) {
+        console.log('Initialized plotconfig');
+        context.store.customPlotConfigs = { default: deepClone(EMPTY_PLOTCONFIG) };
+      }
+    },
   },
 });
