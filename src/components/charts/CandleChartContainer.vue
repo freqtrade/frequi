@@ -45,7 +45,7 @@
           >
 
           <div class="ms-2">
-            <plot-config-select></plot-config-select>
+            <PlotConfigSelect></PlotConfigSelect>
           </div>
 
           <div class="ms-2 me-0 me-md-1">
