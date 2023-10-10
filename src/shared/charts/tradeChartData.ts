@@ -11,7 +11,14 @@ function buildTooltipCost(trade: Trade, order: Order | BTOrder): string {
 }
 
 function buildToolTip(trade: Trade, order: Order | BTOrder, side: string): string {
-  return `${trade.is_short ? 'Short' : 'Long'} ${side}  ${formatPercent(trade.profit_ratio)}
+  return `${trade.is_short ? 'Short' : 'Long'} ${side}
+  ${formatPercent(trade.profit_ratio)} ${
+    trade.profit_abs
+      ? '(' +
+        formatPriceCurrency(trade.profit_abs, trade.quote_currency ?? '<stake_currency>') +
+        ')'
+      : ''
+  }
   ${buildTooltipCost(trade, order)}
   Enter-tag: ${trade.enter_tag ?? ''}
   Exit-Tag: ${trade.exit_reason ?? ''}`;
