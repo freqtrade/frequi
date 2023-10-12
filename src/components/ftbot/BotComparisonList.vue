@@ -8,16 +8,21 @@
     :items="tableItems"
     :fields="tableFields"
   >
-    <template #cell(botName)="row">
+    <template #cell(botName)="{ item, value }">
       <div class="d-flex flex-row">
         <b-form-checkbox
-          v-if="row.item.botId && botStore.botCount > 1"
+          v-if="item.botId && botStore.botCount > 1"
           v-model="
-            botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected
+            botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
           "
           title="Show this bot in Dashboard"
         />
-        <span>{{ row.value }}</span>
+        <b-form-checkbox
+          v-if="!item.botId && botStore.botCount > 1"
+          v-model="allToggled"
+          title="Toggle all bots"
+        />
+        <span>{{ value }}</span>
       </div>
     </template>
     <template #cell(profitOpen)="{ item }">
@@ -70,6 +75,15 @@ import { ProfitInterface, ComparisonTableItems } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
 
 const botStore = useBotStore();
+
+const allToggled = computed<boolean>({
+  get: () => Object.values(botStore.botStores).every((i) => i.isSelected),
+  set: (val) => {
+    for (const botId in botStore.botStores) {
+      botStore.botStores[botId].isSelected = val;
+    }
+  },
+});
 
 const tableFields: TableField[] = [
   { key: 'botName', label: 'Bot' },
