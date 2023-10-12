@@ -15,7 +15,7 @@
           v-model="
             botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected
           "
-          title="Show bot in Dashboard"
+          title="Show this bot in Dashboard"
         />
         <span>{{ row.value }}</span>
       </div>
