@@ -123,7 +123,7 @@ const tableItems = computed<TableItem[]>(() => {
     // TODO: handle one inactive bot ...
     val.push({
       botId: k,
-      botName: botStore.availableBots[k].botName,
+      botName: botStore.availableBots[k].botName || botStore.availableBots[k].botId,
       trades: `${botStore.allOpenTradeCount[k]} / ${
         botStore.allBotState[k]?.max_open_trades || 'N/A'
       }`,
