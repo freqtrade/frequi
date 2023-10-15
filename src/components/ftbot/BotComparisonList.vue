@@ -16,13 +16,14 @@
             botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
           "
           title="Show this bot in Dashboard"
-        />
+          >{{ value }}</b-form-checkbox
+        >
         <b-form-checkbox
           v-if="!item.botId && botStore.botCount > 1"
           v-model="allToggled"
           title="Toggle all bots"
-        />
-        <span>{{ value }}</span>
+          >{{ value }}</b-form-checkbox
+        >
       </div>
     </template>
     <template #cell(profitOpen)="{ item }">
