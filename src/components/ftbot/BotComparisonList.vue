@@ -24,6 +24,7 @@
           title="Toggle all bots"
           >{{ value }}</b-form-checkbox
         >
+        <span v-if="botStore.botCount <= 1">{{ value }}</span>
       </div>
     </template>
     <template #cell(profitOpen)="{ item }">
