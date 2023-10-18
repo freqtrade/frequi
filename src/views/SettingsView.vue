@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-3">
     <b-card header="FreqUI Settings">
-      <div class="text-start">
+      <div class="text-start d-flex flex-column gap-2">
         <p>UI Version: {{ settingsStore.uiVersion }}</p>
         <b-form-group
           description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
