@@ -17,7 +17,7 @@ export const useColorStore = defineStore('colorStore', {
   actions: {
     updateProfitLossColor() {
       const [colorUp, colorDown] =
-        this.colorPreference === 'greenUp' ? ['#26A69A', '#ef5350'] : ['#ef5350', '#12bb7b'];
+        this.colorPreference === 'greenUp' ? ['#26A69A', '#ef5350'] : ['#ef5350', '#26A69A'];
       this.colorUp = colorUp;
       this.colorDown = colorDown;
     },
