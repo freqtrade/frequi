@@ -30,6 +30,7 @@ import { TimeSummaryReturnValue } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
 import { EChartsOption } from 'echarts';
 import { useElementSize } from '@vueuse/core';
+import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,
@@ -59,6 +60,7 @@ const props = defineProps({
 });
 
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 
 const dailyChart = ref(null);
 const { width } = useElementSize(dailyChart);
@@ -113,12 +115,12 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
           {
             max: 0.0,
             min: absoluteMin.value,
-            color: settingsStore.colorLoss,
+            color: colorStore.colorLoss,
           },
           {
             min: 0.0,
             max: absoluteMax.value,
-            color: settingsStore.colorProfit,
+            color: colorStore.colorProfit,
           },
         ],
       },

@@ -15,11 +15,13 @@ import { setTimezone } from './shared/formatters';
 import { setProfitLossColorsCSS } from './shared/colorPreference';
 import { onMounted, watch } from 'vue';
 import { useSettingsStore } from './stores/settings';
+import { useColorStore } from './stores/colors';
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 onMounted(() => {
   setTimezone(settingsStore.timezone);
-  setProfitLossColorsCSS(settingsStore.colorPreference);
-  settingsStore.updateProfitLossColor();
+  setProfitLossColorsCSS(colorStore.colorPreference);
+  colorStore.updateProfitLossColor();
 });
 watch(
   () => settingsStore.timezone,
@@ -29,7 +31,7 @@ watch(
   },
 );
 watch(
-  () => settingsStore.colorPreference,
+  () => colorStore.colorPreference,
   (preference) => {
     setProfitLossColorsCSS(preference);
   },

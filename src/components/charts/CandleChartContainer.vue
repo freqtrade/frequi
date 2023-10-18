@@ -65,7 +65,7 @@
           :use-u-t-c="settingsStore.timezone === 'UTC'"
           :theme="settingsStore.chartTheme"
           :slider-position="sliderPosition"
-          :color-preference="settingsStore.colorPreference"
+          :color-preference="colorStore.colorPreference"
         >
         </CandleChart>
         <div v-else class="m-auto">
@@ -106,6 +106,7 @@ import vSelect from 'vue-select';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { computed, onMounted, ref, watch } from 'vue';
+import { useColorStore } from '@/stores/colors';
 
 const props = defineProps({
   trades: { required: false, default: () => [], type: Array as () => Trade[] },
@@ -125,6 +126,7 @@ const props = defineProps({
   },
 });
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 

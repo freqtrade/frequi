@@ -14,7 +14,7 @@
         <b-form-group description="Color Preference">
           <b-form-radio-group
             id="settings-color-preference-radio-group"
-            v-model="settingsStore.colorPreference"
+            v-model="colorStore.colorPreference"
             :options="colorPreferenceOptions"
             name="color-preference-options"
           ></b-form-radio-group>
@@ -69,8 +69,10 @@ import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { showAlert } from '@/shared/alerts';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { useColorStore } from '@/stores/colors';
 
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 const layoutStore = useLayoutStore();
 
 const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];

@@ -27,6 +27,7 @@ import {
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
+import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,
@@ -50,6 +51,7 @@ const props = defineProps({
   showTitle: { default: true, type: Boolean },
 });
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 
 const hourlyData = computed(() => {
   const res = new Array(24);
@@ -123,12 +125,12 @@ const hourlyChartOptions = computed((): EChartsOption => {
           {
             max: 0.0,
             min: -2,
-            color: settingsStore.colorLoss,
+            color: colorStore.colorLoss,
           },
           {
             min: 0.0,
             max: 2,
-            color: settingsStore.colorProfit,
+            color: colorStore.colorProfit,
           },
         ],
       },
