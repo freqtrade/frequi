@@ -14,7 +14,7 @@ export const useColorStore = defineStore('colorStore', {
       colorPreference: ColorPreferences.GREEN_UP,
       colorUp: '#26A69A',
       colorDown: '#EF5350',
-      colorProfit: '#26A69A', //12bb7b
+      colorProfit: '#12bb7b',
       colorLoss: '#ef5350',
     };
   },

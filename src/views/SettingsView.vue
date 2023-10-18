@@ -11,15 +11,7 @@
         <b-form-group description="Reset dynamic layouts to how they were.">
           <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
         </b-form-group>
-        <b-form-group description="Color Preference">
-          <b-form-radio-group
-            id="settings-color-preference-radio-group"
-            v-model="colorStore.colorPreference"
-            :options="colorPreferenceOptions"
-            name="color-preference-options"
-            @change="colorStore.updateProfitLossColor"
-          ></b-form-radio-group>
-        </b-form-group>
+
         <b-form-group
           label="Show open trades in header"
           description="Decide if open trades should be visualized"
@@ -45,6 +37,15 @@
           <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
             >Use Heikin Ashi candles.</b-form-checkbox
           >
+        </b-form-group>
+        <b-form-group description="Candle Color Preference">
+          <b-form-radio-group
+            id="settings-color-preference-radio-group"
+            v-model="colorStore.colorPreference"
+            :options="colorPreferenceOptions"
+            name="color-preference-options"
+            @change="colorStore.updateProfitLossColor"
+          ></b-form-radio-group>
         </b-form-group>
         <b-form-group description="Notifications">
           <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
