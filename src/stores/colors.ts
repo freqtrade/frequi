@@ -18,7 +18,14 @@ export const useColorStore = defineStore('colorStore', {
       colorLoss: '#ef5350',
     };
   },
-  getters: {},
+  getters: {
+    cssVars(state) {
+      return {
+        '--color-profit': state.colorProfit,
+        '--color-loss': state.colorLoss,
+      };
+    },
+  },
   actions: {
     updateProfitLossColor() {
       const [colorUp, colorDown] =
