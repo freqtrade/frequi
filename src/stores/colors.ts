@@ -7,17 +7,19 @@ export const useColorStore = defineStore('colorStore', {
   state: () => {
     return {
       colorPreference: 'greenUp',
-      colorProfit: '#12bb7b',
+      colorUp: '#26A69A',
+      colorDown: '#EF5350',
+      colorProfit: '#26A69A', //12bb7b
       colorLoss: '#ef5350',
     };
   },
   getters: {},
   actions: {
     updateProfitLossColor() {
-      const [colorProfit, colorLoss] =
-        this.colorPreference === 'greenUp' ? ['#12bb7b', '#ef5350'] : ['#ef5350', '#12bb7b'];
-      this.colorProfit = colorProfit;
-      this.colorLoss = colorLoss;
+      const [colorUp, colorDown] =
+        this.colorPreference === 'greenUp' ? ['#26A69A', '#ef5350'] : ['#ef5350', '#12bb7b'];
+      this.colorUp = colorUp;
+      this.colorDown = colorDown;
     },
   },
   persist: {

@@ -86,16 +86,15 @@ const props = defineProps({
     type: Object as () => ChartSliderPosition,
     default: () => undefined,
   },
-  colorPreference: { required: false, type: String, default: 'greenUp' },
+  colorUp: { required: false, type: String, default: '#12bb7b' },
+  colorDown: { required: false, type: String, default: '#ef5350' },
 });
 
 // Candle Colors
-const colorProfit = props.colorPreference === 'greenUp' ? '#26A69A' : '#EF5350';
-const colorLoss = props.colorPreference === 'greenUp' ? '#EF5350' : '#26A69A';
-const upColor = colorProfit;
-const upBorderColor = colorProfit;
-const downColor = colorLoss;
-const downBorderColor = colorLoss;
+const upColor = props.colorUp;
+const upBorderColor = props.colorUp;
+const downColor = props.colorDown;
+const downBorderColor = props.colorDown;
 
 // Buy / Sell Signal Colors
 const buySignalColor = '#00ff26';

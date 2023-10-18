@@ -65,7 +65,8 @@
           :use-u-t-c="settingsStore.timezone === 'UTC'"
           :theme="settingsStore.chartTheme"
           :slider-position="sliderPosition"
-          :color-preference="colorStore.colorPreference"
+          :color-down="colorStore.colorDown"
+          :color-up="colorStore.colorUp"
         >
         </CandleChart>
         <div v-else class="m-auto">
