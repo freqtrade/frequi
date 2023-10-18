@@ -30,6 +30,7 @@ import {
 import { watchThrottled } from '@vueuse/core';
 import { computed, onMounted, ref, watch } from 'vue';
 import { formatPrice } from '@/shared/formatters';
+import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,
@@ -55,6 +56,7 @@ const props = defineProps({
   profitColumn: { default: 'profit_abs', type: String },
 });
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 // const botList = ref<string[]>([]);
 
 const chart = ref<typeof ECharts>();
@@ -126,6 +128,7 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
 });
 
 function generateChart(initial = false) {
+  const { colorProfit, colorLoss } = colorStore;
   const chartOptionsLoc: EChartsOption = {
     dataset: {
       dimensions: ['date', 'profit', 'currentProfit'],
@@ -141,11 +144,11 @@ function generateChart(initial = false) {
         animation: initial,
 
         lineStyle: {
-          color: openProfit.value > 0 ? 'green' : 'red',
+          color: openProfit.value > 0 ? colorProfit : colorLoss,
           type: 'dotted',
         },
         itemStyle: {
-          color: openProfit.value > 0 ? 'green' : 'red',
+          color: openProfit.value > 0 ? colorProfit : colorLoss,
         },
         encode: {
           x: 'date',

@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-3">
     <b-card header="FreqUI Settings">
-      <div class="text-start">
+      <div class="text-start d-flex flex-column gap-2">
         <p>UI Version: {{ settingsStore.uiVersion }}</p>
         <b-form-group
           description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
@@ -11,6 +11,7 @@
         <b-form-group description="Reset dynamic layouts to how they were.">
           <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
         </b-form-group>
+
         <b-form-group
           label="Show open trades in header"
           description="Decide if open trades should be visualized"
@@ -37,6 +38,40 @@
             >Use Heikin Ashi candles.</b-form-checkbox
           >
         </b-form-group>
+        <b-form-group description="Candle Color Preference">
+          <b-form-radio-group
+            id="settings-color-preference-radio-group"
+            v-model="colorStore.colorPreference"
+            name="color-preference-options"
+            @change="colorStore.updateProfitLossColor"
+          >
+            <b-form-radio
+              v-for="option in colorPreferenceOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              <div class="d-flex">
+                <span class="me-2">{{ option.text }}</span>
+                <i-mdi-arrow-up-thin
+                  :color="
+                    option.value === ColorPreferences.GREEN_UP
+                      ? colorStore.colorProfit
+                      : colorStore.colorLoss
+                  "
+                  class="color-candle-arrows"
+                />
+                <i-mdi-arrow-down-thin
+                  :color="
+                    option.value === ColorPreferences.GREEN_UP
+                      ? colorStore.colorLoss
+                      : colorStore.colorProfit
+                  "
+                  class="color-candle-arrows"
+                />
+              </div>
+            </b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
         <b-form-group description="Notifications">
           <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
             >Entry notifications</b-form-checkbox
@@ -61,8 +96,10 @@ import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { showAlert } from '@/shared/alerts';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { ColorPreferences, useColorStore } from '@/stores/colors';
 
 const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
 const layoutStore = useLayoutStore();
 
 const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
@@ -71,8 +108,11 @@ const openTradesOptions = [
   { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
   { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
 ];
+const colorPreferenceOptions = [
+  { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
+  { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
+];
 
-//
 const resetDynamicLayout = () => {
   layoutStore.resetTradingLayout();
   layoutStore.resetDashboardLayout();
@@ -80,4 +120,9 @@ const resetDynamicLayout = () => {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.color-candle-arrows {
+  margin-left: -0.5rem;
+  margin-top: 2px;
+}
+</style>
