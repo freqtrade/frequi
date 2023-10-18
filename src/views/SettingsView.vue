@@ -17,6 +17,7 @@
             v-model="colorStore.colorPreference"
             :options="colorPreferenceOptions"
             name="color-preference-options"
+            @change="colorStore.updateProfitLossColor"
           ></b-form-radio-group>
         </b-form-group>
         <b-form-group
@@ -69,7 +70,7 @@ import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { showAlert } from '@/shared/alerts';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
-import { useColorStore } from '@/stores/colors';
+import { ColorPreferences, useColorStore } from '@/stores/colors';
 
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
@@ -82,8 +83,8 @@ const openTradesOptions = [
   { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
 ];
 const colorPreferenceOptions = [
-  { value: 'greenUp', text: 'Green Up/Red Down' },
-  { value: 'redUp', text: 'Green Down/Red Up' },
+  { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
+  { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
 ];
 
 //

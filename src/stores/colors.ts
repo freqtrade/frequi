@@ -2,11 +2,16 @@ import { defineStore } from 'pinia';
 
 const STORE_UI_COLORS = 'ftUIColorSettings';
 
+export enum ColorPreferences {
+  GREEN_UP = 'greenUp',
+  RED_UP = 'redUp',
+}
+
 export const useColorStore = defineStore('colorStore', {
   // other options...
   state: () => {
     return {
-      colorPreference: 'greenUp',
+      colorPreference: ColorPreferences.GREEN_UP,
       colorUp: '#26A69A',
       colorDown: '#EF5350',
       colorProfit: '#26A69A', //12bb7b
@@ -17,7 +22,9 @@ export const useColorStore = defineStore('colorStore', {
   actions: {
     updateProfitLossColor() {
       const [colorUp, colorDown] =
-        this.colorPreference === 'greenUp' ? ['#26A69A', '#ef5350'] : ['#ef5350', '#26A69A'];
+        this.colorPreference === ColorPreferences.GREEN_UP
+          ? ['#26A69A', '#ef5350']
+          : ['#ef5350', '#26A69A'];
       this.colorUp = colorUp;
       this.colorDown = colorDown;
     },
