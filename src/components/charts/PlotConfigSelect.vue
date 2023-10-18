@@ -1,5 +1,5 @@
 <template>
-  <edit-value
+  <EditValue
     v-model="plotStore.plotConfigName"
     :allow-edit="allowEdit"
     :allow-add="allowEdit"
@@ -17,7 +17,7 @@
       @change="plotStore.plotConfigChanged"
     >
     </b-form-select>
-  </edit-value>
+  </EditValue>
 </template>
 
 <script setup lang="ts">

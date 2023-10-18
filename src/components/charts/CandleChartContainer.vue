@@ -15,7 +15,13 @@
           >
           </v-select>
 
-          <b-button class="ms-2" :disabled="!!!pair" size="sm" @click="refresh">
+          <b-button
+            title="Refresh chart"
+            class="ms-2"
+            :disabled="!!!pair"
+            size="sm"
+            @click="refresh"
+          >
             <i-mdi-refresh />
           </b-button>
           <div class="d-flex flex-row flex-wrap">
@@ -39,7 +45,7 @@
           >
 
           <div class="ms-2">
-            <plot-config-select></plot-config-select>
+            <PlotConfigSelect></PlotConfigSelect>
           </div>
 
           <div class="ms-2 me-0 me-md-1">
@@ -73,7 +79,7 @@
     </div>
     <transition name="fade" mode="in-out">
       <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25 config-sidebar">
-        <PlotConfigurator :columns="datasetColumns" :as-modal="false" />
+        <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
       </div>
     </transition>
     <b-modal
@@ -84,7 +90,7 @@
       ok-only
       hide-backdrop
     >
-      <PlotConfigurator v-if="showPlotConfigModal" :columns="datasetColumns" />
+      <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
     </b-modal>
   </div>
 </template>

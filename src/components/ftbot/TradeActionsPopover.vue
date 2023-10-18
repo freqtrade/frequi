@@ -47,6 +47,7 @@ function handleReloadTrade(item: Trade) {
       <i-mdi-gesture-tap />
     </b-button>
     <b-popover
+      container="body"
       :target="`btn-actions-${id}`"
       :title="`Actions for ${trade.pair}`"
       triggers="manual"

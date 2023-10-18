@@ -8,16 +8,23 @@
     :items="tableItems"
     :fields="tableFields"
   >
-    <template #cell(botName)="row">
+    <template #cell(botName)="{ item, value }">
       <div class="d-flex flex-row">
         <b-form-checkbox
-          v-if="row.item.botId && botStore.botCount > 1"
+          v-if="item.botId && botStore.botCount > 1"
           v-model="
-            botStore.botStores[(row.item as unknown as ComparisonTableItems).botId ?? ''].isSelected
+            botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
           "
-          title="Show bot in Dashboard"
-        />
-        <span>{{ row.value }}</span>
+          title="Show this bot in Dashboard"
+          >{{ value }}</b-form-checkbox
+        >
+        <b-form-checkbox
+          v-if="!item.botId && botStore.botCount > 1"
+          v-model="allToggled"
+          title="Toggle all bots"
+          >{{ value }}</b-form-checkbox
+        >
+        <span v-if="botStore.botCount <= 1">{{ value }}</span>
       </div>
     </template>
     <template #cell(profitOpen)="{ item }">
@@ -71,6 +78,15 @@ import { TableField, TableItem } from 'bootstrap-vue-next';
 
 const botStore = useBotStore();
 
+const allToggled = computed<boolean>({
+  get: () => Object.values(botStore.botStores).every((i) => i.isSelected),
+  set: (val) => {
+    for (const botId in botStore.botStores) {
+      botStore.botStores[botId].isSelected = val;
+    }
+  },
+});
+
 const tableFields: TableField[] = [
   { key: 'botName', label: 'Bot' },
   { key: 'trades', label: 'Trades' },
@@ -109,7 +125,7 @@ const tableItems = computed<TableItem[]>(() => {
     // TODO: handle one inactive bot ...
     val.push({
       botId: k,
-      botName: botStore.availableBots[k].botName,
+      botName: botStore.availableBots[k].botName || botStore.availableBots[k].botId,
       trades: `${botStore.allOpenTradeCount[k]} / ${
         botStore.allBotState[k]?.max_open_trades || 'N/A'
       }`,

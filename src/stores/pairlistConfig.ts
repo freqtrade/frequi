@@ -13,7 +13,7 @@ import {
   TradingMode,
 } from '@/types';
 import { computed, ref, toRaw, watch } from 'vue';
-import { showAlert } from './alerts';
+import { showAlert } from '../shared/alerts';
 import { isNotUndefined } from '@/shared/formatters';
 
 export const usePairlistConfigStore = defineStore(

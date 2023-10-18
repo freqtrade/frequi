@@ -57,6 +57,7 @@
         title="Add to blacklist"
         target="blacklist-add-btn"
         triggers="click"
+        container="body"
         :show="blackListShow"
       >
         <form ref="form" @submit.prevent>
@@ -188,6 +189,7 @@ onMounted(() => {
   padding: 0.5rem;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
 }
 
 .white {

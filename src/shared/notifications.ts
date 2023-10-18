@@ -1,4 +1,4 @@
-import { showAlert } from '@/stores/alerts';
+import { showAlert } from '@/shared/alerts';
 import { useSettingsStore } from '@/stores/settings';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 
@@ -8,25 +8,19 @@ export function showNotification(msg: FTWsMessage, botname: string) {
     switch (msg.type) {
       case FtWsMessageTypes.entryFill:
         console.log('entryFill', msg);
-        showAlert(`${botname}: Entry fill for ${msg.pair} at ${msg.open_rate}`, 'success');
+        showAlert(`Entry fill for ${msg.pair} at ${msg.open_rate}`, 'success', botname);
         break;
       case FtWsMessageTypes.exitFill:
         console.log('exitFill', msg);
-        showAlert(`${botname}: Exit fill for ${msg.pair} at ${msg.open_rate}`, 'success');
+        showAlert(`Exit fill for ${msg.pair} at ${msg.open_rate}`, 'success', botname);
         break;
       case FtWsMessageTypes.exitCancel:
         console.log('exitCancel', msg);
-        showAlert(
-          `${botname}: Exit order cancelled for ${msg.pair} due to ${msg.reason}`,
-          'warning',
-        );
+        showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning', botname);
         break;
       case FtWsMessageTypes.entryCancel:
         console.log('entryCancel', msg);
-        showAlert(
-          `${botname}: Entry order cancelled for ${msg.pair} due to ${msg.reason}`,
-          'warning',
-        );
+        showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning', botname);
         break;
     }
   } else {

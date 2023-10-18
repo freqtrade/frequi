@@ -159,19 +159,19 @@
 import EditValue from '@/components/general/EditValue.vue';
 import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
 import PlotIndicator from '@/components/charts/PlotIndicator.vue';
-import { showAlert } from '@/stores/alerts';
+import { showAlert } from '@/shared/alerts';
 import { IndicatorConfig, PlotConfig } from '@/types';
 import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
 import { deepClone } from '@/shared/deepClone';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import randomColor from '@/shared/randomColor';
 
-defineProps({
+const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
-  asModal: { required: false, default: true, type: Boolean },
+  isVisible: { required: true, default: false, type: Boolean },
 });
 
 const plotStore = usePlotConfigStore();
@@ -357,19 +357,23 @@ watch(
   () => {
     selIndicatorName.value = '';
     // selSubPlot.value = '';
+    plotConfigNameLoc.value = plotStore.plotConfigName;
   },
 );
 
-onMounted(() => {
-  // Deep clone and assign to editable
-  plotStore.editablePlotConfig = deepClone(plotStore.plotConfig);
-  plotStore.isEditing = true;
-  plotConfigNameLoc.value = plotStore.plotConfigName;
-});
-onUnmounted(() => {
-  // TODO: Unmounted is not called when closing in Chart view
-  plotStore.isEditing = false;
-});
+watch(
+  () => props.isVisible,
+  () => {
+    if (props.isVisible) {
+      // Deep clone and assign to editable
+      plotStore.editablePlotConfig = deepClone(plotStore.plotConfig);
+      plotStore.isEditing = true;
+      plotConfigNameLoc.value = plotStore.plotConfigName;
+    } else {
+      plotStore.isEditing = false;
+    }
+  },
+);
 </script>
 
 <style scoped>
