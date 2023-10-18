@@ -42,10 +42,35 @@
           <b-form-radio-group
             id="settings-color-preference-radio-group"
             v-model="colorStore.colorPreference"
-            :options="colorPreferenceOptions"
             name="color-preference-options"
             @change="colorStore.updateProfitLossColor"
-          ></b-form-radio-group>
+          >
+            <b-form-radio
+              v-for="option in colorPreferenceOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              <div class="d-flex">
+                <span class="me-2">{{ option.text }}</span>
+                <i-mdi-arrow-up-thin
+                  :color="
+                    option.value === ColorPreferences.GREEN_UP
+                      ? colorStore.colorProfit
+                      : colorStore.colorLoss
+                  "
+                  class="color-candle-arrows"
+                />
+                <i-mdi-arrow-down-thin
+                  :color="
+                    option.value === ColorPreferences.GREEN_UP
+                      ? colorStore.colorLoss
+                      : colorStore.colorProfit
+                  "
+                  class="color-candle-arrows"
+                />
+              </div>
+            </b-form-radio>
+          </b-form-radio-group>
         </b-form-group>
         <b-form-group description="Notifications">
           <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
@@ -88,7 +113,6 @@ const colorPreferenceOptions = [
   { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
 ];
 
-//
 const resetDynamicLayout = () => {
   layoutStore.resetTradingLayout();
   layoutStore.resetDashboardLayout();
@@ -96,4 +120,9 @@ const resetDynamicLayout = () => {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.color-candle-arrows {
+  margin-left: -0.5rem;
+  margin-top: 2px;
+}
+</style>
