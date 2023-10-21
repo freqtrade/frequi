@@ -1,4 +1,4 @@
-import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
+import { formatPercent, formatPriceCurrency, splitTradePair } from '@/shared/formatters';
 import { roundTimeframe } from '@/shared/timemath';
 import { Order, PairHistory, Trade, BTOrder } from '@/types';
 import { ScatterSeriesOption } from 'echarts';
@@ -68,7 +68,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
       if (trade.orders) {
         for (let i = 0; i < trade.orders.length; i++) {
           const order: Order | BTOrder = trade.orders[i];
-          const quoteCurrency = trade.quote_currency ?? '<stake_currency>';
+          const { quoteCurrency } = splitTradePair(trade.quote_currency ?? trade.pair ?? '');
           if (
             order.order_filled_timestamp &&
             roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp) <=
