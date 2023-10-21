@@ -35,9 +35,6 @@ function buildAdjustmentToolTip(
   Enter-tag: ${trade.enter_tag ?? ''}`;
 }
 
-// const ENTRY_SYMB = 'circle';
-// const EXIT_SYMB = 'rect';
-
 const ADJUSTMENT_SYMBOL =
   'path://m 52.444161,104.1909 8.386653,25.34314 8.386651,25.34313 -16.731501,0.0422 -16.731501,0.0422 8.344848,-25.38539 z m 0.08656,-48.368126 8.386652,25.343139 8.386652,25.343137 -16.731501,0.0422 -16.731502,0.0422 8.344848,-25.385389 z';
 const OPEN_CLOSE_SYMBOL =
