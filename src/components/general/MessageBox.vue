@@ -5,6 +5,8 @@
     :title="title"
     @ok="msgBoxOK"
     @cancel="showRef = false"
+    @keyup.esc="showRef = false"
+    @keyup.enter="msgBoxOK"
   >
     {{ message }}
   </b-modal>
@@ -27,6 +29,7 @@ const accept = ref<() => void>(() => {
 
 const msgBoxOK = () => {
   accept.value();
+  showRef.value = false;
 };
 
 const show = (msg: MsgBoxObject) => {
