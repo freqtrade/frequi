@@ -23,4 +23,7 @@ describe('splitTradePair', () => {
       quoteCurrency: 'USDT',
     });
   });
+  it('Does not fail on empty input', () => {
+    expect(splitTradePair('')).toEqual({ stakeCurrency: '', quoteCurrency: '' });
+  });
 });

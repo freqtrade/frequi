@@ -4,6 +4,7 @@
  * @returns {stakeCurrency, quoteCurrency}
  */
 export function splitTradePair(pair: string): { stakeCurrency: string; quoteCurrency: string } {
+  if (!pair) return { stakeCurrency: '', quoteCurrency: '' };
   const [stakeCurrency, quoteCurrency] = pair.split('/');
   const quoteCurrencySplit = quoteCurrency.split(':');
   return { stakeCurrency, quoteCurrency: quoteCurrencySplit[0] || quoteCurrency };
