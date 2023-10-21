@@ -62,7 +62,7 @@ onMounted(() => {
 
 function deleteBacktestResult(result: BacktestHistoryEntry) {
   const msg: MsgBoxObject = {
-    title: 'Stop Bot',
+    title: 'Delete result',
     message: `Delete result ${result.filename} from disk?`,
     accept: () => {
       botStore.activeBot.deleteBacktestHistoryResult(result);
