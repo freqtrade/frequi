@@ -12,8 +12,8 @@
           aria-label="Close"
           title="Trade Navigation"
           size="sm"
-          @click="showRightBar = !showRightBar"
-          >{{ showRightBar ? '&gt;' : '&lt;' }}
+          @click="isRightBarVisible = !isRightBarVisible"
+          >{{ isRightBarVisible ? '&gt;' : '&lt;' }}
         </b-button>
       </div>
     </div>
@@ -40,7 +40,7 @@
       </CandleChartContainer>
       <Transition name="fade">
         <TradeListNav
-          v-if="showRightBar"
+          v-if="isRightBarVisible"
           class="overflow-auto col-md-2"
           style="max-height: calc(100vh - 200px)"
           :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
@@ -72,7 +72,7 @@ defineProps({
   trades: { required: true, type: Array as () => Trade[] },
 });
 const botStore = useBotStore();
-const showRightBar = ref(true);
+const isRightBarVisible = ref(true);
 const sliderPosition = ref<ChartSliderPosition>();
 
 const navigateChartToTrade = (trade: Trade) => {
