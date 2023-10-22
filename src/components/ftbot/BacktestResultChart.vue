@@ -1,31 +1,41 @@
 <template>
   <div>
-    <div class="d-flex flex-row">
-      <div class="col-md-11 text-start">
-        <p>
-          Graph will always show the latest values for the selected strategy. Timerange:
-          {{ timerange }} - {{ strategy }}
-        </p>
+    <div class="d-flex flex-row mb-1 align-items-center">
+      <div class="me-2">
+        <b-button
+          aria-label="Close"
+          title="Trade Navigation"
+          size="sm"
+          @click="isBarVisible.left = !isBarVisible.left"
+          >{{ isBarVisible.left ? '&lt;' : '&gt;' }}
+        </b-button>
       </div>
+      <span class="flex-fill text-start">
+        Graph will always show the latest values for the selected strategy. Timerange:
+        {{ timerange }} - {{ strategy }}
+      </span>
       <div class="col-md-1 text-end">
         <b-button
           aria-label="Close"
           title="Trade Navigation"
           size="sm"
-          @click="isRightBarVisible = !isRightBarVisible"
-          >{{ isRightBarVisible ? '&gt;' : '&lt;' }}
+          @click="isBarVisible.right = !isBarVisible.right"
+          >{{ isBarVisible.right ? '&gt;' : '&lt;' }}
         </b-button>
       </div>
     </div>
     <div class="text-center d-flex flex-row h-100 align-items-stretch">
-      <PairSummary
-        class="col-md-2 overflow-auto"
-        style="max-height: calc(100vh - 200px)"
-        :pairlist="pairlist"
-        :trades="trades"
-        sort-method="profit"
-        :backtest-mode="true"
-      />
+      <Transition name="fadeleft">
+        <PairSummary
+          v-if="isBarVisible.left"
+          class="col-md-2 overflow-auto"
+          style="max-height: calc(100vh - 200px)"
+          :pairlist="pairlist"
+          :trades="trades"
+          sort-method="profit"
+          :backtest-mode="true"
+        />
+      </Transition>
       <CandleChartContainer
         :available-pairs="pairlist"
         :historic-view="!!true"
@@ -40,7 +50,7 @@
       </CandleChartContainer>
       <Transition name="fade">
         <TradeListNav
-          v-if="isRightBarVisible"
+          v-if="isBarVisible.right"
           class="overflow-auto col-md-2"
           style="max-height: calc(100vh - 200px)"
           :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
@@ -72,7 +82,7 @@ defineProps({
   trades: { required: true, type: Array as () => Trade[] },
 });
 const botStore = useBotStore();
-const isRightBarVisible = ref(true);
+const isBarVisible = ref({ right: true, left: true });
 const sliderPosition = ref<ChartSliderPosition>();
 
 const navigateChartToTrade = (trade: Trade) => {
@@ -99,5 +109,15 @@ const navigateChartToTrade = (trade: Trade) => {
 .fade-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+.fadeleft-enter-active,
+.fadeleft-leave-active {
+  transition: all 0.2s;
+}
+
+.fadeleft-enter-from,
+.fadeleft-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 </style>
