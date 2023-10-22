@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <div class="d-flex flex-row">
       <div class="col-md-11 text-start">
         <p>
           Graph will always show the latest values for the selected strategy. Timerange:
@@ -17,7 +17,7 @@
         </b-button>
       </div>
     </div>
-    <div class="row text-center h-100 d-flex align-items-stretch">
+    <div class="text-center d-flex flex-row h-100 align-items-stretch">
       <PairSummary
         class="col-md-2 overflow-auto"
         style="max-height: calc(100vh - 200px)"
@@ -33,20 +33,20 @@
         :timerange="timerange"
         :strategy="strategy"
         :trades="trades"
-        :class="`${
-          showRightBar ? 'col-md-8' : 'col-md-10'
-        } candle-chart-container px-0 h-100 align-self-stretch`"
+        class="flex-shrink-1 candle-chart-container w-100 px-0 h-100 align-self-stretch"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
       >
       </CandleChartContainer>
-      <TradeListNav
-        v-if="showRightBar"
-        class="overflow-auto col-md-2"
-        style="max-height: calc(100vh - 200px)"
-        :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
-        @trade-select="navigateChartToTrade"
-      />
+      <Transition name="fade">
+        <TradeListNav
+          v-if="showRightBar"
+          class="overflow-auto col-md-2"
+          style="max-height: calc(100vh - 200px)"
+          :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
+          @trade-select="navigateChartToTrade"
+        />
+      </Transition>
     </div>
     <b-card header="Single trades" class="row mt-2 w-100">
       <TradeList class="row trade-history mt-2 w-100" :trades="trades" :show-filter="true" />
@@ -88,5 +88,16 @@ const navigateChartToTrade = (trade: Trade) => {
   // TODO: Rough estimate - still to fix correctly
   // Applies to all "calc" usages in this file.
   height: calc(100vh - 250px) !important;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>

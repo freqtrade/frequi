@@ -117,10 +117,7 @@
           />
         </div>
 
-        <div
-          v-if="hasBacktestResult && btFormMode == 'visualize'"
-          class="container-fluid text-center w-100 mt-2"
-        >
+        <div v-if="hasBacktestResult && btFormMode == 'visualize'" class="text-center w-100 mt-2">
           <BacktestResultChart
             :timeframe="timeframe"
             :strategy="btStore.strategy"
