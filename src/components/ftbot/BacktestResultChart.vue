@@ -4,10 +4,13 @@
       <div class="me-2">
         <b-button
           aria-label="Close"
-          title="Trade Navigation"
+          title="Pair Navigation"
+          variant="outline-secondary"
           size="sm"
           @click="isBarVisible.left = !isBarVisible.left"
-          >{{ isBarVisible.left ? '&lt;' : '&gt;' }}
+        >
+          <i-mdi-chevron-right v-if="!isBarVisible.left" width="24" height="24" />
+          <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
         </b-button>
       </div>
       <span class="flex-fill text-start">
@@ -17,10 +20,13 @@
       <div class="col-md-1 text-end">
         <b-button
           aria-label="Close"
+          variant="outline-secondary"
           title="Trade Navigation"
           size="sm"
           @click="isBarVisible.right = !isBarVisible.right"
-          >{{ isBarVisible.right ? '&gt;' : '&lt;' }}
+        >
+          <i-mdi-chevron-right v-if="isBarVisible.right" width="24" height="24" />
+          <i-mdi-chevron-left v-if="!isBarVisible.right" width="24" height="24" />
         </b-button>
       </div>
     </div>
