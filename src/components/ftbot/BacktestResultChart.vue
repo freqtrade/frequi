@@ -13,9 +13,9 @@
           <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
         </b-button>
       </div>
-      <span class="flex-fill text-start">
-        Graph will always show the latest values for the selected strategy. Timerange:
-        {{ timerange }} - {{ strategy }}
+      <span class="flex-fill">
+        Graph will always show the latest values for the selected strategy. <br />
+        Timerange: {{ timerange }} - {{ strategy }}
       </span>
       <div class="col-md-1 text-end">
         <b-button
