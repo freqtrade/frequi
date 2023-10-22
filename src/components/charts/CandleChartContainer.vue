@@ -78,8 +78,8 @@
         </div>
       </div>
     </div>
-    <transition name="fade" mode="in-out">
-      <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25 config-sidebar">
+    <transition name="fade">
+      <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25">
         <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
       </div>
     </transition>
@@ -237,7 +237,7 @@ onMounted(() => {
   transition: all 0.2s;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
   transform: translateX(30px);

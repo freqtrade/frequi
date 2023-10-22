@@ -80,7 +80,7 @@
           @click="showLeftBar = !showLeftBar"
           >{{ showLeftBar ? '&lt;' : '&gt;' }}</b-button
         >
-        <transition name="fade" mode="in-out">
+        <transition name="fade">
           <BacktestResultSelect
             v-if="btFormMode !== 'visualize' && showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
