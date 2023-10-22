@@ -77,9 +77,12 @@
           class="align-self-start"
           aria-label="Close"
           size="sm"
+          variant="outline-secondary"
           @click="showLeftBar = !showLeftBar"
-          >{{ showLeftBar ? '&lt;' : '&gt;' }}</b-button
         >
+          <i-mdi-chevron-right v-if="!showLeftBar" width="24" height="24" />
+          <i-mdi-chevron-left v-if="showLeftBar" width="24" height="24" />
+        </b-button>
         <transition name="fade">
           <BacktestResultSelect
             v-if="btFormMode !== 'visualize' && showLeftBar"
