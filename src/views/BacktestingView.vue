@@ -85,7 +85,7 @@
         </b-button>
         <transition name="fade">
           <BacktestResultSelect
-            v-if="btFormMode !== 'visualize' && showLeftBar"
+            v-if="showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
             :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
             :can-use-modify="botStore.activeBot.botApiVersion >= 2.32"
@@ -99,28 +99,28 @@
       <div class="d-flex flex-column flex-fill mw-100">
         <div class="d-md-flex">
           <div
-            v-if="btFormMode == 'historicResults'"
+            v-if="btFormMode === 'historicResults'"
             class="flex-fill d-flex flex-column bt-config"
           >
             <BacktestHistoryLoad />
           </div>
-          <div v-if="btFormMode == 'run'" class="flex-fill d-flex flex-column bt-config">
+          <div v-if="btFormMode === 'run'" class="flex-fill d-flex flex-column bt-config">
             <BacktestRun />
           </div>
           <BacktestResultAnalysis
-            v-if="hasBacktestResult && btFormMode == 'results'"
+            v-if="hasBacktestResult && btFormMode === 'results'"
             :backtest-result="botStore.activeBot.selectedBacktestResult"
             class="flex-fill"
           />
 
           <BacktestGraphs
-            v-if="hasBacktestResult && btFormMode == 'visualize-summary'"
+            v-if="hasBacktestResult && btFormMode === 'visualize-summary'"
             :trades="botStore.activeBot.selectedBacktestResult.trades"
             class="flex-fill"
           />
         </div>
 
-        <div v-if="hasBacktestResult && btFormMode == 'visualize'" class="text-center w-100 mt-2">
+        <div v-if="hasBacktestResult && btFormMode === 'visualize'" class="text-center w-100 mt-2">
           <BacktestResultChart
             :timeframe="timeframe"
             :strategy="btStore.strategy"
@@ -148,6 +148,14 @@ import { useBtStore } from '@/stores/btStore';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { computed, onMounted, ref, watch } from 'vue';
 
+enum BtRunModes {
+  run = 'run',
+  results = 'results',
+  visualize = 'visualize',
+  visualizesummary = 'visualize-summary',
+  historicresults = 'historicResults',
+}
+
 const botStore = useBotStore();
 const btStore = useBtStore();
 
@@ -166,7 +174,7 @@ const timeframe = computed((): string => {
 
 const showLeftBar = ref(false);
 
-const btFormMode = ref('run');
+const btFormMode = ref<BtRunModes>(BtRunModes.run);
 const pollInterval = ref<number | null>(null);
 
 const selectBacktestResult = () => {
