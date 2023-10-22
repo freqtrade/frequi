@@ -1,5 +1,5 @@
 <template>
-  <profit-pill
+  <ProfitPill
     :profit-ratio="profitRatio"
     :profit-abs="profitAbs"
     :profit-desc="profitDesc"
