@@ -1,27 +1,32 @@
 <template>
-  <b-list-group>
-    <b-list-group-item
-      v-for="comb in combinedPairList"
-      :key="comb.pair"
-      button
-      class="d-flex justify-content-between align-items-center py-1"
-      :active="comb.pair === botStore.activeBot.selectedPair"
-      :title="`${comb.pair} - ${comb.tradeCount} trades`"
-      @click="botStore.activeBot.selectedPair = comb.pair"
-    >
-      <div>
-        {{ comb.pair }}
-        <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
-      </div>
+  <div>
+    <b-form-group v-if="backtestMode" label-for="trade-filter" class="mb-2">
+      <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
+    </b-form-group>
+    <b-list-group>
+      <b-list-group-item
+        v-for="comb in combinedPairList"
+        :key="comb.pair"
+        button
+        class="d-flex justify-content-between align-items-center py-1"
+        :active="comb.pair === botStore.activeBot.selectedPair"
+        :title="`${comb.pair} - ${comb.tradeCount} trades`"
+        @click="botStore.activeBot.selectedPair = comb.pair"
+      >
+        <div>
+          {{ comb.pair }}
+          <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
+        </div>
 
-      <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />
-      <ProfitPill
-        v-if="backtestMode && comb.tradeCount > 0"
-        :profit-ratio="comb.profit"
-        :stake-currency="botStore.activeBot.stakeCurrency"
-      />
-    </b-list-group-item>
-  </b-list-group>
+        <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />
+        <ProfitPill
+          v-if="backtestMode && comb.tradeCount > 0"
+          :profit-ratio="comb.profit"
+          :stake-currency="botStore.activeBot.stakeCurrency"
+        />
+      </b-list-group-item>
+    </b-list-group>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -29,7 +34,7 @@ import { formatPercent, timestampms } from '@/shared/formatters';
 import { Lock, Trade } from '@/types';
 import TradeProfit from '@/components/ftbot/TradeProfit.vue';
 import ProfitPill from '@/components/general/ProfitPill.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 interface CombinedPairList {
@@ -42,6 +47,7 @@ interface CombinedPairList {
   profitAbs: number;
   tradeCount: number;
 }
+const filterText = ref('');
 
 const props = defineProps({
   // TOOD: Should be string list
@@ -82,8 +88,14 @@ const combinedPairList = computed(() => {
     if (trade) {
       profitString += `\nOpen since: ${timestampms(trade.open_timestamp)}`;
     }
-    comb.push({ pair, trade, locks, lockReason, profitString, profit, profitAbs, tradeCount });
+    if (
+      filterText.value === '' ||
+      pair.toLocaleLowerCase().includes(filterText.value.toLocaleLowerCase())
+    ) {
+      comb.push({ pair, trade, locks, lockReason, profitString, profit, profitAbs, tradeCount });
+    }
   });
+
   if (props.sortMethod === 'profit') {
     comb.sort((a, b) => {
       if (a.profit > b.profit) {
