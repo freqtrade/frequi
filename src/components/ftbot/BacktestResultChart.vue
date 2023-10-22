@@ -28,7 +28,7 @@
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
-          class="col-md-2 overflow-auto"
+          class="col-md-2 overflow-y-auto overflow-x-hidden"
           style="max-height: calc(100vh - 200px)"
           :pairlist="pairlist"
           :trades="trades"
@@ -51,7 +51,7 @@
       <Transition name="fade">
         <TradeListNav
           v-if="isBarVisible.right"
-          class="overflow-auto col-md-2"
+          class="overflow-y-auto col-md-2 overflow-x-visible"
           style="max-height: calc(100vh - 200px)"
           :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
           @trade-select="navigateChartToTrade"
