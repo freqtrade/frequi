@@ -24,19 +24,23 @@
           >
             <i-mdi-refresh />
           </b-button>
-          <div class="d-flex flex-row flex-wrap">
-            <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
-              >Long signals: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
-            >
-            <small v-if="dataset" class="ms-2 text-nowrap" title="Long exit signals"
-              >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
-            >
-            <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
-              >Short entries: {{ dataset.enter_short_signals }}</small
-            >
-            <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-nowrap"
-              >Short exits: {{ dataset.exit_short_signals }}</small
-            >
+          <div class="d-flex flex-column">
+            <div class="d-flex flex-row flex-wrap">
+              <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
+                >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
+              >
+              <small v-if="dataset" class="ms-2 text-nowrap" title="Long exit signals"
+                >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
+              >
+            </div>
+            <div class="d-flex flex-row flex-wrap">
+              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
+                >Short entries: {{ dataset.enter_short_signals }}</small
+              >
+              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-nowrap"
+                >Short exits: {{ dataset.exit_short_signals }}</small
+              >
+            </div>
           </div>
         </div>
         <div class="ms-auto d-flex align-items-center w-auto">
