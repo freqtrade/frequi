@@ -40,6 +40,16 @@
               >Analyze result</b-form-radio
             >
             <b-form-radio
+              v-if="hasMultiBacktestResult"
+              v-model="btFormMode"
+              name="bt-form-radios"
+              button
+              class="mx-1 flex-samesize-items"
+              value="compare-results"
+              :disabled="!hasMultiBacktestResult"
+              >Compare results</b-form-radio
+            >
+            <b-form-radio
               v-model="btFormMode"
               name="bt-form-radios"
               button
@@ -113,6 +123,12 @@
             class="flex-fill"
           />
 
+          <BacktestResultComparison
+            v-if="hasBacktestResult && btFormMode === 'compare-results'"
+            :backtest-results="botStore.activeBot.backtestHistory"
+            class="flex-fill"
+          />
+
           <BacktestGraphs
             v-if="hasBacktestResult && btFormMode === 'visualize-summary'"
             :trades="botStore.activeBot.selectedBacktestResult.trades"
@@ -141,6 +157,7 @@ import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import BacktestResultAnalysis from '@/components/ftbot/BacktestResultAnalysis.vue';
+import BacktestResultComparison from '@/components/ftbot/BacktestResultComparison.vue';
 import BacktestRun from '@/components/ftbot/BacktestRun.vue';
 
 import { formatPercent } from '@/shared/formatters';
@@ -153,6 +170,7 @@ enum BtRunModes {
   results = 'results',
   visualize = 'visualize',
   visualizesummary = 'visualize-summary',
+  compareresults = 'compare-results',
   historicresults = 'historicResults',
 }
 
@@ -164,6 +182,12 @@ const hasBacktestResult = computed(() =>
     ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
     : false,
 );
+const hasMultiBacktestResult = computed(() =>
+  botStore.activeBot.backtestHistory
+    ? Object.keys(botStore.activeBot.backtestHistory).length > 1
+    : false,
+);
+
 const timeframe = computed((): string => {
   try {
     return botStore.activeBot.selectedBacktestResult.timeframe;
