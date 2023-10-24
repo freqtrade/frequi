@@ -121,52 +121,43 @@ const backtestResultStats = computed(() => {
   const shortMetrics =
     props.backtestResult?.trade_count_short && props.backtestResult?.trade_count_short > 0
       ? [
-          { metric: '___', value: '___' },
+          { '___ ': '___' },
           {
-            metric: 'Long / Short',
-            value: `${props.backtestResult.trade_count_long} / ${props.backtestResult.trade_count_short}`,
+            'Long / Short': `${props.backtestResult.trade_count_long} / ${props.backtestResult.trade_count_short}`,
           },
           {
-            metric: 'Total profit Long',
-            value: `${formatPercent(
+            'Total profit Long': `${formatPercent(
               props.backtestResult.profit_total_long || 0,
             )} | ${formatPriceStake(props.backtestResult.profit_total_long_abs)}`,
           },
           {
-            metric: 'Total profit Short',
-            value: `${formatPercent(
+            'Total profit Short': `${formatPercent(
               props.backtestResult.profit_total_short || 0,
             )} | ${formatPriceStake(props.backtestResult.profit_total_short_abs)}`,
           },
         ]
       : [];
 
-  return [
+  const tmp = [
     {
-      metric: 'Total Profit',
-      value: `${formatPercent(props.backtestResult.profit_total)} | ${formatPriceStake(
+      'Total Profit': `${formatPercent(props.backtestResult.profit_total)} | ${formatPriceStake(
         props.backtestResult.profit_total_abs,
       )}`,
     },
     {
-      metric: 'CAGR',
-      value: `${props.backtestResult.cagr ? formatPercent(props.backtestResult.cagr) : 'N/A'}`,
+      CAGR: `${props.backtestResult.cagr ? formatPercent(props.backtestResult.cagr) : 'N/A'}`,
     },
     {
-      metric: 'Sortino',
-      value: `${props.backtestResult.sortino ? props.backtestResult.sortino.toFixed(2) : 'N/A'}`,
+      Sortino: `${props.backtestResult.sortino ? props.backtestResult.sortino.toFixed(2) : 'N/A'}`,
     },
     {
-      metric: 'Sharpe',
-      value: `${props.backtestResult.sharpe ? props.backtestResult.sharpe.toFixed(2) : 'N/A'}`,
+      Sharpe: `${props.backtestResult.sharpe ? props.backtestResult.sharpe.toFixed(2) : 'N/A'}`,
     },
     {
-      metric: 'Calmar',
-      value: `${props.backtestResult.calmar ? props.backtestResult.calmar.toFixed(2) : 'N/A'}`,
+      Calmar: `${props.backtestResult.calmar ? props.backtestResult.calmar.toFixed(2) : 'N/A'}`,
     },
     {
-      metric: `Expectancy ${props.backtestResult.expectancy_ratio ? '(ratio)' : ''}`,
-      value: `${
+      [`Expectancy ${props.backtestResult.expectancy_ratio ? '(ratio)' : ''}`]: `${
         props.backtestResult.expectancy
           ? props.backtestResult.expectancy_ratio
             ? props.backtestResult.expectancy.toFixed(2) +
@@ -178,35 +169,31 @@ const backtestResultStats = computed(() => {
       }`,
     },
     {
-      metric: 'Profit factor',
-      value: `${
+      'Profit factor': `${
         props.backtestResult.profit_factor
           ? formatPrice(props.backtestResult.profit_factor, 3)
           : 'N/A'
       }`,
     },
     {
-      metric: 'Total trades / Daily Avg Trades',
-      value: `${props.backtestResult.total_trades} / ${props.backtestResult.trades_per_day}`,
+      'Total trades / Daily Avg Trades': `${props.backtestResult.total_trades} / ${props.backtestResult.trades_per_day}`,
     },
-    // { metric: 'First trade', value: props.backtestResult.backtest_fi },
-    // { metric: 'First trade Pair', value: props.backtestResult.backtest_best_day },
+    // { 'First trade': props.backtestResult.backtest_fi },
+    // { 'First trade Pair': props.backtestResult.backtest_best_day },
     {
-      metric: 'Best day',
-      value: `${formatPercent(props.backtestResult.backtest_best_day, 2)} | ${formatPriceStake(
+      'Best day': `${formatPercent(props.backtestResult.backtest_best_day, 2)} | ${formatPriceStake(
         props.backtestResult.backtest_best_day_abs,
       )}`,
     },
     {
-      metric: 'Worst day',
-      value: `${formatPercent(props.backtestResult.backtest_worst_day, 2)} | ${formatPriceStake(
-        props.backtestResult.backtest_worst_day_abs,
-      )}`,
+      'Worst day': `${formatPercent(
+        props.backtestResult.backtest_worst_day,
+        2,
+      )} | ${formatPriceStake(props.backtestResult.backtest_worst_day_abs)}`,
     },
 
     {
-      metric: 'Win/Draw/Loss',
-      value: `${pairSummary.value.wins} / ${pairSummary.value.draws} / ${
+      'Win/Draw/Loss': `${pairSummary.value.wins} / ${pairSummary.value.draws} / ${
         pairSummary.value.losses
       } ${
         isNotUndefined(pairSummary.value.winrate)
@@ -222,83 +209,72 @@ const backtestResultStats = computed(() => {
       }`,
     },
     {
-      metric: 'Days win/draw/loss',
-      value: `${props.backtestResult.winning_days} / ${props.backtestResult.draw_days} / ${props.backtestResult.losing_days}`,
-    },
-
-    {
-      metric: 'Avg. Duration winners',
-      value: humanizeDurationFromSeconds(props.backtestResult.winner_holding_avg_s),
+      'Days win/draw/loss': `${props.backtestResult.winning_days} / ${props.backtestResult.draw_days} / ${props.backtestResult.losing_days}`,
     },
     {
-      metric: 'Avg. Duration Losers',
-      value: humanizeDurationFromSeconds(props.backtestResult.loser_holding_avg_s),
+      'Avg. Duration winners': humanizeDurationFromSeconds(
+        props.backtestResult.winner_holding_avg_s,
+      ),
     },
     {
-      metric: 'Max Consecutive Wins / Loss',
-      value:
+      'Avg. Duration Losers': humanizeDurationFromSeconds(props.backtestResult.loser_holding_avg_s),
+    },
+    {
+      'Max Consecutive Wins / Loss':
         props.backtestResult.max_consecutive_wins === undefined
           ? 'N/A'
           : `${props.backtestResult.max_consecutive_wins} / ${props.backtestResult.max_consecutive_losses}`,
     },
-    { metric: 'Rejected entry signals', value: props.backtestResult.rejected_signals },
+    { 'Rejected entry signals': props.backtestResult.rejected_signals },
     {
-      metric: 'Entry/Exit timeouts',
-      value: `${props.backtestResult.timedout_entry_orders} / ${props.backtestResult.timedout_exit_orders}`,
+      'Entry/Exit timeouts': `${props.backtestResult.timedout_entry_orders} / ${props.backtestResult.timedout_exit_orders}`,
     },
     {
-      metric: 'Canceled Trade Entries',
-      value: props.backtestResult.canceled_trade_entries ?? 'N/A',
+      'Canceled Trade Entries': props.backtestResult.canceled_trade_entries ?? 'N/A',
     },
     {
-      metric: 'Canceled Entry Orders',
-      value: props.backtestResult.canceled_entry_orders ?? 'N/A',
+      'Canceled Entry Orders': props.backtestResult.canceled_entry_orders ?? 'N/A',
     },
     {
-      metric: 'Replaced Entry Orders',
-      value: props.backtestResult.replaced_entry_orders ?? 'N/A',
+      'Replaced Entry Orders': props.backtestResult.replaced_entry_orders ?? 'N/A',
     },
 
     ...shortMetrics,
 
-    { metric: '___', value: '___' },
-    { metric: 'Min balance', value: formatPriceStake(props.backtestResult.csum_min) },
-    { metric: 'Max balance', value: formatPriceStake(props.backtestResult.csum_max) },
-    { metric: 'Market change', value: formatPercent(props.backtestResult.market_change) },
-    { metric: '___', value: '___' },
+    { ___: '___' },
+    { 'Min balance': formatPriceStake(props.backtestResult.csum_min) },
+    { 'Max balance': formatPriceStake(props.backtestResult.csum_max) },
+    { 'Market change': formatPercent(props.backtestResult.market_change) },
+    { '___  ': '___' },
     {
-      metric: 'Max Drawdown (Account)',
-      value: formatPercent(props.backtestResult.max_drawdown_account),
+      'Max Drawdown (Account)': formatPercent(props.backtestResult.max_drawdown_account),
     },
     {
-      metric: 'Max Drawdown ABS',
-      value: formatPriceStake(props.backtestResult.max_drawdown_abs),
+      'Max Drawdown ABS': formatPriceStake(props.backtestResult.max_drawdown_abs),
     },
     {
-      metric: 'Drawdown high | low',
-      value: `${formatPriceStake(props.backtestResult.max_drawdown_high)} | ${formatPriceStake(
-        props.backtestResult.max_drawdown_low,
-      )}`,
+      'Drawdown high | low': `${formatPriceStake(
+        props.backtestResult.max_drawdown_high,
+      )} | ${formatPriceStake(props.backtestResult.max_drawdown_low)}`,
     },
-    { metric: 'Drawdown start', value: timestampms(props.backtestResult.drawdown_start_ts) },
-    { metric: 'Drawdown end', value: timestampms(props.backtestResult.drawdown_end_ts) },
-    { metric: '___', value: '___' },
+    { 'Drawdown start': timestampms(props.backtestResult.drawdown_start_ts) },
+    { 'Drawdown end': timestampms(props.backtestResult.drawdown_end_ts) },
+    { '___   ': '___' },
 
     {
-      metric: 'Best Pair',
-      value: `${props.backtestResult.best_pair.key} ${formatPercent(
+      'Best Pair': `${props.backtestResult.best_pair.key} ${formatPercent(
         props.backtestResult.best_pair.profit_sum,
       )}`,
     },
     {
-      metric: 'Worst Pair',
-      value: `${props.backtestResult.worst_pair.key} ${formatPercent(
+      'Worst Pair': `${props.backtestResult.worst_pair.key} ${formatPercent(
         props.backtestResult.worst_pair.profit_sum,
       )}`,
     },
-    { metric: 'Best single Trade', value: bestPair.value },
-    { metric: 'Worst single Trade', value: worstPair.value },
+    { 'Best single Trade': bestPair.value },
+    { 'Worst single Trade': worstPair.value },
   ];
+  return formatObjectForTable({ value: tmp }, 'metric');
 });
 
 const backtestResultSettings = computed(() => {
