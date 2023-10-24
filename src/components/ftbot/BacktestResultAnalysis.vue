@@ -65,29 +65,18 @@
 
 <script setup lang="ts">
 import TradeList from '@/components/ftbot/TradeList.vue';
-import { StrategyBacktestResult, Trade } from '@/types';
+import { StrategyBacktestResult } from '@/types';
 import BacktestResultPeriodBreakdown from './BacktestResultPeriodBreakdown.vue';
 import { formatObjectForTable } from '@/shared/objectToTableItems';
 
 import { computed } from 'vue';
-import {
-  timestampms,
-  formatPercent,
-  formatPrice,
-  humanizeDurationFromSeconds,
-} from '@/shared/formatters';
-import { generateBacktestMetricRows } from '@/shared/backtestMetrics';
+import { formatPercent, formatPrice } from '@/shared/formatters';
+import { generateBacktestMetricRows, generateBacktestSettingRows } from '@/shared/backtestMetrics';
 import { TableField, TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
 });
-
-const formatPriceStake = (price) => {
-  return `${formatPrice(price, props.backtestResult.stake_currency_decimals)} ${
-    props.backtestResult.stake_currency
-  }`;
-};
 
 const backtestResultStats = computed(() => {
   const tmp = generateBacktestMetricRows(props.backtestResult);
@@ -96,61 +85,7 @@ const backtestResultStats = computed(() => {
 
 const backtestResultSettings = computed(() => {
   // Transpose Result into readable format
-  const tmp = [
-    { 'Backtesting from': timestampms(props.backtestResult.backtest_start_ts) },
-    { 'Backtesting to': timestampms(props.backtestResult.backtest_end_ts) },
-    {
-      'BT execution time': humanizeDurationFromSeconds(
-        props.backtestResult.backtest_run_end_ts - props.backtestResult.backtest_run_start_ts,
-      ),
-    },
-    { 'Max open trades': props.backtestResult.max_open_trades },
-    { Timeframe: props.backtestResult.timeframe },
-    { 'Timeframe Detail': props.backtestResult.timeframe_detail || 'N/A' },
-    { Timerange: props.backtestResult.timerange },
-    { Stoploss: formatPercent(props.backtestResult.stoploss, 2) },
-    { 'Trailing Stoploss': props.backtestResult.trailing_stop },
-    {
-      'Trail only when offset is reached': props.backtestResult.trailing_only_offset_is_reached,
-    },
-    { 'Trailing Stop positive': props.backtestResult.trailing_stop_positive },
-    {
-      'Trailing stop positive offset': props.backtestResult.trailing_stop_positive_offset,
-    },
-    { 'Custom Stoploss': props.backtestResult.use_custom_stoploss },
-    { ROI: props.backtestResult.minimal_roi },
-    {
-      'Use Exit Signal':
-        props.backtestResult.use_exit_signal !== undefined
-          ? props.backtestResult.use_exit_signal
-          : props.backtestResult.use_sell_signal,
-    },
-    {
-      'Exit profit only':
-        props.backtestResult.exit_profit_only !== undefined
-          ? props.backtestResult.exit_profit_only
-          : props.backtestResult.sell_profit_only,
-    },
-    {
-      'Exit profit offset':
-        props.backtestResult.exit_profit_offset !== undefined
-          ? props.backtestResult.exit_profit_offset
-          : props.backtestResult.sell_profit_offset,
-    },
-    { 'Enable protections': props.backtestResult.enable_protections },
-    {
-      'Starting balance': formatPriceStake(props.backtestResult.starting_balance),
-    },
-    {
-      'Final balance': formatPriceStake(props.backtestResult.final_balance),
-    },
-    {
-      'Avg. stake amount': formatPriceStake(props.backtestResult.avg_stake_amount),
-    },
-    {
-      'Total trade volume': formatPriceStake(props.backtestResult.total_volume),
-    },
-  ];
+  const tmp = generateBacktestSettingRows(props.backtestResult);
 
   return formatObjectForTable({ value: tmp }, 'setting');
 });

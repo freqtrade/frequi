@@ -28,15 +28,23 @@ function getWorstPair(trades: Trade[]) {
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 }
 
+function useFormatPriceStake(stake_currency_decimals: number, stake_currency: string) {
+  const formatPriceStake = (price) => {
+    return `${formatPrice(price, stake_currency_decimals)} ${stake_currency}`;
+  };
+  return formatPriceStake;
+}
+
 export function generateBacktestMetricRows(result: StrategyBacktestResult) {
   const sortedTrades = getSortedTrades(result.trades);
   const bestPair = getBestPair(sortedTrades);
   const worstPair = getWorstPair(sortedTrades);
   const pairSummary = result.results_per_pair[result.results_per_pair.length - 1];
 
-  const formatPriceStake = (price) => {
-    return `${formatPrice(price, result.stake_currency_decimals)} ${result.stake_currency}`;
-  };
+  const formatPriceStake = useFormatPriceStake(
+    result.stake_currency_decimals,
+    result.stake_currency,
+  );
 
   // Transpose Result into readable format
   const shortMetrics =
@@ -178,4 +186,63 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
     { 'Worst single Trade': worstPair },
   ];
   return tmp;
+}
+
+export function generateBacktestSettingRows(result: StrategyBacktestResult) {
+  const formatPriceStake = useFormatPriceStake(
+    result.stake_currency_decimals,
+    result.stake_currency,
+  );
+
+  return [
+    { 'Backtesting from': timestampms(result.backtest_start_ts) },
+    { 'Backtesting to': timestampms(result.backtest_end_ts) },
+    {
+      'BT execution time': humanizeDurationFromSeconds(
+        result.backtest_run_end_ts - result.backtest_run_start_ts,
+      ),
+    },
+    { 'Max open trades': result.max_open_trades },
+    { Timeframe: result.timeframe },
+    { 'Timeframe Detail': result.timeframe_detail || 'N/A' },
+    { Timerange: result.timerange },
+    { Stoploss: formatPercent(result.stoploss, 2) },
+    { 'Trailing Stoploss': result.trailing_stop },
+    {
+      'Trail only when offset is reached': result.trailing_only_offset_is_reached,
+    },
+    { 'Trailing Stop positive': result.trailing_stop_positive },
+    {
+      'Trailing stop positive offset': result.trailing_stop_positive_offset,
+    },
+    { 'Custom Stoploss': result.use_custom_stoploss },
+    { ROI: result.minimal_roi },
+    {
+      'Use Exit Signal':
+        result.use_exit_signal !== undefined ? result.use_exit_signal : result.use_sell_signal,
+    },
+    {
+      'Exit profit only':
+        result.exit_profit_only !== undefined ? result.exit_profit_only : result.sell_profit_only,
+    },
+    {
+      'Exit profit offset':
+        result.exit_profit_offset !== undefined
+          ? result.exit_profit_offset
+          : result.sell_profit_offset,
+    },
+    { 'Enable protections': result.enable_protections },
+    {
+      'Starting balance': formatPriceStake(result.starting_balance),
+    },
+    {
+      'Final balance': formatPriceStake(result.final_balance),
+    },
+    {
+      'Avg. stake amount': formatPriceStake(result.avg_stake_amount),
+    },
+    {
+      'Total trade volume': formatPriceStake(result.total_volume),
+    },
+  ];
 }
