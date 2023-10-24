@@ -25,26 +25,11 @@
         </div>
       </div>
       <b-card header="Results per Exit-reason">
-        <b-table
-          small
-          hover
-          stacked="sm"
-          :items="
-            (backtestResult.exit_reason_summary ||
-              backtestResult.sell_reason_summary) as unknown as TableItem[]
-          "
-          :fields="perExitReason"
-        >
+        <b-table small hover stacked="sm" :items="exitReasonSummary" :fields="perExitReason">
         </b-table>
       </b-card>
       <b-card header="Results per pair">
-        <b-table
-          small
-          hover
-          stacked="sm"
-          :items="backtestResult.results_per_pair as unknown as TableItem[]"
-          :fields="perPairFields"
-        >
+        <b-table small hover stacked="sm" :items="resultsPerPair" :fields="perPairFields">
         </b-table>
       </b-card>
       <b-card v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
@@ -89,6 +74,14 @@ const backtestResultSettings = computed(() => {
 
   return formatObjectForTable({ value: tmp }, 'setting');
 });
+
+const resultsPerPair = computed(() => backtestResult.results_per_pair as unknown as TableItem[]);
+const exitReasonSummary = computed(
+  () =>
+    (backtestResult.exit_reason_summary ||
+      backtestResult.sell_reason_summary) as unknown as TableItem[],
+);
+
 const perPairFields = computed(() => {
   return [
     { key: 'key', label: 'Pair' },
