@@ -75,11 +75,13 @@ const backtestResultSettings = computed(() => {
   return formatObjectForTable({ value: tmp }, 'setting');
 });
 
-const resultsPerPair = computed(() => backtestResult.results_per_pair as unknown as TableItem[]);
+const resultsPerPair = computed(
+  () => props.backtestResult.results_per_pair as unknown as TableItem[],
+);
 const exitReasonSummary = computed(
   () =>
-    (backtestResult.exit_reason_summary ||
-      backtestResult.sell_reason_summary) as unknown as TableItem[],
+    (props.backtestResult.exit_reason_summary ||
+      props.backtestResult.sell_reason_summary) as unknown as TableItem[],
 );
 
 const perPairFields = computed(() => {
