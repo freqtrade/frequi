@@ -67,6 +67,7 @@
 import TradeList from '@/components/ftbot/TradeList.vue';
 import { StrategyBacktestResult, Trade } from '@/types';
 import BacktestResultPeriodBreakdown from './BacktestResultPeriodBreakdown.vue';
+import { formatObjectForTable } from '@/shared/objectToTableItems';
 
 import { computed } from 'vue';
 import {
@@ -302,71 +303,63 @@ const backtestResultStats = computed(() => {
 
 const backtestResultSettings = computed(() => {
   // Transpose Result into readable format
-  return [
-    { setting: 'Backtesting from', value: timestampms(props.backtestResult.backtest_start_ts) },
-    { setting: 'Backtesting to', value: timestampms(props.backtestResult.backtest_end_ts) },
+  const tmp = [
+    { 'Backtesting from': timestampms(props.backtestResult.backtest_start_ts) },
+    { 'Backtesting to': timestampms(props.backtestResult.backtest_end_ts) },
     {
-      setting: 'BT execution time',
-      value: humanizeDurationFromSeconds(
+      'BT execution time': humanizeDurationFromSeconds(
         props.backtestResult.backtest_run_end_ts - props.backtestResult.backtest_run_start_ts,
       ),
     },
-    { setting: 'Max open trades', value: props.backtestResult.max_open_trades },
-    { setting: 'Timeframe', value: props.backtestResult.timeframe },
-    { setting: 'Timeframe Detail', value: props.backtestResult.timeframe_detail || 'N/A' },
-    { setting: 'Timerange', value: props.backtestResult.timerange },
-    { setting: 'Stoploss', value: formatPercent(props.backtestResult.stoploss, 2) },
-    { setting: 'Trailing Stoploss', value: props.backtestResult.trailing_stop },
+    { 'Max open trades': props.backtestResult.max_open_trades },
+    { Timeframe: props.backtestResult.timeframe },
+    { 'Timeframe Detail': props.backtestResult.timeframe_detail || 'N/A' },
+    { Timerange: props.backtestResult.timerange },
+    { Stoploss: formatPercent(props.backtestResult.stoploss, 2) },
+    { 'Trailing Stoploss': props.backtestResult.trailing_stop },
     {
-      setting: 'Trail only when offset is reached',
-      value: props.backtestResult.trailing_only_offset_is_reached,
+      'Trail only when offset is reached': props.backtestResult.trailing_only_offset_is_reached,
     },
-    { setting: 'Trailing Stop positive', value: props.backtestResult.trailing_stop_positive },
+    { 'Trailing Stop positive': props.backtestResult.trailing_stop_positive },
     {
-      setting: 'Trailing stop positive offset',
-      value: props.backtestResult.trailing_stop_positive_offset,
+      'Trailing stop positive offset': props.backtestResult.trailing_stop_positive_offset,
     },
-    { setting: 'Custom Stoploss', value: props.backtestResult.use_custom_stoploss },
-    { setting: 'ROI', value: props.backtestResult.minimal_roi },
+    { 'Custom Stoploss': props.backtestResult.use_custom_stoploss },
+    { ROI: props.backtestResult.minimal_roi },
     {
-      setting: 'Use Exit Signal',
-      value:
+      'Use Exit Signal':
         props.backtestResult.use_exit_signal !== undefined
           ? props.backtestResult.use_exit_signal
           : props.backtestResult.use_sell_signal,
     },
     {
-      setting: 'Exit profit only',
-      value:
+      'Exit profit only':
         props.backtestResult.exit_profit_only !== undefined
           ? props.backtestResult.exit_profit_only
           : props.backtestResult.sell_profit_only,
     },
     {
-      setting: 'Exit profit offset',
-      value:
+      'Exit profit offset':
         props.backtestResult.exit_profit_offset !== undefined
           ? props.backtestResult.exit_profit_offset
           : props.backtestResult.sell_profit_offset,
     },
-    { setting: 'Enable protections', value: props.backtestResult.enable_protections },
+    { 'Enable protections': props.backtestResult.enable_protections },
     {
-      setting: 'Starting balance',
-      value: formatPriceStake(props.backtestResult.starting_balance),
+      'Starting balance': formatPriceStake(props.backtestResult.starting_balance),
     },
     {
-      setting: 'Final balance',
-      value: formatPriceStake(props.backtestResult.final_balance),
+      'Final balance': formatPriceStake(props.backtestResult.final_balance),
     },
     {
-      setting: 'Avg. stake amount',
-      value: formatPriceStake(props.backtestResult.avg_stake_amount),
+      'Avg. stake amount': formatPriceStake(props.backtestResult.avg_stake_amount),
     },
     {
-      setting: 'Total trade volume',
-      value: formatPriceStake(props.backtestResult.total_volume),
+      'Total trade volume': formatPriceStake(props.backtestResult.total_volume),
     },
   ];
+
+  return formatObjectForTable({ value: tmp }, 'setting');
 });
 const perPairFields = computed(() => {
   return [
