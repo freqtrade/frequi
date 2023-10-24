@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent } from '@/shared/formatters';
 import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
 import BacktestResultSelectEntry from '@/components/ftbot/BacktestResultSelectEntry.vue';
 

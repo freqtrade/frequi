@@ -1,5 +1,5 @@
 interface childObjects {
-  [key: string]: any;
+  [key: string]: string | boolean | number | undefined;
 }
 interface MutatingObject {
   [key: string]: childObjects[];

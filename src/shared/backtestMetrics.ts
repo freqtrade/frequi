@@ -216,7 +216,7 @@ export function generateBacktestSettingRows(result: StrategyBacktestResult) {
       'Trailing stop positive offset': result.trailing_stop_positive_offset,
     },
     { 'Custom Stoploss': result.use_custom_stoploss },
-    { ROI: result.minimal_roi },
+    { ROI: JSON.stringify(result.minimal_roi) },
     {
       'Use Exit Signal':
         result.use_exit_signal !== undefined ? result.use_exit_signal : result.use_sell_signal,
