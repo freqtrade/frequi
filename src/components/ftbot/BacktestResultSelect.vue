@@ -11,18 +11,7 @@
         @click="setBacktestResult(key)"
       >
         <template v-if="!result.metadata.editing">
-          <div class="d-flex flex-column me-2 text-start">
-            <div class="fw-bold">
-              {{ result.metadata.strategyName }} - {{ result.strategy.timeframe }}
-            </div>
-            <div class="text-small">
-              TradeCount: {{ result.strategy.total_trades }} - Profit:
-              {{ formatPercent(result.strategy.profit_total) }}
-            </div>
-            <div v-if="canUseModify" class="text-small" style="white-space: pre-wrap">
-              {{ result.metadata.notes }}
-            </div>
-          </div>
+          <BacktestResultSelectEntry :backtest-result="result" />
           <div class="d-flex">
             <b-button
               v-if="canUseModify"
@@ -59,6 +48,7 @@
 <script setup lang="ts">
 import { formatPercent } from '@/shared/formatters';
 import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
+import BacktestResultSelectEntry from '@/components/ftbot/BacktestResultSelectEntry.vue';
 
 defineProps({
   backtestHistory: {
