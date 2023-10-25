@@ -62,7 +62,7 @@
     "prettier": "^3.0.3",
     "sass": "^1.69.4",
     "typescript": "~5.2.2",
-    "unplugin-icons": "^0.17.0",
+    "unplugin-icons": "^0.17.1",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.11",
     "vitest": "^0.34.6",
