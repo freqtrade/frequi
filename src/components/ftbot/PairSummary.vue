@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form-group v-if="backtestMode" label-for="trade-filter" class="mb-2">
+    <b-form-group v-if="backtestMode" label-for="trade-filter" class="mb-2 me-5">
       <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
     </b-form-group>
     <b-list-group>
