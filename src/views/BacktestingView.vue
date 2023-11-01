@@ -18,7 +18,7 @@
               class="mx-1 flex-samesize-items"
               value="historicResults"
               :disabled="!botStore.activeBot.canRunBacktest"
-              >Load Results</b-form-radio
+              ><i-mdi-cloud-download class="me-2" />Load Results</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
@@ -27,7 +27,7 @@
               class="mx-1 flex-samesize-items"
               value="run"
               :disabled="!botStore.activeBot.canRunBacktest"
-              >Run backtest</b-form-radio
+              ><i-mdi-run-fast class="me-2" />Run backtest</b-form-radio
             >
             <b-form-radio
               id="bt-analyze-btn"
@@ -37,7 +37,7 @@
               class="mx-1 flex-samesize-items"
               value="results"
               :disabled="!hasBacktestResult"
-              >Analyze result</b-form-radio
+              ><i-mdi-table-eye class="me-2" />Analyze result</b-form-radio
             >
             <b-form-radio
               v-if="hasMultiBacktestResult"
@@ -47,7 +47,7 @@
               class="mx-1 flex-samesize-items"
               value="compare-results"
               :disabled="!hasMultiBacktestResult"
-              >Compare results</b-form-radio
+              ><i-mdi-chart-bell-curve-cumulative class="me-2" />Compare results</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
@@ -56,7 +56,7 @@
               class="mx-1 flex-samesize-items"
               value="visualize-summary"
               :disabled="!hasBacktestResult"
-              >Visualize summary</b-form-radio
+              ><i-mdi-chart-bell-curve-cumulative class="me-2" />Visualize summary</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
@@ -65,7 +65,7 @@
               class="mx-1 flex-samesize-items"
               value="visualize"
               :disabled="!hasBacktestResult"
-              >Visualize result</b-form-radio
+              ><i-mdi-chart-timeline-variant-shimmer class="me-2" />Visualize result</b-form-radio
             >
           </div>
           <small v-show="botStore.activeBot.backtestRunning" class="text-end bt-running-label"
