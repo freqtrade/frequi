@@ -47,7 +47,7 @@
               class="mx-1 flex-samesize-items"
               value="compare-results"
               :disabled="!hasMultiBacktestResult"
-              ><i-mdi-chart-bell-curve-cumulative class="me-2" />Compare results</b-form-radio
+              ><i-mdi-compare-horizontal class="me-2" />Compare results</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
