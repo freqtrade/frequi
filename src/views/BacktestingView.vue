@@ -18,7 +18,7 @@
               class="mx-1 flex-samesize-items"
               value="historicResults"
               :disabled="!botStore.activeBot.canRunBacktest"
-              >Load Results</b-form-radio
+              ><i-mdi-cloud-download class="me-2" />Load Results</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
@@ -27,7 +27,7 @@
               class="mx-1 flex-samesize-items"
               value="run"
               :disabled="!botStore.activeBot.canRunBacktest"
-              >Run backtest</b-form-radio
+              ><i-mdi-run-fast class="me-2" />Run backtest</b-form-radio
             >
             <b-form-radio
               id="bt-analyze-btn"
@@ -37,7 +37,17 @@
               class="mx-1 flex-samesize-items"
               value="results"
               :disabled="!hasBacktestResult"
-              >Analyze result</b-form-radio
+              ><i-mdi-table-eye class="me-2" />Analyze result</b-form-radio
+            >
+            <b-form-radio
+              v-if="hasMultiBacktestResult"
+              v-model="btFormMode"
+              name="bt-form-radios"
+              button
+              class="mx-1 flex-samesize-items"
+              value="compare-results"
+              :disabled="!hasMultiBacktestResult"
+              ><i-mdi-compare-horizontal class="me-2" />Compare results</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
@@ -46,7 +56,7 @@
               class="mx-1 flex-samesize-items"
               value="visualize-summary"
               :disabled="!hasBacktestResult"
-              >Visualize summary</b-form-radio
+              ><i-mdi-chart-bell-curve-cumulative class="me-2" />Visualize summary</b-form-radio
             >
             <b-form-radio
               v-model="btFormMode"
@@ -55,7 +65,7 @@
               class="mx-1 flex-samesize-items"
               value="visualize"
               :disabled="!hasBacktestResult"
-              >Visualize result</b-form-radio
+              ><i-mdi-chart-timeline-variant-shimmer class="me-2" />Visualize result</b-form-radio
             >
           </div>
           <small v-show="botStore.activeBot.backtestRunning" class="text-end bt-running-label"
@@ -113,6 +123,12 @@
             class="flex-fill"
           />
 
+          <BacktestResultComparison
+            v-if="hasBacktestResult && btFormMode === 'compare-results'"
+            :backtest-results="botStore.activeBot.backtestHistory"
+            class="flex-fill"
+          />
+
           <BacktestGraphs
             v-if="hasBacktestResult && btFormMode === 'visualize-summary'"
             :trades="botStore.activeBot.selectedBacktestResult.trades"
@@ -141,6 +157,7 @@ import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
 import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
 import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
 import BacktestResultAnalysis from '@/components/ftbot/BacktestResultAnalysis.vue';
+import BacktestResultComparison from '@/components/ftbot/BacktestResultComparison.vue';
 import BacktestRun from '@/components/ftbot/BacktestRun.vue';
 
 import { formatPercent } from '@/shared/formatters';
@@ -153,6 +170,7 @@ enum BtRunModes {
   results = 'results',
   visualize = 'visualize',
   visualizesummary = 'visualize-summary',
+  compareresults = 'compare-results',
   historicresults = 'historicResults',
 }
 
@@ -164,6 +182,12 @@ const hasBacktestResult = computed(() =>
     ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
     : false,
 );
+const hasMultiBacktestResult = computed(() =>
+  botStore.activeBot.backtestHistory
+    ? Object.keys(botStore.activeBot.backtestHistory).length > 1
+    : false,
+);
+
 const timeframe = computed((): string => {
   try {
     return botStore.activeBot.selectedBacktestResult.timeframe;
