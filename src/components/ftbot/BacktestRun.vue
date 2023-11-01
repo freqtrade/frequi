@@ -56,6 +56,7 @@
         <b-form-input
           id="starting-capital"
           v-model="btStore.startingCapital"
+          placeholder="Use config default"
           type="number"
           step="0.001"
         ></b-form-input>
@@ -66,20 +67,19 @@
         label-align-sm="right"
         label-for="stake-amount"
       >
-        <div class="d-flex">
-          <b-form-checkbox
-            id="stake-amount-bool"
-            v-model="btStore.stakeAmountUnlimited"
-            class="col-md-6"
-            >Unlimited stake</b-form-checkbox
-          >
-
+        <div class="d-flex align-items-center">
+          <div style="flex-basis: 100%" class="d-flex">
+            <b-form-checkbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
+              >Unlimited stake</b-form-checkbox
+            >
+          </div>
           <b-form-input
             id="stake-amount"
             v-model="btStore.stakeAmount"
             type="number"
             placeholder="Use strategy default"
             step="0.01"
+            style="flex-basis: 100%"
             :disabled="btStore.stakeAmountUnlimited"
           ></b-form-input>
         </div>
@@ -90,6 +90,7 @@
         label="Enable Protections:"
         label-align-sm="right"
         label-for="enable-protections"
+        class="align-items-center"
       >
         <b-form-checkbox
           id="enable-protections"
@@ -102,6 +103,7 @@
         label="Cache Backtest results:"
         label-align-sm="right"
         label-for="enable-cache"
+        class="align-items-center"
       >
         <b-form-checkbox id="enable-cache" v-model="btStore.allowCache"></b-form-checkbox>
       </b-form-group>
@@ -111,6 +113,7 @@
           label="Enable FreqAI:"
           label-align-sm="right"
           label-for="enable-freqai"
+          class="align-items-center"
         >
           <template #label>
             <div class="d-flex justify-content-center">
