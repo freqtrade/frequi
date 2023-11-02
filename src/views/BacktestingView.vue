@@ -152,14 +152,6 @@
 </template>
 
 <script setup lang="ts">
-import BacktestGraphs from '@/components/ftbot/BacktestGraphs.vue';
-import BacktestHistoryLoad from '@/components/ftbot/BacktestHistoryLoad.vue';
-import BacktestResultChart from '@/components/ftbot/BacktestResultChart.vue';
-import BacktestResultSelect from '@/components/ftbot/BacktestResultSelect.vue';
-import BacktestResultAnalysis from '@/components/ftbot/BacktestResultAnalysis.vue';
-import BacktestResultComparison from '@/components/ftbot/BacktestResultComparison.vue';
-import BacktestRun from '@/components/ftbot/BacktestRun.vue';
-
 import { formatPercent } from '@/shared/formatters';
 import { useBtStore } from '@/stores/btStore';
 import { useBotStore } from '@/stores/ftbotwrapper';

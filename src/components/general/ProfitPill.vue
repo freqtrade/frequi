@@ -22,8 +22,6 @@
 <script setup lang="ts">
 import { formatPercent, formatPrice, formatPriceCurrency } from '@/shared/formatters';
 
-import ProfitSymbol from '@/components/general/ProfitSymbol.vue';
-
 import { computed } from 'vue';
 
 const props = defineProps({

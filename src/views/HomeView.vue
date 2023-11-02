@@ -20,9 +20,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import BotList from '@/components/BotList.vue';
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 .home {

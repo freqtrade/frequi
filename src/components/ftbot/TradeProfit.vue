@@ -10,7 +10,6 @@
 <script setup lang="ts">
 import { formatPercent, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
-import ProfitPill from '@/components/general/ProfitPill.vue';
 
 import { computed, PropType } from 'vue';
 

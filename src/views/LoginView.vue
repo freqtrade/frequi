@@ -6,9 +6,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import BotLogin from '@/components/BotLogin.vue';
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .container {

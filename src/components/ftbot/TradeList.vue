@@ -88,10 +88,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
-import TradeProfit from './TradeProfit.vue';
-import TradeActionsPopover from './TradeActionsPopover.vue';
-import ForceExitForm from '@/components/ftbot/ForceExitForm.vue';
 
 import { ref, computed, watch, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
