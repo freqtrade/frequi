@@ -99,7 +99,6 @@ import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
 import PairlistConfigActions from './PairlistConfigActions.vue';
 import { Pairlist } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
-import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 import ExchangeSelect from './ExchangeSelect.vue';
 
 const botStore = useBotStore();

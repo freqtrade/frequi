@@ -72,10 +72,6 @@
 
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import TradeList from '@/components/ftbot/TradeList.vue';
-import TradeListNav from '@/components/ftbot/TradeListNav.vue';
-import PairSummary from '@/components/ftbot/PairSummary.vue';
-import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
 import { ref } from 'vue';
 import { ChartSliderPosition, Trade } from '@/types';
 

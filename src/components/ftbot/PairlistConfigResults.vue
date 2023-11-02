@@ -44,7 +44,6 @@ import { ref, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import ChartView from '@/views/ChartsView.vue';
-import CopyableTextfield from '@/components/general/CopyableTextfield.vue';
 
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();

@@ -50,7 +50,6 @@
 
 <script setup lang="ts">
 import { StrategyBacktestResult } from '@/types';
-import BacktestResultPeriodBreakdown from './BacktestResultPeriodBreakdown.vue';
 import { formatObjectForTable } from '@/shared/objectToTableItems';
 
 import { computed } from 'vue';

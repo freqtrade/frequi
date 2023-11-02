@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import PairlistConfigParameter from '@/components/ftbot/PairlistConfigParameter.vue';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import { Pairlist } from '@/types';
 import { computed } from 'vue';

@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { formatPercent, formatPriceCurrency, timestampms } from '@/shared/formatters';
-import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 
 import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';

@@ -34,7 +34,6 @@ import { formatObjectForTable } from '@/shared/objectToTableItems';
 import { computed } from 'vue';
 import { generateBacktestMetricRows } from '@/shared/backtestMetrics';
 import { TableField } from 'bootstrap-vue-next';
-import BacktestResultSelectEntry from '@/components/ftbot/BacktestResultSelectEntry.vue';
 
 const props = defineProps({
   backtestResults: { required: true, type: Object as () => Record<string, BacktestResultInMemory> },

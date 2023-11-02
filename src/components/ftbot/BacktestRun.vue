@@ -199,14 +199,6 @@
 </template>
 
 <script setup lang="ts">
-import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
-
-import FreqaiModelSelect from '@/components/ftbot/FreqaiModelSelect.vue';
-import StrategySelect from '@/components/ftbot/StrategySelect.vue';
-import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
-
-import InfoBox from '@/components/general/InfoBox.vue';
-
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BacktestPayload } from '@/types';
 
