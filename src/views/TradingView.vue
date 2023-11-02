@@ -43,7 +43,7 @@
               <BotPerformance class="performance-view" />
             </b-tab>
             <b-tab title="Balance" lazy>
-              <Balance />
+              <BotBalance />
             </b-tab>
             <b-tab title="Time Breakdown" lazy>
               <PeriodBreakdown />
@@ -147,19 +147,6 @@
 
 <script setup lang="ts">
 import { GridItemData } from '@/types';
-
-import Balance from '@/components/ftbot/BotBalance.vue';
-import BotControls from '@/components/ftbot/BotControls.vue';
-import BotStatus from '@/components/ftbot/BotStatus.vue';
-import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
-import PeriodBreakdown from '@/components/ftbot/PeriodBreakdown.vue';
-import DraggableContainer from '@/components/layout/DraggableContainer.vue';
-import PairListLive from '@/components/ftbot/PairListLive.vue';
-import PairLockList from '@/components/ftbot/PairLockList.vue';
-import PairSummary from '@/components/ftbot/PairSummary.vue';
-import BotPerformance from '@/components/ftbot/BotPerformance.vue';
-import TradeDetail from '@/components/ftbot/TradeDetail.vue';
-import TradeList from '@/components/ftbot/TradeList.vue';
 
 import { ref, computed } from 'vue';
 import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
