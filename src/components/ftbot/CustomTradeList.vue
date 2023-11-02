@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
 import { Trade } from '@/types';
-import CustomTradeListEntry from '@/components/ftbot/CustomTradeListEntry.vue';
 import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

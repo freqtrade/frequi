@@ -130,9 +130,6 @@
 
 <script setup lang="ts">
 import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
-import ValuePair from '@/components/general/ValuePair.vue';
-import TradeProfit from '@/components/ftbot/TradeProfit.vue';
-import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { Trade } from '@/types';
 
 defineProps({

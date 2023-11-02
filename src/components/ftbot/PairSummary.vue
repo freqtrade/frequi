@@ -32,8 +32,6 @@
 <script setup lang="ts">
 import { formatPercent, timestampms } from '@/shared/formatters';
 import { Lock, Trade } from '@/types';
-import TradeProfit from '@/components/ftbot/TradeProfit.vue';
-import ProfitPill from '@/components/general/ProfitPill.vue';
 import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

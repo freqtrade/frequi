@@ -159,15 +159,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 
-import TimePeriodChart from '@/components/charts/TimePeriodChart.vue';
-import CumProfitChart from '@/components/charts/CumProfitChart.vue';
-import TradesLogChart from '@/components/charts/TradesLog.vue';
-import ProfitDistributionChart from '@/components/charts/ProfitDistributionChart.vue';
-import BotComparisonList from '@/components/ftbot/BotComparisonList.vue';
-import TradeList from '@/components/ftbot/TradeList.vue';
-import DraggableContainer from '@/components/layout/DraggableContainer.vue';
-import InfoBox from '@/components/general/InfoBox.vue';
-
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { GridItemData } from '@/types';

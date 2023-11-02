@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import CustomTradeList from '@/components/ftbot/CustomTradeList.vue';
-import TradeDetail from '@/components/ftbot/TradeDetail.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 defineProps({

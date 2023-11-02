@@ -40,10 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import CandleChartContainer from '@/components/charts/CandleChartContainer.vue';
-import TimeRangeSelect from '@/components/ftbot/TimeRangeSelect.vue';
-import TimeframeSelect from '@/components/ftbot/TimeframeSelect.vue';
-import StrategySelect from '@/components/ftbot/StrategySelect.vue';
 import { onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

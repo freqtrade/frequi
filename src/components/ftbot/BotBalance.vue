@@ -61,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-import BalanceChart from '@/components/charts/BalanceChart.vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BalanceValues } from '@/types';

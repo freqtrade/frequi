@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import EditValue from '@/components/general/EditValue.vue';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 
 defineProps({

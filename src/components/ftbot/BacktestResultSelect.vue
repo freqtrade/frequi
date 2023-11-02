@@ -47,7 +47,6 @@
 
 <script setup lang="ts">
 import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
-import BacktestResultSelectEntry from '@/components/ftbot/BacktestResultSelectEntry.vue';
 
 defineProps({
   backtestHistory: {

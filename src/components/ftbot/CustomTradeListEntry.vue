@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
 import { Trade } from '@/types';
-import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import TradeProfit from './TradeProfit.vue';
 
 defineProps({

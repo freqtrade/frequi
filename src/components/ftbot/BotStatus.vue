@@ -86,10 +86,8 @@
 </template>
 
 <script setup lang="ts">
-import DateTimeTZ from '@/components/general/DateTimeTZ.vue';
 import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
 
-import BotProfit from '@/components/ftbot/BotProfit.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 const botStore = useBotStore();

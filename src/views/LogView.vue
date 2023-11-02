@@ -4,8 +4,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import LogViewer from '@/components/ftbot/LogViewer.vue';
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>

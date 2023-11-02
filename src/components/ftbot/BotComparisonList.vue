@@ -69,7 +69,6 @@
 </template>
 
 <script setup lang="ts">
-import ProfitPill from '@/components/general/ProfitPill.vue';
 import { formatPrice } from '@/shared/formatters';
 import { computed } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';

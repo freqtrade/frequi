@@ -16,7 +16,7 @@ export default defineConfig({
     }),
     Components({
       resolvers: [IconsResolve(), BootstrapVueNextResolver()],
-      dirs: [],
+      // dirs: [],
       dts: true,
     }),
     Icons({

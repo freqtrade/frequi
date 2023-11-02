@@ -101,9 +101,6 @@
 </template>
 
 <script setup lang="ts">
-import CandleChart from '@/components/charts/CandleChart.vue';
-import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
-import PlotConfigurator from '@/components/charts/PlotConfigurator.vue';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 import { useSettingsStore } from '@/stores/settings';
 import { ChartSliderPosition, LoadingStatus, PairHistory, Trade } from '@/types';

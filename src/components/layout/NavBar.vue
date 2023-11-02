@@ -133,11 +133,7 @@
 
 <script setup lang="ts">
 import LoginModal from '@/views/LoginModal.vue';
-import ThemeSelect from '@/components/ThemeSelect.vue';
 import Favico from 'favico.js';
-import ReloadControl from '@/components/ftbot/ReloadControl.vue';
-import BotEntry from '@/components/BotEntry.vue';
-import BotList from '@/components/BotList.vue';
 import { ref, onBeforeUnmount, onMounted, watch } from 'vue';
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
