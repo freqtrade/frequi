@@ -8,9 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from '@/components/layout/NavBar.vue';
-import NavFooter from '@/components/layout/NavFooter.vue';
-import BodyLayout from '@/components/layout/BodyLayout.vue';
 import { setTimezone } from './shared/formatters';
 import { onMounted, watch } from 'vue';
 import { useSettingsStore } from './stores/settings';
