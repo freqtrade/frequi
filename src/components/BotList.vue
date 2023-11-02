@@ -35,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import BotEntry from '@/components/BotEntry.vue';
-import BotRename from '@/components/BotRename.vue';
 import LoginModal from '@/views/LoginModal.vue';
 
 import { useBotStore } from '@/stores/ftbotwrapper';

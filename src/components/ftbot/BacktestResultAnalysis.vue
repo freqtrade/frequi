@@ -49,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import TradeList from '@/components/ftbot/TradeList.vue';
 import { StrategyBacktestResult } from '@/types';
 import BacktestResultPeriodBreakdown from './BacktestResultPeriodBreakdown.vue';
 import { formatObjectForTable } from '@/shared/objectToTableItems';

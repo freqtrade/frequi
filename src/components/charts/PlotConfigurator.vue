@@ -156,12 +156,8 @@
 </template>
 
 <script setup lang="ts">
-import EditValue from '@/components/general/EditValue.vue';
-import PlotConfigSelect from '@/components/charts/PlotConfigSelect.vue';
-import PlotIndicator from '@/components/charts/PlotIndicator.vue';
 import { showAlert } from '@/shared/alerts';
 import { IndicatorConfig, PlotConfig } from '@/types';
-import PlotIndicatorSelect from './PlotIndicatorSelect.vue';
 
 import { deepClone } from '@/shared/deepClone';
 import { useBotStore } from '@/stores/ftbotwrapper';
