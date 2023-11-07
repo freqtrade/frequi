@@ -4,7 +4,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 // Eensure Bootstrap css still loads
 import './plugins/bootstrap-vue';
-import { GridLayout } from './plugins/vue-grid-layout';
+import { VueDraggableGrid } from './plugins/vue-grid-layout';
 import router from './router';
 
 const myApp = createApp(App);
@@ -15,7 +15,7 @@ pinia.use(piniaPluginPersistedstate);
 myApp.use(pinia);
 
 myApp.use(router);
-myApp.use(GridLayout);
+myApp.use(VueDraggableGrid);
 
 // Vue.config.productionTip = false;
 myApp.mount('#app');

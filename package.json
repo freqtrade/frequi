@@ -16,6 +16,7 @@
     "cy:run-ct": "cypress run --component"
   },
   "dependencies": {
+    "@noction/vue-draggable-grid": "1.9.8",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^7.2.0",
     "@vueuse/core": "^10.5.0",
@@ -37,8 +38,7 @@
     "vue-demi": "^0.14.6",
     "vue-echarts": "^6.6.1",
     "vue-router": "^4.2.5",
-    "vue-select": "^4.0.0-beta.6",
-    "vue3-drr-grid-layout": "^1.9.7"
+    "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
     "@cypress/vite-dev-server": "^5.0.6",

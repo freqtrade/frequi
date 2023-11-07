@@ -1,4 +1,4 @@
-import GridLayout from 'vue3-drr-grid-layout';
-import 'vue3-drr-grid-layout/dist/style.css';
+import VueDraggableGrid from '@noction/vue-draggable-grid';
+import '@noction/vue-draggable-grid/dist/style.css';
 
-export { GridLayout };
+export { VueDraggableGrid };
