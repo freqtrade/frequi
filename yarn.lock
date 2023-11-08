@@ -503,10 +503,10 @@
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.5.tgz#ae69bcbb1bebb68c4ac0b11e9d8ed04526b3562b"
   integrity sha512-mEo1sAde+UCE6b2hxn332f1g1E8WfYRu6p5SvTKr2ZKC1f7gFJXk4h5PyGP9Dt6gCaG8y8XhwnXWC6Iy2cmBng==
 
-"@types/echarts@^4.9.20":
-  version "4.9.20"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.20.tgz#90260d19cd2c7d20b7444e0da38dc2db1e1ba8f1"
-  integrity sha512-7TfJfcIXP/m6WLU1QIYFLmRMQhRv1B2RbZi0wYKFlkjgMOcX6cVU5bTdZfPz1KGVadCzfsj/YvhyNtTzQRHgaQ==
+"@types/echarts@^4.9.21":
+  version "4.9.21"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.21.tgz#9626d0db7215cf51cbfe02a42c05d9d2834f243a"
+  integrity sha512-xUvHN2TbednNO3bybnG8GtOWU/f+/ouSlC9wO+704uiRlVtPEcLPfvfD24WqZ8uAXJ2dvlBLeB60WIlzv+Xajw==
   dependencies:
     "@types/zrender" "*"
 
