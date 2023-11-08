@@ -419,10 +419,10 @@
   resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz#d7c6e6755c78567a951e04ab52ef0fd26de59f32"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
-"@noction/vue-draggable-grid@1.9.8":
-  version "1.9.8"
-  resolved "https://registry.yarnpkg.com/@noction/vue-draggable-grid/-/vue-draggable-grid-1.9.8.tgz#d8f3667d988f64b0c0803b0ca91accb1b035faf0"
-  integrity sha512-w4GiTgxx6Vt4VEf1cCNxeB3S/jQ5H5qTT8EiajAs6fE/kqmnVRHGMh9MUFszkln8V6ejXHngbW75UPjZSD/HQQ==
+"@noction/vue-draggable-grid@1.9.10":
+  version "1.9.10"
+  resolved "https://registry.yarnpkg.com/@noction/vue-draggable-grid/-/vue-draggable-grid-1.9.10.tgz#51d3695e1209a5b9e2e9f048cec464045f83f0b2"
+  integrity sha512-UTcDz55JK/aypy3B789vUtlk8tkYF+ruT6BYicgXrvP4MKwy2RgYcy18OTSLEBI68TESkwvh4b1K1Auk6cwsoA==
   dependencies:
     "@interactjs/actions" "^1.10.17"
     "@interactjs/auto-start" "^1.10.17"
