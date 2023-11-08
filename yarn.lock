@@ -3520,10 +3520,10 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-unplugin-icons@^0.17.1:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.17.1.tgz#3b5aa66adad805e8cdc6cb229dff585ba7984f23"
-  integrity sha512-KsWejBPCHokYCNDQUzGu6R3E3XDYH/YpewgQwrVBXgpl1iR0RdW1NEGNdjlbuapwVnZXVgA5eiDTfNaQCawSdg==
+unplugin-icons@^0.17.3:
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.17.3.tgz#61ec97a397b302b98d0a3d8bb65bb4c615712da4"
+  integrity sha512-uvopA4I6QYWYpwAyRvG/4NNvR1Cd4GnF/mtOkybgP2YPkHjRX02l/ALm20VUla31Jt9eZHxHyODtNf/Upx5uaw==
   dependencies:
     "@antfu/install-pkg" "^0.1.1"
     "@antfu/utils" "^0.7.6"
