@@ -1,16 +1,3 @@
-<template>
-  <div>
-    <div class="mb-2">
-      <h3>Performance</h3>
-    </div>
-    <b-table
-      class="table-sm"
-      :items="botStore.activeBot.performanceStats"
-      :fields="tableFields"
-    ></b-table>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { formatPrice } from '@/shared/formatters';
 import { computed } from 'vue';
@@ -31,3 +18,15 @@ const tableFields = computed<TableField[]>(() => {
   ];
 });
 </script>
+<template>
+  <div>
+    <div class="mb-2">
+      <h3>Performance</h3>
+    </div>
+    <b-table
+      class="table-sm"
+      :items="botStore.activeBot.performanceStats"
+      :fields="tableFields"
+    ></b-table>
+  </div>
+</template>
