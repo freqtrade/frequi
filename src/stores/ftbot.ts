@@ -47,6 +47,7 @@ import {
   BacktestMetadataPatch,
   BacktestResultUpdate,
   TimeSummaryOptions,
+  PerformanceEntry,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -78,7 +79,7 @@ export function createBotSubStore(botId: string, botName: string) {
         trades: [] as ClosedTrade[],
         openTrades: [] as Trade[],
         tradeCount: 0,
-        performanceStats: [] as Performance[],
+        performanceStats: [] as PerformanceEntry[],
         whitelist: [] as string[],
         blacklist: [] as string[],
         profit: {} as ProfitInterface,
@@ -486,7 +487,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getPerformance() {
         try {
-          const { data } = await api.get<Performance[]>('/performance');
+          const { data } = await api.get<PerformanceEntry[]>('/performance');
           this.performanceStats = data;
           return Promise.resolve(data);
         } catch (error) {
