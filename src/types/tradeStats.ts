@@ -1,31 +1,23 @@
-export interface PerformanceEntry {
+interface BaseStatsModel {
+  profit_ratio: number;
+  profit_pct: number;
+  profit_abs: number;
   count: number;
+}
+
+export interface PerformanceEntry extends BaseStatsModel {
   pair: string;
   profit: number;
-  // TODO: profit_abs is mandatory after 2021.5
-  profit_abs?: number;
 }
 
-export interface EntryStats {
+export interface EntryStats extends BaseStatsModel {
   enter_tag: string;
-  profit_ratio: number;
-  profit_pct: number;
-  profit_abs: number;
-  count: number;
 }
 
-export interface ExitStats {
+export interface ExitStats extends BaseStatsModel {
   exit_reason: string;
-  profit_ratio: number;
-  profit_pct: number;
-  profit_abs: number;
-  count: number;
 }
 
-export interface MixTagStats {
+export interface MixTagStats extends BaseStatsModel {
   mix_tag: string;
-  profit: number;
-  profit_pct: number;
-  profit_abs: number;
-  count: number;
 }
