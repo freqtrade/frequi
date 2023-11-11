@@ -218,7 +218,6 @@ export function createBotSubStore(botId: string, botName: string) {
             // TODO: Should be AxiosInstance
             const updates: Promise<unknown>[] = [];
             updates.push(this.getState());
-            updates.push(this.getPerformance());
             updates.push(this.getProfit());
             updates.push(this.getTrades());
             updates.push(this.getBalance());

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatPrice } from '@/shared/formatters';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 
@@ -91,6 +91,10 @@ function refreshSummary() {
     botStore.activeBot.getMixTagStats();
   }
 }
+
+onMounted(() => {
+  refreshSummary();
+});
 </script>
 <template>
   <div>
