@@ -17,11 +17,18 @@ const tableFields = computed<TableField[]>(() => {
     { key: 'count', label: 'Count' },
   ];
 });
+
+function refreshSummary() {
+  botStore.activeBot.getPerformance();
+}
 </script>
 <template>
   <div>
     <div class="mb-2">
-      <h3>Performance</h3>
+      <h3 class="me-auto d-inline">Performance</h3>
+      <b-button class="float-end" size="sm" @click="refreshSummary">
+        <i-mdi-refresh />
+      </b-button>
     </div>
     <b-table
       class="table-sm"
