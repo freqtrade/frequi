@@ -48,6 +48,9 @@ import {
   BacktestResultUpdate,
   TimeSummaryOptions,
   PerformanceEntry,
+  MixTagStats,
+  ExitStats,
+  EntryStats,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -80,6 +83,9 @@ export function createBotSubStore(botId: string, botName: string) {
         openTrades: [] as Trade[],
         tradeCount: 0,
         performanceStats: [] as PerformanceEntry[],
+        entryStats: [] as EntryStats[],
+        exitStats: [] as ExitStats[],
+        mixTagStats: [] as MixTagStats[],
         whitelist: [] as string[],
         blacklist: [] as string[],
         profit: {} as ProfitInterface,
@@ -489,6 +495,39 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const { data } = await api.get<PerformanceEntry[]>('/performance');
           this.performanceStats = data;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getEntryStats() {
+        // Available with >=2.34
+        try {
+          const { data } = await api.get<EntryStats[]>('/entries');
+          this.entryStats = data;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getExitStats() {
+        // Available with >=2.34
+        try {
+          const { data } = await api.get<ExitStats[]>('/exits');
+          this.exitStats = data;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getMixTagStats() {
+        // Available with >=2.34
+        try {
+          const { data } = await api.get<MixTagStats[]>('/mix_tags');
+          this.mixTagStats = data;
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
