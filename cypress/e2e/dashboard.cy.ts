@@ -8,7 +8,6 @@ function tradeMocks() {
   cy.intercept('GET', '**/api/v1/whitelist', { fixture: 'whitelist.json' }).as('Whitelist');
   cy.intercept('GET', '**/api/v1/blacklist', { fixture: 'blacklist.json' }).as('Blacklist');
   cy.intercept('GET', '**/api/v1/locks', { fixture: 'locks_empty.json' }).as('Locks');
-  cy.intercept('GET', '**/api/v1/performance', { fixture: 'performance.json' }).as('Performance');
   // TODO: Daily mock is missing.
   // cy.intercept('GET', '**/api/v1/daily', { fixture: 'performance.json' }).as('Performance');
 }
@@ -28,7 +27,6 @@ describe('Dashboard', () => {
     cy.wait('@Whitelist');
     cy.wait('@Blacklist');
     cy.wait('@Locks');
-    cy.wait('@Performance');
     cy.get('.drag-header').contains('Bot comparison').should('be.visible');
     cy.get('.drag-header').contains('Daily Profit').should('be.visible');
     cy.get('.drag-header').contains('Open Trades').should('be.visible');

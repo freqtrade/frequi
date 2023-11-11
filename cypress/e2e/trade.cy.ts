@@ -30,12 +30,16 @@ describe('Trade', () => {
     cy.wait('@Whitelist');
     cy.wait('@Blacklist');
     cy.wait('@Locks');
-    cy.wait('@Performance');
     cy.get('.drag-header').contains('Multi Pane').should('be.visible');
     cy.get('.drag-header').contains('Chart').should('be.visible');
     cy.get('button').should('contain', 'BTC/USDT');
     cy.get('button').should('contain', 'ETH/USDT').should('be.visible');
     cy.get('button').contains('ETH/USDT').should('be.visible');
+
+    cy.get('button').contains('Performance').should('be.visible').click();
+    cy.wait('@Performance');
+
+    cy.get('th').contains('Profit USDT').should('be.visible');
 
     // Test messageBox behavior
     // No modal visible

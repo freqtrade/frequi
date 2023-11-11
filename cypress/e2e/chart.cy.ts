@@ -8,7 +8,6 @@ function tradeMocks() {
   cy.intercept('GET', '**/api/v1/whitelist', { fixture: 'whitelist.json' }).as('Whitelist');
   cy.intercept('GET', '**/api/v1/blacklist', { fixture: 'blacklist.json' }).as('Blacklist');
   cy.intercept('GET', '**/api/v1/locks', { fixture: 'locks_empty.json' }).as('Locks');
-  cy.intercept('GET', '**/api/v1/performance', { fixture: 'performance.json' }).as('Performance');
 }
 
 describe('Chart', () => {
@@ -27,7 +26,6 @@ describe('Chart', () => {
     cy.wait('@Whitelist');
     cy.wait('@Blacklist');
     cy.wait('@Locks');
-    cy.wait('@Performance');
     cy.wait('@PairCandles');
     // Disable autorefresh
     cy.get('input[title="AutoRefresh"]').click();
