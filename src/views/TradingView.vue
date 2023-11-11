@@ -40,7 +40,7 @@
               <BotStatus />
             </b-tab>
             <b-tab title="Performance">
-              <BotPerformance class="performance-view" />
+              <BotPerformance />
             </b-tab>
             <b-tab title="Balance" lazy>
               <BotBalance />
