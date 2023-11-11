@@ -34,14 +34,6 @@ export type MultiDeletePayload = MultiBotIdPayload;
 export type MultiReloadTradePayload = MultiBotIdPayload;
 export type MultiCancelOpenOrderPayload = MultiBotIdPayload;
 
-export interface PerformanceEntry {
-  count: number;
-  pair: string;
-  profit: number;
-  // TODO: profit_abs is mandatory after 2021.5
-  profit_abs?: number;
-}
-
 export type LogLine = Array<[string, number, string, string, string]>;
 
 export interface Logs {
