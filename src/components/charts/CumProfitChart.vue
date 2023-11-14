@@ -29,7 +29,7 @@ import {
 } from '@/types';
 import { watchThrottled } from '@vueuse/core';
 
-import { formatPrice } from '@/shared/formatters';
+import { formatPrice, timestampToDateString } from '@/shared/formatters';
 import { useColorStore } from '@/stores/colors';
 
 use([
@@ -216,7 +216,9 @@ function initializeChart() {
         const profitText = currentProfit
           ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
           : `Profit: ${formatPrice(profit, 3)}`;
-        return profitText;
+        return `${timestampToDateString(params[1].data.date)}<br />${
+          params[1].marker
+        }${profitText}`;
       },
       axisPointer: {
         type: 'line',
