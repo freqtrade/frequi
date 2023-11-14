@@ -40,7 +40,6 @@ import LoginModal from '@/views/LoginModal.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
-import { computed, ref } from 'vue';
 
 defineProps({
   small: { default: false, type: Boolean },

@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
 import vSelect from 'vue-select';
 
 const props = defineProps({

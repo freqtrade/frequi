@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { dateFromString, dateStringToTimeRange, timestampToDateString } from '@/shared/formatters';
-import { ref, computed, onMounted, watch } from 'vue';
+
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { useSettingsStore } from '@/stores/settings';

@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import ChartView from '@/views/ChartsView.vue';

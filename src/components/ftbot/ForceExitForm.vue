@@ -62,8 +62,6 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceSellPayload, Trade } from '@/types';
 
-import { ref, computed } from 'vue';
-
 const props = defineProps({
   trade: {
     type: Object as () => Trade,

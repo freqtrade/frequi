@@ -20,7 +20,6 @@
 <script setup lang="ts">
 import BotLogin from '@/components/BotLogin.vue';
 import { AuthStorageWithBotId } from '@/types';
-import { nextTick, ref } from 'vue';
 
 defineProps({
   loginText: { required: false, default: 'Login', type: String },

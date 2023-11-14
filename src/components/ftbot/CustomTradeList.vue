@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { Trade } from '@/types';
-import { computed, ref } from 'vue';
+
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 const props = defineProps({

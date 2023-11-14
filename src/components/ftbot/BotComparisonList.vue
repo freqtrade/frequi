@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { formatPrice } from '@/shared/formatters';
-import { computed } from 'vue';
+
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ProfitInterface, ComparisonTableItems } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';

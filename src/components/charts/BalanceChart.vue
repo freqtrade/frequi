@@ -28,7 +28,6 @@ import { formatPriceCurrency } from '@/shared/formatters';
 import { useSettingsStore } from '@/stores/settings';
 import { BalanceValues } from '@/types';
 import { useElementSize } from '@vueuse/core';
-import { computed, ref } from 'vue';
 
 use([
   PieChart,

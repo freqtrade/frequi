@@ -155,7 +155,6 @@
 import { formatPercent } from '@/shared/formatters';
 import { useBtStore } from '@/stores/btStore';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { computed, onMounted, ref, watch } from 'vue';
 
 enum BtRunModes {
   run = 'run',

@@ -57,7 +57,6 @@
 <script setup lang="ts">
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import { Pairlist } from '@/types';
-import { computed } from 'vue';
 
 const pairlistStore = usePairlistConfigStore();
 

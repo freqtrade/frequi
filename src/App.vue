@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { setTimezone } from './shared/formatters';
-import { onMounted, watch } from 'vue';
+
 import { useSettingsStore } from './stores/settings';
 import { useColorStore } from './stores/colors';
 const settingsStore = useSettingsStore();

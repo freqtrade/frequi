@@ -102,7 +102,6 @@
 
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { onMounted, ref } from 'vue';
 
 const newblacklistpair = ref('');
 const blackListShow = ref(false);

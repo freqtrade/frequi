@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatPrice } from '@/shared/formatters';
-import { computed, onMounted, ref } from 'vue';
+
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 

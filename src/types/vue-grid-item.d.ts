@@ -1,6 +1,5 @@
 /* eslint-disable max-classes-per-file */
 // declare module 'vue-grid-layout' {
-//   import Vue from 'vue';
 
 //   export class GridLayout extends Vue {}
 

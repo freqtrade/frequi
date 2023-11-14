@@ -9,8 +9,6 @@ import {
   timestampToDateString,
 } from '@/shared/formatters';
 
-import { computed } from 'vue';
-
 const props = defineProps({
   date: { required: true, type: Number },
   showTimezone: { required: false, type: Boolean, default: false },

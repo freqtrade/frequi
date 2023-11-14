@@ -65,7 +65,6 @@ import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BalanceValues } from '@/types';
 import { TableField } from 'bootstrap-vue-next';
-import { computed, ref } from 'vue';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);

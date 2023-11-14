@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-
 const props = defineProps({
   value: { default: '', type: String },
   belowTimeframe: { required: false, default: '', type: String },

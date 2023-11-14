@@ -91,7 +91,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import PairlistConfigItem from './PairlistConfigItem.vue';

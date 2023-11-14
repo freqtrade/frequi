@@ -12,7 +12,6 @@ import { formatPercent, formatPriceCurrency, timestampms } from '@/shared/format
 
 import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
-import { computed } from 'vue';
 
 const props = defineProps({
   profit: { required: true, type: Object as () => ProfitInterface },

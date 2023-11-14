@@ -148,7 +148,6 @@
 <script setup lang="ts">
 import { GridItemData } from '@/types';
 
-import { ref, computed } from 'vue';
 import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

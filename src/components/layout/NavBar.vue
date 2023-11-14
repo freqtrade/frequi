@@ -134,7 +134,7 @@
 <script setup lang="ts">
 import LoginModal from '@/views/LoginModal.vue';
 import Favico from 'favico.js';
-import { ref, onBeforeUnmount, onMounted, watch } from 'vue';
+
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';

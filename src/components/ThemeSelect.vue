@@ -7,7 +7,6 @@
 <script setup lang="ts">
 import { useSettingsStore } from '@/stores/settings';
 import { useColorMode } from 'bootstrap-vue-next';
-import { onMounted, ref } from 'vue';
 
 const mode = useColorMode();
 

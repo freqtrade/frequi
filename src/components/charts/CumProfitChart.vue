@@ -28,7 +28,7 @@ import {
   Trade,
 } from '@/types';
 import { watchThrottled } from '@vueuse/core';
-import { computed, onMounted, ref, watch } from 'vue';
+
 import { formatPrice } from '@/shared/formatters';
 import { useColorStore } from '@/stores/colors';
 

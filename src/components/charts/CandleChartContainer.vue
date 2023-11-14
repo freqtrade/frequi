@@ -107,7 +107,7 @@ import { ChartSliderPosition, LoadingStatus, PairHistory, Trade } from '@/types'
 import vSelect from 'vue-select';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { computed, onMounted, ref, watch } from 'vue';
+
 import { useColorStore } from '@/stores/colors';
 
 const props = defineProps({

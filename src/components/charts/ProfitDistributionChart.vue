@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
 

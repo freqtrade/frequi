@@ -11,8 +11,6 @@
 import { formatPercent, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 
-import { computed, PropType } from 'vue';
-
 type modes = 'default' | 'total' | 'realized';
 
 const props = defineProps({

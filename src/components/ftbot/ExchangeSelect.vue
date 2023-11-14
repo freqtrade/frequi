@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { computed, onMounted, watch } from 'vue';
+
 import { ExchangeSelection } from '@/types';
 
 const exchangeModel = defineModel({

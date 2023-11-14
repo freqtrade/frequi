@@ -89,7 +89,6 @@
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 
-import { ref, computed, watch, onMounted } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
 import { TableField, TableItem } from 'bootstrap-vue-next';

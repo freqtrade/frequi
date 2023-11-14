@@ -22,8 +22,6 @@
 <script setup lang="ts">
 import { formatPercent, formatPrice, formatPriceCurrency } from '@/shared/formatters';
 
-import { computed } from 'vue';
-
 const props = defineProps({
   profitRatio: { required: false, default: undefined, type: Number },
   profitAbs: { required: false, default: undefined, type: Number },

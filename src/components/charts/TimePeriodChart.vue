@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, ref } from 'vue';
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
 

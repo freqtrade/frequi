@@ -12,7 +12,7 @@ import {
   PairlistsPayload,
   TradingMode,
 } from '@/types';
-import { computed, ref, toRaw, watch } from 'vue';
+
 import { showAlert } from '../shared/alerts';
 import { isNotUndefined } from '@/shared/formatters';
 

@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import { timestampms } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';

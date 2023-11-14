@@ -157,8 +157,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-
 import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { GridItemData } from '@/types';

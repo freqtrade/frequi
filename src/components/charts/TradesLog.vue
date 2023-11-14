@@ -26,7 +26,7 @@ import {
 
 import { ClosedTrade } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
-import { computed } from 'vue';
+
 import { timestampms } from '@/shared/formatters';
 import { dataZoomPartial } from '@/shared/charts/chartZoom';
 import { useColorStore } from '@/stores/colors';

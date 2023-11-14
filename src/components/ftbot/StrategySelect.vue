@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { computed, onMounted } from 'vue';
 
 const props = defineProps({
   modelValue: { type: String, required: true },

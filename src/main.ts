@@ -1,6 +1,6 @@
 import { createPinia, PiniaVuePlugin } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import { createApp } from 'vue';
+
 import App from './App.vue';
 // Eensure Bootstrap css still loads
 import './plugins/bootstrap-vue';

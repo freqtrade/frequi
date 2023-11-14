@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Trade } from '@/types';
-import { ref } from 'vue';
+
 import TradeActions from './TradeActions.vue';
 
 defineProps({

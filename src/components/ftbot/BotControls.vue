@@ -68,7 +68,6 @@ forceexit
 import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceSellPayload } from '@/types';
-import { computed, ref } from 'vue';
 
 import ForceEntryForm from './ForceEntryForm.vue';
 

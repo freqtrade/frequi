@@ -17,7 +17,7 @@ import {
   Trade,
 } from '@/types';
 import { format } from 'date-fns-tz';
-import { computed, onMounted, ref, watch } from 'vue';
+
 import ECharts from 'vue-echarts';
 
 import { calculateDiff, getDiffColumnsFromPlotConfig } from '@/shared/charts/areaPlotDataset';

@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 import randomColor from '@/shared/randomColor';
-import { computed, ref, watch } from 'vue';
+
 import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps({

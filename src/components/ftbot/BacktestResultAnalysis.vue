@@ -52,7 +52,6 @@
 import { StrategyBacktestResult } from '@/types';
 import { formatObjectForTable } from '@/shared/objectToTableItems';
 
-import { computed } from 'vue';
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { generateBacktestMetricRows, generateBacktestSettingRows } from '@/shared/backtestMetrics';
 import { TableField, TableItem } from 'bootstrap-vue-next';

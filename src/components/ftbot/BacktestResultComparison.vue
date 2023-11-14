@@ -31,7 +31,6 @@
 import { BacktestResultInMemory } from '@/types';
 import { formatObjectForTable } from '@/shared/objectToTableItems';
 
-import { computed } from 'vue';
 import { generateBacktestMetricRows } from '@/shared/backtestMetrics';
 import { TableField } from 'bootstrap-vue-next';
 

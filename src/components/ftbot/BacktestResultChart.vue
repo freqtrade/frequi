@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { ref } from 'vue';
+
 import { ChartSliderPosition, Trade } from '@/types';
 
 defineProps({

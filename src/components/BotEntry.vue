@@ -57,7 +57,6 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
-import { computed, ref } from 'vue';
 
 const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },

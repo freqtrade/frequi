@@ -86,7 +86,6 @@
 import { useUserService } from '@/shared/userService';
 import { AuthPayload, AuthStorageWithBotId } from '@/types';
 
-import { computed, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';

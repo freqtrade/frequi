@@ -162,7 +162,7 @@ import { IndicatorConfig, PlotConfig } from '@/types';
 import { deepClone } from '@/shared/deepClone';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
-import { computed, ref, watch } from 'vue';
+
 import randomColor from '@/shared/randomColor';
 
 const props = defineProps({

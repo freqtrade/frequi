@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 const botStore = useBotStore();

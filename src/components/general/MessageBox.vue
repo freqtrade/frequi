@@ -13,8 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
 export interface MsgBoxObject {
   title: string;
   message: string;
