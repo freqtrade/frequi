@@ -3520,10 +3520,10 @@ unplugin-auto-import@^0.16.7:
     unimport "^3.4.0"
     unplugin "^1.5.0"
 
-unplugin-icons@^0.17.3:
-  version "0.17.3"
-  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.17.3.tgz#61ec97a397b302b98d0a3d8bb65bb4c615712da4"
-  integrity sha512-uvopA4I6QYWYpwAyRvG/4NNvR1Cd4GnF/mtOkybgP2YPkHjRX02l/ALm20VUla31Jt9eZHxHyODtNf/Upx5uaw==
+unplugin-icons@^0.17.4:
+  version "0.17.4"
+  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.17.4.tgz#a05268d44a22703876f953c26107af3cfa04a936"
+  integrity sha512-PHLxjBx3ZV8RUBvfMafFl8uWH88jHeZgOijcRpkwgne7y2Ovx7WI0Ltzzw3fjZQ7dGaDhB8udyKVdm9N2S6BIw==
   dependencies:
     "@antfu/install-pkg" "^0.1.1"
     "@antfu/utils" "^0.7.6"
