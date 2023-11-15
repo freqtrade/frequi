@@ -145,8 +145,8 @@ onMounted(async () => {
     a.is_pairlist_generator === b.is_pairlist_generator
       ? a.name.localeCompare(b.name)
       : a.is_pairlist_generator
-      ? -1
-      : 1,
+        ? -1
+        : 1,
   );
   pairlistStore.selectOrCreateConfig(
     pairlistStore.isSavedConfig(pairlistStore.configName) ? pairlistStore.configName : 'default',
