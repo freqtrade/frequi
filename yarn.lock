@@ -297,7 +297,7 @@
     kolorist "^1.8.0"
     local-pkg "^0.4.3"
 
-"@interactjs/actions@1.10.20", "@interactjs/actions@^1.10.17":
+"@interactjs/actions@1.10.20", "@interactjs/actions@^1.10.20":
   version "1.10.20"
   resolved "https://registry.yarnpkg.com/@interactjs/actions/-/actions-1.10.20.tgz#c8b58f46b38aa414b6e0781a58beec5790ad395d"
   integrity sha512-5aMM/UDc8AD9TOIExH1EXd+J86/SK+UPap5tYNodQyFWkHKCyKmBxS5qGvr//Mz2WyXLj3nFVYxgW1Obj9CDaw==
@@ -311,7 +311,7 @@
   optionalDependencies:
     "@interactjs/interact" "1.10.20"
 
-"@interactjs/auto-start@1.10.20", "@interactjs/auto-start@^1.10.17":
+"@interactjs/auto-start@1.10.20", "@interactjs/auto-start@^1.10.20":
   version "1.10.20"
   resolved "https://registry.yarnpkg.com/@interactjs/auto-start/-/auto-start-1.10.20.tgz#82c482aa729977eb71f66853bf59fe25f9da5c9a"
   integrity sha512-EWfkM2I+S/wlvjKm4sEDHCjfNmymp5N5Dqmzqpu/o+IlwBM3gOpKDkCsJ01HezJ8WfXXG2EVTKB5nT++7tza+g==
@@ -323,7 +323,7 @@
   resolved "https://registry.yarnpkg.com/@interactjs/core/-/core-1.10.20.tgz#41c661a42378b18dd805c478d695faea37411884"
   integrity sha512-mafE6pUtIM3jjDqWflhGCCvXgN7EpW0gAO+Lfny4h5nJ5fp7zn94MoVeBZWOwnkk0dlCLtGVk1qUf042aObwKA==
 
-"@interactjs/dev-tools@1.10.20", "@interactjs/dev-tools@^1.10.17":
+"@interactjs/dev-tools@1.10.20", "@interactjs/dev-tools@^1.10.20":
   version "1.10.20"
   resolved "https://registry.yarnpkg.com/@interactjs/dev-tools/-/dev-tools-1.10.20.tgz#2a7305f122f52333547e439fbe19be4c954222cf"
   integrity sha512-g9VY/g+7K75gwwmoaq3wXAAx/2k0NMUSQPcSU3UInLvE0T2XTYkuW0cY+3NrrT0a21wz+GSSJ6MjzJsGLsxfDQ==
@@ -347,7 +347,7 @@
     "@interactjs/core" "1.10.20"
     "@interactjs/utils" "1.10.20"
 
-"@interactjs/interactjs@^1.10.17":
+"@interactjs/interactjs@^1.10.20":
   version "1.10.20"
   resolved "https://registry.yarnpkg.com/@interactjs/interactjs/-/interactjs-1.10.20.tgz#2df63842d333e0b80e19fb320bb2e8d5f18c2a04"
   integrity sha512-+eQLTij6yybxCMJ7vjN0Ajpj3ErBWT+L7+b3yarDyerdfTAO6n/WIiGm+h21Upo+0xglCck4oFpyNoCGKdCosw==
@@ -365,7 +365,7 @@
     "@interactjs/reflow" "1.10.20"
     "@interactjs/utils" "1.10.20"
 
-"@interactjs/modifiers@1.10.20", "@interactjs/modifiers@^1.10.17":
+"@interactjs/modifiers@1.10.20", "@interactjs/modifiers@^1.10.20":
   version "1.10.20"
   resolved "https://registry.yarnpkg.com/@interactjs/modifiers/-/modifiers-1.10.20.tgz#b68675ee52cbdfccbb5d9768a708aa35a7143d2e"
   integrity sha512-OsTto8Gj5mjpAeNfLrJ1qnsGxdbWdoVU599vaDbMVwzWJfw6Ci5o7sVki7lmic3OQqk0BUEsebbwSt91hgVUFg==
@@ -419,20 +419,20 @@
   resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz#d7c6e6755c78567a951e04ab52ef0fd26de59f32"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
-"@noction/vue-draggable-grid@1.9.10":
-  version "1.9.10"
-  resolved "https://registry.yarnpkg.com/@noction/vue-draggable-grid/-/vue-draggable-grid-1.9.10.tgz#51d3695e1209a5b9e2e9f048cec464045f83f0b2"
-  integrity sha512-UTcDz55JK/aypy3B789vUtlk8tkYF+ruT6BYicgXrvP4MKwy2RgYcy18OTSLEBI68TESkwvh4b1K1Auk6cwsoA==
+"@noction/vue-draggable-grid@1.9.11":
+  version "1.9.11"
+  resolved "https://registry.yarnpkg.com/@noction/vue-draggable-grid/-/vue-draggable-grid-1.9.11.tgz#4c6003e1bb967915253ec05d1350fe1e405b2ed1"
+  integrity sha512-2yGJ8KMsVJJhxQ9ZrKC28QvUuFTXRQfqjw++aB+KXhhh1VAjrx9ozQNpvQadMDQZmDNmOvbfHsR+yfuYsnAhFw==
   dependencies:
-    "@interactjs/actions" "^1.10.17"
-    "@interactjs/auto-start" "^1.10.17"
-    "@interactjs/dev-tools" "^1.10.17"
-    "@interactjs/interactjs" "^1.10.17"
-    "@interactjs/modifiers" "^1.10.17"
-    "@types/element-resize-detector" "^1.1.3"
+    "@interactjs/actions" "^1.10.20"
+    "@interactjs/auto-start" "^1.10.20"
+    "@interactjs/dev-tools" "^1.10.20"
+    "@interactjs/interactjs" "^1.10.20"
+    "@interactjs/modifiers" "^1.10.20"
+    "@types/element-resize-detector" "^1.1.5"
     element-resize-detector "^1.2.4"
-    mitt "^3.0.0"
-    vue "^3.2.0"
+    mitt "^3.0.1"
+    vue "^3.3.8"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -510,7 +510,7 @@
   dependencies:
     "@types/zrender" "*"
 
-"@types/element-resize-detector@^1.1.3":
+"@types/element-resize-detector@^1.1.5":
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/@types/element-resize-detector/-/element-resize-detector-1.1.6.tgz#055721831fa25a7055fc22615c784b74b6740b41"
   integrity sha512-hj0o+gfpKB3XFdMwPBxyMxKkpUpjxI2CctMeaC7gelAsnRfqluiynlM5BOCxv27HnndVWh+utrXlqo1PLyW2Sg==
@@ -2640,7 +2640,7 @@ minimist@^1.2.8:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
-mitt@^3.0.0:
+mitt@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.1.tgz#ea36cf0cc30403601ae074c8f77b7092cdab36d1"
   integrity sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==
@@ -3687,7 +3687,7 @@ vue-tsc@^1.8.22:
     "@vue/language-core" "1.8.22"
     semver "^7.5.4"
 
-vue@^3.2.0, vue@^3.3.2:
+vue@^3.3.2, vue@^3.3.8:
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.8.tgz#532ff071af24f6a69e5ecc53a66858a9ee874ffc"
   integrity sha512-5VSX/3DabBikOXMsxzlW8JyfeLKlG9mzqnWgLQLty88vdZL7ZJgrdgBOmrArwxiLtmS+lNNpPcBYqrhE6TQW5w==
