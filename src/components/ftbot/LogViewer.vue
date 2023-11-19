@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex h-100 p-0 align-items-start">
     <textarea v-model="formattedLogs" class="h-100" readonly></textarea>
-    <b-button id="refresh-logs" size="sm" @click="botStore.activeBot.getLogs">
+    <b-button id="refresh-logs" size="sm" title="Reload Logs" @click="botStore.activeBot.getLogs">
       <i-mdi-refresh />
     </b-button>
   </div>
