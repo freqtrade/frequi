@@ -40,7 +40,6 @@ export function getWaitForResponse(page: Page, url: string) {
     '@Logs': '**/api/v1/logs',
   };
   const urlMap = urlMapping[url] ?? url;
-  console.log(urlMap);
 
   return page.waitForResponse(urlMap);
 }
