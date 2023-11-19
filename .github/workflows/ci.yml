@@ -56,6 +56,22 @@ jobs:
         start: yarn dev --host
         wait-on: 'http://127.0.0.1:3000'
 
+    # Playwright section
+    - name: Install Playwright Browsers
+      run: yarn playwright install --with-deps
+
+    - name: Run Playwright tests
+      run: yarn playwright test
+
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+    # End Playwright section
+
     - name: Build build
       run: yarn build
 
