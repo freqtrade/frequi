@@ -797,12 +797,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/echarts@npm:^4.9.21":
-  version: 4.9.21
-  resolution: "@types/echarts@npm:4.9.21"
+"@types/echarts@npm:^4.9.22":
+  version: 4.9.22
+  resolution: "@types/echarts@npm:4.9.22"
   dependencies:
     "@types/zrender": "*"
-  checksum: fb7abfab42f8ce5a4e21e9ab91e2351120e8380b8971dca19b29ae0c64f7c88b4ac1e83ee3ed9be49a373c32e13a2daad3d62287d10090474000fcf78bfc0488
+  checksum: f33a94c96dc3302751e4c1825e779e08ddd2369f96120cc56ba53a64198d0a021587eccf81465e6ce8689d625ae7e2c946e5787d6376386b29c8ecc58300880e
   languageName: node
   linkType: hard
 
@@ -2991,7 +2991,7 @@ __metadata:
     "@iconify-json/mdi": ^1.1.55
     "@noction/vue-draggable-grid": 1.9.10
     "@popperjs/core": ^2.11.8
-    "@types/echarts": ^4.9.21
+    "@types/echarts": ^4.9.22
     "@typescript-eslint/eslint-plugin": ^6.11.0
     "@typescript-eslint/parser": ^6.11.0
     "@vitejs/plugin-vue": ^4.4.0
