@@ -1081,13 +1081,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^4.4.0":
-  version: 4.4.1
-  resolution: "@vitejs/plugin-vue@npm:4.4.1"
+"@vitejs/plugin-vue@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "@vitejs/plugin-vue@npm:4.5.0"
   peerDependencies:
-    vite: ^4.0.0
+    vite: ^4.0.0 || ^5.0.0
     vue: ^3.2.25
-  checksum: 3423f8faf09600b0bcf65fe845ea3fd1b130d1fc0671c355ce340675e1a5f6937edcca0339f5894630154bc48754ed5240c0819e2faa83c5f2e77332942cdcb5
+  checksum: 50b8300537804fdc78c5b2448f608f9a09ce55230ca7988ada19ad8583a8185edf800f3e9ad9322bd74b89dbbe02d330e99fecee6918efcb92eb58ef34cf2863
   languageName: node
   linkType: hard
 
@@ -3057,7 +3057,7 @@ __metadata:
     "@types/echarts": ^4.9.22
     "@typescript-eslint/eslint-plugin": ^6.11.0
     "@typescript-eslint/parser": ^6.12.0
-    "@vitejs/plugin-vue": ^4.4.0
+    "@vitejs/plugin-vue": ^4.5.0
     "@vue/compiler-sfc": 3.3.8
     "@vue/eslint-config-prettier": ^8.0.0
     "@vue/eslint-config-typescript": ^12.0.0
