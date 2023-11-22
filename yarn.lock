@@ -1430,7 +1430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:10.6.1, @vueuse/core@npm:^10.4.1, @vueuse/core@npm:^10.5.0":
+"@vueuse/core@npm:10.6.1, @vueuse/core@npm:^10.5.0, @vueuse/core@npm:^10.6.0":
   version: 10.6.1
   resolution: "@vueuse/core@npm:10.6.1"
   dependencies:
@@ -1795,15 +1795,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-next@npm:^0.14.10":
-  version: 0.14.10
-  resolution: "bootstrap-vue-next@npm:0.14.10"
+"bootstrap-vue-next@npm:^0.15.1":
+  version: 0.15.1
+  resolution: "bootstrap-vue-next@npm:0.15.1"
   dependencies:
     "@floating-ui/vue": ^1.0.2
-    "@vueuse/core": ^10.4.1
+    "@vueuse/core": ^10.6.0
   peerDependencies:
-    vue: ^3.3.4
-  checksum: 199b30385704ce0ab8fa69540614410938e54cd9043a33854f5f3f0d7a4916e48b3ce837df22723c04b772d84f713910482204cda37a92acd80684dca2e5aabf
+    vue: ^3.3.8
+  checksum: 5fc2e0a2ce9d40a93e139b780a4974d3e680f58e4784571beeb96810f07ed98600b4179a7a5c48492a056724bd89fd4796b756549fc7a1b6a64a51cd5b39f2d5
   languageName: node
   linkType: hard
 
@@ -3127,7 +3127,7 @@ __metadata:
     "@vueuse/integrations": ^10.6.1
     axios: ^1.6.2
     bootstrap: ^5.3.2
-    bootstrap-vue-next: ^0.14.10
+    bootstrap-vue-next: ^0.15.1
     core-js: ^3.33.3
     cypress: ^13.6.0
     date-fns: ^2.30.0
