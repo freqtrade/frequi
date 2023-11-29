@@ -1919,15 +1919,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-next@npm:^0.15.1":
-  version: 0.15.1
-  resolution: "bootstrap-vue-next@npm:0.15.1"
+"bootstrap-vue-next@npm:^0.15.5":
+  version: 0.15.5
+  resolution: "bootstrap-vue-next@npm:0.15.5"
   dependencies:
     "@floating-ui/vue": ^1.0.2
     "@vueuse/core": ^10.6.0
   peerDependencies:
     vue: ^3.3.8
-  checksum: 5fc2e0a2ce9d40a93e139b780a4974d3e680f58e4784571beeb96810f07ed98600b4179a7a5c48492a056724bd89fd4796b756549fc7a1b6a64a51cd5b39f2d5
+  checksum: f2a631fe023426bd3b6179945f7267a55ec9647056304cb8056e8f5406f67461f634ebb755bcd7adff6f5e8750261605bc025592822a6f1e48088faf7ce7621c
   languageName: node
   linkType: hard
 
@@ -3251,7 +3251,7 @@ __metadata:
     "@vueuse/integrations": ^10.6.1
     axios: ^1.6.2
     bootstrap: ^5.3.2
-    bootstrap-vue-next: ^0.15.1
+    bootstrap-vue-next: ^0.15.5
     core-js: ^3.33.3
     cypress: ^13.6.0
     date-fns: ^2.30.0
