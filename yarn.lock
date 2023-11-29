@@ -1530,7 +1530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.10.0, acorn@npm:^8.9.0":
+"acorn@npm:^8.10.0, acorn@npm:^8.11.2, acorn@npm:^8.9.0":
   version: 8.11.2
   resolution: "acorn@npm:8.11.2"
   bin:
@@ -2938,7 +2938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.1, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.2":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -3146,7 +3146,7 @@ __metadata:
     sass: ^1.69.5
     sortablejs: ^1.15.0
     typescript: ~5.3.2
-    unplugin-auto-import: ^0.16.7
+    unplugin-auto-import: ^0.17.1
     unplugin-icons: ^0.17.4
     unplugin-vue-components: ^0.25.2
     vite: ^4.5.0
@@ -5014,10 +5014,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scule@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "scule@npm:1.0.0"
-  checksum: 57f745022ef391868c6adfc77cd8bf1e8a10096cb4e7ba7bbb04f57fab5651804b419da9435692cd012abf1fd020f4b3f823385536f4ddc7247ea725488451c4
+"scule@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "scule@npm:1.1.0"
+  checksum: 3a3393f97255a0ea5e2a8cf2eef19a13078b23c77a0d30beef2a52a4a3fd73ee40906a6f0f8deee1e026e6360da6a55757379a2552008c7c3c99a52c772caa81
   languageName: node
   linkType: hard
 
@@ -5515,9 +5515,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^3.4.0":
-  version: 3.5.0
-  resolution: "unimport@npm:3.5.0"
+"unimport@npm:^3.5.0":
+  version: 3.6.0
+  resolution: "unimport@npm:3.6.0"
   dependencies:
     "@rollup/pluginutils": ^5.0.5
     escape-string-regexp: ^5.0.0
@@ -5527,10 +5527,10 @@ __metadata:
     mlly: ^1.4.2
     pathe: ^1.1.1
     pkg-types: ^1.0.3
-    scule: ^1.0.0
+    scule: ^1.1.0
     strip-literal: ^1.3.0
-    unplugin: ^1.5.0
-  checksum: fa9470f0ff7e0f12e529a3dfadf78fb8b47e57edcba110f8c84364568b1394c23f908b0384b3c7fc4bbd14c4532c869632d884c9178e934c82915dc9b3e0306f
+    unplugin: ^1.5.1
+  checksum: f5c2d64f6e600ab2afbe5dbc2482ea41ff31df0b3915518a67a7d4090a9dc73eb540b7d9f894229110d5d779205ab47c6fc0df98a0a3882939dbf787b2274416
   languageName: node
   linkType: hard
 
@@ -5566,18 +5566,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:^0.16.7":
-  version: 0.16.7
-  resolution: "unplugin-auto-import@npm:0.16.7"
+"unplugin-auto-import@npm:^0.17.1":
+  version: 0.17.1
+  resolution: "unplugin-auto-import@npm:0.17.1"
   dependencies:
     "@antfu/utils": ^0.7.6
     "@rollup/pluginutils": ^5.0.5
-    fast-glob: ^3.3.1
+    fast-glob: ^3.3.2
     local-pkg: ^0.5.0
     magic-string: ^0.30.5
     minimatch: ^9.0.3
-    unimport: ^3.4.0
-    unplugin: ^1.5.0
+    unimport: ^3.5.0
+    unplugin: ^1.5.1
   peerDependencies:
     "@nuxt/kit": ^3.2.2
     "@vueuse/core": "*"
@@ -5586,7 +5586,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 5597752953f27ae28415a2223bf3dc8cb8bca2f3cbe704e7a3de77d1b3a4626a3ce0c324fb8c11ea90fd2c7008846df95ddb06931ccf98a9da9f8416cfc615d1
+  checksum: 1813edc1994b244a5f98474d17616873dc5b31e4232fd8cea82c4073aae3d54cf1ebeb164ea7e15956d5396fb83e71f9340a981b1caf3d43da36f7596a0674c5
   languageName: node
   linkType: hard
 
@@ -5658,6 +5658,18 @@ __metadata:
     webpack-sources: ^3.2.3
     webpack-virtual-modules: ^0.5.0
   checksum: fd3675aef99098741c2f0c4a33726d88230b60962fe9ceeb665e5596eb65e540e1e2d7a6e09132d821093e3d6918296c64311f73a947a9374f1b826017d05f63
+  languageName: node
+  linkType: hard
+
+"unplugin@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "unplugin@npm:1.5.1"
+  dependencies:
+    acorn: ^8.11.2
+    chokidar: ^3.5.3
+    webpack-sources: ^3.2.3
+    webpack-virtual-modules: ^0.6.0
+  checksum: c93cb8526026986ac34d79d7ee8a7c4f8371272bccc5f7a3f64158eb9fa2e296eb65345bd97f60be8f075188fcb681843b1c039eb2002f9a4b400f74e2bbae19
   languageName: node
   linkType: hard
 
@@ -5986,6 +5998,13 @@ __metadata:
   version: 0.5.0
   resolution: "webpack-virtual-modules@npm:0.5.0"
   checksum: 22b59257b55c89d11ae295b588b683ee9fdf3aeb591bc7b6f88ac1d69cb63f4fcb507666ea986866dfae161a1fa534ad6fb4e2ea91bbcd0a6d454368d7d4c64b
+  languageName: node
+  linkType: hard
+
+"webpack-virtual-modules@npm:^0.6.0":
+  version: 0.6.1
+  resolution: "webpack-virtual-modules@npm:0.6.1"
+  checksum: 0cd993d7b00af0ed89eee96ed6dcb2307fa8dc38e37f34e78690088314976aa79a31cf146553c5e414cdc87222878c5e4979abeb0b00bf6dc9c6f018604a1310
   languageName: node
   linkType: hard
 
