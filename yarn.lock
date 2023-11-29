@@ -1519,7 +1519,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:^3.3.9":
+"@vue/runtime-dom@npm:3.3.9, @vue/runtime-dom@npm:^3.3.9":
   version: 3.3.9
   resolution: "@vue/runtime-dom@npm:3.3.9"
   dependencies:
@@ -1539,6 +1539,18 @@ __metadata:
   peerDependencies:
     vue: 3.3.8
   checksum: b0577acc10e3b108b4f631af6b9d349747ac49bcce2e3bac7b237bdeaa295effe8e8ac3547fa5d0dc51e8d419d7553a3cb50c07b21ea9df8c422ee0acd9fbcf9
+  languageName: node
+  linkType: hard
+
+"@vue/server-renderer@npm:3.3.9":
+  version: 3.3.9
+  resolution: "@vue/server-renderer@npm:3.3.9"
+  dependencies:
+    "@vue/compiler-ssr": 3.3.9
+    "@vue/shared": 3.3.9
+  peerDependencies:
+    vue: 3.3.9
+  checksum: 60ca35a06078327552faa9e9f0de53ba7a574b1fd601e22113a48904e6263592dd3d763ca83679f509089dc9861901fe55740a6b3a71f2e9d2e6393993995881
   languageName: node
   linkType: hard
 
@@ -3305,7 +3317,7 @@ __metadata:
     unplugin-vue-components: ^0.25.2
     vite: ^4.5.0
     vitest: ^0.34.6
-    vue: ^3.3.2
+    vue: ^3.3.9
     vue-class-component: ^7.2.5
     vue-demi: ^0.14.6
     vue-echarts: ^6.6.1
@@ -6123,7 +6135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.2.0, vue@npm:^3.3.2":
+"vue@npm:^3.2.0":
   version: 3.3.8
   resolution: "vue@npm:3.3.8"
   dependencies:
@@ -6138,6 +6150,24 @@ __metadata:
     typescript:
       optional: true
   checksum: 560c18aa37f3f2351de8245f7844611409e7b7cbaabaae0993bdacd6090bb5ca81d89366e324babfdc7063f2312de5b62b56fe8b4dadc586baef8e0968eb6e14
+  languageName: node
+  linkType: hard
+
+"vue@npm:^3.3.9":
+  version: 3.3.9
+  resolution: "vue@npm:3.3.9"
+  dependencies:
+    "@vue/compiler-dom": 3.3.9
+    "@vue/compiler-sfc": 3.3.9
+    "@vue/runtime-dom": 3.3.9
+    "@vue/server-renderer": 3.3.9
+    "@vue/shared": 3.3.9
+  peerDependencies:
+    typescript: "*"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 3a3748c4a899fd746b85877eb2028e3c5032081106b3e5dddd567fd68f5f7e4e9291ad929de1836397f1b0c83308c411a09a34e5c668a6a6f39e974e47303dd5
   languageName: node
   linkType: hard
 
