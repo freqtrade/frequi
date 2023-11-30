@@ -42,12 +42,12 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/open_trades',
-    component: () => import('@/views/TradesListView.vue'),
+    component: () => import('@/views/MobileTradesListView.vue'),
   },
 
   {
     path: '/trade_history',
-    component: () => import('@/views/TradesListView.vue'),
+    component: () => import('@/views/MobileTradesListView.vue'),
     props: { history: true },
   },
   {
