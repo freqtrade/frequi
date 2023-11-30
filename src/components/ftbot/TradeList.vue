@@ -127,9 +127,9 @@ const closedFields: TableField[] = [
   { key: 'close_timestamp', label: 'Close date' },
   { key: 'exit_reason', label: 'Close Reason' },
 ];
-const formatPriceWithDecimals = (price) => {
+function formatPriceWithDecimals(price) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
-};
+}
 const rows = computed(() => {
   return props.trades.length;
 });
@@ -178,15 +178,15 @@ onMounted(() => {
 });
 
 const feOrderType = ref<string | undefined>(undefined);
-const forceExitHandler = (item: Trade, ordertype: string | undefined = undefined) => {
+function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
   feTrade.value = item;
   confirmExitValue.value = ModalReasons.forceExit;
   confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
   removeTradeVisible.value = true;
   feOrderType.value = ordertype;
-};
+}
 
-const forceExitExecuter = () => {
+function forceExitExecuter() {
   if (confirmExitValue.value === ModalReasons.removeTrade) {
     const payload: MultiDeletePayload = {
       tradeid: String(feTrade.value.trade_id),
@@ -217,32 +217,32 @@ const forceExitExecuter = () => {
 
   feOrderType.value = undefined;
   removeTradeVisible.value = false;
-};
+}
 
-const removeTradeHandler = (item: Trade) => {
+function removeTradeHandler(item: Trade) {
   confirmExitText.value = `Really delete trade ${item.trade_id} (Pair ${item.pair})?`;
   confirmExitValue.value = ModalReasons.removeTrade;
   feTrade.value = item;
   removeTradeVisible.value = true;
-};
+}
 
-const forceExitPartialHandler = (item: Trade) => {
+function forceExitPartialHandler(item: Trade) {
   feTrade.value = item;
   forceExitVisible.value = true;
-};
+}
 
-const cancelOpenOrderHandler = (item: Trade) => {
+function cancelOpenOrderHandler(item: Trade) {
   confirmExitText.value = `Cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`;
   feTrade.value = item;
   confirmExitValue.value = ModalReasons.cancelOpenOrder;
   removeTradeVisible.value = true;
-};
+}
 
 function reloadTradeHandler(item: Trade) {
   botStore.reloadTradeMulti({ tradeid: String(item.trade_id), botId: item.botId });
 }
 
-const handleContextMenuEvent = (item, index, event) => {
+function handleContextMenuEvent(item, index, event) {
   // stop browser context menu from appearing
   if (!props.activeTrades) {
     return;
@@ -250,7 +250,7 @@ const handleContextMenuEvent = (item, index, event) => {
   event.preventDefault();
   // log the selected item to the console
   console.log(item);
-};
+}
 
 const onRowClicked = (item) => {
   if (props.multiBotView && botStore.selectedBot !== item.botId) {
