@@ -3,89 +3,100 @@
     <b-card header="FreqUI Settings">
       <div class="text-start d-flex flex-column gap-2">
         <p>UI Version: {{ settingsStore.uiVersion }}</p>
-        <b-form-group
-          description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
-        >
-          <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
-        </b-form-group>
-        <b-form-group description="Reset dynamic layouts to how they were.">
-          <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
-        </b-form-group>
-
-        <b-form-group
-          label="Show open trades in header"
-          description="Decide if open trades should be visualized"
-        >
-          <b-form-select
-            v-model="settingsStore.openTradesInTitle"
-            :options="openTradesOptions"
-          ></b-form-select>
-        </b-form-group>
-        <b-form-group
-          label="UTC Timezone"
-          description="Select timezone (we recommend UTC is recommended as exchanges usually work in UTC)"
-        >
-          <b-form-select
-            v-model="settingsStore.timezone"
-            :options="timezoneOptions"
-          ></b-form-select>
-        </b-form-group>
-        <b-form-group description="Keep background sync running while other bots are selected.">
-          <b-form-checkbox v-model="settingsStore.backgroundSync">Background sync</b-form-checkbox>
-        </b-form-group>
-        <b-form-group description="Use Heikin Ashi candles in your charts">
-          <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
-            >Use Heikin Ashi candles.</b-form-checkbox
+        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
+          <h4>UI settings</h4>
+          <b-form-group
+            description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
           >
-        </b-form-group>
-        <b-form-group description="Candle Color Preference">
-          <b-form-radio-group
-            id="settings-color-preference-radio-group"
-            v-model="colorStore.colorPreference"
-            name="color-preference-options"
-            @change="colorStore.updateProfitLossColor"
+            <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
+          </b-form-group>
+          <b-form-group description="Reset dynamic layouts to how they were.">
+            <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
+          </b-form-group>
+          <b-form-group
+            label="Show open trades in header"
+            description="Decide if open trades should be visualized"
           >
-            <b-form-radio
-              v-for="option in colorPreferenceOptions"
-              :key="option.value"
-              :value="option.value"
+            <b-form-select
+              v-model="settingsStore.openTradesInTitle"
+              :options="openTradesOptions"
+            ></b-form-select>
+          </b-form-group>
+          <b-form-group
+            label="UTC Timezone"
+            description="Select timezone (we recommend UTC is recommended as exchanges usually work in UTC)"
+          >
+            <b-form-select
+              v-model="settingsStore.timezone"
+              :options="timezoneOptions"
+            ></b-form-select>
+          </b-form-group>
+          <b-form-group description="Keep background sync running while other bots are selected.">
+            <b-form-checkbox v-model="settingsStore.backgroundSync"
+              >Background sync</b-form-checkbox
             >
-              <div class="d-flex">
-                <span class="me-2">{{ option.text }}</span>
-                <i-mdi-arrow-up-thin
-                  :color="
-                    option.value === ColorPreferences.GREEN_UP
-                      ? colorStore.colorProfit
-                      : colorStore.colorLoss
-                  "
-                  class="color-candle-arrows"
-                />
-                <i-mdi-arrow-down-thin
-                  :color="
-                    option.value === ColorPreferences.GREEN_UP
-                      ? colorStore.colorLoss
-                      : colorStore.colorProfit
-                  "
-                  class="color-candle-arrows"
-                />
-              </div>
-            </b-form-radio>
-          </b-form-radio-group>
-        </b-form-group>
-        <b-form-group description="Notifications">
-          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
-            >Entry notifications</b-form-checkbox
-          >
-          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]"
-            >Exit notifications</b-form-checkbox
-          >
-          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]"
-            >Entry Cancel notifications</b-form-checkbox
-          >
-          <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]"
-            >Exit Cancel notifications</b-form-checkbox
-          >
-        </b-form-group>
+          </b-form-group>
+        </div>
+
+        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
+          <h4>Candle settings</h4>
+          <b-form-group description="Use Heikin Ashi candles in your charts">
+            <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
+              >Use Heikin Ashi candles.</b-form-checkbox
+            >
+          </b-form-group>
+          <b-form-group description="Candle Color Preference">
+            <b-form-radio-group
+              id="settings-color-preference-radio-group"
+              v-model="colorStore.colorPreference"
+              name="color-preference-options"
+              @change="colorStore.updateProfitLossColor"
+            >
+              <b-form-radio
+                v-for="option in colorPreferenceOptions"
+                :key="option.value"
+                :value="option.value"
+              >
+                <div class="d-flex">
+                  <span class="me-2">{{ option.text }}</span>
+                  <i-mdi-arrow-up-thin
+                    :color="
+                      option.value === ColorPreferences.GREEN_UP
+                        ? colorStore.colorProfit
+                        : colorStore.colorLoss
+                    "
+                    class="color-candle-arrows"
+                  />
+                  <i-mdi-arrow-down-thin
+                    :color="
+                      option.value === ColorPreferences.GREEN_UP
+                        ? colorStore.colorLoss
+                        : colorStore.colorProfit
+                    "
+                    class="color-candle-arrows"
+                  />
+                </div>
+              </b-form-radio>
+            </b-form-radio-group>
+          </b-form-group>
+        </div>
+        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
+          <b-form-group description="Notifications">
+            <h4>Notification Settings</h4>
+            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
+              >Entry notifications</b-form-checkbox
+            >
+            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]"
+              >Exit notifications</b-form-checkbox
+            >
+            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]"
+              >Entry Cancel notifications</b-form-checkbox
+            >
+            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]"
+              >Exit Cancel notifications</b-form-checkbox
+            >
+          </b-form-group>
+        </div>
       </div>
     </b-card>
   </div>
