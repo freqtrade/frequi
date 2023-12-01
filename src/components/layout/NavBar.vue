@@ -38,6 +38,15 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ms-auto" menu-class="w-100">
           <!-- TODO This should show outside of the dropdown in XS mode -->
+          <div
+            v-if="!settingsStore.confirmDialog"
+            class="my-auto me-5"
+            title="Confirm dialog deactivated, Forced exits will be executed immediately. Be careful."
+            style="color: yellow"
+          >
+            <i-mdi-run-fast />
+            <i-mdi-alert />
+          </div>
           <div class="d-flex justify-content-between">
             <b-dropdown
               v-if="botStore.botCount > 1"
@@ -53,7 +62,7 @@
               </template>
               <BotList :small="true" />
             </b-dropdown>
-            <ReloadControl class="me-3" />
+            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <li
             class="d-none d-sm-flex flex-sm-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
