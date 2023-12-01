@@ -111,6 +111,7 @@ const props = defineProps({
 });
 const botStore = useBotStore();
 const router = useRouter();
+const settingsStore = useSettingsStore();
 const currentPage = ref(1);
 const selectedItemIndex = ref();
 const filterText = ref('');
@@ -182,8 +183,12 @@ function forceExitHandler(item: Trade, ordertype: string | undefined = undefined
   feTrade.value = item;
   confirmExitValue.value = ModalReasons.forceExit;
   confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
-  removeTradeVisible.value = true;
   feOrderType.value = ordertype;
+  if (settingsStore.confirmDialog === true) {
+    removeTradeVisible.value = true;
+  } else {
+    forceExitExecuter();
+  }
 }
 
 function forceExitExecuter() {

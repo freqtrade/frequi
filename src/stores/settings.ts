@@ -32,6 +32,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       useHeikinAshiCandles: false,
       notifications: notificationDefaults,
       profitDistributionBins: 20,
+      confirmDialog: true,
     };
   },
   getters: {

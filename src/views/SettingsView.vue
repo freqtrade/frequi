@@ -36,6 +36,11 @@
               >Background sync</b-form-checkbox
             >
           </b-form-group>
+          <b-form-group description="Use confirmation dialogs when force-exiting a trade.">
+            <b-form-checkbox v-model="settingsStore.confirmDialog"
+              >Show Confirm Dialog for Trade Exits</b-form-checkbox
+            >
+          </b-form-group>
         </div>
 
         <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
