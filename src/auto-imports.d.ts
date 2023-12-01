@@ -8,6 +8,7 @@ declare global {
   const ColorPreferences: typeof import('./stores/colors')['ColorPreferences']
   const DashboardLayout: typeof import('./stores/layout')['DashboardLayout']
   const EffectScope: typeof import('vue')['EffectScope']
+  const KeyCode: typeof import('./composables/inputListener')['KeyCode']
   const OpenTradeVizOptions: typeof import('./stores/settings')['OpenTradeVizOptions']
   const TradeLayout: typeof import('./stores/layout')['TradeLayout']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
@@ -186,6 +187,7 @@ declare global {
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
   const useInfiniteScroll: typeof import('@vueuse/core')['useInfiniteScroll']
+  const useInputListener: typeof import('./composables/inputListener')['useInputListener']
   const useIntersectionObserver: typeof import('@vueuse/core')['useIntersectionObserver']
   const useInterval: typeof import('@vueuse/core')['useInterval']
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
@@ -215,6 +217,7 @@ declare global {
   const usePairlistConfigStore: typeof import('./stores/pairlistConfig')['usePairlistConfigStore']
   const useParallax: typeof import('@vueuse/core')['useParallax']
   const useParentElement: typeof import('@vueuse/core')['useParentElement']
+  const usePercentageTool: typeof import('./composables/percentageTool')['usePercentageTool']
   const usePerformanceObserver: typeof import('@vueuse/core')['usePerformanceObserver']
   const usePermission: typeof import('@vueuse/core')['usePermission']
   const usePlotConfigStore: typeof import('./stores/plotConfig')['usePlotConfigStore']
@@ -302,6 +305,7 @@ declare global {
 declare global {
   // @ts-ignore
   export type { Component, ComponentPublicInstance, ComputedRef, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, VNode, WritableComputedRef } from 'vue'
+  import('vue')
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'
@@ -310,6 +314,7 @@ declare module 'vue' {
     readonly ColorPreferences: UnwrapRef<typeof import('./stores/colors')['ColorPreferences']>
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly KeyCode: UnwrapRef<typeof import('./composables/inputListener')['KeyCode']>
     readonly OpenTradeVizOptions: UnwrapRef<typeof import('./stores/settings')['OpenTradeVizOptions']>
     readonly TradeLayout: UnwrapRef<typeof import('./stores/layout')['TradeLayout']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -488,6 +493,7 @@ declare module 'vue' {
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
     readonly useInfiniteScroll: UnwrapRef<typeof import('@vueuse/core')['useInfiniteScroll']>
+    readonly useInputListener: UnwrapRef<typeof import('./composables/inputListener')['useInputListener']>
     readonly useIntersectionObserver: UnwrapRef<typeof import('@vueuse/core')['useIntersectionObserver']>
     readonly useInterval: UnwrapRef<typeof import('@vueuse/core')['useInterval']>
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
@@ -517,6 +523,7 @@ declare module 'vue' {
     readonly usePairlistConfigStore: UnwrapRef<typeof import('./stores/pairlistConfig')['usePairlistConfigStore']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePercentageTool: UnwrapRef<typeof import('./composables/percentageTool')['usePercentageTool']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
@@ -606,6 +613,7 @@ declare module '@vue/runtime-core' {
     readonly ColorPreferences: UnwrapRef<typeof import('./stores/colors')['ColorPreferences']>
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly KeyCode: UnwrapRef<typeof import('./composables/inputListener')['KeyCode']>
     readonly OpenTradeVizOptions: UnwrapRef<typeof import('./stores/settings')['OpenTradeVizOptions']>
     readonly TradeLayout: UnwrapRef<typeof import('./stores/layout')['TradeLayout']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -784,6 +792,7 @@ declare module '@vue/runtime-core' {
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
     readonly useInfiniteScroll: UnwrapRef<typeof import('@vueuse/core')['useInfiniteScroll']>
+    readonly useInputListener: UnwrapRef<typeof import('./composables/inputListener')['useInputListener']>
     readonly useIntersectionObserver: UnwrapRef<typeof import('@vueuse/core')['useIntersectionObserver']>
     readonly useInterval: UnwrapRef<typeof import('@vueuse/core')['useInterval']>
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
@@ -813,6 +822,7 @@ declare module '@vue/runtime-core' {
     readonly usePairlistConfigStore: UnwrapRef<typeof import('./stores/pairlistConfig')['usePairlistConfigStore']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePercentageTool: UnwrapRef<typeof import('./composables/percentageTool')['usePercentageTool']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
