@@ -40,6 +40,7 @@ import {
   // MarkAreaComponent,
   MarkLineComponent,
   // MarkPointComponent,
+  GraphicComponent,
 } from 'echarts/components';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -66,6 +67,7 @@ use([
   LineChart,
   ScatterChart,
   CanvasRenderer,
+  GraphicComponent,
 ]);
 
 // Chart default options

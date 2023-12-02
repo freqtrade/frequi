@@ -1,10 +1,6 @@
-import { use } from 'echarts/core';
 import { ElementEvent } from 'echarts';
 import { useInputListener } from './inputListener';
 import { roundTimeframe } from '@/shared/timemath';
-import { GraphicComponent } from 'echarts/components';
-
-use([GraphicComponent]);
 
 export function usePercentageTool(chartRef, theme: string, timeframe_ms: number) {
   const inputListener = useInputListener();
