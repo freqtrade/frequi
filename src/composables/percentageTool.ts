@@ -1,11 +1,12 @@
 import { use } from 'echarts/core';
 import { ElementEvent } from 'echarts';
 import { useInputListener } from './inputListener';
+import { roundTimeframe } from '@/shared/timemath';
 import { GraphicComponent } from 'echarts/components';
 
 use([GraphicComponent]);
 
-export function usePercentageTool(chartRef, theme: string) {
+export function usePercentageTool(chartRef, theme: string, timeframe_ms: number) {
   const inputListener = useInputListener();
 
   const color = theme === 'dark' ? 'white' : 'black';
@@ -56,10 +57,16 @@ export function usePercentageTool(chartRef, theme: string) {
   }
 
   function draw(x: number, y: number) {
-    const startPrice = Number(
-      chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [startPos.value.x, startPos.value.y])[1],
-    );
-    const endPrice = Number(chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [x, y])[1]);
+    const startValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [
+      startPos.value.x,
+      startPos.value.y,
+    ]);
+    const endValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [x, y]);
+    const startPrice = Number(startValues[1]);
+    const endPrice = Number(endValues[1]);
+    const startTime = roundTimeframe(timeframe_ms, Number(startValues[0]));
+    const endTime = roundTimeframe(timeframe_ms, Number(endValues[0]));
+    const timeDiff = Math.abs(startTime - endTime) / timeframe_ms;
     const pct = Math.abs(((startPrice - endPrice) / startPrice) * 100).toFixed(2);
 
     chartRef.value?.setOption({
@@ -74,8 +81,8 @@ export function usePercentageTool(chartRef, theme: string) {
           style: {
             x: x,
             y: y - 20,
-            text: (startPrice < endPrice ? pct : '-' + pct) + '%',
-            font: '16px sans-serif',
+            text: `${timeDiff} Candles -  ${startPrice < endPrice ? pct : '-' + pct}%`,
+            font: '14px sans-serif',
             fill: color,
           },
         },

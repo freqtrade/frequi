@@ -133,7 +133,7 @@ const diffCols = computed(() => {
   return getDiffColumnsFromPlotConfig(props.plotConfig);
 });
 
-usePercentageTool(candleChart, props.theme);
+usePercentageTool(candleChart, props.theme, props.dataset.timeframe_ms);
 
 function updateChart(initial = false) {
   if (!hasData.value) {
