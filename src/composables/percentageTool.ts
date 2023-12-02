@@ -5,8 +5,10 @@ import { GraphicComponent } from 'echarts/components';
 
 use([GraphicComponent]);
 
-export function usePercentageTool(chartRef: Ref) {
+export function usePercentageTool(chartRef, theme: string) {
   const inputListener = useInputListener();
+
+  const color = theme === 'dark' ? 'white' : 'black';
 
   const mousePos = ref({ x: 0, y: 0 });
   const startPos = ref({ x: 0, y: 0 });
@@ -37,7 +39,7 @@ export function usePercentageTool(chartRef: Ref) {
             y2: mousePos.value.y,
           },
           style: {
-            stroke: 'white',
+            stroke: color,
           },
         },
         { type: 'text', z: 5 },
@@ -74,7 +76,7 @@ export function usePercentageTool(chartRef: Ref) {
             y: y - 20,
             text: (startPrice < endPrice ? pct : '-' + pct) + '%',
             font: '16px sans-serif',
-            fill: 'white',
+            fill: color,
           },
         },
       ],
