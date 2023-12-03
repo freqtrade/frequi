@@ -574,6 +574,12 @@ function initializeChartOptions() {
     yAxis: [
       {
         scale: true,
+        max: (value) => {
+          return value.max + (value.max - value.min) * 0.02;
+        },
+        min: (value) => {
+          return value.min - (value.max - value.min) * 0.04;
+        },
       },
       {
         scale: true,
