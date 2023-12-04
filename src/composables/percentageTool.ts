@@ -77,7 +77,7 @@ export function usePercentageTool(chartRef, theme: string, timeframe_ms: number)
           style: {
             x: x,
             y: y - 20,
-            text: `${timeDiff} Candles -  ${startPrice < endPrice ? pct : '-' + pct}%`,
+            text: `${timeDiff} bars -  ${startPrice < endPrice ? pct : '-' + pct}%`,
             font: '14px sans-serif',
             fill: color,
           },
