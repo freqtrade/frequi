@@ -66,7 +66,7 @@
     "unplugin-icons": "^0.17.4",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^5.0.5",
-    "vitest": "^0.34.6",
+    "vitest": "^1.0.1",
     "vue-tsc": "^1.8.25"
   },
   "packageManager": "yarn@3.6.1"
