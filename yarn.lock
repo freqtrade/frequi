@@ -22,6 +22,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@antfu/install-pkg@npm:^0.3.0":
+  version: 0.3.1
+  resolution: "@antfu/install-pkg@npm:0.3.1"
+  dependencies:
+    execa: ^8.0.1
+  checksum: c79d04599eae7c549cef94b4907b3a695bb953dca22816615fd36968eaa6d62394e71a1c7553d3bb46fd72c04f539819d95b10656049c809c67a09fa378dc1dd
+  languageName: node
+  linkType: hard
+
 "@antfu/utils@npm:^0.7.5, @antfu/utils@npm:^0.7.6":
   version: 0.7.6
   resolution: "@antfu/utils@npm:0.7.6"
@@ -423,9 +432,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/utils@npm:^2.1.11":
-  version: 2.1.11
-  resolution: "@iconify/utils@npm:2.1.11"
+"@iconify/utils@npm:^2.1.12":
+  version: 2.1.12
+  resolution: "@iconify/utils@npm:2.1.12"
   dependencies:
     "@antfu/install-pkg": ^0.1.1
     "@antfu/utils": ^0.7.5
@@ -433,7 +442,7 @@ __metadata:
     debug: ^4.3.4
     kolorist: ^1.8.0
     local-pkg: ^0.4.3
-  checksum: 229e886ba4f335f21d106cb3973728c8aecbd84ecce9d4ddd9bc10a9415ae9c419fe10bf9e7cfd6019e2acba9dde24023dd56ef943f1aa2115fedbc566b023f2
+  checksum: 5b307eb5f3407f9ff77b5bfe492e52ac6f0d645df76efdf333f12ccfb31514f224968ebc761c251f7be4a931511d5a147515ea721075d6c742e5d0ee6838fed6
   languageName: node
   linkType: hard
 
@@ -3480,7 +3489,7 @@ __metadata:
     sortablejs: ^1.15.0
     typescript: ~5.3.2
     unplugin-auto-import: ^0.17.2
-    unplugin-icons: ^0.17.4
+    unplugin-icons: ^0.18.1
     unplugin-vue-components: ^0.26.0
     vite: ^5.0.5
     vitest: ^1.0.1
@@ -4375,7 +4384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.1, magic-string@npm:^0.30.3, magic-string@npm:^0.30.5":
+"magic-string@npm:^0.30.3, magic-string@npm:^0.30.5":
   version: 0.30.5
   resolution: "magic-string@npm:0.30.5"
   dependencies:
@@ -5993,17 +6002,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-icons@npm:^0.17.4":
-  version: 0.17.4
-  resolution: "unplugin-icons@npm:0.17.4"
+"unplugin-icons@npm:^0.18.1":
+  version: 0.18.1
+  resolution: "unplugin-icons@npm:0.18.1"
   dependencies:
-    "@antfu/install-pkg": ^0.1.1
+    "@antfu/install-pkg": ^0.3.0
     "@antfu/utils": ^0.7.6
-    "@iconify/utils": ^2.1.11
+    "@iconify/utils": ^2.1.12
     debug: ^4.3.4
     kolorist: ^1.8.0
     local-pkg: ^0.5.0
-    unplugin: ^1.5.0
+    unplugin: ^1.5.1
   peerDependencies:
     "@svgr/core": ">=7.0.0"
     "@svgx/core": ^1.0.1
@@ -6021,7 +6030,7 @@ __metadata:
       optional: true
     vue-template-es2015-compiler:
       optional: true
-  checksum: bd1615ee2a8b85c46c45a57c6e39cd1b2c489d6161391768d8716369f50bc9b0a76e3a66277c2094b7c5a8080c4a9e367fe034981bd70fabf3d77e8d5b199dcc
+  checksum: 578f6e15599081e42ea548ed889194cb65d315a0e292eb057ff6dd5d98564643178b9c581d58afea15415c132493ff539d1d780b50ff414df7a4f017ffa10b8e
   languageName: node
   linkType: hard
 
@@ -6052,7 +6061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^1.4.0, unplugin@npm:^1.5.0":
+"unplugin@npm:^1.4.0":
   version: 1.5.0
   resolution: "unplugin@npm:1.5.0"
   dependencies:
