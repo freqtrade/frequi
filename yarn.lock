@@ -3761,7 +3761,7 @@ __metadata:
     vue: ^3.3.10
     vue-class-component: ^7.2.5
     vue-demi: ^0.14.6
-    vue-echarts: ^6.6.1
+    vue-echarts: ^6.6.2
     vue-router: ^4.2.5
     vue-select: ^4.0.0-beta.6
     vue-tsc: ^1.8.25
@@ -6598,9 +6598,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-echarts@npm:^6.6.1":
-  version: 6.6.1
-  resolution: "vue-echarts@npm:6.6.1"
+"vue-echarts@npm:^6.6.2":
+  version: 6.6.2
+  resolution: "vue-echarts@npm:6.6.2"
   dependencies:
     resize-detector: ^0.3.0
     vue-demi: ^0.13.11
@@ -6611,7 +6611,7 @@ __metadata:
   peerDependenciesMeta:
     "@vue/composition-api":
       optional: true
-  checksum: dd926ee3d547a6f30cea21816b994a3f834226ea37621f84bc395aad91b25f48f0005ed57c786c6ff42c758279046bbee9c8e99367683514353354aa75466678
+  checksum: 7b8d6af5c30a0f27b59a2cd9b37de48c7edff808fd5e59464a68a14f70aa98a394863bebe9f0bc8f17bf084e2b03e020a8ba3027fc08272545056f6d2ba87c80
   languageName: node
   linkType: hard
 
