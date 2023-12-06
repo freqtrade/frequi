@@ -54,7 +54,7 @@
     "@vue/runtime-dom": "^3.3.9",
     "@vue/test-utils": "^2.4.3",
     "cypress": "^13.6.0",
-    "eslint": "^8.54.0",
+    "eslint": "^8.55.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.18.1",
     "mutationobserver-shim": "^0.3.7",
