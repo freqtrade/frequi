@@ -43,7 +43,7 @@
   "devDependencies": {
     "@cypress/vite-dev-server": "^5.0.6",
     "@cypress/vue": "^6.0.0",
-    "@iconify-json/mdi": "^1.1.57",
+    "@iconify-json/mdi": "^1.1.58",
     "@types/echarts": "^4.9.22",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.2",

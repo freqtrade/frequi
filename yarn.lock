@@ -561,12 +561,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/mdi@npm:^1.1.57":
-  version: 1.1.57
-  resolution: "@iconify-json/mdi@npm:1.1.57"
+"@iconify-json/mdi@npm:^1.1.58":
+  version: 1.1.58
+  resolution: "@iconify-json/mdi@npm:1.1.58"
   dependencies:
     "@iconify/types": "*"
-  checksum: 398b25615f2627a6c0fa44616f7619958afc16365f933e294495107e45a825a8b2e67dcd6ca45877d2b04463749fc29dabe65ff37b10798729c8390adbec9564
+  checksum: 5bbc5cea5fbe2cba2245023f37cd6a69a2f8c6986b27bb661f6c1daba0452c8f3b2d1104814ceb499ac98bcb7f918f04c001b2334c951a65da3551946c5cd413
   languageName: node
   linkType: hard
 
@@ -3592,7 +3592,7 @@ __metadata:
   dependencies:
     "@cypress/vite-dev-server": ^5.0.6
     "@cypress/vue": ^6.0.0
-    "@iconify-json/mdi": ^1.1.57
+    "@iconify-json/mdi": ^1.1.58
     "@noction/vue-draggable-grid": 1.9.10
     "@popperjs/core": ^2.11.8
     "@types/echarts": ^4.9.22
