@@ -1645,19 +1645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:10.6.1, @vueuse/core@npm:^10.6.0":
-  version: 10.6.1
-  resolution: "@vueuse/core@npm:10.6.1"
-  dependencies:
-    "@types/web-bluetooth": ^0.0.20
-    "@vueuse/metadata": 10.6.1
-    "@vueuse/shared": 10.6.1
-    vue-demi: ">=0.14.6"
-  checksum: 13b892a32fbf99a32947f7a7ff8014525ca1ceb937663b0d6c5ef811eceb7857138c2c3710c2aa9d21dda7a1cdacb1f0faf9f6e38efefb03c2bae4997d13dcc4
-  languageName: node
-  linkType: hard
-
-"@vueuse/core@npm:^10.7.0":
+"@vueuse/core@npm:10.7.0, @vueuse/core@npm:^10.7.0":
   version: 10.7.0
   resolution: "@vueuse/core@npm:10.7.0"
   dependencies:
@@ -1669,12 +1657,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/integrations@npm:^10.6.1":
+"@vueuse/core@npm:^10.6.0":
   version: 10.6.1
-  resolution: "@vueuse/integrations@npm:10.6.1"
+  resolution: "@vueuse/core@npm:10.6.1"
   dependencies:
-    "@vueuse/core": 10.6.1
+    "@types/web-bluetooth": ^0.0.20
+    "@vueuse/metadata": 10.6.1
     "@vueuse/shared": 10.6.1
+    vue-demi: ">=0.14.6"
+  checksum: 13b892a32fbf99a32947f7a7ff8014525ca1ceb937663b0d6c5ef811eceb7857138c2c3710c2aa9d21dda7a1cdacb1f0faf9f6e38efefb03c2bae4997d13dcc4
+  languageName: node
+  linkType: hard
+
+"@vueuse/integrations@npm:^10.7.0":
+  version: 10.7.0
+  resolution: "@vueuse/integrations@npm:10.7.0"
+  dependencies:
+    "@vueuse/core": 10.7.0
+    "@vueuse/shared": 10.7.0
     vue-demi: ">=0.14.6"
   peerDependencies:
     async-validator: "*"
@@ -1714,7 +1714,7 @@ __metadata:
       optional: true
     universal-cookie:
       optional: true
-  checksum: 214b3e9225889ffb8feff388f1dc787f01f563d16fe394d41c7793a7a601b7c499e0dd9b124f08afe381ccbb5136fa38f45c26e0140bda7d5694754a7af0c62c
+  checksum: 355dc902e01e1a172023fc11416cd557b7b28d73392554fb2e847dc13658aade0177b331b7226cf9f4e36f3848045c2fb2cb24c5508fe6d4ba338b2b515330aa
   languageName: node
   linkType: hard
 
@@ -3384,7 +3384,7 @@ __metadata:
     "@vue/test-utils": ^2.4.3
     "@vuepic/vue-datepicker": ^7.3.0
     "@vueuse/core": ^10.7.0
-    "@vueuse/integrations": ^10.6.1
+    "@vueuse/integrations": ^10.7.0
     axios: ^1.6.2
     bootstrap: ^5.3.2
     bootstrap-vue-next: ^0.15.5
