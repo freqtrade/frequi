@@ -937,6 +937,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/pluginutils@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "@rollup/pluginutils@npm:5.1.0"
+  dependencies:
+    "@types/estree": ^1.0.0
+    estree-walker: ^2.0.2
+    picomatch: ^2.3.1
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 3cc5a6d91452a6eabbfd1ae79b4dd1f1e809d2eecda6e175deb784e75b0911f47e9ecce73f8dd315d6a8b3f362582c91d3c0f66908b6ced69345b3cbe28f8ce8
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.6.0":
   version: 4.6.0
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.6.0"
@@ -3583,7 +3599,7 @@ __metadata:
     sass: ^1.69.5
     sortablejs: ^1.15.0
     typescript: ~5.3.2
-    unplugin-auto-import: ^0.17.1
+    unplugin-auto-import: ^0.17.2
     unplugin-icons: ^0.17.4
     unplugin-vue-components: ^0.25.2
     vite: ^5.0.5
@@ -6013,7 +6029,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^3.5.0":
+"unimport@npm:^3.6.0":
   version: 3.6.0
   resolution: "unimport@npm:3.6.0"
   dependencies:
@@ -6064,17 +6080,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:^0.17.1":
-  version: 0.17.1
-  resolution: "unplugin-auto-import@npm:0.17.1"
+"unplugin-auto-import@npm:^0.17.2":
+  version: 0.17.2
+  resolution: "unplugin-auto-import@npm:0.17.2"
   dependencies:
     "@antfu/utils": ^0.7.6
-    "@rollup/pluginutils": ^5.0.5
+    "@rollup/pluginutils": ^5.1.0
     fast-glob: ^3.3.2
     local-pkg: ^0.5.0
     magic-string: ^0.30.5
     minimatch: ^9.0.3
-    unimport: ^3.5.0
+    unimport: ^3.6.0
     unplugin: ^1.5.1
   peerDependencies:
     "@nuxt/kit": ^3.2.2
@@ -6084,7 +6100,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 1813edc1994b244a5f98474d17616873dc5b31e4232fd8cea82c4073aae3d54cf1ebeb164ea7e15956d5396fb83e71f9340a981b1caf3d43da36f7596a0674c5
+  checksum: ed7d3aba39ec11eb0bc94b35af2f53dc251dcdbdc3f4f0099b3e72026de7af36ee8287622bbcb7cac01c53fff48f82d757b9621bea271d3db9ff9e32cacb066b
   languageName: node
   linkType: hard
 
