@@ -314,7 +314,6 @@ declare module 'vue' {
     readonly ColorPreferences: UnwrapRef<typeof import('./stores/colors')['ColorPreferences']>
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly KeyCode: UnwrapRef<typeof import('./composables/inputListener')['KeyCode']>
     readonly OpenTradeVizOptions: UnwrapRef<typeof import('./stores/settings')['OpenTradeVizOptions']>
     readonly TradeLayout: UnwrapRef<typeof import('./stores/layout')['TradeLayout']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -493,7 +492,6 @@ declare module 'vue' {
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
     readonly useInfiniteScroll: UnwrapRef<typeof import('@vueuse/core')['useInfiniteScroll']>
-    readonly useInputListener: UnwrapRef<typeof import('./composables/inputListener')['useInputListener']>
     readonly useIntersectionObserver: UnwrapRef<typeof import('@vueuse/core')['useIntersectionObserver']>
     readonly useInterval: UnwrapRef<typeof import('@vueuse/core')['useInterval']>
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
@@ -613,7 +611,6 @@ declare module '@vue/runtime-core' {
     readonly ColorPreferences: UnwrapRef<typeof import('./stores/colors')['ColorPreferences']>
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly KeyCode: UnwrapRef<typeof import('./composables/inputListener')['KeyCode']>
     readonly OpenTradeVizOptions: UnwrapRef<typeof import('./stores/settings')['OpenTradeVizOptions']>
     readonly TradeLayout: UnwrapRef<typeof import('./stores/layout')['TradeLayout']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -792,7 +789,6 @@ declare module '@vue/runtime-core' {
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
     readonly useInfiniteScroll: UnwrapRef<typeof import('@vueuse/core')['useInfiniteScroll']>
-    readonly useInputListener: UnwrapRef<typeof import('./composables/inputListener')['useInputListener']>
     readonly useIntersectionObserver: UnwrapRef<typeof import('@vueuse/core')['useIntersectionObserver']>
     readonly useInterval: UnwrapRef<typeof import('@vueuse/core')['useInterval']>
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>

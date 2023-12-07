@@ -1,9 +1,8 @@
 import { ElementEvent } from 'echarts';
-import { useInputListener } from './inputListener';
 import { roundTimeframe } from '@/shared/timemath';
 
 export function usePercentageTool(chartRef, theme: string, timeframe_ms: number) {
-  const inputListener = useInputListener();
+  const inputListener = useKeyModifier('Shift', { events: ['mouseup'] });
 
   const color = theme === 'dark' ? 'white' : 'black';
 
@@ -92,9 +91,10 @@ export function usePercentageTool(chartRef, theme: string, timeframe_ms: number)
   }
 
   watch(
-    () => inputListener.isAnyPressed.value,
+    () => inputListener.value,
     () => {
-      if (inputListener.isKeyPressed(KeyCode.SHIFT_LEFT)) {
+      console.log(inputListener.value);
+      if (inputListener.value) {
         drawStart();
       } else if (active.value) {
         drawEnd();
