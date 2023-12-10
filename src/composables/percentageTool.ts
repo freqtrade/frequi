@@ -44,7 +44,17 @@ export function usePercentageTool(chartRef, props) {
             stroke: color.value,
           },
         },
-        { type: 'text', z: 5 },
+        {
+          type: 'text',
+          z: 5,
+          style: {
+            x: startPos.value.x,
+            y: startPos.value.y - 20,
+            text: '0 bars - 0%',
+            font: '14px sans-serif',
+            fill: color.value,
+          },
+        },
       ],
     });
   }
