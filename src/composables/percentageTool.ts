@@ -33,15 +33,17 @@ export function usePercentageTool(chartRef, props) {
       dataZoom: [{ disabled: true }],
       graphic: [
         {
-          type: 'line',
+          type: 'rect',
           shape: {
-            x1: startPos.value.x,
-            x2: startPos.value.x,
-            y1: startPos.value.y,
-            y2: startPos.value.y,
+            x: startPos.value.x,
+            width: 0,
+            y: startPos.value.y,
+            height: 0,
           },
           style: {
-            stroke: color.value,
+            fill: color.value,
+            // color: color.value,
+            opacity: 0.4,
           },
         },
         {
@@ -84,8 +86,8 @@ export function usePercentageTool(chartRef, props) {
       graphic: [
         {
           shape: {
-            x2: x,
-            y2: y,
+            width: x > startPos.value.x ? -1 * (startPos.value.x - x) : x - startPos.value.x,
+            height: y > startPos.value.y ? -1 * (startPos.value.y - y) : y - startPos.value.y,
           },
         },
         {
