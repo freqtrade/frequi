@@ -1,5 +1,5 @@
 import { ElementEvent } from 'echarts';
-import { roundTimeframe } from '@/shared/timemath';
+import { ROUND_CLOSER, roundTimeframe } from '@/shared/timemath';
 
 export function usePercentageTool(chartRef, props) {
   const inputListener = useKeyModifier('Shift', { events: ['keydown', 'keyup'] });
@@ -11,13 +11,25 @@ export function usePercentageTool(chartRef, props) {
   const canDraw = ref(true);
   const active = ref(false);
 
+  function roundTF(timestamp: number) {
+    return roundTimeframe(props.dataset.timeframe_ms, timestamp, ROUND_CLOSER);
+  }
+
   function mouseMove(e: ElementEvent) {
     if (canDraw.value) draw(e.offsetX, e.offsetY);
   }
 
   function mouseDown(e: ElementEvent) {
     if (!active.value) {
-      startPos.value = { x: e.offsetX, y: e.offsetY };
+      const startValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [
+        e.offsetX,
+        e.offsetY,
+      ]);
+      startValues[0] = roundTF(Number(startValues[0]));
+      const startnew = chartRef.value?.convertToPixel({ seriesIndex: 0 }, startValues);
+
+      startPos.value = { x: startnew[0], y: startnew[1] };
+
       chartRef.value?.chart.getZr().on('mousemove', mouseMove);
       drawStart();
     } else {
@@ -77,22 +89,24 @@ export function usePercentageTool(chartRef, props) {
     const endValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [x, y]);
     const startPrice = Number(startValues[1]);
     const endPrice = Number(endValues[1]);
-    const startTime = roundTimeframe(props.dataset.timeframe_ms, Number(startValues[0]));
-    const endTime = roundTimeframe(props.dataset.timeframe_ms, Number(endValues[0]));
+    const startTime = roundTF(Number(startValues[0]));
+    const endTime = roundTF(Number(endValues[0]));
     const timeDiff = Math.abs(startTime - endTime) / props.dataset.timeframe_ms;
+    const xr = chartRef.value?.convertToPixel({ seriesIndex: 0 }, [endTime, 0])[0];
+
     const pct = Math.abs(((startPrice - endPrice) / startPrice) * 100).toFixed(2);
 
     chartRef.value?.setOption({
       graphic: [
         {
           shape: {
-            width: x > startPos.value.x ? -1 * (startPos.value.x - x) : x - startPos.value.x,
+            width: xr > startPos.value.x ? -1 * (startPos.value.x - xr) : xr - startPos.value.x,
             height: y > startPos.value.y ? -1 * (startPos.value.y - y) : y - startPos.value.y,
           },
         },
         {
           style: {
-            x: x,
+            x: xr,
             y: y - 20,
             text: `${timeDiff} bars -  ${startPrice < endPrice ? pct : '-' + pct}%`,
             font: '14px sans-serif',
