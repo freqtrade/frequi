@@ -94,7 +94,7 @@ export function usePercentageTool(chartRef, props) {
     const endTime = roundTF(Number(endValues[0]));
     const timeDiff = Math.abs(startTime - endTime);
     const xr = chartRef.value?.convertToPixel({ seriesIndex: 0 }, [endTime, 0])[0];
-    const timeElapsed = humanizeDuration(timeDiff);
+    const timeElapsed = humanizeDuration(timeDiff, { units: ['d', 'h', 'm'] });
     const pct = Math.abs(((startPrice - endPrice) / startPrice) * 100).toFixed(2);
 
     chartRef.value?.setOption({
