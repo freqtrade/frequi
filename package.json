@@ -45,7 +45,7 @@
     "@cypress/vue": "^6.0.0",
     "@iconify-json/mdi": "^1.1.58",
     "@types/echarts": "^4.9.22",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.13.2",
     "@vitejs/plugin-vue": "^4.5.1",
     "@vue/compiler-sfc": "3.3.11",
