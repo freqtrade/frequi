@@ -106,9 +106,10 @@ export function usePercentageTool(chartRef, props) {
         },
         {
           style: {
-            x: xr,
-            y: y - 20,
-            text: `${timeDiff} bars -  ${startPrice < endPrice ? pct : '-' + pct}%`,
+            x: startPos.value.x + (xr - startPos.value.x) / 2,
+            y: y < startPos.value.y ? y - 18 : y + 9,
+            textAlign: 'center',
+            text: `${timeDiff} bars (${startPrice < endPrice ? pct : '-' + pct}%)`,
             font: '14px sans-serif',
             fill: color.value,
           },
