@@ -1,5 +1,6 @@
 import { ElementEvent } from 'echarts';
 import { ROUND_CLOSER, roundTimeframe } from '@/shared/timemath';
+import humanizeDuration from 'humanize-duration';
 
 export function usePercentageTool(chartRef, props) {
   const inputListener = useKeyModifier('Shift', { events: ['keydown', 'keyup'] });
@@ -13,15 +14,6 @@ export function usePercentageTool(chartRef, props) {
 
   function roundTF(timestamp: number) {
     return roundTimeframe(props.dataset.timeframe_ms, timestamp, ROUND_CLOSER);
-  }
-
-  function formatTimeElapsed(ms: number) {
-    const minutes = Math.floor((ms / 1000 / 60) % 60);
-    const hours = Math.floor((ms / 1000 / 3600) % 24);
-    const days = Math.floor((ms / 1000 / 3600 / 24) % 365);
-    return `${days > 0 ? days + 'd ' : ''}${hours > 0 ? hours + 'h ' : ''}${
-      minutes > 0 ? minutes + 'm ' : ''
-    }`;
   }
 
   function mouseMove(e: ElementEvent) {
@@ -102,7 +94,7 @@ export function usePercentageTool(chartRef, props) {
     const endTime = roundTF(Number(endValues[0]));
     const timeDiff = Math.abs(startTime - endTime);
     const xr = chartRef.value?.convertToPixel({ seriesIndex: 0 }, [endTime, 0])[0];
-    const timeElapsed = formatTimeElapsed(timeDiff);
+    const timeElapsed = humanizeDuration(timeDiff);
     const pct = Math.abs(((startPrice - endPrice) / startPrice) * 100).toFixed(2);
 
     chartRef.value?.setOption({
