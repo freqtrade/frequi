@@ -1345,6 +1345,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compiler-core@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/compiler-core@npm:3.3.11"
+  dependencies:
+    "@babel/parser": ^7.23.5
+    "@vue/shared": 3.3.11
+    estree-walker: ^2.0.2
+    source-map-js: ^1.0.2
+  checksum: 30bc962fd30fe20082ad935579968acd9d7d32bdfab78a2136061e3d8488dabd6fc838b392758470a6205223f56d0d6f70b1bd025f8f668f7b13d0f9e06981b5
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-core@npm:3.3.8":
   version: 3.3.8
   resolution: "@vue/compiler-core@npm:3.3.8"
@@ -1364,6 +1376,16 @@ __metadata:
     "@vue/compiler-core": 3.3.10
     "@vue/shared": 3.3.10
   checksum: 5b672307ea5da10b827958f3a0aee55478b08ca5a9d552c23bb02bbccd333e558cb0675eaa0275435e623433da3fa1f6c59adca03b463dd5d79cbe129d50b064
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-dom@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/compiler-dom@npm:3.3.11"
+  dependencies:
+    "@vue/compiler-core": 3.3.11
+    "@vue/shared": 3.3.11
+  checksum: 0a3b8267f0ff208425e6e8db371935a2948f9c24e436d8d7f52f2c873c729112e8c78cbba7b9aa3568597d306f8dfdc13fdec71736b4bd65ebdcadbc4976b0e1
   languageName: node
   linkType: hard
 
@@ -1395,6 +1417,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compiler-sfc@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/compiler-sfc@npm:3.3.11"
+  dependencies:
+    "@babel/parser": ^7.23.5
+    "@vue/compiler-core": 3.3.11
+    "@vue/compiler-dom": 3.3.11
+    "@vue/compiler-ssr": 3.3.11
+    "@vue/reactivity-transform": 3.3.11
+    "@vue/shared": 3.3.11
+    estree-walker: ^2.0.2
+    magic-string: ^0.30.5
+    postcss: ^8.4.32
+    source-map-js: ^1.0.2
+  checksum: 9b588c2de5ee31ccc5ee8d44fe50f2b9c7ecc9d93f45ffd94cf57de3546d8113a5cf822a3d9ad54594385991dce2a7ba6acc288cba10fc56a8b638e679c4b921
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-sfc@npm:3.3.8":
   version: 3.3.8
   resolution: "@vue/compiler-sfc@npm:3.3.8"
@@ -1420,6 +1460,16 @@ __metadata:
     "@vue/compiler-dom": 3.3.10
     "@vue/shared": 3.3.10
   checksum: 8fba20decde9d6ba86a1167aabe4cf4d47bd688ae84b1e9160e4d60905067725e918a79e255a82d1946f466dee738860969e2f6be7e89b7fa9de99b5bff7c544
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-ssr@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/compiler-ssr@npm:3.3.11"
+  dependencies:
+    "@vue/compiler-dom": 3.3.11
+    "@vue/shared": 3.3.11
+  checksum: 047c239b873b0670fdfab101d646d2449f5dad96d6a2e724e28c696e33515bf310d806ec7d3147a7e6ad2d9cd648baa7ebaf821a3fb767f5e7d4dfbcc93d2178
   languageName: node
   linkType: hard
 
@@ -1503,6 +1553,19 @@ __metadata:
     estree-walker: ^2.0.2
     magic-string: ^0.30.5
   checksum: cf721e9799576dc2d0d0857e129af45fdd14b712a990bfcdd77c6b1515f6e5777d69e5cafa6411042d4dd5c9b0395cd07796439ad24ba532262d61857cb3fb56
+  languageName: node
+  linkType: hard
+
+"@vue/reactivity-transform@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/reactivity-transform@npm:3.3.11"
+  dependencies:
+    "@babel/parser": ^7.23.5
+    "@vue/compiler-core": 3.3.11
+    "@vue/shared": 3.3.11
+    estree-walker: ^2.0.2
+    magic-string: ^0.30.5
+  checksum: bf40f9173b627cca0bac89f15f4760b9ffc6d579fab22cec8828e36943058f8d5b864414a3269f2d8af2c8133daeacbca2b8b509306f6ae607e571a8f09b50a3
   languageName: node
   linkType: hard
 
@@ -1607,6 +1670,13 @@ __metadata:
   version: 3.3.10
   resolution: "@vue/shared@npm:3.3.10"
   checksum: 6cfb930290c10b810aea18730d8754ff967e804fa04f8e47884c15a2121c24923cb9ab8244ae75ad448bf835e44093b2daf8d294555b9bb1901fefce681d228c
+  languageName: node
+  linkType: hard
+
+"@vue/shared@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/shared@npm:3.3.11"
+  checksum: 1b98f5280f6a3fb0dfe6dfa4fc6589633208f1ad84f435ecca2f936bbabce60a21c25b0ff1fc48628dc9bfd9148a798991011d2053cad532c30931728fbeeb69
   languageName: node
   linkType: hard
 
@@ -3377,7 +3447,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.13.2
     "@typescript-eslint/parser": ^6.13.2
     "@vitejs/plugin-vue": ^4.5.1
-    "@vue/compiler-sfc": 3.3.10
+    "@vue/compiler-sfc": 3.3.11
     "@vue/eslint-config-prettier": ^8.0.0
     "@vue/eslint-config-typescript": ^12.0.0
     "@vue/runtime-dom": ^3.3.10
