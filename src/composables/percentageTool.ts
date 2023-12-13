@@ -15,6 +15,15 @@ export function usePercentageTool(chartRef, props) {
     return roundTimeframe(props.dataset.timeframe_ms, timestamp, ROUND_CLOSER);
   }
 
+  function formatTimeElapsed(ms: number) {
+    const minutes = Math.floor((ms / 1000 / 60) % 60);
+    const hours = Math.floor((ms / 1000 / 3600) % 24);
+    const days = Math.floor((ms / 1000 / 3600 / 24) % 365);
+    return `${days > 0 ? days + 'd ' : ''}${hours > 0 ? hours + 'h ' : ''}${
+      minutes > 0 ? minutes + 'm ' : ''
+    }`;
+  }
+
   function mouseMove(e: ElementEvent) {
     if (canDraw.value) draw(e.offsetX, e.offsetY);
   }
@@ -91,9 +100,9 @@ export function usePercentageTool(chartRef, props) {
     const endPrice = Number(endValues[1]);
     const startTime = roundTF(Number(startValues[0]));
     const endTime = roundTF(Number(endValues[0]));
-    const timeDiff = Math.abs(startTime - endTime) / props.dataset.timeframe_ms;
+    const timeDiff = Math.abs(startTime - endTime);
     const xr = chartRef.value?.convertToPixel({ seriesIndex: 0 }, [endTime, 0])[0];
-
+    const timeElapsed = formatTimeElapsed(timeDiff);
     const pct = Math.abs(((startPrice - endPrice) / startPrice) * 100).toFixed(2);
 
     chartRef.value?.setOption({
@@ -107,9 +116,11 @@ export function usePercentageTool(chartRef, props) {
         {
           style: {
             x: startPos.value.x + (xr - startPos.value.x) / 2,
-            y: y < startPos.value.y ? y - 18 : y + 9,
+            y: y < startPos.value.y ? y - 30 : y + 9,
             textAlign: 'center',
-            text: `${timeDiff} bars (${startPrice < endPrice ? pct : '-' + pct}%)`,
+            text: `${timeDiff / props.dataset.timeframe_ms} bars (${
+              startPrice < endPrice ? pct : '-' + pct
+            }%) \n ${timeElapsed}`,
             font: '14px sans-serif',
             fill: color.value,
           },
