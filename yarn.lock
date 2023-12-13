@@ -3477,7 +3477,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.13.2
     "@typescript-eslint/parser": ^6.13.2
     "@vitejs/plugin-vue": ^4.5.1
-    "@vue/compiler-sfc": 3.3.10
+    "@vue/compiler-sfc": 3.3.11
     "@vue/eslint-config-prettier": ^8.0.0
     "@vue/eslint-config-typescript": ^12.0.0
     "@vue/runtime-dom": ^3.3.10
