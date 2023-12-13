@@ -3404,7 +3404,7 @@ __metadata:
     portal-vue: ^3.0.0
     prettier: ^3.1.1
     sass: ^1.69.5
-    sortablejs: ^1.15.0
+    sortablejs: ^1.15.1
     typescript: ~5.3.3
     unplugin-auto-import: ^0.17.2
     unplugin-icons: ^0.18.1
@@ -5479,10 +5479,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sortablejs@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "sortablejs@npm:1.15.0"
-  checksum: bb82223a663484640d317cad510ac987f26b7a443631040407224de1be069afcc6c39048b6d8527f10f269e33595e8128d7de2fac23517c8260470f77f932d55
+"sortablejs@npm:^1.15.1":
+  version: 1.15.1
+  resolution: "sortablejs@npm:1.15.1"
+  checksum: 56c9abdea2c83fc75cf05ed9430119522380e4953534e94884e2fb85504999064427f7a2d7f876afe779ef9077ccde190af38fd106e9daf7eef258d71a7a86a9
   languageName: node
   linkType: hard
 
