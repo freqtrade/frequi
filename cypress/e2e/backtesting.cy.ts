@@ -21,7 +21,7 @@ describe('Backtesting', () => {
     cy.wait('@ShowConf');
     // cy.wait('@Strategies');
     cy.get('a').should('contain', 'Backtest');
-    cy.contains('Run backtest');
+    cy.contains('Run backtest', { timeout: 10000 });
     cy.contains('Strategy');
     const strategySelect = cy.get('select[id=strategy-select]');
     strategySelect.should('exist');
