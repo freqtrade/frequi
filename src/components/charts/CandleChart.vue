@@ -40,6 +40,7 @@ import {
   // MarkAreaComponent,
   MarkLineComponent,
   // MarkPointComponent,
+  GraphicComponent,
 } from 'echarts/components';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -66,6 +67,7 @@ use([
   LineChart,
   ScatterChart,
   CanvasRenderer,
+  GraphicComponent,
 ]);
 
 // Chart default options
@@ -132,6 +134,8 @@ const chartTitle = computed(() => {
 const diffCols = computed(() => {
   return getDiffColumnsFromPlotConfig(props.plotConfig);
 });
+
+usePercentageTool(candleChart, props);
 
 function updateChart(initial = false) {
   if (!hasData.value) {
@@ -701,6 +705,13 @@ watch(
 watch(
   () => props.sliderPosition,
   () => updateSliderPosition(),
+);
+
+watch(
+  () => props.theme,
+  () => {
+    initializeChartOptions();
+  },
 );
 </script>
 

@@ -8,6 +8,7 @@ declare global {
   const ColorPreferences: typeof import('./stores/colors')['ColorPreferences']
   const DashboardLayout: typeof import('./stores/layout')['DashboardLayout']
   const EffectScope: typeof import('vue')['EffectScope']
+  const KeyCode: typeof import('./composables/inputListener')['KeyCode']
   const OpenTradeVizOptions: typeof import('./stores/settings')['OpenTradeVizOptions']
   const TradeLayout: typeof import('./stores/layout')['TradeLayout']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
@@ -186,6 +187,7 @@ declare global {
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
   const useInfiniteScroll: typeof import('@vueuse/core')['useInfiniteScroll']
+  const useInputListener: typeof import('./composables/inputListener')['useInputListener']
   const useIntersectionObserver: typeof import('@vueuse/core')['useIntersectionObserver']
   const useInterval: typeof import('@vueuse/core')['useInterval']
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
@@ -215,6 +217,7 @@ declare global {
   const usePairlistConfigStore: typeof import('./stores/pairlistConfig')['usePairlistConfigStore']
   const useParallax: typeof import('@vueuse/core')['useParallax']
   const useParentElement: typeof import('@vueuse/core')['useParentElement']
+  const usePercentageTool: typeof import('./composables/percentageTool')['usePercentageTool']
   const usePerformanceObserver: typeof import('@vueuse/core')['usePerformanceObserver']
   const usePermission: typeof import('@vueuse/core')['usePermission']
   const usePlotConfigStore: typeof import('./stores/plotConfig')['usePlotConfigStore']
@@ -518,6 +521,7 @@ declare module 'vue' {
     readonly usePairlistConfigStore: UnwrapRef<typeof import('./stores/pairlistConfig')['usePairlistConfigStore']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePercentageTool: UnwrapRef<typeof import('./composables/percentageTool')['usePercentageTool']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
@@ -814,6 +818,7 @@ declare module '@vue/runtime-core' {
     readonly usePairlistConfigStore: UnwrapRef<typeof import('./stores/pairlistConfig')['usePairlistConfigStore']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePercentageTool: UnwrapRef<typeof import('./composables/percentageTool')['usePercentageTool']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
