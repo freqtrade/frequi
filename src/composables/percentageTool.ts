@@ -56,7 +56,7 @@ export function usePercentageTool(chartRef, props) {
           style: {
             fill: color.value,
             // color: color.value,
-            opacity: 0.4,
+            opacity: 0.1,
           },
         },
         {
