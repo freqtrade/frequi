@@ -1,3 +1,7 @@
+import { PlotConfig } from './plot';
+import { Trade } from './trades';
+import { PairHistory } from './types';
+
 export interface CumProfitData {
   [date: string]: number;
   profit: number;
@@ -16,4 +20,16 @@ export type CumProfitChartData = {
 export interface ChartSliderPosition {
   startValue: number;
   endValue: number | undefined;
+}
+
+export interface CandleChartProps {
+  trades?: Trade[];
+  dataset: PairHistory;
+  heikinAshi?: boolean;
+  useUTC?: boolean;
+  plotConfig: PlotConfig;
+  theme: string;
+  sliderPosition?: ChartSliderPosition;
+  colorUp?: string;
+  colorDown?: string;
 }

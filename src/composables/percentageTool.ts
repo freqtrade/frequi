@@ -1,8 +1,9 @@
 import { ElementEvent } from 'echarts';
 import { ROUND_CLOSER, roundTimeframe } from '@/shared/timemath';
 import humanizeDuration from 'humanize-duration';
+import { CandleChartProps } from '@/types';
 
-export function usePercentageTool(chartRef, props) {
+export function usePercentageTool(chartRef, props: CandleChartProps) {
   const inputListener = useKeyModifier('Shift', { events: ['keydown', 'keyup'] });
 
   const color = computed(() => (props.theme === 'dark' ? 'white' : 'black'));

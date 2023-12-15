@@ -9,6 +9,7 @@ import { generateAreaCandleSeries, generateCandleSeries } from '@/shared/charts/
 import heikinashi from '@/shared/charts/heikinashi';
 import { generateTradeSeries } from '@/shared/charts/tradeChartData';
 import {
+  CandleChartProps,
   ChartSliderPosition,
   ChartType,
   IndicatorConfig,
@@ -76,6 +77,7 @@ const MARGINRIGHT = '1%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
 
+/*
 const props = defineProps({
   trades: { required: false, default: () => [], type: Array as () => Trade[] },
   dataset: { required: true, type: Object as () => PairHistory },
@@ -90,6 +92,15 @@ const props = defineProps({
   },
   colorUp: { required: false, type: String, default: '#12bb7b' },
   colorDown: { required: false, type: String, default: '#ef5350' },
+});*/
+
+const props = withDefaults(defineProps<CandleChartProps>(), {
+  trades: () => [],
+  heikinAshi: false,
+  useUTC: true,
+  sliderPosition: undefined,
+  colorUp: '#12bb7b',
+  colorDown: '#ef5350',
 });
 
 // Candle Colors
