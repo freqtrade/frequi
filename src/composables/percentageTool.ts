@@ -2,10 +2,10 @@ import { ElementEvent } from 'echarts';
 import { ROUND_CLOSER, roundTimeframe } from '@/shared/timemath';
 import humanizeDuration from 'humanize-duration';
 
-export function usePercentageTool(chartRef, props) {
+export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Ref<number>) {
   const inputListener = useKeyModifier('Shift', { events: ['keydown', 'keyup'] });
 
-  const color = computed(() => (props.theme === 'dark' ? 'white' : 'black'));
+  const color = computed(() => (theme.value === 'dark' ? 'white' : 'black'));
 
   const startPos = ref({ x: 0, y: 0 });
   const drawLimitPerSecond = 144;
@@ -13,7 +13,7 @@ export function usePercentageTool(chartRef, props) {
   const active = ref(false);
 
   function roundTF(timestamp: number) {
-    return roundTimeframe(props.dataset.timeframe_ms, timestamp, ROUND_CLOSER);
+    return roundTimeframe(timeframe_ms.value, timestamp, ROUND_CLOSER);
   }
 
   function mouseMove(e: ElementEvent) {
@@ -110,7 +110,7 @@ export function usePercentageTool(chartRef, props) {
             x: startPos.value.x + (xr - startPos.value.x) / 2,
             y: y < startPos.value.y ? y - 30 : y + 9,
             textAlign: 'center',
-            text: `${timeDiff / props.dataset.timeframe_ms} bars (${
+            text: `${timeDiff / timeframe_ms.value} bars (${
               startPrice < endPrice ? pct : '-' + pct
             }%) \n ${timeElapsed}`,
             font: '14px sans-serif',
