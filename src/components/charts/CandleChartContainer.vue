@@ -60,9 +60,7 @@
         </div>
       </div>
       <div class="h-100 w-100 d-flex">
-        <div style="min-width: 0px" class="flex-grow-1">
-          <!-- using min-width: 0px on the first flex itemm fixes
-            an odd issue where a change in layout results in the div overflowing -->
+        <div class="flex-grow-1">
           <CandleChart
             v-if="hasDataset"
             :dataset="dataset"

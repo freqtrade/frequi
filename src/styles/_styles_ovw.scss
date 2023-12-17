@@ -1,5 +1,12 @@
 // global main style
 
+.d-flex > * {
+    // Fix stupid flexbox bug where the flex items are overflowing the parent div if min-width is not set.
+    // mainly appeared on firefox.
+    min-width: 0px;
+}
+
+
 .logo-svg {
     background-color: #000000;
 }
