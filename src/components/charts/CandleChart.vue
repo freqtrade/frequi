@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-grow-1 chart-wrapper">
+  <div class="chart-wrapper">
     <e-charts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>

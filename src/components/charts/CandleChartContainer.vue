@@ -59,34 +59,38 @@
           </div>
         </div>
       </div>
-      <div class="me-1 ms-1 h-100">
-        <CandleChart
-          v-if="hasDataset"
-          :dataset="dataset"
-          :trades="trades"
-          :plot-config="plotStore.plotConfig"
-          :heikin-ashi="settingsStore.useHeikinAshiCandles"
-          :use-u-t-c="settingsStore.timezone === 'UTC'"
-          :theme="settingsStore.chartTheme"
-          :slider-position="sliderPosition"
-          :color-up="colorStore.colorUp"
-          :color-down="colorStore.colorDown"
-        >
-        </CandleChart>
-        <div v-else class="m-auto">
-          <b-spinner v-if="isLoadingDataset" label="Spinning" />
+      <div class="h-100 w-100 d-flex">
+        <div style="min-width: 0px" class="flex-grow-1">
+          <!-- using min-width: 0px on the first flex itemm fixes
+            an odd issue where a change in layout results in the div overflowing -->
+          <CandleChart
+            v-if="hasDataset"
+            :dataset="dataset"
+            :trades="trades"
+            :plot-config="plotStore.plotConfig"
+            :heikin-ashi="settingsStore.useHeikinAshiCandles"
+            :use-u-t-c="settingsStore.timezone === 'UTC'"
+            :theme="settingsStore.chartTheme"
+            :slider-position="sliderPosition"
+            :color-up="colorStore.colorUp"
+            :color-down="colorStore.colorDown"
+          >
+          </CandleChart>
+          <div v-else class="m-auto">
+            <b-spinner v-if="isLoadingDataset" label="Spinning" />
 
-          <div v-else style="font-size: 1.5rem">
-            {{ noDatasetText }}
+            <div v-else style="font-size: 1.5rem">
+              {{ noDatasetText }}
+            </div>
           </div>
         </div>
+        <transition name="fade">
+          <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25">
+            <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
+          </div>
+        </transition>
       </div>
     </div>
-    <transition name="fade">
-      <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25">
-        <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
-      </div>
-    </transition>
     <b-modal
       v-if="plotConfigModal"
       id="plotConfiguratorModal"
