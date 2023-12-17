@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex flex-column h-100 position-relative">
-    <div class="flex-grow-1 order-2">
+    <div class="flex-grow-1">
       <e-charts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
     <b-form-group
-      class="order-1"
+      class="z-2"
       :class="showTitle ? 'ms-5 ps-5' : 'position-absolute'"
       label="Bins"
       style="width: 33%; min-width: 12rem"
