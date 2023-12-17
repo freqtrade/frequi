@@ -20,17 +20,9 @@
 
     <div class="mx-2 mt-2 pb-1 h-100">
       <CandleChartContainer
-        :available-pairs="
-          botStore.activeBot.isWebserverMode
-            ? botStore.activeBot.pairlist
-            : botStore.activeBot.whitelist
-        "
+        :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"
-        :timeframe="
-          botStore.activeBot.isWebserverMode
-            ? selectedTimeframe || botStore.activeBot.strategy.timeframe || ''
-            : botStore.activeBot.timeframe
-        "
+        :timeframe="finalTimeframe"
         :trades="botStore.activeBot.trades"
         :timerange="botStore.activeBot.isWebserverMode ? timerange : ''"
         :strategy="botStore.activeBot.isWebserverMode ? strategy : ''"
@@ -48,6 +40,28 @@ const botStore = useBotStore();
 const strategy = ref('');
 const timerange = ref('');
 const selectedTimeframe = ref('');
+
+const finalTimeframe = computed<string>(() => {
+  return botStore.activeBot.isWebserverMode
+    ? selectedTimeframe.value || botStore.activeBot.strategy.timeframe || ''
+    : botStore.activeBot.timeframe;
+});
+
+const availablePairs = computed<string[]>(() => {
+  if (botStore.activeBot.isWebserverMode) {
+    if (finalTimeframe.value && finalTimeframe.value !== '') {
+      const tf = finalTimeframe.value;
+      return botStore.activeBot.pairlistWithTimeframe
+        .filter(([pair, timeframe]) => {
+          console.log(pair, timeframe, tf);
+          return timeframe === tf;
+        })
+        .map(([pair]) => pair);
+    }
+    return botStore.activeBot.pairlist;
+  }
+  return botStore.activeBot.whitelist;
+});
 
 onMounted(() => {
   if (botStore.activeBot.isWebserverMode) {
