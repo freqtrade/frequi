@@ -51,6 +51,7 @@ import {
   MixTagStats,
   ExitStats,
   EntryStats,
+  PairIntervalTuple,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -109,6 +110,7 @@ export function createBotSubStore(botId: string, botName: string) {
         exchangeList: [] as Exchange[],
         strategy: {} as StrategyResult,
         pairlist: [] as string[],
+        pairlistWithTimeframe: [] as PairIntervalTuple[],
         currentLocks: undefined as LockResponse | undefined,
         // backtesting
         backtestRunning: false,
@@ -484,6 +486,7 @@ export function createBotSubStore(botId: string, botName: string) {
           });
           // result is of type AvailablePairResult
           this.pairlist = data.pairs;
+          this.pairlistWithTimeframe = data.pair_interval;
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);

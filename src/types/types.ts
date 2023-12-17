@@ -186,12 +186,14 @@ export interface AvailablePairPayload {
   stake_currency?: string;
 }
 
+export type PairIntervalTuple = [string, string, string];
+
 export interface AvailablePairResult {
   pairs: string[];
   /**
-   * List of lists, as [pair, timeframe]
+   * List of lists, as [pair, timeframe, candletype]
    */
-  pair_interval: Array<Array<string>>;
+  pair_interval: PairIntervalTuple[];
   length: number;
 }
 
