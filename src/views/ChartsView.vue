@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="mx-2 mt-2 pb-1 h-100">
+    <div class="mx-md-2 mt-2 pb-1 h-100">
       <CandleChartContainer
         :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"

@@ -2,11 +2,11 @@
   <div class="d-flex h-100">
     <div class="flex-fill w-100 flex-column align-items-stretch d-flex h-100">
       <div class="d-flex me-0">
-        <div class="ms-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
-          <span class="ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+        <div class="ms-1 ms-md-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
+          <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <v-select
             v-model="pair"
-            class="ms-2"
+            class="ms-md-2"
             :options="availablePairs"
             style="min-width: 7em"
             size="sm"
