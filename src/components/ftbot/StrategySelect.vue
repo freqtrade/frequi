@@ -7,7 +7,7 @@
         :options="botStore.activeBot.strategyList"
       >
       </b-form-select>
-      <div class="ms-2">
+      <div class="ms-1">
         <b-button @click="botStore.activeBot.getStrategyList">
           <i-mdi-refresh />
         </b-button>

@@ -5,8 +5,8 @@
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
-      <div class="d-flex flex-wrap">
-        <div class="col-md-3 text-start">
+      <div class="d-flex flex-wrap gap-1">
+        <div class="col-md-3 text-start me-1">
           <span>Strategy</span>
           <StrategySelect v-model="strategy" class="mt-1"></StrategySelect>
         </div>
@@ -27,7 +27,9 @@
         "
         :historic-view="botStore.activeBot.isWebserverMode"
         :timeframe="
-          botStore.activeBot.isWebserverMode ? selectedTimeframe : botStore.activeBot.timeframe
+          botStore.activeBot.isWebserverMode
+            ? selectedTimeframe || botStore.activeBot.strategy.timeframe || ''
+            : botStore.activeBot.timeframe
         "
         :trades="botStore.activeBot.trades"
         :timerange="botStore.activeBot.isWebserverMode ? timerange : ''"

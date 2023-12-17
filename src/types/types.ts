@@ -174,6 +174,7 @@ export interface StrategyResult {
   strategy: string;
   /** Code of the strategy class */
   code: string;
+  timeframe: string;
 }
 
 export interface FreqAIModelListResult {
