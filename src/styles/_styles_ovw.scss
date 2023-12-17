@@ -1,5 +1,10 @@
 // global main style
 
+.dp__theme_dark {
+    // Datepicker font size
+    --dp-font-size: 0.9rem;
+}
+
 .d-flex > * {
     // Fix stupid flexbox bug where the flex items are overflowing the parent div if min-width is not set.
     // mainly appeared on firefox.

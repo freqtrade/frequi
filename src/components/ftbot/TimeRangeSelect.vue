@@ -10,6 +10,7 @@
           :max-date="now"
           model-type="yyyy-MM-dd"
           format="yyyy-MM-dd"
+          class="mt-1"
           text-input
           auto-apply
           :enable-time-picker="false"
@@ -20,6 +21,7 @@
         <Datepicker
           v-model="dateTo"
           :dark="settingsStore.isDarkTheme"
+          class="mt-1"
           :max-date="tomorrow"
           model-type="yyyy-MM-dd"
           format="yyyy-MM-dd"
