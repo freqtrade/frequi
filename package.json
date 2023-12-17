@@ -16,7 +16,7 @@
     "cy:run-ct": "cypress run --component"
   },
   "dependencies": {
-    "@noction/vue-draggable-grid": "1.9.11",
+    "@noction/vue-draggable-grid": "1.9.10",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^7.4.0",
     "@vueuse/core": "^10.7.0",
