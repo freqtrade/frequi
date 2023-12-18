@@ -6,11 +6,11 @@
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
       <div class="d-flex flex-wrap mx-1 gap-1 gap-md-2">
-        <div class="text-start me-1">
+        <div class="col-12 col-md-3 text-start me-md-1">
           <span>Strategy</span>
           <StrategySelect v-model="strategy" class="mt-1"></StrategySelect>
         </div>
-        <div class="text-start">
+        <div class="col-12 col-md-3 text-start">
           <span>Timeframe</span>
           <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
         </div>
