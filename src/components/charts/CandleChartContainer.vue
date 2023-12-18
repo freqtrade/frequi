@@ -159,15 +159,14 @@ const noDatasetText = computed((): string => {
     : botStore.activeBot.candleDataStatus;
 
   switch (status) {
+    case LoadingStatus.not_loaded:
+      return 'Not loaded yet.';
     case LoadingStatus.loading:
       return 'Loading...';
-
     case LoadingStatus.success:
       return 'No data available';
-
     case LoadingStatus.error:
       return 'Failed to load data';
-
     default:
       return 'Unknown';
   }

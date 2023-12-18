@@ -270,6 +270,7 @@ export interface UiVersion {
 }
 
 export enum LoadingStatus {
+  not_loaded,
   loading,
   success,
   error,

@@ -103,7 +103,7 @@ export function createBotSubStore(botId: string, botName: string) {
         candleDataStatus: LoadingStatus.loading,
         // TODO: type me
         history: {},
-        historyStatus: LoadingStatus.loading,
+        historyStatus: LoadingStatus.not_loaded,
         strategyPlotConfig: undefined as PlotConfig | undefined,
         strategyList: [] as string[],
         freqaiModelList: [] as string[],
