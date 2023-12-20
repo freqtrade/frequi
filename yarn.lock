@@ -2660,6 +2660,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "date-fns@npm:3.0.1"
+  checksum: d16cdde537eb3d2cc3b51cbfa48d5bcda6622472b486f37457ef96ff52798f488f514fb8d9268c5f256202cac76413e2c1a404c142e9f0a1f3b1c8461a218ad4
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.10.4":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
@@ -3549,7 +3556,7 @@ __metadata:
     bootstrap-vue-next: ^0.15.5
     core-js: ^3.34.0
     cypress: ^13.6.1
-    date-fns: ^2.30.0
+    date-fns: ^3.0.1
     date-fns-tz: ^2.0.0
     echarts: ^5.4.3
     eslint: ^8.56.0
