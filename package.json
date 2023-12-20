@@ -31,7 +31,7 @@
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.30.0",
     "pinia": "^2.1.7",
-    "pinia-plugin-persistedstate": "^3.2.0",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "sortablejs": "^1.15.1",
     "vue": "^3.3.11",
     "vue-class-component": "^7.2.5",
