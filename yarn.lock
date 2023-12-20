@@ -3563,7 +3563,7 @@ __metadata:
     unplugin-auto-import: ^0.17.2
     unplugin-icons: ^0.18.1
     unplugin-vue-components: ^0.26.0
-    vite: ^5.0.8
+    vite: ^5.0.10
     vitest: ^1.0.4
     vue: ^3.3.11
     vue-class-component: ^7.2.5
@@ -6214,7 +6214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0, vite@npm:^5.0.8":
+"vite@npm:^5.0.0":
   version: 5.0.8
   resolution: "vite@npm:5.0.8"
   dependencies:
@@ -6251,6 +6251,46 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 884dc2f17aa2c41786c5acd4ff420d1f291fef7653786ed7bd59d4275e18483c94eabe44dd3a9741798ef65270dcbb6edfa280b60004314db50ac43476ff3d81
+  languageName: node
+  linkType: hard
+
+"vite@npm:^5.0.10":
+  version: 5.0.10
+  resolution: "vite@npm:5.0.10"
+  dependencies:
+    esbuild: ^0.19.3
+    fsevents: ~2.3.3
+    postcss: ^8.4.32
+    rollup: ^4.2.0
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: a1c96be1dc8bafb981c0874813a6b783ee9c4cd235188d7dc746133972d8992fe85111b7402365fee698ffcb626cd31b39bf2f2523140e50b07b81ce3c0139d1
   languageName: node
   linkType: hard
 
