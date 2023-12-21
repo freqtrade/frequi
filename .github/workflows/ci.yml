@@ -61,9 +61,9 @@ jobs:
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v3
-      # Ideally this would upload the zipfile from below - but this action currently does not support this.
+      # Ideally this would upload the zip file from below - but this action currently does not support this.
       with:
-        name: freqUI
+        name: freqUI-${{ matrix.node }}
         path: |
           dist
           !dist/**/*.map
