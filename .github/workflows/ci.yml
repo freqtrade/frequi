@@ -60,7 +60,7 @@ jobs:
       run: yarn build
 
     - name: Archive artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       # Ideally this would upload the zip file from below - but this action currently does not support this.
       with:
         name: freqUI-${{ matrix.node }}
