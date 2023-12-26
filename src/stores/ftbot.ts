@@ -195,7 +195,7 @@ export function createBotSubStore(botId: string, botName: string) {
       updateBot(updatedBotInfo: Partial<BotDescriptor>) {
         userService.updateBot(updatedBotInfo);
       },
-      setAutoRefresh(newRefreshValue) {
+      setAutoRefresh(newRefreshValue: boolean) {
         this.autoRefresh = newRefreshValue;
         // TODO: Investigate this -
         // this ONLY works if ReloadControl is only visible once,otherwise it triggers twice
