@@ -182,7 +182,6 @@ export function createBotSubStore(botId: string, botName: string) {
           this.setIsBotOnline(true);
           return Promise.resolve();
         } catch (error) {
-          console.log('ping fail');
           this.setIsBotOnline(false);
           return Promise.reject();
         }
@@ -207,6 +206,12 @@ export function createBotSubStore(botId: string, botName: string) {
         userService.setAutoRefresh(newRefreshValue);
       },
       setIsBotOnline(isBotOnline: boolean) {
+        if (!this.isBotOnline && isBotOnline) {
+          // Bot just came online.
+          // Refresh everything
+          this.refreshRequired = true;
+          this.refreshSlow(true);
+        }
         this.isBotOnline = isBotOnline;
       },
       async refreshSlow(forceUpdate = false) {
