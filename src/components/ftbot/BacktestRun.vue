@@ -178,7 +178,7 @@
       Start backtest
     </b-button>
     <b-button
-      variant="primary"
+      variant="secondary"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       class="mx-1"
       @click="botStore.activeBot.pollBacktest"
@@ -186,14 +186,14 @@
       Load backtest result
     </b-button>
     <b-button
-      variant="primary"
+      variant="secondary"
       class="mx-1"
       :disabled="!botStore.activeBot.backtestRunning"
       @click="botStore.activeBot.stopBacktest"
       >Stop Backtest</b-button
     >
     <b-button
-      variant="primary"
+      variant="secondary"
       class="mx-1"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       @click="botStore.activeBot.removeBacktest"
