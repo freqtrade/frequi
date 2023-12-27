@@ -41,7 +41,7 @@
     "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
-    "@cypress/vite-dev-server": "^5.0.6",
+    "@cypress/vite-dev-server": "^5.0.7",
     "@cypress/vue": "^6.0.0",
     "@iconify-json/mdi": "^1.1.63",
     "@types/echarts": "^4.9.22",
