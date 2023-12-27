@@ -20,6 +20,8 @@ export const useBtStore = defineStore('btStore', {
       },
     };
   },
-  getters: {},
+  getters: {
+    canRunBacktest: (state) => state.strategy !== '',
+  },
   actions: {},
 });

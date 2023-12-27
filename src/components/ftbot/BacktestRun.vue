@@ -167,7 +167,11 @@
     <b-button
       id="start-backtest"
       variant="primary"
-      :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
+      :disabled="
+        !btStore.canRunBacktest ||
+        botStore.activeBot.backtestRunning ||
+        !botStore.activeBot.canRunBacktest
+      "
       class="mx-1"
       @click="clickBacktest"
     >
