@@ -758,6 +758,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pkgr/core@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@pkgr/core@npm:0.1.0"
+  checksum: eeff0e0e517b1ed10eb4c1a8971413a8349bbfdab727dbe7d4085fd94eab95f0c3beb51b9245fef30562849d2a7a119e07ca48c343c8c4ec4e64ee289f50fe5e
+  languageName: node
+  linkType: hard
+
 "@pkgr/utils@npm:^2.3.1":
   version: 2.4.2
   resolution: "@pkgr/utils@npm:2.4.2"
@@ -3074,12 +3081,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "eslint-plugin-prettier@npm:5.1.0"
+"eslint-plugin-prettier@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "eslint-plugin-prettier@npm:5.1.2"
   dependencies:
     prettier-linter-helpers: ^1.0.0
-    synckit: ^0.8.5
+    synckit: ^0.8.6
   peerDependencies:
     "@types/eslint": ">=8.0.0"
     eslint: ">=8.0.0"
@@ -3090,7 +3097,7 @@ __metadata:
       optional: true
     eslint-config-prettier:
       optional: true
-  checksum: 3a1c53899373dafcabdfb1d8e7638de249d3685825b787a59a743581d43ef849d4afac14edd2628fb80c57f507a31613c557c3f816144bc7179ad18c5e7afcf5
+  checksum: ee972ca16c1d05773abe370dcd43c71ffe729ad4eca86752e21be3d4afbc18f04184b4143e9d17869395d534eb8ad685b7589fcdc2706cb734fe17c3c3f4e6cd
   languageName: node
   linkType: hard
 
@@ -3565,7 +3572,7 @@ __metadata:
     date-fns-tz: ^2.0.0
     echarts: ^5.4.3
     eslint: ^8.56.0
-    eslint-plugin-prettier: ^5.1.0
+    eslint-plugin-prettier: ^5.1.2
     eslint-plugin-vue: ^9.19.2
     favico.js: ^0.3.10
     humanize-duration: ^3.30.0
@@ -5802,6 +5809,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"synckit@npm:^0.8.6":
+  version: 0.8.8
+  resolution: "synckit@npm:0.8.8"
+  dependencies:
+    "@pkgr/core": ^0.1.0
+    tslib: ^2.6.2
+  checksum: 9ed5d33abb785f5f24e2531efd53b2782ca77abf7912f734d170134552b99001915531be5a50297aa45c5701b5c9041e8762e6cd7a38e41e2461c1e7fccdedf8
+  languageName: node
+  linkType: hard
+
 "tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.2.0
   resolution: "tar@npm:6.2.0"
@@ -5918,7 +5935,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.5.0, tslib@npm:^2.6.0":
+"tslib@npm:^2.1.0, tslib@npm:^2.5.0, tslib@npm:^2.6.0, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
