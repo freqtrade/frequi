@@ -22,7 +22,11 @@
         @click="botStore.activeBot.getBacktestHistoryResult(res)"
       >
         <strong>{{ res.strategy }}</strong>
-        backtested on: {{ timestampms(res.backtest_start_time * 1000) }}
+        backtested on: {{ timestampms(res.backtest_start_time * 1000) }} {{ res.timeframe }}
+        <span v-if="res.backtest_start_ts && res.backtest_end_ts"
+          >{{ timestampToDateString(res.backtest_start_ts * 1000) }} -
+          {{ timestampToDateString(res.backtest_end_ts * 1000) }}</span
+        >
         <small>{{ res.filename }}</small>
         <InfoBox
           v-if="botStore.activeBot.botApiVersion >= 2.32"
@@ -47,7 +51,7 @@
 
 <script setup lang="ts">
 import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import { timestampms } from '@/shared/formatters';
+import { timestampToDateString, timestampms } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BacktestHistoryEntry } from '@/types';
 import InfoBox from '../general/InfoBox.vue';
