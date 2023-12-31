@@ -12,46 +12,82 @@
       Load Historic results from disk. You can click on multiple results to load all of them into
       freqUI.
     </p>
-    <b-list-group v-if="botStore.activeBot.backtestHistoryList" class="ms-2 mb-1">
-      <b-list-group-item
-        v-for="(res, idx) in botStore.activeBot.backtestHistoryList"
-        :key="idx"
-        class="d-flex justify-content-between align-items-center py-1 pe-2"
-        button
-        :disabled="res.run_id in botStore.activeBot.backtestHistory"
-        @click="botStore.activeBot.getBacktestHistoryResult(res)"
-      >
-        <strong>{{ res.strategy }}</strong>
-        backtested on: {{ timestampms(res.backtest_start_time * 1000) }} {{ res.timeframe }}
-        <span v-if="res.backtest_start_ts && res.backtest_end_ts"
-          >{{ timestampToDateString(res.backtest_start_ts * 1000) }} -
-          {{ timestampToDateString(res.backtest_end_ts * 1000) }}</span
+    <BTableSimple
+      v-if="botStore.activeBot.backtestHistoryList.length > 0"
+      responsive
+      small
+      class="rounded-1 table-rounded-corners"
+    >
+      <BThead>
+        <BTr>
+          <BTh>Strategy</BTh>
+          <BTh>Details</BTh>
+          <BTh>Backtest Time</BTh>
+          <BTh>Filename</BTh>
+          <BTh>Actions</BTh>
+        </BTr>
+      </BThead>
+      <BTbody>
+        <BTr
+          v-for="(res, idx) in botStore.activeBot.backtestHistoryList"
+          :key="idx"
+          role="button"
+          @click="botStore.activeBot.getBacktestHistoryResult(res)"
         >
-        <small>{{ res.filename }}</small>
-        <InfoBox
-          v-if="botStore.activeBot.botApiVersion >= 2.32"
-          :class="res.notes ? 'opacity-100' : 'opacity-0'"
-          :hint="res.notes ?? ''"
-        ></InfoBox>
-        <b-button
-          v-if="botStore.activeBot.botApiVersion >= 2.31"
-          class="ms-1"
-          size="sm"
-          title="Delete this Result."
-          :disabled="res.run_id in botStore.activeBot.backtestHistory"
-          @click.stop="deleteBacktestResult(res)"
-        >
-          <i-mdi-delete />
-        </b-button>
-      </b-list-group-item>
-    </b-list-group>
+          <BTd>{{ res.strategy }}</BTd>
+          <BTd>
+            <strong>{{ res.timeframe }}</strong>
+            <span v-if="res.backtest_start_ts && res.backtest_end_ts" class="ms-1">
+              {{ timestampToTimeRangeString(res.backtest_start_ts * 1000) }}-{{
+                timestampToTimeRangeString(res.backtest_end_ts * 1000)
+              }}</span
+            >
+          </BTd>
+          <BTd
+            ><small>{{ timestampms(res.backtest_start_time * 1000) }}</small></BTd
+          >
+          <BTd>
+            <small>{{ res.filename }}</small>
+          </BTd>
+          <BTd>
+            <div class="d-flex align-items-center">
+              <InfoBox
+                v-if="botStore.activeBot.botApiVersion >= 2.32"
+                :class="res.notes ? 'opacity-100' : 'opacity-0'"
+                :hint="res.notes ?? ''"
+              ></InfoBox>
+              <b-button
+                v-if="botStore.activeBot.botApiVersion >= 2.31"
+                class="ms-1"
+                size="sm"
+                title="Load this Result."
+                :disabled="res.run_id in botStore.activeBot.backtestHistory"
+                @click.stop="botStore.activeBot.getBacktestHistoryResult(res)"
+              >
+                <i-mdi-arrow-right />
+              </b-button>
+              <b-button
+                v-if="botStore.activeBot.botApiVersion >= 2.31"
+                class="ms-1"
+                size="sm"
+                title="Delete this Result."
+                :disabled="res.run_id in botStore.activeBot.backtestHistory"
+                @click.stop="deleteBacktestResult(res)"
+              >
+                <i-mdi-delete />
+              </b-button>
+            </div>
+          </BTd>
+        </BTr>
+      </BTbody>
+    </BTableSimple>
   </div>
   <MessageBox ref="msgBox" />
 </template>
 
 <script setup lang="ts">
 import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import { timestampToDateString, timestampms } from '@/shared/formatters';
+import { timestampms, timestampToTimeRangeString } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BacktestHistoryEntry } from '@/types';
 import InfoBox from '../general/InfoBox.vue';
@@ -75,4 +111,9 @@ function deleteBacktestResult(result: BacktestHistoryEntry) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.table-rounded-corners {
+  box-shadow: 0 0 0 1px var(--bs-border-color);
+  overflow: hidden;
+}
+</style>
