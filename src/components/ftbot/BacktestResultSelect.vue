@@ -17,7 +17,7 @@
               v-if="canUseModify"
               class="flex-nowrap"
               size="sm"
-              title="Modify"
+              title="Modify result notes."
               @click.stop="result.metadata.editing = !result.metadata.editing"
             >
               <i-mdi-pencil />
@@ -25,7 +25,7 @@
             <b-button
               size="sm"
               class="flex-nowrap"
-              title="Delete this Result."
+              title="Delete this Result from UI."
               @click.stop="emit('removeResult', key)"
             >
               <i-mdi-delete />
