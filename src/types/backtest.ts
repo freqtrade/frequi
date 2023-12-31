@@ -243,4 +243,8 @@ export interface BacktestHistoryEntry {
   run_id: string;
   backtest_start_time: number;
   notes?: string;
+  backtest_start_ts?: number | null;
+  backtest_end_ts?: number | null;
+  timeframe?: string | null;
+  timeframe_detail?: string | null;
 }
