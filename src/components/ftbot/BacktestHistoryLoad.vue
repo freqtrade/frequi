@@ -115,5 +115,6 @@ function deleteBacktestResult(result: BacktestHistoryEntry) {
 .table-rounded-corners {
   box-shadow: 0 0 0 1px var(--bs-border-color);
   overflow: hidden;
+  vertical-align: middle;
 }
 </style>
