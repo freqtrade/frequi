@@ -69,6 +69,15 @@ export function timestampToDateString(ts: number | Date): string {
 }
 
 /**
+ * Converts timestamp or Date object to yyyyMMdd format.
+ * Used for timerange displays
+ * @param ts
+ */
+export function timestampToTimeRangeString(ts: number | Date): string {
+  return formatDate(toDate(ts), 'yyyyMMdd');
+}
+
+/**
  * Converts a String of the format yyyy-MM-dd to YYYYMMDD. To be used as timerange.
  * @param datestring Input string (in the format yyyy-MM-dd)
  */

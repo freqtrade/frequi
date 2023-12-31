@@ -5,6 +5,7 @@ import {
   timestampmsWithTimezone,
   setTimezone,
   timestampToDateString,
+  timestampToTimeRangeString,
   dateStringToTimeRange,
   timestampHour,
   dateFromString,
@@ -51,6 +52,7 @@ describe('timeformatter.ts', () => {
     expect(timestampmsOrNa(0)).toEqual('N/A');
     expect(timestampmsOrNa(null)).toEqual('N/A');
   });
+
   it('timestampToDateString converts to date', () => {
     expect(timestampToDateString(1651057500000)).toEqual('2022-04-27');
 
@@ -62,10 +64,24 @@ describe('timeformatter.ts', () => {
     setTimezone('CET');
     expect(timestampToDateString(timestamp)).toEqual('2022-04-28');
   });
+
+  it('timestampToDateString converts to date', () => {
+    expect(timestampToTimeRangeString(1651057500000)).toEqual('20220427');
+
+    // Set close to midnight - so timezone matters
+    // 2022-04-27T11:26:19 UTC
+    const timestamp = 1651101979000;
+    setTimezone('UTC');
+    expect(timestampToTimeRangeString(timestamp)).toEqual('20220427');
+    setTimezone('CET');
+    expect(timestampToTimeRangeString(timestamp)).toEqual('20220428');
+  });
+
   it('dateStringToTimeRange converts to correct timerange', () => {
     expect(dateStringToTimeRange('2022-04-28')).toEqual('20220428');
     expect(dateStringToTimeRange('2019-04-01')).toEqual('20190401');
   });
+
   it('timestampHour converts', () => {
     // Hour conversion
     setTimezone('UTC');
@@ -73,6 +89,7 @@ describe('timeformatter.ts', () => {
     setTimezone('CET');
     expect(timestampHour(1651057500000)).toEqual(13);
   });
+
   it('dateFromString converts correctly', () => {
     expect(dateFromString('2022-04-04', 'yyyy-MM-dd')).toEqual(
       new Date('2022-04-04T00:00:00.000Z'),
