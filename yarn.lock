@@ -2542,10 +2542,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.34.0":
-  version: 3.34.0
-  resolution: "core-js@npm:3.34.0"
-  checksum: 26b0d103716b33fc660ee8737da7bc9475fbc655f93bbf1360ab692966449d18f2fc393805095937283db9f919ca2aa5c88d86d16f2846217983ad7da707e31e
+"core-js@npm:^3.35.0":
+  version: 3.35.0
+  resolution: "core-js@npm:3.35.0"
+  checksum: 25c224aca3df012b98f08f13ccbd8171ef5852acd33fd5e58e106d27f5f0c97de2fdbc520f0b4364d26253caf2deb3e5d265310f57d2a66ae6cc922850e649f0
   languageName: node
   linkType: hard
 
@@ -3595,7 +3595,7 @@ __metadata:
     axios: ^1.6.3
     bootstrap: ^5.3.2
     bootstrap-vue-next: ^0.15.5
-    core-js: ^3.34.0
+    core-js: ^3.35.0
     cypress: ^13.6.2
     date-fns: ^2.30.0
     date-fns-tz: ^2.0.0
