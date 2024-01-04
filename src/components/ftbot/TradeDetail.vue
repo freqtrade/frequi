@@ -14,6 +14,9 @@
         >
         <ValuePair description="Amount">{{ trade.amount }}</ValuePair>
         <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
+        <ValuePair v-if="trade.is_open && trade.current_rate" description="Current Rate">{{
+          formatPrice(trade.current_rate)
+        }}</ValuePair>
         <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
           formatPrice(trade.close_rate)
         }}</ValuePair>
