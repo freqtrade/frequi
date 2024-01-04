@@ -32,6 +32,9 @@
         v-if="item.profitOpen && item.botId != 'Summary'"
         :profit-ratio="(item as unknown as ComparisonTableItems).profitOpenRatio"
         :profit-abs="(item as unknown as ComparisonTableItems).profitOpen"
+        :profit-desc="`Total Profit (Open and realized) ${formatPercent(
+          (item as unknown as ComparisonTableItems).profitOpenRatio ?? 0.0,
+        )}`"
         :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
       />
     </template>
@@ -69,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatPrice } from '@/shared/formatters';
+import { formatPrice, formatPercent } from '@/shared/formatters';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ProfitInterface, ComparisonTableItems } from '@/types';
