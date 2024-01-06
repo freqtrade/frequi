@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:20-bullseye
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:20-bookworm
 
 RUN sudo apt-get update \
     && sudo apt-get install -y vim \
