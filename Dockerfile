@@ -4,20 +4,16 @@ RUN mkdir /app
 
 WORKDIR /app
 
-# ENV PATH /usr/src/app/node_modules/.bin:$PATH
-
-COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+COPY package.json yarn.lock .yarnrc.yml /app/
+COPY .yarn/releases/ /app/.yarn/releases/
 
 RUN apk add --update --no-cache python3 g++ make\
-    && yarn \
+    && yarn install\
     && apk del python3 g++ make
 
 COPY . /app
 
-# The below flag should be removed, it's an incompatibility between
-# webpack and node17
-RUN NODE_OPTIONS=--openssl-legacy-provider yarn build
+RUN yarn build
 
 FROM nginx:1.25.3-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
