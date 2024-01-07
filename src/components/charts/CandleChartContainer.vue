@@ -45,7 +45,7 @@
         </div>
         <div class="ms-auto d-flex align-items-center w-auto">
           <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
-            ><span class="text-nowrap">Heikin Ashi</span></b-form-checkbox
+            ><small class="text-nowrap">Heikin Ashi</small></b-form-checkbox
           >
 
           <div class="ms-2">
