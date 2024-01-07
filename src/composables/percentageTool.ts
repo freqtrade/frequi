@@ -132,7 +132,7 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
           // Rect containing text ...
           shape: {
             x: xr + 5, //startPos.value.x + (xr - startPos.value.x) / 2,
-            y: y < startPos.value.y ? y - (boxHeight + 5) : y + 9,
+            y: y > startPos.value.y ? y - (boxHeight + 5) : y + 9,
           },
           textContent: {
             style: {
