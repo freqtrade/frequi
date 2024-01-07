@@ -11,13 +11,14 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
   const drawLimitPerSecond = 144;
   const canDraw = ref(true);
   const active = ref(false);
+  const closing = ref(false);
 
   function roundTF(timestamp: number) {
     return roundTimeframe(timeframe_ms.value, timestamp, ROUND_CLOSER);
   }
 
   function mouseMove(e: ElementEvent) {
-    if (canDraw.value) draw(e.offsetX, e.offsetY);
+    if (canDraw.value && !closing.value) draw(e.offsetX, e.offsetY);
   }
 
   function mouseDown(e: ElementEvent) {
@@ -33,8 +34,11 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
 
       chartRef.value?.chart.getZr().on('mousemove', mouseMove);
       drawStart();
+    } else if (!closing.value) {
+      closing.value = true;
     } else {
       drawEnd();
+      closing.value = false;
       chartRef.value?.chart.getZr().off('mousemove', mouseMove);
       chartRef.value?.chart.getZr().off('mousedown', mouseDown);
     }
