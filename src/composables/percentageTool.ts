@@ -12,6 +12,7 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
   const canDraw = ref(true);
   const active = ref(false);
   const closing = ref(false);
+  const boxHeight = 35;
 
   function roundTF(timestamp: number) {
     return roundTimeframe(timeframe_ms.value, timestamp, ROUND_CLOSER);
@@ -64,14 +65,31 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
           },
         },
         {
-          type: 'text',
+          // Rect containing text ...
+          type: 'rect',
           z: 5,
-          style: {
+          shape: {
             x: startPos.value.x,
-            y: startPos.value.y - 20,
-            text: '0 bars - 0%',
-            font: '14px sans-serif',
-            fill: color.value,
+            width: 170,
+            y: startPos.value.y,
+            height: boxHeight,
+            r: 5,
+          },
+          style: {
+            fill: '#002fff',
+            // color: color.value,
+            opacity: 0.8,
+          },
+          textContent: {
+            z: 10,
+            style: {
+              text: '0 bars - 0%',
+              font: '14px sans-serif',
+              fill: 'white',
+            },
+          },
+          textConfig: {
+            position: 'inside',
           },
         },
       ],
@@ -104,21 +122,25 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
     chartRef.value?.setOption({
       graphic: [
         {
+          // Transparent rectangle ....
           shape: {
             width: xr > startPos.value.x ? -1 * (startPos.value.x - xr) : xr - startPos.value.x,
             height: y > startPos.value.y ? -1 * (startPos.value.y - y) : y - startPos.value.y,
           },
         },
         {
-          style: {
-            x: startPos.value.x + (xr - startPos.value.x) / 2,
-            y: y < startPos.value.y ? y - 30 : y + 9,
-            textAlign: 'center',
-            text: `${timeDiff / timeframe_ms.value} bars (${
-              startPrice < endPrice ? pct : '-' + pct
-            }%) \n ${timeElapsed}`,
-            font: '14px sans-serif',
-            fill: color.value,
+          // Rect containing text ...
+          shape: {
+            x: xr + 5, //startPos.value.x + (xr - startPos.value.x) / 2,
+            y: y < startPos.value.y ? y - (boxHeight + 5) : y + 9,
+          },
+          textContent: {
+            style: {
+              textAlign: x < startPos.value.x ? 'left' : 'right',
+              text: `${timeDiff / timeframe_ms.value} bars (${
+                startPrice < endPrice ? pct : '-' + pct
+              }%) \n ${timeElapsed}`,
+            },
           },
         },
       ],
