@@ -1,8 +1,13 @@
 import { ElementEvent } from 'echarts';
 import { ROUND_CLOSER, roundTimeframe } from '@/shared/timemath';
 import humanizeDuration from 'humanize-duration';
+import ECharts from 'vue-echarts';
 
-export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Ref<number>) {
+export function usePercentageTool(
+  chartRef: Ref<InstanceType<typeof ECharts> | undefined>,
+  theme: Ref<string>,
+  timeframe_ms: Ref<number>,
+) {
   const inputListener = useKeyModifier('Shift', { events: ['keydown', 'keyup'] });
 
   const color = computed(() => (theme.value === 'dark' ? 'white' : 'black'));
@@ -27,21 +32,21 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
       const startValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [
         e.offsetX,
         e.offsetY,
-      ]);
+      ]) ?? [0, 0];
       startValues[0] = roundTF(Number(startValues[0]));
-      const startnew = chartRef.value?.convertToPixel({ seriesIndex: 0 }, startValues);
+      const startnew = chartRef.value?.convertToPixel({ seriesIndex: 0 }, startValues) ?? [0, 0];
 
       startPos.value = { x: startnew[0], y: startnew[1] };
 
-      chartRef.value?.chart.getZr().on('mousemove', mouseMove);
+      chartRef.value?.chart?.getZr().on('mousemove', mouseMove);
       drawStart();
     } else if (!closing.value) {
       closing.value = true;
     } else {
       drawEnd();
       closing.value = false;
-      chartRef.value?.chart.getZr().off('mousemove', mouseMove);
-      chartRef.value?.chart.getZr().off('mousedown', mouseDown);
+      chartRef.value?.chart?.getZr().off('mousemove', mouseMove);
+      chartRef.value?.chart?.getZr().off('mousedown', mouseDown);
     }
   }
 
@@ -108,14 +113,14 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
     const startValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [
       startPos.value.x,
       startPos.value.y,
-    ]);
-    const endValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [x, y]);
+    ]) ?? [0, 0];
+    const endValues = chartRef.value?.convertFromPixel({ seriesIndex: 0 }, [x, y]) ?? [0, 0];
     const startPrice = Number(startValues[1]);
     const endPrice = Number(endValues[1]);
     const startTime = roundTF(Number(startValues[0]));
     const endTime = roundTF(Number(endValues[0]));
     const timeDiff = Math.abs(startTime - endTime);
-    const xr = chartRef.value?.convertToPixel({ seriesIndex: 0 }, [endTime, 0])[0];
+    const xr = chartRef.value?.convertToPixel({ seriesIndex: 0 }, [endTime, 0])[0] ?? 0;
     const timeElapsed = humanizeDuration(timeDiff, { units: ['d', 'h', 'm'] });
     const pct = Math.abs(((startPrice - endPrice) / startPrice) * 100).toFixed(2);
 
@@ -156,7 +161,7 @@ export function usePercentageTool(chartRef, theme: Ref<string>, timeframe_ms: Re
     () => inputListener.value,
     () => {
       if (inputListener.value && !active.value) {
-        chartRef.value?.chart.getZr().on('mousedown', mouseDown);
+        chartRef.value?.chart?.getZr().on('mousedown', mouseDown);
       }
     },
   );
