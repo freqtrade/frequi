@@ -104,7 +104,7 @@ const shortEntrySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
 const shortexitSignalColor = '#faba25';
 
-const candleChart = ref<typeof ECharts>();
+const candleChart = ref<InstanceType<typeof ECharts>>();
 const chartOptions = ref<EChartsOption>({});
 
 const strategy = computed(() => {
@@ -140,7 +140,7 @@ usePercentageTool(
   toRef(() => props.theme),
   toRef(() => props.dataset.timeframe_ms),
 );
-
+console.log(candleChart);
 function updateChart(initial = false) {
   if (!hasData.value) {
     return;
@@ -493,13 +493,13 @@ function updateChart(initial = false) {
   // console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
-    noMerge: !initial,
+    notMerge: !initial,
   });
 }
 
 function initializeChartOptions() {
   // Ensure we start empty.
-  candleChart.value?.setOption({}, { noMerge: true });
+  candleChart.value?.setOption({}, { notMerge: true });
 
   chartOptions.value = {
     title: [

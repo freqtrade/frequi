@@ -59,7 +59,7 @@ const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 // const botList = ref<string[]>([]);
 
-const chart = ref<typeof ECharts>();
+const chart = ref<InstanceType<typeof ECharts>>();
 
 const openProfit = computed<number>(() => {
   return props.openTrades.reduce(
@@ -196,12 +196,12 @@ function updateChart(initial = false) {
   const chartOptionsLoc = generateChart(initial);
   chart.value?.setOption(chartOptionsLoc, {
     replaceMerge: ['series', 'dataset'],
-    noMerge: !initial,
+    notMerge: !initial,
   });
 }
 
 function initializeChart() {
-  chart.value?.setOption({}, { noMerge: true });
+  chart.value?.setOption({}, { notMerge: true });
   const chartOptionsLoc: EChartsOption = {
     title: {
       text: 'Cumulative Profit',
@@ -273,7 +273,7 @@ function initializeChart() {
   chartOptionsLoc.series = chartOptionsLoc1.series;
   chartOptionsLoc.dataset = chartOptionsLoc1.dataset;
 
-  chart.value?.setOption(chartOptionsLoc, { noMerge: true });
+  chart.value?.setOption(chartOptionsLoc, { notMerge: true });
   updateChart(true);
 }
 
