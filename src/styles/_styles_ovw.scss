@@ -70,6 +70,13 @@
     }
 }
 
+
+.router-link-active,
+.nav-link.router-link-exact-active,
+.nav-link.active {
+    color: #dedede;
+}
+
 [data-bs-theme="dark"] {
     $bg-dark: rgb(18, 18, 18);
 
@@ -132,11 +139,6 @@
         }
     }
 
-    .nav-link.active {
-        color: $fg-color;
-        background: $bg-darker;
-        border-color: lighten($bg-dark, 20%);
-    }
 
     .modal-content {
         color: $fg-color;

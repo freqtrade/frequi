@@ -1,7 +1,7 @@
 <template>
-  <b-link class="nav-link" @click="toggleNight">
+  <b-nav-item @click="toggleNight">
     <i-mdi-brightness-6 />
-  </b-link>
+  </b-nav-item>
 </template>
 
 <script setup lang="ts">
