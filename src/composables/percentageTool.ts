@@ -18,6 +18,7 @@ export function usePercentageTool(
   const active = ref(false);
   const closing = ref(false);
   const boxHeight = 35;
+  const boxWidth = 170;
 
   function roundTF(timestamp: number) {
     return roundTimeframe(timeframe_ms.value, timestamp, ROUND_CLOSER);
@@ -75,7 +76,7 @@ export function usePercentageTool(
           z: 5,
           shape: {
             x: startPos.value.x,
-            width: 170,
+            width: boxWidth,
             y: startPos.value.y,
             height: boxHeight,
             r: 5,
@@ -136,7 +137,7 @@ export function usePercentageTool(
         {
           // Rect containing text ...
           shape: {
-            x: xr + 5, //startPos.value.x + (xr - startPos.value.x) / 2,
+            x: startPos.value.x + (xr - startPos.value.x) / 2 - boxWidth / 2,
             y: y > startPos.value.y ? y - (boxHeight + 5) : y + 9,
           },
           textContent: {
