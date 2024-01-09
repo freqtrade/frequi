@@ -34,7 +34,15 @@ export type MultiDeletePayload = MultiBotIdPayload;
 export type MultiReloadTradePayload = MultiBotIdPayload;
 export type MultiCancelOpenOrderPayload = MultiBotIdPayload;
 
-export type LogLine = Array<[string, number, string, string, string]>;
+/**
+ * Response from the Logs endpoint
+ * [0] FormattedDate
+ * [1] Timestamp
+ * [2] Module
+ * [3] LogLevel
+ * [4] Message
+ */
+export type LogLine = [string, number, string, string, string];
 
 export interface Logs {
   /**
