@@ -3627,7 +3627,7 @@ __metadata:
     sortablejs: ^1.15.1
     typescript: ~5.3.3
     unplugin-auto-import: ^0.17.3
-    unplugin-icons: ^0.18.1
+    unplugin-icons: ^0.18.2
     unplugin-vue-components: ^0.26.0
     vite: ^5.0.10
     vitest: ^1.1.3
@@ -6141,9 +6141,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-icons@npm:^0.18.1":
-  version: 0.18.1
-  resolution: "unplugin-icons@npm:0.18.1"
+"unplugin-icons@npm:^0.18.2":
+  version: 0.18.2
+  resolution: "unplugin-icons@npm:0.18.2"
   dependencies:
     "@antfu/install-pkg": ^0.3.0
     "@antfu/utils": ^0.7.6
@@ -6169,7 +6169,7 @@ __metadata:
       optional: true
     vue-template-es2015-compiler:
       optional: true
-  checksum: 578f6e15599081e42ea548ed889194cb65d315a0e292eb057ff6dd5d98564643178b9c581d58afea15415c132493ff539d1d780b50ff414df7a4f017ffa10b8e
+  checksum: 2674710ed80384eb86cec4892618cef86757145c0f098d694233aac3002a7c627e7445ed90b684fd86a1b7f014af3a5676b576d60db38f558865e995fdf2fd7e
   languageName: node
   linkType: hard
 
