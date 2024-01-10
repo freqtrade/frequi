@@ -85,7 +85,7 @@ describe('Login', () => {
 
     // Test logout
     cy.get('[id=avatar-drop]').parent().click();
-    cy.get('.dropdown-menu > a:last').click();
+    cy.get('.dropdown-menu > .dropdown-item:last').click();
     cy.get('button').should('contain', 'Login');
     // login button there again
   });
