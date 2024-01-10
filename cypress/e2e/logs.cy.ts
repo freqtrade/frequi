@@ -11,7 +11,7 @@ describe('Logs', () => {
     cy.wait('@Ping');
     cy.wait('@ShowConf');
     cy.wait('@Logs');
-    cy.get('textarea').should('contain.value', 'Checking exchange...');
+    cy.get('span').should('contain.text', 'Checking exchange...');
     cy.get('button[id=refresh-logs]').click();
     cy.wait('@Logs');
   });

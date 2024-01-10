@@ -13,7 +13,7 @@
       <b-button id="refresh-logs" size="sm" title="Reload Logs" @click="refreshLogs">
         <i-mdi-refresh />
       </b-button>
-      <b-button id="refresh-logs" size="sm" title="Reload Logs" @click="scrollToBottom">
+      <b-button size="sm" title="Scroll to bottom" @click="scrollToBottom">
         <i-mdi-arrow-down-thick />
       </b-button>
     </div>
