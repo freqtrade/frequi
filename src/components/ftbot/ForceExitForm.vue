@@ -25,7 +25,6 @@
             v-model="amount"
             type="number"
             step="0.000001"
-            @keydown.enter="handleEntry"
           ></b-form-input>
           <b-form-input
             id="stake-input"
@@ -34,7 +33,6 @@
             step="0.000001"
             min="0"
             :max="trade.amount"
-            @keydown.enter="handleEntry"
           ></b-form-input>
         </b-form-group>
 
