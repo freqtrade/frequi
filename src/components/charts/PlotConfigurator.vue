@@ -196,14 +196,20 @@ const subplots = computed((): string[] => {
   // Subplot keys (for selection window)
   return ['main_plot', ...Object.keys(plotStore.editablePlotConfig.subplots)];
 });
-const usedColumns = computed((): string[] => {
+const usedColumns = computed((): { html: string; value: string }[] => {
+  let usedCols: string[] = [];
   if (isMainPlot.value) {
-    return Object.keys(plotStore.editablePlotConfig.main_plot);
+    usedCols = Object.keys(plotStore.editablePlotConfig.main_plot);
   }
   if (selSubPlot.value in plotStore.editablePlotConfig.subplots) {
-    return Object.keys(plotStore.editablePlotConfig.subplots[selSubPlot.value]);
+    usedCols = Object.keys(plotStore.editablePlotConfig.subplots[selSubPlot.value]);
   }
-  return [];
+  return usedCols.map((col) => ({
+    value: col,
+    html: !props.columns.includes(col)
+      ? `<span title="Column not available">${col} <-- not available in this chart</span>`
+      : col,
+  }));
 });
 
 function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
@@ -372,7 +378,7 @@ watch(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .textArea {
   min-height: 250px;
 }
