@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row">
+  <form class="d-flex flex-row" @submit.prevent="saveNewName">
     <div class="flex-grow-1">
       <slot v-if="mode === EditState.None"> </slot>
       <b-form-input v-else v-model="localName" size="sm"> </b-form-input>
@@ -46,18 +46,18 @@
       <template v-if="mode !== EditState.None">
         <b-button
           size="sm"
-          :title="`Add new '${editableName}`"
+          :title="`Add new ${editableName}`"
           variant="primary"
           @click="saveNewName"
         >
           <i-mdi-check />
         </b-button>
-        <b-button size="sm" title="Abort" class="ms-1" variant="secondary" @click="abort">
+        <b-button size="sm" title="Abort" variant="secondary" @click="abort">
           <i-mdi-close />
         </b-button>
       </template>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup lang="ts">
