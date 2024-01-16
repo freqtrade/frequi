@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="d-flex flex-column vh-100" :style="colorStore.cssVars">
+  <div id="app" class="d-flex flex-column dvh-100" :style="colorStore.cssVars">
     <NavBar />
     <BToaster></BToaster>
     <BodyLayout class="flex-fill overflow-auto" />
