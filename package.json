@@ -46,7 +46,7 @@
     "@iconify-json/mdi": "^1.1.64",
     "@types/echarts": "^4.9.22",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
+    "@typescript-eslint/parser": "^6.19.0",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/compiler-sfc": "3.4.14",
     "@vue/eslint-config-prettier": "^9.0.0",
