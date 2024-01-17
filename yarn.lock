@@ -1772,7 +1772,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:10.7.1, @vueuse/core@npm:^10.7.1":
+"@vueuse/core@npm:10.7.1":
   version: 10.7.1
   resolution: "@vueuse/core@npm:10.7.1"
   dependencies:
@@ -1793,6 +1793,18 @@ __metadata:
     "@vueuse/shared": 10.6.1
     vue-demi: ">=0.14.6"
   checksum: 13b892a32fbf99a32947f7a7ff8014525ca1ceb937663b0d6c5ef811eceb7857138c2c3710c2aa9d21dda7a1cdacb1f0faf9f6e38efefb03c2bae4997d13dcc4
+  languageName: node
+  linkType: hard
+
+"@vueuse/core@npm:^10.7.2":
+  version: 10.7.2
+  resolution: "@vueuse/core@npm:10.7.2"
+  dependencies:
+    "@types/web-bluetooth": ^0.0.20
+    "@vueuse/metadata": 10.7.2
+    "@vueuse/shared": 10.7.2
+    vue-demi: ">=0.14.6"
+  checksum: 0a1e9433f4f4cd40838bcb4a055c16f48303ced860d53c4541458103b72b52c261836c3d7896719412f24e5d9e460870db3ab74f3b18b399d46c2dc1dc1ec613
   languageName: node
   linkType: hard
 
@@ -1859,6 +1871,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vueuse/metadata@npm:10.7.2":
+  version: 10.7.2
+  resolution: "@vueuse/metadata@npm:10.7.2"
+  checksum: 51bb8d451ff6c867fc9d315559f3ca8ce206a7da65f3dc0124c4ccc69fa608ec0d8ed050e282a69da29a0b8a9528904b1d0e1084bbc08a07ec7a1439e5dffb14
+  languageName: node
+  linkType: hard
+
 "@vueuse/shared@npm:10.6.1":
   version: 10.6.1
   resolution: "@vueuse/shared@npm:10.6.1"
@@ -1874,6 +1893,15 @@ __metadata:
   dependencies:
     vue-demi: ">=0.14.6"
   checksum: 5f79b68e2c2c9af4f07d748306d671ebc94d7c065a3b9a3e87879b1432bb339fb3d85f74ac2d46c0856947b36bda78dc7f5922354d16abe4071f540c11c626c5
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:10.7.2":
+  version: 10.7.2
+  resolution: "@vueuse/shared@npm:10.7.2"
+  dependencies:
+    vue-demi: ">=0.14.6"
+  checksum: c03cbbd7cdf640ff3179ea26bf98879cbbc71cdedd994c8a5a519cb90d96b3ae088dbc5411e904681a76470849ff9a110a1c4c136eca0d94081f1c64ca850798
   languageName: node
   linkType: hard
 
@@ -3553,7 +3581,7 @@ __metadata:
     "@vue/runtime-dom": ^3.4.7
     "@vue/test-utils": ^2.4.3
     "@vuepic/vue-datepicker": ^7.4.1
-    "@vueuse/core": ^10.7.1
+    "@vueuse/core": ^10.7.2
     "@vueuse/integrations": ^10.7.1
     axios: ^1.6.5
     bootstrap: ^5.3.2
