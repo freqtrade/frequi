@@ -50,8 +50,9 @@ const exchangeList = computed(() => {
 });
 
 const tradeModesTyped = computed(() => {
-  const val = botStore.activeBot.exchangeList.find((ex) => ex.name === exchangeModel.value.exchange)
-    ?.trade_modes;
+  const val = botStore.activeBot.exchangeList.find(
+    (ex) => ex.name === exchangeModel.value.exchange,
+  )?.trade_modes;
   return val ?? [];
 });
 
