@@ -1382,6 +1382,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compiler-core@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/compiler-core@npm:3.4.14"
+  dependencies:
+    "@babel/parser": ^7.23.6
+    "@vue/shared": 3.4.14
+    entities: ^4.5.0
+    estree-walker: ^2.0.2
+    source-map-js: ^1.0.2
+  checksum: df7767c63273555ec46719757d1b240ef4ad6643847fbf574b30c2e7049e640dfedb698cffb06ad399257f452eb8a08484ba0ff80ff5650e1ea4257d0c3374d6
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-core@npm:3.4.7":
   version: 3.4.7
   resolution: "@vue/compiler-core@npm:3.4.7"
@@ -1412,6 +1425,16 @@ __metadata:
     "@vue/compiler-core": 3.4.11
     "@vue/shared": 3.4.11
   checksum: 6822c8e3e3fd603606d3761ba9fb2e219d9d28031d94f86fd1ec97de323ca1024fc08542d8580cc482c738259a843fe2e241d7155bc9c8d6a1a5c53674b2a7bd
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-dom@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/compiler-dom@npm:3.4.14"
+  dependencies:
+    "@vue/compiler-core": 3.4.14
+    "@vue/shared": 3.4.14
+  checksum: 03b06006d780819ccb758baf0ac243d7c3c6502405149fe162f60389529ca02af9af47d2674047908952f63143e5e539a74eee27e51a8ad79b91bb9bdb357aa7
   languageName: node
   linkType: hard
 
@@ -1470,6 +1493,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compiler-sfc@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/compiler-sfc@npm:3.4.14"
+  dependencies:
+    "@babel/parser": ^7.23.6
+    "@vue/compiler-core": 3.4.14
+    "@vue/compiler-dom": 3.4.14
+    "@vue/compiler-ssr": 3.4.14
+    "@vue/shared": 3.4.14
+    estree-walker: ^2.0.2
+    magic-string: ^0.30.5
+    postcss: ^8.4.33
+    source-map-js: ^1.0.2
+  checksum: 2ce5c4e6323cf6eb304bc56a4b0079cb3c9c064493e02f29df3db5a08c99c1dc5eff88d7e97f1cb1177d66b397fbf40c9f3a2a19f71688e563fbf10d06c6a490
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-sfc@npm:3.4.7":
   version: 3.4.7
   resolution: "@vue/compiler-sfc@npm:3.4.7"
@@ -1504,6 +1544,16 @@ __metadata:
     "@vue/compiler-dom": 3.4.11
     "@vue/shared": 3.4.11
   checksum: 970d363b3893fb0d88c29e9950a3c1d5759ecc5571de7265848055cb1a221b923a216bb3e6afb00a97e875d3ad710457f976ccb03b87d5bf830eb74fe55f9719
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-ssr@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/compiler-ssr@npm:3.4.14"
+  dependencies:
+    "@vue/compiler-dom": 3.4.14
+    "@vue/shared": 3.4.14
+  checksum: faff2e3815020ec232d50835c28e99108d50f88795adba0d08faed330405c48d16be10648ccef9a4d6fad9ac2e6d747b9d15b0cfaddb98ae305212483d40d1da
   languageName: node
   linkType: hard
 
@@ -1734,6 +1784,13 @@ __metadata:
   version: 3.4.11
   resolution: "@vue/shared@npm:3.4.11"
   checksum: 5c2cef8b5a19ca3f3f86072044149c487f66dc9857fd09238c90106f919f0b46f249fc809606001ffebf689225d93657fb1a5ff3769e961af4aaa5d1e49614dd
+  languageName: node
+  linkType: hard
+
+"@vue/shared@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/shared@npm:3.4.14"
+  checksum: 6945de71cc74b4f26e6e3310f4e98f627ed950ffebd32ff5e864df9001708918432fec8fe2840797f7915163c4ffaee334d73fac812f96a3b1ea15bd08a5ceea
   languageName: node
   linkType: hard
 
@@ -3547,7 +3604,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.18.1
     "@typescript-eslint/parser": ^6.18.1
     "@vitejs/plugin-vue": ^5.0.2
-    "@vue/compiler-sfc": 3.4.7
+    "@vue/compiler-sfc": 3.4.14
     "@vue/eslint-config-prettier": ^9.0.0
     "@vue/eslint-config-typescript": ^12.0.0
     "@vue/runtime-dom": ^3.4.7
@@ -5140,6 +5197,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 220d9d0bf5d65be7ed31006c523bfb11619461d296245c1231831f90150aeb4a31eab9983ac9c5c89759a3ca8b60b3e0d098574964e1691673c3ce5c494305ae
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.33":
+  version: 8.4.33
+  resolution: "postcss@npm:8.4.33"
+  dependencies:
+    nanoid: ^3.3.7
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 6f98b2af4b76632a3de20c4f47bf0e984a1ce1a531cf11adcb0b1d63a6cbda0aae4165e578b66c32ca4879038e3eaad386a6be725a8fb4429c78e3c1ab858fe9
   languageName: node
   linkType: hard
 
