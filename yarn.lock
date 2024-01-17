@@ -1649,6 +1649,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/reactivity@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/reactivity@npm:3.4.14"
+  dependencies:
+    "@vue/shared": 3.4.14
+  checksum: bf7eb456f5462f34fb189d2292bc4f0afe0e8f98c92a17774f5029ea35003ec74dc1195ffa986e9114b86619cbe89854dc0ada87e6e96565bc351ab233bd76eb
+  languageName: node
+  linkType: hard
+
 "@vue/reactivity@npm:3.4.7":
   version: 3.4.7
   resolution: "@vue/reactivity@npm:3.4.7"
@@ -1675,6 +1684,16 @@ __metadata:
     "@vue/reactivity": 3.4.11
     "@vue/shared": 3.4.11
   checksum: 55342005999fc02790dd2204e39483d23ce2a75ffce5363181d150b4446d251c840a92d9463de740991012cec5499c0dd9751b4ab42da1ba72c3afe241cf75b0
+  languageName: node
+  linkType: hard
+
+"@vue/runtime-core@npm:3.4.14":
+  version: 3.4.14
+  resolution: "@vue/runtime-core@npm:3.4.14"
+  dependencies:
+    "@vue/reactivity": 3.4.14
+    "@vue/shared": 3.4.14
+  checksum: b3b167a9ed472ed5d8e6cc660debcc5ee1e4be72940e14469aff36defadb534551aafe759a98f26be51d8e541447ef1700f8eab4bf2a1fa432b843de8050fdc6
   languageName: node
   linkType: hard
 
@@ -1710,7 +1729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:3.4.7, @vue/runtime-dom@npm:^3.4.7":
+"@vue/runtime-dom@npm:3.4.7":
   version: 3.4.7
   resolution: "@vue/runtime-dom@npm:3.4.7"
   dependencies:
@@ -1718,6 +1737,17 @@ __metadata:
     "@vue/shared": 3.4.7
     csstype: ^3.1.3
   checksum: 5d1c52ffc93453afb88848a83bd60bac1d855eb09ff70caf608d53a2d5fb0ef7597b4caa0686cb4363505626c6a844369aea2993d247013a8a88171d3299e771
+  languageName: node
+  linkType: hard
+
+"@vue/runtime-dom@npm:^3.4.14":
+  version: 3.4.14
+  resolution: "@vue/runtime-dom@npm:3.4.14"
+  dependencies:
+    "@vue/runtime-core": 3.4.14
+    "@vue/shared": 3.4.14
+    csstype: ^3.1.3
+  checksum: ae9da6479280a4028bfa3bc6adf47537c6633de7b7d7a1a6b21b2a765034efcbf39b47c7cc6c87099831aa22b0e534c0eb8834f1ae6c75f8b5197d6b239976a2
   languageName: node
   linkType: hard
 
@@ -3625,7 +3655,7 @@ __metadata:
     "@vue/compiler-sfc": 3.4.14
     "@vue/eslint-config-prettier": ^9.0.0
     "@vue/eslint-config-typescript": ^12.0.0
-    "@vue/runtime-dom": ^3.4.7
+    "@vue/runtime-dom": ^3.4.14
     "@vue/test-utils": ^2.4.3
     "@vuepic/vue-datepicker": ^7.4.1
     "@vueuse/core": ^10.7.2
