@@ -123,6 +123,7 @@
                 >{{ formatPrice(order.remaining, 8) }} /
               </span>
               <span title="Filled">{{ formatPrice(order.filled ?? 0, 8) }}</span>
+              <template v-if="order.ft_order_tag"> | {{ order.ft_order_tag ?? '' }}</template>
             </span>
           </div>
         </details>
