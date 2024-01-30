@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-5">
         <h5 class="detail-header">General</h5>
-        <ValuePair description="TradeId">{{ trade.trade_id }}</ValuePair>
+        <ValuePair description="Trade Id">{{ trade.trade_id }}</ValuePair>
         <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
 
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
