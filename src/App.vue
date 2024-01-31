@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="d-flex flex-column dvh-100" :style="colorStore.cssVars">
     <NavBar />
-    <BToaster></BToaster>
+    <BToastOrchestrator></BToastOrchestrator>
     <BodyLayout class="flex-fill overflow-auto" />
     <NavFooter />
   </div>
