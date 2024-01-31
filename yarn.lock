@@ -3612,7 +3612,7 @@ __metadata:
     sass: ^1.70.0
     sortablejs: ^1.15.2
     typescript: ~5.3.3
-    unplugin-auto-import: ^0.17.3
+    unplugin-auto-import: ^0.17.5
     unplugin-icons: ^0.18.3
     unplugin-vue-components: ^0.26.0
     vite: ^5.0.12
@@ -6061,7 +6061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^3.7.0":
+"unimport@npm:^3.7.1":
   version: 3.7.1
   resolution: "unimport@npm:3.7.1"
   dependencies:
@@ -6114,9 +6114,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:^0.17.3":
-  version: 0.17.3
-  resolution: "unplugin-auto-import@npm:0.17.3"
+"unplugin-auto-import@npm:^0.17.5":
+  version: 0.17.5
+  resolution: "unplugin-auto-import@npm:0.17.5"
   dependencies:
     "@antfu/utils": ^0.7.7
     "@rollup/pluginutils": ^5.1.0
@@ -6124,7 +6124,7 @@ __metadata:
     local-pkg: ^0.5.0
     magic-string: ^0.30.5
     minimatch: ^9.0.3
-    unimport: ^3.7.0
+    unimport: ^3.7.1
     unplugin: ^1.6.0
   peerDependencies:
     "@nuxt/kit": ^3.2.2
@@ -6134,7 +6134,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: f15895ab8ccb4d05796bca2a04f6d0ddc7051261f316c9c0b3d606bb1e488f75ff24874b20ba98b539e19e29c9189138916233ea700e700e9d95e24718e6cce3
+  checksum: e26b8ca7e7ab4f480833e0d3100e97d4cddc91a954e1a596c0f8b45e5131e787869fa9def8428a7a7ec3fac4d8f36d7e8bacf3b3d8b2654bc17a26de39a39613
   languageName: node
   linkType: hard
 
