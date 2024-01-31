@@ -20,7 +20,7 @@
           v-model="auth.url"
           required
           trim
-          :state="urlState === '' ? null : urlState"
+          :state="urlState"
           @keydown.enter="handleOk"
         ></b-form-input>
         <b-alert
@@ -43,7 +43,7 @@
           v-model="auth.username"
           required
           placeholder="Freqtrader"
-          :state="nameState === '' ? null : nameState"
+          :state="nameState"
           @keydown.enter="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -58,7 +58,7 @@
           v-model="auth.password"
           required
           type="password"
-          :state="pwdState === '' ? null : pwdState"
+          :state="pwdState"
           @keydown.enter="handleOk"
         ></b-form-input>
       </b-form-group>
@@ -102,9 +102,9 @@ const router = useRouter();
 const route = useRoute();
 const botStore = useBotStore();
 
-const nameState = ref<boolean | ''>('');
-const pwdState = ref<boolean | ''>('');
-const urlState = ref<boolean | ''>('');
+const nameState = ref<boolean>();
+const pwdState = ref<boolean>();
+const urlState = ref<boolean>();
 const errorMessage = ref<string>('');
 const errorMessageCORS = ref<boolean>(false);
 const formRef = ref<HTMLFormElement>();
@@ -138,9 +138,9 @@ const resetLogin = () => {
   auth.value.url = defaultURL;
   auth.value.username = '';
   auth.value.password = '';
-  nameState.value = '';
-  pwdState.value = '';
-  urlState.value = '';
+  nameState.value = undefined;
+  pwdState.value = undefined;
+  urlState.value = undefined;
   errorMessage.value = '';
   botEdit.value = false;
 };
