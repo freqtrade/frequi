@@ -17,6 +17,11 @@
     height: 100dvh;
 }
 
+.no-min-w {
+    // Remove min-width
+    min-width: unset;
+}
+
 
 .logo-svg {
     background-color: #000000;
