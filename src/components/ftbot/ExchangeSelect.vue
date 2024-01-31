@@ -15,11 +15,9 @@
       :disabled="tradeModes.length < 2"
     >
     </b-form-select>
-    <div class="ms-2">
-      <b-button size="sm" @click="botStore.activeBot.getExchangeList">
-        <i-mdi-refresh />
-      </b-button>
-    </div>
+    <b-button class="ms-2 no-min-w" size="sm" @click="botStore.activeBot.getExchangeList">
+      <i-mdi-refresh />
+    </b-button>
   </div>
 </template>
 
@@ -56,7 +54,7 @@ const tradeModesTyped = computed(() => {
   return val ?? [];
 });
 
-const tradeModes = computed<Record<string, unknown>[]>(() => {
+const tradeModes = computed(() => {
   return tradeModesTyped.value.map((tm) => {
     return (
       {
@@ -64,7 +62,7 @@ const tradeModes = computed<Record<string, unknown>[]>(() => {
         value: tm,
       } ?? []
     );
-  }) as Record<string, unknown>[];
+  });
 });
 
 watch(
