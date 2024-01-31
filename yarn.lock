@@ -692,9 +692,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noction/vue-draggable-grid@npm:1.9.15":
-  version: 1.9.15
-  resolution: "@noction/vue-draggable-grid@npm:1.9.15"
+"@noction/vue-draggable-grid@npm:1.9.16":
+  version: 1.9.16
+  resolution: "@noction/vue-draggable-grid@npm:1.9.16"
   dependencies:
     "@interactjs/actions": ^1.10.20
     "@interactjs/auto-start": ^1.10.20
@@ -707,7 +707,7 @@ __metadata:
     vue: ^3.3.8
   peerDependencies:
     vue: ^3.2.0
-  checksum: 7f097c0c7623d5c3fc3eca54ec7e3cdf8b2c6325552a9e7324e349e4007a4228b007d51c93bce63c707ac14e6332f1b4f854caf78230402a63dfaf05f3938ef3
+  checksum: d501165edc2d325a4ac49feda4d4ec4702e76bf2b88ac86fdad46dcfa6255178965fd52c6d693fb63e1ebcea4fc2c2937c5ab25ac80014ccf88060eadd9f2473
   languageName: node
   linkType: hard
 
@@ -3531,7 +3531,7 @@ __metadata:
     "@cypress/vite-dev-server": ^5.0.7
     "@cypress/vue": ^6.0.0
     "@iconify-json/mdi": ^1.1.64
-    "@noction/vue-draggable-grid": 1.9.15
+    "@noction/vue-draggable-grid": 1.9.16
     "@popperjs/core": ^2.11.8
     "@types/echarts": ^4.9.22
     "@typescript-eslint/eslint-plugin": ^6.19.1
