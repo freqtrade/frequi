@@ -112,13 +112,21 @@
               )}, filled ${formatPrice(order.filled)}`"
             >
               (#{{ key + 1 }})
+              <i-mdi-triangle
+                v-if="order.ft_order_side === 'buy'"
+                class="me-1 color-up"
+                style="font-size: 0.6rem"
+              />
+              <i-mdi-triangle-down v-else class="me-1 color-down" style="font-size: 0.6rem" />
               <DateTimeTZ
                 v-if="order.order_timestamp"
                 :date="order.order_timestamp"
                 show-timezone
               />
-              <b class="ms-1">{{ order.ft_order_side }}</b> for
-              <b>{{ formatPrice(order.safe_price) }}</b> |
+              <b class="ms-1" :class="order.ft_order_side === 'buy' ? 'color-up' : 'color-down'">{{
+                order.ft_order_side
+              }}</b>
+              for <b>{{ formatPrice(order.safe_price) }}</b> |
               <span v-if="order.remaining && order.remaining !== 0" title="remaining"
                 >{{ formatPrice(order.remaining, 8) }} /
               </span>
@@ -136,6 +144,8 @@
 import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 
+const colorStore = useColorStore();
+
 defineProps({
   trade: { required: true, type: Object as () => Trade },
   stakeCurrency: { required: true, type: String },
@@ -147,5 +157,12 @@ defineProps({
   padding-bottom: 5px;
   width: 100%;
   display: block;
+}
+.color-up {
+  color: v-bind('colorStore.colorUp');
+}
+
+.color-down {
+  color: v-bind('colorStore.colorDown');
 }
 </style>
