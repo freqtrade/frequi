@@ -310,6 +310,7 @@ declare global {
 // for vue template auto import
 import { UnwrapRef } from 'vue'
 declare module 'vue' {
+  interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly ColorPreferences: UnwrapRef<typeof import('./stores/colors')['ColorPreferences']>
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
@@ -607,6 +608,7 @@ declare module 'vue' {
   }
 }
 declare module '@vue/runtime-core' {
+  interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly ColorPreferences: UnwrapRef<typeof import('./stores/colors')['ColorPreferences']>
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
