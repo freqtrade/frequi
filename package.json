@@ -35,7 +35,7 @@
     "sortablejs": "^1.15.2",
     "vue": "^3.4.15",
     "vue-class-component": "^7.2.5",
-    "vue-demi": "^0.14.6",
+    "vue-demi": "^0.14.7",
     "vue-echarts": "^6.6.8",
     "vue-router": "^4.2.5",
     "vue-select": "^4.0.0-beta.6"
