@@ -36,9 +36,13 @@ updates:
       patterns:
         - "@vue/*"
         - "vue-*"
+        - "vue"
         - "pinia*"
       exclude-patterns:
         - "*eslint*"
+    vueuse:
+      patterns:
+        - "@vueuse/*"
     bootstrap:
       patterns:
         - "bootstrap*"
