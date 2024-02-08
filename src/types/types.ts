@@ -14,7 +14,7 @@ export interface ForceEnterPayload {
 }
 
 export interface ForceSellPayload {
-  tradeid: string;
+  tradeid: string | number;
   ordertype?: string;
   amount?: number;
 }
