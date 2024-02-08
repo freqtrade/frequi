@@ -140,7 +140,7 @@ usePercentageTool(
   toRef(() => props.theme),
   toRef(() => props.dataset.timeframe_ms),
 );
-console.log(candleChart);
+
 function updateChart(initial = false) {
   if (!hasData.value) {
     return;
@@ -493,7 +493,7 @@ function updateChart(initial = false) {
   // console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
-    notMerge: !initial,
+    notMerge: initial,
   });
 }
 
