@@ -1,10 +1,14 @@
 import { AlertSeverity } from '@/types/alertTypes';
-import { useToast } from 'bootstrap-vue-next';
 
 export function showAlert(message: string, severity: AlertSeverity = 'warning', bot: string = '') {
-  const { show } = useToast();
+  const alertStore = useAlertsStore();
 
-  show(message, { title: `${bot ? 'Bot: ' + bot : 'Notification'}`, variant: severity });
+  alertStore.addAlert({
+    message,
+    title: `${bot ? 'Bot: ' + bot : 'Notification'}`,
+    severity,
+    timeout: 60000,
+  });
 }
 
 export function useAlertForBot(botName: string) {

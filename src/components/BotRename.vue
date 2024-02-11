@@ -9,12 +9,12 @@
       autofocus
     />
 
-    <div class="d-flex ms-2">
-      <b-button type="submit" size="sm" title="Save">
+    <div class="d-flex ms-2 no-min-w">
+      <b-button type="submit" size="sm" title="Save" class="no-min-w">
         <i-mdi-check />
       </b-button>
 
-      <b-button class="ms-1" size="sm" title="Cancel" @click="$emit('cancelled')">
+      <b-button class="ms-1 no-min-w" size="sm" title="Cancel" @click="$emit('cancelled')">
         <i-mdi-close />
       </b-button>
     </div>

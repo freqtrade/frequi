@@ -66,7 +66,13 @@ const settingsStore = useSettingsStore();
 // registerTransform(ecStat.transform.histogram);
 // console.log(profits);
 // const data = [[]];
-const binOptions = [10, 15, 20, 25, 50];
+const binOptions = [
+  { text: '10', value: 10 },
+  { text: '15', value: 15 },
+  { text: '20', value: 20 },
+  { text: '25', value: 25 },
+  { text: '50', value: 50 },
+];
 const data = computed(() => {
   const profits = props.trades.map((trade) => trade.profit_ratio);
 
