@@ -32,7 +32,7 @@ yarn install
 ### Compiles and hot-reloads for development
 
 ```
-yarn serve
+yarn dev
 ```
 
 ### Compiles and minifies for production
@@ -79,7 +79,7 @@ docker-compose exec web /bin/bash
 then
 
 ```
-yarn serve
+yarn dev
 ```
 
 ## Project setup for vscode and docker (developing inside dev container) on Linux
@@ -97,7 +97,7 @@ View > Command palette > Enter: Remote-Containers rebuild container
 ### Serve your local server
 
 ```
-yarn serve
+yarn dev
 ```
 
 You now have useful vscode extensions, git support, your command history of the project.
