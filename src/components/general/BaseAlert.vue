@@ -9,9 +9,9 @@ const alertStore = useAlertsStore();
         :key="idx"
         v-model="alert.timeout"
         :variant="alert.severity"
+        :title="alert.title"
         @hide.prevent="alertStore.removeAlert(alert)"
       >
-        <template #title>Title</template>
         {{ alert.message }}
       </BToast>
     </div>

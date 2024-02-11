@@ -10,7 +10,6 @@ export const useAlertsStore = defineStore('alerts', {
       this.activeMessages.push(message);
     },
     removeAlert(alert: AlertType) {
-      console.log('dismissed', alert);
       this.activeMessages = this.activeMessages.filter((v) => v !== alert);
     },
   },
