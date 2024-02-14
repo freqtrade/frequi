@@ -12,6 +12,21 @@
       Load Historic results from disk. You can click on multiple results to load all of them into
       freqUI.
     </p>
+    <div class="d-flex align-items-center">
+      <b-form-group
+        v-if="botStore.activeBot.backtestHistoryList.length > 0"
+        class="my-2"
+        label-for="trade-filter"
+      >
+        <b-form-input
+          id="trade-filter"
+          v-model="filterText"
+          type="text"
+          placeholder="Filter Strategies"
+          tilte="Filter Strategies"
+        />
+      </b-form-group>
+    </div>
     <BTableSimple
       v-if="botStore.activeBot.backtestHistoryList.length > 0"
       responsive
@@ -29,8 +44,12 @@
       </BThead>
       <BTbody>
         <BTr
-          v-for="(res, idx) in botStore.activeBot.backtestHistoryList"
-          :key="idx"
+          v-for="(res, idx) in botStore.activeBot.backtestHistoryList.filter(
+            (r) =>
+              r.filename.toLowerCase().includes(filterTextDebounced.toLowerCase()) ||
+              r.strategy.toLowerCase().includes(filterTextDebounced.toLowerCase()),
+          )"
+          :key="res.filename + res.strategy"
           role="button"
           @click="botStore.activeBot.getBacktestHistoryResult(res)"
         >
@@ -94,6 +113,8 @@ import InfoBox from '../general/InfoBox.vue';
 
 const botStore = useBotStore();
 const msgBox = ref<typeof MessageBox>();
+const filterText = ref('');
+const filterTextDebounced = refDebounced(filterText, 350, { maxWait: 1000 });
 
 onMounted(() => {
   botStore.activeBot.getBacktestHistory();
