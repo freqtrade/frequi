@@ -56,6 +56,8 @@ interface TradeBase {
   /** Open date in the format Y-M-d HH:mm:ss */
   open_date: string;
   open_timestamp: number;
+  open_fill_date?: string | null;
+  open_fill_timestamp?: number | null;
   fee_open: number;
   fee_open_cost?: number;
   fee_open_currency?: string;
