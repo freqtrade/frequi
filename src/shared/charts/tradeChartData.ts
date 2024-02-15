@@ -68,12 +68,14 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
       if (trade.orders) {
         for (let i = 0; i < trade.orders.length; i++) {
           const order: Order | BTOrder = trade.orders[i];
+          const orderTs =
+            order.order_filled_timestamp ??
+            ('order_timestamp' in order ? order.order_timestamp : trade.open_timestamp);
           const { quoteCurrency } = splitTradePair(trade.quote_currency ?? trade.pair ?? '');
           if (
-            order.order_filled_timestamp &&
-            roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp) <=
-              stop_ts_adjusted &&
-            order.order_filled_timestamp > dataset.data_start_ts
+            orderTs &&
+            roundTimeframe(dataset.timeframe_ms ?? 0, orderTs) <= stop_ts_adjusted &&
+            orderTs > dataset.data_start_ts
           ) {
             // Trade entry
             if (i === 0) {
@@ -83,7 +85,8 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
                 OPEN_CLOSE_SYMBOL,
                 order.ft_order_side == 'sell' ? 180 : 0,
                 trade.is_short ? SHORT_COLOR : LONG_COLOR,
-                trade.is_short ? 'Short' : 'Long',
+                (trade.is_short ? 'Short' : 'Long') +
+                  (!order.order_filled_timestamp ? ' (open)' : ''),
                 buildToolTip(trade, order, 'entry', quoteCurrency),
               ]);
               // Trade exit
@@ -109,7 +112,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             // Position adjustment
             else {
               tradeData.push([
-                roundTimeframe(dataset.timeframe_ms ?? 0, order.order_filled_timestamp),
+                roundTimeframe(dataset.timeframe_ms ?? 0, orderTs),
                 order.safe_price,
                 ADJUSTMENT_SYMBOL,
                 order.ft_order_side == 'sell' ? 180 : 0,
