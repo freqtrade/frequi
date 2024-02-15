@@ -44,7 +44,7 @@
       </BThead>
       <BTbody>
         <BTr
-          v-for="(res, idx) in botStore.activeBot.backtestHistoryList.filter(
+          v-for="res in botStore.activeBot.backtestHistoryList.filter(
             (r) =>
               r.filename.toLowerCase().includes(filterTextDebounced.toLowerCase()) ||
               r.strategy.toLowerCase().includes(filterTextDebounced.toLowerCase()),
