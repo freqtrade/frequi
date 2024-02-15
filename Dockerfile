@@ -15,7 +15,7 @@ COPY . /app
 
 RUN yarn build
 
-FROM nginx:1.25.3-alpine
+FROM nginx:1.25.4-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
 COPY  --from=ui-builder /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
