@@ -59,6 +59,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   const stop_ts_adjusted = dataset.data_stop_ts + dataset.timeframe_ms;
   for (let i = 0, len = trades.length; i < len; i += 1) {
     const trade: Trade = trades[i];
+    const openTs = trade.open_fill_timestamp ?? trade.open_timestamp;
     if (
       // Trade is open or closed and within timerange
       roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= stop_ts_adjusted ||
@@ -80,7 +81,7 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             // Trade entry
             if (i === 0) {
               tradeData.push([
-                roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp),
+                roundTimeframe(dataset.timeframe_ms ?? 0, openTs),
                 order.safe_price,
                 OPEN_CLOSE_SYMBOL,
                 order.ft_order_side == 'sell' ? 180 : 0,
