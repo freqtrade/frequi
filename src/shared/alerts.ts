@@ -7,7 +7,7 @@ export function showAlert(message: string, severity: AlertSeverity = 'warning', 
     message,
     title: `${bot ? 'Bot: ' + bot : 'Notification'}`,
     severity,
-    timeout: 60000,
+    timeout: 5000,
   });
 }
 
