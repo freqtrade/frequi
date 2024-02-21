@@ -2138,24 +2138,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-next@npm:^0.16.3":
-  version: 0.16.3
-  resolution: "bootstrap-vue-next@npm:0.16.3"
+"bootstrap-vue-next@npm:^0.16.5":
+  version: 0.16.5
+  resolution: "bootstrap-vue-next@npm:0.16.5"
   dependencies:
     "@floating-ui/vue": ^1.0.6
     "@vueuse/core": ^10.7.2
   peerDependencies:
     vue: ^3.4.18
-  checksum: 49360881a09b0dade93b06e05853e921d127de6dc3afeb485aa007add05cb44d306cb780e2545ceb61537d8ff17dcce120b86dca81c18b0a9a13bce843e3fdaa
+  checksum: 059e3d848533399ffba87af6c4882582d1a9d74f508b3846013623b2a5bbae54868d08e25cc0105cdeda39786e09e53af7a294905d03e64dd10a4e085b1df92a
   languageName: node
   linkType: hard
 
-"bootstrap@npm:^5.3.2":
-  version: 5.3.2
-  resolution: "bootstrap@npm:5.3.2"
+"bootstrap@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "bootstrap@npm:5.3.3"
   peerDependencies:
     "@popperjs/core": ^2.11.8
-  checksum: d5580b253d121ffc137388d41da58dce8d15f1ccd574e12f28d4a08e7649ca15e95db645b2b677cb8025bccd446bff04138fc0fe64f8cba0ccc5dc004a8644cf
+  checksum: 537b68db30150075614310e9ebdf1be9b4affdf89ca226d59f4352e82a368b203af13ed0ce5ccfa4e06f141ecd233f7432ca3817e9c1a39863a05fbe13c73c4b
   languageName: node
   linkType: hard
 
@@ -3526,8 +3526,8 @@ __metadata:
     "@vueuse/core": ^10.7.2
     "@vueuse/integrations": ^10.7.2
     axios: ^1.6.7
-    bootstrap: ^5.3.2
-    bootstrap-vue-next: ^0.16.3
+    bootstrap: ^5.3.3
+    bootstrap-vue-next: ^0.16.5
     core-js: ^3.35.1
     cypress: ^13.6.5
     date-fns: ^2.30.0
