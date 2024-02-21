@@ -167,7 +167,7 @@ export function generateTradeSeries(
     },
     itemStyle: {
       // color: tradeSellColor,
-      color: (v) => v.data[4],
+      color: (v) => (v.data ? v.data[4] : '#000'),
       opacity: 0.9,
     },
     symbol: (v) => v[2],
