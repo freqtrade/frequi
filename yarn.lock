@@ -1764,7 +1764,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:10.7.2, @vueuse/core@npm:^10.7.2":
+"@vueuse/core@npm:10.8.0, @vueuse/core@npm:^10.8.0":
+  version: 10.8.0
+  resolution: "@vueuse/core@npm:10.8.0"
+  dependencies:
+    "@types/web-bluetooth": ^0.0.20
+    "@vueuse/metadata": 10.8.0
+    "@vueuse/shared": 10.8.0
+    vue-demi: ">=0.14.7"
+  checksum: 8112f24bc3de025cddede12b15c3046cf176a6a64f9ac04493ddbf3ac187c90eb31c53c461f9d0e9a088ba592e0a3a4684bf8bd40e608eeaba9da5276f8fb941
+  languageName: node
+  linkType: hard
+
+"@vueuse/core@npm:^10.7.2":
   version: 10.7.2
   resolution: "@vueuse/core@npm:10.7.2"
   dependencies:
@@ -1776,13 +1788,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/integrations@npm:^10.7.2":
-  version: 10.7.2
-  resolution: "@vueuse/integrations@npm:10.7.2"
+"@vueuse/integrations@npm:^10.8.0":
+  version: 10.8.0
+  resolution: "@vueuse/integrations@npm:10.8.0"
   dependencies:
-    "@vueuse/core": 10.7.2
-    "@vueuse/shared": 10.7.2
-    vue-demi: ">=0.14.6"
+    "@vueuse/core": 10.8.0
+    "@vueuse/shared": 10.8.0
+    vue-demi: ">=0.14.7"
   peerDependencies:
     async-validator: "*"
     axios: "*"
@@ -1821,7 +1833,7 @@ __metadata:
       optional: true
     universal-cookie:
       optional: true
-  checksum: 2a2a795d7ab4384eeccfd46cf69ee976005117e6cf63ead5156c3c4a47126c93399dbf66117d3f665038d824c2790867ad439ceeee234cc32207f13d4ad3f53e
+  checksum: fb4e6e8ddb2b394d05c3ec28365de347f94c00baf7eea58c400f60c2a3cb04f691db6e7d5690dd572268f9e352f765919c7b6bb49ca6c69288f42262a725cb8b
   languageName: node
   linkType: hard
 
@@ -1832,12 +1844,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vueuse/metadata@npm:10.8.0":
+  version: 10.8.0
+  resolution: "@vueuse/metadata@npm:10.8.0"
+  checksum: 3b094e569047fdae0a1b107b9f367d99ab3ddae14c36650a88e1b8ee7b55e5ea3a369da7f486957a70bc8ca439433063269e72ee5953bf32995ebaa593d04ad9
+  languageName: node
+  linkType: hard
+
 "@vueuse/shared@npm:10.7.2":
   version: 10.7.2
   resolution: "@vueuse/shared@npm:10.7.2"
   dependencies:
     vue-demi: ">=0.14.6"
   checksum: c03cbbd7cdf640ff3179ea26bf98879cbbc71cdedd994c8a5a519cb90d96b3ae088dbc5411e904681a76470849ff9a110a1c4c136eca0d94081f1c64ca850798
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:10.8.0":
+  version: 10.8.0
+  resolution: "@vueuse/shared@npm:10.8.0"
+  dependencies:
+    vue-demi: ">=0.14.7"
+  checksum: ec0f1a3220f70b37d60cede4f9a17c1ae1c890c900b8a1c101587cdd7df62ba1363bef060a3c8ea61fbef402572d05af01e18ea5a1c6d1102abd525e5830fcae
   languageName: node
   linkType: hard
 
@@ -3523,8 +3551,8 @@ __metadata:
     "@vue/runtime-dom": ^3.4.19
     "@vue/test-utils": ^2.4.4
     "@vuepic/vue-datepicker": ^8.1.1
-    "@vueuse/core": ^10.7.2
-    "@vueuse/integrations": ^10.7.2
+    "@vueuse/core": ^10.8.0
+    "@vueuse/integrations": ^10.8.0
     axios: ^1.6.7
     bootstrap: ^5.3.2
     bootstrap-vue-next: ^0.16.3
@@ -6459,6 +6487,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-demi@npm:>=0.14.7, vue-demi@npm:^0.14.7":
+  version: 0.14.7
+  resolution: "vue-demi@npm:0.14.7"
+  peerDependencies:
+    "@vue/composition-api": ^1.0.0-rc.1
+    vue: ^3.0.0-0 || ^2.6.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  bin:
+    vue-demi-fix: bin/vue-demi-fix.js
+    vue-demi-switch: bin/vue-demi-switch.js
+  checksum: 6819b1cd52355047ae899d7cdfa32f1b00e806e6c67455601d33ab0226f3172c48a5f6c3d547cb7fa32925b3b7100448bf18f98ea4d5f8bc4b9d28ae005a805d
+  languageName: node
+  linkType: hard
+
 "vue-demi@npm:^0.13.11":
   version: 0.13.11
   resolution: "vue-demi@npm:0.13.11"
@@ -6472,22 +6516,6 @@ __metadata:
     vue-demi-fix: bin/vue-demi-fix.js
     vue-demi-switch: bin/vue-demi-switch.js
   checksum: 0fbe9bf8ab7fe498ffa2bbd0cfc8f6f43a6bbaa5eda3e20ef1b70dca7c8b0ddb216a7ff2f632b694fe0735805638975abb441c621ec0bd2e6d4656353f316c15
-  languageName: node
-  linkType: hard
-
-"vue-demi@npm:^0.14.7":
-  version: 0.14.7
-  resolution: "vue-demi@npm:0.14.7"
-  peerDependencies:
-    "@vue/composition-api": ^1.0.0-rc.1
-    vue: ^3.0.0-0 || ^2.6.0
-  peerDependenciesMeta:
-    "@vue/composition-api":
-      optional: true
-  bin:
-    vue-demi-fix: bin/vue-demi-fix.js
-    vue-demi-switch: bin/vue-demi-switch.js
-  checksum: 6819b1cd52355047ae899d7cdfa32f1b00e806e6c67455601d33ab0226f3172c48a5f6c3d547cb7fa32925b3b7100448bf18f98ea4d5f8bc4b9d28ae005a805d
   languageName: node
   linkType: hard
 
