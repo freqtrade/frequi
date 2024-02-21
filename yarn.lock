@@ -2831,13 +2831,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echarts@npm:^5.4.3":
-  version: 5.4.3
-  resolution: "echarts@npm:5.4.3"
+"echarts@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "echarts@npm:5.5.0"
   dependencies:
     tslib: 2.3.0
-    zrender: 5.4.4
-  checksum: f4f69becf1cf8f546f9488ffa3bffaa971dcfbd49f5d635f288cbc8c5177839154bd6c325d6ed72c2b822c89c9bba4947ac73400614fd23c6f2f7ace3c939132
+    zrender: 5.5.0
+  checksum: 181600d21bc4ad6a877bac419800501345c4103ae49ef05a4db495c8dde91f0a5f7ff02eb94581190c59518526f7931e8410ce3fe5da1e0f1e60cd1aeec04a52
   languageName: node
   linkType: hard
 
@@ -3560,7 +3560,7 @@ __metadata:
     cypress: ^13.6.5
     date-fns: ^2.30.0
     date-fns-tz: ^2.0.0
-    echarts: ^5.4.3
+    echarts: ^5.5.0
     eslint: ^8.56.0
     eslint-plugin-prettier: ^5.1.3
     eslint-plugin-vue: ^9.21.1
@@ -6805,11 +6805,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zrender@npm:5.4.4":
-  version: 5.4.4
-  resolution: "zrender@npm:5.4.4"
+"zrender@npm:5.5.0":
+  version: 5.5.0
+  resolution: "zrender@npm:5.5.0"
   dependencies:
     tslib: 2.3.0
-  checksum: 4b317346af8eca38e62ba029239c3a13e97eac4fa15b3ddadbae23442d8b373f0e937c255dee8080d6bb2fc79c9da54f1106415586ed8942bd8bc684b3890ea9
+  checksum: 89e4f9e95b586af66ebf5c0504d5f8da73678e18c5b888124943ca81ecea7cff12f23009d64048df91e4dc670e9c51fa66c357834d9347e367f3b5cc02a24d35
   languageName: node
   linkType: hard
