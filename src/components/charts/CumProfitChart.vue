@@ -196,7 +196,6 @@ function updateChart(initial = false) {
   const chartOptionsLoc = generateChart(initial);
   chart.value?.setOption(chartOptionsLoc, {
     replaceMerge: ['series', 'dataset'],
-    notMerge: !initial,
   });
 }
 
