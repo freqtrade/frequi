@@ -2574,9 +2574,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^13.6.5":
-  version: 13.6.5
-  resolution: "cypress@npm:13.6.5"
+"cypress@npm:^13.6.6":
+  version: 13.6.6
+  resolution: "cypress@npm:13.6.6"
   dependencies:
     "@cypress/request": ^3.0.0
     "@cypress/xvfb": ^1.2.4
@@ -2622,7 +2622,7 @@ __metadata:
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: b0f106d11ceb54ed7c90abfeb5ecd02b9c0fd2d9e8aa9848e60d0f15248e48339a2e3dcd82d3ebe2d86e9af95f4af2810f48f45d97dd8d87189220ab980d56f0
+  checksum: 8a7db7d2941ea9fd698b9311b4f23fb6491038fe57e4c19b29a1ee58a25f9d98646674f876c1068a97428c2e81548bb0dd8701cd08e84c6b17ed75f9c2266908
   languageName: node
   linkType: hard
 
@@ -3564,7 +3564,7 @@ __metadata:
     bootstrap: ^5.3.3
     bootstrap-vue-next: ^0.16.6
     core-js: ^3.36.0
-    cypress: ^13.6.5
+    cypress: ^13.6.6
     date-fns: ^2.30.0
     date-fns-tz: ^2.0.0
     echarts: ^5.5.0
