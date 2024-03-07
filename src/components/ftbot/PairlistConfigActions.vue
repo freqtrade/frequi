@@ -24,7 +24,7 @@
         v-model="pairlistStore.configName"
         size="sm"
         :options="pairlistStore.savedConfigs.map((c) => c.name)"
-        @change="(config) => pairlistStore.selectOrCreateConfig(config as string)"
+        @update:model-value="(config) => pairlistStore.selectOrCreateConfig(config as string)"
       />
     </edit-value>
     <b-button
