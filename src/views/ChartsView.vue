@@ -53,7 +53,7 @@ const availablePairs = computed<string[]>(() => {
       const tf = finalTimeframe.value;
       return botStore.activeBot.pairlistWithTimeframe
         .filter(([pair, timeframe]) => {
-          console.log(pair, timeframe, tf);
+          // console.log(pair, timeframe, tf);
           return timeframe === tf;
         })
         .map(([pair]) => pair);
