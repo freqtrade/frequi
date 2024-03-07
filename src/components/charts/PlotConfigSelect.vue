@@ -14,7 +14,7 @@
       v-model="plotStore.plotConfigName"
       :options="plotStore.availablePlotConfigNames"
       size="sm"
-      @change="plotStore.plotConfigChanged"
+      @update:model-value="plotStore.plotConfigChanged"
     >
     </b-form-select>
   </EditValue>
