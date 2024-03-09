@@ -260,6 +260,10 @@ export interface SysInfoResponse {
 export interface HealthResponse {
   last_process: string;
   last_process_ts: number;
+  bot_start: string;
+  bot_start_ts: number;
+  bot_startup: string;
+  bot_startup_ts: number;
 }
 
 export interface StatusResponse {
