@@ -9,7 +9,7 @@
         title="AutoRefresh"
         variant="secondary"
         switch
-        @change="changeEvent"
+        @update:model-value="changeEvent"
       >
         <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
@@ -57,6 +57,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BotDescriptor } from '@/types';
+import type { CheckboxValue } from 'bootstrap-vue-next';
 
 const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },
@@ -65,8 +66,8 @@ const props = defineProps({
 defineEmits(['edit', 'editLogin']);
 const botStore = useBotStore();
 
-const changeEvent = (v) => {
-  botStore.botStores[props.bot.botId].setAutoRefresh(v);
+const changeEvent = (v: CheckboxValue) => {
+  botStore.botStores[props.bot.botId].setAutoRefresh(v as boolean);
 };
 const botRemoveModalVisible = ref(false);
 
