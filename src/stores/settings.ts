@@ -56,7 +56,7 @@ export const useSettingsStore = defineStore('uiSettings', {
         try {
           const result = await axios.get<UiVersion>('/ui_version');
           const { version } = result.data;
-          this._uiVersion = version;
+          this._uiVersion = version ?? 'dev';
         } catch (error) {
           //
         }
