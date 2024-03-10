@@ -28,7 +28,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       timezone: 'UTC',
       backgroundSync: true,
       currentTheme: getCurrentTheme(),
-      uiVersion: 'dev',
+      _uiVersion: 'dev',
       useHeikinAshiCandles: false,
       notifications: notificationDefaults,
       profitDistributionBins: 20,
@@ -46,6 +46,9 @@ export const useSettingsStore = defineStore('uiSettings', {
     chartTheme(): string {
       return this.isDarkTheme ? 'dark' : 'light';
     },
+    uiVersion(state) {
+      return `${state._uiVersion}-${__COMMIT_HASH__}`;
+    },
   },
   actions: {
     async loadUIVersion() {
@@ -53,7 +56,7 @@ export const useSettingsStore = defineStore('uiSettings', {
         try {
           const result = await axios.get<UiVersion>('/ui_version');
           const { version } = result.data;
-          this.uiVersion = version;
+          this._uiVersion = version;
         } catch (error) {
           //
         }
