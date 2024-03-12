@@ -1,5 +1,11 @@
 <template>
-  <e-charts v-if="trades" ref="chart" autoresize manual-update :theme="settingsStore.chartTheme" />
+  <e-charts
+    v-if="trades"
+    ref="chart"
+    :option="cumProfitChartOptions"
+    :theme="settingsStore.chartTheme"
+    autoresize
+  />
 </template>
 
 <script setup lang="ts">
@@ -27,10 +33,9 @@ import {
   CumProfitDataPerDate,
   Trade,
 } from '@/types';
-import { watchThrottled } from '@vueuse/core';
+import type { ComputedRefWithControl } from '@vueuse/core';
 
 import { formatPrice, timestampToDateString } from '@/shared/formatters';
-import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,
@@ -199,98 +204,101 @@ function updateChart(initial = false) {
   });
 }
 
-function initializeChart() {
-  chart.value?.setOption({}, { notMerge: true });
-  const chartOptionsLoc: EChartsOption = {
-    title: {
-      text: 'Cumulative Profit',
-      show: props.showTitle,
-    },
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    tooltip: {
-      trigger: 'axis',
-      formatter: (params) => {
-        const profit = params[0].data.profit;
-        const currentProfit = params[0].data['currentProfit'];
-        const profitText = currentProfit
-          ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
-          : `Profit: ${formatPrice(profit, 3)}`;
-        return `${timestampToDateString(params[1].data.date)}<br />${
-          params[1].marker
-        }${profitText}`;
+const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWithControl(
+  () => props.trades,
+  () => {
+    const chartOptionsLoc: EChartsOption = {
+      title: {
+        text: 'Cumulative Profit',
+        show: props.showTitle,
       },
-      axisPointer: {
-        type: 'line',
-        label: {
-          backgroundColor: '#6a7985',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params) => {
+          const profit = params[0].data.profit;
+          const currentProfit = params[0].data['currentProfit'];
+          const profitText = currentProfit
+            ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
+            : `Profit: ${formatPrice(profit, 3)}`;
+          return `${timestampToDateString(params[1].data.date)}<br />${
+            params[1].marker
+          }${profitText}`;
+        },
+        axisPointer: {
+          type: 'line',
+          label: {
+            backgroundColor: '#6a7985',
+          },
         },
       },
-    },
-    legend: {
-      data: [CHART_PROFIT],
-      right: '5%',
-      selectedMode: false,
-    },
-    useUTC: false,
-    xAxis: {
-      type: 'time',
-    },
-    yAxis: [
-      {
-        type: 'value',
-        name: CHART_PROFIT,
-        splitLine: {
-          show: false,
+      legend: {
+        data: [CHART_PROFIT],
+        right: '5%',
+        selectedMode: false,
+      },
+      useUTC: false,
+      xAxis: {
+        type: 'time',
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: CHART_PROFIT,
+          splitLine: {
+            show: false,
+          },
+          nameRotate: 90,
+          nameLocation: 'middle',
+          nameGap: 40,
         },
-        nameRotate: 90,
-        nameLocation: 'middle',
-        nameGap: 40,
+      ],
+      grid: {
+        bottom: 80,
       },
-    ],
-    grid: {
-      bottom: 80,
-    },
-    dataZoom: [
-      {
-        type: 'inside',
-        // xAxisIndex: [0],
-        start: 0,
+      dataZoom: [
+        {
+          type: 'inside',
+          // xAxisIndex: [0],
+          start: 0,
 
-        end: 100,
-      },
-      {
-        // xAxisIndex: [0],
-        bottom: 10,
-        start: 0,
-        end: 100,
-        ...dataZoomPartial,
-      },
-    ],
-  };
-  const chartOptionsLoc1 = generateChart(true);
-  // Merge the series and dataset, but not the rest
-  chartOptionsLoc.series = chartOptionsLoc1.series;
-  chartOptionsLoc.dataset = chartOptionsLoc1.dataset;
+          end: 100,
+        },
+        {
+          // xAxisIndex: [0],
+          bottom: 10,
+          start: 0,
+          end: 100,
+          ...dataZoomPartial,
+        },
+      ],
+    };
 
-  chart.value?.setOption(chartOptionsLoc, { notMerge: true });
-  updateChart(true);
-}
+    const chartOptionsLoc1 = generateChart(false);
+    // Merge the series and dataset, but not the rest
+    chartOptionsLoc.series = chartOptionsLoc1.series;
+    chartOptionsLoc.dataset = chartOptionsLoc1.dataset;
+    // console.log('computed chartOptionsLoc', chartOptionsLoc);
+    return chartOptionsLoc;
+  },
+);
 
 onMounted(() => {
-  initializeChart();
+  // initializeChart();
 });
 
 watchThrottled(
   () => props.openTrades,
   () => {
+    // cumProfitChartOptions.trigger();
     updateChart();
   },
   { throttle: 60 * 1000 },
 );
 watch(
-  () => props.trades,
+  () => settingsStore.chartTheme,
   () => {
-    updateChart();
+    cumProfitChartOptions.trigger();
   },
 );
 </script>
