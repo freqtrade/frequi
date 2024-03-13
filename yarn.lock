@@ -2604,12 +2604,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "date-fns-tz@npm:2.0.0"
+"date-fns-tz@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "date-fns-tz@npm:2.0.1"
   peerDependencies:
-    date-fns: ">=2.0.0"
-  checksum: a6553603a9d26dd9669326c99a58a2335ac550bc060c74b86a5ad9e1de73c9d4e3e5236f0f552f990e616e4e8dcc2b6a637913a04d2e04396e6a9f8ae83c73da
+    date-fns: 2.x
+  checksum: 2d2bb3d67f1ac876a7bd3bbe027aba61347d21c74f20a3f014c53d6057a7a1653ed3021c2d9271dc24411ab38f82763fec362c4f24e944465172cd80ee8c4b5f
   languageName: node
   linkType: hard
 
@@ -3535,7 +3535,7 @@ __metadata:
     core-js: ^3.36.0
     cypress: ^13.6.6
     date-fns: ^2.30.0
-    date-fns-tz: ^2.0.0
+    date-fns-tz: ^2.0.1
     echarts: ^5.5.0
     eslint: ^8.57.0
     eslint-plugin-prettier: ^5.1.3
