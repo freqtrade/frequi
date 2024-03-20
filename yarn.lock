@@ -1482,19 +1482,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/test-utils@npm:^2.4.4":
-  version: 2.4.4
-  resolution: "@vue/test-utils@npm:2.4.4"
+"@vue/test-utils@npm:^2.4.5":
+  version: 2.4.5
+  resolution: "@vue/test-utils@npm:2.4.5"
   dependencies:
     js-beautify: ^1.14.9
-    vue-component-type-helpers: ^1.8.21
-  peerDependencies:
-    "@vue/server-renderer": ^3.0.1
-    vue: ^3.0.1
-  peerDependenciesMeta:
-    "@vue/server-renderer":
-      optional: true
-  checksum: edd444308a6e2ec6806fa81612236005448f2a0e98bf0e85c33af027ab910706be46cc292dd96b1df51685673a826825b1994cd290cadba529832e70f6018e22
+    vue-component-type-helpers: ^2.0.0
+  checksum: 385745c2e644fcc5af1c6da1448c51b1222eba70fe21f290ee20b7ef718e3a8b699dbab6305ac7f6711c9d03e508fbdb009aa5b9b9be06556dee21e1a64af846
   languageName: node
   linkType: hard
 
@@ -3294,7 +3288,7 @@ __metadata:
     "@vue/eslint-config-prettier": ^9.0.0
     "@vue/eslint-config-typescript": ^13.0.0
     "@vue/runtime-dom": ^3.4.21
-    "@vue/test-utils": ^2.4.4
+    "@vue/test-utils": ^2.4.5
     "@vuepic/vue-datepicker": ^8.2.0
     "@vueuse/core": ^10.9.0
     "@vueuse/integrations": ^10.9.0
@@ -6202,10 +6196,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-component-type-helpers@npm:^1.8.21":
-  version: 1.8.22
-  resolution: "vue-component-type-helpers@npm:1.8.22"
-  checksum: 50cada55013c1579278e25c47cc4e338f4cbca65642a939962cff349dac0fa8d12cbb8214f80234173f77a1c91901c174929fca0249eb000b87c56e5bd0a0b60
+"vue-component-type-helpers@npm:^2.0.0":
+  version: 2.0.6
+  resolution: "vue-component-type-helpers@npm:2.0.6"
+  checksum: f6a48eb7b7c0a492a273c010d85d5caf1560656a1375a72ac76d58e72a03ea5d2c697f520ed8cc51b37a515bfdf33a96980dfe34ff892d666325d0b43ab3a781
   languageName: node
   linkType: hard
 

@@ -52,7 +52,7 @@
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/runtime-dom": "^3.4.21",
-    "@vue/test-utils": "^2.4.4",
+    "@vue/test-utils": "^2.4.5",
     "cypress": "^13.6.6",
     "eslint": "^8.57.0",
     "eslint-plugin-prettier": "^5.1.3",
