@@ -28,7 +28,7 @@ const profitItems = computed<TableItem[]>(() => {
   if (!props.profit) return [];
   return [
     {
-      metric: 'ROI open trades',
+      metric: 'ROI closed trades',
       value: props.profit.profit_closed_coin
         ? `${formatPriceCurrency(
             props.profit.profit_closed_coin,
