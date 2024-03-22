@@ -16,13 +16,15 @@ function buildToolTip(
   side: string,
   quoteCurrency: string,
 ): string {
-  return `${trade.is_short ? 'Short' : 'Long'} ${side}
+  let tooltip = `${trade.is_short ? 'Short' : 'Long'} ${side}
   ${formatPercent(trade.profit_ratio)} ${
     trade.profit_abs ? '(' + formatPriceCurrency(trade.profit_abs, quoteCurrency) + ')' : ''
   }
   ${buildTooltipCost(order, quoteCurrency)}
-  Enter-tag: ${trade.enter_tag ?? ''}
-  Exit-Tag: ${trade.exit_reason ?? ''}`;
+  Enter-tag: ${trade.enter_tag ?? ''}`;
+  tooltip += `${'ft_order_tag' in order && order.ft_order_tag && trade.enter_tag != order.ft_order_tag ? '\nOrder-Tag: ' + order.ft_order_tag : ''}`;
+  tooltip += `${trade.exit_reason ? '\nExit-Tag: ' + trade.exit_reason : ''}`;
+  return tooltip;
 }
 
 function buildAdjustmentToolTip(
@@ -30,9 +32,12 @@ function buildAdjustmentToolTip(
   order: Order | BTOrder,
   quoteCurrency: string,
 ): string {
-  return `${trade.is_short ? 'Short' : 'Long'} adjustment
+  let tooltip = `${trade.is_short ? 'Short' : 'Long'} adjustment
   ${buildTooltipCost(order, quoteCurrency)}
   Enter-tag: ${trade.enter_tag ?? ''}`;
+  tooltip += `${'ft_order_tag' in order && order.ft_order_tag ? '\nOrder-Tag: ' + order.ft_order_tag : ''}`;
+
+  return tooltip;
 }
 
 const ADJUSTMENT_SYMBOL =
