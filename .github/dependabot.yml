@@ -51,6 +51,10 @@ updates:
     unplugin:
       patterns:
         - "unplugin*"
+    date-fns:
+      patterns:
+        - "date-fns*"
+
 
 - package-ecosystem: "github-actions"
   directory: "/"
