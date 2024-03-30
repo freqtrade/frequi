@@ -29,19 +29,14 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "cypress/support/*.ts",
+    "components.d.ts",
   ],
   "exclude": [
       "node_modules",
       // "tests"
   ],
   "vueCompilerOptions": {
-    "experimentalImplicitWrapComponentOptionsWithDefineComponent": false,
     "target": 3,
-    "experimentalTemplateCompilerOptions": {
-      "compatConfig": {
-        "MODE": 3
-      } // optional
-    },
     "experimentalModelPropName": {
       "": {
         "b-form-radio": true
