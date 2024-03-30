@@ -24,18 +24,29 @@
           </b-card>
         </div>
       </div>
-      <b-card header="Results per Enter tag">
-        <b-table small hover stacked="sm" :items="enterTagSummary" :fields="perTagReason">
-        </b-table>
-      </b-card>
-      <b-card header="Results per Exit-reason">
-        <b-table small hover stacked="sm" :items="exitReasonSummary" :fields="perExitReason">
-        </b-table>
-      </b-card>
-      <b-card header="Results per pair">
-        <b-table small hover stacked="sm" :items="resultsPerPair" :fields="perPairFields">
-        </b-table>
-      </b-card>
+      <BacktestResultTablePer
+        title="Results per Enter tag"
+        :results="backtestResult.results_per_enter_tag"
+        :stake-currency="backtestResult.stake_currency"
+        key-header="Tag"
+        :stake-currency-decimals="backtestResult.stake_currency_decimals"
+      />
+
+      <BacktestResultTablePer
+        title="Results per Exit-reason"
+        :results="backtestResult.exit_reason_summary ?? []"
+        :stake-currency="backtestResult.stake_currency"
+        key-header="Exit Reason"
+        :stake-currency-decimals="backtestResult.stake_currency_decimals"
+      />
+
+      <BacktestResultTablePer
+        title="Results per pair"
+        :results="backtestResult.results_per_pair"
+        :stake-currency="backtestResult.stake_currency"
+        key-header="Pair"
+        :stake-currency-decimals="backtestResult.stake_currency_decimals"
+      />
       <b-card v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
         <BacktestResultPeriodBreakdown :periodic-breakdown="backtestResult.periodic_breakdown">
         </BacktestResultPeriodBreakdown>
@@ -56,9 +67,8 @@
 import { StrategyBacktestResult } from '@/types';
 import { formatObjectForTable } from '@/shared/objectToTableItems';
 
-import { formatPercent, formatPrice } from '@/shared/formatters';
 import { generateBacktestMetricRows, generateBacktestSettingRows } from '@/shared/backtestMetrics';
-import { TableField, TableItem } from 'bootstrap-vue-next';
+import { TableField } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
@@ -74,96 +84,6 @@ const backtestResultSettings = computed(() => {
   const tmp = generateBacktestSettingRows(props.backtestResult);
 
   return formatObjectForTable({ value: tmp }, 'setting');
-});
-
-const resultsPerPair = computed(
-  () => props.backtestResult.results_per_pair as unknown as TableItem[],
-);
-const exitReasonSummary = computed(
-  () =>
-    (props.backtestResult.exit_reason_summary ||
-      props.backtestResult.sell_reason_summary) as unknown as TableItem[],
-);
-
-const enterTagSummary = computed(
-  () => props.backtestResult.results_per_enter_tag as unknown as TableItem[],
-);
-
-const perPairFields = computed(() => {
-  return [
-    { key: 'key', label: 'Pair' },
-    { key: 'trades', label: 'Buys' },
-    {
-      key: 'profit_mean',
-      label: 'Avg Profit %',
-      formatter: (value) => formatPercent(value, 2),
-    },
-    {
-      key: 'profit_total_abs',
-      label: `Tot Profit ${props.backtestResult.stake_currency}`,
-      formatter: (value) => formatPrice(value, props.backtestResult.stake_currency_decimals),
-    },
-    {
-      key: 'profit_total',
-      label: 'Tot Profit %',
-      formatter: (value) => formatPercent(value, 2),
-    },
-    { key: 'duration_avg', label: 'Avg Duration' },
-    { key: 'wins', label: 'Wins' },
-    { key: 'draws', label: 'Draws' },
-    { key: 'losses', label: 'Losses' },
-  ];
-});
-
-const perExitReason = computed(() => {
-  return [
-    { key: 'exit_reason', label: 'Exit Reason' },
-    { key: 'trades', label: 'Buys' },
-    {
-      key: 'profit_mean',
-      label: 'Avg Profit %',
-      formatter: (value) => formatPercent(value, 2),
-    },
-    {
-      key: 'profit_total_abs',
-      label: `Tot Profit ${props.backtestResult.stake_currency}`,
-
-      formatter: (value) => formatPrice(value, props.backtestResult.stake_currency_decimals),
-    },
-    {
-      key: 'profit_total',
-      label: 'Tot Profit %',
-      formatter: (value) => formatPercent(value, 2),
-    },
-    { key: 'wins', label: 'Wins' },
-    { key: 'draws', label: 'Draws' },
-    { key: 'losses', label: 'Losses' },
-  ];
-});
-const perTagReason = computed(() => {
-  return [
-    { key: 'key', label: 'Tag', formatter: (value) => value || 'OTHER' },
-    { key: 'trades', label: 'Buys' },
-    {
-      key: 'profit_mean',
-      label: 'Avg Profit %',
-      formatter: (value) => formatPercent(value, 2),
-    },
-    {
-      key: 'profit_total_abs',
-      label: `Tot Profit ${props.backtestResult.stake_currency}`,
-
-      formatter: (value) => formatPrice(value, props.backtestResult.stake_currency_decimals),
-    },
-    {
-      key: 'profit_total',
-      label: 'Tot Profit %',
-      formatter: (value) => formatPercent(value, 2),
-    },
-    { key: 'wins', label: 'Wins' },
-    { key: 'draws', label: 'Draws' },
-    { key: 'losses', label: 'Losses' },
-  ];
 });
 const backtestResultFields: TableField[] = [
   { key: 'metric', label: 'Metric' },
