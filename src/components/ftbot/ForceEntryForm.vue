@@ -3,7 +3,7 @@
     id="forceentry-modal"
     ref="modal"
     v-model="model"
-    title="Force entering a trade"
+    :title="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
     @show="resetForm"
     @hidden="resetForm"
     @ok="handleEntry"
@@ -37,6 +37,7 @@
           id="pair-input"
           v-model="selectedPair"
           required
+          :disabled="positionIncrease"
           @keydown.enter="handleEntry"
           @focus="inputSelect"
         ></b-form-input>
@@ -124,6 +125,7 @@ import { ForceEnterPayload, OrderSides } from '@/types';
 const props = defineProps({
   modelValue: { required: true, default: false, type: Boolean },
   pair: { type: String, default: '' },
+  positionIncrease: { type: Boolean, default: false },
 });
 const emit = defineEmits(['update:modelValue']);
 const botStore = useBotStore();

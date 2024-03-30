@@ -80,7 +80,11 @@
       </b-form-group>
     </div>
     <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
-    <ForceEntryForm v-model="increasePosition.visible" :pair="increasePosition.trade?.pair" />
+    <ForceEntryForm
+      v-model="increasePosition.visible"
+      :pair="increasePosition.trade?.pair"
+      position-increase
+    />
 
     <b-modal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
       {{ confirmExitText }}
