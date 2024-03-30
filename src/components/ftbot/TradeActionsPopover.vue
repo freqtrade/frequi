@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Trade } from '@/types';
 
-import TradeActions from './TradeActions.vue';
-
 defineProps({
   trade: { type: Object as () => Trade, required: true },
   id: { type: Number, required: true },
   botApiVersion: { type: Number, required: true },
+  enableForceEntry: { type: Boolean, default: false },
 });
 const emit = defineEmits([
   'forceExit',
@@ -14,6 +13,7 @@ const emit = defineEmits([
   'cancelOpenOrder',
   'reloadTrade',
   'deleteTrade',
+  'forceEntry',
 ]);
 const popoverOpen = ref(false);
 
@@ -32,6 +32,14 @@ function cancelOpenOrderHandler(item: Trade) {
 function handleReloadTrade(item: Trade) {
   popoverOpen.value = false;
   emit('reloadTrade', item);
+}
+function handleDeleteTrade(item: Trade) {
+  popoverOpen.value = false;
+  emit('deleteTrade', item);
+}
+function handleForceEntry(item: Trade) {
+  popoverOpen.value = false;
+  emit('forceEntry', item);
 }
 </script>
 
@@ -57,14 +65,13 @@ function handleReloadTrade(item: Trade) {
       <trade-actions
         :trade="trade"
         :bot-api-version="botApiVersion"
+        :enable-force-entry="enableForceEntry"
         @force-exit="forceExitHandler"
         @force-exit-partial="forceExitPartialHandler"
-        @delete-trade="
-          popoverOpen = false;
-          $emit('deleteTrade', trade);
-        "
+        @delete-trade="handleDeleteTrade(trade)"
         @cancel-open-order="cancelOpenOrderHandler"
         @reload-trade="handleReloadTrade"
+        @force-entry="handleForceEntry"
       />
       <b-button class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
         <i-mdi-cancel class="me-1" />Close Actions menu

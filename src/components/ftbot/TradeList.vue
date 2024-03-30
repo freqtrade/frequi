@@ -29,6 +29,7 @@
       <template #cell(actions)="{ index, item }">
         <TradeActionsPopover
           :id="index"
+          :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
           :trade="item as unknown as Trade"
           :bot-api-version="botStore.activeBot.botApiVersion"
           @delete-trade="removeTradeHandler(item as unknown as Trade)"
@@ -36,6 +37,7 @@
           @force-exit-partial="forceExitPartialHandler"
           @cancel-open-order="cancelOpenOrderHandler"
           @reload-trade="reloadTradeHandler"
+          @force-entry="handleForceEntry"
         />
       </template>
       <template #cell(pair)="row">
@@ -78,6 +80,8 @@
       </b-form-group>
     </div>
     <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
+    <ForceEntryForm v-model="increasePosition.visible" :pair="increasePosition.trade?.pair" />
+
     <b-modal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
       {{ confirmExitText }}
     </b-modal>
@@ -123,6 +127,7 @@ const removeTradeVisible = ref(false);
 const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
 
+const increasePosition = ref({ visible: false, trade: {} as Trade });
 const openFields: TableField[] = [{ key: 'actions' }];
 const closedFields: TableField[] = [
   { key: 'close_timestamp', label: 'Close date' },
@@ -245,6 +250,11 @@ function cancelOpenOrderHandler(item: Trade) {
 
 function reloadTradeHandler(item: Trade) {
   botStore.reloadTradeMulti({ tradeid: String(item.trade_id), botId: item.botId });
+}
+
+function handleForceEntry(item: Trade) {
+  increasePosition.value.trade = item;
+  increasePosition.value.visible = true;
 }
 
 function handleContextMenuEvent(item, index, event) {

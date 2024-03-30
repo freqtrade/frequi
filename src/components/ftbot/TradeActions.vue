@@ -46,6 +46,15 @@
       <i-mdi-cancel class="me-1" />Cancel open order
     </b-button>
     <b-button
+      v-if="enableForceEntry"
+      class="btn-xs text-start mt-1"
+      size="sm"
+      title="Increase position"
+      @click="$emit('forceEntry', trade)"
+    >
+      <i-mdi-plus-box-multiple-outline class="me-1" />Increase position
+    </b-button>
+    <b-button
       v-if="botApiVersion >= 2.28"
       class="btn-xs text-start mt-1"
       size="sm"
@@ -78,8 +87,19 @@ defineProps({
     type: Object as () => Trade,
     required: true,
   },
+  enableForceEntry: {
+    type: Boolean,
+    default: false,
+  },
 });
-defineEmits(['forceExit', 'forceExitPartial', 'cancelOpenOrder', 'reloadTrade', 'deleteTrade']);
+defineEmits([
+  'forceExit',
+  'forceExitPartial',
+  'cancelOpenOrder',
+  'reloadTrade',
+  'deleteTrade',
+  'forceEntry',
+]);
 </script>
 
 <style scoped lang="scss"></style>
