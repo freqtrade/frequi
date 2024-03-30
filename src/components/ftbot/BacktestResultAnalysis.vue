@@ -24,6 +24,10 @@
           </b-card>
         </div>
       </div>
+      <b-card header="Results per Enter tag">
+        <b-table small hover stacked="sm" :items="enterTagSummary" :fields="perTagReason">
+        </b-table>
+      </b-card>
       <b-card header="Results per Exit-reason">
         <b-table small hover stacked="sm" :items="exitReasonSummary" :fields="perExitReason">
         </b-table>
@@ -81,6 +85,10 @@ const exitReasonSummary = computed(
       props.backtestResult.sell_reason_summary) as unknown as TableItem[],
 );
 
+const enterTagSummary = computed(
+  () => props.backtestResult.results_per_enter_tag as unknown as TableItem[],
+);
+
 const perPairFields = computed(() => {
   return [
     { key: 'key', label: 'Pair' },
@@ -110,6 +118,31 @@ const perPairFields = computed(() => {
 const perExitReason = computed(() => {
   return [
     { key: 'exit_reason', label: 'Exit Reason' },
+    { key: 'trades', label: 'Buys' },
+    {
+      key: 'profit_mean',
+      label: 'Avg Profit %',
+      formatter: (value) => formatPercent(value, 2),
+    },
+    {
+      key: 'profit_total_abs',
+      label: `Tot Profit ${props.backtestResult.stake_currency}`,
+
+      formatter: (value) => formatPrice(value, props.backtestResult.stake_currency_decimals),
+    },
+    {
+      key: 'profit_total',
+      label: 'Tot Profit %',
+      formatter: (value) => formatPercent(value, 2),
+    },
+    { key: 'wins', label: 'Wins' },
+    { key: 'draws', label: 'Draws' },
+    { key: 'losses', label: 'Losses' },
+  ];
+});
+const perTagReason = computed(() => {
+  return [
+    { key: 'key', label: 'Tag', formatter: (value) => value || 'OTHER' },
     { key: 'trades', label: 'Buys' },
     {
       key: 'profit_mean',
