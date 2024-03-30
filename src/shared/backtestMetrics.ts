@@ -177,10 +177,10 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
     { '___   ': '___' },
 
     {
-      'Best Pair': `${result.best_pair.key} ${formatPercent(result.best_pair.profit_sum)}`,
+      'Best Pair': `${result.best_pair.key} ${formatPercent(result.best_pair.profit_total)}`,
     },
     {
-      'Worst Pair': `${result.worst_pair.key} ${formatPercent(result.worst_pair.profit_sum)}`,
+      'Worst Pair': `${result.worst_pair.key} ${formatPercent(result.worst_pair.profit_total)}`,
     },
     { 'Best single Trade': bestPair },
     { 'Worst single Trade': worstPair },
