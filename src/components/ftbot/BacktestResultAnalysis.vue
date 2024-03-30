@@ -90,7 +90,6 @@ const perPairFields = computed(() => {
       label: 'Avg Profit %',
       formatter: (value) => formatPercent(value, 2),
     },
-    { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
     {
       key: 'profit_total_abs',
       label: `Tot Profit ${props.backtestResult.stake_currency}`,
@@ -117,7 +116,6 @@ const perExitReason = computed(() => {
       label: 'Avg Profit %',
       formatter: (value) => formatPercent(value, 2),
     },
-    { key: 'profit_sum', label: 'Cum Profit %', formatter: (value) => formatPercent(value, 2) },
     {
       key: 'profit_total_abs',
       label: `Tot Profit ${props.backtestResult.stake_currency}`,
