@@ -159,6 +159,10 @@
     .form-control {
         color: $fg-color;
         background: $bg-dark;
+        &:disabled {
+            color: darken($fg-color, 30%);
+            background: lighten($bg-dark, 10%);
+        }
     }
 
     .popover {
