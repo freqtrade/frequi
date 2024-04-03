@@ -3760,7 +3760,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.1.3"
     eslint-plugin-vue: "npm:^9.24.0"
     favico.js: "npm:^0.3.10"
-    humanize-duration: "npm:^3.30.0"
+    humanize-duration: "npm:^3.32.0"
     mutationobserver-shim: "npm:^0.3.7"
     pinia: "npm:^2.1.7"
     pinia-plugin-persistedstate: "npm:^3.2.1"
@@ -4132,10 +4132,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"humanize-duration@npm:^3.30.0":
-  version: 3.31.0
-  resolution: "humanize-duration@npm:3.31.0"
-  checksum: 10/6737c09c9eabd5f0ff91455b5325c41b5a037e8a4b6ad3068c7f27f5bc2d938aa743451d7cd42ee614d10b52518c69bb470caa9aa90ee36d30f16694984d5aad
+"humanize-duration@npm:^3.32.0":
+  version: 3.32.0
+  resolution: "humanize-duration@npm:3.32.0"
+  checksum: 10/5388507c78c845781b2364b0ccdce069fb537ba8cb0a4ee1232c9392e9b942a2d1f8fb36b149ae85b3d57d5698ff0f51ed5a1628124cfd94e8dc630ab1202f9c
   languageName: node
   linkType: hard
 
