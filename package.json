@@ -29,7 +29,7 @@
     "date-fns-tz": "^2.0.1",
     "echarts": "^5.5.0",
     "favico.js": "^0.3.10",
-    "humanize-duration": "^3.30.0",
+    "humanize-duration": "^3.32.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "sortablejs": "^1.15.2",
