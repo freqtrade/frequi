@@ -1,5 +1,6 @@
 <template>
   <b-modal
+    id="MsgBoxModal"
     ref="removeTradeModal"
     v-model="showRef"
     :title="title"
