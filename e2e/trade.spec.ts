@@ -46,6 +46,7 @@ test('Trade', async ({ page }) => {
   // // Check visibility of elements
   await expect(page.locator('.drag-header', { hasText: 'Multi Pane' })).toBeInViewport();
   await expect(page.locator('.drag-header:has-text("Chart")')).toBeInViewport();
+  // Pairlist elements
   await expect(page.locator('button:has-text("BTC/USDT")')).toBeInViewport();
   await expect(page.locator('button:has-text("ETH/USDT")')).toBeInViewport();
 
@@ -56,38 +57,32 @@ test('Trade', async ({ page }) => {
   ]);
 
   // // Check visibility of Profit USDT
-  // await expect(page.locator('th:has-text("Profit USDT")')).toBeInViewport();
+  await expect(page.locator('th:has-text("Profit USDT")')).toBeInViewport();
 
   // // Test messageBox behavior
-  // // No modal visible
-  expect(
-    await page.$$eval(
-      '.modal-dialog > .modal-content > .modal-footer > .btn-secondary:visible',
-      (elements) => elements.length,
-    ),
-  ).toBe(0);
 
-  // await page.locator('.mt-1 > .mt-1').getByRole('button').getByTitle('Stop Trading').click();
+  const dialogModal = page.getByRole('dialog');
+  const modalButton = page.locator(
+    '#MsgBoxModal .modal-dialog > .modal-content > .modal-footer > .btn-secondary:has-text("Cancel")',
+  );
+  await expect(dialogModal).not.toBeVisible();
+  await expect(dialogModal).not.toBeInViewport();
 
-  // // Modal open
-  // await expect(
-  //   page.locator(
-  //     '.modal-dialog > .modal-content > .modal-footer > .btn-secondary:visible:has-text("Cancel")',
-  //   ),
-  // ).toBeVisible();
+  await expect(modalButton).not.toBeVisible();
+
+  await page.getByRole('button', { name: 'Stop Trading - Also stops' }).click();
+
+  // Modal open
+  await expect(dialogModal).toBeVisible();
+  await expect(dialogModal).toBeInViewport();
+  await expect(modalButton).toBeInViewport();
 
   // // Close modal
-  // await page.click(
-  //   '.modal-dialog > .modal-content > .modal-footer > .btn-secondary:visible:has-text("Cancel")',
-  // );
+  await modalButton.click();
 
   // // Modal closed
-  // expect(
-  //   await page.$$eval(
-  //     '.modal-dialog > .modal-content > .modal-footer > .btn-secondary:visible',
-  //     (elements) => elements.length,
-  //   ),
-  // ).toBe(0);
+  await expect(modalButton).not.toBeVisible();
+  await expect(modalButton).not.toBeInViewport();
 
   // // Click on General tab
   const performancePair = page.locator('td:has-text("XRP/USDT")');
@@ -112,7 +107,18 @@ test('Trade', async ({ page }) => {
   await expect(multiPane).toBeInViewport();
 
   // // Click on Reload Config button
+  await page.getByRole('button', { name: 'Reload Config' }).click();
   // await page.locator('button[title*="Reload Config "]').click();
+  await expect(dialogModal).toBeVisible();
+  await expect(dialogModal).toBeInViewport();
+
+  const modalOkButton = page.locator(
+    '#MsgBoxModal .modal-dialog > .modal-content > .modal-footer > .btn-primary:has-text("Ok")',
+  );
+  await expect(modalOkButton).toBeVisible();
+  await modalOkButton.click();
+
+  await expect(page.getByText('Config reloaded successfully.')).toBeInViewport();
 
   await page.locator('#avatar-drop').click();
 
