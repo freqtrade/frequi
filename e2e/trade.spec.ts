@@ -31,18 +31,17 @@ test('Trade', async ({ page }) => {
   await setLoginInfo(page);
 
   await tradeMocks(page);
-
   await page.goto('/trade');
 
   // Wait for network requests
   // await page.waitForResponse('**/ping');
   await page.waitForResponse('**/status');
-  // await page.waitForResponse('**/Profit');
-  // await page.waitForResponse('**/Balance');
-  // await page.waitForResponse('**/Trades');
-  // await page.waitForResponse('**/Whitelist');
-  // await page.waitForResponse('**/Blacklist');
-  // await page.waitForResponse('**/Locks');
+  await page.waitForResponse('**/profit');
+  await page.waitForResponse('**/balance');
+  // await page.waitForResponse('**/trades');
+  await page.waitForResponse('**/whitelist');
+  await page.waitForResponse('**/blacklist');
+  await page.waitForResponse('**/locks');
 
   // // Check visibility of elements
   await expect(page.locator('.drag-header', { hasText: 'Multi Pane' })).toBeInViewport();
@@ -67,8 +66,6 @@ test('Trade', async ({ page }) => {
       (elements) => elements.length,
     ),
   ).toBe(0);
-
-  // // Click on Stop Trading button
 
   // await page.locator('.mt-1 > .mt-1').getByRole('button').getByTitle('Stop Trading').click();
 
@@ -116,4 +113,24 @@ test('Trade', async ({ page }) => {
 
   // // Click on Reload Config button
   // await page.locator('button[title*="Reload Config "]').click();
+
+  await page.locator('#avatar-drop').click();
+
+  await page.getByLabel('Lock layout').uncheck();
+
+  const chartHeader = await page.locator('.drag-header:has-text("Chart")');
+  await expect(multiPane).toBeInViewport();
+  await expect(chartHeader).toBeInViewport();
+
+  // Test drag and drop functionality
+  const chartHeaderbb = await chartHeader.boundingBox();
+  if (chartHeaderbb) {
+    await chartHeader.hover();
+    await page.mouse.down();
+
+    await page.mouse.move(chartHeaderbb?.x + chartHeaderbb.width / 2, chartHeaderbb?.y + 200);
+    await page.mouse.up();
+    await expect(multiPane).toBeInViewport();
+    await expect(chartHeader).toBeInViewport();
+  }
 });
