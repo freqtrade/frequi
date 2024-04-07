@@ -30,6 +30,12 @@ export async function defaultMocks(page: Page) {
   await page.route('**/api/v1/ping', (route) => {
     return route.fulfill({ path: './cypress/fixtures/ping.json' });
   });
+  await page.route('**/api/v1/show_config', (route) => {
+    return route.fulfill({ path: './cypress/fixtures/show_config.json' });
+  });
+  await page.route('**/api/v1/pair_candles?*', (route) => {
+    return route.fulfill({ path: './cypress/fixtures/pair_candles_btc_1m.json' });
+  });
 }
 
 export function getWaitForResponse(page: Page, url: string) {
