@@ -35,6 +35,7 @@ export interface PairResult {
   winrate?: number;
 }
 
+// TODO: ExitReasonResult was replaced with PairResult on 2024-03-30.
 export interface ExitReasonResults {
   draws: number;
   losses: number;
@@ -75,7 +76,7 @@ export interface StrategyBacktestResult {
   worst_pair: PairResult;
   results_per_pair: PairResult[];
   sell_reason_summary?: ExitReasonResults[];
-  exit_reason_summary?: ExitReasonResults[];
+  exit_reason_summary?: ExitReasonResults[] | PairResult[];
   results_per_enter_tag: PairResult[];
   periodic_breakdown?: PeriodicBreakdown;
   left_open_trades: Trade[];
