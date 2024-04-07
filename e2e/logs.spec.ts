@@ -19,8 +19,11 @@ test.describe('Logs', () => {
     await page.goto('/logs', { waitUntil: 'networkidle' });
     await Promise.all([logs, ping]);
 
-    await expect(page.locator('textarea')).toBeVisible();
-    await expect(page.locator('textarea')).toHaveValue(/Checking exchange.../, {});
+    await expect(page.locator('span', { hasText: 'Checking exchange' })).toBeVisible();
+    await expect(page.locator('span', { hasText: 'Checking exchange' })).toHaveText(
+      /Checking exchange.../,
+      {},
+    );
     // const logsPromise = page.waitForResponse('**/api/v1/logs');
     const logsPromise = getWaitForResponse(page, '@Logs');
     await page.getByRole('button', { name: 'Reload Logs' }).click();
