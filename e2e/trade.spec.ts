@@ -35,16 +35,16 @@ test.describe('Trade', () => {
   });
   test('Trade page', async ({ page }) => {
     await Promise.all([
-      await page.goto('/trade'),
+      page.goto('/trade'),
       // Wait for network requests
-      // await page.waitForResponse('**/ping'),
-      await page.waitForResponse('**/status'),
-      await page.waitForResponse('**/profit'),
-      await page.waitForResponse('**/balance'),
-      // await page.waitForResponse('**/trades'),
-      await page.waitForResponse('**/whitelist'),
-      await page.waitForResponse('**/blacklist'),
-      await page.waitForResponse('**/locks'),
+      //  page.waitForResponse('**/ping'),
+      page.waitForResponse('**/status'),
+      page.waitForResponse('**/profit'),
+      page.waitForResponse('**/balance'),
+      //  page.waitForResponse('**/trades'),
+      page.waitForResponse('**/whitelist'),
+      page.waitForResponse('**/blacklist'),
+      page.waitForResponse('**/locks'),
     ]);
 
     // // Check visibility of elements
