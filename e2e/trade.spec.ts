@@ -121,8 +121,12 @@ test.describe('Trade', () => {
     await modalOkButton.click();
 
     await expect(page.getByText('Config reloaded successfully.')).toBeInViewport();
+  });
+  test('Trade page - drag and drop', async ({ page }) => {
+    await page.goto('/trade');
 
     await page.locator('#avatar-drop').click();
+    const multiPane = page.locator('.drag-header', { hasText: 'Multi Pane' });
 
     await page.getByLabel('Lock layout').uncheck();
 
