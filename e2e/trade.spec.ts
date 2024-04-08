@@ -47,10 +47,10 @@ test.describe('Trade', () => {
 
     // // Check visibility of elements
     await expect(page.locator('.drag-header', { hasText: 'Multi Pane' })).toBeInViewport();
-    await expect(page.locator('.drag-header:has-text("Chart")')).toBeInViewport();
+    await expect(page.locator('.drag-header', { hasText: 'Chart' })).toBeInViewport();
     // Pairlist elements
-    await expect(page.locator('button:has-text("BTC/USDT")')).toBeInViewport();
-    await expect(page.locator('button:has-text("ETH/USDT")')).toBeInViewport();
+    await expect(page.locator('button', { hasText: 'BTC/USDT' })).toBeInViewport();
+    await expect(page.locator('button', { hasText: 'ETH/USDT' })).toBeInViewport();
 
     // // Click on Performance button and wait for response
     await Promise.all([
