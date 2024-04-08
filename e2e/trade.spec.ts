@@ -32,18 +32,20 @@ test.describe('Trade', () => {
     await setLoginInfo(page);
 
     await tradeMocks(page);
-    await page.goto('/trade');
   });
   test('Trade page', async ({ page }) => {
-    // Wait for network requests
-    // await page.waitForResponse('**/ping');
-    await page.waitForResponse('**/status');
-    await page.waitForResponse('**/profit');
-    await page.waitForResponse('**/balance');
-    // await page.waitForResponse('**/trades');
-    await page.waitForResponse('**/whitelist');
-    await page.waitForResponse('**/blacklist');
-    await page.waitForResponse('**/locks');
+    await Promise.all([
+      await page.goto('/trade'),
+      // Wait for network requests
+      // await page.waitForResponse('**/ping'),
+      await page.waitForResponse('**/status'),
+      await page.waitForResponse('**/profit'),
+      await page.waitForResponse('**/balance'),
+      // await page.waitForResponse('**/trades'),
+      await page.waitForResponse('**/whitelist'),
+      await page.waitForResponse('**/blacklist'),
+      await page.waitForResponse('**/locks'),
+    ]);
 
     // // Check visibility of elements
     await expect(page.locator('.drag-header', { hasText: 'Multi Pane' })).toBeInViewport();
