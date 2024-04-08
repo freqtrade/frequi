@@ -34,9 +34,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
-
+    {
+      name: 'msedge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' }, // or "msedge-beta" or 'msedge-dev'
+    },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },

@@ -14,7 +14,9 @@
     "cy:run": "cypress run",
     "cy:open-ct": "cypress open-ct",
     "cy:run-ct": "cypress run --component",
-    "test:e2e": "yarn playwright test --project=chromium"
+    "test:e2e": "yarn playwright test",
+    "test:e2e-chromium": "yarn playwright test --project=chromium",
+    "test:e2e-msedge": "yarn playwright test --project=msedge"
   },
   "dependencies": {
     "@noction/vue-draggable-grid": "1.9.16",
