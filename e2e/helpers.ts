@@ -19,6 +19,21 @@ export async function setLoginInfo(page) {
   });
 }
 
+interface mockArray {
+  name: string;
+  url: string;
+  fixture: string;
+  method?: string;
+}
+
+function mockRequests(page, mocks: mockArray[]) {
+  mocks.forEach((item) => {
+    page.route(item.url, (route) => {
+      return route.fulfill({ path: `./cypress/fixtures/${item.fixture}` });
+    });
+  });
+}
+
 export async function defaultMocks(page: Page) {
   page.route('**/api/v1/**', (route) => {
     route.fulfill({
@@ -27,15 +42,33 @@ export async function defaultMocks(page: Page) {
     });
   });
 
-  await page.route('**/api/v1/ping', (route) => {
-    return route.fulfill({ path: './cypress/fixtures/ping.json' });
-  });
-  await page.route('**/api/v1/show_config', (route) => {
-    return route.fulfill({ path: './cypress/fixtures/show_config.json' });
-  });
-  await page.route('**/api/v1/pair_candles?*', (route) => {
-    return route.fulfill({ path: './cypress/fixtures/pair_candles_btc_1m.json' });
-  });
+  const mapping: mockArray[] = [
+    { name: '@Ping', url: '**/api/v1/ping', fixture: 'ping.json' },
+    { name: '@Ping', url: '**/api/v1/show_config', fixture: 'show_config.json' },
+    { name: '@Ping', url: '**/api/v1/pair_candles?*', fixture: 'pair_candles_btc_1m.json' },
+  ];
+
+  mockRequests(page, mapping);
+}
+
+export function tradeMocks(page) {
+  const mapping: mockArray[] = [
+    { name: '@Status', url: '**/api/v1/status', fixture: 'status_empty.json' },
+    { name: '@Profit', url: '**/api/v1/profit', fixture: 'profit.json' },
+    { name: '@Trades', url: '**/api/v1/trades*', fixture: 'trades.json' },
+    { name: '@Balance', url: '**/api/v1/balance', fixture: 'balance.json' },
+    { name: '@Whitelist', url: '**/api/v1/whitelist', fixture: 'whitelist.json' },
+    { name: '@Blacklist', url: '**/api/v1/blacklist', fixture: 'blacklist.json' },
+    { name: '@Locks', url: '**/api/v1/locks', fixture: 'locks_empty.json' },
+    { name: '@Performance', url: '**/api/v1/performance', fixture: 'performance.json' },
+    {
+      name: '@ReloadConfig',
+      method: 'POST',
+      url: '**/api/v1/reload_config',
+      fixture: 'reload_config.json',
+    },
+  ];
+  mockRequests(page, mapping);
 }
 
 export function getWaitForResponse(page: Page, url: string) {
