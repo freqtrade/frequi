@@ -41,21 +41,6 @@ jobs:
     - name: Run Tests
       run: yarn test:unit
 
-    - name: Run Component tests
-      uses: cypress-io/github-action@v6
-      with:
-        # we have already installed everything
-        install: false
-        # to run component tests we need to use "cypress run-ct"
-        command: yarn cypress run --component
-
-    - name: Cypress run
-      uses: cypress-io/github-action@v6
-      with:
-        # build: yarn build
-        start: yarn dev --host
-        wait-on: 'http://127.0.0.1:3000'
-
     # Playwright section
     - name: Install Playwright Browsers
       run: yarn playwright install --with-deps
@@ -71,6 +56,21 @@ jobs:
         retention-days: 30
 
     # End Playwright section
+
+    - name: Run Component tests
+      uses: cypress-io/github-action@v6
+      with:
+        # we have already installed everything
+        install: false
+        # to run component tests we need to use "cypress run-ct"
+        command: yarn cypress run --component
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v6
+      with:
+        # build: yarn build
+        start: yarn dev --host
+        wait-on: 'http://127.0.0.1:3000'
 
     - name: Build build
       run: yarn build
