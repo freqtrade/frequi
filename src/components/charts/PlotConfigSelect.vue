@@ -11,6 +11,7 @@
     @duplicate="plotStore.duplicatePlotConfig"
   >
     <b-form-select
+      id="plotConfigSelect"
       v-model="plotStore.plotConfigName"
       :options="plotStore.availablePlotConfigNames"
       size="sm"

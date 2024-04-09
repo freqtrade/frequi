@@ -14,7 +14,10 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:open-ct": "cypress open-ct",
-    "cy:run-ct": "cypress run --component"
+    "cy:run-ct": "cypress run --component",
+    "test:e2e": "yarn playwright test",
+    "test:e2e-chromium": "yarn playwright test --project=chromium",
+    "test:e2e-msedge": "yarn playwright test --project=msedge"
   },
   "dependencies": {
     "@noction/vue-draggable-grid": "1.9.16",
@@ -45,7 +48,9 @@
     "@cypress/vite-dev-server": "^5.0.7",
     "@cypress/vue": "^6.0.0",
     "@iconify-json/mdi": "^1.1.64",
+    "@playwright/test": "^1.40.0",
     "@types/echarts": "^4.9.22",
+    "@types/node": "^20.9.2",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "@vitejs/plugin-vue": "^5.0.4",
