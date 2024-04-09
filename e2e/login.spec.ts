@@ -56,11 +56,18 @@ test.describe('Login', () => {
         headers: { 'access-control-allow-origin': '*' },
       });
     });
-    const loginButton = page.locator('button[type=submit]');
+    const loginButton = await page.locator('button[type=submit]');
     await expect(loginButton).toBeVisible();
     await expect(loginButton).toContainText('Submit');
     await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
 
+    await expect(page.locator('span', { hasText: 'TestBot' })).toBeVisible();
     await expect(page.locator('button', { hasText: 'Add new Bot' })).toBeVisible();
+    await expect(page.locator('button', { hasText: 'Login' })).not.toBeVisible();
+    // Test logout
+    await page.locator('#avatar-drop').click();
+    await page.locator('a:visible', { hasText: 'Sign Out' }).click();
+    // Assert we're logged out again
+    await expect(page.locator('button', { hasText: 'Login' })).toBeVisible();
   });
 });
