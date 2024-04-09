@@ -41,4 +41,26 @@ test.describe('Login', () => {
     await expect(page.locator('li', { hasText: 'No bot selected' }).first()).toBeInViewport();
     await expect(page).toHaveURL(/.*\/login\?redirect=\/trade/);
   });
+  test('Test Login', async ({ page }) => {
+    await defaultMocks(page);
+    await page.goto('/login');
+    await page.locator('.card-header:has-text("Freqtrade bot Login")');
+    await page.locator('input[id=name-input]').fill('TestBot');
+    await page.locator('input[id=username-input]').fill('Freqtrader');
+    await page.locator('input[id=password-input]').fill('SuperDuperBot');
+
+    await page.route('**/api/v1/token/login', (route) => {
+      return route.fulfill({
+        status: 200,
+        json: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+        headers: { 'access-control-allow-origin': '*' },
+      });
+    });
+    const loginButton = page.locator('button[type=submit]');
+    await expect(loginButton).toBeVisible();
+    await expect(loginButton).toContainText('Submit');
+    await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
+
+    await expect(page.locator('button', { hasText: 'Add new Bot' })).toBeVisible();
+  });
 });
