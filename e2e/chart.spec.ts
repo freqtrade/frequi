@@ -7,7 +7,11 @@ test.describe('Chart', () => {
     await setLoginInfo(page);
   });
   test('Chart page', async ({ page }) => {
-    await page.goto('/graph');
+    await Promise.all([
+      page.goto('/graph'),
+      page.waitForResponse('**/whitelist'),
+      page.waitForResponse('**/blacklist'),
+    ]);
 
     // await page.waitForResponse('**/pair_candles');
     await page.locator('input[title="AutoRefresh"]').click();
