@@ -46,6 +46,8 @@ export async function defaultMocks(page: Page) {
     { name: '@Ping', url: '**/api/v1/ping', fixture: 'ping.json' },
     { name: '@Ping', url: '**/api/v1/show_config', fixture: 'show_config.json' },
     { name: '@Ping', url: '**/api/v1/pair_candles?*', fixture: 'pair_candles_btc_1m.json' },
+    { name: '@Whitelist', url: '**/api/v1/whitelist', fixture: 'whitelist.json' },
+    { name: '@Blacklist', url: '**/api/v1/blacklist', fixture: 'blacklist.json' },
   ];
 
   mockRequests(page, mapping);
@@ -57,8 +59,6 @@ export function tradeMocks(page) {
     { name: '@Profit', url: '**/api/v1/profit', fixture: 'profit.json' },
     { name: '@Trades', url: '**/api/v1/trades*', fixture: 'trades.json' },
     { name: '@Balance', url: '**/api/v1/balance', fixture: 'balance.json' },
-    { name: '@Whitelist', url: '**/api/v1/whitelist', fixture: 'whitelist.json' },
-    { name: '@Blacklist', url: '**/api/v1/blacklist', fixture: 'blacklist.json' },
     { name: '@Locks', url: '**/api/v1/locks', fixture: 'locks_empty.json' },
     { name: '@Performance', url: '**/api/v1/performance', fixture: 'performance.json' },
     {
