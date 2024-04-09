@@ -115,9 +115,11 @@ test.describe('Login', () => {
     await expect(loginButton).toContainText('Submit');
     await expect(page.getByText('Name and Password are required.')).not.toBeVisible();
     await expect(page.getByText('Connected to bot, however Login failed,')).not.toBeVisible();
+    await expect(page.getByText('Invalid Password')).not.toBeVisible();
 
     await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
     await expect(page.getByText('Name and Password are required.')).toBeVisible();
+    await expect(page.getByText('Invalid Password')).toBeVisible();
     await expect(page.getByText('Connected to bot, however Login failed,')).toBeVisible();
   });
 });
