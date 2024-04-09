@@ -93,4 +93,31 @@ test.describe('Login', () => {
     await expect(page.getByText('Login failed.')).toBeVisible();
     await expect(page.getByText('API Url required')).toBeVisible();
   });
+
+  test('Test Login failed - wrong password', async ({ page }) => {
+    await defaultMocks(page);
+    await page.goto('/login');
+    await page.locator('.card-header:has-text("Freqtrade bot Login")');
+    await page.locator('input[id=name-input]').fill('TestBot');
+    await page.locator('input[id=username-input]').fill('Freqtrader');
+    await page.locator('input[id=password-input]').fill('SuperDuperBot');
+
+    await page.route('**/api/v1/token/login', (route) => {
+      return route.fulfill({
+        status: 401,
+        json: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+        headers: { 'access-control-allow-origin': '*' },
+      });
+    });
+
+    const loginButton = await page.locator('button[type=submit]');
+    await expect(loginButton).toBeVisible();
+    await expect(loginButton).toContainText('Submit');
+    await expect(page.getByText('Name and Password are required.')).not.toBeVisible();
+    await expect(page.getByText('Connected to bot, however Login failed,')).not.toBeVisible();
+
+    await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
+    await expect(page.getByText('Name and Password are required.')).toBeVisible();
+    await expect(page.getByText('Connected to bot, however Login failed,')).toBeVisible();
+  });
 });
