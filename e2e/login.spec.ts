@@ -70,4 +70,27 @@ test.describe('Login', () => {
     // Assert we're logged out again
     await expect(page.locator('button', { hasText: 'Login' })).toBeVisible();
   });
+
+  test('Test Login failed - wrong api url', async ({ page }) => {
+    await defaultMocks(page);
+    await page.goto('/login');
+    await page.locator('.card-header:has-text("Freqtrade bot Login")');
+    await page.locator('input[id=name-input]').fill('TestBot');
+    await page.locator('input[id=username-input]').fill('Freqtrader');
+    await page.locator('input[id=password-input]').fill('SuperDuperBot');
+
+    await page.route('**/api/v1/token/login', (route) => {
+      return route.fulfill({
+        status: 404,
+        json: { access_token: 'access_token_tesst', refresh_token: 'refresh_test' },
+        headers: { 'access-control-allow-origin': '*' },
+      });
+    });
+    const loginButton = await page.locator('button[type=submit]');
+    await expect(loginButton).toBeVisible();
+    await expect(loginButton).toContainText('Submit');
+    await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
+    await expect(page.getByText('Login failed.')).toBeVisible();
+    await expect(page.getByText('API Url required')).toBeVisible();
+  });
 });
