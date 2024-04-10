@@ -50,7 +50,7 @@
     "@iconify-json/mdi": "^1.1.64",
     "@playwright/test": "^1.40.0",
     "@types/echarts": "^4.9.22",
-    "@types/node": "^20.9.2",
+    "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "@vitejs/plugin-vue": "^5.0.4",
