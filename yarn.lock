@@ -765,14 +765,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.40.0":
-  version: 1.40.0
-  resolution: "@playwright/test@npm:1.40.0"
+"@playwright/test@npm:^1.43.0":
+  version: 1.43.0
+  resolution: "@playwright/test@npm:1.43.0"
   dependencies:
-    playwright: "npm:1.40.0"
+    playwright: "npm:1.43.0"
   bin:
     playwright: cli.js
-  checksum: 10/46ebd396d37b3e438019229f5c84bf4a8614f455245a51fd2d77a05f6065aefc41af30f26882415607c9e4adc2bb1511bd1f1ba06d7870fae0b5525768240acb
+  checksum: 10/a30b5a9f51ae35c16a6c56d239a1e3abfbc5b8d84abf709914b9f3b02fa3afd5590cb7e01e479adafcb8282a8325c8b8afa4d70ca992502053490889f3dc714b
   languageName: node
   linkType: hard
 
@@ -3076,7 +3076,7 @@ __metadata:
     "@cypress/vue": "npm:^6.0.0"
     "@iconify-json/mdi": "npm:^1.1.64"
     "@noction/vue-draggable-grid": "npm:1.9.16"
-    "@playwright/test": "npm:^1.40.0"
+    "@playwright/test": "npm:^1.43.0"
     "@popperjs/core": "npm:^2.11.8"
     "@types/echarts": "npm:^4.9.22"
     "@types/node": "npm:^20.12.7"
@@ -4650,27 +4650,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.40.0":
-  version: 1.40.0
-  resolution: "playwright-core@npm:1.40.0"
+"playwright-core@npm:1.43.0":
+  version: 1.43.0
+  resolution: "playwright-core@npm:1.43.0"
   bin:
     playwright-core: cli.js
-  checksum: 10/2ce5245988b0e89ed3359476a83ad724484da349eae42e6c9dd4162a2180b1d37fe1750df45473a5a04a1590cb093d9f0df81e607b7f5c2c161f881436ee1a00
+  checksum: 10/f34c8c5b94c7ddd59b462b8f5dd0f9a8204ed14f470a151d46384c6854c78f5624d80a80a7873a335e2b0c15d54d0d92da2f97422ee708bf5e5693b81bb33a09
   languageName: node
   linkType: hard
 
-"playwright@npm:1.40.0":
-  version: 1.40.0
-  resolution: "playwright@npm:1.40.0"
+"playwright@npm:1.43.0":
+  version: 1.43.0
+  resolution: "playwright@npm:1.43.0"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.40.0"
+    playwright-core: "npm:1.43.0"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10/56352a177e712598f30bbe6da69027a065cb9ee50df512e186dfc9e479a68bd60bab2fee9278e943ab75d4109ad062b88556f3e7efdabfd1f91f728ccceee631
+  checksum: 10/481b0d13bc990b8118a02396f03577748a3d64c2ca7635a238688ffbe399e3d6c92e05bdd074ad095f5d2d56e6648b213b5debe84815820a55b13c9a6fdf2108
   languageName: node
   linkType: hard
 
