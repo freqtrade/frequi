@@ -106,6 +106,8 @@ test.describe('Trade', () => {
     await page.locator('#avatar-drop').click();
     const multiPane = page.locator('.drag-header', { hasText: 'Multi Pane' });
 
+    const multiPanebb = await multiPane.boundingBox();
+
     await page.getByLabel('Lock layout').uncheck();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
@@ -121,7 +123,12 @@ test.describe('Trade', () => {
       await page.mouse.move(chartHeaderbb?.x + chartHeaderbb.width / 2, chartHeaderbb?.y + 200);
       await page.mouse.up();
       await expect(multiPane).toBeInViewport();
+      // Multipane wasn't moved.
+      await expect(multiPanebb).toEqual(await multiPane.boundingBox());
+
       await expect(chartHeader).toBeInViewport();
+      // ChartHeader was moved down
+      await expect(chartHeaderbb).not.toEqual(await chartHeader.boundingBox());
     }
   });
 });
