@@ -47,7 +47,7 @@
   "devDependencies": {
     "@cypress/vite-dev-server": "^5.0.7",
     "@cypress/vue": "^6.0.0",
-    "@iconify-json/mdi": "^1.1.64",
+    "@iconify-json/mdi": "^1.1.66",
     "@playwright/test": "^1.43.0",
     "@types/echarts": "^4.9.22",
     "@types/node": "^20.12.7",
