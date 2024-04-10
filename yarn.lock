@@ -61,15 +61,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.21.0":
-  version: 7.24.4
-  resolution: "@babel/runtime@npm:7.24.4"
-  dependencies:
-    regenerator-runtime: "npm:^0.14.0"
-  checksum: 10/8ec8ce2c145bc7e31dd39ab66df124f357f65c11489aefacb30f431bae913b9aaa66aa5efe5321ea2bf8878af3fcee338c87e7599519a952e3a6f83aa1b03308
-  languageName: node
-  linkType: hard
-
 "@babel/types@npm:^7.8.3":
   version: 7.24.0
   resolution: "@babel/types@npm:7.24.0"
@@ -2209,21 +2200,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "date-fns-tz@npm:2.0.1"
-  peerDependencies:
-    date-fns: 2.x
-  checksum: 10/f12e684bc13c9fe7ef7910c5b25437e15290a655d45102b7420f046cecdf9fa5715bf333d6dfb6bab6c382c7abc6b58241a50c216e9ab0b60d6fdb388f473d6b
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^2.30.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
+"date-fns-tz@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "date-fns-tz@npm:3.0.0"
   dependencies:
-    "@babel/runtime": "npm:^7.21.0"
-  checksum: 10/70b3e8ea7aaaaeaa2cd80bd889622a4bcb5d8028b4de9162cbcda359db06e16ff6e9309e54eead5341e71031818497f19aaf9839c87d1aba1e27bb4796e758a9
+    lodash.clonedeep: "npm:^4.5.0"
+  peerDependencies:
+    date-fns: ^3.0.0
+  checksum: 10/0a20196abd2519eb56bed0ba8fa838d60374db7bffa37d0d9284b29b6eed1b84369560d59688236479ed0bda923057fec2faef71caf09bc246d5f567c23308a8
   languageName: node
   linkType: hard
 
@@ -3096,8 +3080,8 @@ __metadata:
     bootstrap-vue-next: "npm:^0.16.6"
     core-js: "npm:^3.36.1"
     cypress: "npm:^13.7.2"
-    date-fns: "npm:^2.30.0"
-    date-fns-tz: "npm:^2.0.1"
+    date-fns: "npm:^3.6.0"
+    date-fns-tz: "npm:^3.0.0"
     echarts: "npm:^5.5.0"
     eslint: "npm:^8.57.0"
     eslint-plugin-prettier: "npm:^5.1.3"
@@ -3935,6 +3919,13 @@ __metadata:
   dependencies:
     p-locate: "npm:^6.0.0"
   checksum: 10/1c6d269d4efec555937081be964e8a9b4a136319c79ca1d45ac6382212a8466113c75bd89e44521ca8ecd1c47fb08523b56eee5c0712bc7d14fec5f729deeb42
+  languageName: node
+  linkType: hard
+
+"lodash.clonedeep@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.clonedeep@npm:4.5.0"
+  checksum: 10/957ed243f84ba6791d4992d5c222ffffca339a3b79dbe81d2eaf0c90504160b500641c5a0f56e27630030b18b8e971ea10b44f928a977d5ced3c8948841b555f
   languageName: node
   linkType: hard
 
@@ -4855,13 +4846,6 @@ __metadata:
   dependencies:
     picomatch: "npm:^2.2.1"
   checksum: 10/196b30ef6ccf9b6e18c4e1724b7334f72a093d011a99f3b5920470f0b3406a51770867b3e1ae9711f227ef7a7065982f6ee2ce316746b2cb42c88efe44297fe7
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.14.0":
-  version: 0.14.1
-  resolution: "regenerator-runtime@npm:0.14.1"
-  checksum: 10/5db3161abb311eef8c45bcf6565f4f378f785900ed3945acf740a9888c792f75b98ecb77f0775f3bf95502ff423529d23e94f41d80c8256e8fa05ed4b07cf471
   languageName: node
   linkType: hard
 
