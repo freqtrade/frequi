@@ -676,9 +676,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noction/vue-draggable-grid@npm:1.9.16":
-  version: 1.9.16
-  resolution: "@noction/vue-draggable-grid@npm:1.9.16"
+"@noction/vue-draggable-grid@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@noction/vue-draggable-grid@npm:1.11.0"
   dependencies:
     "@interactjs/actions": "npm:^1.10.20"
     "@interactjs/auto-start": "npm:^1.10.20"
@@ -687,11 +687,10 @@ __metadata:
     "@interactjs/modifiers": "npm:^1.10.20"
     "@types/element-resize-detector": "npm:^1.1.5"
     element-resize-detector: "npm:^1.2.4"
-    mitt: "npm:^3.0.1"
-    vue: "npm:^3.3.8"
+    vue: "npm:^3.4.14"
   peerDependencies:
     vue: ^3.2.0
-  checksum: 10/11115cdabaf31a40fde2c0e0c9085199b4a53aa8b7c0264317c1392ef43dbf979262dad31d5a0a70c91b2918f897b421032cb497855dee38f6af9ebfea6fed35
+  checksum: 10/46043224054196a806ae88a0d16ec2c8a5ea0c82c8df7b1a4accdaf5ccbe223764b67cf8764344468fa47fb5c3ebdf8e6d0b2cc842469e09ff50a58fc89b9f8c
   languageName: node
   linkType: hard
 
@@ -3075,7 +3074,7 @@ __metadata:
     "@cypress/vite-dev-server": "npm:^5.0.7"
     "@cypress/vue": "npm:^6.0.0"
     "@iconify-json/mdi": "npm:^1.1.66"
-    "@noction/vue-draggable-grid": "npm:1.9.16"
+    "@noction/vue-draggable-grid": "npm:1.11.0"
     "@playwright/test": "npm:^1.43.0"
     "@popperjs/core": "npm:^2.11.8"
     "@types/echarts": "npm:^4.9.22"
@@ -4221,13 +4220,6 @@ __metadata:
     minipass: "npm:^3.0.0"
     yallist: "npm:^4.0.0"
   checksum: 10/ae0f45436fb51344dcb87938446a32fbebb540d0e191d63b35e1c773d47512e17307bf54aa88326cc6d176594d00e4423563a091f7266c2f9a6872cdc1e234d1
-  languageName: node
-  linkType: hard
-
-"mitt@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "mitt@npm:3.0.1"
-  checksum: 10/287c70d8e73ffc25624261a4989c783768aed95ecb60900f051d180cf83e311e3e59865bfd6e9d029cdb149dc20ba2f128a805e9429c5c4ce33b1416c65bbd14
   languageName: node
   linkType: hard
 
@@ -6015,7 +6007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:3, vue@npm:^3.3.8, vue@npm:^3.4.21":
+"vue@npm:3, vue@npm:^3.4.14, vue@npm:^3.4.21":
   version: 3.4.21
   resolution: "vue@npm:3.4.21"
   dependencies:
