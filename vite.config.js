@@ -64,6 +64,7 @@ export default defineConfig({
     port: 3000,
   },
   test: {
+    environment: 'happy-dom',
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
