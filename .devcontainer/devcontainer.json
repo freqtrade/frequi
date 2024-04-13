@@ -27,15 +27,16 @@
       "extensions": [
         "vue.volar",
         "dbaeumer.vscode-eslint",
+        "antfu.iconify",
+        "ms-playwright.playwright",
+        "vitest.explorer",
         "yzhang.markdown-all-in-one",
         "marquesmps.dockerfile-validator",
         "streetsidesoftware.code-spell-checker",
         "vscode-icons-team.vscode-icons",
-        "hediet.vscode-drawio",
-        "ZixuanChen.vitest-explorer",
-        "antfu.iconify"
+        "hediet.vscode-drawio"
       ]
     }
   },
-  "postCreateCommand": "yarn install",
+  "postCreateCommand": "yarn install"
 }

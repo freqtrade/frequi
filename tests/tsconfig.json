@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "unit/*.ts",
-    "unit/*.tsx"
+    "**/*.ts",
+    "**/*.tsx"
   ],
 }
