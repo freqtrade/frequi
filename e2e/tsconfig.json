@@ -2,9 +2,6 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "sourceMap": false,
-    "types": [
-      "cypress",
-    ],
   },
   "include": [
     "e2e/*.ts",

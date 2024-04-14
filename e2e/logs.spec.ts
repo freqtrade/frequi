@@ -11,7 +11,7 @@ test.describe('Logs', () => {
 
     // const logsPromise = page.waitForResponse('**/api/v1/logs');
     await page.route('**/api/v1/logs', (route) => {
-      return route.fulfill({ path: './cypress/fixtures/logs.json' });
+      return route.fulfill({ path: './e2e/testData/logs.json' });
     });
 
     const logs = getWaitForResponse(page, '@Logs');

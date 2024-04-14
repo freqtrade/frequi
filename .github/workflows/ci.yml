@@ -57,13 +57,6 @@ jobs:
 
     # End Playwright section
 
-    - name: Cypress run
-      uses: cypress-io/github-action@v6
-      with:
-        # build: yarn build
-        start: yarn dev --host
-        wait-on: 'http://127.0.0.1:3000'
-
     - name: Build build
       run: yarn build
 

@@ -29,7 +29,7 @@ interface mockArray {
 function mockRequests(page, mocks: mockArray[]) {
   mocks.forEach((item) => {
     page.route(item.url, (route) => {
-      return route.fulfill({ path: `./cypress/fixtures/${item.fixture}` });
+      return route.fulfill({ path: `./e2e/testData/${item.fixture}` });
     });
   });
 }
