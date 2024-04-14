@@ -6,11 +6,11 @@ test.describe('Pairlists', () => {
   test.beforeEach(async ({ page }) => {
     await defaultMocks(page);
     page.route('**/api/v1/show_config', (route) => {
-      return route.fulfill({ path: `./cypress/fixtures/backtest/show_config_webserver.json` });
+      return route.fulfill({ path: `./e2e/testData/backtest/show_config_webserver.json` });
     });
 
     page.route('**/api/v1/pairlists/available*', (route) => {
-      return route.fulfill({ path: `./cypress/fixtures/pairlists_available.json` });
+      return route.fulfill({ path: `./e2e/testData/pairlists_available.json` });
     });
 
     const jobID = 'c0578b6a-dd34-4bb7-b83c-492f02da2cfd';

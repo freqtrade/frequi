@@ -5,20 +5,20 @@ test.describe('Backtesting', () => {
   test.beforeEach(async ({ page }) => {
     await defaultMocks(page);
     page.route('**/api/v1/show_config', (route) => {
-      return route.fulfill({ path: `./cypress/fixtures/backtest/show_config_webserver.json` });
+      return route.fulfill({ path: `./e2e/testData/backtest/show_config_webserver.json` });
     });
     page.route('**/api/v1/strategies', (route) => {
-      return route.fulfill({ path: `./cypress/fixtures/backtest/strategies.json` });
+      return route.fulfill({ path: `./e2e/testData/backtest/strategies.json` });
     });
 
     await page.route('**/api/v1/backtest', (route) => {
       if (route.request().method() === 'POST') {
         route.fulfill({
-          path: './cypress/fixtures/backtest/backtest_post_start.json',
+          path: './e2e/testData/backtest/backtest_post_start.json',
         });
       } else if (route.request().method() === 'GET') {
         route.fulfill({
-          path: './cypress/fixtures/backtest/backtest_get_end.json',
+          path: './e2e/testData/backtest/backtest_get_end.json',
         });
       }
     });
