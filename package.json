@@ -11,10 +11,6 @@
     "check-types": "vue-tsc --noEmit",
     "lint": "eslint --ext .ts,vue src tests",
     "lint-ci": "eslint --no-fix --ext .ts,vue src tests",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "cy:open-ct": "cypress open-ct",
-    "cy:run-ct": "cypress run --component",
     "test:e2e": "yarn playwright test",
     "test:e2e-chromium": "yarn playwright test --project=chromium",
     "test:e2e-msedge": "yarn playwright test --project=msedge"
@@ -45,8 +41,6 @@
     "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
-    "@cypress/vite-dev-server": "^5.0.7",
-    "@cypress/vue": "^6.0.0",
     "@iconify-json/mdi": "^1.1.66",
     "@playwright/test": "^1.43.0",
     "@types/echarts": "^4.9.22",
@@ -59,7 +53,6 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/runtime-dom": "^3.4.21",
     "@vue/test-utils": "^2.4.5",
-    "cypress": "^13.7.2",
     "eslint": "^8.57.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-vue": "^9.24.1",
