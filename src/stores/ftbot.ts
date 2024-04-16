@@ -119,7 +119,6 @@ export function createBotSubStore(botId: string, botName: string) {
         backtestProgress: 0.0,
         backtestStep: BacktestSteps.none,
         backtestTradeCount: 0,
-        backtestResult: undefined as BacktestResult | undefined,
         selectedBacktestResultKey: '',
         backtestHistory: {} as Record<string, BacktestResultInMemory>,
         backtestHistoryList: [] as BacktestHistoryEntry[],
@@ -1014,7 +1013,6 @@ export function createBotSubStore(botId: string, botName: string) {
         this.backtestHistoryList = data;
       },
       updateBacktestResult(backtestResult: BacktestResult) {
-        this.backtestResult = backtestResult;
         Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
           const metadata: BacktestMetadataWithStrategyName = {
             ...(backtestResult.metadata[key] ?? {}),
