@@ -253,3 +253,9 @@ export interface BacktestHistoryEntry {
   timeframe?: string | null;
   timeframe_detail?: string | null;
 }
+
+export interface BacktestMarketChange {
+  columns: string[];
+  length: number;
+  data: (number | string)[][];
+}

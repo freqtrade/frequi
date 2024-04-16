@@ -51,6 +51,7 @@ import type {
   HyperoptLossListResponse,
   HyperoptLossObj,
   DownloadDataPayload,
+  BacktestMarketChange,
 } from '@/types';
 import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
 import type { AxiosResponse } from 'axios';
@@ -134,6 +135,8 @@ export function createBotSubStore(botId: string, botName: string) {
       isWebserverMode: (state) => state.botState?.runmode === RunModes.WEBSERVER,
       selectedBacktestResult: (state) =>
         state.backtestHistory[state.selectedBacktestResultKey]?.strategy || {},
+      selectedBacktestMetadata: (state) =>
+        state.backtestHistory[state.selectedBacktestResultKey]?.metadata || {},
       shortAllowed: (state) => state.botState?.short_allowed || false,
       openTradeCount: (state) => state.openTrades.length,
       isTrading: (state) =>
@@ -1049,6 +1052,20 @@ export function createBotSubStore(botId: string, botName: string) {
             `/backtest/history/${btHistoryEntry.filename}`,
           );
           this.backtestHistoryList = data;
+        } catch (err) {
+          console.error(err);
+          return Promise.reject(err);
+        }
+      },
+      async getBacktestMarketChange() {
+        if (!this.selectedBacktestMetadata.filename) {
+          return Promise.reject('No backtest selected');
+        }
+        try {
+          const { data } = await api.get<BacktestMarketChange>(
+            `/backtest/history/${this.selectedBacktestMetadata.filename}/market_change`,
+          );
+          return data;
         } catch (err) {
           console.error(err);
           return Promise.reject(err);
