@@ -197,6 +197,7 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
     const chartOptionsLoc: EChartsOption = {
       title: {
         text: 'Cumulative Profit',
+        left: 'center',
         show: props.showTitle,
       },
       backgroundColor: 'rgba(0, 0, 0, 0)',

@@ -73,6 +73,7 @@ const chartOptions = computed((): EChartsOption => {
   return {
     title: {
       text: 'Trades log',
+      left: 'center',
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
