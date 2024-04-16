@@ -70,9 +70,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     return {};
   }
   const colDate = props.marketChangeData.columns.findIndex((el) => el === '__date_ts');
-  const colRel = props.marketChangeData.columns.findIndex((el) => el === 'rel_mean');
-  console.log('colDate', colDate);
-  console.log('colRel', colRel);
+  const colRelMean = props.marketChangeData.columns.findIndex((el) => el === 'rel_mean');
   return {
     title: {
       text: 'Market change',
@@ -149,7 +147,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         encode: {
           x: colDate,
           // open, close, low, high
-          y: colRel,
+          y: colRelMean,
         },
       },
     ],
