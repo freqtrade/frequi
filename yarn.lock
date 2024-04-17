@@ -1919,14 +1919,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "date-fns-tz@npm:3.0.0"
-  dependencies:
-    lodash.clonedeep: "npm:^4.5.0"
+"date-fns-tz@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "date-fns-tz@npm:3.1.2"
   peerDependencies:
     date-fns: ^3.0.0
-  checksum: 10/0a20196abd2519eb56bed0ba8fa838d60374db7bffa37d0d9284b29b6eed1b84369560d59688236479ed0bda923057fec2faef71caf09bc246d5f567c23308a8
+  checksum: 10/e349ac5ebe78c523a5066447ed7f97716452074df7041af241963a644a432ae607d7955a14253b6dc749ffce7fcc5a9f9069e5d96848f9ab32aaa3bb10ee64f1
   languageName: node
   linkType: hard
 
@@ -2556,7 +2554,7 @@ __metadata:
     bootstrap-vue-next: "npm:^0.16.6"
     core-js: "npm:^3.37.0"
     date-fns: "npm:^3.6.0"
-    date-fns-tz: "npm:^3.0.0"
+    date-fns-tz: "npm:^3.1.2"
     echarts: "npm:^5.5.0"
     eslint: "npm:^8.57.0"
     eslint-plugin-prettier: "npm:^5.1.3"
@@ -3156,13 +3154,6 @@ __metadata:
   dependencies:
     p-locate: "npm:^5.0.0"
   checksum: 10/72eb661788a0368c099a184c59d2fee760b3831c9c1c33955e8a19ae4a21b4116e53fa736dc086cdeb9fce9f7cc508f2f92d2d3aae516f133e16a2bb59a39f5a
-  languageName: node
-  linkType: hard
-
-"lodash.clonedeep@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.clonedeep@npm:4.5.0"
-  checksum: 10/957ed243f84ba6791d4992d5c222ffffca339a3b79dbe81d2eaf0c90504160b500641c5a0f56e27630030b18b8e971ea10b44f928a977d5ced3c8948841b555f
   languageName: node
   linkType: hard
 
