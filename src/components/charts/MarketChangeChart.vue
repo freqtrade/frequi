@@ -47,7 +47,7 @@ use([
 ]);
 
 // Define Column labels here to avoid typos
-const CHART_MARKET_CHANGE = 'Market change';
+const CHART_MARKET_CHANGE = 'Market change %';
 
 const props = defineProps({
   marketChangeData: {
@@ -73,7 +73,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
   const colRelMean = props.marketChangeData.columns.findIndex((el) => el === 'rel_mean');
   return {
     title: {
-      text: 'Market change',
+      text: 'Market change %',
       left: 'center',
       show: props.showTitle,
     },
@@ -125,13 +125,10 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     dataZoom: [
       {
         type: 'inside',
-        // xAxisIndex: [0],
         start: 0,
-
         end: 100,
       },
       {
-        // xAxisIndex: [0],
         bottom: 10,
         start: 0,
         end: 100,
