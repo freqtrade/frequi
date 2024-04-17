@@ -24,7 +24,7 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.16.6",
-    "core-js": "^3.36.1",
+    "core-js": "^3.37.0",
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.0.0",
     "echarts": "^5.5.0",
