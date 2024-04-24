@@ -1504,14 +1504,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vuepic/vue-datepicker@npm:^8.3.2":
-  version: 8.4.0
-  resolution: "@vuepic/vue-datepicker@npm:8.4.0"
+"@vuepic/vue-datepicker@npm:^8.5.0":
+  version: 8.5.0
+  resolution: "@vuepic/vue-datepicker@npm:8.5.0"
   dependencies:
     date-fns: "npm:^3.6.0"
   peerDependencies:
     vue: ">=3.2.0"
-  checksum: 10/20709844a719e0bd42ac7e2f1acec7c7f71548eafcd52af937bb4184ea30f1e83404dd8d3f755cea128c522d4131c24ad138b89f26d7d05e9fce9876e284f675
+  checksum: 10/db120923d5e395d68de169894d3907f28a7c725e0f8efce9d5acf06a92ce4a391eb5b26d2a3c5810abfa0dcf349a1e077c0450512c57981ab347e64d5c8caa44
   languageName: node
   linkType: hard
 
@@ -2645,7 +2645,7 @@ __metadata:
     "@vue/eslint-config-typescript": "npm:^13.0.0"
     "@vue/runtime-dom": "npm:^3.4.24"
     "@vue/test-utils": "npm:^2.4.5"
-    "@vuepic/vue-datepicker": "npm:^8.3.2"
+    "@vuepic/vue-datepicker": "npm:^8.5.0"
     "@vueuse/core": "npm:^10.9.0"
     "@vueuse/integrations": "npm:^10.9.0"
     axios: "npm:^1.6.8"
