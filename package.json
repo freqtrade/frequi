@@ -26,7 +26,7 @@
     "bootstrap-vue-next": "^0.16.6",
     "core-js": "^3.37.0",
     "date-fns": "^3.6.0",
-    "date-fns-tz": "^3.1.2",
+    "date-fns-tz": "^3.1.3",
     "echarts": "^5.5.0",
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.32.0",
