@@ -267,7 +267,6 @@ export function createBotSubStore(botId: string, botName: string) {
               // Don't use Promise.all - this would fire all requests at once, which can
               // cause problems for big sqlite databases
               do {
-                // eslint-disable-next-line no-await-in-loop
                 const res = await fetchTrades(pageLength, trades.length);
 
                 const result: TradeResponse = res.data;
