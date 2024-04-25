@@ -31,7 +31,9 @@ updates:
       patterns:
         - "eslint"
         - "eslint-*"
+        - "@eslint/*"
         - "@typescript-eslint/*"
+        - "typescript-eslint"
         - "@vue/eslint-*"
     vue:
       patterns:
