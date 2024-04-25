@@ -93,7 +93,6 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 
