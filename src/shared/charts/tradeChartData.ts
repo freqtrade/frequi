@@ -109,7 +109,6 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
                   OPEN_CLOSE_SYMBOL,
                   trade.is_short ? 0 : 180,
                   trade.is_short ? SHORT_COLOR : LONG_COLOR,
-                  // (trade.profit_abs ?? 0) > 0 ? '#31e04b' : '#fc0505',
                   formatPercent(trade.profit_ratio, 2),
                   buildToolTip(trade, order, 'exit', quoteCurrency),
                 ]);
@@ -117,15 +116,21 @@ export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             }
             // Position adjustment
             else {
-              tradeData.push([
-                roundTimeframe(dataset.timeframe_ms ?? 0, orderTs),
-                order.safe_price,
-                ADJUSTMENT_SYMBOL,
-                order.ft_order_side == 'sell' ? 180 : 0,
-                trade.is_short ? SHORT_COLOR : LONG_COLOR,
-                '',
-                buildAdjustmentToolTip(trade, order, quoteCurrency),
-              ]);
+              if (
+                order.ft_order_side !== 'stoploss' ||
+                ('filled' in order && (order.filled ?? 0) > 0)
+              ) {
+                // Don't show stoploss orders that haven't been filled
+                tradeData.push([
+                  roundTimeframe(dataset.timeframe_ms ?? 0, orderTs),
+                  order.safe_price,
+                  ADJUSTMENT_SYMBOL,
+                  order.ft_order_side == 'sell' ? 180 : 0,
+                  trade.is_short ? SHORT_COLOR : LONG_COLOR,
+                  '',
+                  buildAdjustmentToolTip(trade, order, quoteCurrency),
+                ]);
+              }
             }
           }
         }
