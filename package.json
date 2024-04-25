@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "check-types": "vue-tsc --noEmit",
-    "lint": "eslint --ext .ts,vue src tests",
-    "lint-ci": "eslint --no-fix --ext .ts,vue src tests",
+    "lint": "eslint src tests",
+    "lint-ci": "eslint --no-fix src tests",
     "test:e2e": "yarn playwright test",
     "test:e2e-chromium": "yarn playwright test --project=chromium",
     "test:e2e-msedge": "yarn playwright test --project=msedge"
