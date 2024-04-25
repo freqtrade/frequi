@@ -2692,7 +2692,6 @@ __metadata:
     vite: "npm:^5.2.10"
     vitest: "npm:^1.5.0"
     vue: "npm:^3.4.24"
-    vue-class-component: "npm:^7.2.5"
     vue-demi: "npm:^0.14.7"
     vue-echarts: "npm:^6.7.1"
     vue-router: "npm:^4.3.2"
@@ -4823,15 +4822,6 @@ __metadata:
   bin:
     vitest: vitest.mjs
   checksum: 10/ad487ab8578fd7d1fe39d2ef3d8355dacd41ae2774a23b96160b3d6a6347507679963158f190ef21cd864f72c389808605d0be662d69289ceaaa0beb55f5091c
-  languageName: node
-  linkType: hard
-
-"vue-class-component@npm:^7.2.5":
-  version: 7.2.6
-  resolution: "vue-class-component@npm:7.2.6"
-  peerDependencies:
-    vue: ^2.0.0
-  checksum: 10/d0ff279fa5d22f15b291fc07cabb116a4a3f748070a478cdd42f73bd9ceb6d46f0dc86bb2bad2ac408d4f11c53290207268d6cfdf3d27039ff34de02adfd5a8f
   languageName: node
   linkType: hard
 

@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "check-types": "vue-tsc --noEmit",
-    "lint": "eslint src tests",
-    "lint-ci": "eslint --no-fix src tests",
+    "lint": "eslint src tests e2e",
+    "lint-ci": "eslint --no-fix src tests e2e",
     "test:e2e": "yarn playwright test",
     "test:e2e-chromium": "yarn playwright test --project=chromium",
     "test:e2e-msedge": "yarn playwright test --project=msedge"
@@ -34,7 +34,6 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "sortablejs": "^1.15.2",
     "vue": "^3.4.24",
-    "vue-class-component": "^7.2.5",
     "vue-demi": "^0.14.7",
     "vue-echarts": "^6.7.1",
     "vue-router": "^4.3.2",
