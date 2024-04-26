@@ -21,11 +21,11 @@ export default [
   ...compat.extends('@vue/eslint-config-typescript/recommended'),
   ...compat.extends('@vue/eslint-config-prettier'),
   {
-    // languageOptions: {
-    //   parserOptions: {
-    //     parser: '@typescript-eslint/parser',
-    //   },
-    // },
+    languageOptions: {
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+      },
+    },
     rules: {
       // // disable eslint no-shadow as it's causing false positives on typescript enums
       // 'no-shadow': 'off',
