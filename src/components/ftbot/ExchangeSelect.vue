@@ -56,12 +56,10 @@ const tradeModesTyped = computed(() => {
 
 const tradeModes = computed(() => {
   return tradeModesTyped.value.map((tm) => {
-    return (
-      {
-        text: `${tm.margin_mode} ${tm.trading_mode}`,
-        value: tm,
-      } ?? []
-    );
+    return {
+      text: `${tm.margin_mode} ${tm.trading_mode}`,
+      value: tm,
+    };
   });
 });
 

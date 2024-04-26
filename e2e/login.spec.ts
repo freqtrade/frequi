@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { setLoginInfo, defaultMocks, tradeMocks } from './helpers';
+import { defaultMocks } from './helpers';
 
 test.describe('Login', () => {
   test('Is not logged in', async ({ page }) => {

@@ -22,7 +22,6 @@ const props = defineProps({
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const modeDescs: { [key in modes]: string } = {
   default: 'Current profit',
   total: 'Total profit',
