@@ -515,6 +515,12 @@ function initializeChartOptions() {
       // Initial legend, further entries are pushed to the below list
       data: ['Candles', 'Volume', 'Entry', 'Exit'],
       right: '1%',
+      type: 'scroll',
+      pageTextStyle: {
+        color: props.theme === 'dark' ? '#dedede' : '#333',
+      },
+      pageIconColor: props.theme === 'dark' ? '#aaa' : '#2f4554',
+      pageIconInactiveColor: props.theme === 'dark' ? '#2f4554' : '#aaa',
     },
     tooltip: {
       show: true,
