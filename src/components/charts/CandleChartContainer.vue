@@ -18,12 +18,13 @@
           <b-button
             title="Refresh chart"
             class="ms-2"
-            :disabled="!!!botStore.activeBot.plotPair"
+            :disabled="!!!botStore.activeBot.plotPair || isLoadingDataset"
             size="sm"
             @click="refresh"
           >
             <i-mdi-refresh />
           </b-button>
+          <b-spinner v-if="isLoadingDataset" small class="ms-2" label="Spinning" />
           <div class="d-flex flex-column">
             <div class="d-flex flex-row flex-wrap">
               <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
