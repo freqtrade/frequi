@@ -5,7 +5,7 @@
         <div class="ms-1 ms-md-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
           <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <v-select
-            v-model="pair"
+            v-model="botStore.activeBot.plotPair"
             class="ms-md-2"
             :options="availablePairs"
             style="min-width: 7em"
@@ -18,7 +18,7 @@
           <b-button
             title="Refresh chart"
             class="ms-2"
-            :disabled="!!!pair"
+            :disabled="!!!botStore.activeBot.plotPair"
             size="sm"
             @click="refresh"
           >
@@ -134,14 +134,13 @@ const colorStore = useColorStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
-const pair = ref('');
 const showPlotConfig = ref<boolean>();
 
 const dataset = computed((): PairHistory => {
   if (props.historicView) {
-    return botStore.activeBot.history[`${pair.value}__${props.timeframe}`]?.data;
+    return botStore.activeBot.history[`${botStore.activeBot.plotPair}__${props.timeframe}`]?.data;
   }
-  return botStore.activeBot.candleData[`${pair.value}__${props.timeframe}`]?.data;
+  return botStore.activeBot.candleData[`${botStore.activeBot.plotPair}__${props.timeframe}`]?.data;
 });
 const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
 const datasetColumns = computed(() =>
@@ -184,11 +183,11 @@ function showConfigurator() {
 }
 
 function refresh() {
-  console.log('refresh', pair.value, props.timeframe);
-  if (pair.value && props.timeframe) {
+  // console.log('refresh', botStore.activeBot.plotPair, props.timeframe);
+  if (botStore.activeBot.plotPair && props.timeframe) {
     if (props.historicView) {
       botStore.activeBot.getPairHistory({
-        pair: pair.value,
+        pair: botStore.activeBot.plotPair,
         timeframe: props.timeframe,
         timerange: props.timerange,
         strategy: props.strategy,
@@ -196,7 +195,7 @@ function refresh() {
       });
     } else {
       botStore.activeBot.getPairCandles({
-        pair: pair.value,
+        pair: botStore.activeBot.plotPair,
         timeframe: props.timeframe,
         columns: plotStore.usedColumns,
       });
@@ -207,8 +206,8 @@ function refresh() {
 watch(
   () => props.availablePairs,
   () => {
-    if (!props.availablePairs.find((p) => p === pair.value)) {
-      [pair.value] = props.availablePairs;
+    if (!props.availablePairs.find((p) => p === botStore.activeBot.plotPair)) {
+      [botStore.activeBot.plotPair] = props.availablePairs;
       refresh();
     }
   },
@@ -217,7 +216,7 @@ watch(
 watch(
   () => botStore.activeBot.selectedPair,
   () => {
-    pair.value = botStore.activeBot.selectedPair;
+    botStore.activeBot.plotPair = botStore.activeBot.selectedPair;
     refresh();
   },
 );
@@ -225,9 +224,9 @@ watch(
 onMounted(() => {
   showPlotConfig.value = props.plotConfigModal;
   if (botStore.activeBot.selectedPair) {
-    pair.value = botStore.activeBot.selectedPair;
+    botStore.activeBot.plotPair = botStore.activeBot.selectedPair;
   } else if (props.availablePairs.length > 0) {
-    [pair.value] = props.availablePairs;
+    [botStore.activeBot.plotPair] = props.availablePairs;
   }
   plotStore.plotConfigChanged();
   if (!hasDataset.value) {
