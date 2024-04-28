@@ -144,7 +144,9 @@ const dataset = computed((): PairHistory => {
   return botStore.activeBot.candleData[`${pair.value}__${props.timeframe}`]?.data;
 });
 const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
-const datasetColumns = computed(() => (dataset.value ? dataset.value.columns : []));
+const datasetColumns = computed(() =>
+  dataset.value ? dataset.value.all_columns ?? dataset.value.columns : [],
+);
 const hasDataset = computed(() => dataset.value && dataset.value.data.length > 0);
 const isLoadingDataset = computed((): boolean => {
   if (props.historicView) {
@@ -196,6 +198,7 @@ function refresh() {
       botStore.activeBot.getPairCandles({
         pair: pair.value,
         timeframe: props.timeframe,
+        columns: plotStore.usedColumns,
       });
     }
   }

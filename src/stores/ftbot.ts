@@ -1068,7 +1068,8 @@ export function createBotSubStore(botId: string, botName: string) {
             // TODO: check for active bot ...
             if (pair === this.selectedPair) {
               // Reload pair candles
-              this.getPairCandles({ pair, timeframe });
+              const plotStore = usePlotConfigStore();
+              this.getPairCandles({ pair, timeframe, columns: plotStore.usedColumns });
             }
             break;
           }
