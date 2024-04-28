@@ -52,6 +52,7 @@ import {
   ExitStats,
   EntryStats,
   PairIntervalTuple,
+  PairHistory,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
@@ -349,17 +350,30 @@ export function createBotSubStore(botId: string, botName: string) {
         if (payload.pair && payload.timeframe) {
           this.candleDataStatus = LoadingStatus.loading;
           try {
-            const result = await api.get('/pair_candles', {
-              params: { ...payload },
-            });
-            this.candleData = {
-              ...this.candleData,
-              [`${payload.pair}__${payload.timeframe}`]: {
-                pair: payload.pair,
-                timeframe: payload.timeframe,
-                data: result.data,
-              },
-            };
+            let result: PairHistory | null = null;
+            if (this.botApiVersion >= 2.35) {
+              // Modern approach, allowing filtering of columns
+              const { data } = await api.post<PairCandlePayload, AxiosResponse<PairHistory>>(
+                '/pair_candles',
+                payload,
+              );
+              result = data;
+            } else {
+              const { data } = await api.get<PairHistory>('/pair_candles', {
+                params: { ...payload },
+              });
+              result = data;
+            }
+            if (result) {
+              this.candleData = {
+                ...this.candleData,
+                [`${payload.pair}__${payload.timeframe}`]: {
+                  pair: payload.pair,
+                  timeframe: payload.timeframe,
+                  data: result,
+                },
+              };
+            }
             this.candleDataStatus = LoadingStatus.success;
           } catch (err) {
             console.error(err);

@@ -209,6 +209,7 @@ export interface PairCandlePayload {
   pair: string;
   timeframe: string;
   limit?: number;
+  columns?: string[];
 }
 
 export interface PairHistoryPayload {
