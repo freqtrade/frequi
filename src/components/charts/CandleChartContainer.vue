@@ -229,6 +229,18 @@ watch(
   },
 );
 
+watch(
+  () => plotStore.plotConfig,
+  () => {
+    // all plotstore.usedColumns are in the dataset
+    const hasAllColumns = plotStore.usedColumns.every((c) => datasetColumns.value.includes(c));
+    if (!props.historicView && settingsStore.useReducedPairCalls && !hasAllColumns) {
+      console.log('triggering refresh');
+      refresh();
+    }
+  },
+);
+
 onMounted(() => {
   showPlotConfig.value = props.plotConfigModal;
   if (botStore.activeBot.selectedPair) {

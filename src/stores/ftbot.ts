@@ -352,7 +352,8 @@ export function createBotSubStore(botId: string, botName: string) {
           this.candleDataStatus = LoadingStatus.loading;
           try {
             let result: PairHistory | null = null;
-            if (this.botApiVersion >= 2.35) {
+            const settingsStore = useSettingsStore();
+            if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairCandlePayload, AxiosResponse<PairHistory>>(
                 '/pair_candles',
@@ -381,7 +382,7 @@ export function createBotSubStore(botId: string, botName: string) {
             this.candleDataStatus = LoadingStatus.error;
           }
         } else {
-          // Error branch
+          // Error branchs
           const error = 'pair or timeframe not specified';
           console.error(error);
           return new Promise((resolve, reject) => {
