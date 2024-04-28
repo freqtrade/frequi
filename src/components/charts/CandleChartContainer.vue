@@ -217,7 +217,15 @@ watch(
   () => botStore.activeBot.selectedPair,
   () => {
     botStore.activeBot.plotPair = botStore.activeBot.selectedPair;
-    refresh();
+  },
+);
+
+watch(
+  () => botStore.activeBot.plotPair,
+  () => {
+    if (!props.historicView) {
+      refresh();
+    }
   },
 );
 

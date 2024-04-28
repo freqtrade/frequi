@@ -380,13 +380,14 @@ export function createBotSubStore(botId: string, botName: string) {
             console.error(err);
             this.candleDataStatus = LoadingStatus.error;
           }
+        } else {
+          // Error branch
+          const error = 'pair or timeframe not specified';
+          console.error(error);
+          return new Promise((resolve, reject) => {
+            reject(error);
+          });
         }
-        // Error branchs
-        const error = 'pair or timeframe not specified';
-        console.error(error);
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
       },
       async getPairHistory(payload: PairHistoryPayload) {
         if (payload.pair && payload.timeframe) {
