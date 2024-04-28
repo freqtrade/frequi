@@ -345,28 +345,26 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      getPairCandles(payload: PairCandlePayload) {
+      async getPairCandles(payload: PairCandlePayload) {
         if (payload.pair && payload.timeframe) {
           this.candleDataStatus = LoadingStatus.loading;
-          return api
-            .get('/pair_candles', {
+          try {
+            const result = await api.get('/pair_candles', {
               params: { ...payload },
-            })
-            .then((result) => {
-              this.candleData = {
-                ...this.candleData,
-                [`${payload.pair}__${payload.timeframe}`]: {
-                  pair: payload.pair,
-                  timeframe: payload.timeframe,
-                  data: result.data,
-                },
-              };
-              this.candleDataStatus = LoadingStatus.success;
-            })
-            .catch((err) => {
-              console.error(err);
-              this.candleDataStatus = LoadingStatus.error;
             });
+            this.candleData = {
+              ...this.candleData,
+              [`${payload.pair}__${payload.timeframe}`]: {
+                pair: payload.pair,
+                timeframe: payload.timeframe,
+                data: result.data,
+              },
+            };
+            this.candleDataStatus = LoadingStatus.success;
+          } catch (err) {
+            console.error(err);
+            this.candleDataStatus = LoadingStatus.error;
+          }
         }
         // Error branchs
         const error = 'pair or timeframe not specified';
