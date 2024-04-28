@@ -50,6 +50,13 @@
               >Use Heikin Ashi candles.</b-form-checkbox
             >
           </b-form-group>
+          <b-form-group
+            description="Can reduce the transfer size for large dataframes. May require additional calls if the plot config changes."
+          >
+            <b-form-checkbox v-model="settingsStore.useReducedPairCalls"
+              >Only request necessary columns (recommended to be checked).</b-form-checkbox
+            >
+          </b-form-group>
           <b-form-group description="Candle Color Preference">
             <b-form-radio-group
               id="settings-color-preference-radio-group"

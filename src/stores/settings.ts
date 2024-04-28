@@ -30,6 +30,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       currentTheme: getCurrentTheme(),
       _uiVersion: 'dev',
       useHeikinAshiCandles: false,
+      useReducedPairCalls: true,
       notifications: notificationDefaults,
       profitDistributionBins: 20,
       confirmDialog: true,
