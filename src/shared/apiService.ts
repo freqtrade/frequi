@@ -34,6 +34,15 @@ export function useApi(userService: UserService, botId: string) {
         console.log('Fetching refresh_token...');
         return userService
           .refreshToken()
+          .catch((error) => {
+            console.log('No new token received');
+            console.log(error);
+            const botStore = useBotStore();
+            if (botStore.botStores[botId]) {
+              botStore.botStores[botId].setIsBotOnline(false);
+              botStore.botStores[botId].isBotLoggedIn = false;
+            }
+          })
           .then((token) => {
             // Retry original request with new token
             const { config } = err;
@@ -51,13 +60,7 @@ export function useApi(userService: UserService, botId: string) {
             });
           })
           .catch((error) => {
-            console.log('No new token received');
             console.log(error);
-            const botStore = useBotStore();
-            if (botStore.botStores[botId]) {
-              botStore.botStores[botId].setIsBotOnline(false);
-              botStore.botStores[botId].isBotLoggedIn = false;
-            }
           });
 
         // maybe redirect to /login if needed !
