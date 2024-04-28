@@ -239,7 +239,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
 
         const botStoreUpdates: Promise<BotState>[] = [];
         this.allBotStores.forEach((bot) => {
-          if (bot.isBotOnline && !bot.botStatusAvailable) {
+          if (bot.isBotLoggedIn && bot.isBotOnline && !bot.botStatusAvailable) {
             botStoreUpdates.push(bot.getState());
           }
         });

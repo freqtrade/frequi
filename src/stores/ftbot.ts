@@ -206,7 +206,7 @@ export function createBotSubStore(botId: string, botName: string) {
         userService.setAutoRefresh(newRefreshValue);
       },
       setIsBotOnline(isBotOnline: boolean) {
-        if (!this.isBotOnline && isBotOnline) {
+        if (!this.isBotOnline && isBotOnline && this.isBotLoggedIn) {
           // Bot just came online.
           // Refresh everything
           this.refreshRequired = true;
