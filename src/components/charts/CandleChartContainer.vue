@@ -192,6 +192,7 @@ function refresh() {
         timerange: props.timerange,
         strategy: props.strategy,
         freqaimodel: props.freqaiModel,
+        columns: plotStore.usedColumns,
       });
     } else {
       botStore.activeBot.getPairCandles({
@@ -234,7 +235,7 @@ watch(
   () => {
     // all plotstore.usedColumns are in the dataset
     const hasAllColumns = plotStore.usedColumns.every((c) => datasetColumns.value.includes(c));
-    if (!props.historicView && settingsStore.useReducedPairCalls && !hasAllColumns) {
+    if (settingsStore.useReducedPairCalls && !hasAllColumns) {
       console.log('triggering refresh');
       refresh();
     }

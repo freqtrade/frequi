@@ -394,16 +394,28 @@ export function createBotSubStore(botId: string, botName: string) {
         if (payload.pair && payload.timeframe) {
           this.historyStatus = LoadingStatus.loading;
           try {
-            const { data } = await api.get('/pair_history', {
-              params: { ...payload },
-              timeout: 50000,
-            });
+            const settingsStore = useSettingsStore();
+            let result: PairHistory | null = null;
+            if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
+              // Modern approach, allowing filtering of columns
+              const { data } = await api.post<PairHistoryPayload, AxiosResponse<PairHistory>>(
+                '/pair_history',
+                payload,
+              );
+              result = data;
+            } else {
+              const { data } = await api.get<PairHistory>('/pair_history', {
+                params: { ...payload },
+                timeout: 50000,
+              });
+              result = data;
+            }
             this.history = {
               [`${payload.pair}__${payload.timeframe}`]: {
                 pair: payload.pair,
                 timeframe: payload.timeframe,
                 timerange: payload.timerange,
-                data: data,
+                data: result,
               },
             };
             this.historyStatus = LoadingStatus.success;

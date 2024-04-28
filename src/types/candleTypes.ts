@@ -27,6 +27,7 @@ export interface PairHistoryPayload {
   timerange: string;
   strategy: string;
   freqaimodel?: string;
+  columns?: string[];
 }
 
 export interface PairHistory {
