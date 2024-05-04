@@ -81,7 +81,8 @@
                 <b-avatar size="2em" button>FT</b-avatar>
               </template>
               <span class="ps-3">V: {{ settingsStore.uiVersion }}</span>
-              <b-dropdown-item to="/settings">Settings</b-dropdown-item>
+              <!-- Link active-class to non-existant class to avoid it getting the "light" active color -->
+              <b-dropdown-item active-class="non-existant" to="/settings">Settings</b-dropdown-item>
               <div class="ps-3">
                 <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
               </div>
