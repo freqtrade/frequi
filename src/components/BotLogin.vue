@@ -66,8 +66,8 @@
         <b-alert v-if="errorMessage" class="alert-wrap" :model-value="true" variant="warning">
           {{ errorMessage }}
           <br />
-          <span v-if="errorMessageCORS">
-            Please also check your bot's CORS configuration:
+          <span v-if="errorMessageCORS"
+            >Please also check your bot's CORS configuration:
             <a href="https://www.freqtrade.io/en/latest/rest-api/#cors"
               >Freqtrade CORS documentation</a
             ></span
