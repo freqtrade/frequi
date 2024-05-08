@@ -42,7 +42,7 @@
   "devDependencies": {
     "@eslint/js": "^9.1.1",
     "@iconify-json/mdi": "^1.1.66",
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.44.0",
     "@types/echarts": "^4.9.22",
     "@types/node": "^20.12.10",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
