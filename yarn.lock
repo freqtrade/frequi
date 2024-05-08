@@ -2693,7 +2693,7 @@ __metadata:
     vitest: "npm:^1.6.0"
     vue: "npm:^3.4.26"
     vue-demi: "npm:^0.14.7"
-    vue-echarts: "npm:^6.7.1"
+    vue-echarts: "npm:^6.7.2"
     vue-router: "npm:^4.3.2"
     vue-select: "npm:^4.0.0-beta.6"
     vue-tsc: "npm:^2.0.16"
@@ -4864,9 +4864,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-echarts@npm:^6.7.1":
-  version: 6.7.1
-  resolution: "vue-echarts@npm:6.7.1"
+"vue-echarts@npm:^6.7.2":
+  version: 6.7.2
+  resolution: "vue-echarts@npm:6.7.2"
   dependencies:
     resize-detector: "npm:^0.3.0"
     vue-demi: "npm:^0.13.11"
@@ -4880,7 +4880,7 @@ __metadata:
       optional: true
     "@vue/runtime-core":
       optional: true
-  checksum: 10/ce55d53823248e18622ceb51d8dd55515d5d4bd446d50de8ef58c55347d7ffdb8bc8ecaec5aedfd2deeacf1e4faa98dea97bab94f27d45e4e7c212b2a4c9678b
+  checksum: 10/79f9d6cb54daf2c1971287a6ce845cdcd18cf47be3795c84ca9c16b9c5b189fcaad4a347dc32ddd6cd869e22ad43da7c3b3a6b8ce57727ff83b0e4d182bdde57
   languageName: node
   linkType: hard
 
