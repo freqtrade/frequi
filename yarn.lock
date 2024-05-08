@@ -2675,7 +2675,7 @@ __metadata:
     eslint-plugin-vue: "npm:^9.25.0"
     favico.js: "npm:^0.3.10"
     globals: "npm:^15.1.0"
-    happy-dom: "npm:^14.7.1"
+    happy-dom: "npm:^14.10.1"
     humanize-duration: "npm:^3.32.0"
     mutationobserver-shim: "npm:^0.3.7"
     pinia: "npm:^2.1.7"
@@ -2868,14 +2868,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:^14.7.1":
-  version: 14.7.1
-  resolution: "happy-dom@npm:14.7.1"
+"happy-dom@npm:^14.10.1":
+  version: 14.10.1
+  resolution: "happy-dom@npm:14.10.1"
   dependencies:
     entities: "npm:^4.5.0"
     webidl-conversions: "npm:^7.0.0"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10/8a8c8995abc92d5319750d71cac08a4aafd26e8a7203d2a970270c5c1ca68dad2b3af772de761e061107f3aaa51d6cb9430f07e05366047a126ef908377a4c08
+  checksum: 10/e9dcdc6977c494ecd75126b01d895b5d34c654886a4f2752da2ce010ae85e623e4dcd4e7ab707b425f1294fee270858fc3910e684a671b65f9931b97a2a7857f
   languageName: node
   linkType: hard
 
