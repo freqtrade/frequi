@@ -2689,7 +2689,7 @@ __metadata:
     unplugin-auto-import: "npm:^0.17.5"
     unplugin-icons: "npm:^0.18.5"
     unplugin-vue-components: "npm:^0.26.0"
-    vite: "npm:^5.2.10"
+    vite: "npm:^5.2.11"
     vitest: "npm:^1.6.0"
     vue: "npm:^3.4.26"
     vue-demi: "npm:^0.14.7"
@@ -4735,9 +4735,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.2.10":
-  version: 5.2.10
-  resolution: "vite@npm:5.2.10"
+"vite@npm:^5.2.11":
+  version: 5.2.11
+  resolution: "vite@npm:5.2.11"
   dependencies:
     esbuild: "npm:^0.20.1"
     fsevents: "npm:~2.3.3"
@@ -4771,7 +4771,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/a0c4ac7b95e9a2a59f4e73e5b42a63f33569f5ec505af9dd019f19ff419fd20d66ad9aad6708987d4da173d485358f0024f410af78ac97cf5c92a38f8c96c451
+  checksum: 10/ee0ad038f0831c9514796522deb1e2dcb84bc311abbccb77e4b12216d37fc9559137f4f1b8e75187d51007b954e845c6518e36ee3acac2e2a2789c1181ebb16c
   languageName: node
   linkType: hard
 
