@@ -38,6 +38,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@antfu/utils@npm:^0.7.8":
+  version: 0.7.8
+  resolution: "@antfu/utils@npm:0.7.8"
+  checksum: 10/9efffb78a9683add047b0e2be96a059c3a29baee1565a2d127500bc433def25a0375c1e84c9479cbb3f1dcec797b2c1f0a24e5d85c830ea64f9a8a6a6ca5b9c3
+  languageName: node
+  linkType: hard
+
 "@babel/helper-string-parser@npm:^7.23.4":
   version: 7.24.1
   resolution: "@babel/helper-string-parser@npm:7.24.1"
@@ -2707,7 +2714,7 @@ __metadata:
     sortablejs: "npm:^1.15.2"
     typescript: "npm:~5.4.5"
     typescript-eslint: "npm:^7.9.0"
-    unplugin-auto-import: "npm:^0.17.5"
+    unplugin-auto-import: "npm:^0.17.6"
     unplugin-icons: "npm:^0.19.0"
     unplugin-vue-components: "npm:^0.27.0"
     vite: "npm:^5.2.11"
@@ -4613,18 +4620,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:^0.17.5":
-  version: 0.17.5
-  resolution: "unplugin-auto-import@npm:0.17.5"
+"unplugin-auto-import@npm:^0.17.6":
+  version: 0.17.6
+  resolution: "unplugin-auto-import@npm:0.17.6"
   dependencies:
-    "@antfu/utils": "npm:^0.7.7"
+    "@antfu/utils": "npm:^0.7.8"
     "@rollup/pluginutils": "npm:^5.1.0"
     fast-glob: "npm:^3.3.2"
     local-pkg: "npm:^0.5.0"
-    magic-string: "npm:^0.30.5"
-    minimatch: "npm:^9.0.3"
+    magic-string: "npm:^0.30.10"
+    minimatch: "npm:^9.0.4"
     unimport: "npm:^3.7.1"
-    unplugin: "npm:^1.6.0"
+    unplugin: "npm:^1.10.1"
   peerDependencies:
     "@nuxt/kit": ^3.2.2
     "@vueuse/core": "*"
@@ -4633,7 +4640,7 @@ __metadata:
       optional: true
     "@vueuse/core":
       optional: true
-  checksum: 10/824a522bc75f47ccefddab21223726235686d4c04a2bef01034ce8ac2d1aeed64dd0187dd107d7c576a94649bccc8fec6f5a4fac32cf47e5ac13eb3fbbe82c10
+  checksum: 10/ad938236c1826f6ccf944161d7e716c994e3d1cdb84f40ea7df4df260fa591081829973d7f50a22274cfed4f38b08a4aa03b456ff51bdeefac36ab65a294af1c
   languageName: node
   linkType: hard
 
@@ -4696,7 +4703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^1.10.1, unplugin@npm:^1.5.1, unplugin@npm:^1.6.0":
+"unplugin@npm:^1.10.1, unplugin@npm:^1.5.1":
   version: 1.10.1
   resolution: "unplugin@npm:1.10.1"
   dependencies:
