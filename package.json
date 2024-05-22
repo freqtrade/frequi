@@ -61,7 +61,7 @@
     "mutationobserver-shim": "^0.3.7",
     "portal-vue": "^3.0.0",
     "prettier": "^3.2.5",
-    "sass": "^1.77.1",
+    "sass": "^1.77.2",
     "typescript": "~5.4.5",
     "typescript-eslint": "^7.9.0",
     "unplugin-auto-import": "^0.17.6",
