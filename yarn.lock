@@ -1792,15 +1792,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-next@npm:^0.17.6":
-  version: 0.17.6
-  resolution: "bootstrap-vue-next@npm:0.17.6"
+"bootstrap-vue-next@npm:^0.18.1":
+  version: 0.18.1
+  resolution: "bootstrap-vue-next@npm:0.18.1"
   dependencies:
     "@floating-ui/vue": "npm:^1.0.6"
     "@vueuse/core": "npm:^10.9.0"
   peerDependencies:
-    vue: ^3.4.21
-  checksum: 10/7a741a16e1f30222e6dc3643885247b9d97e5b3e5e162eec67f9602058be756fbaf217c470498c570bee944f65ebe3482c1245cc889a3f3d0755b0bfb20ae391
+    vue: ^3.4.27
+  checksum: 10/e90a3631a9fd5b7e3653a9e72f69cc7c8fe52435aabe08a77854807cf6c5c1a0fd5d5e8f175878fa6924ed68f5c1d3919e961f72d6a945f1d916b2f46f585b90
   languageName: node
   linkType: hard
 
@@ -2693,7 +2693,7 @@ __metadata:
     "@vueuse/integrations": "npm:^10.9.0"
     axios: "npm:^1.7.2"
     bootstrap: "npm:^5.3.3"
-    bootstrap-vue-next: "npm:^0.17.6"
+    bootstrap-vue-next: "npm:^0.18.1"
     core-js: "npm:^3.37.1"
     date-fns: "npm:^3.6.0"
     date-fns-tz: "npm:^3.1.3"
