@@ -38,5 +38,5 @@
       ]
     }
   },
-  "postCreateCommand": "yarn install"
+  "postCreateCommand": "pnpm install"
 }

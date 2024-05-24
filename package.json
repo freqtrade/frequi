@@ -11,9 +11,9 @@
     "check-types": "vue-tsc --noEmit",
     "lint": "eslint src tests e2e",
     "lint-ci": "eslint --no-fix src tests e2e",
-    "test:e2e": "yarn playwright test",
-    "test:e2e-chromium": "yarn playwright test --project=chromium",
-    "test:e2e-msedge": "yarn playwright test --project=msedge"
+    "test:e2e": "playwright test",
+    "test:e2e-chromium": "playwright test --project=chromium",
+    "test:e2e-msedge": "playwright test --project=msedge"
   },
   "dependencies": {
     "@noction/vue-draggable-grid": "1.9.16",
@@ -71,5 +71,5 @@
     "vitest": "^1.6.0",
     "vue-tsc": "^2.0.19"
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "pnpm@8.15.6"
 }
