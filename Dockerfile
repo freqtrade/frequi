@@ -1,19 +1,19 @@
 FROM node:22.2.0-alpine as ui-builder
 
-RUN mkdir /app
+RUN mkdir /app \
+    && corepack enable
 
 WORKDIR /app
 
-COPY package.json yarn.lock .yarnrc.yml /app/
-COPY .yarn/releases/ /app/.yarn/releases/
+COPY package.json pnpm-lock.yaml /app/
 
-RUN apk add --update --no-cache g++ make\
-    && yarn install\
+RUN apk add --update --no-cache g++ make git \
+    && pnpm install --frozen-lockfile \
     && apk del g++ make
 
 COPY . /app
 
-RUN yarn build
+RUN pnpm run build
 
 FROM nginx:1.26.0-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
