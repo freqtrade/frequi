@@ -26,25 +26,25 @@ Ports can vary, so check the URL you're using.
 ### Project setup
 
 ```
-yarn install
+pnpm run install
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-yarn dev
+pnpm run dev
 ```
 
 ### Compiles and minifies for production
 
 ```
-yarn build
+pnpm run build
 ```
 
 ### Lints and fixes files
 
 ```
-yarn lint
+pnpm run lint
 ```
 
 ### Build and run docker version
@@ -79,7 +79,7 @@ docker-compose exec web /bin/bash
 then
 
 ```
-yarn dev
+pnpm run dev
 ```
 
 ## Project setup for vscode and docker (developing inside dev container) on Linux
@@ -97,7 +97,7 @@ View > Command palette > Enter: Remote-Containers rebuild container
 ### Serve your local server
 
 ```
-yarn dev
+pnpm run dev
 ```
 
 You now have useful vscode extensions, git support, your command history of the project.
