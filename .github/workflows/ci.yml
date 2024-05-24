@@ -30,23 +30,23 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
 
-    - run: yarn install
+    - run: pnpm run install
 
     - name: Run Lint
-      run: yarn lint-ci
+      run: pnpm run lint-ci
 
     - name: Run type check
-      run: yarn check-types
+      run: pnpm run check-types
 
     - name: Run Tests
-      run: yarn test:unit
+      run: pnpm run test:unit
 
     # Playwright section
     - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
+      run: pnpm run playwright install --with-deps
 
     - name: Run Playwright tests
-      run: yarn playwright test
+      run: pnpm run playwright test
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
@@ -58,7 +58,7 @@ jobs:
     # End Playwright section
 
     - name: Build build
-      run: yarn build
+      run: pnpm run build
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
