@@ -399,18 +399,19 @@ export function createBotSubStore(botId: string, botName: string) {
             const settingsStore = useSettingsStore();
             let result: PairHistory | null = null;
             const loadingTimer = setTimeout(() => (this.historyTakesLonger = true), 10000);
+            const timeout = 2 * 60 * 1000; // in MS
             if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairHistoryPayload, AxiosResponse<PairHistory>>(
                 '/pair_history',
                 payload,
-                { timeout: 50000 },
+                { timeout },
               );
               result = data;
             } else {
               const { data } = await api.get<PairHistory>('/pair_history', {
                 params: { ...payload },
-                timeout: 50000,
+                timeout,
               });
               result = data;
             }
