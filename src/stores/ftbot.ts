@@ -401,6 +401,7 @@ export function createBotSubStore(botId: string, botName: string) {
               const { data } = await api.post<PairHistoryPayload, AxiosResponse<PairHistory>>(
                 '/pair_history',
                 payload,
+                { timeout: 50000 },
               );
               result = data;
             } else {
