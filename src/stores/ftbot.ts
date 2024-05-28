@@ -106,6 +106,7 @@ export function createBotSubStore(botId: string, botName: string) {
         // TODO: type me
         history: {},
         historyStatus: LoadingStatus.not_loaded,
+        historyTakesLonger: false,
         strategyPlotConfig: undefined as PlotConfig | undefined,
         strategyList: [] as string[],
         freqaiModelList: [] as string[],
@@ -393,9 +394,11 @@ export function createBotSubStore(botId: string, botName: string) {
       async getPairHistory(payload: PairHistoryPayload) {
         if (payload.pair && payload.timeframe) {
           this.historyStatus = LoadingStatus.loading;
+          this.historyTakesLonger = false;
           try {
             const settingsStore = useSettingsStore();
             let result: PairHistory | null = null;
+            const loadingTimer = setTimeout(() => (this.historyTakesLonger = true), 10000);
             if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairHistoryPayload, AxiosResponse<PairHistory>>(
@@ -411,6 +414,7 @@ export function createBotSubStore(botId: string, botName: string) {
               });
               result = data;
             }
+            clearTimeout(loadingTimer);
             this.history = {
               [`${payload.pair}__${payload.timeframe}`]: {
                 pair: payload.pair,
@@ -432,6 +436,8 @@ export function createBotSubStore(botId: string, botName: string) {
             return new Promise((resolve, reject) => {
               reject(err);
             });
+          } finally {
+            this.historyTakesLonger = false;
           }
         }
         // Error branchs

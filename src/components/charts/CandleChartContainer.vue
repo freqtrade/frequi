@@ -77,10 +77,12 @@
           </CandleChart>
           <div v-else class="m-auto">
             <b-spinner v-if="isLoadingDataset" label="Spinning" />
-
             <div v-else style="font-size: 1.5rem">
               {{ noDatasetText }}
             </div>
+            <p v-if="botStore.activeBot.historyTakesLonger">
+              This is taking longer than expected ... Hold on ...
+            </p>
           </div>
         </div>
         <transition name="fade">
