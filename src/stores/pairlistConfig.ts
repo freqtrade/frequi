@@ -151,7 +151,7 @@ export const usePairlistConfigStore = defineStore(
         const { job_id: jobId } = await botStore.activeBot.evaluatePairlist(payload);
         console.log('jobId', jobId);
 
-        intervalId.value = setInterval(async () => {
+        intervalId.value = window.setInterval(async () => {
           const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
           if (!res.running) {
             clearInterval(intervalId.value);
