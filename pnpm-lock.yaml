@@ -45,8 +45,8 @@ dependencies:
     specifier: ^0.3.10
     version: 0.3.10
   humanize-duration:
-    specifier: ^3.32.0
-    version: 3.32.0
+    specifier: ^3.32.1
+    version: 3.32.1
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.4.5)(vue@3.4.27)
@@ -2205,8 +2205,8 @@ packages:
     engines: {node: '>=16.17.0'}
     dev: true
 
-  /humanize-duration@3.32.0:
-    resolution: {integrity: sha512-6WsXYTHJr7hXKqoqf5zoWza/lANRAqGlbnZnm0cjDykbXuez1JVXOQGmq0EPB45pXYAJyueRA3S3hfhmMbrMEQ==}
+  /humanize-duration@3.32.1:
+    resolution: {integrity: sha512-inh5wue5XdfObhu/IGEMiA1nUXigSGcaKNemcbLRKa7jXYGDZXr3LoT9pTIzq2hPEbld7w/qv9h+ikWGz8fL1g==}
     dev: false
 
   /ignore@5.3.1:
