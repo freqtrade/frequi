@@ -35,7 +35,7 @@
     "sortablejs": "^1.15.2",
     "vue": "^3.4.27",
     "vue-demi": "^0.14.8",
-    "vue-echarts": "^6.7.2",
+    "vue-echarts": "^6.7.3",
     "vue-router": "^4.3.2",
     "vue-select": "^4.0.0-beta.6"
   },
