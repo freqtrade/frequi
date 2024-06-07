@@ -60,7 +60,7 @@
         teleport-to="body"
         :show="blackListShow"
       >
-        <form ref="form" @submit.prevent>
+        <form ref="form" @submit.prevent="addBlacklistPair">
           <div>
             <b-form-group label-cols="2" label="Pair" label-for="pair-input">
               <b-form-input
@@ -70,15 +70,9 @@
                 autofocus
               ></b-form-input>
             </b-form-group>
-            <b-button
-              id="blacklist-submit"
-              class="float-end mb-2"
-              size="sm"
-              type="submit"
-              @click="addBlacklistPair"
-            >
-              Add</b-button
-            >
+            <b-button id="blacklist-submit" class="float-end mb-2" size="sm" type="submit">
+              Add
+            </b-button>
           </div>
         </form>
       </BPopover>
