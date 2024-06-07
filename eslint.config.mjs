@@ -41,6 +41,10 @@ export default [
           },
         },
       ],
+    },
+  },
+  {
+    rules: {
       'vue/component-api-style': ['error'],
       'vue/component-name-in-template-casing': [
         'error',
