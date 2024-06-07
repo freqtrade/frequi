@@ -31,6 +31,22 @@ export default [
       // 'no-shadow': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      // Custom vue rules
+
+      'vue/block-lang': [
+        'error',
+        {
+          script: {
+            lang: 'ts',
+          },
+        },
+      ],
+      'vue/component-api-style': ['error'],
+      'vue/component-name-in-template-casing': [
+        'error',
+        'PascalCase',
+        { registeredComponentsOnly: true },
+      ],
     },
   },
 ];
