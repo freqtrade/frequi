@@ -1,6 +1,13 @@
 <template>
   <div>
-    <b-form-group v-if="backtestMode" label-for="trade-filter" class="mb-2 me-5">
+    <b-form-group
+      label-for="trade-filter"
+      class="mb-2 ms-2"
+      :class="{
+        'me-4': backtestMode,
+        'me-2': !backtestMode,
+      }"
+    >
       <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
     </b-form-group>
     <b-list-group>
