@@ -53,11 +53,11 @@
           <i-mdi-delete />
         </b-button>
       </div>
-      <b-popover
+      <BPopover
         title="Add to blacklist"
         target="blacklist-add-btn"
         triggers="click"
-        container="body"
+        teleport-to="body"
         :show="blackListShow"
       >
         <form ref="form" @submit.prevent>
@@ -81,7 +81,7 @@
             >
           </div>
         </form>
-      </b-popover>
+      </BPopover>
     </div>
     <div v-if="botStore.activeBot.blacklist.length" class="list">
       <div

@@ -54,8 +54,8 @@ function handleForceEntry(item: Trade) {
     >
       <i-mdi-gesture-tap />
     </b-button>
-    <b-popover
-      container="body"
+    <BPopover
+      teleport-to="body"
       :target="`btn-actions-${id}`"
       :title="`Actions for ${trade.pair}`"
       triggers="manual"
@@ -76,7 +76,7 @@ function handleForceEntry(item: Trade) {
       <b-button class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
         <i-mdi-cancel class="me-1" />Close Actions menu
       </b-button>
-    </b-popover>
+    </BPopover>
   </div>
 </template>
 
