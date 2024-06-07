@@ -1,6 +1,6 @@
 <template>
   <div class="chart-wrapper">
-    <e-charts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
+    <ECharts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>
 

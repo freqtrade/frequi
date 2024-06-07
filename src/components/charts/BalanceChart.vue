@@ -1,5 +1,5 @@
 <template>
-  <e-charts
+  <ECharts
     v-if="currencies"
     ref="balanceChart"
     :option="balanceChartOptions"

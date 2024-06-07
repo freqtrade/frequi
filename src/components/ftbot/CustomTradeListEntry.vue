@@ -11,7 +11,7 @@
         <DateTimeTZ :date="trade.open_timestamp" :date-only="true" />
       </small>
     </div>
-    <trade-profit class="col-5" :trade="trade" />
+    <TradeProfit class="col-5" :trade="trade" />
   </div>
 </template>
 

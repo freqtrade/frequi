@@ -36,7 +36,7 @@
           <b-form-checkbox v-model="pairlistStore.customExchange" class="mb-2">
             Custom Exchange
           </b-form-checkbox>
-          <exchange-select
+          <ExchangeSelect
             v-if="pairlistStore.customExchange"
             v-model="pairlistStore.selectedExchange"
           />

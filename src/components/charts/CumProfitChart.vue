@@ -1,5 +1,5 @@
 <template>
-  <e-charts
+  <ECharts
     v-if="trades"
     ref="chart"
     :option="cumProfitChartOptions"

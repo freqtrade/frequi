@@ -8,7 +8,7 @@
     >
       <i-mdi-content-save />
     </b-button>
-    <edit-value
+    <EditValue
       v-model="pairlistStore.config.name"
       editable-name="config"
       :allow-add="true"
@@ -26,7 +26,7 @@
         :options="pairlistStore.savedConfigs.map((c) => c.name)"
         @update:model-value="(config) => pairlistStore.selectOrCreateConfig(config as string)"
       />
-    </edit-value>
+    </EditValue>
     <b-button
       title="Evaluate pairlist"
       :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"

@@ -1,5 +1,5 @@
 <template>
-  <e-charts
+  <ECharts
     v-if="trades.length > 0"
     :option="chartOptions"
     autoresize

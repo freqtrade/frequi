@@ -1,5 +1,5 @@
 <template>
-  <e-charts
+  <ECharts
     v-if="dailyStats.data"
     ref="dailyChart"
     :option="dailyChartOptions"

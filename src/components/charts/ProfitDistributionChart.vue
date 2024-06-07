@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column h-100 position-relative">
     <div class="flex-grow-1">
-      <e-charts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
+      <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
     <b-form-group
       class="z-2"
