@@ -20,7 +20,7 @@ const perTagReason = computed(() => {
       label: props.keyHeader,
       formatter: (value, _, item) => value || item['exit_reason'] || 'OTHER',
     },
-    { key: 'trades', label: 'Entries' },
+    { key: 'trades', label: 'Trades' },
     {
       key: 'profit_mean',
       label: 'Avg Profit %',
