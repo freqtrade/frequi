@@ -28,12 +28,12 @@
         title="Results per Enter tag"
         :results="backtestResult.results_per_enter_tag"
         :stake-currency="backtestResult.stake_currency"
-        key-header="Tag"
+        key-header="Enter Tag"
         :stake-currency-decimals="backtestResult.stake_currency_decimals"
       />
 
       <BacktestResultTablePer
-        title="Results per Exit-reason"
+        title="Results per Exit reason"
         :results="backtestResult.exit_reason_summary ?? []"
         :stake-currency="backtestResult.stake_currency"
         key-header="Exit Reason"
