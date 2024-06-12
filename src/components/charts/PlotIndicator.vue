@@ -11,8 +11,8 @@
         </b-form-select>
       </b-form-group>
       <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
-        <b-input-group>
-          <b-input-group-prepend>
+        <b-input-group size="sm">
+          <template #prepend>
             <b-form-input
               v-model="selColor"
               type="color"
@@ -20,14 +20,14 @@
               class="p-0"
               style="max-width: 29px"
             ></b-form-input>
-          </b-input-group-prepend>
+          </template>
           <b-form-input id="colsel" v-model="selColor" size="sm" class="flex-grow-1">
           </b-form-input>
-          <b-input-group-append>
+          <template #append>
             <b-button variant="primary" size="sm" @click="newColor">
               <i-mdi-dice-multiple />
             </b-button>
-          </b-input-group-append>
+          </template>
         </b-input-group>
       </b-form-group>
     </div>
