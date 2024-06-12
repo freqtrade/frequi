@@ -41,6 +41,15 @@
       />
 
       <BacktestResultTablePer
+        v-if="backtestResult.mix_tag_stats"
+        title="Results Mixed Tag"
+        :results="backtestResult.mix_tag_stats ?? []"
+        :stake-currency="backtestResult.stake_currency"
+        :key-headers="['Enter Tag', 'Exit Tag']"
+        :stake-currency-decimals="backtestResult.stake_currency_decimals"
+      />
+
+      <BacktestResultTablePer
         title="Results per pair"
         :results="backtestResult.results_per_pair"
         :stake-currency="backtestResult.stake_currency"

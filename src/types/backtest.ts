@@ -77,6 +77,7 @@ export interface StrategyBacktestResult {
   results_per_pair: PairResult[];
   sell_reason_summary?: ExitReasonResults[];
   exit_reason_summary?: ExitReasonResults[] | PairResult[];
+  mix_tag_stats?: ExitReasonResults[];
   results_per_enter_tag: PairResult[];
   periodic_breakdown?: PeriodicBreakdown;
   left_open_trades: Trade[];

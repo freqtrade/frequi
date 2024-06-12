@@ -1,30 +1,51 @@
 <script setup lang="ts">
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import type { ExitReasonResults, PairResult } from '@/types';
-import { TableItem } from 'bootstrap-vue-next';
+import { TableField, TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   title: { type: String, required: true },
   results: { type: Array as PropType<(PairResult | ExitReasonResults)[]>, required: true },
   stakeCurrency: { type: String, required: true },
   stakeCurrencyDecimals: { type: Number, required: true },
-  keyHeader: { type: String, default: 'Tag' },
+  keyHeader: { type: String, default: '' },
+  keyHeaders: { type: Array as PropType<string[]>, default: () => [] },
 });
 
 const tableItems = computed(() => props.results as unknown as TableItem[]);
 
 const perTagReason = computed(() => {
-  return [
-    {
+  const firstFields: TableField[] = [];
+  if (props.keyHeaders.length > 0) {
+    // Keys could be an array
+    for (let i = 0; i < props.keyHeaders.length; i += 1) {
+      firstFields.push({
+        key: `key`,
+        label: props.keyHeaders[i],
+        formatter: (value, _, item) =>
+          Array.isArray(value) ? value[i] : value || item['exit_reason'] || 'OTHER',
+      });
+    }
+  } else {
+    firstFields.push({
       key: 'key',
       label: props.keyHeader,
       formatter: (value, _, item) => value || item['exit_reason'] || 'OTHER',
-    },
+    });
+  }
+
+  return [
+    ...firstFields,
+    // {
+    //   key: 'key',
+    //   label: props.keyHeader,
+    //   formatter: (value, _, item) => value || item['exit_reason'] || 'OTHER',
+    // },
     { key: 'trades', label: 'Trades' },
     {
       key: 'profit_mean',
       label: 'Avg Profit %',
-      formatter: (value) => formatPercent(value, 2),
+      formatter: (value: number) => formatPercent(value, 2),
     },
     {
       key: 'profit_total_abs',
