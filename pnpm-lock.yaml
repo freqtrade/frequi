@@ -15,11 +15,11 @@ dependencies:
     specifier: ^8.7.0
     version: 8.7.0(vue@3.4.27)
   '@vueuse/core':
-    specifier: ^10.10.0
-    version: 10.10.0(vue@3.4.27)
+    specifier: ^10.10.1
+    version: 10.10.1(vue@3.4.27)
   '@vueuse/integrations':
-    specifier: ^10.10.0
-    version: 10.10.0(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.27)
+    specifier: ^10.10.1
+    version: 10.10.1(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.27)
   axios:
     specifier: ^1.7.2
     version: 1.7.2
@@ -147,7 +147,7 @@ devDependencies:
     version: 7.12.0(eslint@9.4.0)(typescript@5.4.5)
   unplugin-auto-import:
     specifier: ^0.17.6
-    version: 0.17.6(@vueuse/core@10.10.0)
+    version: 0.17.6(@vueuse/core@10.10.1)
   unplugin-icons:
     specifier: ^0.19.0
     version: 0.19.0(@vue/compiler-sfc@3.4.27)
@@ -1297,19 +1297,19 @@ packages:
       vue: 3.4.27(typescript@5.4.5)
     dev: false
 
-  /@vueuse/core@10.10.0(vue@3.4.27):
-    resolution: {integrity: sha512-vexJ/YXYs2S42B783rI95lMt3GzEwkxzC8Hb0Ndpd8rD+p+Lk/Za4bd797Ym7yq4jXqdSyj3JLChunF/vyYjUw==}
+  /@vueuse/core@10.10.1(vue@3.4.27):
+    resolution: {integrity: sha512-8Vr8wxILdK+qfBjbngav8LVI+6UuM2TQCufRKMPz/GrpLHQ6dbY6kL5PLa9Eobq8JRrMaDyArPX9Jj18fMTPew==}
     dependencies:
       '@types/web-bluetooth': 0.0.20
-      '@vueuse/metadata': 10.10.0
-      '@vueuse/shared': 10.10.0(vue@3.4.27)
+      '@vueuse/metadata': 10.10.1
+      '@vueuse/shared': 10.10.1(vue@3.4.27)
       vue-demi: 0.14.8(vue@3.4.27)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
 
-  /@vueuse/integrations@10.10.0(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.27):
-    resolution: {integrity: sha512-vHGeK7X6mkdkpcm1eE9t3Cpm21pNVfZRwrjwwbrEs9XftnSgszF4831G2rei8Dt9cIYJIfFV+iyx/29muimJPQ==}
+  /@vueuse/integrations@10.10.1(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.27):
+    resolution: {integrity: sha512-b4iPz4NLk2g5u9GNgTpYqNN1pzYWPpIglHTg6eDjJwKB7OfzJP4m5kQlzn2oRH7U0OlEOCVPrdDfqneuS9YNTg==}
     peerDependencies:
       async-validator: '*'
       axios: '*'
@@ -1349,8 +1349,8 @@ packages:
       universal-cookie:
         optional: true
     dependencies:
-      '@vueuse/core': 10.10.0(vue@3.4.27)
-      '@vueuse/shared': 10.10.0(vue@3.4.27)
+      '@vueuse/core': 10.10.1(vue@3.4.27)
+      '@vueuse/shared': 10.10.1(vue@3.4.27)
       axios: 1.7.2
       sortablejs: 1.15.2
       vue-demi: 0.14.8(vue@3.4.27)
@@ -1359,11 +1359,11 @@ packages:
       - vue
     dev: false
 
-  /@vueuse/metadata@10.10.0:
-    resolution: {integrity: sha512-UNAo2sTCAW5ge6OErPEHb5z7NEAg3XcO9Cj7OK45aZXfLLH1QkexDcZD77HBi5zvEiLOm1An+p/4b5K3Worpug==}
+  /@vueuse/metadata@10.10.1:
+    resolution: {integrity: sha512-dpEL5afVLUqbchwGiLrV6spkl4/6UOKJ3YgxFE+wWLj/LakyIZUC83bfeFgbHkRcNhsAqTQCGR74jImsLfK8pg==}
 
-  /@vueuse/shared@10.10.0(vue@3.4.27):
-    resolution: {integrity: sha512-2aW33Ac0Uk0U+9yo3Ypg9s5KcR42cuehRWl7vnUHadQyFvCktseyxxEPBi1Eiq4D2yBGACOnqLZpx1eMc7g5Og==}
+  /@vueuse/shared@10.10.1(vue@3.4.27):
+    resolution: {integrity: sha512-edqexI+RQpoeqDxTatqBZa+K87ganbrwpoP++Fd9828U3js5jzwcEDeyrYcUgkKZ5LLL8q7M5SOMvSpMrxBPxg==}
     dependencies:
       vue-demi: 0.14.8(vue@3.4.27)
     transitivePeerDependencies:
@@ -1488,7 +1488,7 @@ packages:
       vue: ^3.4.27
     dependencies:
       '@floating-ui/vue': 1.0.6(vue@3.4.27)
-      '@vueuse/core': 10.10.0(vue@3.4.27)
+      '@vueuse/core': 10.10.1(vue@3.4.27)
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -3098,7 +3098,7 @@ packages:
       - rollup
     dev: true
 
-  /unplugin-auto-import@0.17.6(@vueuse/core@10.10.0):
+  /unplugin-auto-import@0.17.6(@vueuse/core@10.10.1):
     resolution: {integrity: sha512-dmX0Pex5DzMzVuALkexboOZvh51fL/BD6aoPO7qHoTYGlQp0GRKsREv2KMF1lzYI9SXKQiRxAjwzbQnrFFNydQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -3112,7 +3112,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.8
       '@rollup/pluginutils': 5.1.0
-      '@vueuse/core': 10.10.0(vue@3.4.27)
+      '@vueuse/core': 10.10.1(vue@3.4.27)
       fast-glob: 3.3.2
       local-pkg: 0.5.0
       magic-string: 0.30.10
