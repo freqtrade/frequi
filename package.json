@@ -44,7 +44,7 @@
     "@iconify-json/mdi": "^1.1.66",
     "@playwright/test": "^1.44.0",
     "@types/echarts": "^4.9.22",
-    "@types/node": "^20.14.1",
+    "@types/node": "^20.14.2",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "@vitejs/plugin-vue": "^5.0.5",
