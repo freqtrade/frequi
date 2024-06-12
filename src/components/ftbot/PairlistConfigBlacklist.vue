@@ -37,11 +37,11 @@
           size="sm"
         >
           <b-form-input v-model="pairlistStore.config.blacklist[i]" />
-          <b-input-group-append>
+          <template #append>
             <b-button size="sm" @click="pairlistStore.removeFromBlacklist(i)"
               ><i-mdi-close
             /></b-button>
-          </b-input-group-append>
+          </template>
         </b-input-group>
         <b-button size="sm" @click="pairlistStore.addToBlacklist()">Add</b-button>
       </b-card-body>
