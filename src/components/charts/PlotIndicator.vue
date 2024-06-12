@@ -11,7 +11,7 @@
         </b-form-select>
       </b-form-group>
       <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
-        <b-input-group size="sm">
+        <b-input-group>
           <template #prepend>
             <b-form-input
               v-model="selColor"
