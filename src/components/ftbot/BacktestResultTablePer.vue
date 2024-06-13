@@ -36,11 +36,6 @@ const perTagReason = computed(() => {
 
   return [
     ...firstFields,
-    // {
-    //   key: 'key',
-    //   label: props.keyHeader,
-    //   formatter: (value, _, item) => value || item['exit_reason'] || 'OTHER',
-    // },
     { key: 'trades', label: 'Trades' },
     {
       key: 'profit_mean',
