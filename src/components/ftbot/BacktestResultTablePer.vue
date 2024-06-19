@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatPercent, formatPrice } from '@/shared/formatters';
 import type { ExitReasonResults, PairResult } from '@/types';
-import { TableField, TableItem } from 'bootstrap-vue-next';
+import { TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -15,7 +15,8 @@ const props = defineProps({
 const tableItems = computed(() => props.results as unknown as TableItem[]);
 
 const perTagReason = computed(() => {
-  const firstFields: TableField[] = [];
+  // TODO: should be TableField - but it's not working correctly
+  const firstFields: any[] = [];
   if (props.keyHeaders.length > 0) {
     // Keys could be an array
     for (let i = 0; i < props.keyHeaders.length; i += 1) {
@@ -30,7 +31,7 @@ const perTagReason = computed(() => {
     firstFields.push({
       key: 'key',
       label: props.keyHeader,
-      formatter: (value, _, item) => value || item['exit_reason'] || 'OTHER',
+      formatter: (value, _, item) => (value || item['exit_reason'] || 'OTHER') as string,
     });
   }
 
@@ -46,12 +47,12 @@ const perTagReason = computed(() => {
       key: 'profit_total_abs',
       label: `Tot Profit ${props.stakeCurrency}`,
 
-      formatter: (value) => formatPrice(value, props.stakeCurrencyDecimals),
+      formatter: (value) => formatPrice(value as number, props.stakeCurrencyDecimals),
     },
     {
       key: 'profit_total',
       label: 'Tot Profit %',
-      formatter: (value) => formatPercent(value, 2),
+      formatter: (value) => formatPercent(value as number, 2),
     },
     { key: 'wins', label: 'Wins' },
     { key: 'draws', label: 'Draws' },
