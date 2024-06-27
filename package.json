@@ -66,7 +66,7 @@
     "typescript-eslint": "^7.13.1",
     "unplugin-auto-import": "^0.17.6",
     "unplugin-icons": "^0.19.0",
-    "unplugin-vue-components": "^0.27.0",
+    "unplugin-vue-components": "^0.27.2",
     "vite": "^5.3.1",
     "vitest": "^1.6.0",
     "vue-tsc": "^2.0.22"
