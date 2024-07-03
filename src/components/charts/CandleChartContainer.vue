@@ -73,8 +73,8 @@
             :slider-position="sliderPosition"
             :color-up="colorStore.colorUp"
             :color-down="colorStore.colorDown"
-          >
-          </CandleChart>
+            :label-side="settingsStore.chartLabelSide"
+          />
           <div v-else class="m-auto">
             <b-spinner v-if="isLoadingDataset" label="Spinning" />
             <div v-else style="font-size: 1.5rem">

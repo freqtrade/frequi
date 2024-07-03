@@ -80,11 +80,13 @@ const props = defineProps<{
   sliderPosition: ChartSliderPosition | undefined;
   colorUp: string;
   colorDown: string;
+  labelSide: 'left' | 'right';
 }>();
 
+const isLabelLeft = computed(() => props.labelSide === 'left');
 // Chart default options
-const MARGINLEFT = '5.5%';
-const MARGINRIGHT = '1%';
+const MARGINLEFT = isLabelLeft.value ? '5.5%' : '1%';
+const MARGINRIGHT = isLabelLeft.value ? '1%' : '5.5%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
 
@@ -387,6 +389,7 @@ function updateChart(initial = false) {
           scale: true,
           gridIndex: currGridIdx,
           name: key,
+          position: props.labelSide,
           nameLocation: 'middle',
           nameGap: NAMEGAP,
           axisLabel: { show: true },
@@ -590,6 +593,7 @@ function initializeChartOptions() {
         min: (value) => {
           return value.min - (value.max - value.min) * 0.04;
         },
+        position: props.labelSide,
       },
       {
         scale: true,
@@ -597,7 +601,7 @@ function initializeChartOptions() {
         splitNumber: 2,
         name: 'volume',
         nameLocation: 'middle',
-        // position: 'right',
+        position: props.labelSide,
         nameGap: NAMEGAP,
         axisLabel: { show: false },
         axisLine: { show: false },
