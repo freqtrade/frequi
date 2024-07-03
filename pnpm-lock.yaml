@@ -96,7 +96,7 @@ devDependencies:
     version: 7.13.1(eslint@9.5.0)(typescript@5.5.2)
   '@vitejs/plugin-vue':
     specifier: ^5.0.5
-    version: 5.0.5(vite@5.3.1)(vue@3.4.30)
+    version: 5.0.5(vite@5.3.2)(vue@3.4.30)
   '@vue/compiler-sfc':
     specifier: 3.4.30
     version: 3.4.30
@@ -155,8 +155,8 @@ devDependencies:
     specifier: ^0.27.2
     version: 0.27.2(vue@3.4.30)
   vite:
-    specifier: ^5.3.1
-    version: 5.3.1(@types/node@20.14.9)(sass@1.77.6)
+    specifier: ^5.3.2
+    version: 5.3.2(@types/node@20.14.9)(sass@1.77.6)
   vitest:
     specifier: ^1.6.0
     version: 1.6.0(@types/node@20.14.9)(happy-dom@14.12.3)(sass@1.77.6)
@@ -1094,14 +1094,14 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
-  /@vitejs/plugin-vue@5.0.5(vite@5.3.1)(vue@3.4.30):
+  /@vitejs/plugin-vue@5.0.5(vite@5.3.2)(vue@3.4.30):
     resolution: {integrity: sha512-LOjm7XeIimLBZyzinBQ6OSm3UBCNVCpLkxGC0oWmm2YPzVZoxMsdvNVimLTBzpAnR9hl/yn1SHGuRfe6/Td9rQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.3.1(@types/node@20.14.9)(sass@1.77.6)
+      vite: 5.3.2(@types/node@20.14.9)(sass@1.77.6)
       vue: 3.4.30(typescript@5.5.2)
     dev: true
 
@@ -3217,7 +3217,7 @@ packages:
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.3.1(@types/node@20.14.9)(sass@1.77.6)
+      vite: 5.3.2(@types/node@20.14.9)(sass@1.77.6)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -3229,8 +3229,8 @@ packages:
       - terser
     dev: true
 
-  /vite@5.3.1(@types/node@20.14.9)(sass@1.77.6):
-    resolution: {integrity: sha512-XBmSKRLXLxiaPYamLv3/hnP/KXDai1NDexN0FpkTaZXTfycHvkRHoenpgl/fvuK/kPbB6xAgoyiryAhQNxYmAQ==}
+  /vite@5.3.2(@types/node@20.14.9)(sass@1.77.6):
+    resolution: {integrity: sha512-6lA7OBHBlXUxiJxbO5aAY2fsHHzDr1q7DvXYnyZycRs2Dz+dXBWuhpWHvmljTRTpQC2uvGmUFFkSHF2vGo90MA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -3310,7 +3310,7 @@ packages:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.3.1(@types/node@20.14.9)(sass@1.77.6)
+      vite: 5.3.2(@types/node@20.14.9)(sass@1.77.6)
       vite-node: 1.6.0(@types/node@20.14.9)(sass@1.77.6)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
