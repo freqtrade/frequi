@@ -87,13 +87,13 @@
                 <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
               </div>
               <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
-              <b-nav-item
-                v-if="botStore.botCount === 1"
-                class="dropdown-item"
-                to="/"
-                @click="clickLogout()"
-                >Sign Out</b-nav-item
-              >
+              <template v-if="botStore.botCount === 1">
+                <BDropdownDivider />
+                <b-dropdown-item active-class="non-existant" @click="clickLogout()">
+                  <i-mdi-logout class="me-1" />
+                  Sign Out
+                </b-dropdown-item>
+              </template>
             </b-nav-item-dropdown>
             <div class="d-block d-sm-none">
               <!-- Visible only on XS -->
@@ -142,13 +142,15 @@ const botStore = useBotStore();
 const settingsStore = useSettingsStore();
 const layoutStore = useLayoutStore();
 const route = useRoute();
+const router = useRouter();
 const favicon = ref<Favico | undefined>(undefined);
 const pingInterval = ref<number>();
 
-const clickLogout = () => {
+async function clickLogout() {
   botStore.removeBot(botStore.selectedBot);
   // TODO: This should be per bot
-};
+  await router.push('/');
+}
 
 const setOpenTradesAsPill = (tradeCount: number) => {
   if (!favicon.value) {
