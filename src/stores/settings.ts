@@ -32,6 +32,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       notifications: notificationDefaults,
       profitDistributionBins: 20,
       confirmDialog: true,
+      chartLabelSide: 'right' as 'left' | 'right',
     };
   },
   getters: {

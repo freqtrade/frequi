@@ -44,7 +44,17 @@
         </div>
 
         <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
-          <h4>Candle settings</h4>
+          <h4>Chart settings</h4>
+          <b-form-group description="Chart Scale side">
+            <b-form-radio-group
+              v-model="settingsStore.chartLabelSide"
+              name="chart-preference-options"
+              :options="[
+                { value: 'left', text: 'Left' },
+                { value: 'right', text: 'Right' },
+              ]"
+            ></b-form-radio-group>
+          </b-form-group>
           <b-form-group description="Use Heikin Ashi candles in your charts">
             <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
               >Use Heikin Ashi candles.</b-form-checkbox
