@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import LoginModal from '@/views/LoginModal.vue';
+import LoginModal from '@/components/LoginModal.vue';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { AuthStorageWithBotId, BotDescriptor } from '@/types';

@@ -130,7 +130,6 @@
 </template>
 
 <script setup lang="ts">
-import LoginModal from '@/views/LoginModal.vue';
 import Favico from 'favico.js';
 
 import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
