@@ -70,27 +70,23 @@ use([
   GraphicComponent,
 ]);
 
+const props = defineProps<{
+  trades: Trade[];
+  dataset: PairHistory;
+  heikinAshi: boolean;
+  useUTC: boolean;
+  plotConfig: PlotConfig;
+  theme: 'dark' | 'light';
+  sliderPosition: ChartSliderPosition | undefined;
+  colorUp: string;
+  colorDown: string;
+}>();
+
 // Chart default options
 const MARGINLEFT = '5.5%';
 const MARGINRIGHT = '1%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
-
-const props = defineProps({
-  trades: { required: false, default: () => [], type: Array as () => Trade[] },
-  dataset: { required: true, type: Object as () => PairHistory },
-  heikinAshi: { required: false, default: false, type: Boolean },
-  useUTC: { required: false, default: true, type: Boolean },
-  plotConfig: { required: true, type: Object as () => PlotConfig },
-  theme: { default: 'dark', type: String },
-  sliderPosition: {
-    required: false,
-    type: Object as () => ChartSliderPosition,
-    default: () => undefined,
-  },
-  colorUp: { required: false, type: String, default: '#12bb7b' },
-  colorDown: { required: false, type: String, default: '#ef5350' },
-});
 
 // Candle Colors
 const upColor = props.colorUp;
