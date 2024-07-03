@@ -19,7 +19,7 @@ dependencies:
     version: 10.11.0(vue@3.4.30)
   '@vueuse/integrations':
     specifier: ^10.11.0
-    version: 10.11.0(axios@1.7.2)(focus-trap@7.5.4)(sortablejs@1.15.2)(vue@3.4.30)
+    version: 10.11.0(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.30)
   axios:
     specifier: ^1.7.2
     version: 1.7.2
@@ -27,8 +27,8 @@ dependencies:
     specifier: ^5.3.3
     version: 5.3.3(@popperjs/core@2.11.8)
   bootstrap-vue-next:
-    specifier: ^0.22.2
-    version: 0.22.2(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.30)
+    specifier: ^0.22.7
+    version: 0.22.7(vue@3.4.30)
   core-js:
     specifier: ^3.37.1
     version: 3.37.1
@@ -470,28 +470,28 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
 
-  /@floating-ui/core@1.6.3:
-    resolution: {integrity: sha512-1ZpCvYf788/ZXOhRQGFxnYQOVgeU+pi0i+d0Ow34La7qjIXETi6RNswGVKkA6KcDO8/+Ysu2E/CeUmmeEBDvTg==}
+  /@floating-ui/core@1.6.4:
+    resolution: {integrity: sha512-a4IowK4QkXl4SCWTGUR0INAfEOX3wtsYw3rKK5InQEHMGObkR8Xk44qYQD9P4r6HHw0iIfK6GUKECmY8sTkqRA==}
     dependencies:
-      '@floating-ui/utils': 0.2.3
+      '@floating-ui/utils': 0.2.4
     dev: false
 
-  /@floating-ui/dom@1.6.6:
-    resolution: {integrity: sha512-qiTYajAnh3P+38kECeffMSQgbvXty2VB6rS+42iWR4FPIlZjLK84E9qtLnMTLIpPz2znD/TaFqaiavMUrS+Hcw==}
+  /@floating-ui/dom@1.6.7:
+    resolution: {integrity: sha512-wmVfPG5o2xnKDU4jx/m4w5qva9FWHcnZ8BvzEe90D/RpwsJaTAVYPEPdQ8sbr/N8zZTAHlZUTQdqg8ZUbzHmng==}
     dependencies:
-      '@floating-ui/core': 1.6.3
-      '@floating-ui/utils': 0.2.3
+      '@floating-ui/core': 1.6.4
+      '@floating-ui/utils': 0.2.4
     dev: false
 
-  /@floating-ui/utils@0.2.3:
-    resolution: {integrity: sha512-XGndio0l5/Gvd6CLIABvsav9HHezgDFFhDfHk1bvLfr9ni8dojqLSvBbotJEjmIwNHL7vK4QzBJTdBRoB+c1ww==}
+  /@floating-ui/utils@0.2.4:
+    resolution: {integrity: sha512-dWO2pw8hhi+WrXq1YJy2yCuWoL20PddgGaqTgVe4cOS9Q6qklXCiA1tJEqX6BEwRNSCP84/afac9hd4MS+zEUA==}
     dev: false
 
-  /@floating-ui/vue@1.0.7(vue@3.4.30):
-    resolution: {integrity: sha512-tm9aMT9IrMzoZfzPpsoZHP7j7ULZ0p9AzCJV6i2H8sAlKe36tAnwuQLHdm7vE0SnRkHJJXuMB/gNz4gFdHLNrg==}
+  /@floating-ui/vue@1.1.1(vue@3.4.30):
+    resolution: {integrity: sha512-cyawjk9etPZPl/RVtMRnWrwtAhWbPVSrRVYARgOzhLIqxr0k2up1APrrFjqP9QwRQ0AwjKSvbWg4YC6jESutow==}
     dependencies:
-      '@floating-ui/dom': 1.6.6
-      '@floating-ui/utils': 0.2.3
+      '@floating-ui/dom': 1.6.7
+      '@floating-ui/utils': 0.2.4
       vue-demi: 0.14.8(vue@3.4.30)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -1316,7 +1316,7 @@ packages:
       - '@vue/composition-api'
       - vue
 
-  /@vueuse/integrations@10.11.0(axios@1.7.2)(focus-trap@7.5.4)(sortablejs@1.15.2)(vue@3.4.30):
+  /@vueuse/integrations@10.11.0(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.30):
     resolution: {integrity: sha512-Pp6MtWEIr+NDOccWd8j59Kpjy5YDXogXI61Kb1JxvSfVBO8NzFQkmrKmSZz47i+ZqHnIzxaT38L358yDHTncZg==}
     peerDependencies:
       async-validator: ^4
@@ -1360,7 +1360,6 @@ packages:
       '@vueuse/core': 10.11.0(vue@3.4.30)
       '@vueuse/shared': 10.11.0(vue@3.4.30)
       axios: 1.7.2
-      focus-trap: 7.5.4
       sortablejs: 1.15.2
       vue-demi: 0.14.8(vue@3.4.30)
     transitivePeerDependencies:
@@ -1491,29 +1490,16 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
 
-  /bootstrap-vue-next@0.22.2(axios@1.7.2)(sortablejs@1.15.2)(vue@3.4.30):
-    resolution: {integrity: sha512-/MK+H8t9fZB6KvUc82ifad6oqB1cTRnlC/K7XmHV8HA3SQ5ji4QK8V08Rocn9k2iTwHLOMjtDEG2I7TgM+rUaA==}
+  /bootstrap-vue-next@0.22.7(vue@3.4.30):
+    resolution: {integrity: sha512-6GN+gM8wj3ulYB72bkmBFHnqSLYGBTndbYxJRLpBRh4dPWTfp1SQ+PUQd4wfIF+7Mqy6nxZmi4qEw0DebT341w==}
     peerDependencies:
       vue: ^3.4.27
     dependencies:
-      '@floating-ui/vue': 1.0.7(vue@3.4.30)
+      '@floating-ui/vue': 1.1.1(vue@3.4.30)
       '@vueuse/core': 10.11.0(vue@3.4.30)
-      '@vueuse/integrations': 10.11.0(axios@1.7.2)(focus-trap@7.5.4)(sortablejs@1.15.2)(vue@3.4.30)
-      focus-trap: 7.5.4
       vue: 3.4.30(typescript@5.5.2)
     transitivePeerDependencies:
       - '@vue/composition-api'
-      - async-validator
-      - axios
-      - change-case
-      - drauu
-      - fuse.js
-      - idb-keyval
-      - jwt-decode
-      - nprogress
-      - qrcode
-      - sortablejs
-      - universal-cookie
     dev: false
 
   /bootstrap@5.3.3(@popperjs/core@2.11.8):
@@ -2083,12 +2069,6 @@ packages:
   /flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
     dev: true
-
-  /focus-trap@7.5.4:
-    resolution: {integrity: sha512-N7kHdlgsO/v+iD/dMoJKtsSqs5Dz/dXZVebRgJw23LDk+jMi/974zyiOYDziY2JPp8xivq9BmUGwIJMiuSBi7w==}
-    dependencies:
-      tabbable: 6.2.0
-    dev: false
 
   /follow-redirects@1.15.6:
     resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
@@ -2982,10 +2962,6 @@ packages:
       '@pkgr/core': 0.1.1
       tslib: 2.6.2
     dev: true
-
-  /tabbable@6.2.0:
-    resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
-    dev: false
 
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
