@@ -122,8 +122,8 @@ devDependencies:
     specifier: ^9.26.0
     version: 9.26.0(eslint@9.5.0)
   globals:
-    specifier: ^15.6.0
-    version: 15.6.0
+    specifier: ^15.8.0
+    version: 15.8.0
   happy-dom:
     specifier: ^14.12.3
     version: 14.12.3
@@ -2186,8 +2186,8 @@ packages:
     engines: {node: '>=18'}
     dev: true
 
-  /globals@15.6.0:
-    resolution: {integrity: sha512-UzcJi88Hw//CurUIRa9Jxb0vgOCcuD/MNjwmXp633cyaRKkCWACkoqHCtfZv43b1kqXGg/fpOa8bwgacCeXsVg==}
+  /globals@15.8.0:
+    resolution: {integrity: sha512-VZAJ4cewHTExBWDHR6yptdIBlx9YSSZuwojj9Nt5mBRXQzrKakDsVKQ1J63sklLvzAJm0X5+RpO4i3Y2hcOnFw==}
     engines: {node: '>=18'}
     dev: true
 
