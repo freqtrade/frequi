@@ -392,7 +392,10 @@ function updateChart(initial = false) {
           position: props.labelSide,
           nameLocation: 'middle',
           nameGap: NAMEGAP,
-          axisLabel: { show: true },
+          axisLabel: {
+            show: true,
+            hideOverlap: true,
+          },
           axisLine: { show: false },
           axisTick: { show: false },
           splitLine: { show: false },
