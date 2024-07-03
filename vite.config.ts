@@ -8,7 +8,12 @@ import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
 import { defineConfig } from 'vite';
 
-const commitHash = execSync('git rev-parse --short HEAD').toString();
+let commitHash: string = 'unknown';
+try {
+  commitHash = execSync('git rev-parse --short HEAD').toString();
+} catch (error) {
+  console.error('Failed to get commit hash. Running in this mode will not be supported.');
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
