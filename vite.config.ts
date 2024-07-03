@@ -1,12 +1,12 @@
-import { defineConfig } from 'vite';
 import createVuePlugin from '@vitejs/plugin-vue';
-import { resolve } from 'path';
-import Icons from 'unplugin-icons/vite';
-import Components from 'unplugin-vue-components/vite';
-import IconsResolve from 'unplugin-icons/resolver';
-import AutoImport from 'unplugin-auto-import/vite';
 import { BootstrapVueNextResolver } from 'bootstrap-vue-next';
 import { execSync } from 'child_process';
+import { resolve } from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import IconsResolve from 'unplugin-icons/resolver';
+import Icons from 'unplugin-icons/vite';
+import Components from 'unplugin-vue-components/vite';
+import { defineConfig } from 'vite';
 
 const commitHash = execSync('git rev-parse --short HEAD').toString();
 
