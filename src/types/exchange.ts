@@ -10,6 +10,7 @@ export interface Exchange {
   valid: boolean;
   supported: boolean;
   comment: string;
+  dex?: boolean;
   trade_modes: TradeMode[];
 }
 
