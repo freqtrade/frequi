@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import { useBotStore } from './ftbotwrapper';
 
 import {
@@ -258,3 +257,7 @@ export const usePairlistConfigStore = defineStore(
     },
   },
 );
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePairlistConfigStore, import.meta.hot));
+}

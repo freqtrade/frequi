@@ -1,6 +1,5 @@
 import { deepClone } from '@/shared/deepClone';
 import { EMPTY_PLOTCONFIG, PlotConfig, PlotConfigStorage } from '@/types';
-import { defineStore } from 'pinia';
 
 const FT_PLOT_CONFIG_KEY = 'ftPlotConfig';
 
@@ -101,3 +100,7 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     },
   },
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePlotConfigStore, import.meta.hot));
+}

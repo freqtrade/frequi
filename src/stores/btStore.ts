@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia';
-
 export const useBtStore = defineStore('btStore', {
   state: () => {
     return {
@@ -25,3 +23,7 @@ export const useBtStore = defineStore('btStore', {
   },
   actions: {},
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useBtStore, import.meta.hot));
+}

@@ -16,7 +16,6 @@ import {
   Trade,
   TimeSummaryOptions,
 } from '@/types';
-import { defineStore } from 'pinia';
 import { createBotSubStore } from './ftbot';
 const AUTH_SELECTED_BOT = 'ftSelectedBot';
 
@@ -340,4 +339,8 @@ export function initBots() {
   botStore.selectFirstBot();
   botStore.startRefresh();
   botStore.allRefreshFull();
+}
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useBotStore, import.meta.hot));
 }

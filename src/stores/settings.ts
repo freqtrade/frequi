@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia';
-
 import { getCurrentTheme, getTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UiVersion } from '@/types';
@@ -68,3 +66,7 @@ export const useSettingsStore = defineStore('uiSettings', {
     key: STORE_UI_SETTINGS,
   },
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSettingsStore, import.meta.hot));
+}

@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import { AlertType } from '@/types/alertTypes';
 
 export const useAlertsStore = defineStore('alerts', {
@@ -14,3 +13,7 @@ export const useAlertsStore = defineStore('alerts', {
     },
   },
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAlertsStore, import.meta.hot));
+}
