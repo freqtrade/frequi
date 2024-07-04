@@ -166,10 +166,10 @@ const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const currentBreakpoint = ref('');
 
-const breakpointChanged = (newBreakpoint: string) => {
+function breakpointChanged(newBreakpoint: string) {
   // console.log('breakpoint:', newBreakpoint);
   currentBreakpoint.value = newBreakpoint;
-};
+}
 const isResizableLayout = computed(() =>
   ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
 );
@@ -184,13 +184,13 @@ const gridLayoutData = computed((): GridItemData[] => {
   return [...layoutStore.getDashboardLayoutSm];
 });
 
-const layoutUpdatedEvent = (newLayout) => {
+function layoutUpdatedEvent(newLayout) {
   if (isResizableLayout.value) {
     console.log('newlayout', newLayout);
     console.log('saving dashboard');
     layoutStore.dashboardLayout = newLayout;
   }
-};
+}
 
 const gridLayoutDaily = computed((): GridItemData => {
   return findGridLayout(gridLayoutData.value, DashboardLayout.dailyChart);
