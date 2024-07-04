@@ -1166,5 +1166,9 @@ export function createBotSubStore(botId: string, botName: string) {
     },
   });
 
+  if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useBotStore, import.meta.hot));
+  }
+
   return useBotStore();
 }
