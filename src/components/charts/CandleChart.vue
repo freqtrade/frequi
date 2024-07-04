@@ -480,7 +480,8 @@ function updateChart(initial = false) {
 
   const nameTrades = 'Trades';
   if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-    chartOptions.value.legend.data.push(nameTrades);
+    // Insert trades into legend, after the default columns
+    chartOptions.value.legend.data.splice(4, 0, nameTrades);
   }
   const tradesSeries: ScatterSeriesOption = generateTradeSeries(
     nameTrades,
