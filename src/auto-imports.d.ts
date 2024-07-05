@@ -52,6 +52,7 @@ declare global {
   const exportForTesting: typeof import('./utils/formatters/timeformat')['exportForTesting']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const findGridLayout: typeof import('./stores/layout')['findGridLayout']
+  const formatObjectForTable: typeof import('./utils/objectToTableItems')['formatObjectForTable']
   const formatPercent: typeof import('./utils/formatters/numberformat')['formatPercent']
   const formatPrice: typeof import('./utils/formatters/numberformat')['formatPrice']
   const formatPriceCurrency: typeof import('./utils/formatters/numberformat')['formatPriceCurrency']
@@ -406,6 +407,7 @@ declare module 'vue' {
     readonly exportForTesting: UnwrapRef<typeof import('./utils/formatters/timeformat')['exportForTesting']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly findGridLayout: UnwrapRef<typeof import('./stores/layout')['findGridLayout']>
+    readonly formatObjectForTable: UnwrapRef<typeof import('./utils/objectToTableItems')['formatObjectForTable']>
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
@@ -751,6 +753,7 @@ declare module '@vue/runtime-core' {
     readonly exportForTesting: UnwrapRef<typeof import('./utils/formatters/timeformat')['exportForTesting']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly findGridLayout: UnwrapRef<typeof import('./stores/layout')['findGridLayout']>
+    readonly formatObjectForTable: UnwrapRef<typeof import('./utils/objectToTableItems')['formatObjectForTable']>
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>

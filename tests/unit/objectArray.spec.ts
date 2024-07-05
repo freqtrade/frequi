@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatObjectForTable } from '@/shared/objectToTableItems';
+import { formatObjectForTable } from '@/utils/objectToTableItems';
 
 describe('objectArray.ts', () => {
   it('converts object array', () => {
