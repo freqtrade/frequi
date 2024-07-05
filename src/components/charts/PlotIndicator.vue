@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
-import randomColor from '@/shared/randomColor';
 
 import { watchDebounced } from '@vueuse/core';
 

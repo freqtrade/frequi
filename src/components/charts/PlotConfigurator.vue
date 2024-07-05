@@ -157,8 +157,6 @@ import { IndicatorConfig, PlotConfig } from '@/types';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { usePlotConfigStore } from '@/stores/plotConfig';
 
-import randomColor from '@/shared/randomColor';
-
 const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
   isVisible: { required: true, default: false, type: Boolean },

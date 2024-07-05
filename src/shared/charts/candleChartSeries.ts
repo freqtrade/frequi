@@ -1,6 +1,5 @@
 import { ChartType, IndicatorConfig } from '@/types';
 import { BarSeriesOption, LineSeriesOption, ScatterSeriesOption } from 'echarts';
-import randomColor from '../randomColor';
 
 export type SupportedSeriesTypes = LineSeriesOption | BarSeriesOption | ScatterSeriesOption;
 
