@@ -28,16 +28,16 @@
           v-if="trade.is_open && trade.realized_profit && !trade.total_profit_abs"
           description="Realized Profit"
         >
-          <trade-profit class="ms-2" :trade="trade" mode="realized" />
+          <TradeProfit class="ms-2" :trade="trade" mode="realized" />
         </ValuePair>
         <ValuePair v-if="trade.is_open && trade.total_profit_abs" description="Total Profit">
-          <trade-profit class="ms-2" :trade="trade" mode="total" />
+          <TradeProfit class="ms-2" :trade="trade" mode="total" />
         </ValuePair>
         <ValuePair
           v-if="trade.profit_ratio && trade.profit_abs"
           :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
         >
-          <trade-profit class="ms-2" :trade="trade" />
+          <TradeProfit class="ms-2" :trade="trade" />
         </ValuePair>
         <details>
           <summary>Details</summary>

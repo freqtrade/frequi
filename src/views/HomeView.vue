@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="d-flex justify-content-center">
-      <bot-list />
+      <BotList />
     </div>
     <hr />
     <!-- <img alt="Freqtrade logo" src="../assets/freqtrade-logo.png" width="450px" class="my-5" /> -->

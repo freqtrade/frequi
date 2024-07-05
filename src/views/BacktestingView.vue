@@ -93,7 +93,7 @@
           <i-mdi-chevron-right v-if="!showLeftBar" width="24" height="24" />
           <i-mdi-chevron-left v-if="showLeftBar" width="24" height="24" />
         </b-button>
-        <transition name="fade">
+        <Transition name="fade">
           <BacktestResultSelect
             v-if="showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
@@ -103,7 +103,7 @@
             @remove-result="botStore.activeBot.removeBacktestResultFromMemory"
             @update-result="botStore.activeBot.saveBacktestResultMetadata"
           />
-        </transition>
+        </Transition>
       </div>
       <!-- End Left bar -->
       <div class="d-flex flex-column flex-fill mw-100">

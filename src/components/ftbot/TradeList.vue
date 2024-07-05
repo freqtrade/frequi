@@ -58,7 +58,7 @@
         {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
       </template>
       <template #cell(profit)="row">
-        <trade-profit :trade="row.item as unknown as Trade" />
+        <TradeProfit :trade="row.item as unknown as Trade" />
       </template>
       <template #cell(open_timestamp)="row">
         <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
@@ -79,7 +79,7 @@
         <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
       </b-form-group>
     </div>
-    <force-exit-form v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
+    <ForceExitForm v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
     <ForceEntryForm
       v-model="increasePosition.visible"
       :pair="increasePosition.trade?.pair"

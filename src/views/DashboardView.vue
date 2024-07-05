@@ -47,7 +47,7 @@
         drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Bot comparison">
-          <bot-comparison-list />
+          <BotComparisonList />
         </DraggableContainer>
       </grid-item>
       <grid-item

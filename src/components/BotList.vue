@@ -14,14 +14,14 @@
         @click="botStore.selectBot(bot.botId)"
       >
         <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
-        <bot-rename
+        <BotRename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"
           @saved="stopEditBot(bot.botId)"
           @cancelled="stopEditBot(bot.botId)"
         />
 
-        <bot-entry
+        <BotEntry
           v-else
           :bot="bot"
           :no-buttons="small"

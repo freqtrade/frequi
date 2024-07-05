@@ -62,7 +62,7 @@ function handleForceEntry(item: Trade) {
       :show="popoverOpen"
       placement="left"
     >
-      <trade-actions
+      <TradeActions
         :trade="trade"
         :bot-api-version="botApiVersion"
         :enable-force-entry="enableForceEntry"

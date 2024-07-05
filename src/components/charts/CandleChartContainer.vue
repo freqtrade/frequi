@@ -4,7 +4,7 @@
       <div class="d-flex me-0">
         <div class="ms-1 ms-md-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
           <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-          <v-select
+          <VSelect
             v-model="botStore.activeBot.plotPair"
             class="ms-md-2"
             :options="availablePairs"
@@ -13,7 +13,7 @@
             :clearable="false"
             @input="refresh"
           >
-          </v-select>
+          </VSelect>
 
           <b-button
             title="Refresh chart"
@@ -85,11 +85,11 @@
             </p>
           </div>
         </div>
-        <transition name="fade">
+        <Transition name="fade">
           <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25">
             <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
           </div>
-        </transition>
+        </Transition>
       </div>
     </div>
     <b-modal
@@ -109,7 +109,7 @@
 import { usePlotConfigStore } from '@/stores/plotConfig';
 import { useSettingsStore } from '@/stores/settings';
 import { ChartSliderPosition, LoadingStatus, PairHistory, Trade } from '@/types';
-import vSelect from 'vue-select';
+import VSelect from 'vue-select';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 

@@ -1,10 +1,10 @@
 <template>
   <header>
     <b-navbar toggleable="sm" dark variant="primary">
-      <router-link class="navbar-brand" exact to="/">
+      <RouterLink class="navbar-brand" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
-      </router-link>
+      </RouterLink>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
       <!-- <ReloadControl class="me-3" /> -->
@@ -25,7 +25,7 @@
             to="/pairlist_config"
             >Pairlist Config</b-nav-item
           >
-          <theme-select />
+          <ThemeSelect />
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

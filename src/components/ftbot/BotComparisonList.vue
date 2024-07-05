@@ -28,7 +28,7 @@
       </div>
     </template>
     <template #cell(profitOpen)="{ item }">
-      <profit-pill
+      <ProfitPill
         v-if="item.profitOpen && item.botId != 'Summary'"
         :profit-ratio="(item as unknown as ComparisonTableItems).profitOpenRatio"
         :profit-abs="(item as unknown as ComparisonTableItems).profitOpen"
@@ -39,7 +39,7 @@
       />
     </template>
     <template #cell(profitClosed)="{ item }">
-      <profit-pill
+      <ProfitPill
         v-if="item.profitClosed && item.botId != 'Summary'"
         :profit-ratio="(item as unknown as ComparisonTableItems).profitClosedRatio"
         :profit-abs="(item as unknown as ComparisonTableItems).profitClosed"

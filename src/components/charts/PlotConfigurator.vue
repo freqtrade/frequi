@@ -1,12 +1,12 @@
 <template>
   <div v-if="columns">
     <b-form-group label="Plot config name" label-for="idPlotConfigName">
-      <plot-config-select allow-edit></plot-config-select>
+      <PlotConfigSelect allow-edit></PlotConfigSelect>
     </b-form-group>
     <div class="col-mb-3">
       <hr />
       <b-form-group label="Target Plot" label-for="FieldSel">
-        <edit-value
+        <EditValue
           v-model="selSubPlot"
           :allow-edit="!isMainPlot"
           allow-add
@@ -18,7 +18,7 @@
         >
           <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
           </b-form-select>
-        </edit-value>
+        </EditValue>
       </b-form-group>
     </div>
     <hr />
@@ -68,12 +68,7 @@
       @indicator-selected="addNewIndicatorSelected"
     />
 
-    <plot-indicator
-      v-if="selIndicatorName"
-      v-model="selIndicator"
-      class="mt-1"
-      :columns="columns"
-    />
+    <PlotIndicator v-if="selIndicatorName" v-model="selIndicator" class="mt-1" :columns="columns" />
     <hr />
 
     <div class="d-flex flex-row">

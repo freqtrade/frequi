@@ -1,14 +1,14 @@
 <template>
   <div class="d-flex flex-row">
     <b-form-group class="flex-grow-1" :label="label" label-for="indicatorSelector">
-      <v-select
+      <VSelect
         v-model="selAvailableIndicator"
         :options="columns"
         size="sm"
         :clearable="false"
         @option:selected="emitIndicator"
       >
-      </v-select>
+      </VSelect>
     </b-form-group>
     <b-button size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
       <i-mdi-close />
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import vSelect from 'vue-select';
+import VSelect from 'vue-select';
 
 const props = defineProps({
   modelValue: { required: false, default: '', type: String },
