@@ -1,4 +1,3 @@
-import { getTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';

@@ -1,10 +1,10 @@
-export interface ThemeType {
+interface ThemeType {
   name: string;
   description: string;
   dark: boolean;
   bootswatch: boolean;
 }
-export const themeList: ThemeType[] = [
+const themeList: ThemeType[] = [
   {
     name: 'Bootstrap',
     description: 'Plain bootstrap default theme',

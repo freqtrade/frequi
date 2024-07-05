@@ -63,6 +63,7 @@ declare global {
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getDiffColumnsFromPlotConfig: typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']
+  const getTheme: typeof import('./utils/themes')['getTheme']
   const getTradeEntries: typeof import('./utils/charts/tradeChartData')['getTradeEntries']
   const h: typeof import('vue')['h']
   const heikinAshiDataset: typeof import('./utils/charts/heikinashi')['heikinAshiDataset']
@@ -418,6 +419,7 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
+    readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly getTradeEntries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['getTradeEntries']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
@@ -764,6 +766,7 @@ declare module '@vue/runtime-core' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
+    readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly getTradeEntries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['getTradeEntries']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
