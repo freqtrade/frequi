@@ -1,6 +1,6 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import axios, { AxiosHeaders } from 'axios';
-import { UserService } from './userService';
+import { UserService } from '../shared/userService';
 
 export function useApi(userService: UserService, botId: string) {
   const api = axios.create({

@@ -1,4 +1,3 @@
-import { useApi } from '@/shared/apiService';
 import { useUserService } from '@/shared/userService';
 import {
   BotState,
