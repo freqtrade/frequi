@@ -30,7 +30,6 @@
 <script setup lang="ts">
 import { BacktestResultInMemory } from '@/types';
 
-import { generateBacktestMetricRows } from '@/shared/backtestMetrics';
 import { TableField } from 'bootstrap-vue-next';
 
 const props = defineProps({

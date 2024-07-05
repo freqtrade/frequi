@@ -57,6 +57,8 @@ declare global {
   const formatPrice: typeof import('./utils/formatters/numberformat')['formatPrice']
   const formatPriceCurrency: typeof import('./utils/formatters/numberformat')['formatPriceCurrency']
   const generateAreaCandleSeries: typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']
+  const generateBacktestMetricRows: typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']
+  const generateBacktestSettingRows: typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']
   const generateCandleSeries: typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']
   const generateTradeSeries: typeof import('./utils/charts/tradeChartData')['generateTradeSeries']
   const getActivePinia: typeof import('pinia')['getActivePinia']
@@ -413,6 +415,8 @@ declare module 'vue' {
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
     readonly generateAreaCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']>
+    readonly generateBacktestMetricRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']>
+    readonly generateBacktestSettingRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']>
     readonly generateCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']>
     readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
@@ -760,6 +764,8 @@ declare module '@vue/runtime-core' {
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
     readonly generateAreaCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']>
+    readonly generateBacktestMetricRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']>
+    readonly generateBacktestSettingRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']>
     readonly generateCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']>
     readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>

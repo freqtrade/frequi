@@ -75,7 +75,6 @@
 <script setup lang="ts">
 import { StrategyBacktestResult } from '@/types';
 
-import { generateBacktestMetricRows, generateBacktestSettingRows } from '@/shared/backtestMetrics';
 import { TableField } from 'bootstrap-vue-next';
 
 const props = defineProps({
