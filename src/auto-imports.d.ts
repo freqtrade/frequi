@@ -10,6 +10,9 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const KeyCode: typeof import('./composables/inputListener')['KeyCode']
   const OpenTradeVizOptions: typeof import('./stores/settings')['OpenTradeVizOptions']
+  const ROUND_CLOSER: typeof import('./utils/roundTimeframe')['ROUND_CLOSER']
+  const ROUND_DOWN: typeof import('./utils/roundTimeframe')['ROUND_DOWN']
+  const ROUND_UP: typeof import('./utils/roundTimeframe')['ROUND_UP']
   const TradeLayout: typeof import('./stores/layout')['TradeLayout']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
@@ -102,6 +105,7 @@ declare global {
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
+  const roundTimeframe: typeof import('./utils/roundTimeframe')['default']
   const setActivePinia: typeof import('pinia')['setActivePinia']
   const setMapStoreSuffix: typeof import('pinia')['setMapStoreSuffix']
   const shallowReactive: typeof import('vue')['shallowReactive']
@@ -331,6 +335,9 @@ declare module 'vue' {
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly OpenTradeVizOptions: UnwrapRef<typeof import('./stores/settings')['OpenTradeVizOptions']>
+    readonly ROUND_CLOSER: UnwrapRef<typeof import('./utils/roundTimeframe')['ROUND_CLOSER']>
+    readonly ROUND_DOWN: UnwrapRef<typeof import('./utils/roundTimeframe')['ROUND_DOWN']>
+    readonly ROUND_UP: UnwrapRef<typeof import('./utils/roundTimeframe')['ROUND_UP']>
     readonly TradeLayout: UnwrapRef<typeof import('./stores/layout')['TradeLayout']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -423,6 +430,7 @@ declare module 'vue' {
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
+    readonly roundTimeframe: UnwrapRef<typeof import('./utils/roundTimeframe')['default']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
@@ -644,6 +652,9 @@ declare module '@vue/runtime-core' {
     readonly DashboardLayout: UnwrapRef<typeof import('./stores/layout')['DashboardLayout']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly OpenTradeVizOptions: UnwrapRef<typeof import('./stores/settings')['OpenTradeVizOptions']>
+    readonly ROUND_CLOSER: UnwrapRef<typeof import('./utils/roundTimeframe')['ROUND_CLOSER']>
+    readonly ROUND_DOWN: UnwrapRef<typeof import('./utils/roundTimeframe')['ROUND_DOWN']>
+    readonly ROUND_UP: UnwrapRef<typeof import('./utils/roundTimeframe')['ROUND_UP']>
     readonly TradeLayout: UnwrapRef<typeof import('./stores/layout')['TradeLayout']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -736,6 +747,7 @@ declare module '@vue/runtime-core' {
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
+    readonly roundTimeframe: UnwrapRef<typeof import('./utils/roundTimeframe')['default']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>

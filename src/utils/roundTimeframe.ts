@@ -10,11 +10,7 @@ export const ROUND_CLOSER = 4;
  * @param direction Direction (see ROUND_* constants)
  * @returns timestamp in ms rounded to the timeframe
  */
-export function roundTimeframe(
-  timeframems: number,
-  timestamp: number,
-  direction: number = ROUND_DOWN,
-) {
+export default function (timeframems: number, timestamp: number, direction: number = ROUND_DOWN) {
   const offset = timestamp % timeframems;
   let up = direction === ROUND_UP;
   if (direction === ROUND_CLOSER) {
@@ -22,9 +18,3 @@ export function roundTimeframe(
   }
   return timestamp - offset + (up ? timeframems : 0);
 }
-
-export default {
-  ROUND_UP,
-  ROUND_DOWN,
-  roundTimeframe,
-};

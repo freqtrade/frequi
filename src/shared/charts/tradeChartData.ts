@@ -1,5 +1,4 @@
 import { formatPercent, formatPriceCurrency, splitTradePair } from '@/shared/formatters';
-import { roundTimeframe } from '@/shared/timemath';
 import { Order, PairHistory, Trade, BTOrder } from '@/types';
 import { ScatterSeriesOption } from 'echarts';
 

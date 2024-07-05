@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { roundTimeframe, ROUND_DOWN, ROUND_UP, ROUND_CLOSER } from '@/shared/timemath';
+import roundTimeframe, { ROUND_DOWN, ROUND_UP, ROUND_CLOSER } from '@/utils/roundTimeframe';
 
 // 1651021200000 = 2022-04-27T11:05:00+00:00
 
