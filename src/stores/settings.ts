@@ -1,4 +1,4 @@
-import { getCurrentTheme, getTheme } from '@/shared/themes';
+import { getTheme } from '@/shared/themes';
 import axios from 'axios';
 import { UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
@@ -25,7 +25,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       openTradesInTitle: OpenTradeVizOptions.showPill as string,
       timezone: 'UTC',
       backgroundSync: true,
-      currentTheme: getCurrentTheme(),
+      currentTheme: 'dark',
       _uiVersion: 'dev',
       useHeikinAshiCandles: false,
       useReducedPairCalls: true,

@@ -19,18 +19,9 @@ export const themeList: ThemeType[] = [
   },
 ];
 
-export function storeCurrentTheme(themeName: string) {
-  window.localStorage.theme = themeName;
-}
-
 export function getTheme(theme: string): ThemeType | undefined {
   if (theme !== undefined) {
     return themeList.find((item) => item.name.toLowerCase() === theme.toLowerCase());
   }
   return undefined;
-}
-
-export function getCurrentTheme(): string {
-  const { theme } = window.localStorage;
-  return theme;
 }
