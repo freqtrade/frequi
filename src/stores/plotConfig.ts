@@ -1,4 +1,3 @@
-import { deepClone } from '@/shared/deepClone';
 import { EMPTY_PLOTCONFIG, PlotConfig, PlotConfigStorage } from '@/types';
 
 const FT_PLOT_CONFIG_KEY = 'ftPlotConfig';
