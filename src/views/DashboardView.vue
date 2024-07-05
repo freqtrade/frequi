@@ -71,7 +71,7 @@
               />
             </div>
           </template>
-          <trade-list active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
+          <TradeList active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
         </DraggableContainer>
       </grid-item>
       <grid-item
@@ -114,7 +114,7 @@
               />
             </div>
           </template>
-          <trade-list
+          <TradeList
             :active-trades="false"
             show-filter
             :trades="botStore.allClosedTradesSelectedBots"

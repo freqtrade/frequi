@@ -89,7 +89,7 @@
         drag-allow-from=".card-header"
       >
         <DraggableContainer header="Closed Trades">
-          <trade-list
+          <TradeList
             class="trade-history"
             :trades="botStore.activeBot.closedTrades"
             title="Trade history"
