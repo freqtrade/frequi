@@ -12,8 +12,6 @@ import {
   TradingMode,
 } from '@/types';
 
-import { showAlert } from '../shared/alerts';
-
 export const usePairlistConfigStore = defineStore(
   'pairlistConfig',
   () => {

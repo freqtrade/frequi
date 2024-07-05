@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import { Lock } from '@/types';
 
-import { showAlert } from '@/shared/alerts';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 const botStore = useBotStore();

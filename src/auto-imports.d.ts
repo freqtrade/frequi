@@ -136,6 +136,7 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const showAlert: typeof import('./utils/alerts')['showAlert']
   const splitTradePair: typeof import('./utils/formatters/pairFormat')['splitTradePair']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const syncRef: typeof import('@vueuse/core')['syncRef']
@@ -165,6 +166,7 @@ declare global {
   const unrefElement: typeof import('@vueuse/core')['unrefElement']
   const until: typeof import('@vueuse/core')['until']
   const useActiveElement: typeof import('@vueuse/core')['useActiveElement']
+  const useAlertForBot: typeof import('./utils/alerts')['useAlertForBot']
   const useAlertsStore: typeof import('./stores/alertsStore')['useAlertsStore']
   const useAnimate: typeof import('@vueuse/core')['useAnimate']
   const useApi: typeof import('./composables/apiService')['useApi']
@@ -493,6 +495,7 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly showAlert: UnwrapRef<typeof import('./utils/alerts')['showAlert']>
     readonly splitTradePair: UnwrapRef<typeof import('./utils/formatters/pairFormat')['splitTradePair']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
@@ -522,6 +525,7 @@ declare module 'vue' {
     readonly unrefElement: UnwrapRef<typeof import('@vueuse/core')['unrefElement']>
     readonly until: UnwrapRef<typeof import('@vueuse/core')['until']>
     readonly useActiveElement: UnwrapRef<typeof import('@vueuse/core')['useActiveElement']>
+    readonly useAlertForBot: UnwrapRef<typeof import('./utils/alerts')['useAlertForBot']>
     readonly useAlertsStore: UnwrapRef<typeof import('./stores/alertsStore')['useAlertsStore']>
     readonly useAnimate: UnwrapRef<typeof import('@vueuse/core')['useAnimate']>
     readonly useApi: UnwrapRef<typeof import('./composables/apiService')['useApi']>
@@ -842,6 +846,7 @@ declare module '@vue/runtime-core' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly showAlert: UnwrapRef<typeof import('./utils/alerts')['showAlert']>
     readonly splitTradePair: UnwrapRef<typeof import('./utils/formatters/pairFormat')['splitTradePair']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
@@ -871,6 +876,7 @@ declare module '@vue/runtime-core' {
     readonly unrefElement: UnwrapRef<typeof import('@vueuse/core')['unrefElement']>
     readonly until: UnwrapRef<typeof import('@vueuse/core')['until']>
     readonly useActiveElement: UnwrapRef<typeof import('@vueuse/core')['useActiveElement']>
+    readonly useAlertForBot: UnwrapRef<typeof import('./utils/alerts')['useAlertForBot']>
     readonly useAlertsStore: UnwrapRef<typeof import('./stores/alertsStore')['useAlertsStore']>
     readonly useAnimate: UnwrapRef<typeof import('@vueuse/core')['useAnimate']>
     readonly useApi: UnwrapRef<typeof import('./composables/apiService')['useApi']>

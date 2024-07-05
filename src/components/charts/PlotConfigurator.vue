@@ -151,7 +151,6 @@
 </template>
 
 <script setup lang="ts">
-import { showAlert } from '@/shared/alerts';
 import { IndicatorConfig, PlotConfig } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';

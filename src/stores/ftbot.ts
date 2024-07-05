@@ -54,7 +54,6 @@ import {
   PairHistory,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
-import { useAlertForBot } from '../shared/alerts';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
 import { showNotification } from '@/shared/notifications';
