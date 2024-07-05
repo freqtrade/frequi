@@ -1,5 +1,5 @@
 <template>
-  <grid-layout
+  <GridLayout
     class="h-100 w-100"
     :row-height="50"
     :layout="gridLayoutData"
@@ -14,7 +14,7 @@
     @update:breakpoint="breakpointChanged"
   >
     <template #default="{ gridItemProps }">
-      <grid-item
+      <GridItem
         v-if="gridLayoutMultiPane.h != 0"
         v-bind="gridItemProps"
         :i="gridLayoutMultiPane.i"
@@ -57,8 +57,8 @@
             </b-tab>
           </b-tabs>
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-if="gridLayoutOpenTrades.h != 0"
         v-bind="gridItemProps"
         :i="gridLayoutOpenTrades.i"
@@ -77,8 +77,8 @@
             empty-text="Currently no open trades."
           />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-if="gridLayoutTradeHistory.h != 0"
         v-bind="gridItemProps"
         :i="gridLayoutTradeHistory.i"
@@ -97,8 +97,8 @@
             empty-text="No closed trades so far."
           />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-if="
           botStore.activeBot.detailTradeId &&
           botStore.activeBot.tradeDetail &&
@@ -119,8 +119,8 @@
             :stake-currency="botStore.activeBot.stakeCurrency"
           />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-if="gridLayoutTradeDetail.h != 0"
         v-bind="gridItemProps"
         :i="gridLayoutChartView.i"
@@ -140,9 +140,9 @@
           >
           </CandleChartContainer>
         </DraggableContainer>
-      </grid-item>
+      </GridItem>
     </template>
-  </grid-layout>
+  </GridLayout>
 </template>
 
 <script setup lang="ts">

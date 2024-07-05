@@ -1,5 +1,5 @@
 <template>
-  <grid-layout
+  <GridLayout
     class="h-100 w-100"
     :row-height="50"
     :layout="gridLayoutData"
@@ -16,7 +16,7 @@
     @update:breakpoint="breakpointChanged"
   >
     <template #default="{ gridItemProps }">
-      <grid-item
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutDaily.i"
         :x="gridLayoutDaily.x"
@@ -34,8 +34,8 @@
             :show-title="false"
           />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutBotComparison.i"
         :x="gridLayoutBotComparison.x"
@@ -49,8 +49,8 @@
         <DraggableContainer header="Bot comparison">
           <BotComparisonList />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutAllOpenTrades.i"
         :x="gridLayoutAllOpenTrades.x"
@@ -73,8 +73,8 @@
           </template>
           <TradeList active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutCumChart.i"
         :x="gridLayoutCumChart.x"
@@ -92,8 +92,8 @@
             :show-title="false"
           />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutAllClosedTrades.i"
         :x="gridLayoutAllClosedTrades.x"
@@ -121,8 +121,8 @@
             multi-bot-view
           />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutProfitDistribution.i"
         :x="gridLayoutProfitDistribution.x"
@@ -136,8 +136,8 @@
         <DraggableContainer header="Profit Distribution">
           <ProfitDistributionChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
         </DraggableContainer>
-      </grid-item>
-      <grid-item
+      </GridItem>
+      <GridItem
         v-bind="gridItemProps"
         :i="gridLayoutTradesLogChart.i"
         :x="gridLayoutTradesLogChart.x"
@@ -151,9 +151,9 @@
         <DraggableContainer header="Trades Log">
           <TradesLogChart :trades="botStore.allTradesSelectedBots" :show-title="false" />
         </DraggableContainer>
-      </grid-item>
+      </GridItem>
     </template>
-  </grid-layout>
+  </GridLayout>
 </template>
 
 <script setup lang="ts">
