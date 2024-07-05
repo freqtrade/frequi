@@ -35,14 +35,14 @@
         >Blacklist</label
       >
       <div class="float-end d-flex d-flex-columns pe-1">
-        <b-button
+        <BButton
           id="blacklist-add-btn"
           class="me-1"
           :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
           size="sm"
           ><i-mdi-plus-box-outline />
-        </b-button>
-        <b-button
+        </BButton>
+        <BButton
           v-if="botStore.activeBot.botApiVersion >= 1.12"
           size="sm"
           class="col-6"
@@ -51,7 +51,7 @@
           @click="deletePairs"
         >
           <i-mdi-delete />
-        </b-button>
+        </BButton>
       </div>
       <BPopover
         title="Add to blacklist"
@@ -62,17 +62,17 @@
       >
         <form ref="form" @submit.prevent="addBlacklistPair">
           <div>
-            <b-form-group label-cols="2" label="Pair" label-for="pair-input">
-              <b-form-input
+            <BFormGroup label-cols="2" label="Pair" label-for="pair-input">
+              <BFormInput
                 id="pair-input"
                 v-model="newblacklistpair"
                 required
                 autofocus
-              ></b-form-input>
-            </b-form-group>
-            <b-button id="blacklist-submit" class="float-end mb-2" size="sm" type="submit">
+              ></BFormInput>
+            </BFormGroup>
+            <BButton id="blacklist-submit" class="float-end mb-2" size="sm" type="submit">
               Add
-            </b-button>
+            </BButton>
           </div>
         </form>
       </BPopover>

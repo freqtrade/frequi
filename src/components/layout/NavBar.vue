@@ -1,6 +1,6 @@
 <template>
   <header>
-    <b-navbar toggleable="sm" dark variant="primary">
+    <BNavbar toggleable="sm" dark variant="primary">
       <RouterLink class="navbar-brand" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
@@ -8,28 +8,28 @@
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
       <!-- <ReloadControl class="me-3" /> -->
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <BNavbarToggle target="nav-collapse"></BNavbarToggle>
 
-      <b-collapse id="nav-collapse" class="text-center" is-nav>
-        <b-navbar-nav>
-          <b-nav-item v-if="!botStore.canRunBacktest" to="/trade">Trade</b-nav-item>
-          <b-nav-item v-if="!botStore.canRunBacktest" to="/dashboard">Dashboard</b-nav-item>
-          <b-nav-item to="/graph">Chart</b-nav-item>
-          <b-nav-item to="/logs">Logs</b-nav-item>
-          <b-nav-item v-if="botStore.canRunBacktest" to="/backtest">Backtest</b-nav-item>
-          <b-nav-item
+      <BCollapse id="nav-collapse" class="text-center" is-nav>
+        <BNavbarNav>
+          <BNavItem v-if="!botStore.canRunBacktest" to="/trade">Trade</BNavItem>
+          <BNavItem v-if="!botStore.canRunBacktest" to="/dashboard">Dashboard</BNavItem>
+          <BNavItem to="/graph">Chart</BNavItem>
+          <BNavItem to="/logs">Logs</BNavItem>
+          <BNavItem v-if="botStore.canRunBacktest" to="/backtest">Backtest</BNavItem>
+          <BNavItem
             v-if="
               (botStore.activeBot?.isWebserverMode ?? false) &&
               botStore.activeBot.botApiVersion >= 2.3
             "
             to="/pairlist_config"
-            >Pairlist Config</b-nav-item
+            >Pairlist Config</BNavItem
           >
           <ThemeSelect />
-        </b-navbar-nav>
+        </BNavbarNav>
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ms-auto" menu-class="w-100">
+        <BNavbarNav class="ms-auto" menu-class="w-100">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div
             v-if="!settingsStore.confirmDialog"
@@ -41,7 +41,7 @@
             <i-mdi-alert />
           </div>
           <div class="d-flex justify-content-between">
-            <b-dropdown
+            <BDropdown
               v-if="botStore.botCount > 1"
               size="sm"
               class="m-1"
@@ -54,47 +54,47 @@
                 <BotEntry :bot="botStore.selectedBotObj" :no-buttons="true" />
               </template>
               <BotList :small="true" />
-            </b-dropdown>
+            </BDropdown>
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <li
             class="d-none d-sm-flex flex-sm-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
           >
-            <b-nav-text class="verticalCenter small me-2">
+            <BNavText class="verticalCenter small me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
-            </b-nav-text>
-            <b-nav-text v-if="botStore.botCount === 1" class="verticalCenter">
+            </BNavText>
+            <BNavText v-if="botStore.botCount === 1" class="verticalCenter">
               {{
                 botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
                   ? 'Online'
                   : 'Offline'
               }}
-            </b-nav-text>
+            </BNavText>
           </li>
           <li v-if="botStore.hasBots" class="nav-item">
             <!-- Hide dropdown on xs, instead show below  -->
-            <b-nav-item-dropdown id="avatar-drop" right auto-close class="d-none d-sm-block">
+            <BNavItemDropdown id="avatar-drop" right auto-close class="d-none d-sm-block">
               <template #button-content>
-                <b-avatar size="2em" button>FT</b-avatar>
+                <BAvatar size="2em" button>FT</BAvatar>
               </template>
               <span class="ps-3">V: {{ settingsStore.uiVersion }}</span>
               <!-- Link active-class to non-existant class to avoid it getting the "light" active color -->
-              <b-dropdown-item active-class="non-existant" to="/settings">Settings</b-dropdown-item>
+              <BDropdownItem active-class="non-existant" to="/settings">Settings</BDropdownItem>
               <div class="ps-3">
-                <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
+                <BFormCheckbox v-model="layoutStore.layoutLocked">Lock layout</BFormCheckbox>
               </div>
-              <b-dropdown-item @click="resetDynamicLayout">Reset Layout</b-dropdown-item>
+              <BDropdownItem @click="resetDynamicLayout">Reset Layout</BDropdownItem>
               <template v-if="botStore.botCount === 1">
                 <BDropdownDivider />
-                <b-dropdown-item active-class="non-existant" @click="clickLogout()">
+                <BDropdownItem active-class="non-existant" @click="clickLogout()">
                   <i-mdi-logout class="me-1" />
                   Sign Out
-                </b-dropdown-item>
+                </BDropdownItem>
               </template>
-            </b-nav-item-dropdown>
+            </BNavItemDropdown>
             <div class="d-block d-sm-none">
               <!-- Visible only on XS -->
               <!-- <li class="nav-item text-secondary ms-2 d-sm-none d-flex justify-content-between">
@@ -107,15 +107,15 @@
                   </b-nav-text>
                 </div>
               </li> -->
-              <b-nav-item class="py-0" to="/settings" title="Settings">
+              <BNavItem class="py-0" to="/settings" title="Settings">
                 Settings <i-mdi-cog class="ms-auto" />
-              </b-nav-item>
-              <b-nav-item
+              </BNavItem>
+              <BNavItem
                 v-if="botStore.botCount === 1"
                 class="nav-link navbar-nav"
                 to="/"
                 @click="clickLogout()"
-                >Sign Out</b-nav-item
+                >Sign Out</BNavItem
               >
             </div>
           </li>
@@ -123,9 +123,9 @@
             <!-- should open Modal window! -->
             <LoginModal v-if="route?.path !== '/login'" />
           </li>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
+        </BNavbarNav>
+      </BCollapse>
+    </BNavbar>
   </header>
 </template>
 

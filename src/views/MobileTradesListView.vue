@@ -26,11 +26,11 @@
       v-if="botStore.activeBot.detailTradeId && botStore.activeBot.tradeDetail"
       class="d-flex flex-column"
     >
-      <b-button
+      <BButton
         size="sm"
         class="align-self-start my-1 ms-1"
         @click="botStore.activeBot.setDetailTrade(null)"
-        ><i-mdi-arrow-left /> Back</b-button
+        ><i-mdi-arrow-left /> Back</BButton
       >
       <TradeDetail
         :trade="botStore.activeBot.tradeDetail"

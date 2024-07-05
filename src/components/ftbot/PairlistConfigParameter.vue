@@ -1,26 +1,26 @@
 <template>
-  <b-form-group label-cols="4" label-size="md" class="pb-1 text-start" :description="param.help">
-    <b-form-input
+  <BFormGroup label-cols="4" label-size="md" class="pb-1 text-start" :description="param.help">
+    <BFormInput
       v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
       v-model="paramValue"
       size="sm"
-    ></b-form-input>
+    ></BFormInput>
 
-    <b-form-checkbox
+    <BFormCheckbox
       v-if="param.type === PairlistParamType.boolean"
       v-model="paramValue"
-    ></b-form-checkbox>
+    ></BFormCheckbox>
 
-    <b-form-select
+    <BFormSelect
       v-if="param.type === PairlistParamType.option"
       v-model="paramValue"
       :options="param.options"
-    ></b-form-select>
+    ></BFormSelect>
 
     <template #label>
       <label> {{ param.description }}</label>
     </template>
-  </b-form-group>
+  </BFormGroup>
 </template>
 
 <script setup lang="ts">

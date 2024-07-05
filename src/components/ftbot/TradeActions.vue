@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column">
-    <b-button
+    <BButton
       v-if="botApiVersion <= 1.1"
       class="btn-xs text-start"
       size="sm"
@@ -8,8 +8,8 @@
       @click="$emit('forceExit', trade)"
     >
       <i-mdi-close-box class="me-1" />Forceexit
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       v-if="botApiVersion > 1.1"
       class="btn-xs text-start"
       size="sm"
@@ -17,8 +17,8 @@
       @click="$emit('forceExit', trade, 'limit')"
     >
       <i-mdi-close-box class="me-1" />Forceexit limit
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       v-if="botApiVersion > 1.1"
       class="btn-xs text-start mt-1"
       size="sm"
@@ -26,8 +26,8 @@
       @click="$emit('forceExit', trade, 'market')"
     >
       <i-mdi-close-box class="me-1" />Forceexit market
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       v-if="botApiVersion > 2.16"
       class="btn-xs text-start mt-1"
       size="sm"
@@ -35,8 +35,8 @@
       @click="$emit('forceExitPartial', trade)"
     >
       <i-mdi-close-box-multiple class="me-1" />Forceexit partial
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       v-if="botApiVersion >= 2.24 && (trade.open_order_id || trade.has_open_orders)"
       class="btn-xs text-start mt-1"
       size="sm"
@@ -44,8 +44,8 @@
       @click="$emit('cancelOpenOrder', trade)"
     >
       <i-mdi-cancel class="me-1" />Cancel open order
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       v-if="enableForceEntry"
       class="btn-xs text-start mt-1"
       size="sm"
@@ -53,8 +53,8 @@
       @click="$emit('forceEntry', trade)"
     >
       <i-mdi-plus-box-multiple-outline class="me-1" />Increase position
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       v-if="botApiVersion >= 2.28"
       class="btn-xs text-start mt-1"
       size="sm"
@@ -62,8 +62,8 @@
       @click="$emit('reloadTrade', trade)"
     >
       <i-mdi-reload-alert class="me-1" />Reload Trade
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       class="btn-xs text-start mt-1"
       size="sm"
       title="Delete trade"
@@ -71,7 +71,7 @@
     >
       <i-mdi-delete class="me-1" />
       Delete
-    </b-button>
+    </BButton>
   </div>
 </template>
 

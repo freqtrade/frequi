@@ -45,7 +45,7 @@ function handleForceEntry(item: Trade) {
 
 <template>
   <div>
-    <b-button
+    <BButton
       :id="`btn-actions-${id}`"
       class="btn-xs"
       size="sm"
@@ -53,7 +53,7 @@ function handleForceEntry(item: Trade) {
       @click="popoverOpen = !popoverOpen"
     >
       <i-mdi-gesture-tap />
-    </b-button>
+    </BButton>
     <BPopover
       teleport-to="body"
       :target="`btn-actions-${id}`"
@@ -73,9 +73,9 @@ function handleForceEntry(item: Trade) {
         @reload-trade="handleReloadTrade"
         @force-entry="handleForceEntry"
       />
-      <b-button class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
+      <BButton class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
         <i-mdi-cancel class="me-1" />Close Actions menu
-      </b-button>
+      </BButton>
     </BPopover>
   </div>
 </template>

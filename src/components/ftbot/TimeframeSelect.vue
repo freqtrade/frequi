@@ -1,10 +1,10 @@
 <template>
-  <b-form-select
+  <BFormSelect
     v-model="selectedTimeframe"
     placeholder="Use strategy default"
     :options="availableTimeframes"
     @change="emitSelectedTimeframe"
-  ></b-form-select>
+  ></BFormSelect>
 </template>
 
 <script setup lang="ts">

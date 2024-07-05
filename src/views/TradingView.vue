@@ -28,34 +28,34 @@
           <div class="mt-1 d-flex justify-content-center">
             <BotControls class="mt-1 mb-2" />
           </div>
-          <b-tabs content-class="mt-3" class="mt-1">
-            <b-tab title="Pairs combined" active>
+          <BTabs content-class="mt-3" class="mt-1">
+            <BTab title="Pairs combined" active>
               <PairSummary
                 :pairlist="botStore.activeBot.whitelist"
                 :current-locks="botStore.activeBot.activeLocks"
                 :trades="botStore.activeBot.openTrades"
               />
-            </b-tab>
-            <b-tab title="General">
+            </BTab>
+            <BTab title="General">
               <BotStatus />
-            </b-tab>
-            <b-tab title="Performance" lazy>
+            </BTab>
+            <BTab title="Performance" lazy>
               <BotPerformance />
-            </b-tab>
-            <b-tab title="Balance" lazy>
+            </BTab>
+            <BTab title="Balance" lazy>
               <BotBalance />
-            </b-tab>
-            <b-tab title="Time Breakdown" lazy>
+            </BTab>
+            <BTab title="Time Breakdown" lazy>
               <PeriodBreakdown />
-            </b-tab>
+            </BTab>
 
-            <b-tab title="Pairlist" lazy>
+            <BTab title="Pairlist" lazy>
               <PairListLive />
-            </b-tab>
-            <b-tab title="Pair Locks" lazy>
+            </BTab>
+            <BTab title="Pair Locks" lazy>
               <PairLockList />
-            </b-tab>
-          </b-tabs>
+            </BTab>
+          </BTabs>
         </DraggableContainer>
       </GridItem>
       <GridItem

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form-group
+    <BFormGroup
       label-for="trade-filter"
       class="mb-2 ms-2"
       :class="{
@@ -8,10 +8,10 @@
         'me-2': !backtestMode,
       }"
     >
-      <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
-    </b-form-group>
-    <b-list-group>
-      <b-list-group-item
+      <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
+    </BFormGroup>
+    <BListGroup>
+      <BListGroupItem
         v-for="comb in combinedPairList"
         :key="comb.pair"
         button
@@ -31,8 +31,8 @@
           :profit-ratio="comb.profit"
           :stake-currency="botStore.activeBot.stakeCurrency"
         />
-      </b-list-group-item>
-    </b-list-group>
+      </BListGroupItem>
+    </BListGroup>
   </div>
 </template>
 

@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="w-100 d-flex">
-      <b-form-select
+      <BFormSelect
         id="strategy-select"
         v-model="locStrategy"
         :options="botStore.activeBot.strategyList"
       >
-      </b-form-select>
+      </BFormSelect>
       <div class="ms-1">
-        <b-button @click="botStore.activeBot.getStrategyList">
+        <BButton @click="botStore.activeBot.getStrategyList">
           <i-mdi-refresh />
-        </b-button>
+        </BButton>
       </div>
     </div>
 

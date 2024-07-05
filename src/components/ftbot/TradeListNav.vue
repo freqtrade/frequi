@@ -1,14 +1,14 @@
 <template>
   <div>
-    <b-list-group>
-      <b-list-group-item
+    <BListGroup>
+      <BListGroupItem
         button
         class="d-flex flex-wrap justify-content-center align-items-center"
         :title="'Trade Navigation'"
         @click="sortNewestFirst = !sortNewestFirst"
         >Trade Navigation {{ sortNewestFirst ? '&#8595;' : '&#8593;' }}
-      </b-list-group-item>
-      <b-list-group-item
+      </BListGroupItem>
+      <BListGroupItem
         v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
         button
@@ -32,16 +32,16 @@
               :stake-currency="botStore.activeBot.stakeCurrency"
             />
           </div>
-          <b-button
+          <BButton
             size="sm"
             class="ms-auto mt-auto"
             variant="outline-secondary"
             @click="ordersVisible[i] = !ordersVisible[i]"
             ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
             <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
-          </b-button>
+          </BButton>
         </div>
-        <b-collapse v-model="ordersVisible[i]">
+        <BCollapse v-model="ordersVisible[i]">
           <ul class="px-3 m-0">
             <li
               v-for="order in trade.orders?.filter((o) => o.order_filled_timestamp !== null)"
@@ -50,10 +50,10 @@
               {{ order.ft_order_side }} {{ order.amount }} at {{ order.safe_price }}
             </li>
           </ul>
-        </b-collapse>
-      </b-list-group-item>
-      <b-list-group-item v-if="trades.length === 0">No trades to show...</b-list-group-item>
-    </b-list-group>
+        </BCollapse>
+      </BListGroupItem>
+      <BListGroupItem v-if="trades.length === 0">No trades to show...</BListGroupItem>
+    </BListGroup>
   </div>
 </template>
 

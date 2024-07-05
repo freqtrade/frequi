@@ -1,83 +1,78 @@
 <template>
   <div class="container mt-3">
-    <b-card header="FreqUI Settings">
+    <BCard header="FreqUI Settings">
       <div class="text-start d-flex flex-column gap-2">
         <p>UI Version: {{ settingsStore.uiVersion }}</p>
         <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
           <h4>UI settings</h4>
-          <b-form-group
+          <BFormGroup
             description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
           >
-            <b-form-checkbox v-model="layoutStore.layoutLocked">Lock layout</b-form-checkbox>
-          </b-form-group>
-          <b-form-group description="Reset dynamic layouts to how they were.">
-            <b-button size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</b-button>
-          </b-form-group>
-          <b-form-group
+            <BFormCheckbox v-model="layoutStore.layoutLocked">Lock layout</BFormCheckbox>
+          </BFormGroup>
+          <BFormGroup description="Reset dynamic layouts to how they were.">
+            <BButton size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</BButton>
+          </BFormGroup>
+          <BFormGroup
             label="Show open trades in header"
             description="Decide if open trades should be visualized"
           >
-            <b-form-select
+            <BFormSelect
               v-model="settingsStore.openTradesInTitle"
               :options="openTradesOptions"
-            ></b-form-select>
-          </b-form-group>
-          <b-form-group
+            ></BFormSelect>
+          </BFormGroup>
+          <BFormGroup
             label="UTC Timezone"
             description="Select timezone (we recommend UTC is recommended as exchanges usually work in UTC)"
           >
-            <b-form-select
-              v-model="settingsStore.timezone"
-              :options="timezoneOptions"
-            ></b-form-select>
-          </b-form-group>
-          <b-form-group description="Keep background sync running while other bots are selected.">
-            <b-form-checkbox v-model="settingsStore.backgroundSync"
-              >Background sync</b-form-checkbox
+            <BFormSelect v-model="settingsStore.timezone" :options="timezoneOptions"></BFormSelect>
+          </BFormGroup>
+          <BFormGroup description="Keep background sync running while other bots are selected.">
+            <BFormCheckbox v-model="settingsStore.backgroundSync">Background sync</BFormCheckbox>
+          </BFormGroup>
+          <BFormGroup description="Use confirmation dialogs when force-exiting a trade.">
+            <BFormCheckbox v-model="settingsStore.confirmDialog"
+              >Show Confirm Dialog for Trade Exits</BFormCheckbox
             >
-          </b-form-group>
-          <b-form-group description="Use confirmation dialogs when force-exiting a trade.">
-            <b-form-checkbox v-model="settingsStore.confirmDialog"
-              >Show Confirm Dialog for Trade Exits</b-form-checkbox
-            >
-          </b-form-group>
+          </BFormGroup>
         </div>
 
         <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
           <h4>Chart settings</h4>
-          <b-form-group
+          <BFormGroup
             description="Chart scale Side (Should the scale be displayed on the right or left?)"
           >
-            <b-form-radio-group
+            <BFormRadioGroup
               v-model="settingsStore.chartLabelSide"
               name="chart-preference-options"
               :options="[
                 { value: 'left', text: 'Left' },
                 { value: 'right', text: 'Right' },
               ]"
-            ></b-form-radio-group>
-          </b-form-group>
+            ></BFormRadioGroup>
+          </BFormGroup>
 
-          <b-form-group description="Use Heikin Ashi candles in your charts">
-            <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
-              >Use Heikin Ashi candles.</b-form-checkbox
+          <BFormGroup description="Use Heikin Ashi candles in your charts">
+            <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles"
+              >Use Heikin Ashi candles.</BFormCheckbox
             >
-          </b-form-group>
-          <b-form-group
+          </BFormGroup>
+          <BFormGroup
             description="Can reduce the transfer size for large dataframes. May require additional calls if the plot config changes."
           >
-            <b-form-checkbox v-model="settingsStore.useReducedPairCalls"
-              >Only request necessary columns (recommended to be checked).</b-form-checkbox
+            <BFormCheckbox v-model="settingsStore.useReducedPairCalls"
+              >Only request necessary columns (recommended to be checked).</BFormCheckbox
             >
-          </b-form-group>
-          <b-form-group description="Candle Color Preference">
-            <b-form-radio-group
+          </BFormGroup>
+          <BFormGroup description="Candle Color Preference">
+            <BFormRadioGroup
               id="settings-color-preference-radio-group"
               v-model="colorStore.colorPreference"
               name="color-preference-options"
               @change="colorStore.updateProfitLossColor"
             >
-              <b-form-radio
+              <BFormRadio
                 v-for="option in colorPreferenceOptions"
                 :key="option.value"
                 :value="option.value"
@@ -101,29 +96,29 @@
                     class="color-candle-arrows"
                   />
                 </div>
-              </b-form-radio>
-            </b-form-radio-group>
-          </b-form-group>
+              </BFormRadio>
+            </BFormRadioGroup>
+          </BFormGroup>
         </div>
         <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
-          <b-form-group description="Notifications">
+          <BFormGroup description="Notifications">
             <h4>Notification Settings</h4>
-            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
-              >Entry notifications</b-form-checkbox
+            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
+              >Entry notifications</BFormCheckbox
             >
-            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]"
-              >Exit notifications</b-form-checkbox
+            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]"
+              >Exit notifications</BFormCheckbox
             >
-            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]"
-              >Entry Cancel notifications</b-form-checkbox
+            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]"
+              >Entry Cancel notifications</BFormCheckbox
             >
-            <b-form-checkbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]"
-              >Exit Cancel notifications</b-form-checkbox
+            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]"
+              >Exit Cancel notifications</BFormCheckbox
             >
-          </b-form-group>
+          </BFormGroup>
         </div>
       </div>
-    </b-card>
+    </BCard>
   </div>
 </template>
 

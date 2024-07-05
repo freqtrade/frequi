@@ -1,6 +1,6 @@
 <template>
   <div class="h-100 overflow-auto w-100">
-    <b-table
+    <BTable
       ref="tradesTable"
       small
       hover
@@ -66,18 +66,18 @@
       <template #cell(close_timestamp)="row">
         <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
       </template>
-    </b-table>
+    </BTable>
     <div class="w-100 d-flex justify-content-between">
-      <b-pagination
+      <BPagination
         v-if="!activeTrades"
         v-model="currentPage"
         :total-rows="rows"
         :per-page="perPage"
         aria-controls="my-table"
-      ></b-pagination>
-      <b-form-group v-if="showFilter" label-for="trade-filter">
-        <b-form-input id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
-      </b-form-group>
+      ></BPagination>
+      <BFormGroup v-if="showFilter" label-for="trade-filter">
+        <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
+      </BFormGroup>
     </div>
     <ForceExitForm v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
     <ForceEntryForm
@@ -86,9 +86,9 @@
       position-increase
     />
 
-    <b-modal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
+    <BModal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
       {{ confirmExitText }}
-    </b-modal>
+    </BModal>
   </div>
 </template>
 

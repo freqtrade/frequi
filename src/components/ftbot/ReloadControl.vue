@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex align-items-center ms-2">
-    <b-form-checkbox
+    <BFormCheckbox
       v-model="autoRefreshLoc"
       class="float-end my-auto mt-1"
       title="AutoRefresh"
-    ></b-form-checkbox>
-    <b-button
+    ></BFormCheckbox>
+    <BButton
       class="m-1"
       variant="secondary"
       size="sm"
@@ -13,7 +13,7 @@
       @click="botStore.allRefreshFull"
     >
       <i-mdi-refresh />
-    </b-button>
+    </BButton>
   </div>
 </template>
 

@@ -2,23 +2,23 @@
   <div>
     <div class="mb-2">
       <label class="me-auto h3">Pair Locks</label>
-      <b-button class="float-end" size="sm" @click="botStore.activeBot.getLocks">
+      <BButton class="float-end" size="sm" @click="botStore.activeBot.getLocks">
         <i-mdi-refresh />
-      </b-button>
+      </BButton>
     </div>
     <div>
-      <b-table class="table-sm" :items="botStore.activeBot.activeLocks" :fields="tableFields">
+      <BTable class="table-sm" :items="botStore.activeBot.activeLocks" :fields="tableFields">
         <template #cell(actions)="row">
-          <b-button
+          <BButton
             class="btn-xs ms-1"
             size="sm"
             title="Delete trade"
             @click="removePairLock(row.item as unknown as Lock)"
           >
             <i-mdi-delete />
-          </b-button>
+          </BButton>
         </template>
-      </b-table>
+      </BTable>
     </div>
   </div>
 </template>

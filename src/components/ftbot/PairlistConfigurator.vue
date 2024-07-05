@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-row">
-    <b-list-group ref="availablePairlistsEl" class="available-pairlists">
-      <b-list-group-item
+    <BListGroup ref="availablePairlistsEl" class="available-pairlists">
+      <BListGroupItem
         v-for="pairlist in availablePairlists"
         :key="pairlist.name"
         :class="{
@@ -13,7 +13,7 @@
           <span class="fw-bold">{{ pairlist.name }}</span>
           <span class="text-small">{{ pairlist.description }}</span>
         </div>
-        <b-button
+        <BButton
           class="p-0 add-pairlist"
           style="border: none"
           variant="outline-light"
@@ -21,21 +21,21 @@
           @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
         >
           <i-mdi-arrow-right-bold-box-outline class="fs-4" />
-        </b-button>
-      </b-list-group-item>
-    </b-list-group>
+        </BButton>
+      </BListGroupItem>
+    </BListGroup>
     <div class="d-flex flex-column flex-fill">
       <PairlistConfigActions />
       <div class="border rounded-1 p-2 mb-2">
         <div class="d-flex align-items-center gap-2 my-2">
           <span class="col-auto">Stake currency: </span>
-          <b-form-input v-model="pairlistStore.stakeCurrency" size="sm" />
+          <BFormInput v-model="pairlistStore.stakeCurrency" size="sm" />
         </div>
 
         <div class="mb-2 border rounded-1 p-2 text-start">
-          <b-form-checkbox v-model="pairlistStore.customExchange" class="mb-2">
+          <BFormCheckbox v-model="pairlistStore.customExchange" class="mb-2">
             Custom Exchange
-          </b-form-checkbox>
+          </BFormCheckbox>
           <ExchangeSelect
             v-if="pairlistStore.customExchange"
             v-model="pairlistStore.selectedExchange"
@@ -43,7 +43,7 @@
         </div>
       </div>
       <PairlistConfigBlacklist />
-      <b-alert
+      <BAlert
         :model-value="
           pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
         "
@@ -51,7 +51,7 @@
       >
         First entry in the pairlist must be a Generating pairlist, like StaticPairList or
         VolumePairList.
-      </b-alert>
+      </BAlert>
       <div
         ref="pairlistConfigsEl"
         class="d-flex flex-column flex-grow-1 position-relative border rounded-1 p-1"
@@ -67,12 +67,12 @@
       </div>
     </div>
     <div class="d-flex flex-column col-12 col-lg-3">
-      <b-form-radio-group v-model="selectedView" class="mb-2" size="sm" buttons>
-        <b-form-radio button value="Config"> Config</b-form-radio>
-        <b-form-radio button value="Results" :disabled="pairlistStore.whitelist.length === 0">
-          Results</b-form-radio
+      <BFormRadioGroup v-model="selectedView" class="mb-2" size="sm" buttons>
+        <BFormRadio button value="Config"> Config</BFormRadio>
+        <BFormRadio button value="Results" :disabled="pairlistStore.whitelist.length === 0">
+          Results</BFormRadio
         >
-      </b-form-radio-group>
+      </BFormRadioGroup>
       <div class="position-relative flex-fill overflow-auto">
         <CopyableTextfield
           v-if="selectedView === 'Config'"

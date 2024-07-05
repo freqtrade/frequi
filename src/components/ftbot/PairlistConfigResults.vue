@@ -2,8 +2,8 @@
   <div>
     <div v-if="whitelist.length > 0" class="d-flex flex-column flex-lg-row px-2">
       <!-- TODO: look into flexbox solution to have overflow scroll? -->
-      <b-list-group class="col-12 col-md-2 overflow-auto" style="height: calc(100vh - 135px)">
-        <b-list-group-item
+      <BListGroup class="col-12 col-md-2 overflow-auto" style="height: calc(100vh - 135px)">
+        <BListGroupItem
           v-for="(pair, i) in whitelist"
           :key="pair.pair"
           button
@@ -12,10 +12,10 @@
           :title="pair.pair"
           @click="botStore.activeBot.selectedPair = pair.pair"
         >
-          <b-form-checkbox v-model="whitelist[i].enabled"></b-form-checkbox>
+          <BFormCheckbox v-model="whitelist[i].enabled"></BFormCheckbox>
           {{ pair.pair }}
-        </b-list-group-item>
-      </b-list-group>
+        </BListGroupItem>
+      </BListGroup>
       <div class="flex-fill">
         <ChartView />
       </div>

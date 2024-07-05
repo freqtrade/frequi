@@ -2,22 +2,22 @@
   <form class="d-flex flex-row" @submit.prevent="saveNewName">
     <div class="flex-grow-1">
       <slot v-if="mode === EditState.None"> </slot>
-      <b-form-input v-else v-model="localName" size="sm"> </b-form-input>
+      <BFormInput v-else v-model="localName" size="sm"> </BFormInput>
     </div>
     <div
       class="flex-grow-2 mt-auto d-flex gap-1 ms-1"
       :class="alignVertical ? 'flex-column' : 'flex-row'"
     >
       <template v-if="allowEdit && mode === EditState.None">
-        <b-button
+        <BButton
           size="sm"
           variant="secondary"
           :title="`Edit this ${editableName}.`"
           @click="mode = EditState.Editing"
         >
           <i-mdi-pencil />
-        </b-button>
-        <b-button
+        </BButton>
+        <BButton
           v-if="allowDuplicate"
           size="sm"
           variant="secondary"
@@ -25,36 +25,36 @@
           @click="duplicate"
         >
           <i-mdi-content-copy />
-        </b-button>
-        <b-button
+        </BButton>
+        <BButton
           size="sm"
           variant="secondary"
           :title="`Delete this ${editableName}.`"
           @click="$emit('delete', modelValue)"
         >
           <i-mdi-delete />
-        </b-button>
+        </BButton>
       </template>
-      <b-button
+      <BButton
         v-if="allowAdd && mode === EditState.None"
         size="sm"
         :title="`Add new ${editableName}.`"
         variant="primary"
         @click="addNewClick"
         ><i-mdi-plus-box-outline />
-      </b-button>
+      </BButton>
       <template v-if="mode !== EditState.None">
-        <b-button
+        <BButton
           size="sm"
           :title="`Add new ${editableName}`"
           variant="primary"
           @click="saveNewName"
         >
           <i-mdi-check />
-        </b-button>
-        <b-button size="sm" title="Abort" variant="secondary" @click="abort">
+        </BButton>
+        <BButton size="sm" title="Abort" variant="secondary" @click="abort">
           <i-mdi-close />
-        </b-button>
+        </BButton>
       </template>
     </div>
   </form>

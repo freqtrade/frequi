@@ -2,11 +2,11 @@
   <div>
     <div class="mb-2">
       <h3 class="me-auto d-inline">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
-      <b-button class="float-end" size="sm" @click="refreshSummary">
+      <BButton class="float-end" size="sm" @click="refreshSummary">
         <i-mdi-refresh />
-      </b-button>
+      </BButton>
     </div>
-    <b-form-radio-group
+    <BFormRadioGroup
       v-if="hasWeekly"
       id="order-direction"
       v-model="periodicBreakdownPeriod"
@@ -17,7 +17,7 @@
       style="min-width: 10em"
       button-variant="outline-primary"
       @change="refreshSummary"
-    ></b-form-radio-group>
+    ></BFormRadioGroup>
 
     <div class="ps-1">
       <TimePeriodChart
@@ -27,7 +27,7 @@
       />
     </div>
     <div>
-      <b-table class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </b-table>
+      <BTable class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </BTable>
     </div>
   </div>
 </template>

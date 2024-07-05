@@ -10,7 +10,7 @@
           <div
             class="mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4 gap-2"
           >
-            <b-form-radio
+            <BFormRadio
               v-if="botStore.activeBot.botApiVersion >= 2.15"
               v-model="btFormMode"
               name="bt-form-radios"
@@ -18,18 +18,18 @@
               class="mx-1 flex-samesize-items"
               value="historicResults"
               :disabled="!botStore.activeBot.canRunBacktest"
-              ><i-mdi-cloud-download class="me-2" />Load Results</b-form-radio
+              ><i-mdi-cloud-download class="me-2" />Load Results</BFormRadio
             >
-            <b-form-radio
+            <BFormRadio
               v-model="btFormMode"
               name="bt-form-radios"
               button
               class="mx-1 flex-samesize-items"
               value="run"
               :disabled="!botStore.activeBot.canRunBacktest"
-              ><i-mdi-run-fast class="me-2" />Run backtest</b-form-radio
+              ><i-mdi-run-fast class="me-2" />Run backtest</BFormRadio
             >
-            <b-form-radio
+            <BFormRadio
               id="bt-analyze-btn"
               v-model="btFormMode"
               name="bt-form-radios"
@@ -37,9 +37,9 @@
               class="mx-1 flex-samesize-items"
               value="results"
               :disabled="!hasBacktestResult"
-              ><i-mdi-table-eye class="me-2" />Analyze result</b-form-radio
+              ><i-mdi-table-eye class="me-2" />Analyze result</BFormRadio
             >
-            <b-form-radio
+            <BFormRadio
               v-if="hasMultiBacktestResult"
               v-model="btFormMode"
               name="bt-form-radios"
@@ -47,25 +47,25 @@
               class="mx-1 flex-samesize-items"
               value="compare-results"
               :disabled="!hasMultiBacktestResult"
-              ><i-mdi-compare-horizontal class="me-2" />Compare results</b-form-radio
+              ><i-mdi-compare-horizontal class="me-2" />Compare results</BFormRadio
             >
-            <b-form-radio
+            <BFormRadio
               v-model="btFormMode"
               name="bt-form-radios"
               button
               class="mx-1 flex-samesize-items"
               value="visualize-summary"
               :disabled="!hasBacktestResult"
-              ><i-mdi-chart-bell-curve-cumulative class="me-2" />Visualize summary</b-form-radio
+              ><i-mdi-chart-bell-curve-cumulative class="me-2" />Visualize summary</BFormRadio
             >
-            <b-form-radio
+            <BFormRadio
               v-model="btFormMode"
               name="bt-form-radios"
               button
               class="mx-1 flex-samesize-items"
               value="visualize"
               :disabled="!hasBacktestResult"
-              ><i-mdi-chart-timeline-variant-shimmer class="me-2" />Visualize result</b-form-radio
+              ><i-mdi-chart-timeline-variant-shimmer class="me-2" />Visualize result</BFormRadio
             >
           </div>
           <small v-show="botStore.activeBot.backtestRunning" class="text-end bt-running-label"
@@ -83,7 +83,7 @@
         class="sticky-top sticky-offset me-3 d-flex flex-column absolute"
         style="max-height: calc(100vh - 60px)"
       >
-        <b-button
+        <BButton
           class="align-self-start"
           aria-label="Close"
           size="sm"
@@ -92,7 +92,7 @@
         >
           <i-mdi-chevron-right v-if="!showLeftBar" width="24" height="24" />
           <i-mdi-chevron-left v-if="showLeftBar" width="24" height="24" />
-        </b-button>
+        </BButton>
         <Transition name="fade">
           <BacktestResultSelect
             v-if="showLeftBar"

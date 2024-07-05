@@ -1,5 +1,5 @@
 <template>
-  <b-modal
+  <BModal
     id="MsgBoxModal"
     ref="removeTradeModal"
     v-model="showRef"
@@ -10,7 +10,7 @@
     @keyup.enter="msgBoxOK"
   >
     {{ message }}
-  </b-modal>
+  </BModal>
 </template>
 
 <script setup lang="ts">
