@@ -40,7 +40,6 @@ import {
 } from 'echarts/components';
 
 import { ClosedTrade } from '@/types';
-import { binData } from '@/shared/charts/binCount';
 import { useSettingsStore } from '@/stores/settings';
 
 use([

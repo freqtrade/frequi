@@ -27,7 +27,6 @@ import {
 import { ClosedTrade } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
 
-import { dataZoomPartial } from '@/shared/charts/chartZoom';
 import { useColorStore } from '@/stores/colors';
 
 use([

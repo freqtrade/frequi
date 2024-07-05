@@ -26,5 +26,3 @@ export function heikinAshiDataset(columns: string[], data: Array<number[]>): num
     return candle;
   });
 }
-
-export default heikinAshiDataset;

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { binData } from '@/shared/charts/binCount';
+import { binData } from '@/utils/charts/binCount';
 
 describe('binCount.ts', () => {
   it('Bins data as expected', () => {

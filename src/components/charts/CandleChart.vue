@@ -5,9 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { generateAreaCandleSeries, generateCandleSeries } from '@/shared/charts/candleChartSeries';
-import heikinashi from '@/shared/charts/heikinashi';
-import { generateTradeSeries } from '@/shared/charts/tradeChartData';
 import {
   ChartSliderPosition,
   ChartType,
@@ -19,8 +16,6 @@ import {
 
 import ECharts from 'vue-echarts';
 
-import { calculateDiff, getDiffColumnsFromPlotConfig } from '@/shared/charts/areaPlotDataset';
-import { dataZoomPartial } from '@/shared/charts/chartZoom';
 import { EChartsOption, ScatterSeriesOption } from 'echarts';
 import { BarChart, CandlestickChart, LineChart, ScatterChart } from 'echarts/charts';
 import {

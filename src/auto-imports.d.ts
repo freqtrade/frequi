@@ -17,6 +17,8 @@ declare global {
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const binData: typeof import('./utils/charts/binCount')['binData']
+  const calculateDiff: typeof import('./utils/charts/areaPlotDataset')['calculateDiff']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
   const computedEager: typeof import('@vueuse/core')['computedEager']
@@ -36,6 +38,7 @@ declare global {
   const createTemplatePromise: typeof import('@vueuse/core')['createTemplatePromise']
   const createUnrefFn: typeof import('@vueuse/core')['createUnrefFn']
   const customRef: typeof import('vue')['customRef']
+  const dataZoomPartial: typeof import('./utils/charts/chartZoom')['dataZoomPartial']
   const dateFromString: typeof import('./utils/formatters/timeformat')['dateFromString']
   const dateStringToTimeRange: typeof import('./utils/formatters/timeformat')['dateStringToTimeRange']
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
@@ -52,10 +55,17 @@ declare global {
   const formatPercent: typeof import('./utils/formatters/numberformat')['formatPercent']
   const formatPrice: typeof import('./utils/formatters/numberformat')['formatPrice']
   const formatPriceCurrency: typeof import('./utils/formatters/numberformat')['formatPriceCurrency']
+  const generateAreaCandleSeries: typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']
+  const generateCandleSeries: typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']
+  const generateTradeSeries: typeof import('./utils/charts/tradeChartData')['generateTradeSeries']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getDiffColumnsFromPlotConfig: typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']
+  const getTradeEntries: typeof import('./utils/charts/tradeChartData')['getTradeEntries']
   const h: typeof import('vue')['h']
+  const heikinAshiDataset: typeof import('./utils/charts/heikinashi')['heikinAshiDataset']
+  const heikinashi: typeof import('./utils/charts/heikinashi')['default']
   const humanizeDurationFromSeconds: typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const initBots: typeof import('./stores/ftbotwrapper')['initBots']
@@ -361,6 +371,8 @@ declare module 'vue' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly binData: UnwrapRef<typeof import('./utils/charts/binCount')['binData']>
+    readonly calculateDiff: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['calculateDiff']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -380,6 +392,7 @@ declare module 'vue' {
     readonly createTemplatePromise: UnwrapRef<typeof import('@vueuse/core')['createTemplatePromise']>
     readonly createUnrefFn: UnwrapRef<typeof import('@vueuse/core')['createUnrefFn']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
+    readonly dataZoomPartial: UnwrapRef<typeof import('./utils/charts/chartZoom')['dataZoomPartial']>
     readonly dateFromString: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateFromString']>
     readonly dateStringToTimeRange: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateStringToTimeRange']>
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
@@ -396,10 +409,16 @@ declare module 'vue' {
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
+    readonly generateAreaCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']>
+    readonly generateCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']>
+    readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
+    readonly getTradeEntries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['getTradeEntries']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
@@ -697,6 +716,8 @@ declare module '@vue/runtime-core' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly binData: UnwrapRef<typeof import('./utils/charts/binCount')['binData']>
+    readonly calculateDiff: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['calculateDiff']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -716,6 +737,7 @@ declare module '@vue/runtime-core' {
     readonly createTemplatePromise: UnwrapRef<typeof import('@vueuse/core')['createTemplatePromise']>
     readonly createUnrefFn: UnwrapRef<typeof import('@vueuse/core')['createUnrefFn']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
+    readonly dataZoomPartial: UnwrapRef<typeof import('./utils/charts/chartZoom')['dataZoomPartial']>
     readonly dateFromString: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateFromString']>
     readonly dateStringToTimeRange: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateStringToTimeRange']>
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
@@ -732,10 +754,16 @@ declare module '@vue/runtime-core' {
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
+    readonly generateAreaCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']>
+    readonly generateCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']>
+    readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
+    readonly getTradeEntries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['getTradeEntries']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
