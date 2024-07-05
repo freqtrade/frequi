@@ -66,7 +66,7 @@ test.describe('Login', () => {
     await expect(page.locator('button', { hasText: 'Login' })).not.toBeVisible();
     // Test logout
     await page.locator('#avatar-drop').click();
-    await page.locator('a:visible', { hasText: 'Sign Out' }).click();
+    await page.locator('button', { hasText: 'Sign Out' }).click();
     // Assert we're logged out again
     await expect(page.locator('button', { hasText: 'Login' })).toBeVisible();
   });
