@@ -56,7 +56,6 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import { useWebSocket } from '@vueuse/core';
 import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
-import { showNotification } from '@/shared/notifications';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);

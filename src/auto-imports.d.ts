@@ -137,6 +137,7 @@ declare global {
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
   const showAlert: typeof import('./utils/alerts')['showAlert']
+  const showNotification: typeof import('./utils/notifications')['showNotification']
   const splitTradePair: typeof import('./utils/formatters/pairFormat')['splitTradePair']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const syncRef: typeof import('@vueuse/core')['syncRef']
@@ -496,6 +497,7 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly showAlert: UnwrapRef<typeof import('./utils/alerts')['showAlert']>
+    readonly showNotification: UnwrapRef<typeof import('./utils/notifications')['showNotification']>
     readonly splitTradePair: UnwrapRef<typeof import('./utils/formatters/pairFormat')['splitTradePair']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
@@ -847,6 +849,7 @@ declare module '@vue/runtime-core' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly showAlert: UnwrapRef<typeof import('./utils/alerts')['showAlert']>
+    readonly showNotification: UnwrapRef<typeof import('./utils/notifications')['showNotification']>
     readonly splitTradePair: UnwrapRef<typeof import('./utils/formatters/pairFormat')['splitTradePair']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
