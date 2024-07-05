@@ -12,7 +12,7 @@
     <div class="d-flex flex-column text-start ms-0 me-2 gap-2">
       <div class="d-flex flex-column flex-xl-row">
         <div class="px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1 flex-fill">
-          <b-table bordered :items="backtestResultStats" :fields="backtestResultFields">
+          <BTable bordered :items="backtestResultStats" :fields="backtestResultFields">
             <template
               v-for="[key, result] in Object.entries(backtestResults)"
               #[`head(${key})`]
@@ -20,7 +20,7 @@
             >
               <BacktestResultSelectEntry :backtest-result="result" />
             </template>
-          </b-table>
+          </BTable>
         </div>
       </div>
     </div>

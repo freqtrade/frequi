@@ -1,23 +1,23 @@
 <template>
   <div class="w-100 d-flex">
-    <b-form-select
+    <BFormSelect
       id="exchange-select"
       v-model="exchangeModel.exchange"
       size="sm"
       :options="exchangeList"
     >
-    </b-form-select>
-    <b-form-select
+    </BFormSelect>
+    <BFormSelect
       id="tradeMode-select"
       v-model="exchangeModel.trade_mode"
       size="sm"
       :options="tradeModes"
       :disabled="tradeModes.length < 2"
     >
-    </b-form-select>
-    <b-button class="ms-2 no-min-w" size="sm" @click="botStore.activeBot.getExchangeList">
+    </BFormSelect>
+    <BButton class="ms-2 no-min-w" size="sm" @click="botStore.activeBot.getExchangeList">
       <i-mdi-refresh />
-    </b-button>
+    </BButton>
   </div>
 </template>
 

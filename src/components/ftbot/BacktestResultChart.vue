@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex flex-row mb-1 align-items-center">
       <div class="me-2">
-        <b-button
+        <BButton
           aria-label="Close"
           title="Pair Navigation"
           variant="outline-secondary"
@@ -11,14 +11,14 @@
         >
           <i-mdi-chevron-right v-if="!isBarVisible.left" width="24" height="24" />
           <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
-        </b-button>
+        </BButton>
       </div>
       <span class="flex-fill">
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>
       <div class="col-md-1 text-end">
-        <b-button
+        <BButton
           aria-label="Close"
           variant="outline-secondary"
           title="Trade Navigation"
@@ -27,7 +27,7 @@
         >
           <i-mdi-chevron-right v-if="isBarVisible.right" width="24" height="24" />
           <i-mdi-chevron-left v-if="!isBarVisible.right" width="24" height="24" />
-        </b-button>
+        </BButton>
       </div>
     </div>
     <div class="text-center d-flex flex-row h-100 align-items-stretch">
@@ -64,9 +64,9 @@
         />
       </Transition>
     </div>
-    <b-card header="Single trades" class="row mt-2 w-100">
+    <BCard header="Single trades" class="row mt-2 w-100">
       <TradeList class="row trade-history mt-2 w-100" :trades="trades" :show-filter="true" />
-    </b-card>
+    </BCard>
   </div>
 </template>
 

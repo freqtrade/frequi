@@ -100,11 +100,11 @@ onMounted(() => {
   <div>
     <div class="mb-2">
       <h3 class="me-auto d-inline">Performance</h3>
-      <b-button class="float-end" size="sm" @click="refreshSummary">
+      <BButton class="float-end" size="sm" @click="refreshSummary">
         <i-mdi-refresh />
-      </b-button>
+      </BButton>
     </div>
-    <b-form-radio-group
+    <BFormRadioGroup
       v-if="hasAdvancedStats"
       id="order-direction"
       v-model="selectedOption"
@@ -115,7 +115,7 @@ onMounted(() => {
       style="min-width: 10em"
       button-variant="outline-primary"
       @change="refreshSummary"
-    ></b-form-radio-group>
-    <b-table class="table-sm" :items="performanceData" :fields="performanceTable"></b-table>
+    ></BFormRadioGroup>
+    <BTable class="table-sm" :items="performanceData" :fields="performanceTable"></BTable>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <div v-if="botStore.botCount > 0">
     <h3 v-if="!small">Available bots</h3>
-    <b-list-group ref="sortContainer">
-      <b-list-group-item
+    <BListGroup ref="sortContainer">
+      <BListGroupItem
         v-for="bot in botListComp"
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
@@ -28,8 +28,8 @@
           @edit="editBot(bot.botId)"
           @edit-login="editBotLogin(bot.botId)"
         />
-      </b-list-group-item>
-    </b-list-group>
+      </BListGroupItem>
+    </BListGroup>
     <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
   </div>
 </template>

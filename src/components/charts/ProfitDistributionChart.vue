@@ -3,7 +3,7 @@
     <div class="flex-grow-1">
       <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
-    <b-form-group
+    <BFormGroup
       class="z-2"
       :class="showTitle ? 'ms-5 ps-5' : 'position-absolute'"
       label="Bins"
@@ -13,14 +13,14 @@
       content-cols="6"
       size="sm"
     >
-      <b-form-select
+      <BFormSelect
         id="input-bins"
         v-model="settingsStore.profitDistributionBins"
         size="sm"
         class="mt-1"
         :options="binOptions"
-      ></b-form-select>
-    </b-form-group>
+      ></BFormSelect>
+    </BFormGroup>
   </div>
 </template>
 

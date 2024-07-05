@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row">
-    <b-form-group class="flex-grow-1" :label="label" label-for="indicatorSelector">
+    <BFormGroup class="flex-grow-1" :label="label" label-for="indicatorSelector">
       <VSelect
         v-model="selAvailableIndicator"
         :options="columns"
@@ -9,10 +9,10 @@
         @option:selected="emitIndicator"
       >
       </VSelect>
-    </b-form-group>
-    <b-button size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
+    </BFormGroup>
+    <BButton size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
       <i-mdi-close />
-    </b-button>
+    </BButton>
   </div>
 </template>
 

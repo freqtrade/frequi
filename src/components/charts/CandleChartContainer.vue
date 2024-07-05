@@ -15,7 +15,7 @@
           >
           </VSelect>
 
-          <b-button
+          <BButton
             title="Refresh chart"
             class="ms-2"
             :disabled="!!!botStore.activeBot.plotPair || isLoadingDataset"
@@ -23,8 +23,8 @@
             @click="refresh"
           >
             <i-mdi-refresh />
-          </b-button>
-          <b-spinner v-if="isLoadingDataset" small class="ms-2" label="Spinning" />
+          </BButton>
+          <BSpinner v-if="isLoadingDataset" small class="ms-2" label="Spinning" />
           <div class="d-flex flex-column">
             <div class="d-flex flex-row flex-wrap">
               <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
@@ -45,8 +45,8 @@
           </div>
         </div>
         <div class="ms-auto d-flex align-items-center w-auto">
-          <b-form-checkbox v-model="settingsStore.useHeikinAshiCandles"
-            ><small class="text-nowrap">Heikin Ashi</small></b-form-checkbox
+          <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles"
+            ><small class="text-nowrap">Heikin Ashi</small></BFormCheckbox
           >
 
           <div class="ms-2">
@@ -54,9 +54,9 @@
           </div>
 
           <div class="ms-2 me-0 me-md-1">
-            <b-button size="sm" title="Plot configurator" @click="showConfigurator">
+            <BButton size="sm" title="Plot configurator" @click="showConfigurator">
               <i-mdi-cog width="12" height="12" />
-            </b-button>
+            </BButton>
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@
             :label-side="settingsStore.chartLabelSide"
           />
           <div v-else class="m-auto">
-            <b-spinner v-if="isLoadingDataset" label="Spinning" />
+            <BSpinner v-if="isLoadingDataset" label="Spinning" />
             <div v-else style="font-size: 1.5rem">
               {{ noDatasetText }}
             </div>
@@ -92,7 +92,7 @@
         </Transition>
       </div>
     </div>
-    <b-modal
+    <BModal
       v-if="plotConfigModal"
       id="plotConfiguratorModal"
       v-model="showPlotConfigModal"
@@ -101,7 +101,7 @@
       hide-backdrop
     >
       <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
-    </b-modal>
+    </BModal>
   </div>
 </template>
 

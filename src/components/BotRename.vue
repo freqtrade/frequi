@@ -1,6 +1,6 @@
 <template>
   <form class="d-flex" @submit.prevent="save">
-    <b-form-input
+    <BFormInput
       v-model="newName"
       size="sm"
       class="w-100"
@@ -10,13 +10,13 @@
     />
 
     <div class="d-flex ms-2 no-min-w">
-      <b-button type="submit" size="sm" title="Save" class="no-min-w">
+      <BButton type="submit" size="sm" title="Save" class="no-min-w">
         <i-mdi-check />
-      </b-button>
+      </BButton>
 
-      <b-button class="ms-1 no-min-w" size="sm" title="Cancel" @click="$emit('cancelled')">
+      <BButton class="ms-1 no-min-w" size="sm" title="Cancel" @click="$emit('cancelled')">
         <i-mdi-close />
-      </b-button>
+      </BButton>
     </div>
   </form>
 </template>

@@ -27,7 +27,7 @@ const periodicBreakdownFields = computed<TableField[]>(() => {
 </script>
 
 <template>
-  <b-form-radio-group
+  <BFormRadioGroup
     id="order-direction"
     v-model="periodicBreakdownPeriod"
     :options="periodicBreakdownSelections"
@@ -36,13 +36,13 @@ const periodicBreakdownFields = computed<TableField[]>(() => {
     buttons
     style="min-width: 10em"
     button-variant="outline-primary"
-  ></b-form-radio-group>
-  <b-table
+  ></BFormRadioGroup>
+  <BTable
     small
     hover
     stacked="sm"
     :items="periodicBreakdown[periodicBreakdownPeriod] as unknown as TableItem[]"
     :fields="periodicBreakdownFields"
   >
-  </b-table>
+  </BTable>
 </template>

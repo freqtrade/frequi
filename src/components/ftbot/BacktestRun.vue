@@ -3,24 +3,24 @@
     <span>Strategy</span>
     <StrategySelect v-model="btStore.strategy"></StrategySelect>
   </div>
-  <b-card :disabled="botStore.activeBot.backtestRunning">
+  <BCard :disabled="botStore.activeBot.backtestRunning">
     <!-- Backtesting parameters -->
-    <b-form-group
+    <BFormGroup
       label-cols-lg="2"
       label="Backtest params"
       label-size="sm"
       label-class="fw-bold pt-0"
       class="mb-0"
     >
-      <b-form-group
+      <BFormGroup
         label-cols-sm="5"
         label="Timeframe:"
         label-align-sm="right"
         label-for="timeframe-select"
       >
         <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" />
-      </b-form-group>
-      <b-form-group
+      </BFormGroup>
+      <BFormGroup
         label-cols-sm="5"
         label="Detail Timeframe:"
         label-align-sm="right"
@@ -32,36 +32,36 @@
           v-model="btStore.selectedDetailTimeframe"
           :below-timeframe="btStore.selectedTimeframe"
         />
-      </b-form-group>
+      </BFormGroup>
 
-      <b-form-group
+      <BFormGroup
         label-cols-sm="5"
         label="Max open trades:"
         label-align-sm="right"
         label-for="max-open-trades"
       >
-        <b-form-input
+        <BFormInput
           id="max-open-trades"
           v-model="btStore.maxOpenTrades"
           placeholder="Use strategy default"
           type="number"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         label-cols-sm="5"
         label="Starting capital:"
         label-align-sm="right"
         label-for="starting-capital"
       >
-        <b-form-input
+        <BFormInput
           id="starting-capital"
           v-model="btStore.startingCapital"
           placeholder="Use config default"
           type="number"
           step="0.001"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         label-cols-sm="5"
         label="Stake amount:"
         label-align-sm="right"
@@ -69,11 +69,11 @@
       >
         <div class="d-flex align-items-center">
           <div style="flex-basis: 100%" class="d-flex">
-            <b-form-checkbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
-              >Unlimited stake</b-form-checkbox
+            <BFormCheckbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
+              >Unlimited stake</BFormCheckbox
             >
           </div>
-          <b-form-input
+          <BFormInput
             id="stake-amount"
             v-model="btStore.stakeAmount"
             type="number"
@@ -81,23 +81,20 @@
             step="0.01"
             style="flex-basis: 100%"
             :disabled="btStore.stakeAmountUnlimited"
-          ></b-form-input>
+          ></BFormInput>
         </div>
-      </b-form-group>
+      </BFormGroup>
 
-      <b-form-group
+      <BFormGroup
         label-cols-sm="5"
         label="Enable Protections:"
         label-align-sm="right"
         label-for="enable-protections"
         class="align-items-center"
       >
-        <b-form-checkbox
-          id="enable-protections"
-          v-model="btStore.enableProtections"
-        ></b-form-checkbox>
-      </b-form-group>
-      <b-form-group
+        <BFormCheckbox id="enable-protections" v-model="btStore.enableProtections"></BFormCheckbox>
+      </BFormGroup>
+      <BFormGroup
         v-if="botStore.activeBot.botApiVersion >= 2.22"
         label-cols-sm="5"
         label="Cache Backtest results:"
@@ -105,10 +102,10 @@
         label-for="enable-cache"
         class="align-items-center"
       >
-        <b-form-checkbox id="enable-cache" v-model="btStore.allowCache"></b-form-checkbox>
-      </b-form-group>
+        <BFormCheckbox id="enable-cache" v-model="btStore.allowCache"></BFormCheckbox>
+      </BFormGroup>
       <template v-if="botStore.activeBot.botApiVersion >= 2.22">
-        <b-form-group
+        <BFormGroup
           label-cols-sm="5"
           label="Enable FreqAI:"
           label-align-sm="right"
@@ -123,22 +120,22 @@
               />
             </div>
           </template>
-          <b-form-checkbox id="enable-freqai" v-model="btStore.freqAI.enabled"></b-form-checkbox>
-        </b-form-group>
-        <b-form-group
+          <BFormCheckbox id="enable-freqai" v-model="btStore.freqAI.enabled"></BFormCheckbox>
+        </BFormGroup>
+        <BFormGroup
           v-if="btStore.freqAI.enabled"
           label-cols-sm="5"
           label="FreqAI identifier:"
           label-align-sm="right"
           label-for="freqai-identifier"
         >
-          <b-form-input
+          <BFormInput
             id="freqai-identifier"
             v-model="btStore.freqAI.identifier"
             placeholder="Use config default"
-          ></b-form-input>
-        </b-form-group>
-        <b-form-group
+          ></BFormInput>
+        </BFormGroup>
+        <BFormGroup
           v-if="btStore.freqAI.enabled"
           label-cols-sm="5"
           label="FreqAI Model"
@@ -146,7 +143,7 @@
           label-for="freqai-model"
         >
           <FreqaiModelSelect id="freqai-model" v-model="btStore.freqAI.model"></FreqaiModelSelect>
-        </b-form-group>
+        </BFormGroup>
       </template>
 
       <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
@@ -159,12 +156,12 @@
             </b-form-group> -->
       <hr />
       <TimeRangeSelect v-model="btStore.timerange" class="mt-2"></TimeRangeSelect>
-    </b-form-group>
-  </b-card>
+    </BFormGroup>
+  </BCard>
 
   <h3 class="mt-3">Backtesting summary</h3>
   <div class="d-flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center">
-    <b-button
+    <BButton
       id="start-backtest"
       variant="primary"
       :disabled="
@@ -176,28 +173,28 @@
       @click="clickBacktest"
     >
       Start backtest
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       variant="secondary"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       class="mx-1"
       @click="botStore.activeBot.pollBacktest"
     >
       Load backtest result
-    </b-button>
-    <b-button
+    </BButton>
+    <BButton
       variant="secondary"
       class="mx-1"
       :disabled="!botStore.activeBot.backtestRunning"
       @click="botStore.activeBot.stopBacktest"
-      >Stop Backtest</b-button
+      >Stop Backtest</BButton
     >
-    <b-button
+    <BButton
       variant="secondary"
       class="mx-1"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       @click="botStore.activeBot.removeBacktest"
-      >Reset Backtest</b-button
+      >Reset Backtest</BButton
     >
   </div>
 </template>

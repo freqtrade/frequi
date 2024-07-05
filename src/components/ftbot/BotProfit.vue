@@ -1,10 +1,10 @@
 <template>
-  <b-table class="text-start" small borderless :items="profitItems" :fields="profitFields">
+  <BTable class="text-start" small borderless :items="profitItems" :fields="profitFields">
     <template #cell(value)="row">
       <DateTimeTZ v-if="row.item.isTs && row.value" :date="row.value as number"></DateTimeTZ>
       <template v-else>{{ row.value }}</template>
     </template>
-  </b-table>
+  </BTable>
 </template>
 
 <script setup lang="ts">

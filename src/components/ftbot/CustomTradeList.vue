@@ -1,27 +1,27 @@
 <template>
   <div class="h-100 overflow-auto p-1">
-    <b-list-group id="tradeList">
-      <b-list-group-item
+    <BListGroup id="tradeList">
+      <BListGroupItem
         v-for="trade in filteredTrades"
         :key="trade.trade_id"
         class="border border-secondary rounded my-05 px-1"
         @click="tradeClick(trade)"
       >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
-      </b-list-group-item>
-    </b-list-group>
+      </BListGroupItem>
+    </BListGroup>
 
     <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
     <div class="w-100 d-flex justify-content-between mt-1">
-      <b-pagination
+      <BPagination
         v-if="!activeTrades"
         v-model="currentPage"
         :total-rows="rows"
         :per-page="perPage"
         aria-controls="tradeList"
-      ></b-pagination>
-      <b-form-input
+      ></BPagination>
+      <BFormInput
         v-if="showFilter"
         v-model="filterText"
         type="text"

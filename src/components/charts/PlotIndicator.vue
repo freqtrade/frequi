@@ -1,35 +1,34 @@
 <template>
   <div>
     <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
-      <b-form-group class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
-        <b-form-select
+      <BFormGroup class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
+        <BFormSelect
           id="plotTypeSelector"
           v-model="graphType"
           size="sm"
           :options="availableGraphTypes"
         >
-        </b-form-select>
-      </b-form-group>
-      <b-form-group label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
-        <b-input-group>
+        </BFormSelect>
+      </BFormGroup>
+      <BFormGroup label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
+        <BInputGroup>
           <template #prepend>
-            <b-form-input
+            <BFormInput
               v-model="selColor"
               type="color"
               size="sm"
               class="p-0"
               style="max-width: 29px"
-            ></b-form-input>
+            ></BFormInput>
           </template>
-          <b-form-input id="colsel" v-model="selColor" size="sm" class="flex-grow-1">
-          </b-form-input>
+          <BFormInput id="colsel" v-model="selColor" size="sm" class="flex-grow-1"> </BFormInput>
           <template #append>
-            <b-button variant="primary" size="sm" @click="newColor">
+            <BButton variant="primary" size="sm" @click="newColor">
               <i-mdi-dice-multiple />
-            </b-button>
+            </BButton>
           </template>
-        </b-input-group>
-      </b-form-group>
+        </BInputGroup>
+      </BFormGroup>
     </div>
     <PlotIndicatorSelect
       v-if="graphType === ChartType.line"

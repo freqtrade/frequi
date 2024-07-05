@@ -1,69 +1,69 @@
 <template>
   <div>
     <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
-      <b-form-group label="Bot Name" label-for="name-input">
-        <b-form-input
+      <BFormGroup label="Bot Name" label-for="name-input">
+        <BFormInput
           id="name-input"
           v-model="auth.botName"
           placeholder="Bot Name"
           @keydown.enter="handleOk"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         :state="urlState"
         label="API Url"
         label-for="url-input"
         invalid-feedback="API Url required"
       >
-        <b-form-input
+        <BFormInput
           id="url-input"
           v-model="auth.url"
           required
           trim
           :state="urlState"
           @keydown.enter="handleOk"
-        ></b-form-input>
-        <b-alert
+        ></BFormInput>
+        <BAlert
           v-if="urlDuplicate"
           class="mt-2 p-1 alert-wrap"
           :model-value="true"
           variant="warning"
         >
           This URL is already in use by another bot.
-        </b-alert>
-      </b-form-group>
-      <b-form-group
+        </BAlert>
+      </BFormGroup>
+      <BFormGroup
         :state="nameState"
         label="Username"
         label-for="username-input"
         invalid-feedback="Name and Password are required."
       >
-        <b-form-input
+        <BFormInput
           id="username-input"
           v-model="auth.username"
           required
           placeholder="Freqtrader"
           :state="nameState"
           @keydown.enter="handleOk"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         label="Password"
         label-for="password-input"
         invalid-feedback="Invalid Password"
         :state="pwdState"
       >
-        <b-form-input
+        <BFormInput
           id="password-input"
           v-model="auth.password"
           required
           type="password"
           :state="pwdState"
           @keydown.enter="handleOk"
-        ></b-form-input>
-      </b-form-group>
+        ></BFormInput>
+      </BFormGroup>
       <div>
-        <b-alert v-if="errorMessage" class="alert-wrap" :model-value="true" variant="warning">
+        <BAlert v-if="errorMessage" class="alert-wrap" :model-value="true" variant="warning">
           {{ errorMessage }}
           <br />
           <span v-if="errorMessageCORS"
@@ -72,11 +72,11 @@
               >Freqtrade CORS documentation</a
             ></span
           >
-        </b-alert>
+        </BAlert>
       </div>
       <div v-if="inModal === false" class="float-end">
-        <b-button class="me-2" type="reset" variant="danger">Reset</b-button>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <BButton class="me-2" type="reset" variant="danger">Reset</BButton>
+        <BButton type="submit" variant="primary">Submit</BButton>
       </div>
     </form>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <b-modal
+  <BModal
     id="forceentry-modal"
     ref="modal"
     v-model="model"
@@ -9,14 +9,14 @@
     @ok="handleEntry"
   >
     <form ref="form" @submit.stop.prevent="handleSubmit">
-      <b-form-group
+      <BFormGroup
         v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed"
         label="Order direction (Long or Short)"
         label-for="order-direction"
         invalid-feedback="Order direction must be set"
         :state="orderSide !== undefined"
       >
-        <b-form-radio-group
+        <BFormRadioGroup
           id="order-direction"
           v-model="orderSide"
           :options="orderSideOptions"
@@ -25,73 +25,73 @@
           buttons
           style="min-width: 10em"
           button-variant="outline-primary"
-        ></b-form-radio-group>
-      </b-form-group>
-      <b-form-group
+        ></BFormRadioGroup>
+      </BFormGroup>
+      <BFormGroup
         label="Pair"
         label-for="pair-input"
         invalid-feedback="Pair is required"
         :state="selectedPair !== undefined"
       >
-        <b-form-input
+        <BFormInput
           id="pair-input"
           v-model="selectedPair"
           required
           :disabled="positionIncrease"
           @keydown.enter="handleEntry"
           @focus="inputSelect"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         label="*Price [optional]"
         label-for="price-input"
         invalid-feedback="Price must be empty or a positive number"
         :state="!price || price > 0"
       >
-        <b-form-input
+        <BFormInput
           id="price-input"
           v-model="price"
           type="number"
           step="0.00000001"
           @keydown.enter="handleEntry"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         :label="`*Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
         label-for="stake-input"
         invalid-feedback="Stake-amount must be empty or a positive number"
         :state="!stakeAmount || stakeAmount > 0"
       >
-        <b-form-input
+        <BFormInput
           id="stake-input"
           v-model="stakeAmount"
           type="number"
           step="0.000001"
           @keydown.enter="handleEntry"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         v-if="botStore.activeBot.botApiVersion > 2.16 && botStore.activeBot.shortAllowed"
         :label="`*Leverage to apply [optional]`"
         label-for="leverage-input"
         invalid-feedback="Leverage must be empty or a positive number"
         :state="!leverage || leverage > 0"
       >
-        <b-form-input
+        <BFormInput
           id="leverage-input"
           v-model="leverage"
           type="number"
           step="0.01"
           @keydown.enter="handleEntry"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group
+        ></BFormInput>
+      </BFormGroup>
+      <BFormGroup
         label="OrderType"
         label-for="ordertype-input"
         invalid-feedback="OrderType"
         :state="true"
       >
-        <b-form-radio-group
+        <BFormRadioGroup
           id="ordertype-input"
           v-model="ordertype"
           :options="orderTypeOptions"
@@ -100,22 +100,22 @@
           button-variant="outline-primary"
           style="min-width: 10em"
           size="sm"
-        ></b-form-radio-group>
-      </b-form-group>
-      <b-form-group
+        ></BFormRadioGroup>
+      </BFormGroup>
+      <BFormGroup
         v-if="botStore.activeBot.botApiVersion > 1.16"
         label="*Custom entry tag Optional]"
         label-for="enterTag-input"
       >
-        <b-form-input
+        <BFormInput
           id="enterTag-input"
           v-model="enterTag"
           type="text"
           name="radios-btn-orderType"
-        ></b-form-input>
-      </b-form-group>
+        ></BFormInput>
+      </BFormGroup>
     </form>
-  </b-modal>
+  </BModal>
 </template>
 
 <script setup lang="ts">

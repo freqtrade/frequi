@@ -1,11 +1,11 @@
 <template>
   <div v-if="columns">
-    <b-form-group label="Plot config name" label-for="idPlotConfigName">
+    <BFormGroup label="Plot config name" label-for="idPlotConfigName">
       <PlotConfigSelect allow-edit></PlotConfigSelect>
-    </b-form-group>
+    </BFormGroup>
     <div class="col-mb-3">
       <hr />
-      <b-form-group label="Target Plot" label-for="FieldSel">
+      <BFormGroup label="Target Plot" label-for="FieldSel">
         <EditValue
           v-model="selSubPlot"
           :allow-edit="!isMainPlot"
@@ -16,26 +16,26 @@
           @delete="deleteSubplot"
           @rename="renameSubplot"
         >
-          <b-form-select id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
-          </b-form-select>
+          <BFormSelect id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
+          </BFormSelect>
         </EditValue>
-      </b-form-group>
+      </BFormGroup>
     </div>
     <hr />
     <div>
-      <b-form-group label="Indicators in this plot" label-for="selectedIndicators">
-        <b-form-select
+      <BFormGroup label="Indicators in this plot" label-for="selectedIndicators">
+        <BFormSelect
           id="selectedIndicators"
           v-model="selIndicatorName"
           :disabled="addNewIndicator"
           :options="usedColumns"
           :select-size="4"
         >
-        </b-form-select>
-      </b-form-group>
+        </BFormSelect>
+      </BFormGroup>
     </div>
     <div class="d-flex flex-row mt-1">
-      <b-button
+      <BButton
         variant="secondary"
         title="Remove indicator to plot"
         size="sm"
@@ -44,8 +44,8 @@
         @click="removeIndicator"
       >
         Remove indicator
-      </b-button>
-      <b-button
+      </BButton>
+      <BButton
         variant="primary"
         title="Add indicator to plot"
         size="sm"
@@ -57,7 +57,7 @@
         "
       >
         Add new indicator
-      </b-button>
+      </BButton>
     </div>
 
     <PlotIndicatorSelect
@@ -72,14 +72,14 @@
     <hr />
 
     <div class="d-flex flex-row">
-      <b-button
+      <BButton
         class="ms-1 col"
         variant="secondary"
         size="sm"
         :disabled="addNewIndicator"
         title="Reset to last saved configuration"
         @click="loadPlotConfig"
-        >Reset</b-button
+        >Reset</BButton
       >
 
       <!--
@@ -93,7 +93,7 @@
         @click="clearConfig"
         >Reset</b-button
       > -->
-      <b-button
+      <BButton
         :disabled="
           (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
           !botStore.activeBot.isBotOnline ||
@@ -105,8 +105,8 @@
         @click="loadPlotConfigFromStrategy"
       >
         From strategy
-      </b-button>
-      <b-button
+      </BButton>
+      <BButton
         id="showButton"
         class="ms-1 col"
         variant="secondary"
@@ -114,10 +114,10 @@
         :disabled="addNewIndicator"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
-        >{{ showConfig ? 'Hide' : 'Show' }}</b-button
+        >{{ showConfig ? 'Hide' : 'Show' }}</BButton
       >
 
-      <b-button
+      <BButton
         class="ms-1 col"
         variant="primary"
         size="sm"
@@ -125,27 +125,27 @@
         :disabled="addNewIndicator"
         title="Save configuration"
         @click="savePlotConfig"
-        >Save</b-button
+        >Save</BButton
       >
     </div>
-    <b-button
+    <BButton
       v-if="showConfig"
       class="ms-1 mt-1"
       variant="secondary"
       size="sm"
       title="Load configuration from text box below"
       @click="loadConfigFromString"
-      >Load from String</b-button
+      >Load from String</BButton
     >
     <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
-      <b-form-textarea
+      <BFormTextarea
         id="TextArea"
         v-model="plotConfigJson"
         class="textArea"
         size="sm"
         :state="tempPlotConfigValid"
       >
-      </b-form-textarea>
+      </BFormTextarea>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@
     <div class="mb-2">
       <label class="me-auto h3">Balance</label>
       <div class="float-end d-flex flex-row">
-        <b-button
+        <BButton
           v-if="canUseBotBalance"
           size="sm"
           :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
@@ -11,19 +11,19 @@
         >
           <i-mdi-robot v-if="showBotOnly" />
           <i-mdi-bank v-else />
-        </b-button>
-        <b-button
+        </BButton>
+        <BButton
           size="sm"
           :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           @click="hideSmallBalances = !hideSmallBalances"
         >
           <i-mdi-eye-off v-if="hideSmallBalances" />
           <i-mdi-eye v-else />
-        </b-button>
+        </BButton>
 
-        <b-button class="float-end" size="sm" @click="refreshBalance">
+        <BButton class="float-end" size="sm" @click="refreshBalance">
           <i-mdi-refresh />
-        </b-button>
+        </BButton>
       </div>
     </div>
     <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />
@@ -31,7 +31,7 @@
       <p v-if="botStore.activeBot.balance.note">
         <strong>{{ botStore.activeBot.balance.note }}</strong>
       </p>
-      <b-table class="table-sm" :items="balanceCurrencies" :fields="tableFields">
+      <BTable class="table-sm" :items="balanceCurrencies" :fields="tableFields">
         <template #custom-foot>
           <td class="pt-1"><strong>Total</strong></td>
           <td class="pt-1">
@@ -55,7 +55,7 @@
             </strong>
           </td>
         </template>
-      </b-table>
+      </BTable>
     </div>
   </div>
 </template>

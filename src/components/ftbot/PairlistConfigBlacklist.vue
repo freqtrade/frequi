@@ -1,5 +1,5 @@
 <template>
-  <b-card no-body class="mb-2">
+  <BCard no-body class="mb-2">
     <template #header>
       <div
         class="d-flex flex-row align-items-center justify-content-between"
@@ -21,32 +21,32 @@
         />
       </div>
     </template>
-    <b-collapse v-model="visible">
-      <b-card-body>
+    <BCollapse v-model="visible">
+      <BCardBody>
         <div class="d-flex mb-4 align-items-center gap-2">
           <span class="col-auto">Copy from:</span
-          ><b-form-select v-model="copyFromConfig" size="sm" :options="configNames" />
-          <b-button title="Copy" size="sm" @click="pairlistStore.duplicateBlacklist(copyFromConfig)"
+          ><BFormSelect v-model="copyFromConfig" size="sm" :options="configNames" />
+          <BButton title="Copy" size="sm" @click="pairlistStore.duplicateBlacklist(copyFromConfig)"
             ><i-mdi-content-copy
-          /></b-button>
+          /></BButton>
         </div>
-        <b-input-group
+        <BInputGroup
           v-for="(item, i) in pairlistStore.config.blacklist"
           :key="i"
           class="mb-2"
           size="sm"
         >
-          <b-form-input v-model="pairlistStore.config.blacklist[i]" />
+          <BFormInput v-model="pairlistStore.config.blacklist[i]" />
           <template #append>
-            <b-button size="sm" @click="pairlistStore.removeFromBlacklist(i)"
+            <BButton size="sm" @click="pairlistStore.removeFromBlacklist(i)"
               ><i-mdi-close
-            /></b-button>
+            /></BButton>
           </template>
-        </b-input-group>
-        <b-button size="sm" @click="pairlistStore.addToBlacklist()">Add</b-button>
-      </b-card-body>
-    </b-collapse>
-  </b-card>
+        </BInputGroup>
+        <BButton size="sm" @click="pairlistStore.addToBlacklist()">Add</BButton>
+      </BCardBody>
+    </BCollapse>
+  </BCard>
 </template>
 <script setup lang="ts">
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';

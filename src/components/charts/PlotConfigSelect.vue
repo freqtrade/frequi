@@ -10,14 +10,14 @@
     @new="plotStore.newPlotConfig"
     @duplicate="plotStore.duplicatePlotConfig"
   >
-    <b-form-select
+    <BFormSelect
       id="plotConfigSelect"
       v-model="plotStore.plotConfigName"
       :options="plotStore.availablePlotConfigNames"
       size="sm"
       @update:model-value="plotStore.plotConfigChanged"
     >
-    </b-form-select>
+    </BFormSelect>
   </EditValue>
 </template>
 

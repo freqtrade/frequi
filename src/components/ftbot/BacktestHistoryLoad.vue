@@ -13,19 +13,19 @@
       freqUI.
     </p>
     <div class="d-flex align-items-center">
-      <b-form-group
+      <BFormGroup
         v-if="botStore.activeBot.backtestHistoryList.length > 0"
         class="my-2"
         label-for="trade-filter"
       >
-        <b-form-input
+        <BFormInput
           id="trade-filter"
           v-model="filterText"
           type="text"
           placeholder="Filter Strategies"
           tilte="Filter Strategies"
         />
-      </b-form-group>
+      </BFormGroup>
     </div>
     <BTableSimple
       v-if="botStore.activeBot.backtestHistoryList.length > 0"
@@ -75,7 +75,7 @@
                 :class="res.notes ? 'opacity-100' : 'opacity-0'"
                 :hint="res.notes ?? ''"
               ></InfoBox>
-              <b-button
+              <BButton
                 v-if="botStore.activeBot.botApiVersion >= 2.31"
                 class="ms-1"
                 size="sm"
@@ -84,8 +84,8 @@
                 @click.stop="botStore.activeBot.getBacktestHistoryResult(res)"
               >
                 <i-mdi-arrow-right />
-              </b-button>
-              <b-button
+              </BButton>
+              <BButton
                 v-if="botStore.activeBot.botApiVersion >= 2.31"
                 class="ms-1"
                 size="sm"
@@ -94,7 +94,7 @@
                 @click.stop="deleteBacktestResult(res)"
               >
                 <i-mdi-delete />
-              </b-button>
+              </BButton>
             </div>
           </BTd>
         </BTr>

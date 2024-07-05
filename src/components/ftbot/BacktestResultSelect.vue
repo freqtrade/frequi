@@ -1,8 +1,8 @@
 <template>
   <div class="container d-flex flex-column align-items-stretch">
     <h3>Available results:</h3>
-    <b-list-group class="ms-2">
-      <b-list-group-item
+    <BListGroup class="ms-2">
+      <BListGroupItem
         v-for="[key, result] in Object.entries(backtestHistory)"
         :key="key"
         button
@@ -13,7 +13,7 @@
         <template v-if="!result.metadata.editing">
           <BacktestResultSelectEntry :backtest-result="result" />
           <div class="d-flex">
-            <b-button
+            <BButton
               v-if="canUseModify"
               class="flex-nowrap"
               size="sm"
@@ -21,27 +21,27 @@
               @click.stop="result.metadata.editing = !result.metadata.editing"
             >
               <i-mdi-pencil />
-            </b-button>
-            <b-button
+            </BButton>
+            <BButton
               size="sm"
               class="flex-nowrap"
               title="Delete this Result from UI."
               @click.stop="emit('removeResult', key)"
             >
               <i-mdi-delete />
-            </b-button>
+            </BButton>
           </div>
         </template>
         <template v-if="result.metadata.editing">
-          <b-form-textarea v-model="result.metadata.notes" placeholder="notes" size="sm">
-          </b-form-textarea>
+          <BFormTextarea v-model="result.metadata.notes" placeholder="notes" size="sm">
+          </BFormTextarea>
 
-          <b-button size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
+          <BButton size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
             <i-mdi-check />
-          </b-button>
+          </BButton>
         </template>
-      </b-list-group-item>
-    </b-list-group>
+      </BListGroupItem>
+    </BListGroup>
   </div>
 </template>
 

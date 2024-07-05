@@ -10,12 +10,12 @@
         ></pre>
     </div>
     <div class="d-flex flex-column gap-1 ms-1">
-      <b-button id="refresh-logs" size="sm" title="Reload Logs" @click="refreshLogs">
+      <BButton id="refresh-logs" size="sm" title="Reload Logs" @click="refreshLogs">
         <i-mdi-refresh />
-      </b-button>
-      <b-button size="sm" title="Scroll to bottom" @click="scrollToBottom">
+      </BButton>
+      <BButton size="sm" title="Scroll to bottom" @click="scrollToBottom">
         <i-mdi-arrow-down-thick />
-      </b-button>
+      </BButton>
     </div>
   </div>
 </template>

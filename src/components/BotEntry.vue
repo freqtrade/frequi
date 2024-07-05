@@ -3,7 +3,7 @@
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="align-items-center d-flex">
-      <b-form-checkbox
+      <BFormCheckbox
         v-model="autoRefreshLoc"
         class="ms-auto float-end me-2 my-auto mt-1"
         title="AutoRefresh"
@@ -23,9 +23,9 @@
         <div v-else title="Login info expired, please login again.">
           <i-mdi-cancel class="offline" />
         </div>
-      </b-form-checkbox>
+      </BFormCheckbox>
       <div v-if="!noButtons" class="float-end d-flex flex-align-center">
-        <b-button
+        <BButton
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           class="ms-1"
           size="sm"
@@ -33,16 +33,16 @@
           @click="$emit('edit')"
         >
           <i-mdi-pencil />
-        </b-button>
-        <b-button v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
+        </BButton>
+        <BButton v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
           <i-mdi-login />
-        </b-button>
-        <b-button class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
+        </BButton>
+        <BButton class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
           <i-mdi-delete />
-        </b-button>
+        </BButton>
       </div>
     </div>
-    <b-modal
+    <BModal
       v-if="!noButtons"
       id="removeBotModal"
       v-model="botRemoveModalVisible"
@@ -50,7 +50,7 @@
       @ok="confirmRemoveBot"
     >
       Really remove (logout) from {{ bot.botName }} ({{ bot.botId }})?
-    </b-modal>
+    </BModal>
   </div>
 </template>
 

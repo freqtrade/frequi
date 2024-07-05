@@ -7,21 +7,21 @@
     <div class="d-flex flex-column text-start ms-0 me-2 gap-2">
       <div class="d-flex flex-column flex-xl-row">
         <div class="px-0 px-xl-0 pe-xl-1 flex-fill">
-          <b-card header="Strategy settings">
-            <b-table
+          <BCard header="Strategy settings">
+            <BTable
               small
               borderless
               :items="backtestResultSettings"
               :fields="backtestsettingFields"
             >
-            </b-table>
-          </b-card>
+            </BTable>
+          </BCard>
         </div>
         <div class="px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1 flex-fill">
-          <b-card header="Metrics">
-            <b-table small borderless :items="backtestResultStats" :fields="backtestResultFields">
-            </b-table>
-          </b-card>
+          <BCard header="Metrics">
+            <BTable small borderless :items="backtestResultStats" :fields="backtestResultFields">
+            </BTable>
+          </BCard>
         </div>
       </div>
       <BacktestResultTablePer
@@ -56,18 +56,18 @@
         key-header="Pair"
         :stake-currency-decimals="backtestResult.stake_currency_decimals"
       />
-      <b-card v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
+      <BCard v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
         <BacktestResultPeriodBreakdown :periodic-breakdown="backtestResult.periodic_breakdown">
         </BacktestResultPeriodBreakdown>
-      </b-card>
+      </BCard>
 
-      <b-card header="Single trades">
+      <BCard header="Single trades">
         <TradeList
           :trades="backtestResult.trades"
           :show-filter="true"
           :stake-currency="backtestResult.stake_currency"
         />
-      </b-card>
+      </BCard>
     </div>
   </div>
 </template>

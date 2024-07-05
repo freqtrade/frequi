@@ -1,5 +1,5 @@
 <template>
-  <b-table
+  <BTable
     ref="tradesTable"
     small
     hover
@@ -10,19 +10,19 @@
   >
     <template #cell(botName)="{ item, value }">
       <div class="d-flex flex-row">
-        <b-form-checkbox
+        <BFormCheckbox
           v-if="item.botId && botStore.botCount > 1"
           v-model="
             botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
           "
           title="Show this bot in Dashboard"
-          >{{ value }}</b-form-checkbox
+          >{{ value }}</BFormCheckbox
         >
-        <b-form-checkbox
+        <BFormCheckbox
           v-if="!item.botId && botStore.botCount > 1"
           v-model="allToggled"
           title="Toggle all bots"
-          >{{ value }}</b-form-checkbox
+          >{{ value }}</BFormCheckbox
         >
         <span v-if="botStore.botCount <= 1">{{ value }}</span>
       </div>
@@ -68,7 +68,7 @@
         <span class="text-loss">{{ item.losses }}</span>
       </div>
     </template>
-  </b-table>
+  </BTable>
 </template>
 
 <script setup lang="ts">

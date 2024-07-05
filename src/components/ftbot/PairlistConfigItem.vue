@@ -1,5 +1,5 @@
 <template>
-  <b-card no-body class="mb-2">
+  <BCard no-body class="mb-2">
     <template #header>
       <div class="d-flex text-start align-items-center">
         <div class="d-flex flex-grow-1 align-items-center">
@@ -41,17 +41,17 @@
         />
       </div>
     </template>
-    <b-collapse v-model="pairlist.showParameters">
-      <b-card-body>
+    <BCollapse v-model="pairlist.showParameters">
+      <BCardBody>
         <PairlistConfigParameter
           v-for="(parameter, key) in pairlist.params"
           :key="key"
           v-model="pairlist.params[key].value"
           :param="parameter"
         />
-      </b-card-body>
-    </b-collapse>
-  </b-card>
+      </BCardBody>
+    </BCollapse>
+  </BCard>
 </template>
 
 <script setup lang="ts">

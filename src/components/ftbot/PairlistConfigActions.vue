@@ -1,13 +1,13 @@
 <template>
   <div class="d-flex flex-column flex-sm-row mb-2 gap-2">
-    <b-button
+    <BButton
       title="Save configuration"
       size="sm"
       variant="primary"
       @click="pairlistStore.saveConfig(pairlistStore.config.name)"
     >
       <i-mdi-content-save />
-    </b-button>
+    </BButton>
     <EditValue
       v-model="pairlistStore.config.name"
       editable-name="config"
@@ -20,14 +20,14 @@
       @new="(name: string) => pairlistStore.newConfig(name)"
       @rename="(oldName: string, newName: string) => pairlistStore.saveConfig(newName)"
     >
-      <b-form-select
+      <BFormSelect
         v-model="pairlistStore.configName"
         size="sm"
         :options="pairlistStore.savedConfigs.map((c) => c.name)"
         @update:model-value="(config) => pairlistStore.selectOrCreateConfig(config as string)"
       />
     </EditValue>
-    <b-button
+    <BButton
       title="Evaluate pairlist"
       :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
       variant="primary"
@@ -35,9 +35,9 @@
       size="sm"
       @click="pairlistStore.startPairlistEvaluation()"
     >
-      <b-spinner v-if="pairlistStore.evaluating" small></b-spinner>
+      <BSpinner v-if="pairlistStore.evaluating" small></BSpinner>
       <span>{{ pairlistStore.evaluating ? '' : 'Evaluate' }}</span>
-    </b-button>
+    </BButton>
   </div>
 </template>
 <script setup lang="ts">

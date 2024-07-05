@@ -61,7 +61,7 @@ const perTagReason = computed(() => {
 });
 </script>
 <template>
-  <b-card :header="title">
-    <b-table small hover stacked="sm" :items="tableItems" :fields="perTagReason"> </b-table>
-  </b-card>
+  <BCard :header="title">
+    <BTable small hover stacked="sm" :items="tableItems" :fields="perTagReason"> </BTable>
+  </BCard>
 </template>

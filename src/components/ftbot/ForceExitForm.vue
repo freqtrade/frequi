@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal
+    <BModal
       id="forceexit-modal"
       v-model="model"
       title="Force exiting a trade"
@@ -14,45 +14,40 @@
           <br />
           <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
         </p>
-        <b-form-group
+        <BFormGroup
           :label="`*Amount in ${trade.base_currency} [optional]`"
           label-for="stake-input"
           invalid-feedback="Amount must be empty or a positive number"
           :state="amount !== undefined && amount > 0"
         >
-          <b-form-input
-            id="stake-input"
-            v-model="amount"
-            type="number"
-            step="0.000001"
-          ></b-form-input>
-          <b-form-input
+          <BFormInput id="stake-input" v-model="amount" type="number" step="0.000001"></BFormInput>
+          <BFormInput
             id="stake-input"
             v-model="amount"
             type="range"
             step="0.000001"
             min="0"
             :max="trade.amount"
-          ></b-form-input>
-        </b-form-group>
+          ></BFormInput>
+        </BFormGroup>
 
-        <b-form-group
+        <BFormGroup
           label="*OrderType"
           label-for="ordertype-input"
           invalid-feedback="OrderType"
           :state="ordertype !== undefined"
         >
-          <b-form-select
+          <BFormSelect
             v-model="ordertype"
             class="ms-2"
             :options="['market', 'limit']"
             style="min-width: 7em"
             size="sm"
           >
-          </b-form-select>
-        </b-form-group>
+          </BFormSelect>
+        </BFormGroup>
       </form>
-    </b-modal>
+    </BModal>
   </div>
 </template>
 
