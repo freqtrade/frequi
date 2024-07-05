@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatPercent, formatPrice } from '@/shared/formatters';
 import type { ExitReasonResults, PairResult } from '@/types';
 import { TableItem } from 'bootstrap-vue-next';
 

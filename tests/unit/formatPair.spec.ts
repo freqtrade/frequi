@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitTradePair } from '@/shared/formatters';
+import { splitTradePair } from '@/utils/formatters/pairFormat';
 
 describe('splitTradePair', () => {
   it('Extracts stake and quote currencies from spot pairs', () => {

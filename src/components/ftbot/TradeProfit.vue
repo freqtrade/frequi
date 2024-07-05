@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 
 type modes = 'default' | 'total' | 'realized';

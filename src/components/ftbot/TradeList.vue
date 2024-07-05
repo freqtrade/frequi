@@ -93,7 +93,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPrice } from '@/shared/formatters';
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';

@@ -152,7 +152,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent } from '@/shared/formatters';
 import { useBtStore } from '@/stores/btStore';
 import { useBotStore } from '@/stores/ftbotwrapper';
 

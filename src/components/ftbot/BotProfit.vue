@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPriceCurrency, timestampms } from '@/shared/formatters';
-
 import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
 

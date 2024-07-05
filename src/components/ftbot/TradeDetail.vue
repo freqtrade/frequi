@@ -141,7 +141,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPriceCurrency, formatPrice, timestampms } from '@/shared/formatters';
 import { Trade } from '@/types';
 
 const colorStore = useColorStore();

@@ -43,7 +43,6 @@ import {
 } from 'echarts/components';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { timestampms } from '@/shared/formatters';
 
 use([
   AxisPointerComponent,

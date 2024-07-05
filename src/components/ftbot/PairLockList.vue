@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { timestampms } from '@/shared/formatters';
 import { Lock } from '@/types';
 
 import { showAlert } from '@/shared/alerts';

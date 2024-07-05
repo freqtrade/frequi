@@ -1,5 +1,5 @@
+import { formatPercent, formatPrice, formatPriceCurrency } from '@/utils/formatters/numberformat';
 import { describe, it, expect } from 'vitest';
-import { formatPercent, formatPrice, formatPriceCurrency } from '@/shared/formatters';
 
 describe('formatters.ts', () => {
   it('Format percent correctly', () => {

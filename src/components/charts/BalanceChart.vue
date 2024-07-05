@@ -24,7 +24,6 @@ import { use } from 'echarts/core';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { formatPriceCurrency } from '@/shared/formatters';
 import { useSettingsStore } from '@/stores/settings';
 import { BalanceValues } from '@/types';
 import { useElementSize } from '@vueuse/core';

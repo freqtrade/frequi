@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, timestampms } from '@/shared/formatters';
 import { Lock, Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';

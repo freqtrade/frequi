@@ -35,8 +35,6 @@ import {
 } from '@/types';
 import type { ComputedRefWithControl } from '@vueuse/core';
 
-import { formatPrice, timestampToDateString } from '@/shared/formatters';
-
 use([
   BarChart,
   LineChart,

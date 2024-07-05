@@ -12,7 +12,6 @@ import ECharts from 'vue-echarts';
 import { useSettingsStore } from '@/stores/settings';
 
 import { Trade } from '@/types';
-import { timestampHour } from '@/shared/formatters';
 import { EChartsOption } from 'echarts';
 
 import { use } from 'echarts/core';

@@ -1,5 +1,5 @@
-import { formatPercent, formatPriceCurrency, splitTradePair } from '@/shared/formatters';
 import { Order, PairHistory, Trade, BTOrder } from '@/types';
+
 import { ScatterSeriesOption } from 'echarts';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {

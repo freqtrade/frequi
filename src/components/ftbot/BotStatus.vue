@@ -86,8 +86,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPriceCurrency } from '@/shared/formatters';
-
 import { useBotStore } from '@/stores/ftbotwrapper';
 
 const botStore = useBotStore();

@@ -13,7 +13,6 @@ import {
 } from '@/types';
 
 import { showAlert } from '../shared/alerts';
-import { isNotUndefined } from '@/shared/formatters';
 
 export const usePairlistConfigStore = defineStore(
   'pairlistConfig',

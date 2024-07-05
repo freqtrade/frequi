@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPercent, formatPrice } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
 

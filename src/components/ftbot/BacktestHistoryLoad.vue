@@ -106,7 +106,6 @@
 
 <script setup lang="ts">
 import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import { timestampms, timestampToTimeRangeString } from '@/shared/formatters';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BacktestHistoryEntry } from '@/types';
 import InfoBox from '../general/InfoBox.vue';

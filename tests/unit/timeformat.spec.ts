@@ -10,7 +10,7 @@ import {
   timestampHour,
   dateFromString,
   timestampmsOrNa,
-} from '@/shared/formatters';
+} from '@/utils/formatters/timeformat';
 
 const { getTimeZone } = exportForTesting;
 

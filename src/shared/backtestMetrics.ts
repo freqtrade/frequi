@@ -1,11 +1,4 @@
 import { StrategyBacktestResult, Trade } from '@/types';
-import {
-  formatPercent,
-  formatPrice,
-  humanizeDurationFromSeconds,
-  isNotUndefined,
-  timestampms,
-} from './formatters';
 
 function getSortedTrades(trades: Trade[]): Trade[] {
   const sortedTrades = trades.slice().sort((a, b) => a.profit_ratio - b.profit_ratio);

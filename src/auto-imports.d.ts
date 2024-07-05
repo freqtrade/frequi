@@ -36,6 +36,8 @@ declare global {
   const createTemplatePromise: typeof import('@vueuse/core')['createTemplatePromise']
   const createUnrefFn: typeof import('@vueuse/core')['createUnrefFn']
   const customRef: typeof import('vue')['customRef']
+  const dateFromString: typeof import('./utils/formatters/timeformat')['dateFromString']
+  const dateStringToTimeRange: typeof import('./utils/formatters/timeformat')['dateStringToTimeRange']
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const deepClone: typeof import('./utils/deepClone')['deepClone']
@@ -44,17 +46,23 @@ declare global {
   const defineStore: typeof import('pinia')['defineStore']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
+  const exportForTesting: typeof import('./utils/formatters/timeformat')['exportForTesting']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const findGridLayout: typeof import('./stores/layout')['findGridLayout']
+  const formatPercent: typeof import('./utils/formatters/numberformat')['formatPercent']
+  const formatPrice: typeof import('./utils/formatters/numberformat')['formatPrice']
+  const formatPriceCurrency: typeof import('./utils/formatters/numberformat')['formatPriceCurrency']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
+  const humanizeDurationFromSeconds: typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const initBots: typeof import('./stores/ftbotwrapper')['initBots']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
   const isDefined: typeof import('@vueuse/core')['isDefined']
+  const isNotUndefined: typeof import('./utils/formatters/numberformat')['isNotUndefined']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
@@ -67,6 +75,7 @@ declare global {
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
   const nextTick: typeof import('vue')['nextTick']
+  const numberformat: typeof import('./utils/formatters/numberformat')['default']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
   const onBeforeRouteLeave: typeof import('vue-router')['onBeforeRouteLeave']
@@ -109,15 +118,24 @@ declare global {
   const roundTimeframe: typeof import('./utils/roundTimeframe')['default']
   const setActivePinia: typeof import('pinia')['setActivePinia']
   const setMapStoreSuffix: typeof import('pinia')['setMapStoreSuffix']
+  const setTimezone: typeof import('./utils/formatters/timeformat')['setTimezone']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const splitTradePair: typeof import('./utils/formatters/pairFormat')['splitTradePair']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
   const templateRef: typeof import('@vueuse/core')['templateRef']
   const throttledRef: typeof import('@vueuse/core')['throttledRef']
   const throttledWatch: typeof import('@vueuse/core')['throttledWatch']
+  const timeformat: typeof import('./utils/formatters/timeformat')['default']
+  const timestampHour: typeof import('./utils/formatters/timeformat')['timestampHour']
+  const timestampToDateString: typeof import('./utils/formatters/timeformat')['timestampToDateString']
+  const timestampToTimeRangeString: typeof import('./utils/formatters/timeformat')['timestampToTimeRangeString']
+  const timestampms: typeof import('./utils/formatters/timeformat')['timestampms']
+  const timestampmsOrNa: typeof import('./utils/formatters/timeformat')['timestampmsOrNa']
+  const timestampmsWithTimezone: typeof import('./utils/formatters/timeformat')['timestampmsWithTimezone']
   const toRaw: typeof import('vue')['toRaw']
   const toReactive: typeof import('@vueuse/core')['toReactive']
   const toRef: typeof import('vue')['toRef']
@@ -362,6 +380,8 @@ declare module 'vue' {
     readonly createTemplatePromise: UnwrapRef<typeof import('@vueuse/core')['createTemplatePromise']>
     readonly createUnrefFn: UnwrapRef<typeof import('@vueuse/core')['createUnrefFn']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
+    readonly dateFromString: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateFromString']>
+    readonly dateStringToTimeRange: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateStringToTimeRange']>
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly deepClone: UnwrapRef<typeof import('./utils/deepClone')['deepClone']>
@@ -370,17 +390,23 @@ declare module 'vue' {
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
+    readonly exportForTesting: UnwrapRef<typeof import('./utils/formatters/timeformat')['exportForTesting']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly findGridLayout: UnwrapRef<typeof import('./stores/layout')['findGridLayout']>
+    readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
+    readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
+    readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
+    readonly isNotUndefined: UnwrapRef<typeof import('./utils/formatters/numberformat')['isNotUndefined']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -393,6 +419,7 @@ declare module 'vue' {
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly numberformat: UnwrapRef<typeof import('./utils/formatters/numberformat')['default']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>
@@ -435,15 +462,24 @@ declare module 'vue' {
     readonly roundTimeframe: UnwrapRef<typeof import('./utils/roundTimeframe')['default']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
+    readonly setTimezone: UnwrapRef<typeof import('./utils/formatters/timeformat')['setTimezone']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly splitTradePair: UnwrapRef<typeof import('./utils/formatters/pairFormat')['splitTradePair']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
     readonly throttledRef: UnwrapRef<typeof import('@vueuse/core')['throttledRef']>
     readonly throttledWatch: UnwrapRef<typeof import('@vueuse/core')['throttledWatch']>
+    readonly timeformat: UnwrapRef<typeof import('./utils/formatters/timeformat')['default']>
+    readonly timestampHour: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampHour']>
+    readonly timestampToDateString: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampToDateString']>
+    readonly timestampToTimeRangeString: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampToTimeRangeString']>
+    readonly timestampms: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampms']>
+    readonly timestampmsOrNa: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampmsOrNa']>
+    readonly timestampmsWithTimezone: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampmsWithTimezone']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toReactive: UnwrapRef<typeof import('@vueuse/core')['toReactive']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
@@ -680,6 +716,8 @@ declare module '@vue/runtime-core' {
     readonly createTemplatePromise: UnwrapRef<typeof import('@vueuse/core')['createTemplatePromise']>
     readonly createUnrefFn: UnwrapRef<typeof import('@vueuse/core')['createUnrefFn']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
+    readonly dateFromString: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateFromString']>
+    readonly dateStringToTimeRange: UnwrapRef<typeof import('./utils/formatters/timeformat')['dateStringToTimeRange']>
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly deepClone: UnwrapRef<typeof import('./utils/deepClone')['deepClone']>
@@ -688,17 +726,23 @@ declare module '@vue/runtime-core' {
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
+    readonly exportForTesting: UnwrapRef<typeof import('./utils/formatters/timeformat')['exportForTesting']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly findGridLayout: UnwrapRef<typeof import('./stores/layout')['findGridLayout']>
+    readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
+    readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
+    readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
+    readonly isNotUndefined: UnwrapRef<typeof import('./utils/formatters/numberformat')['isNotUndefined']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -711,6 +755,7 @@ declare module '@vue/runtime-core' {
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly numberformat: UnwrapRef<typeof import('./utils/formatters/numberformat')['default']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>
@@ -753,15 +798,24 @@ declare module '@vue/runtime-core' {
     readonly roundTimeframe: UnwrapRef<typeof import('./utils/roundTimeframe')['default']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
+    readonly setTimezone: UnwrapRef<typeof import('./utils/formatters/timeformat')['setTimezone']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly splitTradePair: UnwrapRef<typeof import('./utils/formatters/pairFormat')['splitTradePair']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
     readonly throttledRef: UnwrapRef<typeof import('@vueuse/core')['throttledRef']>
     readonly throttledWatch: UnwrapRef<typeof import('@vueuse/core')['throttledWatch']>
+    readonly timeformat: UnwrapRef<typeof import('./utils/formatters/timeformat')['default']>
+    readonly timestampHour: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampHour']>
+    readonly timestampToDateString: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampToDateString']>
+    readonly timestampToTimeRangeString: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampToTimeRangeString']>
+    readonly timestampms: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampms']>
+    readonly timestampmsOrNa: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampmsOrNa']>
+    readonly timestampmsWithTimezone: UnwrapRef<typeof import('./utils/formatters/timeformat')['timestampmsWithTimezone']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toReactive: UnwrapRef<typeof import('@vueuse/core')['toReactive']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
