@@ -50,7 +50,7 @@ const LONG_COLOR = '#0066FF';
 //const LONG_ADJUST_COLOR = '#00A9FF';
 
 /** Return trade entries for charting */
-export function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
+function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   const tradeData: (number | string)[][] = [];
   // Return schema:
   // 0: Timeframe

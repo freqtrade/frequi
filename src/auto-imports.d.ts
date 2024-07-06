@@ -427,7 +427,6 @@ declare module 'vue' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
     readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
-    readonly getTradeEntries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['getTradeEntries']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
@@ -779,7 +778,6 @@ declare module '@vue/runtime-core' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
     readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
-    readonly getTradeEntries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['getTradeEntries']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
