@@ -256,6 +256,9 @@ function updateChart(initial = false) {
         itemStyle: {
           color: buySignalColor,
         },
+        tooltip: {
+          valueFormatter: (value) => (value ? `Long entry ${value}` : ''),
+        },
         encode: {
           x: colDate,
           y: colEntryData,
@@ -278,6 +281,9 @@ function updateChart(initial = false) {
         yAxisIndex: 0,
         itemStyle: {
           color: sellSignalColor,
+        },
+        tooltip: {
+          valueFormatter: (value) => (value ? `Long exit ${value}` : ''),
         },
         encode: {
           x: colDate,
@@ -302,6 +308,7 @@ function updateChart(initial = false) {
           color: shortEntrySignalColor,
         },
         tooltip: {
+          valueFormatter: (value) => (value ? `Short entry ${value}` : ''),
           // Hide tooltip - it's already there for longs.
           // show: false,
         },
@@ -324,8 +331,7 @@ function updateChart(initial = false) {
           color: shortexitSignalColor,
         },
         tooltip: {
-          // Hide tooltip - it's already there for longs.
-          // show: false,
+          valueFormatter: (value) => (value ? `Short exit ${value}` : ''),
         },
         encode: {
           x: colDate,
