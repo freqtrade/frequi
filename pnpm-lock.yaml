@@ -27,8 +27,8 @@ dependencies:
     specifier: ^5.3.3
     version: 5.3.3(@popperjs/core@2.11.8)
   bootstrap-vue-next:
-    specifier: ^0.23.1
-    version: 0.23.1(vue@3.4.31)
+    specifier: ^0.23.5
+    version: 0.23.5(vue@3.4.31)
   core-js:
     specifier: ^3.37.1
     version: 3.37.1
@@ -482,6 +482,34 @@ packages:
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
+
+  /@floating-ui/core@1.6.4:
+    resolution: {integrity: sha512-a4IowK4QkXl4SCWTGUR0INAfEOX3wtsYw3rKK5InQEHMGObkR8Xk44qYQD9P4r6HHw0iIfK6GUKECmY8sTkqRA==}
+    dependencies:
+      '@floating-ui/utils': 0.2.4
+    dev: false
+
+  /@floating-ui/dom@1.6.7:
+    resolution: {integrity: sha512-wmVfPG5o2xnKDU4jx/m4w5qva9FWHcnZ8BvzEe90D/RpwsJaTAVYPEPdQ8sbr/N8zZTAHlZUTQdqg8ZUbzHmng==}
+    dependencies:
+      '@floating-ui/core': 1.6.4
+      '@floating-ui/utils': 0.2.4
+    dev: false
+
+  /@floating-ui/utils@0.2.4:
+    resolution: {integrity: sha512-dWO2pw8hhi+WrXq1YJy2yCuWoL20PddgGaqTgVe4cOS9Q6qklXCiA1tJEqX6BEwRNSCP84/afac9hd4MS+zEUA==}
+    dev: false
+
+  /@floating-ui/vue@1.1.1(vue@3.4.31):
+    resolution: {integrity: sha512-cyawjk9etPZPl/RVtMRnWrwtAhWbPVSrRVYARgOzhLIqxr0k2up1APrrFjqP9QwRQ0AwjKSvbWg4YC6jESutow==}
+    dependencies:
+      '@floating-ui/dom': 1.6.7
+      '@floating-ui/utils': 0.2.4
+      vue-demi: 0.14.8(vue@3.4.31)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
 
   /@humanwhocodes/module-importer@1.0.1:
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -1502,12 +1530,16 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
 
-  /bootstrap-vue-next@0.23.1(vue@3.4.31):
-    resolution: {integrity: sha512-QhWLWU7CyxElbY/8h+417q1egybzbz5DtLARnBJ4iWtn4IpBXPea+mDCeDbgG16cIeFe+M3oWandQWtgSyY7Xw==}
+  /bootstrap-vue-next@0.23.5(vue@3.4.31):
+    resolution: {integrity: sha512-exDAaAEdQ4QTk4gVIuF5UKw3DWqSrG5mMHM0xhD70XW3rywt3p0220xqtY/AXjTz11AhiAZ2Cn1EZWhVnCOWmA==}
     peerDependencies:
       vue: ^3.4.27
     dependencies:
+      '@floating-ui/vue': 1.1.1(vue@3.4.31)
+      '@vueuse/core': 10.11.0(vue@3.4.31)
       vue: 3.4.31(typescript@5.5.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
     dev: false
 
   /bootstrap@5.3.3(@popperjs/core@2.11.8):
