@@ -34,7 +34,7 @@
         </BFormSelect>
       </BFormGroup>
     </div>
-    <div class="d-flex flex-row mt-1">
+    <div class="d-flex flex-row mt-1 gap-1">
       <BButton
         variant="secondary"
         title="Remove indicator to plot"
@@ -49,7 +49,7 @@
         variant="primary"
         title="Add indicator to plot"
         size="sm"
-        class="ms-1 col"
+        class="col"
         :disabled="addNewIndicator"
         @click="
           addNewIndicator = !addNewIndicator;
