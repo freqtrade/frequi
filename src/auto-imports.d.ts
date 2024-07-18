@@ -277,6 +277,7 @@ declare global {
   const usePerformanceObserver: typeof import('@vueuse/core')['usePerformanceObserver']
   const usePermission: typeof import('@vueuse/core')['usePermission']
   const usePlotConfigStore: typeof import('./stores/plotConfig')['usePlotConfigStore']
+  const usePlotTemplates: typeof import('./composables/plotTemplates')['usePlotTemplates']
   const usePointer: typeof import('@vueuse/core')['usePointer']
   const usePointerLock: typeof import('@vueuse/core')['usePointerLock']
   const usePointerSwipe: typeof import('@vueuse/core')['usePointerSwipe']
@@ -645,6 +646,7 @@ declare module 'vue' {
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
+    readonly usePlotTemplates: UnwrapRef<typeof import('./composables/plotTemplates')['usePlotTemplates']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
     readonly usePointerLock: UnwrapRef<typeof import('@vueuse/core')['usePointerLock']>
     readonly usePointerSwipe: UnwrapRef<typeof import('@vueuse/core')['usePointerSwipe']>
@@ -997,6 +999,7 @@ declare module '@vue/runtime-core' {
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
+    readonly usePlotTemplates: UnwrapRef<typeof import('./composables/plotTemplates')['usePlotTemplates']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
     readonly usePointerLock: UnwrapRef<typeof import('@vueuse/core')['usePointerLock']>
     readonly usePointerSwipe: UnwrapRef<typeof import('@vueuse/core')['usePointerSwipe']>
