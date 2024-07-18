@@ -147,7 +147,7 @@ const dataset = computed((): PairHistory => {
 });
 const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
 const datasetColumns = computed(() =>
-  dataset.value ? dataset.value.all_columns ?? dataset.value.columns : [],
+  dataset.value ? (dataset.value.all_columns ?? dataset.value.columns) : [],
 );
 const hasDataset = computed(() => dataset.value && dataset.value.data.length > 0);
 const isLoadingDataset = computed((): boolean => {

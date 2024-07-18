@@ -98,8 +98,10 @@ const chartValues = computed<BalanceValues[]>(() => {
           : v.balance,
       currency: v.currency,
       est_stake:
-        showBotOnly.value && canUseBotBalance.value ? v.est_stake_bot ?? v.est_stake : v.est_stake,
-      free: showBotOnly.value && canUseBotBalance.value ? v.bot_owned ?? v.free : v.free,
+        showBotOnly.value && canUseBotBalance.value
+          ? (v.est_stake_bot ?? v.est_stake)
+          : v.est_stake,
+      free: showBotOnly.value && canUseBotBalance.value ? (v.bot_owned ?? v.free) : v.free,
       used: v.used,
       stake: v.stake,
     };
