@@ -281,7 +281,8 @@ function addSubplot(newSubplotName: string) {
 
 function deleteSubplot(subplotName: string) {
   delete plotStore.editablePlotConfig.subplots[subplotName];
-  // plotStore.editablePlotConfig.subplots = { ...plotStore.editablePlotConfig.subplots };
+  // Reassign to trigger reactivity
+  plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   selSubPlot.value = subplots.value[subplots.value.length - 1];
 }
 
