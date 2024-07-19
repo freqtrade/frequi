@@ -270,7 +270,7 @@ function removeIndicator() {
 }
 
 function clickAddNewIndicator() {
-  addNewIndicator.value = !addNewIndicator;
+  addNewIndicator.value = !addNewIndicator.value;
   selIndicatorName.value = '';
 }
 
