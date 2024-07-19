@@ -51,10 +51,7 @@
         size="sm"
         class="col"
         :disabled="addNewIndicator"
-        @click="
-          addNewIndicator = !addNewIndicator;
-          selIndicatorName = '';
-        "
+        @click="clickAddNewIndicator"
       >
         Add new indicator
       </BButton>
@@ -271,6 +268,12 @@ function removeIndicator() {
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
   selIndicatorName.value = '';
 }
+
+function clickAddNewIndicator() {
+  addNewIndicator.value = !addNewIndicator;
+  selIndicatorName.value = '';
+}
+
 function addSubplot(newSubplotName: string) {
   plotStore.editablePlotConfig.subplots = {
     ...plotStore.editablePlotConfig.subplots,
