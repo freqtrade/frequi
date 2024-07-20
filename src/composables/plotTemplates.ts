@@ -1,12 +1,26 @@
-import { ChartType, PlotConfig, PlotConfigTemplate } from '@/types';
+import { PlotConfig, PlotConfigTemplate } from '@/types';
 
-const plotTemplates: PlotConfigTemplate = {
+const plotTemplates = ref<PlotConfigTemplate>({
+  BollingerBands: {
+    main_plot: {
+      bb_upperband: {
+        color: '#008af4',
+        type: 'line',
+        fill_to: 'bb_lowerband',
+      },
+      bb_lowerband: {
+        color: '#008af4',
+        type: 'line',
+        fill_to: 'bb_lowerband',
+      },
+    },
+  },
   RSI: {
     subplots: {
       RSI: {
         rsi: {
-          color: 'orange',
-          type: ChartType.line,
+          color: '#ff8000',
+          type: 'line',
         },
       },
     },
@@ -15,17 +29,17 @@ const plotTemplates: PlotConfigTemplate = {
     subplots: {
       MACD: {
         macdsignal: {
-          color: 'orange',
-          type: ChartType.line,
+          color: '#ff8000',
+          type: 'line',
         },
         macd: {
-          color: 'blue',
-          type: ChartType.line,
+          color: '#1370f4',
+          type: 'line',
         },
       },
     },
   },
-};
+});
 
 export function usePlotTemplates() {
   function applyPlotTemplate(templateName: string, currentConfig: PlotConfig) {
@@ -39,6 +53,6 @@ export function usePlotTemplates() {
   return {
     plotTemplates,
     applyPlotTemplate,
-    plotTemplateNames: Object.keys(plotTemplates),
+    plotTemplateNames: computed(() => Object.keys(plotTemplates.value)),
   };
 }
