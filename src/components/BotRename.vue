@@ -28,7 +28,8 @@ import { BotDescriptor } from '@/types';
 const props = defineProps({
   bot: { type: Object as () => BotDescriptor, required: true },
 });
-const emit = defineEmits(['cancelled', 'saved']);
+const emit = defineEmits<{ cancelled: []; saved: [] }>();
+
 const botStore = useBotStore();
 const newName = ref<string>('');
 

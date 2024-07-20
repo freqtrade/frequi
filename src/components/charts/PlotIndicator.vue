@@ -50,7 +50,8 @@ const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
+
 const selColor = ref(randomColor());
 const graphType = ref<ChartType>(ChartType.line);
 const availableGraphTypes = ref(Object.keys(ChartType));

@@ -62,7 +62,8 @@ const props = defineProps({
   },
   modelValue: { required: true, default: false, type: Boolean },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
+
 const botStore = useBotStore();
 
 const form = ref<HTMLFormElement>();

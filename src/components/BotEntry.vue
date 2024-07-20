@@ -63,7 +63,7 @@ const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },
   noButtons: { default: false, type: Boolean },
 });
-defineEmits(['edit', 'editLogin']);
+defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
 
 const changeEvent = (v: CheckboxValue) => {

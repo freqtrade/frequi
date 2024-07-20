@@ -24,7 +24,10 @@ const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
   label: { required: true, type: String },
 });
-const emit = defineEmits(['update:modelValue', 'indicatorSelected']);
+const emit = defineEmits<{
+  'update:modelValue': [value: string];
+  indicatorSelected: [value: string];
+}>();
 
 const selAvailableIndicator = ref('');
 
