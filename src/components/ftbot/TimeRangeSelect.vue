@@ -54,7 +54,7 @@ const dateTo = ref<string>('');
 const props = defineProps({
   modelValue: { required: true, type: String },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const timeRange = computed(() => {
   if (dateFrom.value !== '' || dateTo.value !== '') {

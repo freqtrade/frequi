@@ -127,7 +127,7 @@ const props = defineProps({
   pair: { type: String, default: '' },
   positionIncrease: { type: Boolean, default: false },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
 const botStore = useBotStore();
 
 const form = ref<HTMLFormElement>();

@@ -22,7 +22,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 const props = defineProps({
   modelValue: { type: String, required: true },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 const botStore = useBotStore();
 
 const locFreqaiModel = computed({
