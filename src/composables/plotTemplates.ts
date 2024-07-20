@@ -11,7 +11,6 @@ const plotTemplates = ref<PlotConfigTemplate>({
       bb_lowerband: {
         color: '#008af4',
         type: 'line',
-        fill_to: 'bb_lowerband',
       },
     },
   },
