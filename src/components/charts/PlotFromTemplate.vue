@@ -14,6 +14,14 @@ function fromTemplateApply() {
   }
 }
 const selTemplateName = ref<string>('');
+watch(
+  () => visible.value,
+  (v) => {
+    if (v) {
+      selTemplateName.value = '';
+    }
+  },
+);
 </script>
 
 <template>
