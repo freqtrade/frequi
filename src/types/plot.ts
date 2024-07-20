@@ -6,7 +6,7 @@ export enum ChartType {
 
 export interface IndicatorConfig {
   color?: string;
-  type?: ChartType;
+  type?: ChartType | keyof typeof ChartType;
   fill_to?: string;
 }
 
