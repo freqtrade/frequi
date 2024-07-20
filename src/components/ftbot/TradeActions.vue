@@ -92,14 +92,14 @@ defineProps({
     default: false,
   },
 });
-defineEmits([
-  'forceExit',
-  'forceExitPartial',
-  'cancelOpenOrder',
-  'reloadTrade',
-  'deleteTrade',
-  'forceEntry',
-]);
+defineEmits<{
+  forceExit: [trade: Trade, type?: 'limit' | 'market'];
+  forceExitPartial: [trade: Trade];
+  cancelOpenOrder: [trade: Trade];
+  reloadTrade: [trade: Trade];
+  deleteTrade: [trade: Trade];
+  forceEntry: [trade: Trade];
+}>();
 </script>
 
 <style scoped lang="scss"></style>

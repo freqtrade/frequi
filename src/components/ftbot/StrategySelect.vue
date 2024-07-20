@@ -29,7 +29,7 @@ const props = defineProps({
   modelValue: { type: String, required: true },
   showDetails: { default: false, required: false, type: Boolean },
 });
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
+const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const botStore = useBotStore();
 

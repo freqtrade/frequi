@@ -7,14 +7,14 @@ defineProps({
   botApiVersion: { type: Number, required: true },
   enableForceEntry: { type: Boolean, default: false },
 });
-const emit = defineEmits([
-  'forceExit',
-  'forceExitPartial',
-  'cancelOpenOrder',
-  'reloadTrade',
-  'deleteTrade',
-  'forceEntry',
-]);
+const emit = defineEmits<{
+  forceExit: [trade: Trade, type?: string];
+  forceExitPartial: [trade: Trade];
+  cancelOpenOrder: [trade: Trade];
+  reloadTrade: [trade: Trade];
+  deleteTrade: [trade: Trade];
+  forceEntry: [trade: Trade];
+}>();
 const popoverOpen = ref(false);
 
 function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
