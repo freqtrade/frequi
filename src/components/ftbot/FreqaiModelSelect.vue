@@ -19,20 +19,8 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-const props = defineProps({
-  modelValue: { type: String, required: true },
-});
-const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
+const locFreqaiModel = defineModel<string>();
 const botStore = useBotStore();
-
-const locFreqaiModel = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(freqaiModel: string) {
-    emit('update:modelValue', freqaiModel);
-  },
-});
 
 onMounted(() => {
   if (botStore.activeBot.freqaiModelList.length === 0) {

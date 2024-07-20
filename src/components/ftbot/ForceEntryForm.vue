@@ -123,7 +123,6 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import { ForceEnterPayload, OrderSides } from '@/types';
 
 const props = defineProps({
-  modelValue: { required: true, default: false, type: Boolean },
   pair: { type: String, default: '' },
   positionIncrease: { type: Boolean, default: false },
 });

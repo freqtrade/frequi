@@ -59,7 +59,6 @@ const props = defineProps({
     type: Object as () => Trade,
     required: true,
   },
-  modelValue: { required: true, default: false, type: Boolean },
 });
 
 const model = defineModel<boolean>();
