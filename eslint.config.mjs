@@ -59,6 +59,8 @@ export default [
           },
         },
       ],
+      // 'vue/define-emits-declaration': ['error'],
+      'vue/enforce-style-attribute': ['error'],
     },
   },
 ];
