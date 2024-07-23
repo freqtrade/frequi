@@ -11,5 +11,6 @@ export function plotConfigColumns(plotConfig: Partial<PlotConfig>): string[] {
       cols.push(subkey);
     }
   }
-  return cols;
+  // Make list unique
+  return [...new Set(cols)].sort();
 }
