@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { usePlotTemplates } from '@/composables/plotTemplates';
 import { PlotConfig } from '@/types';
-import { M } from 'vite/dist/node/types.d-aGj9QkWt';
 
 describe('replaceTemplateColumns', () => {
   it('Updates main plot values', () => {
