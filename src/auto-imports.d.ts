@@ -67,7 +67,7 @@ declare global {
   const getDiffColumnsFromPlotConfig: typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']
   const getTheme: typeof import('./utils/themes')['getTheme']
   const h: typeof import('vue')['h']
-  const heikinAshiDataset: typeof import('./utils/charts/heikinashi')['heikinAshiDataset']
+  const heikinAshiDataset: typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']
   const humanizeDurationFromSeconds: typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const initBots: typeof import('./stores/ftbotwrapper')['initBots']
@@ -438,7 +438,7 @@ declare module 'vue' {
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
     readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
+    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
@@ -792,7 +792,7 @@ declare module '@vue/runtime-core' {
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
     readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
+    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
