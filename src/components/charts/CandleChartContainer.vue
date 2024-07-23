@@ -45,9 +45,9 @@
           </div>
         </div>
         <div class="ms-auto d-flex align-items-center w-auto">
-          <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles"
-            ><small class="text-nowrap">Heikin Ashi</small></BFormCheckbox
-          >
+          <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles">
+            <small class="text-nowrap">Heikin Ashi</small>
+          </BFormCheckbox>
 
           <div class="ms-2">
             <PlotConfigSelect></PlotConfigSelect>
@@ -149,6 +149,10 @@ const strategyName = computed(() => props.strategy || dataset.value?.strategy ||
 const datasetColumns = computed(() =>
   dataset.value ? (dataset.value.all_columns ?? dataset.value.columns) : [],
 );
+const datasetLoadedColumns = computed(() =>
+  dataset.value ? (dataset.value.columns ?? dataset.value.all_columns) : [],
+);
+
 const hasDataset = computed(() => dataset.value && dataset.value.data.length > 0);
 const isLoadingDataset = computed((): boolean => {
   if (props.historicView) {
@@ -236,9 +240,12 @@ watch(
 watch(
   () => plotStore.plotConfig,
   () => {
-    // all plotstore.usedColumns are in the dataset
-    const hasAllColumns = plotStore.usedColumns.every((c) => datasetColumns.value.includes(c));
-    if (settingsStore.useReducedPairCalls && !hasAllColumns) {
+    // Trigger reload if the used columns are not loaded yet but would be available.
+    const hasAllColumns = plotStore.usedColumns.some(
+      (c) => datasetColumns.value.includes(c) && !datasetLoadedColumns.value.includes(c),
+    );
+
+    if (settingsStore.useReducedPairCalls && hasAllColumns) {
       console.log('triggering refresh');
       refresh();
     }
