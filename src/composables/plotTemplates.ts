@@ -52,7 +52,9 @@ function replaceTemplateColumns(template: Partial<PlotConfig>, nameMap: Record<s
     const newKey = nameMap[key] || key;
     newMainPlot[newKey] = template.main_plot[key];
   }
-  newTemplate.main_plot = newMainPlot;
+  if ('main_plot' in template) {
+    newTemplate.main_plot = newMainPlot;
+  }
 
   // Replace the keys of all elements in subplots
   const newSubplots: Record<string, any> = {};
@@ -64,7 +66,9 @@ function replaceTemplateColumns(template: Partial<PlotConfig>, nameMap: Record<s
     }
     newSubplots[subplotKey] = newSubplot;
   }
-  newTemplate.subplots = newSubplots;
+  if ('subplots' in template) {
+    newTemplate.subplots = newSubplots;
+  }
   return newTemplate;
 }
 
@@ -90,6 +94,7 @@ export function usePlotTemplates() {
     plotTemplates,
     applyPlotTemplate,
     getTemplateContent,
+    replaceTemplateColumns,
     plotTemplateNames: computed(() => Object.keys(plotTemplates.value)),
   };
 }
