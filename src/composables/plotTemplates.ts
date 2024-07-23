@@ -41,8 +41,12 @@ const plotTemplates = ref<PlotConfigTemplate>({
 });
 
 export function usePlotTemplates() {
+  function getTemplateContent(templateName: string) {
+    return plotTemplates.value[templateName] || {};
+  }
+
   function applyPlotTemplate(templateName: string, currentConfig: PlotConfig) {
-    const template = plotTemplates.value[templateName];
+    const template = getTemplateContent(templateName);
     if (!template) {
       return currentConfig;
     }
@@ -52,6 +56,7 @@ export function usePlotTemplates() {
   return {
     plotTemplates,
     applyPlotTemplate,
+    getTemplateContent,
     plotTemplateNames: computed(() => Object.keys(plotTemplates.value)),
   };
 }
