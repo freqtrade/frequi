@@ -95,4 +95,66 @@ describe('plotTemplates.ts', () => {
     };
     expect(replaceTemplateColumns(template, reMapping)).toEqual(expected);
   });
+
+  it('Updates "fill to" values', () => {
+    const { replaceTemplateColumns } = usePlotTemplates();
+    const reMapping = {
+      bb_upperband: 'upperband',
+      bb_lowerband: 'lowerband',
+      macd: 'macd_5m',
+    };
+    const template: Partial<PlotConfig> = {
+      main_plot: {
+        bb_upperband: {
+          color: '#008af4',
+          type: 'line',
+          fill_to: 'bb_lowerband',
+        },
+        bb_lowerband: {
+          color: '#008af4',
+          type: 'line',
+        },
+      },
+      subplots: {
+        MACD: {
+          macdsignal: {
+            color: '#ff8000',
+            type: 'line',
+            fill_to: 'macd',
+          },
+          macd: {
+            color: '#1370f4',
+            type: 'line',
+          },
+        },
+      },
+    };
+    const expected: Partial<PlotConfig> = {
+      main_plot: {
+        upperband: {
+          color: '#008af4',
+          type: 'line',
+          fill_to: 'lowerband',
+        },
+        lowerband: {
+          color: '#008af4',
+          type: 'line',
+        },
+      },
+      subplots: {
+        MACD: {
+          macdsignal: {
+            color: '#ff8000',
+            type: 'line',
+            fill_to: 'macd_5m',
+          },
+          macd_5m: {
+            color: '#1370f4',
+            type: 'line',
+          },
+        },
+      },
+    };
+    expect(replaceTemplateColumns(template, reMapping)).toEqual(expected);
+  });
 });
