@@ -1,4 +1,4 @@
-import { PlotConfig, PlotConfigTemplate } from '@/types';
+import { IndicatorConfig, PlotConfig, PlotConfigTemplate } from '@/types';
 
 const plotTemplates = ref<PlotConfigTemplate>({
   BollingerBands: {
@@ -41,13 +41,12 @@ const plotTemplates = ref<PlotConfigTemplate>({
 });
 
 function replaceTemplateColumns(template: Partial<PlotConfig>, nameMap: Record<string, string>) {
-  // Replace column names in the template with the actual column names
   // Replace the keys of all elements in main_plot
   const newTemplate = deepClone(template);
   if (!nameMap) {
     return newTemplate;
   }
-  const newMainPlot: Record<string, any> = {};
+  const newMainPlot: Record<string, IndicatorConfig> = {};
   for (const key in template.main_plot) {
     const newKey = nameMap[key] || key;
     newMainPlot[newKey] = template.main_plot[key];
@@ -57,9 +56,9 @@ function replaceTemplateColumns(template: Partial<PlotConfig>, nameMap: Record<s
   }
 
   // Replace the keys of all elements in subplots
-  const newSubplots: Record<string, any> = {};
+  const newSubplots: Record<string, Record<string, IndicatorConfig>> = {};
   for (const subplotKey in template.subplots) {
-    const newSubplot: Record<string, any> = {};
+    const newSubplot: Record<string, IndicatorConfig> = {};
     for (const key in template.subplots[subplotKey]) {
       const newKey = nameMap[key] || key;
       newSubplot[newKey] = template.subplots[subplotKey][key];
