@@ -42,7 +42,7 @@ const plotTemplates = ref<PlotConfigTemplate>({
 
 export function usePlotTemplates() {
   function applyPlotTemplate(templateName: string, currentConfig: PlotConfig) {
-    const template = plotTemplates[templateName];
+    const template = plotTemplates.value[templateName];
     if (!template) {
       return currentConfig;
     }
