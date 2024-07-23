@@ -182,7 +182,7 @@ function updateChart(initial = false) {
     }
   }
   let dataset = props.heikinAshi
-    ? heikinashi(columns, props.dataset.data)
+    ? heikinAshiDataset(columns, props.dataset.data)
     : props.dataset.data.slice();
 
   diffCols.value.forEach(([colFrom, colTo]) => {
