@@ -73,7 +73,7 @@
       @indicator-selected="addNewIndicatorSelected"
     />
 
-    <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" />
+    <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" :columns="columns" />
 
     <PlotIndicator
       v-if="selIndicatorName && !fromPlotTemplateVisible"
