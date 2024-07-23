@@ -8,7 +8,6 @@ declare global {
   const ColorPreferences: typeof import('./stores/colors')['ColorPreferences']
   const DashboardLayout: typeof import('./stores/layout')['DashboardLayout']
   const EffectScope: typeof import('vue')['EffectScope']
-  const KeyCode: typeof import('./composables/inputListener')['KeyCode']
   const OpenTradeVizOptions: typeof import('./stores/settings')['OpenTradeVizOptions']
   const ROUND_CLOSER: typeof import('./utils/roundTimeframe')['ROUND_CLOSER']
   const ROUND_DOWN: typeof import('./utils/roundTimeframe')['ROUND_DOWN']
@@ -67,10 +66,8 @@ declare global {
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getDiffColumnsFromPlotConfig: typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']
   const getTheme: typeof import('./utils/themes')['getTheme']
-  const getTradeEntries: typeof import('./utils/charts/tradeChartData')['getTradeEntries']
   const h: typeof import('vue')['h']
   const heikinAshiDataset: typeof import('./utils/charts/heikinashi')['heikinAshiDataset']
-  const heikinashi: typeof import('./utils/charts/heikinashi')['default']
   const humanizeDurationFromSeconds: typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const initBots: typeof import('./stores/ftbotwrapper')['initBots']
@@ -111,6 +108,7 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
+  const plotConfigColumns: typeof import('./utils/charts/plotConfigColumns')['plotConfigColumns']
   const provide: typeof import('vue')['provide']
   const provideLocal: typeof import('@vueuse/core')['provideLocal']
   const randomColor: typeof import('./utils/randomColor')['default']
@@ -243,7 +241,6 @@ declare global {
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
   const useInfiniteScroll: typeof import('@vueuse/core')['useInfiniteScroll']
-  const useInputListener: typeof import('./composables/inputListener')['useInputListener']
   const useIntersectionObserver: typeof import('@vueuse/core')['useIntersectionObserver']
   const useInterval: typeof import('@vueuse/core')['useInterval']
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
@@ -341,6 +338,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
+  const usedColumns: typeof import('./utils/charts/usedColumns')['default']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -481,6 +479,7 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly plotConfigColumns: UnwrapRef<typeof import('./utils/charts/plotConfigColumns')['plotConfigColumns']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
     readonly randomColor: UnwrapRef<typeof import('./utils/randomColor')['default']>
@@ -834,6 +833,7 @@ declare module '@vue/runtime-core' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly plotConfigColumns: UnwrapRef<typeof import('./utils/charts/plotConfigColumns')['plotConfigColumns']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
     readonly randomColor: UnwrapRef<typeof import('./utils/randomColor')['default']>
