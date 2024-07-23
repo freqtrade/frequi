@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest';
 
 import { usePlotTemplates } from '@/composables/plotTemplates';
 import { PlotConfig } from '@/types';
+import { M } from 'vite/dist/node/types.d-aGj9QkWt';
 
-describe('plotTemplates.ts', () => {
+describe('replaceTemplateColumns', () => {
   it('Updates main plot values', () => {
     const { replaceTemplateColumns } = usePlotTemplates();
     const reMapping = { ema: 'ema_14' };
@@ -156,5 +157,50 @@ describe('plotTemplates.ts', () => {
       },
     };
     expect(replaceTemplateColumns(template, reMapping)).toEqual(expected);
+  });
+});
+
+describe('applyPlotTemplate', () => {
+  it('Updates main plot values', () => {
+    const { applyPlotTemplate } = usePlotTemplates();
+    const reMapping = { rsi: 'rsi_14' };
+
+    const currentConfig: PlotConfig = {
+      main_plot: { ema: { color: '#ff8000', type: 'line' } },
+      subplots: {
+        MACD: {
+          macdsignal: {
+            color: '#ff8000',
+            type: 'line',
+          },
+          macd: {
+            color: '#1370f4',
+            type: 'line',
+          },
+        },
+      },
+    };
+    const expected: Partial<PlotConfig> = {
+      main_plot: { ema: { color: '#ff8000', type: 'line' } },
+      subplots: {
+        RSI: {
+          rsi_14: {
+            color: '#ff8000',
+            type: 'line',
+          },
+        },
+        MACD: {
+          macdsignal: {
+            color: '#ff8000',
+            type: 'line',
+          },
+          macd: {
+            color: '#1370f4',
+            type: 'line',
+          },
+        },
+      },
+    };
+    expect(applyPlotTemplate('RSI', currentConfig, reMapping)).toEqual(expected);
   });
 });
