@@ -8,7 +8,6 @@ declare global {
   const ColorPreferences: typeof import('./stores/colors')['ColorPreferences']
   const DashboardLayout: typeof import('./stores/layout')['DashboardLayout']
   const EffectScope: typeof import('vue')['EffectScope']
-  const KeyCode: typeof import('./composables/inputListener')['KeyCode']
   const OpenTradeVizOptions: typeof import('./stores/settings')['OpenTradeVizOptions']
   const ROUND_CLOSER: typeof import('./utils/roundTimeframe')['ROUND_CLOSER']
   const ROUND_DOWN: typeof import('./utils/roundTimeframe')['ROUND_DOWN']
@@ -44,6 +43,7 @@ declare global {
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const deepClone: typeof import('./utils/deepClone')['deepClone']
+  const deepMerge: typeof import('./utils/deepMerge')['deepMerge']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const defineStore: typeof import('pinia')['defineStore']
@@ -66,10 +66,8 @@ declare global {
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getDiffColumnsFromPlotConfig: typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']
   const getTheme: typeof import('./utils/themes')['getTheme']
-  const getTradeEntries: typeof import('./utils/charts/tradeChartData')['getTradeEntries']
   const h: typeof import('vue')['h']
-  const heikinAshiDataset: typeof import('./utils/charts/heikinashi')['heikinAshiDataset']
-  const heikinashi: typeof import('./utils/charts/heikinashi')['default']
+  const heikinAshiDataset: typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']
   const humanizeDurationFromSeconds: typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const initBots: typeof import('./stores/ftbotwrapper')['initBots']
@@ -110,6 +108,7 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
+  const plotConfigColumns: typeof import('./utils/charts/plotConfigColumns')['plotConfigColumns']
   const provide: typeof import('vue')['provide']
   const provideLocal: typeof import('@vueuse/core')['provideLocal']
   const randomColor: typeof import('./utils/randomColor')['default']
@@ -242,7 +241,6 @@ declare global {
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
   const useInfiniteScroll: typeof import('@vueuse/core')['useInfiniteScroll']
-  const useInputListener: typeof import('./composables/inputListener')['useInputListener']
   const useIntersectionObserver: typeof import('@vueuse/core')['useIntersectionObserver']
   const useInterval: typeof import('@vueuse/core')['useInterval']
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
@@ -276,6 +274,7 @@ declare global {
   const usePerformanceObserver: typeof import('@vueuse/core')['usePerformanceObserver']
   const usePermission: typeof import('@vueuse/core')['usePermission']
   const usePlotConfigStore: typeof import('./stores/plotConfig')['usePlotConfigStore']
+  const usePlotTemplates: typeof import('./composables/plotTemplates')['usePlotTemplates']
   const usePointer: typeof import('@vueuse/core')['usePointer']
   const usePointerLock: typeof import('@vueuse/core')['usePointerLock']
   const usePointerSwipe: typeof import('@vueuse/core')['usePointerSwipe']
@@ -339,6 +338,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
+  const usedColumns: typeof import('./utils/charts/usedColumns')['default']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -414,6 +414,7 @@ declare module 'vue' {
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly deepClone: UnwrapRef<typeof import('./utils/deepClone')['deepClone']>
+    readonly deepMerge: UnwrapRef<typeof import('./utils/deepMerge')['deepMerge']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
@@ -437,7 +438,7 @@ declare module 'vue' {
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
     readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
+    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
@@ -478,6 +479,7 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly plotConfigColumns: UnwrapRef<typeof import('./utils/charts/plotConfigColumns')['plotConfigColumns']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
     readonly randomColor: UnwrapRef<typeof import('./utils/randomColor')['default']>
@@ -643,6 +645,7 @@ declare module 'vue' {
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
+    readonly usePlotTemplates: UnwrapRef<typeof import('./composables/plotTemplates')['usePlotTemplates']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
     readonly usePointerLock: UnwrapRef<typeof import('@vueuse/core')['usePointerLock']>
     readonly usePointerSwipe: UnwrapRef<typeof import('@vueuse/core')['usePointerSwipe']>
@@ -765,6 +768,7 @@ declare module '@vue/runtime-core' {
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly deepClone: UnwrapRef<typeof import('./utils/deepClone')['deepClone']>
+    readonly deepMerge: UnwrapRef<typeof import('./utils/deepMerge')['deepMerge']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
@@ -788,7 +792,7 @@ declare module '@vue/runtime-core' {
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
     readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinashi')['heikinAshiDataset']>
+    readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly initBots: UnwrapRef<typeof import('./stores/ftbotwrapper')['initBots']>
@@ -829,6 +833,7 @@ declare module '@vue/runtime-core' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly plotConfigColumns: UnwrapRef<typeof import('./utils/charts/plotConfigColumns')['plotConfigColumns']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
     readonly randomColor: UnwrapRef<typeof import('./utils/randomColor')['default']>
@@ -994,6 +999,7 @@ declare module '@vue/runtime-core' {
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePlotConfigStore: UnwrapRef<typeof import('./stores/plotConfig')['usePlotConfigStore']>
+    readonly usePlotTemplates: UnwrapRef<typeof import('./composables/plotTemplates')['usePlotTemplates']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
     readonly usePointerLock: UnwrapRef<typeof import('@vueuse/core')['usePointerLock']>
     readonly usePointerSwipe: UnwrapRef<typeof import('@vueuse/core')['usePointerSwipe']>

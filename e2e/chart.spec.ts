@@ -37,4 +37,34 @@ test.describe('Chart', () => {
         .locator('#plotConfigSelect'),
     ).toHaveValue('default');
   });
+
+  test('Plot configurator', async ({ page }) => {
+    await Promise.all([
+      page.goto('/graph'),
+      page.waitForResponse('**/whitelist'),
+      page.waitForResponse('**/blacklist'),
+    ]);
+
+    // Wait for the chart to load
+    await page.waitForSelector('span:has-text("NoActionStrategyFut | 1m")');
+
+    await page.getByRole('button', { name: 'Plot configurator' }).click();
+    await page.getByRole('button', { name: 'Indicator from template' }).click();
+    // Apply bollinger bands
+    await page.getByLabel('Select Templates').selectOption('BollingerBands');
+    // Select template - Try to use
+    await page.getByRole('button', { name: 'Use Template' }).click();
+    // Accept remapping and close
+    await page.getByRole('button', { name: 'Apply Template' }).click();
+    await page.getByRole('button', { name: 'Save' }).click();
+    // Close Plot configurator
+    await page.getByRole('button', { name: 'Plot configurator' }).click();
+
+    await expect(page.locator('canvas')).toHaveScreenshot('Chart-Plot-with_BollingerBands.png', {
+      threshold: 0.15,
+      maxDiffPixelRatio: 0.15,
+    });
+    // Should assert if indicators have been set
+    // but it's a canvas ...
+  });
 });

@@ -46,6 +46,14 @@
         Remove indicator
       </BButton>
       <BButton
+        variant="secondary"
+        title="Load indicator config from template"
+        size="sm"
+        @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
+      >
+        Indicator from template
+      </BButton>
+      <BButton
         variant="primary"
         title="Add indicator to plot"
         size="sm"
@@ -65,7 +73,14 @@
       @indicator-selected="addNewIndicatorSelected"
     />
 
-    <PlotIndicator v-if="selIndicatorName" v-model="selIndicator" class="mt-1" :columns="columns" />
+    <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" :columns="columns" />
+
+    <PlotIndicator
+      v-if="selIndicatorName && !fromPlotTemplateVisible"
+      v-model="selIndicator"
+      class="mt-1"
+      :columns="columns"
+    />
     <hr />
 
     <div class="d-flex flex-row">
@@ -149,9 +164,6 @@
 
 <script setup lang="ts">
 import { IndicatorConfig, PlotConfig } from '@/types';
-
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { usePlotConfigStore } from '@/stores/plotConfig';
 
 const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
@@ -371,6 +383,7 @@ watch(
     }
   },
 );
+const fromPlotTemplateVisible = ref(false);
 </script>
 
 <style scoped lang="scss">

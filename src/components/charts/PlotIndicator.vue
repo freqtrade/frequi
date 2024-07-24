@@ -53,7 +53,7 @@ const props = defineProps({
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 
 const selColor = ref(randomColor());
-const graphType = ref<ChartType>(ChartType.line);
+const graphType = ref<ChartType | keyof typeof ChartType>(ChartType.line);
 const availableGraphTypes = ref(Object.keys(ChartType));
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);

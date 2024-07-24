@@ -36,18 +36,8 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       (state.isEditing
         ? state.editablePlotConfig
         : state.customPlotConfigs[state.plotConfigName]) || deepClone(EMPTY_PLOTCONFIG),
-    // plotConfig: (state) => state.customPlotConfig[state.plotConfigName] || { ...EMPTY_PLOTCONFIG },
     usedColumns() {
-      const cols: string[] = [];
-      for (const key in this.plotConfig.main_plot) {
-        cols.push(key);
-      }
-      for (const key in this.plotConfig.subplots) {
-        for (const subkey in this.plotConfig.subplots[key]) {
-          cols.push(subkey);
-        }
-      }
-      return cols;
+      return plotConfigColumns(this.plotConfig as unknown as PlotConfig);
     },
   },
   actions: {
