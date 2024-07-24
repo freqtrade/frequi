@@ -95,8 +95,8 @@ devDependencies:
     specifier: ^7.16.1
     version: 7.16.1(eslint@9.7.0)(typescript@5.5.3)
   '@vitejs/plugin-vue':
-    specifier: ^5.0.5
-    version: 5.0.5(vite@5.3.4)(vue@3.4.31)
+    specifier: ^5.1.0
+    version: 5.1.0(vite@5.3.4)(vue@3.4.31)
   '@vue/compiler-sfc':
     specifier: 3.4.31
     version: 3.4.31
@@ -1117,8 +1117,8 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
-  /@vitejs/plugin-vue@5.0.5(vite@5.3.4)(vue@3.4.31):
-    resolution: {integrity: sha512-LOjm7XeIimLBZyzinBQ6OSm3UBCNVCpLkxGC0oWmm2YPzVZoxMsdvNVimLTBzpAnR9hl/yn1SHGuRfe6/Td9rQ==}
+  /@vitejs/plugin-vue@5.1.0(vite@5.3.4)(vue@3.4.31):
+    resolution: {integrity: sha512-QMRxARyrdiwi1mj3AW4fLByoHTavreXq0itdEW696EihXglf1MB3D4C2gBvE0jMPH29ZjC3iK8aIaUMLf4EOGA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0
