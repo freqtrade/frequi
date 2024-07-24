@@ -62,7 +62,7 @@
     "portal-vue": "^3.0.0",
     "prettier": "^3.3.3",
     "sass": "^1.77.8",
-    "typescript": "~5.5.3",
+    "typescript": "~5.5.4",
     "typescript-eslint": "^7.16.1",
     "unplugin-auto-import": "^0.18.1",
     "unplugin-icons": "^0.19.0",
