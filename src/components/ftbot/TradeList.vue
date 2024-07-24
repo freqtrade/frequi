@@ -79,7 +79,12 @@
         <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
       </BFormGroup>
     </div>
-    <ForceExitForm v-if="activeTrades" v-model="forceExitVisible" :trade="feTrade" />
+    <ForceExitForm
+      v-if="activeTrades"
+      v-model="forceExitVisible"
+      :trade="feTrade"
+      :quote-currency-decimals="botStore.activeBot.botState.stake_currency_decimals"
+    />
     <ForceEntryForm
       v-model="increasePosition.visible"
       :pair="increasePosition.trade?.pair"

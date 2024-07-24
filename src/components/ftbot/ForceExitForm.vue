@@ -15,11 +15,14 @@
           <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
         </p>
         <BFormGroup
-          :label="`*Amount in ${trade.base_currency} [optional]`"
           label-for="stake-input"
           invalid-feedback="Amount must be empty or a positive number"
           :state="amount !== undefined && amount > 0"
         >
+          <template #label>
+            <span class="fst-italic">*Amount in {{ trade.base_currency }} [optional]</span>
+            <span class="ms-1 fst-italic">{{ amountInBase }}</span>
+          </template>
           <BFormInput id="stake-input" v-model="amount" type="number" step="0.000001"></BFormInput>
           <BFormInput
             id="stake-input"
@@ -57,6 +60,10 @@ import { ForceSellPayload, Trade } from '@/types';
 const props = defineProps({
   trade: {
     type: Object as () => Trade,
+    required: true,
+  },
+  stakeCurrencyDecimals: {
+    type: Number,
     required: true,
   },
 });
@@ -105,4 +112,12 @@ function handleEntry() {
   // Trigger submit handler
   handleSubmit();
 }
+
+const amountDebounced = refDebounced(amount, 250, { maxWait: 500 });
+
+const amountInBase = computed<string>(() => {
+  return amountDebounced.value && props.trade.current_rate
+    ? `~${formatPriceCurrency(amountDebounced.value * props.trade.current_rate, props.trade.quote_currency || '', props.stakeCurrencyDecimals)} (Estimated value) `
+    : '';
+});
 </script>
