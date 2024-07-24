@@ -60,7 +60,9 @@ test.describe('Chart', () => {
     // Close Plot configurator
     await page.getByRole('button', { name: 'Plot configurator' }).click();
 
-    await expect(page.locator('canvas')).toHaveScreenshot('Chart-Plot-with_BollingerBands.png');
+    await expect(page.locator('canvas')).toHaveScreenshot('Chart-Plot-with_BollingerBands.png', {
+      threshold: 0.15,
+    });
     // Should assert if indicators have been set
     // but it's a canvas ...
   });
