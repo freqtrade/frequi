@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const botStore = useBotStore();
+</script>
+
 <template>
   <footer class="d-md-none">
     <!-- Only visible on xs (phone) viewport! -->
@@ -46,12 +52,6 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const botStore = useBotStore();
-</script>
 
 <style lang="scss" scoped>
 [data-theme='dark'] {

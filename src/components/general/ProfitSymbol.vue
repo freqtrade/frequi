@@ -1,9 +1,3 @@
-<template>
-  <div class="d-inline-block">
-    <div :class="isProfitable ? 'triangle-up' : 'triangle-down'"></div>
-  </div>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   profit: { type: Number, required: true },
@@ -12,6 +6,12 @@ const isProfitable = computed(() => {
   return props.profit > 0;
 });
 </script>
+
+<template>
+  <div class="d-inline-block">
+    <div :class="isProfitable ? 'triangle-up' : 'triangle-down'"></div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .triangle-up {

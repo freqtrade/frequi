@@ -1,12 +1,3 @@
-<template>
-  <ProfitPill
-    :profit-ratio="profitRatio"
-    :profit-abs="profitAbs"
-    :profit-desc="profitDesc"
-    :stake-currency="trade.quote_currency || 'USDT'"
-  />
-</template>
-
 <script setup lang="ts">
 import { Trade } from '@/types';
 
@@ -59,5 +50,14 @@ const profitDesc = computed((): string => {
   return profit;
 });
 </script>
+
+<template>
+  <ProfitPill
+    :profit-ratio="profitRatio"
+    :profit-abs="profitAbs"
+    :profit-desc="profitDesc"
+    :stake-currency="trade.quote_currency || 'USDT'"
+  />
+</template>
 
 <style scoped></style>

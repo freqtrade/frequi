@@ -1,27 +1,3 @@
-<template>
-  <div>
-    <div class="w-100 d-flex">
-      <BFormSelect
-        id="strategy-select"
-        v-model="locStrategy"
-        :options="botStore.activeBot.strategyList"
-      >
-      </BFormSelect>
-      <div class="ms-1">
-        <BButton @click="botStore.activeBot.getStrategyList">
-          <i-mdi-refresh />
-        </BButton>
-      </div>
-    </div>
-
-    <textarea
-      v-if="showDetails && botStore.activeBot.strategy"
-      v-model="strategyCode"
-      class="w-100 h-100"
-    ></textarea>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
@@ -50,3 +26,27 @@ onMounted(() => {
   }
 });
 </script>
+
+<template>
+  <div>
+    <div class="w-100 d-flex">
+      <BFormSelect
+        id="strategy-select"
+        v-model="locStrategy"
+        :options="botStore.activeBot.strategyList"
+      >
+      </BFormSelect>
+      <div class="ms-1">
+        <BButton @click="botStore.activeBot.getStrategyList">
+          <i-mdi-refresh />
+        </BButton>
+      </div>
+    </div>
+
+    <textarea
+      v-if="showDetails && botStore.activeBot.strategy"
+      v-model="strategyCode"
+      class="w-100 h-100"
+    ></textarea>
+  </div>
+</template>

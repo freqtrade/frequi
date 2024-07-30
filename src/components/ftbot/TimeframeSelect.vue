@@ -1,12 +1,3 @@
-<template>
-  <BFormSelect
-    v-model="selectedTimeframe"
-    placeholder="Use strategy default"
-    :options="availableTimeframes"
-    @change="emitSelectedTimeframe"
-  ></BFormSelect>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   value: { default: '', type: String },
@@ -51,5 +42,14 @@ const emitSelectedTimeframe = () => {
   emit('input', selectedTimeframe.value);
 };
 </script>
+
+<template>
+  <BFormSelect
+    v-model="selectedTimeframe"
+    placeholder="Use strategy default"
+    :options="availableTimeframes"
+    @change="emitSelectedTimeframe"
+  ></BFormSelect>
+</template>
 
 <style scoped></style>

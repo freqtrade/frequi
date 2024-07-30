@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="home">
     <div class="d-flex justify-content-center">
@@ -19,8 +21,6 @@
     <p>Have fun - <i>wishes you the Freqtrade team</i></p>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 .home {

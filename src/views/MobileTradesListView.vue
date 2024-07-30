@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+defineProps({
+  history: { default: false, type: Boolean },
+});
+const botStore = useBotStore();
+</script>
+
 <template>
   <div>
     <!-- <TradeList
@@ -39,14 +48,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-defineProps({
-  history: { default: false, type: Boolean },
-});
-const botStore = useBotStore();
-</script>
 
 <style scoped></style>

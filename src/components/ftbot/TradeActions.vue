@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { Trade } from '@/types';
+
+defineProps({
+  botApiVersion: {
+    type: Number,
+    default: 1.0,
+  },
+  trade: {
+    type: Object as () => Trade,
+    required: true,
+  },
+  enableForceEntry: {
+    type: Boolean,
+    default: false,
+  },
+});
+defineEmits<{
+  forceExit: [trade: Trade, type?: 'limit' | 'market'];
+  forceExitPartial: [trade: Trade];
+  cancelOpenOrder: [trade: Trade];
+  reloadTrade: [trade: Trade];
+  deleteTrade: [trade: Trade];
+  forceEntry: [trade: Trade];
+}>();
+</script>
+
 <template>
   <div class="d-flex flex-column">
     <BButton
@@ -74,32 +101,5 @@
     </BButton>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Trade } from '@/types';
-
-defineProps({
-  botApiVersion: {
-    type: Number,
-    default: 1.0,
-  },
-  trade: {
-    type: Object as () => Trade,
-    required: true,
-  },
-  enableForceEntry: {
-    type: Boolean,
-    default: false,
-  },
-});
-defineEmits<{
-  forceExit: [trade: Trade, type?: 'limit' | 'market'];
-  forceExitPartial: [trade: Trade];
-  cancelOpenOrder: [trade: Trade];
-  reloadTrade: [trade: Trade];
-  deleteTrade: [trade: Trade];
-  forceEntry: [trade: Trade];
-}>();
-</script>
 
 <style scoped lang="scss"></style>

@@ -1,3 +1,75 @@
+<script setup lang="ts">
+import { useBtStore } from '@/stores/btStore';
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+enum BtRunModes {
+  run = 'run',
+  results = 'results',
+  visualize = 'visualize',
+  visualizesummary = 'visualize-summary',
+  compareresults = 'compare-results',
+  historicresults = 'historicResults',
+}
+
+const botStore = useBotStore();
+const btStore = useBtStore();
+
+const hasBacktestResult = computed(() =>
+  botStore.activeBot.backtestHistory
+    ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
+    : false,
+);
+const hasMultiBacktestResult = computed(() =>
+  botStore.activeBot.backtestHistory
+    ? Object.keys(botStore.activeBot.backtestHistory).length > 1
+    : false,
+);
+
+const timeframe = computed((): string => {
+  try {
+    return botStore.activeBot.selectedBacktestResult.timeframe;
+  } catch (err) {
+    return '';
+  }
+});
+
+const showLeftBar = ref(false);
+
+const btFormMode = ref<BtRunModes>(BtRunModes.run);
+const pollInterval = ref<number | null>(null);
+
+const selectBacktestResult = () => {
+  // Set parameters for this result
+  btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
+  botStore.activeBot.getStrategy(btStore.strategy);
+  btStore.selectedTimeframe = botStore.activeBot.selectedBacktestResult.timeframe;
+  btStore.selectedDetailTimeframe =
+    botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
+  // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
+  btStore.timerange = botStore.activeBot.selectedBacktestResult.timerange;
+};
+
+watch(
+  () => botStore.activeBot.selectedBacktestResultKey,
+  () => {
+    selectBacktestResult();
+  },
+);
+
+onMounted(() => botStore.activeBot.getState());
+watch(
+  () => botStore.activeBot.backtestRunning,
+  () => {
+    if (botStore.activeBot.backtestRunning === true) {
+      pollInterval.value = window.setInterval(botStore.activeBot.pollBacktest, 1000);
+    } else if (pollInterval.value) {
+      clearInterval(pollInterval.value);
+      pollInterval.value = null;
+    }
+  },
+);
+</script>
+
 <template>
   <div class="d-flex flex-column pt-1 me-1" style="height: calc(100vh - 60px)">
     <div>
@@ -150,78 +222,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBtStore } from '@/stores/btStore';
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-enum BtRunModes {
-  run = 'run',
-  results = 'results',
-  visualize = 'visualize',
-  visualizesummary = 'visualize-summary',
-  compareresults = 'compare-results',
-  historicresults = 'historicResults',
-}
-
-const botStore = useBotStore();
-const btStore = useBtStore();
-
-const hasBacktestResult = computed(() =>
-  botStore.activeBot.backtestHistory
-    ? Object.keys(botStore.activeBot.backtestHistory).length !== 0
-    : false,
-);
-const hasMultiBacktestResult = computed(() =>
-  botStore.activeBot.backtestHistory
-    ? Object.keys(botStore.activeBot.backtestHistory).length > 1
-    : false,
-);
-
-const timeframe = computed((): string => {
-  try {
-    return botStore.activeBot.selectedBacktestResult.timeframe;
-  } catch (err) {
-    return '';
-  }
-});
-
-const showLeftBar = ref(false);
-
-const btFormMode = ref<BtRunModes>(BtRunModes.run);
-const pollInterval = ref<number | null>(null);
-
-const selectBacktestResult = () => {
-  // Set parameters for this result
-  btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
-  botStore.activeBot.getStrategy(btStore.strategy);
-  btStore.selectedTimeframe = botStore.activeBot.selectedBacktestResult.timeframe;
-  btStore.selectedDetailTimeframe =
-    botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
-  // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
-  btStore.timerange = botStore.activeBot.selectedBacktestResult.timerange;
-};
-
-watch(
-  () => botStore.activeBot.selectedBacktestResultKey,
-  () => {
-    selectBacktestResult();
-  },
-);
-
-onMounted(() => botStore.activeBot.getState());
-watch(
-  () => botStore.activeBot.backtestRunning,
-  () => {
-    if (botStore.activeBot.backtestRunning === true) {
-      pollInterval.value = window.setInterval(botStore.activeBot.pollBacktest, 1000);
-    } else if (pollInterval.value) {
-      clearInterval(pollInterval.value);
-      pollInterval.value = null;
-    }
-  },
-);
-</script>
 
 <style lang="scss" scoped>
 .bt-running-label {

@@ -1,18 +1,3 @@
-<template>
-  <BModal
-    id="MsgBoxModal"
-    ref="removeTradeModal"
-    v-model="showRef"
-    :title="title"
-    @ok="msgBoxOK"
-    @cancel="showRef = false"
-    @keyup.esc="showRef = false"
-    @keyup.enter="msgBoxOK"
-  >
-    {{ message }}
-  </BModal>
-</template>
-
 <script setup lang="ts">
 export interface MsgBoxObject {
   title: string;
@@ -40,5 +25,20 @@ const show = (msg: MsgBoxObject) => {
 
 defineExpose({ show });
 </script>
+
+<template>
+  <BModal
+    id="MsgBoxModal"
+    ref="removeTradeModal"
+    v-model="showRef"
+    :title="title"
+    @ok="msgBoxOK"
+    @cancel="showRef = false"
+    @keyup.esc="showRef = false"
+    @keyup.enter="msgBoxOK"
+  >
+    {{ message }}
+  </BModal>
+</template>
 
 <style scoped></style>

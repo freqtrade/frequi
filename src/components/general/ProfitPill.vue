@@ -1,24 +1,3 @@
-<template>
-  <div
-    class="d-flex justify-content-between align-items-center profit-pill ps-2 pe-1"
-    :class="isProfitable ? 'profit-pill-profit' : ''"
-    :title="profitDesc"
-  >
-    <ProfitSymbol :profit="(profitRatio || profitAbs) ?? 0" />
-
-    <div class="d-flex justify-content-center align-items-center flex-grow-1">
-      {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
-      <span
-        v-if="profitString"
-        class="ms-1"
-        :class="profitRatio ? 'small' : ''"
-        :title="stakeCurrency"
-        >{{ profitString }}</span
-      >
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   profitRatio: { required: false, default: undefined, type: Number },
@@ -46,6 +25,27 @@ const profitString = computed((): string => {
   return '';
 });
 </script>
+
+<template>
+  <div
+    class="d-flex justify-content-between align-items-center profit-pill ps-2 pe-1"
+    :class="isProfitable ? 'profit-pill-profit' : ''"
+    :title="profitDesc"
+  >
+    <ProfitSymbol :profit="(profitRatio || profitAbs) ?? 0" />
+
+    <div class="d-flex justify-content-center align-items-center flex-grow-1">
+      {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
+      <span
+        v-if="profitString"
+        class="ms-1"
+        :class="profitRatio ? 'small' : ''"
+        :title="stakeCurrency"
+        >{{ profitString }}</span
+      >
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .profit-pill {

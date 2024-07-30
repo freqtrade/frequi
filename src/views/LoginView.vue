@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="container">
     <BCard header="Freqtrade bot Login">
@@ -5,8 +7,6 @@
     </BCard>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped>
 .container {

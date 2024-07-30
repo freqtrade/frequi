@@ -1,3 +1,31 @@
+<script setup lang="ts">
+import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
+import { useLayoutStore } from '@/stores/layout';
+import { FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { ColorPreferences, useColorStore } from '@/stores/colors';
+
+const settingsStore = useSettingsStore();
+const colorStore = useColorStore();
+const layoutStore = useLayoutStore();
+
+const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
+const openTradesOptions = [
+  { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
+  { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
+  { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
+];
+const colorPreferenceOptions = [
+  { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
+  { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
+];
+
+const resetDynamicLayout = () => {
+  layoutStore.resetTradingLayout();
+  layoutStore.resetDashboardLayout();
+  showAlert('Layouts have been reset.');
+};
+</script>
+
 <template>
   <div class="container mt-3">
     <BCard header="FreqUI Settings">
@@ -121,34 +149,6 @@
     </BCard>
   </div>
 </template>
-
-<script setup lang="ts">
-import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
-import { useLayoutStore } from '@/stores/layout';
-import { FtWsMessageTypes } from '@/types/wsMessageTypes';
-import { ColorPreferences, useColorStore } from '@/stores/colors';
-
-const settingsStore = useSettingsStore();
-const colorStore = useColorStore();
-const layoutStore = useLayoutStore();
-
-const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
-const openTradesOptions = [
-  { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
-  { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
-  { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
-];
-const colorPreferenceOptions = [
-  { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
-  { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
-];
-
-const resetDynamicLayout = () => {
-  layoutStore.resetTradingLayout();
-  layoutStore.resetDashboardLayout();
-  showAlert('Layouts have been reset.');
-};
-</script>
 
 <style lang="scss" scoped>
 .color-candle-arrows {

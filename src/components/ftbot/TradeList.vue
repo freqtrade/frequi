@@ -1,102 +1,3 @@
-<template>
-  <div class="h-100 overflow-auto w-100">
-    <BTable
-      ref="tradesTable"
-      small
-      hover
-      stacked="md"
-      :items="
-        trades.filter(
-          (t) =>
-            t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
-            t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
-            t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
-        ) as unknown as TableItem[]
-      "
-      :fields="tableFields"
-      show-empty
-      :empty-text="emptyText"
-      :per-page="perPage"
-      :current-page="currentPage"
-      primary-key="botTradeId"
-      selectable
-      :select-head="false"
-      select-mode="single"
-      @row-contextmenu="handleContextMenuEvent"
-      @row-clicked="onRowClicked"
-      @row-selected="onRowSelected"
-    >
-      <template #cell(actions)="{ index, item }">
-        <TradeActionsPopover
-          :id="index"
-          :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
-          :trade="item as unknown as Trade"
-          :bot-api-version="botStore.activeBot.botApiVersion"
-          @delete-trade="removeTradeHandler(item as unknown as Trade)"
-          @force-exit="forceExitHandler"
-          @force-exit-partial="forceExitPartialHandler"
-          @cancel-open-order="cancelOpenOrderHandler"
-          @reload-trade="reloadTradeHandler"
-          @force-entry="handleForceEntry"
-        />
-      </template>
-      <template #cell(pair)="row">
-        <span>
-          {{ `${row.item.pair}${row.item.open_order_id || row.item.has_open_orders ? '*' : ''}` }}
-        </span>
-      </template>
-      <template #cell(trade_id)="row">
-        {{ row.item.trade_id }}
-        {{
-          botStore.activeBot.botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
-            ? '| ' + (row.item.is_short ? 'Short' : 'Long')
-            : ''
-        }}
-      </template>
-      <template #cell(stake_amount)="row">
-        {{ formatPriceWithDecimals(row.item.stake_amount) }}
-        {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
-      </template>
-      <template #cell(profit)="row">
-        <TradeProfit :trade="row.item as unknown as Trade" />
-      </template>
-      <template #cell(open_timestamp)="row">
-        <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
-      </template>
-      <template #cell(close_timestamp)="row">
-        <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
-      </template>
-    </BTable>
-    <div class="w-100 d-flex justify-content-between">
-      <BPagination
-        v-if="!activeTrades"
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
-      ></BPagination>
-      <BFormGroup v-if="showFilter" label-for="trade-filter">
-        <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
-      </BFormGroup>
-    </div>
-    <ForceExitForm
-      v-if="activeTrades"
-      v-model="forceExitVisible"
-      :trade="feTrade"
-      :quote-currency-decimals="botStore.activeBot.botState.stake_currency_decimals"
-    />
-    <ForceEntryForm
-      v-model="increasePosition.visible"
-      :pair="increasePosition.trade?.pair"
-      position-increase
-    />
-
-    <BModal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
-      {{ confirmExitText }}
-    </BModal>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 
@@ -314,6 +215,105 @@ watch(
   },
 );
 </script>
+
+<template>
+  <div class="h-100 overflow-auto w-100">
+    <BTable
+      ref="tradesTable"
+      small
+      hover
+      stacked="md"
+      :items="
+        trades.filter(
+          (t) =>
+            t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
+            t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
+            t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
+        ) as unknown as TableItem[]
+      "
+      :fields="tableFields"
+      show-empty
+      :empty-text="emptyText"
+      :per-page="perPage"
+      :current-page="currentPage"
+      primary-key="botTradeId"
+      selectable
+      :select-head="false"
+      select-mode="single"
+      @row-contextmenu="handleContextMenuEvent"
+      @row-clicked="onRowClicked"
+      @row-selected="onRowSelected"
+    >
+      <template #cell(actions)="{ index, item }">
+        <TradeActionsPopover
+          :id="index"
+          :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
+          :trade="item as unknown as Trade"
+          :bot-api-version="botStore.activeBot.botApiVersion"
+          @delete-trade="removeTradeHandler(item as unknown as Trade)"
+          @force-exit="forceExitHandler"
+          @force-exit-partial="forceExitPartialHandler"
+          @cancel-open-order="cancelOpenOrderHandler"
+          @reload-trade="reloadTradeHandler"
+          @force-entry="handleForceEntry"
+        />
+      </template>
+      <template #cell(pair)="row">
+        <span>
+          {{ `${row.item.pair}${row.item.open_order_id || row.item.has_open_orders ? '*' : ''}` }}
+        </span>
+      </template>
+      <template #cell(trade_id)="row">
+        {{ row.item.trade_id }}
+        {{
+          botStore.activeBot.botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
+            ? '| ' + (row.item.is_short ? 'Short' : 'Long')
+            : ''
+        }}
+      </template>
+      <template #cell(stake_amount)="row">
+        {{ formatPriceWithDecimals(row.item.stake_amount) }}
+        {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
+      </template>
+      <template #cell(profit)="row">
+        <TradeProfit :trade="row.item as unknown as Trade" />
+      </template>
+      <template #cell(open_timestamp)="row">
+        <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
+      </template>
+      <template #cell(close_timestamp)="row">
+        <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
+      </template>
+    </BTable>
+    <div class="w-100 d-flex justify-content-between">
+      <BPagination
+        v-if="!activeTrades"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-table"
+      ></BPagination>
+      <BFormGroup v-if="showFilter" label-for="trade-filter">
+        <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
+      </BFormGroup>
+    </div>
+    <ForceExitForm
+      v-if="activeTrades"
+      v-model="forceExitVisible"
+      :trade="feTrade"
+      :quote-currency-decimals="botStore.activeBot.botState.stake_currency_decimals"
+    />
+    <ForceEntryForm
+      v-model="increasePosition.visible"
+      :pair="increasePosition.trade?.pair"
+      position-increase
+    />
+
+    <BModal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
+      {{ confirmExitText }}
+    </BModal>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .card-body {

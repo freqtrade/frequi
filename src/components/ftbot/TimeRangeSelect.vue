@@ -1,43 +1,3 @@
-<template>
-  <div>
-    <div class="d-flex justify-content-center">
-      <div>
-        <label for="dateFrom">Start Date</label>
-        <Datepicker
-          id="dateFrom"
-          v-model="dateFrom"
-          :dark="settingsStore.isDarkTheme"
-          :max-date="now"
-          model-type="yyyy-MM-dd"
-          format="yyyy-MM-dd"
-          class="mt-1"
-          text-input
-          auto-apply
-          :enable-time-picker="false"
-        ></Datepicker>
-      </div>
-      <div class="ms-2">
-        <label for="dateTo">End Date</label>
-        <Datepicker
-          v-model="dateTo"
-          :dark="settingsStore.isDarkTheme"
-          class="mt-1"
-          :max-date="tomorrow"
-          model-type="yyyy-MM-dd"
-          format="yyyy-MM-dd"
-          text-input
-          auto-apply
-          :enable-time-picker="false"
-        ></Datepicker>
-      </div>
-    </div>
-
-    <label class="mt-1 text-start">
-      Timerange: <b>{{ timeRange }}</b>
-    </label>
-  </div>
-</template>
-
 <script setup lang="ts">
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -102,5 +62,45 @@ onMounted(() => {
   emit('update:modelValue', timeRange.value);
 });
 </script>
+
+<template>
+  <div>
+    <div class="d-flex justify-content-center">
+      <div>
+        <label for="dateFrom">Start Date</label>
+        <Datepicker
+          id="dateFrom"
+          v-model="dateFrom"
+          :dark="settingsStore.isDarkTheme"
+          :max-date="now"
+          model-type="yyyy-MM-dd"
+          format="yyyy-MM-dd"
+          class="mt-1"
+          text-input
+          auto-apply
+          :enable-time-picker="false"
+        ></Datepicker>
+      </div>
+      <div class="ms-2">
+        <label for="dateTo">End Date</label>
+        <Datepicker
+          v-model="dateTo"
+          :dark="settingsStore.isDarkTheme"
+          class="mt-1"
+          :max-date="tomorrow"
+          model-type="yyyy-MM-dd"
+          format="yyyy-MM-dd"
+          text-input
+          auto-apply
+          :enable-time-picker="false"
+        ></Datepicker>
+      </div>
+    </div>
+
+    <label class="mt-1 text-start">
+      Timerange: <b>{{ timeRange }}</b>
+    </label>
+  </div>
+</template>
 
 <style scoped></style>

@@ -1,3 +1,78 @@
+<script setup lang="ts">
+import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { GridItemData } from '@/types';
+
+const botStore = useBotStore();
+
+const layoutStore = useLayoutStore();
+const currentBreakpoint = ref('');
+
+function breakpointChanged(newBreakpoint: string) {
+  // console.log('breakpoint:', newBreakpoint);
+  currentBreakpoint.value = newBreakpoint;
+}
+const isResizableLayout = computed(() =>
+  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+);
+const isLayoutLocked = computed(() => {
+  return layoutStore.layoutLocked || !isResizableLayout.value;
+});
+
+const gridLayoutData = computed((): GridItemData[] => {
+  if (isResizableLayout.value) {
+    return layoutStore.dashboardLayout;
+  }
+  return [...layoutStore.getDashboardLayoutSm];
+});
+
+function layoutUpdatedEvent(newLayout) {
+  if (isResizableLayout.value) {
+    console.log('newlayout', newLayout);
+    console.log('saving dashboard');
+    layoutStore.dashboardLayout = newLayout;
+  }
+}
+
+const gridLayoutDaily = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.dailyChart);
+});
+
+const gridLayoutBotComparison = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.botComparison);
+});
+
+const gridLayoutAllOpenTrades = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.allOpenTrades);
+});
+const gridLayoutAllClosedTrades = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.allClosedTrades);
+});
+
+const gridLayoutCumChart = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
+});
+const gridLayoutProfitDistribution = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
+});
+const gridLayoutTradesLogChart = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.tradesLogChart);
+});
+
+const responsiveGridLayouts = computed(() => {
+  return {
+    sm: layoutStore.getDashboardLayoutSm,
+  };
+});
+
+onMounted(async () => {
+  botStore.allGetDaily({ timescale: 30 });
+  // botStore.activeBot.getTrades();
+  botStore.activeBot.getOpenTrades();
+  botStore.activeBot.getProfit();
+});
+</script>
+
 <template>
   <GridLayout
     class="h-100 w-100"
@@ -155,80 +230,3 @@
     </template>
   </GridLayout>
 </template>
-
-<script setup lang="ts">
-import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { GridItemData } from '@/types';
-
-const botStore = useBotStore();
-
-const layoutStore = useLayoutStore();
-const currentBreakpoint = ref('');
-
-function breakpointChanged(newBreakpoint: string) {
-  // console.log('breakpoint:', newBreakpoint);
-  currentBreakpoint.value = newBreakpoint;
-}
-const isResizableLayout = computed(() =>
-  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
-);
-const isLayoutLocked = computed(() => {
-  return layoutStore.layoutLocked || !isResizableLayout.value;
-});
-
-const gridLayoutData = computed((): GridItemData[] => {
-  if (isResizableLayout.value) {
-    return layoutStore.dashboardLayout;
-  }
-  return [...layoutStore.getDashboardLayoutSm];
-});
-
-function layoutUpdatedEvent(newLayout) {
-  if (isResizableLayout.value) {
-    console.log('newlayout', newLayout);
-    console.log('saving dashboard');
-    layoutStore.dashboardLayout = newLayout;
-  }
-}
-
-const gridLayoutDaily = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.dailyChart);
-});
-
-const gridLayoutBotComparison = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.botComparison);
-});
-
-const gridLayoutAllOpenTrades = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.allOpenTrades);
-});
-const gridLayoutAllClosedTrades = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.allClosedTrades);
-});
-
-const gridLayoutCumChart = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
-});
-const gridLayoutProfitDistribution = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
-});
-const gridLayoutTradesLogChart = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.tradesLogChart);
-});
-
-const responsiveGridLayouts = computed(() => {
-  return {
-    sm: layoutStore.getDashboardLayoutSm,
-  };
-});
-
-onMounted(async () => {
-  botStore.allGetDaily({ timescale: 30 });
-  // botStore.activeBot.getTrades();
-  botStore.activeBot.getOpenTrades();
-  botStore.activeBot.getProfit();
-});
-</script>
-
-<style scoped></style>

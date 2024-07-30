@@ -1,3 +1,57 @@
+<script setup lang="ts">
+import { GridItemData } from '@/types';
+
+import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const botStore = useBotStore();
+const layoutStore = useLayoutStore();
+const currentBreakpoint = ref('');
+
+const breakpointChanged = (newBreakpoint: string) => {
+  // console.log('breakpoint:', newBreakpoint);
+  currentBreakpoint.value = newBreakpoint;
+};
+const isResizableLayout = computed(() =>
+  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+);
+const isLayoutLocked = computed(() => {
+  return layoutStore.layoutLocked || !isResizableLayout.value;
+});
+const gridLayoutData = computed((): GridItemData[] => {
+  if (isResizableLayout.value) {
+    return layoutStore.tradingLayout;
+  }
+  return [...layoutStore.getTradingLayoutSm];
+});
+
+const gridLayoutMultiPane = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.multiPane);
+});
+
+const gridLayoutOpenTrades = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.openTrades);
+});
+
+const gridLayoutTradeHistory = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.tradeHistory);
+});
+
+const gridLayoutTradeDetail = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.tradeDetail);
+});
+
+const gridLayoutChartView = computed(() => {
+  return findGridLayout(gridLayoutData.value, TradeLayout.chartView);
+});
+
+const responsiveGridLayouts = computed(() => {
+  return {
+    sm: layoutStore.getTradingLayoutSm,
+  };
+});
+</script>
+
 <template>
   <GridLayout
     class="h-100 w-100"
@@ -144,59 +198,5 @@
     </template>
   </GridLayout>
 </template>
-
-<script setup lang="ts">
-import { GridItemData } from '@/types';
-
-import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const botStore = useBotStore();
-const layoutStore = useLayoutStore();
-const currentBreakpoint = ref('');
-
-const breakpointChanged = (newBreakpoint: string) => {
-  // console.log('breakpoint:', newBreakpoint);
-  currentBreakpoint.value = newBreakpoint;
-};
-const isResizableLayout = computed(() =>
-  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
-);
-const isLayoutLocked = computed(() => {
-  return layoutStore.layoutLocked || !isResizableLayout.value;
-});
-const gridLayoutData = computed((): GridItemData[] => {
-  if (isResizableLayout.value) {
-    return layoutStore.tradingLayout;
-  }
-  return [...layoutStore.getTradingLayoutSm];
-});
-
-const gridLayoutMultiPane = computed(() => {
-  return findGridLayout(gridLayoutData.value, TradeLayout.multiPane);
-});
-
-const gridLayoutOpenTrades = computed(() => {
-  return findGridLayout(gridLayoutData.value, TradeLayout.openTrades);
-});
-
-const gridLayoutTradeHistory = computed(() => {
-  return findGridLayout(gridLayoutData.value, TradeLayout.tradeHistory);
-});
-
-const gridLayoutTradeDetail = computed(() => {
-  return findGridLayout(gridLayoutData.value, TradeLayout.tradeDetail);
-});
-
-const gridLayoutChartView = computed(() => {
-  return findGridLayout(gridLayoutData.value, TradeLayout.chartView);
-});
-
-const responsiveGridLayouts = computed(() => {
-  return {
-    sm: layoutStore.getTradingLayoutSm,
-  };
-});
-</script>
 
 <style scoped></style>

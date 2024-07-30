@@ -1,7 +1,3 @@
-<template>
-  <span :title="timezoneTooltip">{{ formattedDate }}</span>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   date: { required: true, type: Number },
@@ -28,5 +24,9 @@ const timezoneTooltip = computed((): string => {
   return `${time1}\n${timeUTC}`;
 });
 </script>
+
+<template>
+  <span :title="timezoneTooltip">{{ formattedDate }}</span>
+</template>
 
 <style scoped></style>

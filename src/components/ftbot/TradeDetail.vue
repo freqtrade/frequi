@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { Trade } from '@/types';
+
+const colorStore = useColorStore();
+
+defineProps({
+  trade: { required: true, type: Object as () => Trade },
+  stakeCurrency: { required: true, type: String },
+});
+</script>
+
 <template>
   <div class="container text-start">
     <div class="row">
@@ -139,17 +150,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Trade } from '@/types';
-
-const colorStore = useColorStore();
-
-defineProps({
-  trade: { required: true, type: Object as () => Trade },
-  stakeCurrency: { required: true, type: String },
-});
-</script>
 <style scoped>
 .detail-header {
   border-bottom: 1px solid;

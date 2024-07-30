@@ -1,3 +1,43 @@
+<script setup lang="ts">
+import { Trade } from '@/types';
+
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const props = defineProps({
+  trades: { required: true, type: Array as () => Trade[] },
+  backtestMode: { required: false, default: false, type: Boolean },
+});
+const emit = defineEmits<{ 'trade-select': [trade: Trade] }>();
+
+const botStore = useBotStore();
+const selectedTrade = ref({} as Trade);
+const sortNewestFirst = ref(true);
+
+const onTradeSelect = (trade: Trade) => {
+  selectedTrade.value = trade;
+  emit('trade-select', trade);
+};
+
+const sortedTrades = computed(() => {
+  return props.trades
+    .slice()
+    .sort((a, b) =>
+      sortNewestFirst.value
+        ? b.open_timestamp - a.open_timestamp
+        : a.open_timestamp - b.open_timestamp,
+    );
+});
+
+const ordersVisible = ref(sortedTrades.value.map(() => false));
+
+watch(
+  () => botStore.activeBot.selectedPair,
+  () => {
+    ordersVisible.value = sortedTrades.value.map(() => false);
+  },
+);
+</script>
+
 <template>
   <div>
     <BListGroup>
@@ -56,46 +96,6 @@
     </BListGroup>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Trade } from '@/types';
-
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  backtestMode: { required: false, default: false, type: Boolean },
-});
-const emit = defineEmits<{ 'trade-select': [trade: Trade] }>();
-
-const botStore = useBotStore();
-const selectedTrade = ref({} as Trade);
-const sortNewestFirst = ref(true);
-
-const onTradeSelect = (trade: Trade) => {
-  selectedTrade.value = trade;
-  emit('trade-select', trade);
-};
-
-const sortedTrades = computed(() => {
-  return props.trades
-    .slice()
-    .sort((a, b) =>
-      sortNewestFirst.value
-        ? b.open_timestamp - a.open_timestamp
-        : a.open_timestamp - b.open_timestamp,
-    );
-});
-
-const ordersVisible = ref(sortedTrades.value.map(() => false));
-
-watch(
-  () => botStore.activeBot.selectedPair,
-  () => {
-    ordersVisible.value = sortedTrades.value.map(() => false);
-  },
-);
-</script>
 
 <style scoped>
 .list-group {

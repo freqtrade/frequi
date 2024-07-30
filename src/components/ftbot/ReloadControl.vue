@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const botStore = useBotStore();
+const autoRefreshLoc = computed({
+  get() {
+    return botStore.globalAutoRefresh;
+  },
+  set(newValue: boolean) {
+    botStore.setGlobalAutoRefresh(newValue);
+  },
+});
+</script>
+
 <template>
   <div class="d-flex align-items-center ms-2">
     <BFormCheckbox
@@ -16,19 +30,5 @@
     </BButton>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const botStore = useBotStore();
-const autoRefreshLoc = computed({
-  get() {
-    return botStore.globalAutoRefresh;
-  },
-  set(newValue: boolean) {
-    botStore.setGlobalAutoRefresh(newValue);
-  },
-});
-</script>
 
 <style scoped></style>

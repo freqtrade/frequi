@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps({
+  header: { required: false, type: String, default: '' },
+});
+</script>
+
 <template>
   <div class="card h-100 w-100">
     <div class="drag-header card-header">
@@ -10,12 +16,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  header: { required: false, type: String, default: '' },
-});
-</script>
 
 <style scoped>
 .card-header {

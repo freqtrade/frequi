@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { useClipboard } from '@vueuse/core';
+
+defineProps({
+  content: { type: [String, Array<string>], required: true },
+  isValid: { type: Boolean, default: true },
+});
+
+const { copy, isSupported } = useClipboard();
+</script>
+
 <template>
   <div class="copy-container position-relative">
     <i-mdi-content-copy
@@ -9,17 +20,6 @@
     <pre class="text-start border p-1 mb-0"><code>{{ content }}</code></pre>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useClipboard } from '@vueuse/core';
-
-defineProps({
-  content: { type: [String, Array<string>], required: true },
-  isValid: { type: Boolean, default: true },
-});
-
-const { copy, isSupported } = useClipboard();
-</script>
 
 <style lang="scss" scoped>
 .copy-container {

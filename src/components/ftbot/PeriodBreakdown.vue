@@ -1,37 +1,3 @@
-<template>
-  <div>
-    <div class="mb-2">
-      <h3 class="me-auto d-inline">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
-      <BButton class="float-end" size="sm" @click="refreshSummary">
-        <i-mdi-refresh />
-      </BButton>
-    </div>
-    <BFormRadioGroup
-      v-if="hasWeekly"
-      id="order-direction"
-      v-model="periodicBreakdownPeriod"
-      :options="periodicBreakdownSelections"
-      name="radios-btn-default"
-      size="sm"
-      buttons
-      style="min-width: 10em"
-      button-variant="outline-primary"
-      @change="refreshSummary"
-    ></BFormRadioGroup>
-
-    <div class="ps-1">
-      <TimePeriodChart
-        v-if="selectedStats"
-        :daily-stats="selectedStatsSorted"
-        :show-title="false"
-      />
-    </div>
-    <div>
-      <BTable class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </BTable>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { TableField } from 'bootstrap-vue-next';
@@ -105,3 +71,37 @@ onMounted(() => {
   refreshSummary();
 });
 </script>
+
+<template>
+  <div>
+    <div class="mb-2">
+      <h3 class="me-auto d-inline">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
+      <BButton class="float-end" size="sm" @click="refreshSummary">
+        <i-mdi-refresh />
+      </BButton>
+    </div>
+    <BFormRadioGroup
+      v-if="hasWeekly"
+      id="order-direction"
+      v-model="periodicBreakdownPeriod"
+      :options="periodicBreakdownSelections"
+      name="radios-btn-default"
+      size="sm"
+      buttons
+      style="min-width: 10em"
+      button-variant="outline-primary"
+      @change="refreshSummary"
+    ></BFormRadioGroup>
+
+    <div class="ps-1">
+      <TimePeriodChart
+        v-if="selectedStats"
+        :daily-stats="selectedStatsSorted"
+        :show-title="false"
+      />
+    </div>
+    <div>
+      <BTable class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </BTable>
+    </div>
+  </div>
+</template>
