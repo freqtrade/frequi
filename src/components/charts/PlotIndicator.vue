@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChartType, IndicatorConfig } from '@/types';
+import { ChartType, ChartTypeString, IndicatorConfig } from '@/types';
 
 import { watchDebounced } from '@vueuse/core';
 
@@ -11,8 +11,8 @@ const props = defineProps({
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 
 const selColor = ref(randomColor());
-const graphType = ref<ChartType | keyof typeof ChartType>(ChartType.line);
-const availableGraphTypes = ref(Object.keys(ChartType));
+const graphType = ref<ChartTypeString>(ChartType.line);
+const availableGraphTypes = ref<ChartTypeString[]>(Object.keys(ChartType) as ChartTypeString[]);
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
 const fillTo = ref('');
