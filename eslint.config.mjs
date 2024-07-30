@@ -61,6 +61,12 @@ export default [
       ],
       'vue/define-emits-declaration': ['error'],
       'vue/enforce-style-attribute': ['error'],
+      'vue/block-order': [
+        'error',
+        {
+          order: ['script', 'template', 'style'],
+        },
+      ],
     },
   },
 ];
