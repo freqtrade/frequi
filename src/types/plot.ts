@@ -4,9 +4,11 @@ export enum ChartType {
   scatter = 'scatter',
 }
 
+export type ChartTypeString = keyof typeof ChartType;
+
 export interface IndicatorConfig {
   color?: string;
-  type?: ChartType | keyof typeof ChartType;
+  type?: ChartType | ChartTypeString;
   fill_to?: string;
 }
 
