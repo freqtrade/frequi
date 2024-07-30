@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { Lock } from '@/types';
+
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { TableField } from 'bootstrap-vue-next';
+const botStore = useBotStore();
+
+const tableFields: TableField[] = [
+  { key: 'pair', label: 'Pair' },
+  { key: 'lock_end_timestamp', label: 'Until', formatter: (value) => timestampms(value as number) },
+  { key: 'reason', label: 'Reason' },
+  { key: 'actions' },
+];
+
+const removePairLock = (item: Lock) => {
+  console.log(item);
+  if (item.id !== undefined) {
+    botStore.activeBot.deleteLock(item.id);
+  } else {
+    showAlert('This Freqtrade version does not support deleting locks.');
+  }
+};
+</script>
+
 <template>
   <div>
     <div class="mb-2">
@@ -22,29 +46,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Lock } from '@/types';
-
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { TableField } from 'bootstrap-vue-next';
-const botStore = useBotStore();
-
-const tableFields: TableField[] = [
-  { key: 'pair', label: 'Pair' },
-  { key: 'lock_end_timestamp', label: 'Until', formatter: (value) => timestampms(value as number) },
-  { key: 'reason', label: 'Reason' },
-  { key: 'actions' },
-];
-
-const removePairLock = (item: Lock) => {
-  console.log(item);
-  if (item.id !== undefined) {
-    botStore.activeBot.deleteLock(item.id);
-  } else {
-    showAlert('This Freqtrade version does not support deleting locks.');
-  }
-};
-</script>
 
 <style scoped></style>

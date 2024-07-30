@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const botStore = useBotStore();
+</script>
+
 <template>
   <div v-if="botStore.activeBot.botState">
     <p>
@@ -84,9 +90,3 @@
     />
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const botStore = useBotStore();
-</script>

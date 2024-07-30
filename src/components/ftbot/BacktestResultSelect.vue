@@ -1,3 +1,37 @@
+<script setup lang="ts">
+import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
+
+defineProps({
+  backtestHistory: {
+    required: true,
+    type: Object as () => Record<string, BacktestResultInMemory>,
+  },
+  selectedBacktestResultKey: { required: false, default: '', type: String },
+  canUseModify: { required: false, default: false, type: Boolean },
+});
+const emit = defineEmits<{
+  selectionChange: [value: string];
+  removeResult: [value: string];
+  updateResult: [value: BacktestResultUpdate];
+}>();
+
+const setBacktestResult = (key: string) => {
+  emit('selectionChange', key);
+};
+
+function confirmInput(run_id: string, result: BacktestResultInMemory) {
+  result.metadata.editing = !result.metadata.editing;
+  if (result.metadata.filename) {
+    emit('updateResult', {
+      run_id: run_id,
+      notes: result.metadata.notes ?? '',
+      filename: result.metadata.filename,
+      strategy: result.metadata.strategyName,
+    });
+  }
+}
+</script>
+
 <template>
   <div class="container d-flex flex-column align-items-stretch">
     <h3>Available results:</h3>
@@ -44,39 +78,5 @@
     </BListGroup>
   </div>
 </template>
-
-<script setup lang="ts">
-import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
-
-defineProps({
-  backtestHistory: {
-    required: true,
-    type: Object as () => Record<string, BacktestResultInMemory>,
-  },
-  selectedBacktestResultKey: { required: false, default: '', type: String },
-  canUseModify: { required: false, default: false, type: Boolean },
-});
-const emit = defineEmits<{
-  selectionChange: [value: string];
-  removeResult: [value: string];
-  updateResult: [value: BacktestResultUpdate];
-}>();
-
-const setBacktestResult = (key: string) => {
-  emit('selectionChange', key);
-};
-
-function confirmInput(run_id: string, result: BacktestResultInMemory) {
-  result.metadata.editing = !result.metadata.editing;
-  if (result.metadata.filename) {
-    emit('updateResult', {
-      run_id: run_id,
-      notes: result.metadata.notes ?? '',
-      filename: result.metadata.filename,
-      strategy: result.metadata.strategyName,
-    });
-  }
-}
-</script>
 
 <style scoped></style>

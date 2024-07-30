@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { BacktestResultInMemory } from '@/types';
+
+defineProps({
+  backtestResult: {
+    required: true,
+    type: Object as () => BacktestResultInMemory,
+  },
+  selectedBacktestResultKey: { required: false, default: '', type: String },
+  canUseModify: { required: false, default: false, type: Boolean },
+});
+</script>
+
 <template>
   <div class="d-flex flex-column me-2 text-start">
     <div class="fw-bold">
@@ -12,18 +25,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { BacktestResultInMemory } from '@/types';
-
-defineProps({
-  backtestResult: {
-    required: true,
-    type: Object as () => BacktestResultInMemory,
-  },
-  selectedBacktestResultKey: { required: false, default: '', type: String },
-  canUseModify: { required: false, default: false, type: Boolean },
-});
-</script>
 
 <style scoped></style>

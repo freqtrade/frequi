@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+import { Pairlist } from '@/types';
+
+const pairlistStore = usePairlistConfigStore();
+
+defineProps<{
+  index: number;
+}>();
+
+const pairlist = defineModel<Pairlist>({ required: true });
+
+const hasParameters = computed(() => Object.keys(pairlist.value.params).length > 0);
+
+function toggleVisible() {
+  if (hasParameters.value) {
+    pairlist.value.showParameters = !pairlist.value.showParameters;
+  }
+}
+</script>
+
 <template>
   <BCard no-body class="mb-2">
     <template #header>
@@ -53,26 +74,5 @@
     </BCollapse>
   </BCard>
 </template>
-
-<script setup lang="ts">
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-import { Pairlist } from '@/types';
-
-const pairlistStore = usePairlistConfigStore();
-
-defineProps<{
-  index: number;
-}>();
-
-const pairlist = defineModel<Pairlist>({ required: true });
-
-const hasParameters = computed(() => Object.keys(pairlist.value.params).length > 0);
-
-function toggleVisible() {
-  if (hasParameters.value) {
-    pairlist.value.showParameters = !pairlist.value.showParameters;
-  }
-}
-</script>
 
 <style lang="scss" scoped></style>

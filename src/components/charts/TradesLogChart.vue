@@ -1,12 +1,3 @@
-<template>
-  <ECharts
-    v-if="trades.length > 0"
-    :option="chartOptions"
-    autoresize
-    :theme="settingsStore.chartTheme"
-  />
-</template>
-
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
@@ -177,6 +168,15 @@ const chartOptions = computed((): EChartsOption => {
   };
 });
 </script>
+
+<template>
+  <ECharts
+    v-if="trades.length > 0"
+    :option="chartOptions"
+    autoresize
+    :theme="settingsStore.chartTheme"
+  />
+</template>
 
 <style scoped>
 .echarts {

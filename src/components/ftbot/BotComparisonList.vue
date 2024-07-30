@@ -1,76 +1,3 @@
-<template>
-  <BTable
-    ref="tradesTable"
-    small
-    hover
-    show-empty
-    primary-key="botId"
-    :items="tableItems"
-    :fields="tableFields"
-  >
-    <template #cell(botName)="{ item, value }">
-      <div class="d-flex flex-row">
-        <BFormCheckbox
-          v-if="item.botId && botStore.botCount > 1"
-          v-model="
-            botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
-          "
-          title="Show this bot in Dashboard"
-          >{{ value }}</BFormCheckbox
-        >
-        <BFormCheckbox
-          v-if="!item.botId && botStore.botCount > 1"
-          v-model="allToggled"
-          title="Toggle all bots"
-          >{{ value }}</BFormCheckbox
-        >
-        <span v-if="botStore.botCount <= 1">{{ value }}</span>
-      </div>
-    </template>
-    <template #cell(profitOpen)="{ item }">
-      <ProfitPill
-        v-if="item.profitOpen && item.botId != 'Summary'"
-        :profit-ratio="(item as unknown as ComparisonTableItems).profitOpenRatio"
-        :profit-abs="(item as unknown as ComparisonTableItems).profitOpen"
-        :profit-desc="`Total Profit (Open and realized) ${formatPercent(
-          (item as unknown as ComparisonTableItems).profitOpenRatio ?? 0.0,
-        )}`"
-        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
-      />
-    </template>
-    <template #cell(profitClosed)="{ item }">
-      <ProfitPill
-        v-if="item.profitClosed && item.botId != 'Summary'"
-        :profit-ratio="(item as unknown as ComparisonTableItems).profitClosedRatio"
-        :profit-abs="(item as unknown as ComparisonTableItems).profitClosed"
-        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
-      />
-    </template>
-
-    <template #cell(balance)="{ item }">
-      <div v-if="item.balance">
-        <span :title="(item as unknown as ComparisonTableItems).stakeCurrency"
-          >{{
-            formatPrice(
-              (item as unknown as ComparisonTableItems).balance ?? 0,
-              (item as unknown as ComparisonTableItems).stakeCurrencyDecimals,
-            )
-          }}
-        </span>
-        <span class="text-small">{{
-          ` ${item.stakeCurrency}${item.isDryRun ? ' (dry)' : ''}`
-        }}</span>
-      </div>
-    </template>
-    <template #cell(winVsLoss)="{ item }">
-      <div v-if="item.losses !== undefined">
-        <span class="text-profit">{{ item.wins }}</span> /
-        <span class="text-loss">{{ item.losses }}</span>
-      </div>
-    </template>
-  </BTable>
-</template>
-
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { ProfitInterface, ComparisonTableItems } from '@/types';
@@ -158,5 +85,78 @@ const tableItems = computed<TableItem[]>(() => {
   return val as unknown as TableItem[];
 });
 </script>
+
+<template>
+  <BTable
+    ref="tradesTable"
+    small
+    hover
+    show-empty
+    primary-key="botId"
+    :items="tableItems"
+    :fields="tableFields"
+  >
+    <template #cell(botName)="{ item, value }">
+      <div class="d-flex flex-row">
+        <BFormCheckbox
+          v-if="item.botId && botStore.botCount > 1"
+          v-model="
+            botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
+          "
+          title="Show this bot in Dashboard"
+          >{{ value }}</BFormCheckbox
+        >
+        <BFormCheckbox
+          v-if="!item.botId && botStore.botCount > 1"
+          v-model="allToggled"
+          title="Toggle all bots"
+          >{{ value }}</BFormCheckbox
+        >
+        <span v-if="botStore.botCount <= 1">{{ value }}</span>
+      </div>
+    </template>
+    <template #cell(profitOpen)="{ item }">
+      <ProfitPill
+        v-if="item.profitOpen && item.botId != 'Summary'"
+        :profit-ratio="(item as unknown as ComparisonTableItems).profitOpenRatio"
+        :profit-abs="(item as unknown as ComparisonTableItems).profitOpen"
+        :profit-desc="`Total Profit (Open and realized) ${formatPercent(
+          (item as unknown as ComparisonTableItems).profitOpenRatio ?? 0.0,
+        )}`"
+        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
+      />
+    </template>
+    <template #cell(profitClosed)="{ item }">
+      <ProfitPill
+        v-if="item.profitClosed && item.botId != 'Summary'"
+        :profit-ratio="(item as unknown as ComparisonTableItems).profitClosedRatio"
+        :profit-abs="(item as unknown as ComparisonTableItems).profitClosed"
+        :stake-currency="(item as unknown as ComparisonTableItems).stakeCurrency"
+      />
+    </template>
+
+    <template #cell(balance)="{ item }">
+      <div v-if="item.balance">
+        <span :title="(item as unknown as ComparisonTableItems).stakeCurrency"
+          >{{
+            formatPrice(
+              (item as unknown as ComparisonTableItems).balance ?? 0,
+              (item as unknown as ComparisonTableItems).stakeCurrencyDecimals,
+            )
+          }}
+        </span>
+        <span class="text-small">{{
+          ` ${item.stakeCurrency}${item.isDryRun ? ' (dry)' : ''}`
+        }}</span>
+      </div>
+    </template>
+    <template #cell(winVsLoss)="{ item }">
+      <div v-if="item.losses !== undefined">
+        <span class="text-profit">{{ item.wins }}</span> /
+        <span class="text-loss">{{ item.losses }}</span>
+      </div>
+    </template>
+  </BTable>
+</template>
 
 <style scoped></style>

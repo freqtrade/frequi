@@ -1,25 +1,3 @@
-<template>
-  <div class="d-flex h-100 p-0 align-items-start">
-    <div ref="scrollContainer" class="border p-1 text-start pb-5 w-100 h-100 overflow-auto">
-      <pre
-        v-for="(log, index) in botStore.activeBot.lastLogs"
-        :key="index"
-        class="m-0 overflow-visible"
-        style="line-height: unset"
-      ><span class="text-muted">{{ log[0] }} <span :class="getLogColor(log[3])">{{ log[3].padEnd(7, ' ') }}</span> {{ log[2] }} - </span><span class="text-{{ log[1] }}">{{ log[4] }}</span
-        ></pre>
-    </div>
-    <div class="d-flex flex-column gap-1 ms-1">
-      <BButton id="refresh-logs" size="sm" title="Reload Logs" @click="refreshLogs">
-        <i-mdi-refresh />
-      </BButton>
-      <BButton size="sm" title="Scroll to bottom" @click="scrollToBottom">
-        <i-mdi-arrow-down-thick />
-      </BButton>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
@@ -52,6 +30,28 @@ function scrollToBottom() {
   }
 }
 </script>
+
+<template>
+  <div class="d-flex h-100 p-0 align-items-start">
+    <div ref="scrollContainer" class="border p-1 text-start pb-5 w-100 h-100 overflow-auto">
+      <pre
+        v-for="(log, index) in botStore.activeBot.lastLogs"
+        :key="index"
+        class="m-0 overflow-visible"
+        style="line-height: unset"
+      ><span class="text-muted">{{ log[0] }} <span :class="getLogColor(log[3])">{{ log[3].padEnd(7, ' ') }}</span> {{ log[2] }} - </span><span class="text-{{ log[1] }}">{{ log[4] }}</span
+        ></pre>
+    </div>
+    <div class="d-flex flex-column gap-1 ms-1">
+      <BButton id="refresh-logs" size="sm" title="Reload Logs" @click="refreshLogs">
+        <i-mdi-refresh />
+      </BButton>
+      <BButton size="sm" title="Scroll to bottom" @click="scrollToBottom">
+        <i-mdi-arrow-down-thick />
+      </BButton>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 textarea {

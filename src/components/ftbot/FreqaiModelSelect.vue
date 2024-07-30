@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const locFreqaiModel = defineModel<string>();
+const botStore = useBotStore();
+
+onMounted(() => {
+  if (botStore.activeBot.freqaiModelList.length === 0) {
+    botStore.activeBot.getFreqAIModelList();
+  }
+});
+</script>
+
 <template>
   <div>
     <div class="w-100 d-flex">
@@ -15,16 +28,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const locFreqaiModel = defineModel<string>();
-const botStore = useBotStore();
-
-onMounted(() => {
-  if (botStore.activeBot.freqaiModelList.length === 0) {
-    botStore.activeBot.getFreqAIModelList();
-  }
-});
-</script>

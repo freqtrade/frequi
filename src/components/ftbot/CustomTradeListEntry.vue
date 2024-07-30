@@ -1,20 +1,3 @@
-<template>
-  <div class="d-flex">
-    <div
-      class="px-1 d-flex flex-row flex-fill text-start justify-content-between align-items-center"
-    >
-      <span>
-        <span class="me-1 fw-bold">{{ trade.pair }}</span>
-        <small class="text-secondary">(#{{ trade.trade_id }})</small>
-      </span>
-      <small>
-        <DateTimeTZ :date="trade.open_timestamp" :date-only="true" />
-      </small>
-    </div>
-    <TradeProfit class="col-5" :trade="trade" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Trade } from '@/types';
 import TradeProfit from './TradeProfit.vue';
@@ -34,6 +17,23 @@ defineProps({
   },
 });
 </script>
+
+<template>
+  <div class="d-flex">
+    <div
+      class="px-1 d-flex flex-row flex-fill text-start justify-content-between align-items-center"
+    >
+      <span>
+        <span class="me-1 fw-bold">{{ trade.pair }}</span>
+        <small class="text-secondary">(#{{ trade.trade_id }})</small>
+      </span>
+      <small>
+        <DateTimeTZ :date="trade.open_timestamp" :date-only="true" />
+      </small>
+    </div>
+    <TradeProfit class="col-5" :trade="trade" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .card-body {

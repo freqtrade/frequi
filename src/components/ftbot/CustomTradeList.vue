@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { Trade } from '@/types';
+
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+const props = defineProps({
+  trades: { required: true, type: Array as () => Trade[] },
+  title: { default: 'Trades', type: String },
+  stakeCurrency: { required: false, default: '', type: String },
+  activeTrades: { default: false, type: Boolean },
+  showFilter: { default: false, type: Boolean },
+  multiBotView: { default: false, type: Boolean },
+  emptyText: { default: 'No Trades to show.', type: String },
+  stakeCurrencyDecimals: { default: 3, type: Number },
+});
+const botStore = useBotStore();
+const currentPage = ref(1);
+const filterText = ref('');
+const perPage = props.activeTrades ? 200 : 25;
+
+const rows = computed(() => props.trades.length);
+
+const filteredTrades = computed(() => {
+  return props.trades.slice((currentPage.value - 1) * perPage, currentPage.value * perPage);
+});
+
+const tradeClick = (trade) => {
+  botStore.activeBot.setDetailTrade(trade);
+};
+</script>
+
 <template>
   <div class="h-100 overflow-auto p-1">
     <BListGroup id="tradeList">
@@ -32,37 +63,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Trade } from '@/types';
-
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  title: { default: 'Trades', type: String },
-  stakeCurrency: { required: false, default: '', type: String },
-  activeTrades: { default: false, type: Boolean },
-  showFilter: { default: false, type: Boolean },
-  multiBotView: { default: false, type: Boolean },
-  emptyText: { default: 'No Trades to show.', type: String },
-  stakeCurrencyDecimals: { default: 3, type: Number },
-});
-const botStore = useBotStore();
-const currentPage = ref(1);
-const filterText = ref('');
-const perPage = props.activeTrades ? 200 : 25;
-
-const rows = computed(() => props.trades.length);
-
-const filteredTrades = computed(() => {
-  return props.trades.slice((currentPage.value - 1) * perPage, currentPage.value * perPage);
-});
-
-const tradeClick = (trade) => {
-  botStore.activeBot.setDetailTrade(trade);
-};
-</script>
 
 <style lang="scss" scoped>
 .my-05 {

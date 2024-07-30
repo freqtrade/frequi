@@ -1,14 +1,3 @@
-<template>
-  <ECharts
-    v-if="dailyStats.data"
-    ref="dailyChart"
-    :option="dailyChartOptions"
-    :theme="settingsStore.chartTheme"
-    :style="{ height: width * 0.6 + 'px' }"
-    autoresize
-  />
-</template>
-
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
@@ -161,6 +150,17 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
   };
 });
 </script>
+
+<template>
+  <ECharts
+    v-if="dailyStats.data"
+    ref="dailyChart"
+    :option="dailyChartOptions"
+    :theme="settingsStore.chartTheme"
+    :style="{ height: width * 0.6 + 'px' }"
+    autoresize
+  />
+</template>
 
 <style lang="scss" scoped>
 .echarts {

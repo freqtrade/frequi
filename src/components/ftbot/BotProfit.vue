@@ -1,12 +1,3 @@
-<template>
-  <BTable class="text-start" small borderless :items="profitItems" :fields="profitFields">
-    <template #cell(value)="row">
-      <DateTimeTZ v-if="row.item.isTs && row.value" :date="row.value as number"></DateTimeTZ>
-      <template v-else>{{ row.value }}</template>
-    </template>
-  </BTable>
-</template>
-
 <script setup lang="ts">
 import { ProfitInterface } from '@/types';
 import { TableField, TableItem } from 'bootstrap-vue-next';
@@ -125,3 +116,12 @@ const profitItems = computed<TableItem[]>(() => {
   ];
 });
 </script>
+
+<template>
+  <BTable class="text-start" small borderless :items="profitItems" :fields="profitFields">
+    <template #cell(value)="row">
+      <DateTimeTZ v-if="row.item.isTs && row.value" :date="row.value as number"></DateTimeTZ>
+      <template v-else>{{ row.value }}</template>
+    </template>
+  </BTable>
+</template>

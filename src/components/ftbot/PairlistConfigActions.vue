@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+import EditValue from '../general/EditValue.vue';
+const pairlistStore = usePairlistConfigStore();
+</script>
 <template>
   <div class="d-flex flex-column flex-sm-row mb-2 gap-2">
     <BButton
@@ -40,8 +45,3 @@
     </BButton>
   </div>
 </template>
-<script setup lang="ts">
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-import EditValue from '../general/EditValue.vue';
-const pairlistStore = usePairlistConfigStore();
-</script>

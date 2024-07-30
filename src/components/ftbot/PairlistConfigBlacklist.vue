@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+const pairlistStore = usePairlistConfigStore();
+const copyFromConfig = ref('');
+const visible = ref(false);
+
+const configNames = computed(() =>
+  pairlistStore.savedConfigs.filter((c) => c.name !== pairlistStore.config.name).map((c) => c.name),
+);
+</script>
 <template>
   <BCard no-body class="mb-2">
     <template #header>
@@ -48,14 +58,4 @@
     </BCollapse>
   </BCard>
 </template>
-<script setup lang="ts">
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-const pairlistStore = usePairlistConfigStore();
-const copyFromConfig = ref('');
-const visible = ref(false);
-
-const configNames = computed(() =>
-  pairlistStore.savedConfigs.filter((c) => c.name !== pairlistStore.config.name).map((c) => c.name),
-);
-</script>
 <style lang="scss" scoped></style>

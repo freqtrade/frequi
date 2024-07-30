@@ -1,3 +1,55 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { BacktestPayload } from '@/types';
+
+import { useBtStore } from '@/stores/btStore';
+const botStore = useBotStore();
+const btStore = useBtStore();
+
+function clickBacktest() {
+  const btPayload: BacktestPayload = {
+    strategy: btStore.strategy,
+    timerange: btStore.timerange,
+    enable_protections: btStore.enableProtections,
+  };
+  const openTradesInt = parseInt(btStore.maxOpenTrades, 10);
+  if (openTradesInt) {
+    btPayload.max_open_trades = openTradesInt;
+  }
+  if (btStore.stakeAmountUnlimited) {
+    btPayload.stake_amount = 'unlimited';
+  } else {
+    const stakeAmountLoc = Number(btStore.stakeAmount);
+    if (stakeAmountLoc) {
+      btPayload.stake_amount = stakeAmountLoc.toString();
+    }
+  }
+
+  const startingCapitalLoc = Number(btStore.startingCapital);
+  if (startingCapitalLoc) {
+    btPayload.dry_run_wallet = startingCapitalLoc;
+  }
+
+  if (btStore.selectedTimeframe) {
+    btPayload.timeframe = btStore.selectedTimeframe;
+  }
+  if (btStore.selectedDetailTimeframe) {
+    btPayload.timeframe_detail = btStore.selectedDetailTimeframe;
+  }
+  if (!btStore.allowCache) {
+    btPayload.backtest_cache = 'none';
+  }
+  if (btStore.freqAI.enabled) {
+    btPayload.freqaimodel = btStore.freqAI.model;
+    if (btStore.freqAI.identifier !== '') {
+      btPayload.freqai = { identifier: btStore.freqAI.identifier };
+    }
+  }
+
+  botStore.activeBot.startBacktest(btPayload);
+}
+</script>
+
 <template>
   <div class="mb-2">
     <span>Strategy</span>
@@ -198,57 +250,5 @@
     >
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { BacktestPayload } from '@/types';
-
-import { useBtStore } from '@/stores/btStore';
-const botStore = useBotStore();
-const btStore = useBtStore();
-
-function clickBacktest() {
-  const btPayload: BacktestPayload = {
-    strategy: btStore.strategy,
-    timerange: btStore.timerange,
-    enable_protections: btStore.enableProtections,
-  };
-  const openTradesInt = parseInt(btStore.maxOpenTrades, 10);
-  if (openTradesInt) {
-    btPayload.max_open_trades = openTradesInt;
-  }
-  if (btStore.stakeAmountUnlimited) {
-    btPayload.stake_amount = 'unlimited';
-  } else {
-    const stakeAmountLoc = Number(btStore.stakeAmount);
-    if (stakeAmountLoc) {
-      btPayload.stake_amount = stakeAmountLoc.toString();
-    }
-  }
-
-  const startingCapitalLoc = Number(btStore.startingCapital);
-  if (startingCapitalLoc) {
-    btPayload.dry_run_wallet = startingCapitalLoc;
-  }
-
-  if (btStore.selectedTimeframe) {
-    btPayload.timeframe = btStore.selectedTimeframe;
-  }
-  if (btStore.selectedDetailTimeframe) {
-    btPayload.timeframe_detail = btStore.selectedDetailTimeframe;
-  }
-  if (!btStore.allowCache) {
-    btPayload.backtest_cache = 'none';
-  }
-  if (btStore.freqAI.enabled) {
-    btPayload.freqaimodel = btStore.freqAI.model;
-    if (btStore.freqAI.identifier !== '') {
-      btPayload.freqai = { identifier: btStore.freqAI.identifier };
-    }
-  }
-
-  botStore.activeBot.startBacktest(btPayload);
-}
-</script>
 
 <style scoped></style>

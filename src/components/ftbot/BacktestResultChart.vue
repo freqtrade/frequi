@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+
+import { ChartSliderPosition, Trade } from '@/types';
+
+defineProps({
+  timeframe: { required: true, type: String },
+  strategy: { required: true, type: String },
+  freqaiModel: { required: false, default: undefined, type: String },
+  timerange: { required: true, type: String },
+  pairlist: { required: true, type: Array as () => string[] },
+  trades: { required: true, type: Array as () => Trade[] },
+});
+const botStore = useBotStore();
+const isBarVisible = ref({ right: true, left: true });
+const sliderPosition = ref<ChartSliderPosition>();
+
+const navigateChartToTrade = (trade: Trade) => {
+  sliderPosition.value = {
+    startValue: trade.open_timestamp,
+    endValue: trade.close_timestamp,
+  };
+};
+</script>
+
 <template>
   <div>
     <div class="d-flex flex-row mb-1 align-items-center">
@@ -69,31 +94,6 @@
     </BCard>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-import { ChartSliderPosition, Trade } from '@/types';
-
-defineProps({
-  timeframe: { required: true, type: String },
-  strategy: { required: true, type: String },
-  freqaiModel: { required: false, default: undefined, type: String },
-  timerange: { required: true, type: String },
-  pairlist: { required: true, type: Array as () => string[] },
-  trades: { required: true, type: Array as () => Trade[] },
-});
-const botStore = useBotStore();
-const isBarVisible = ref({ right: true, left: true });
-const sliderPosition = ref<ChartSliderPosition>();
-
-const navigateChartToTrade = (trade: Trade) => {
-  sliderPosition.value = {
-    startValue: trade.open_timestamp,
-    endValue: trade.close_timestamp,
-  };
-};
-</script>
 
 <style lang="scss" scoped>
 .candle-chart-container {

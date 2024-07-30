@@ -1,41 +1,3 @@
-<template>
-  <div>
-    <BFormGroup
-      label-for="trade-filter"
-      class="mb-2 ms-2"
-      :class="{
-        'me-4': backtestMode,
-        'me-2': !backtestMode,
-      }"
-    >
-      <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
-    </BFormGroup>
-    <BListGroup>
-      <BListGroupItem
-        v-for="comb in combinedPairList"
-        :key="comb.pair"
-        button
-        class="d-flex justify-content-between align-items-center py-1"
-        :active="comb.pair === botStore.activeBot.selectedPair"
-        :title="`${comb.pair} - ${comb.tradeCount} trades`"
-        @click="botStore.activeBot.selectedPair = comb.pair"
-      >
-        <div>
-          {{ comb.pair }}
-          <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
-        </div>
-
-        <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />
-        <ProfitPill
-          v-if="backtestMode && comb.tradeCount > 0"
-          :profit-ratio="comb.profit"
-          :stake-currency="botStore.activeBot.stakeCurrency"
-        />
-      </BListGroupItem>
-    </BListGroup>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Lock, Trade } from '@/types';
 
@@ -130,6 +92,44 @@ const combinedPairList = computed(() => {
   return comb;
 });
 </script>
+
+<template>
+  <div>
+    <BFormGroup
+      label-for="trade-filter"
+      class="mb-2 ms-2"
+      :class="{
+        'me-4': backtestMode,
+        'me-2': !backtestMode,
+      }"
+    >
+      <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
+    </BFormGroup>
+    <BListGroup>
+      <BListGroupItem
+        v-for="comb in combinedPairList"
+        :key="comb.pair"
+        button
+        class="d-flex justify-content-between align-items-center py-1"
+        :active="comb.pair === botStore.activeBot.selectedPair"
+        :title="`${comb.pair} - ${comb.tradeCount} trades`"
+        @click="botStore.activeBot.selectedPair = comb.pair"
+      >
+        <div>
+          {{ comb.pair }}
+          <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
+        </div>
+
+        <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />
+        <ProfitPill
+          v-if="backtestMode && comb.tradeCount > 0"
+          :profit-ratio="comb.profit"
+          :stake-currency="botStore.activeBot.stakeCurrency"
+        />
+      </BListGroupItem>
+    </BListGroup>
+  </div>
+</template>
 
 <style scoped>
 .list-group {

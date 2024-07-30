@@ -1,3 +1,74 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+import PairlistConfigItem from './PairlistConfigItem.vue';
+import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
+import PairlistConfigActions from './PairlistConfigActions.vue';
+import { Pairlist } from '@/types';
+import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
+import ExchangeSelect from './ExchangeSelect.vue';
+
+const botStore = useBotStore();
+const pairlistStore = usePairlistConfigStore();
+
+const availablePairlists = ref<Pairlist[]>([]);
+const pairlistConfigsEl = ref<HTMLElement | null>(null);
+const availablePairlistsEl = ref<HTMLElement | null>(null);
+const selectedView = ref<'Config' | 'Results'>('Config');
+
+const configEmpty = computed(() => {
+  return pairlistStore.config.pairlists.length == 0;
+});
+
+useSortable(availablePairlistsEl, availablePairlists.value, {
+  group: {
+    name: 'configurator',
+    pull: 'clone',
+    put: false,
+  },
+  sort: false,
+  filter: '.no-drag',
+  dragClass: 'dragging',
+});
+
+useSortable(pairlistConfigsEl, pairlistStore.config.pairlists, {
+  handle: '.handle',
+  group: 'configurator',
+  onUpdate: async (e) => {
+    moveArrayElement(pairlistStore.config.pairlists, e.oldIndex, e.newIndex);
+  },
+  onAdd: (e) => {
+    const pairlist = availablePairlists.value[e.oldIndex];
+    pairlistStore.addToConfig(pairlist, e.newIndex);
+    // quick fix from: https://github.com/SortableJS/Sortable/issues/1515
+    e.clone.replaceWith(e.item);
+    e.clone.remove();
+  },
+});
+
+onMounted(async () => {
+  availablePairlists.value = (await botStore.activeBot.getPairlists()).pairlists.sort((a, b) =>
+    // Sort by is_pairlist_generator (by name), then by name.
+    // TODO: this might need to be improved
+    a.is_pairlist_generator === b.is_pairlist_generator
+      ? a.name.localeCompare(b.name)
+      : a.is_pairlist_generator
+        ? -1
+        : 1,
+  );
+  pairlistStore.selectOrCreateConfig(
+    pairlistStore.isSavedConfig(pairlistStore.configName) ? pairlistStore.configName : 'default',
+  );
+});
+
+watch(
+  () => pairlistStore.whitelist,
+  () => {
+    selectedView.value = 'Results';
+  },
+);
+</script>
+
 <template>
   <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-row">
     <BListGroup ref="availablePairlistsEl" class="available-pairlists">
@@ -89,77 +160,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-import PairlistConfigItem from './PairlistConfigItem.vue';
-import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
-import PairlistConfigActions from './PairlistConfigActions.vue';
-import { Pairlist } from '@/types';
-import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
-import ExchangeSelect from './ExchangeSelect.vue';
-
-const botStore = useBotStore();
-const pairlistStore = usePairlistConfigStore();
-
-const availablePairlists = ref<Pairlist[]>([]);
-const pairlistConfigsEl = ref<HTMLElement | null>(null);
-const availablePairlistsEl = ref<HTMLElement | null>(null);
-const selectedView = ref<'Config' | 'Results'>('Config');
-
-const configEmpty = computed(() => {
-  return pairlistStore.config.pairlists.length == 0;
-});
-
-useSortable(availablePairlistsEl, availablePairlists.value, {
-  group: {
-    name: 'configurator',
-    pull: 'clone',
-    put: false,
-  },
-  sort: false,
-  filter: '.no-drag',
-  dragClass: 'dragging',
-});
-
-useSortable(pairlistConfigsEl, pairlistStore.config.pairlists, {
-  handle: '.handle',
-  group: 'configurator',
-  onUpdate: async (e) => {
-    moveArrayElement(pairlistStore.config.pairlists, e.oldIndex, e.newIndex);
-  },
-  onAdd: (e) => {
-    const pairlist = availablePairlists.value[e.oldIndex];
-    pairlistStore.addToConfig(pairlist, e.newIndex);
-    // quick fix from: https://github.com/SortableJS/Sortable/issues/1515
-    e.clone.replaceWith(e.item);
-    e.clone.remove();
-  },
-});
-
-onMounted(async () => {
-  availablePairlists.value = (await botStore.activeBot.getPairlists()).pairlists.sort((a, b) =>
-    // Sort by is_pairlist_generator (by name), then by name.
-    // TODO: this might need to be improved
-    a.is_pairlist_generator === b.is_pairlist_generator
-      ? a.name.localeCompare(b.name)
-      : a.is_pairlist_generator
-        ? -1
-        : 1,
-  );
-  pairlistStore.selectOrCreateConfig(
-    pairlistStore.isSavedConfig(pairlistStore.configName) ? pairlistStore.configName : 'default',
-  );
-});
-
-watch(
-  () => pairlistStore.whitelist,
-  () => {
-    selectedView.value = 'Results';
-  },
-);
-</script>
 
 <style lang="scss" scoped>
 .pairlist {

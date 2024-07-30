@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { BacktestHistoryEntry } from '@/types';
+import InfoBox from '../general/InfoBox.vue';
+
+const botStore = useBotStore();
+const msgBox = ref<typeof MessageBox>();
+const filterText = ref('');
+const filterTextDebounced = refDebounced(filterText, 350, { maxWait: 1000 });
+
+onMounted(() => {
+  botStore.activeBot.getBacktestHistory();
+});
+
+function deleteBacktestResult(result: BacktestHistoryEntry) {
+  const msg: MsgBoxObject = {
+    title: 'Delete result',
+    message: `Delete result ${result.filename} from disk?`,
+    accept: () => {
+      botStore.activeBot.deleteBacktestHistoryResult(result);
+    },
+  };
+  msgBox.value?.show(msg);
+}
+</script>
+
 <template>
   <div>
     <button
@@ -103,33 +130,6 @@
   </div>
   <MessageBox ref="msgBox" />
 </template>
-
-<script setup lang="ts">
-import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { BacktestHistoryEntry } from '@/types';
-import InfoBox from '../general/InfoBox.vue';
-
-const botStore = useBotStore();
-const msgBox = ref<typeof MessageBox>();
-const filterText = ref('');
-const filterTextDebounced = refDebounced(filterText, 350, { maxWait: 1000 });
-
-onMounted(() => {
-  botStore.activeBot.getBacktestHistory();
-});
-
-function deleteBacktestResult(result: BacktestHistoryEntry) {
-  const msg: MsgBoxObject = {
-    title: 'Delete result',
-    message: `Delete result ${result.filename} from disk?`,
-    accept: () => {
-      botStore.activeBot.deleteBacktestHistoryResult(result);
-    },
-  };
-  msgBox.value?.show(msg);
-}
-</script>
 
 <style lang="scss" scoped>
 .table-rounded-corners {

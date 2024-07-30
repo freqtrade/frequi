@@ -1,26 +1,3 @@
-<template>
-  <div class="w-100 d-flex">
-    <BFormSelect
-      id="exchange-select"
-      v-model="exchangeModel.exchange"
-      size="sm"
-      :options="exchangeList"
-    >
-    </BFormSelect>
-    <BFormSelect
-      id="tradeMode-select"
-      v-model="exchangeModel.trade_mode"
-      size="sm"
-      :options="tradeModes"
-      :disabled="tradeModes.length < 2"
-    >
-    </BFormSelect>
-    <BButton class="ms-2 no-min-w" size="sm" @click="botStore.activeBot.getExchangeList">
-      <i-mdi-refresh />
-    </BButton>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
@@ -78,3 +55,26 @@ onMounted(() => {
   }
 });
 </script>
+
+<template>
+  <div class="w-100 d-flex">
+    <BFormSelect
+      id="exchange-select"
+      v-model="exchangeModel.exchange"
+      size="sm"
+      :options="exchangeList"
+    >
+    </BFormSelect>
+    <BFormSelect
+      id="tradeMode-select"
+      v-model="exchangeModel.trade_mode"
+      size="sm"
+      :options="tradeModes"
+      :disabled="tradeModes.length < 2"
+    >
+    </BFormSelect>
+    <BButton class="ms-2 no-min-w" size="sm" @click="botStore.activeBot.getExchangeList">
+      <i-mdi-refresh />
+    </BButton>
+  </div>
+</template>

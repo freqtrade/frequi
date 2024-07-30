@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { StrategyBacktestResult } from '@/types';
+
+import { TableField } from 'bootstrap-vue-next';
+
+const props = defineProps({
+  backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
+});
+
+const backtestResultStats = computed(() => {
+  const tmp = generateBacktestMetricRows(props.backtestResult);
+  return formatObjectForTable({ value: tmp }, 'metric');
+});
+
+const backtestResultSettings = computed(() => {
+  // Transpose Result into readable format
+  const tmp = generateBacktestSettingRows(props.backtestResult);
+
+  return formatObjectForTable({ value: tmp }, 'setting');
+});
+const backtestResultFields: TableField[] = [
+  { key: 'metric', label: 'Metric' },
+  { key: 'value', label: 'Value' },
+];
+
+const backtestsettingFields: TableField[] = [
+  { key: 'setting', label: 'Setting' },
+  { key: 'value', label: 'Value' },
+];
+</script>
+
 <template>
   <div class="px-0 mw-100">
     <div class="d-flex justify-content-center">
@@ -71,36 +102,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { StrategyBacktestResult } from '@/types';
-
-import { TableField } from 'bootstrap-vue-next';
-
-const props = defineProps({
-  backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
-});
-
-const backtestResultStats = computed(() => {
-  const tmp = generateBacktestMetricRows(props.backtestResult);
-  return formatObjectForTable({ value: tmp }, 'metric');
-});
-
-const backtestResultSettings = computed(() => {
-  // Transpose Result into readable format
-  const tmp = generateBacktestSettingRows(props.backtestResult);
-
-  return formatObjectForTable({ value: tmp }, 'setting');
-});
-const backtestResultFields: TableField[] = [
-  { key: 'metric', label: 'Metric' },
-  { key: 'value', label: 'Value' },
-];
-
-const backtestsettingFields: TableField[] = [
-  { key: 'setting', label: 'Setting' },
-  { key: 'value', label: 'Value' },
-];
-</script>
 
 <style lang="scss" scoped></style>

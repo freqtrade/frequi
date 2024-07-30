@@ -1,3 +1,92 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { ForceEnterPayload, OrderSides } from '@/types';
+
+const props = defineProps({
+  pair: { type: String, default: '' },
+  positionIncrease: { type: Boolean, default: false },
+});
+const model = defineModel<boolean>();
+const botStore = useBotStore();
+
+const form = ref<HTMLFormElement>();
+const selectedPair = ref('');
+const price = ref<number | undefined>(undefined);
+const stakeAmount = ref<number | undefined>(undefined);
+const leverage = ref<number | undefined>(undefined);
+
+const ordertype = ref('');
+const orderSide = ref<OrderSides>(OrderSides.long);
+const enterTag = ref('force_entry');
+
+const orderTypeOptions = [
+  { value: 'market', text: 'Market' },
+  { value: 'limit', text: 'Limit' },
+];
+const orderSideOptions = [
+  { value: 'long', text: 'Long' },
+  { value: 'short', text: 'Short' },
+];
+
+const checkFormValidity = () => {
+  const valid = form.value?.checkValidity();
+
+  return valid;
+};
+
+const handleSubmit = async () => {
+  // Exit when the form isn't valid
+  if (!checkFormValidity()) {
+    return;
+  }
+
+  // call forceentry
+  const payload: ForceEnterPayload = { pair: selectedPair.value };
+  if (price.value) {
+    payload.price = Number(price.value);
+  }
+  if (ordertype.value) {
+    payload.ordertype = ordertype.value;
+  }
+  if (stakeAmount.value) {
+    payload.stakeamount = stakeAmount.value;
+  }
+  if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
+    payload.side = orderSide.value;
+  }
+  if (botStore.activeBot.botApiVersion >= 2.16 && enterTag.value) {
+    payload.entry_tag = enterTag.value;
+  }
+
+  if (leverage.value) {
+    payload.leverage = leverage.value;
+  }
+  botStore.activeBot.forceentry(payload);
+  await nextTick();
+  model.value = false;
+};
+const resetForm = () => {
+  console.log('resetForm');
+  selectedPair.value = props.pair;
+  price.value = undefined;
+  stakeAmount.value = undefined;
+  ordertype.value =
+    botStore.activeBot.botState?.order_types?.forcebuy ||
+    botStore.activeBot.botState?.order_types?.force_entry ||
+    botStore.activeBot.botState?.order_types?.buy ||
+    botStore.activeBot.botState?.order_types?.entry ||
+    'limit';
+};
+
+const handleEntry = () => {
+  // Trigger submit handler
+  handleSubmit();
+};
+const inputSelect = (bvModalEvt) => {
+  bvModalEvt.srcElement?.select();
+};
+</script>
+
 <template>
   <BModal
     id="forceentry-modal"
@@ -117,92 +206,3 @@
     </form>
   </BModal>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { ForceEnterPayload, OrderSides } from '@/types';
-
-const props = defineProps({
-  pair: { type: String, default: '' },
-  positionIncrease: { type: Boolean, default: false },
-});
-const model = defineModel<boolean>();
-const botStore = useBotStore();
-
-const form = ref<HTMLFormElement>();
-const selectedPair = ref('');
-const price = ref<number | undefined>(undefined);
-const stakeAmount = ref<number | undefined>(undefined);
-const leverage = ref<number | undefined>(undefined);
-
-const ordertype = ref('');
-const orderSide = ref<OrderSides>(OrderSides.long);
-const enterTag = ref('force_entry');
-
-const orderTypeOptions = [
-  { value: 'market', text: 'Market' },
-  { value: 'limit', text: 'Limit' },
-];
-const orderSideOptions = [
-  { value: 'long', text: 'Long' },
-  { value: 'short', text: 'Short' },
-];
-
-const checkFormValidity = () => {
-  const valid = form.value?.checkValidity();
-
-  return valid;
-};
-
-const handleSubmit = async () => {
-  // Exit when the form isn't valid
-  if (!checkFormValidity()) {
-    return;
-  }
-
-  // call forceentry
-  const payload: ForceEnterPayload = { pair: selectedPair.value };
-  if (price.value) {
-    payload.price = Number(price.value);
-  }
-  if (ordertype.value) {
-    payload.ordertype = ordertype.value;
-  }
-  if (stakeAmount.value) {
-    payload.stakeamount = stakeAmount.value;
-  }
-  if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
-    payload.side = orderSide.value;
-  }
-  if (botStore.activeBot.botApiVersion >= 2.16 && enterTag.value) {
-    payload.entry_tag = enterTag.value;
-  }
-
-  if (leverage.value) {
-    payload.leverage = leverage.value;
-  }
-  botStore.activeBot.forceentry(payload);
-  await nextTick();
-  model.value = false;
-};
-const resetForm = () => {
-  console.log('resetForm');
-  selectedPair.value = props.pair;
-  price.value = undefined;
-  stakeAmount.value = undefined;
-  ordertype.value =
-    botStore.activeBot.botState?.order_types?.forcebuy ||
-    botStore.activeBot.botState?.order_types?.force_entry ||
-    botStore.activeBot.botState?.order_types?.buy ||
-    botStore.activeBot.botState?.order_types?.entry ||
-    'limit';
-};
-
-const handleEntry = () => {
-  // Trigger submit handler
-  handleSubmit();
-};
-const inputSelect = (bvModalEvt) => {
-  bvModalEvt.srcElement?.select();
-};
-</script>

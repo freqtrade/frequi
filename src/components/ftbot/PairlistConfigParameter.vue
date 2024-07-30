@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { PairlistParameter, PairlistParamType } from '@/types';
+
+defineProps<{
+  param: PairlistParameter;
+}>();
+
+// TODO: type should really be PairlistParamValue
+const paramValue = defineModel<any>();
+</script>
+
 <template>
   <BFormGroup label-cols="4" label-size="md" class="pb-1 text-start" :description="param.help">
     <BFormInput
@@ -22,14 +33,3 @@
     </template>
   </BFormGroup>
 </template>
-
-<script setup lang="ts">
-import { PairlistParameter, PairlistParamType } from '@/types';
-
-defineProps<{
-  param: PairlistParameter;
-}>();
-
-// TODO: type should really be PairlistParamValue
-const paramValue = defineModel<any>();
-</script>

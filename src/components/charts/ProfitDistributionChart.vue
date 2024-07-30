@@ -1,29 +1,3 @@
-<template>
-  <div class="d-flex flex-column h-100 position-relative">
-    <div class="flex-grow-1">
-      <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
-    </div>
-    <BFormGroup
-      class="z-2"
-      :class="showTitle ? 'ms-5 ps-5' : 'position-absolute'"
-      label="Bins"
-      style="width: 33%; min-width: 12rem"
-      label-for="input-bins"
-      label-cols="6"
-      content-cols="6"
-      size="sm"
-    >
-      <BFormSelect
-        id="input-bins"
-        v-model="settingsStore.profitDistributionBins"
-        size="sm"
-        class="mt-1"
-        :options="binOptions"
-      ></BFormSelect>
-    </BFormGroup>
-  </div>
-</template>
-
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 import { EChartsOption } from 'echarts';
@@ -142,6 +116,32 @@ const chartOptions = computed((): EChartsOption => {
   return chartOptionsLoc;
 });
 </script>
+
+<template>
+  <div class="d-flex flex-column h-100 position-relative">
+    <div class="flex-grow-1">
+      <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
+    </div>
+    <BFormGroup
+      class="z-2"
+      :class="showTitle ? 'ms-5 ps-5' : 'position-absolute'"
+      label="Bins"
+      style="width: 33%; min-width: 12rem"
+      label-for="input-bins"
+      label-cols="6"
+      content-cols="6"
+      size="sm"
+    >
+      <BFormSelect
+        id="input-bins"
+        v-model="settingsStore.profitDistributionBins"
+        size="sm"
+        class="mt-1"
+        :options="binOptions"
+      ></BFormSelect>
+    </BFormGroup>
+  </div>
+</template>
 
 <style scoped>
 .echarts {

@@ -1,65 +1,3 @@
-<template>
-  <div>
-    <div class="mb-2">
-      <label class="me-auto h3">Balance</label>
-      <div class="float-end d-flex flex-row">
-        <BButton
-          v-if="canUseBotBalance"
-          size="sm"
-          :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
-          @click="showBotOnly = !showBotOnly"
-        >
-          <i-mdi-robot v-if="showBotOnly" />
-          <i-mdi-bank v-else />
-        </BButton>
-        <BButton
-          size="sm"
-          :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
-          @click="hideSmallBalances = !hideSmallBalances"
-        >
-          <i-mdi-eye-off v-if="hideSmallBalances" />
-          <i-mdi-eye v-else />
-        </BButton>
-
-        <BButton class="float-end" size="sm" @click="refreshBalance">
-          <i-mdi-refresh />
-        </BButton>
-      </div>
-    </div>
-    <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />
-    <div>
-      <p v-if="botStore.activeBot.balance.note">
-        <strong>{{ botStore.activeBot.balance.note }}</strong>
-      </p>
-      <BTable class="table-sm" :items="balanceCurrencies" :fields="tableFields">
-        <template #custom-foot>
-          <td class="pt-1"><strong>Total</strong></td>
-          <td class="pt-1">
-            <span
-              class="font-italic"
-              :title="`Increase over initial capital of ${formatCurrency(
-                botStore.activeBot.balance.starting_capital,
-              )} ${botStore.activeBot.balance.stake}`"
-            >
-              {{ formatPercent(botStore.activeBot.balance.starting_capital_ratio) }}
-            </span>
-          </td>
-          <!-- this is a computed prop that adds up all the expenses in the visible rows -->
-          <td class="pt-1">
-            <strong>
-              {{
-                showBotOnly && canUseBotBalance
-                  ? formatCurrency(botStore.activeBot.balance.total_bot)
-                  : formatCurrency(botStore.activeBot.balance.total)
-              }}
-            </strong>
-          </td>
-        </template>
-      </BTable>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { BalanceValues } from '@/types';
@@ -132,3 +70,65 @@ onMounted(() => {
   refreshBalance();
 });
 </script>
+
+<template>
+  <div>
+    <div class="mb-2">
+      <label class="me-auto h3">Balance</label>
+      <div class="float-end d-flex flex-row">
+        <BButton
+          v-if="canUseBotBalance"
+          size="sm"
+          :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
+          @click="showBotOnly = !showBotOnly"
+        >
+          <i-mdi-robot v-if="showBotOnly" />
+          <i-mdi-bank v-else />
+        </BButton>
+        <BButton
+          size="sm"
+          :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
+          @click="hideSmallBalances = !hideSmallBalances"
+        >
+          <i-mdi-eye-off v-if="hideSmallBalances" />
+          <i-mdi-eye v-else />
+        </BButton>
+
+        <BButton class="float-end" size="sm" @click="refreshBalance">
+          <i-mdi-refresh />
+        </BButton>
+      </div>
+    </div>
+    <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />
+    <div>
+      <p v-if="botStore.activeBot.balance.note">
+        <strong>{{ botStore.activeBot.balance.note }}</strong>
+      </p>
+      <BTable class="table-sm" :items="balanceCurrencies" :fields="tableFields">
+        <template #custom-foot>
+          <td class="pt-1"><strong>Total</strong></td>
+          <td class="pt-1">
+            <span
+              class="font-italic"
+              :title="`Increase over initial capital of ${formatCurrency(
+                botStore.activeBot.balance.starting_capital,
+              )} ${botStore.activeBot.balance.stake}`"
+            >
+              {{ formatPercent(botStore.activeBot.balance.starting_capital_ratio) }}
+            </span>
+          </td>
+          <!-- this is a computed prop that adds up all the expenses in the visible rows -->
+          <td class="pt-1">
+            <strong>
+              {{
+                showBotOnly && canUseBotBalance
+                  ? formatCurrency(botStore.activeBot.balance.total_bot)
+                  : formatCurrency(botStore.activeBot.balance.total)
+              }}
+            </strong>
+          </td>
+        </template>
+      </BTable>
+    </div>
+  </div>
+</template>

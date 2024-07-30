@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { usePairlistConfigStore } from '@/stores/pairlistConfig';
+import ChartView from '@/views/ChartsView.vue';
+
+const botStore = useBotStore();
+const pairlistStore = usePairlistConfigStore();
+
+const whitelist = ref<{ enabled: boolean; pair: string }[]>([]);
+
+watch(
+  () => pairlistStore.whitelist,
+  () => {
+    whitelist.value = pairlistStore.whitelist.map((p) => {
+      return {
+        enabled: true,
+        pair: p,
+      };
+    });
+  },
+);
+</script>
+
 <template>
   <div>
     <div v-if="whitelist.length > 0" class="d-flex flex-column flex-lg-row px-2">
@@ -38,26 +61,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-import ChartView from '@/views/ChartsView.vue';
-
-const botStore = useBotStore();
-const pairlistStore = usePairlistConfigStore();
-
-const whitelist = ref<{ enabled: boolean; pair: string }[]>([]);
-
-watch(
-  () => pairlistStore.whitelist,
-  () => {
-    whitelist.value = pairlistStore.whitelist.map((p) => {
-      return {
-        enabled: true,
-        pair: p,
-      };
-    });
-  },
-);
-</script>

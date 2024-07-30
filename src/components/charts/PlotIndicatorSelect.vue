@@ -1,21 +1,3 @@
-<template>
-  <div class="d-flex flex-row">
-    <BFormGroup class="flex-grow-1" :label="label" label-for="indicatorSelector">
-      <VSelect
-        v-model="selAvailableIndicator"
-        :options="columns"
-        size="sm"
-        :clearable="false"
-        @option:selected="emitIndicator"
-      >
-      </VSelect>
-    </BFormGroup>
-    <BButton size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
-      <i-mdi-close />
-    </BButton>
-  </div>
-</template>
-
 <script setup lang="ts">
 import VSelect from 'vue-select';
 
@@ -51,5 +33,23 @@ watch(
   },
 );
 </script>
+
+<template>
+  <div class="d-flex flex-row">
+    <BFormGroup class="flex-grow-1" :label="label" label-for="indicatorSelector">
+      <VSelect
+        v-model="selAvailableIndicator"
+        :options="columns"
+        size="sm"
+        :clearable="false"
+        @option:selected="emitIndicator"
+      >
+      </VSelect>
+    </BFormGroup>
+    <BButton size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
+      <i-mdi-close />
+    </BButton>
+  </div>
+</template>
 
 <style scoped></style>
