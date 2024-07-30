@@ -1,22 +1,3 @@
-<template>
-  <div>
-    <BButton @click="openLoginModal()"><i-mdi-login class="me-1" />{{ loginText }}</BButton>
-    <BModal
-      id="modal-prevent-closing"
-      v-model="loginViewOpen"
-      title="Login to your bot"
-      @ok="handleOk"
-    >
-      <BotLogin
-        ref="loginForm"
-        in-modal
-        :existing-auth="loginInfo"
-        @login-result="handleLoginResult"
-      />
-    </BModal>
-  </div>
-</template>
-
 <script setup lang="ts">
 import BotLogin from '@/components/BotLogin.vue';
 import { AuthStorageWithBotId } from '@/types';
@@ -47,5 +28,24 @@ defineExpose({
   openLoginModal,
 });
 </script>
+
+<template>
+  <div>
+    <BButton @click="openLoginModal()"><i-mdi-login class="me-1" />{{ loginText }}</BButton>
+    <BModal
+      id="modal-prevent-closing"
+      v-model="loginViewOpen"
+      title="Login to your bot"
+      @ok="handleOk"
+    >
+      <BotLogin
+        ref="loginForm"
+        in-modal
+        :existing-auth="loginInfo"
+        @login-result="handleLoginResult"
+      />
+    </BModal>
+  </div>
+</template>
 
 <style scoped></style>

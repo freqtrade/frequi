@@ -1,45 +1,3 @@
-<template>
-  <div>
-    <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
-      <BFormGroup class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
-        <BFormSelect
-          id="plotTypeSelector"
-          v-model="graphType"
-          size="sm"
-          :options="availableGraphTypes"
-        >
-        </BFormSelect>
-      </BFormGroup>
-      <BFormGroup label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
-        <BInputGroup>
-          <template #prepend>
-            <BFormInput
-              v-model="selColor"
-              type="color"
-              size="sm"
-              class="p-0"
-              style="max-width: 29px"
-            ></BFormInput>
-          </template>
-          <BFormInput id="colsel" v-model="selColor" size="sm" class="flex-grow-1"> </BFormInput>
-          <template #append>
-            <BButton variant="primary" size="sm" @click="newColor">
-              <i-mdi-dice-multiple />
-            </BButton>
-          </template>
-        </BInputGroup>
-      </BFormGroup>
-    </div>
-    <PlotIndicatorSelect
-      v-if="graphType === ChartType.line"
-      v-model="fillTo"
-      :columns="columns"
-      class="mt-1"
-      label="Area chart - Fill to (leave empty for line chart)"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ChartType, IndicatorConfig } from '@/types';
 
@@ -110,5 +68,47 @@ watchDebounced(
   },
 );
 </script>
+
+<template>
+  <div>
+    <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
+      <BFormGroup class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
+        <BFormSelect
+          id="plotTypeSelector"
+          v-model="graphType"
+          size="sm"
+          :options="availableGraphTypes"
+        >
+        </BFormSelect>
+      </BFormGroup>
+      <BFormGroup label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
+        <BInputGroup>
+          <template #prepend>
+            <BFormInput
+              v-model="selColor"
+              type="color"
+              size="sm"
+              class="p-0"
+              style="max-width: 29px"
+            ></BFormInput>
+          </template>
+          <BFormInput id="colsel" v-model="selColor" size="sm" class="flex-grow-1"> </BFormInput>
+          <template #append>
+            <BButton variant="primary" size="sm" @click="newColor">
+              <i-mdi-dice-multiple />
+            </BButton>
+          </template>
+        </BInputGroup>
+      </BFormGroup>
+    </div>
+    <PlotIndicatorSelect
+      v-if="graphType === ChartType.line"
+      v-model="fillTo"
+      :columns="columns"
+      class="mt-1"
+      label="Area chart - Fill to (leave empty for line chart)"
+    />
+  </div>
+</template>
 
 <style scoped></style>

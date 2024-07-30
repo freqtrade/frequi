@@ -1,167 +1,3 @@
-<template>
-  <div v-if="columns">
-    <BFormGroup label="Plot config name" label-for="idPlotConfigName">
-      <PlotConfigSelect allow-edit></PlotConfigSelect>
-    </BFormGroup>
-    <div class="col-mb-3">
-      <hr />
-      <BFormGroup label="Target Plot" label-for="FieldSel">
-        <EditValue
-          v-model="selSubPlot"
-          :allow-edit="!isMainPlot"
-          allow-add
-          editable-name="plot configuration"
-          align-vertical
-          @new="addSubplot"
-          @delete="deleteSubplot"
-          @rename="renameSubplot"
-        >
-          <BFormSelect id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
-          </BFormSelect>
-        </EditValue>
-      </BFormGroup>
-    </div>
-    <hr />
-    <div>
-      <BFormGroup label="Indicators in this plot" label-for="selectedIndicators">
-        <BFormSelect
-          id="selectedIndicators"
-          v-model="selIndicatorName"
-          :disabled="addNewIndicator"
-          :options="usedColumns"
-          :select-size="4"
-        >
-        </BFormSelect>
-      </BFormGroup>
-    </div>
-    <div class="d-flex flex-row mt-1 gap-1">
-      <BButton
-        variant="secondary"
-        title="Remove indicator to plot"
-        size="sm"
-        :disabled="!selIndicatorName"
-        class="col"
-        @click="removeIndicator"
-      >
-        Remove indicator
-      </BButton>
-      <BButton
-        variant="secondary"
-        title="Load indicator config from template"
-        size="sm"
-        @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
-      >
-        Indicator from template
-      </BButton>
-      <BButton
-        variant="primary"
-        title="Add indicator to plot"
-        size="sm"
-        class="col"
-        :disabled="addNewIndicator"
-        @click="clickAddNewIndicator"
-      >
-        Add new indicator
-      </BButton>
-    </div>
-
-    <PlotIndicatorSelect
-      v-if="addNewIndicator"
-      :columns="columns"
-      class="mt-1"
-      label="Select indicator to add"
-      @indicator-selected="addNewIndicatorSelected"
-    />
-
-    <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" :columns="columns" />
-
-    <PlotIndicator
-      v-if="selIndicatorName && !fromPlotTemplateVisible"
-      v-model="selIndicator"
-      class="mt-1"
-      :columns="columns"
-    />
-    <hr />
-
-    <div class="d-flex flex-row">
-      <BButton
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
-        :disabled="addNewIndicator"
-        title="Reset to last saved configuration"
-        @click="loadPlotConfig"
-        >Reset</BButton
-      >
-
-      <!--
-        Does Resetting a config to "nothing" make sense, or can this be done via "delete / create"?
-        <b-button
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
-        :disabled="addNewIndicator"
-        title="Start with empty configuration"
-        @click="clearConfig"
-        >Reset</b-button
-      > -->
-      <BButton
-        :disabled="
-          (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
-          !botStore.activeBot.isBotOnline ||
-          addNewIndicator
-        "
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
-        @click="loadPlotConfigFromStrategy"
-      >
-        From strategy
-      </BButton>
-      <BButton
-        id="showButton"
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
-        :disabled="addNewIndicator"
-        title="Show configuration for easy transfer to a strategy"
-        @click="showConfig = !showConfig"
-        >{{ showConfig ? 'Hide' : 'Show' }}</BButton
-      >
-
-      <BButton
-        class="ms-1 col"
-        variant="primary"
-        size="sm"
-        data-toggle="tooltip"
-        :disabled="addNewIndicator"
-        title="Save configuration"
-        @click="savePlotConfig"
-        >Save</BButton
-      >
-    </div>
-    <BButton
-      v-if="showConfig"
-      class="ms-1 mt-1"
-      variant="secondary"
-      size="sm"
-      title="Load configuration from text box below"
-      @click="loadConfigFromString"
-      >Load from String</BButton
-    >
-    <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
-      <BFormTextarea
-        id="TextArea"
-        v-model="plotConfigJson"
-        class="textArea"
-        size="sm"
-        :state="tempPlotConfigValid"
-      >
-      </BFormTextarea>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { IndicatorConfig, PlotConfig } from '@/types';
 
@@ -385,6 +221,170 @@ watch(
 );
 const fromPlotTemplateVisible = ref(false);
 </script>
+
+<template>
+  <div v-if="columns">
+    <BFormGroup label="Plot config name" label-for="idPlotConfigName">
+      <PlotConfigSelect allow-edit></PlotConfigSelect>
+    </BFormGroup>
+    <div class="col-mb-3">
+      <hr />
+      <BFormGroup label="Target Plot" label-for="FieldSel">
+        <EditValue
+          v-model="selSubPlot"
+          :allow-edit="!isMainPlot"
+          allow-add
+          editable-name="plot configuration"
+          align-vertical
+          @new="addSubplot"
+          @delete="deleteSubplot"
+          @rename="renameSubplot"
+        >
+          <BFormSelect id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
+          </BFormSelect>
+        </EditValue>
+      </BFormGroup>
+    </div>
+    <hr />
+    <div>
+      <BFormGroup label="Indicators in this plot" label-for="selectedIndicators">
+        <BFormSelect
+          id="selectedIndicators"
+          v-model="selIndicatorName"
+          :disabled="addNewIndicator"
+          :options="usedColumns"
+          :select-size="4"
+        >
+        </BFormSelect>
+      </BFormGroup>
+    </div>
+    <div class="d-flex flex-row mt-1 gap-1">
+      <BButton
+        variant="secondary"
+        title="Remove indicator to plot"
+        size="sm"
+        :disabled="!selIndicatorName"
+        class="col"
+        @click="removeIndicator"
+      >
+        Remove indicator
+      </BButton>
+      <BButton
+        variant="secondary"
+        title="Load indicator config from template"
+        size="sm"
+        @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
+      >
+        Indicator from template
+      </BButton>
+      <BButton
+        variant="primary"
+        title="Add indicator to plot"
+        size="sm"
+        class="col"
+        :disabled="addNewIndicator"
+        @click="clickAddNewIndicator"
+      >
+        Add new indicator
+      </BButton>
+    </div>
+
+    <PlotIndicatorSelect
+      v-if="addNewIndicator"
+      :columns="columns"
+      class="mt-1"
+      label="Select indicator to add"
+      @indicator-selected="addNewIndicatorSelected"
+    />
+
+    <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" :columns="columns" />
+
+    <PlotIndicator
+      v-if="selIndicatorName && !fromPlotTemplateVisible"
+      v-model="selIndicator"
+      class="mt-1"
+      :columns="columns"
+    />
+    <hr />
+
+    <div class="d-flex flex-row">
+      <BButton
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        :disabled="addNewIndicator"
+        title="Reset to last saved configuration"
+        @click="loadPlotConfig"
+        >Reset</BButton
+      >
+
+      <!--
+        Does Resetting a config to "nothing" make sense, or can this be done via "delete / create"?
+        <b-button
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        :disabled="addNewIndicator"
+        title="Start with empty configuration"
+        @click="clearConfig"
+        >Reset</b-button
+      > -->
+      <BButton
+        :disabled="
+          (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
+          !botStore.activeBot.isBotOnline ||
+          addNewIndicator
+        "
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        @click="loadPlotConfigFromStrategy"
+      >
+        From strategy
+      </BButton>
+      <BButton
+        id="showButton"
+        class="ms-1 col"
+        variant="secondary"
+        size="sm"
+        :disabled="addNewIndicator"
+        title="Show configuration for easy transfer to a strategy"
+        @click="showConfig = !showConfig"
+        >{{ showConfig ? 'Hide' : 'Show' }}</BButton
+      >
+
+      <BButton
+        class="ms-1 col"
+        variant="primary"
+        size="sm"
+        data-toggle="tooltip"
+        :disabled="addNewIndicator"
+        title="Save configuration"
+        @click="savePlotConfig"
+        >Save</BButton
+      >
+    </div>
+    <BButton
+      v-if="showConfig"
+      class="ms-1 mt-1"
+      variant="secondary"
+      size="sm"
+      title="Load configuration from text box below"
+      @click="loadConfigFromString"
+      >Load from String</BButton
+    >
+    <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
+      <BFormTextarea
+        id="TextArea"
+        v-model="plotConfigJson"
+        class="textArea"
+        size="sm"
+        :state="tempPlotConfigValid"
+      >
+      </BFormTextarea>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .textArea {

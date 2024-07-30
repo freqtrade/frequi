@@ -1,14 +1,3 @@
-<template>
-  <ECharts
-    v-if="currencies"
-    ref="balanceChart"
-    :option="balanceChartOptions"
-    :theme="settingsStore.chartTheme"
-    :style="{ height: width * 0.6 + 'px' }"
-    autoresize
-  />
-</template>
-
 <script setup lang="ts">
 import { EChartsOption } from 'echarts';
 import ECharts from 'vue-echarts';
@@ -94,6 +83,17 @@ const balanceChartOptions = computed((): EChartsOption => {
   };
 });
 </script>
+
+<template>
+  <ECharts
+    v-if="currencies"
+    ref="balanceChart"
+    :option="balanceChartOptions"
+    :theme="settingsStore.chartTheme"
+    :style="{ height: width * 0.6 + 'px' }"
+    autoresize
+  />
+</template>
 
 <style lang="scss" scoped>
 .echarts {

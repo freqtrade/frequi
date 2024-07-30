@@ -1,9 +1,3 @@
-<template>
-  <div class="chart-wrapper">
-    <ECharts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
-  </div>
-</template>
-
 <script setup lang="ts">
 import {
   ChartSliderPosition,
@@ -724,6 +718,12 @@ watch(
   },
 );
 </script>
+
+<template>
+  <div class="chart-wrapper">
+    <ECharts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
+  </div>
+</template>
 
 <style scoped>
 .chart-wrapper {

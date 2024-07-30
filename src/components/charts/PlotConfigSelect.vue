@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { usePlotConfigStore } from '@/stores/plotConfig';
+
+defineProps({
+  allowEdit: {
+    type: Boolean,
+    default: false,
+  },
+  editableName: {
+    type: String,
+    default: 'plot configuration',
+  },
+});
+const plotStore = usePlotConfigStore();
+</script>
+
 <template>
   <EditValue
     v-model="plotStore.plotConfigName"
@@ -20,21 +36,5 @@
     </BFormSelect>
   </EditValue>
 </template>
-
-<script setup lang="ts">
-import { usePlotConfigStore } from '@/stores/plotConfig';
-
-defineProps({
-  allowEdit: {
-    type: Boolean,
-    default: false,
-  },
-  editableName: {
-    type: String,
-    default: 'plot configuration',
-  },
-});
-const plotStore = usePlotConfigStore();
-</script>
 
 <style scoped></style>

@@ -1,9 +1,3 @@
-<template>
-  <BNavItem @click="toggleNight">
-    <i-mdi-brightness-6 />
-  </BNavItem>
-</template>
-
 <script setup lang="ts">
 import { useSettingsStore } from '@/stores/settings';
 import { useColorMode } from 'bootstrap-vue-next';
@@ -42,5 +36,11 @@ const toggleNight = () => {
   setTheme(activeTheme.value === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
 };
 </script>
+
+<template>
+  <BNavItem @click="toggleNight">
+    <i-mdi-brightness-6 />
+  </BNavItem>
+</template>
 
 <style scoped></style>

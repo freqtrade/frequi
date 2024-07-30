@@ -1,39 +1,3 @@
-<template>
-  <div v-if="botStore.botCount > 0">
-    <h3 v-if="!small">Available bots</h3>
-    <BListGroup ref="sortContainer">
-      <BListGroupItem
-        v-for="bot in botListComp"
-        :key="bot.botId"
-        :active="bot.botId === botStore.selectedBot"
-        button
-        :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
-          botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
-        }`"
-        class="d-flex"
-        @click="botStore.selectBot(bot.botId)"
-      >
-        <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
-        <BotRename
-          v-if="editingBots.includes(bot.botId)"
-          :bot="bot"
-          @saved="stopEditBot(bot.botId)"
-          @cancelled="stopEditBot(bot.botId)"
-        />
-
-        <BotEntry
-          v-else
-          :bot="bot"
-          :no-buttons="small"
-          @edit="editBot(bot.botId)"
-          @edit-login="editBotLogin(bot.botId)"
-        />
-      </BListGroupItem>
-    </BListGroup>
-    <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import LoginModal from '@/components/LoginModal.vue';
 
@@ -87,3 +51,39 @@ const stopEditBot = (botId: string) => {
   editingBots.value.splice(editingBots.value.indexOf(botId), 1);
 };
 </script>
+
+<template>
+  <div v-if="botStore.botCount > 0">
+    <h3 v-if="!small">Available bots</h3>
+    <BListGroup ref="sortContainer">
+      <BListGroupItem
+        v-for="bot in botListComp"
+        :key="bot.botId"
+        :active="bot.botId === botStore.selectedBot"
+        button
+        :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
+          botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
+        }`"
+        class="d-flex"
+        @click="botStore.selectBot(bot.botId)"
+      >
+        <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
+        <BotRename
+          v-if="editingBots.includes(bot.botId)"
+          :bot="bot"
+          @saved="stopEditBot(bot.botId)"
+          @cancelled="stopEditBot(bot.botId)"
+        />
+
+        <BotEntry
+          v-else
+          :bot="bot"
+          :no-buttons="small"
+          @edit="editBot(bot.botId)"
+          @edit-login="editBotLogin(bot.botId)"
+        />
+      </BListGroupItem>
+    </BListGroup>
+    <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
+  </div>
+</template>

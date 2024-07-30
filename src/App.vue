@@ -1,12 +1,3 @@
-<template>
-  <div id="app" class="d-flex flex-column dvh-100" :style="colorStore.cssVars">
-    <NavBar />
-    <BaseAlert></BaseAlert>
-    <BodyLayout class="flex-fill overflow-auto" />
-    <NavFooter />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useSettingsStore } from './stores/settings';
 import { useColorStore } from './stores/colors';
@@ -24,6 +15,15 @@ watch(
   },
 );
 </script>
+
+<template>
+  <div id="app" class="d-flex flex-column dvh-100" :style="colorStore.cssVars">
+    <NavBar />
+    <BaseAlert></BaseAlert>
+    <BodyLayout class="flex-fill overflow-auto" />
+    <NavFooter />
+  </div>
+</template>
 
 <style scoped>
 #app {

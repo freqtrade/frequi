@@ -1,13 +1,3 @@
-<template>
-  <ECharts
-    v-if="trades"
-    ref="chart"
-    :option="cumProfitChartOptions"
-    :theme="settingsStore.chartTheme"
-    autoresize
-  />
-</template>
-
 <script setup lang="ts">
 import { EChartsOption } from 'echarts';
 import ECharts from 'vue-echarts';
@@ -299,6 +289,16 @@ watch(
   },
 );
 </script>
+
+<template>
+  <ECharts
+    v-if="trades"
+    ref="chart"
+    :option="cumProfitChartOptions"
+    :theme="settingsStore.chartTheme"
+    autoresize
+  />
+</template>
 
 <style scoped>
 .echarts {

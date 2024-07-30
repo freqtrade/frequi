@@ -1,12 +1,3 @@
-<template>
-  <ECharts
-    v-if="trades.length > 0"
-    :option="hourlyChartOptions"
-    autoresize
-    :theme="settingsStore.chartTheme"
-  />
-</template>
-
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 import { useSettingsStore } from '@/stores/settings';
@@ -153,6 +144,15 @@ const hourlyChartOptions = computed((): EChartsOption => {
   };
 });
 </script>
+
+<template>
+  <ECharts
+    v-if="trades.length > 0"
+    :option="hourlyChartOptions"
+    autoresize
+    :theme="settingsStore.chartTheme"
+  />
+</template>
 
 <style scoped>
 .echarts {

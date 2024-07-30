@@ -1,3 +1,35 @@
+<script setup lang="ts">
+import { useBotStore } from '@/stores/ftbotwrapper';
+import { BotDescriptor } from '@/types';
+import type { CheckboxValue } from 'bootstrap-vue-next';
+
+const props = defineProps({
+  bot: { required: true, type: Object as () => BotDescriptor },
+  noButtons: { default: false, type: Boolean },
+});
+defineEmits<{ edit: []; editLogin: [] }>();
+const botStore = useBotStore();
+
+const changeEvent = (v: CheckboxValue) => {
+  botStore.botStores[props.bot.botId].setAutoRefresh(v as boolean);
+};
+const botRemoveModalVisible = ref(false);
+
+const confirmRemoveBot = () => {
+  botRemoveModalVisible.value = false;
+  botStore.removeBot(props.bot.botId);
+  console.log('removing bot.');
+};
+const autoRefreshLoc = computed({
+  get() {
+    return botStore.botStores[props.bot.botId].autoRefresh;
+  },
+  set() {
+    // pass
+  },
+});
+</script>
+
 <template>
   <div v-if="bot" class="d-flex align-items-center justify-content-between w-100">
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
@@ -53,38 +85,6 @@
     </BModal>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { BotDescriptor } from '@/types';
-import type { CheckboxValue } from 'bootstrap-vue-next';
-
-const props = defineProps({
-  bot: { required: true, type: Object as () => BotDescriptor },
-  noButtons: { default: false, type: Boolean },
-});
-defineEmits<{ edit: []; editLogin: [] }>();
-const botStore = useBotStore();
-
-const changeEvent = (v: CheckboxValue) => {
-  botStore.botStores[props.bot.botId].setAutoRefresh(v as boolean);
-};
-const botRemoveModalVisible = ref(false);
-
-const confirmRemoveBot = () => {
-  botRemoveModalVisible.value = false;
-  botStore.removeBot(props.bot.botId);
-  console.log('removing bot.');
-};
-const autoRefreshLoc = computed({
-  get() {
-    return botStore.botStores[props.bot.botId].autoRefresh;
-  },
-  set() {
-    // pass
-  },
-});
-</script>
 
 <style scoped lang="scss">
 .form-switch {
