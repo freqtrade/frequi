@@ -5,5 +5,3 @@
     <LogViewer />
   </div>
 </template>
-
-<style scoped></style>

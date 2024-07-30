@@ -102,5 +102,3 @@ onMounted(() => {
     </label>
   </div>
 </template>
-
-<style scoped></style>

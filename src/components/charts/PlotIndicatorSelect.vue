@@ -51,5 +51,3 @@ watch(
     </BButton>
   </div>
 </template>
-
-<style scoped></style>

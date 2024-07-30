@@ -158,5 +158,3 @@ const tableItems = computed<TableItem[]>(() => {
     </template>
   </BTable>
 </template>
-
-<style scoped></style>

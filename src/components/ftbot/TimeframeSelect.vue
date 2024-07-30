@@ -51,5 +51,3 @@ const emitSelectedTimeframe = () => {
     @change="emitSelectedTimeframe"
   ></BFormSelect>
 </template>
-
-<style scoped></style>

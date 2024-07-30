@@ -110,5 +110,3 @@ watchDebounced(
     />
   </div>
 </template>
-
-<style scoped></style>

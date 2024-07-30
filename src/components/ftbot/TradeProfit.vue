@@ -59,5 +59,3 @@ const profitDesc = computed((): string => {
     :stake-currency="trade.quote_currency || 'USDT'"
   />
 </template>
-
-<style scoped></style>

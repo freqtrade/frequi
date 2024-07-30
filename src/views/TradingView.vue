@@ -198,5 +198,3 @@ const responsiveGridLayouts = computed(() => {
     </template>
   </GridLayout>
 </template>
-
-<style scoped></style>

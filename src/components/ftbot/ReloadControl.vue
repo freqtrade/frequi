@@ -30,5 +30,3 @@ const autoRefreshLoc = computed({
     </BButton>
   </div>
 </template>
-
-<style scoped></style>

@@ -36,5 +36,3 @@ const plotStore = usePlotConfigStore();
     </BFormSelect>
   </EditValue>
 </template>
-
-<style scoped></style>

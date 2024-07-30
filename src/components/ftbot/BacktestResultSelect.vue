@@ -78,5 +78,3 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
     </BListGroup>
   </div>
 </template>
-
-<style scoped></style>

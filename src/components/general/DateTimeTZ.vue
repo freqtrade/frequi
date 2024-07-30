@@ -28,5 +28,3 @@ const timezoneTooltip = computed((): string => {
 <template>
   <span :title="timezoneTooltip">{{ formattedDate }}</span>
 </template>
-
-<style scoped></style>

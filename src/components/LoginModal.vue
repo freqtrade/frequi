@@ -47,5 +47,3 @@ defineExpose({
     </BModal>
   </div>
 </template>
-
-<style scoped></style>

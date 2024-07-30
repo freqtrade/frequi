@@ -42,5 +42,3 @@ const toggleNight = () => {
     <i-mdi-brightness-6 />
   </BNavItem>
 </template>
-
-<style scoped></style>

@@ -79,5 +79,3 @@ function handleForceEntry(item: Trade) {
     </BPopover>
   </div>
 </template>
-
-<style scoped></style>

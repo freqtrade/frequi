@@ -48,5 +48,3 @@ const botStore = useBotStore();
     </div>
   </div>
 </template>
-
-<style scoped></style>

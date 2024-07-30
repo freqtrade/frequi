@@ -250,5 +250,3 @@ function clickBacktest() {
     >
   </div>
 </template>
-
-<style scoped></style>

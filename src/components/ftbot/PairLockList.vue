@@ -46,5 +46,3 @@ const removePairLock = (item: Lock) => {
     </div>
   </div>
 </template>
-
-<style scoped></style>

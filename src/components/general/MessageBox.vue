@@ -40,5 +40,3 @@ defineExpose({ show });
     {{ message }}
   </BModal>
 </template>
-
-<style scoped></style>
