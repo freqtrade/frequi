@@ -32,7 +32,6 @@ yarn-error.log*
 *.sw?
 
 
-components.d.ts
 /test-results/
 /playwright-report/
 /blob-report/
