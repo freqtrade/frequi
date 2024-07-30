@@ -27,7 +27,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "components.d.ts",
+    "src/components.d.ts",
+    "src/autoimport.d.ts",
   ],
   "exclude": [
       "node_modules",

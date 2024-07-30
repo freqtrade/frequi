@@ -28,8 +28,7 @@ export default defineConfig({
     }),
     Components({
       resolvers: [IconsResolve(), BootstrapVueNextResolver()],
-      // dirs: [],
-      dts: true,
+      dts: 'src/components.d.ts',
     }),
     Icons({
       compiler: 'vue3',
