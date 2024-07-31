@@ -54,11 +54,11 @@ importers:
         specifier: ^3.32.1
         version: 3.32.1
       pinia:
-        specifier: ^2.2.0
-        version: 2.2.0(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4))
+        specifier: 2.1.7
+        version: 2.1.7(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4))
       pinia-plugin-persistedstate:
         specifier: ^3.2.1
-        version: 3.2.1(pinia@2.2.0(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4)))
+        version: 3.2.1(pinia@2.1.7(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4)))
       sortablejs:
         specifier: ^1.15.2
         version: 1.15.2
@@ -1577,8 +1577,8 @@ packages:
     peerDependencies:
       pinia: ^2.0.0
 
-  pinia@2.2.0:
-    resolution: {integrity: sha512-iPrIh26GMqfpUlMOGyxuDowGmYousTecbTHFwT0xZ1zJvh23oQ+Cj99ZoPQA1TnUPhU6AuRPv6/drkTCJ0VHQA==}
+  pinia@2.1.7:
+    resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}
     peerDependencies:
       '@vue/composition-api': ^1.4.0
       typescript: '>=4.4.4'
@@ -3485,11 +3485,11 @@ snapshots:
 
   picomatch@2.3.1: {}
 
-  pinia-plugin-persistedstate@3.2.1(pinia@2.2.0(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4))):
+  pinia-plugin-persistedstate@3.2.1(pinia@2.1.7(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4))):
     dependencies:
-      pinia: 2.2.0(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4))
+      pinia: 2.1.7(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4))
 
-  pinia@2.2.0(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4)):
+  pinia@2.1.7(typescript@5.5.4)(vue@3.4.34(typescript@5.5.4)):
     dependencies:
       '@vue/devtools-api': 6.6.3
       vue: 3.4.34(typescript@5.5.4)
