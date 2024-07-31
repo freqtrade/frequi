@@ -31,7 +31,7 @@
     "echarts": "^5.5.1",
     "favico.js": "^0.3.10",
     "humanize-duration": "^3.32.1",
-    "pinia": "2.1.7",
+    "pinia": "2.2.0",
     "pinia-plugin-persistedstate": "^3.2.1",
     "sortablejs": "^1.15.2",
     "vue": "^3.4.34",
