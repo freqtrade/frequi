@@ -30,7 +30,14 @@ export default [
       // // disable eslint no-shadow as it's causing false positives on typescript enums
       // 'no-shadow': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^err|^error',
+        },
+      ],
       // Custom vue rules
 
       'vue/block-lang': [
