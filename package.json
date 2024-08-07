@@ -69,7 +69,7 @@
     "unplugin-icons": "^0.19.1",
     "unplugin-vue-components": "^0.27.3",
     "vite": "^5.3.5",
-    "vitest": "^2.0.4",
+    "vitest": "^2.0.5",
     "vue-tsc": "^2.0.29"
   },
   "packageManager": "pnpm@9.6.0"
