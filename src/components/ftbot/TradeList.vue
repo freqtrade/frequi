@@ -301,7 +301,7 @@ watch(
       v-if="activeTrades"
       v-model="forceExitVisible"
       :trade="feTrade"
-      :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals"
+      :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
     />
     <ForceEntryForm
       v-model="increasePosition.visible"
