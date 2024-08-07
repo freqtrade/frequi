@@ -30,8 +30,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(@popperjs/core@2.11.8)
       bootstrap-vue-next:
-        specifier: ^0.24.2
-        version: 0.24.2(vue@3.4.36(typescript@5.5.4))
+        specifier: ^0.24.4
+        version: 0.24.4(vue@3.4.36(typescript@5.5.4))
       core-js:
         specifier: ^3.38.0
         version: 3.38.0
@@ -364,18 +364,6 @@ packages:
   '@eslint/object-schema@2.1.4':
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@floating-ui/core@1.6.5':
-    resolution: {integrity: sha512-8GrTWmoFhm5BsMZOTHeGD2/0FLKLQQHvO/ZmQga4tKempYRLz8aqJGqXVuQgisnMObq2YZ2SgkwctN1LOOxcqA==}
-
-  '@floating-ui/dom@1.6.8':
-    resolution: {integrity: sha512-kx62rP19VZ767Q653wsP1XZCGIirkE09E0QUGNYTM/ttbbQHqcGPdSfWFxUyyNLc/W6aoJRBajOSXhP6GXjC0Q==}
-
-  '@floating-ui/utils@0.2.5':
-    resolution: {integrity: sha512-sTcG+QZ6fdEUObICavU+aB3Mp8HY4n14wYHdxK4fXjPmv3PXZZeY5RaguJmGyeH/CJQhX3fqKUtS4qc1LoHwhQ==}
-
-  '@floating-ui/vue@1.1.2':
-    resolution: {integrity: sha512-7pq8HfhVhxOpV6iIMKSslI51fwFYy8G0BF0GjhlhpmUhVwL8jCByvcjzTwEtRWFVRrGD/I9kLp6eUHKumiUTjw==}
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -994,8 +982,8 @@ packages:
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
 
-  bootstrap-vue-next@0.24.2:
-    resolution: {integrity: sha512-CW89wbEqVlamWy2h4l7yldaR3eV8iBrvSHCo0IYwRsaLLLTA/J3u1pK+uwzWkS5lvzmb41SqzH6xpHe93l2I9Q==}
+  bootstrap-vue-next@0.24.4:
+    resolution: {integrity: sha512-93M0a+JwfuQkt4HQlbFp4SqnFW2WfjEmF1Nv3hqsAKA/i+IP6C3zbEFR8xS6sWgyqoYJZgVNa3EFW0lASniTOA==}
     peerDependencies:
       vue: ^3.4.27
 
@@ -2313,26 +2301,6 @@ snapshots:
 
   '@eslint/object-schema@2.1.4': {}
 
-  '@floating-ui/core@1.6.5':
-    dependencies:
-      '@floating-ui/utils': 0.2.5
-
-  '@floating-ui/dom@1.6.8':
-    dependencies:
-      '@floating-ui/core': 1.6.5
-      '@floating-ui/utils': 0.2.5
-
-  '@floating-ui/utils@0.2.5': {}
-
-  '@floating-ui/vue@1.1.2(vue@3.4.36(typescript@5.5.4))':
-    dependencies:
-      '@floating-ui/dom': 1.6.8
-      '@floating-ui/utils': 0.2.5
-      vue-demi: 0.14.10(vue@3.4.36(typescript@5.5.4))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
-
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.3.0': {}
@@ -2972,13 +2940,9 @@ snapshots:
 
   boolbase@1.0.0: {}
 
-  bootstrap-vue-next@0.24.2(vue@3.4.36(typescript@5.5.4)):
+  bootstrap-vue-next@0.24.4(vue@3.4.36(typescript@5.5.4)):
     dependencies:
-      '@floating-ui/vue': 1.1.2(vue@3.4.36(typescript@5.5.4))
-      '@vueuse/core': 10.11.0(vue@3.4.36(typescript@5.5.4))
       vue: 3.4.36(typescript@5.5.4)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
 
   bootstrap@5.3.3(@popperjs/core@2.11.8):
     dependencies:
