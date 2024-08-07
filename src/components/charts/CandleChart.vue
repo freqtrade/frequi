@@ -720,16 +720,12 @@ watch(
 </script>
 
 <template>
-  <div class="chart-wrapper">
+  <div class="h-100 w-100">
     <ECharts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>
 
-<style scoped>
-.chart-wrapper {
-  width: 100%;
-  height: 100%;
-}
+<style scoped lang="scss">
 .echarts {
   width: 100%;
   min-height: 200px;

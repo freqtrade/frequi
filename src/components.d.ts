@@ -22,6 +22,7 @@ declare module 'vue' {
     BaseAlert: typeof import('./components/general/BaseAlert.vue')['default']
     BAvatar: typeof import('bootstrap-vue-next')['BAvatar']
     BButton: typeof import('bootstrap-vue-next')['BButton']
+    BCard: typeof import('bootstrap-vue-next')['BCard']
     BCollapse: typeof import('bootstrap-vue-next')['BCollapse']
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownDivider: typeof import('bootstrap-vue-next')['BDropdownDivider']
