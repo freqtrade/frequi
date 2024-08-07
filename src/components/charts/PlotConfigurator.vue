@@ -169,7 +169,7 @@ async function loadPlotConfigFromStrategy() {
     if (botStore.activeBot.strategyPlotConfig) {
       plotStore.editablePlotConfig = botStore.activeBot.strategyPlotConfig;
     }
-  } catch (data) {
+  } catch (error) {
     //
     showAlert('Failed to load Plot configuration from Strategy.');
   }
