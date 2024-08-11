@@ -29,7 +29,7 @@ const profitString = computed((): string => {
 <template>
   <div
     class="d-flex justify-content-between align-items-center profit-pill ps-2 pe-1"
-    :class="isProfitable ? 'profit-pill-profit' : ''"
+    :class="{ 'profit-pill-profit': isProfitable }"
     :title="profitDesc"
   >
     <ProfitSymbol :profit="(profitRatio || profitAbs) ?? 0" />
