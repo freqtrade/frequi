@@ -111,6 +111,7 @@ interface TradeBase {
   amount_precision?: number;
   price_precision?: number;
   precision_mode?: number;
+  precision_mode_price?: number;
 
   orders?: Order[];
 }
