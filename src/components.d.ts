@@ -76,6 +76,7 @@ declare module 'vue' {
     FreqaiModelSelect: typeof import('./components/ftbot/FreqaiModelSelect.vue')['default']
     HourlyChart: typeof import('./components/charts/HourlyChart.vue')['default']
     IMdiAlert: typeof import('~icons/mdi/alert')['default']
+    IMdiArrowDownThick: typeof import('~icons/mdi/arrow-down-thick')['default']
     IMdiBank: typeof import('~icons/mdi/bank')['default']
     IMdiBrightness6: typeof import('~icons/mdi/brightness6')['default']
     IMdiCancel: typeof import('~icons/mdi/cancel')['default']

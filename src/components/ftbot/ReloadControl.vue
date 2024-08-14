@@ -16,7 +16,7 @@ const autoRefreshLoc = computed({
   <div class="d-flex align-items-center ms-2">
     <BFormCheckbox
       v-model="autoRefreshLoc"
-      class="float-end my-auto mt-1"
+      input-class="float-end my-auto mt-1"
       title="AutoRefresh"
     ></BFormCheckbox>
     <BButton
