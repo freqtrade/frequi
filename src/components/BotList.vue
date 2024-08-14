@@ -64,7 +64,7 @@ const stopEditBot = (botId: string) => {
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
-        class="d-flex"
+        class="d-flex align-items-center"
         @click="botStore.selectBot(bot.botId)"
       >
         <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
