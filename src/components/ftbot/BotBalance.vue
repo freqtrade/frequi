@@ -33,7 +33,9 @@ const chartValues = computed<BalanceValues[]>(() => {
       balance:
         showBotOnly.value && canUseBotBalance.value && v.bot_owned != undefined
           ? v.bot_owned
-          : v.balance,
+          : v.is_position === true
+            ? v.position
+            : v.balance,
       currency: v.currency,
       est_stake:
         showBotOnly.value && canUseBotBalance.value
