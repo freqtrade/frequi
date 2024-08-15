@@ -9,7 +9,6 @@ export interface BalanceRecords {
   stake: string;
   // Properties added in v 2.x
   side: string;
-  leverage: number;
   is_position: boolean;
   position: number;
   is_bot_managed?: boolean;

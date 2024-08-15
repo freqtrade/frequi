@@ -8,7 +8,6 @@
             "est_stake": 766.8545525,
             "stake": "USDT",
             "side": "long",
-            "leverage": 1.0,
             "is_position": false,
             "position": 0.0
         }
