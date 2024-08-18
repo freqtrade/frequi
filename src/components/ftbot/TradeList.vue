@@ -36,11 +36,6 @@ const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
 
 const increasePosition = ref({ visible: false, trade: {} as Trade });
-const openFields: TableField[] = [{ key: 'actions' }];
-const closedFields: TableField[] = [
-  { key: 'close_timestamp', label: 'Close date' },
-  { key: 'exit_reason', label: 'Close Reason' },
-];
 function formatPriceWithDecimals(price) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
@@ -53,14 +48,26 @@ const rows = computed(() => {
 const tableFields = ref<any[]>([]);
 
 onMounted(() => {
+  const openFields: TableField[] = [{ key: 'actions' }];
+  const closedFields: TableField[] = [
+    { key: 'close_timestamp', label: 'Close date' },
+    { key: 'exit_reason', label: 'Close Reason' },
+  ];
+  const stakeAmountCol: TableField = props.activeTrades
+    ? {
+        key: 'stake_amount',
+        label: 'Stake amount',
+      }
+    : {
+        key: 'max_stake_amount',
+        label: 'Total stake amount',
+      };
+
   tableFields.value = [
     { key: 'trade_id', label: 'ID' },
     { key: 'pair', label: 'Pair' },
     { key: 'amount', label: 'Amount' },
-    {
-      key: 'stake_amount',
-      label: 'Stake amount',
-    },
+    stakeAmountCol,
     {
       key: 'open_rate',
       label: 'Open rate',

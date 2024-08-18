@@ -19,8 +19,12 @@ defineProps({
 
         <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
         <ValuePair v-if="trade.enter_tag" description="Entry tag">{{ trade.enter_tag }}</ValuePair>
-        <ValuePair description="Stake"
+        <ValuePair v-if="trade.is_open" description="Stake"
           >{{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
+          {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
+        >
+        <ValuePair v-if="!trade.is_open" description="Total Stake"
+          >{{ formatPriceCurrency(trade.max_stake_amount ?? trade.stake_amount, stakeCurrency) }}
           {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
         >
         <ValuePair description="Amount">{{ trade.amount }}</ValuePair>
