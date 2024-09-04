@@ -130,8 +130,8 @@ importers:
         specifier: ^15.9.0
         version: 15.9.0
       happy-dom:
-        specifier: ^15.0.0
-        version: 15.0.0
+        specifier: ^15.7.3
+        version: 15.7.3
       mutationobserver-shim:
         specifier: ^0.3.7
         version: 0.3.7
@@ -164,7 +164,7 @@ importers:
         version: 5.4.2(@types/node@22.5.1)(sass@1.77.8)
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.1)(happy-dom@15.0.0)(sass@1.77.8)
+        version: 2.0.5(@types/node@22.5.1)(happy-dom@15.7.3)(sass@1.77.8)
       vue-tsc:
         specifier: ^2.0.29
         version: 2.0.29(typescript@5.5.4)
@@ -1318,8 +1318,8 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  happy-dom@15.0.0:
-    resolution: {integrity: sha512-DsvANUcxxY20iCo3Yllm7dqwzPVPduGfVFxa7mONwMBLczFeQgkN0LpDir1kIY322JMh+hrcPV3aGLyHCESDlA==}
+  happy-dom@15.7.3:
+    resolution: {integrity: sha512-w3RUaYNXFJX5LiNVhOJLK4GqCB1bFj1FvELtpon3HrN8gUpS09V0Vvm4/BBRRj7mLUE1+ch8PKv1JxEp/0IHjA==}
     engines: {node: '>=18.0.0'}
 
   has-flag@4.0.0:
@@ -3305,7 +3305,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@15.0.0:
+  happy-dom@15.7.3:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -3868,7 +3868,7 @@ snapshots:
       fsevents: 2.3.3
       sass: 1.77.8
 
-  vitest@2.0.5(@types/node@22.5.1)(happy-dom@15.0.0)(sass@1.77.8):
+  vitest@2.0.5(@types/node@22.5.1)(happy-dom@15.7.3)(sass@1.77.8):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.5
@@ -3891,7 +3891,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.5.1
-      happy-dom: 15.0.0
+      happy-dom: 15.7.3
     transitivePeerDependencies:
       - less
       - lightningcss
