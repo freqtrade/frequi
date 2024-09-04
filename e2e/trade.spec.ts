@@ -108,7 +108,7 @@ test.describe('Trade', () => {
     const multiPanebb = await multiPane.boundingBox();
 
     await page.locator('#avatar-drop').click();
-    await page.getByLabel('Lock layout').uncheck();
+    await page.getByText('Lock layout').uncheck();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
     await expect(multiPane).toBeInViewport();
