@@ -42,7 +42,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       }
       return true;
     },
-    chartTheme(): string {
+    chartTheme(): 'dark' | 'light' {
       return this.isDarkTheme ? 'dark' : 'light';
     },
     uiVersion(state) {
