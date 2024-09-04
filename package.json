@@ -33,7 +33,7 @@
     "humanize-duration": "^3.32.1",
     "pinia": "2.2.2",
     "pinia-plugin-persistedstate": "^3.2.1",
-    "sortablejs": "^1.15.2",
+    "sortablejs": "^1.15.3",
     "vue": "^3.4.38",
     "vue-demi": "^0.14.10",
     "vue-echarts": "^7.0.3",
