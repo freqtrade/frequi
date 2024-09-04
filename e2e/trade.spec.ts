@@ -103,11 +103,11 @@ test.describe('Trade', () => {
   test('Trade page - drag and drop', async ({ page }) => {
     await page.goto('/trade');
 
-    await page.locator('#avatar-drop').click();
     const multiPane = page.locator('.drag-header', { hasText: 'Multi Pane' });
 
     const multiPanebb = await multiPane.boundingBox();
 
+    await page.locator('#avatar-drop').click();
     await page.getByLabel('Lock layout').uncheck();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
