@@ -22,7 +22,7 @@ importers:
         version: 11.0.3(vue@3.4.38(typescript@5.5.4))
       '@vueuse/integrations':
         specifier: ^11.0.3
-        version: 11.0.3(axios@1.7.5)(sortablejs@1.15.2)(vue@3.4.38(typescript@5.5.4))
+        version: 11.0.3(axios@1.7.5)(sortablejs@1.15.3)(vue@3.4.38(typescript@5.5.4))
       axios:
         specifier: ^1.7.5
         version: 1.7.5
@@ -60,8 +60,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1(pinia@2.2.2(typescript@5.5.4)(vue@3.4.38(typescript@5.5.4)))
       sortablejs:
-        specifier: ^1.15.2
-        version: 1.15.2
+        specifier: ^1.15.3
+        version: 1.15.3
       vue:
         specifier: ^3.4.38
         version: 3.4.38(typescript@5.5.4)
@@ -1731,8 +1731,8 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
-  sortablejs@1.15.2:
-    resolution: {integrity: sha512-FJF5jgdfvoKn1MAKSdGs33bIqLi3LmsgVTliuX6iITj834F+JRQZN90Z93yql8h0K2t0RwDPBmxwlbZfDcxNZA==}
+  sortablejs@1.15.3:
+    resolution: {integrity: sha512-zdK3/kwwAK1cJgy1rwl1YtNTbRmc8qW/+vgXf75A7NHag5of4pyI6uK86ktmQETyWRH7IGaE73uZOOBcGxgqZg==}
 
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
@@ -2824,14 +2824,14 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.0.3(axios@1.7.5)(sortablejs@1.15.2)(vue@3.4.38(typescript@5.5.4))':
+  '@vueuse/integrations@11.0.3(axios@1.7.5)(sortablejs@1.15.3)(vue@3.4.38(typescript@5.5.4))':
     dependencies:
       '@vueuse/core': 11.0.3(vue@3.4.38(typescript@5.5.4))
       '@vueuse/shared': 11.0.3(vue@3.4.38(typescript@5.5.4))
       vue-demi: 0.14.10(vue@3.4.38(typescript@5.5.4))
     optionalDependencies:
       axios: 1.7.5
-      sortablejs: 1.15.2
+      sortablejs: 1.15.3
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -3650,7 +3650,7 @@ snapshots:
 
   slash@3.0.0: {}
 
-  sortablejs@1.15.2: {}
+  sortablejs@1.15.3: {}
 
   source-map-js@1.2.0: {}
 
