@@ -181,15 +181,32 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
   return tmp;
 }
 
+function capitalizeFirstLetter(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function formatTradingMode(result: StrategyBacktestResult) {
+  if (!result.trading_mode || !result.margin_mode) {
+    return {};
+  }
+  const value =
+    result.trading_mode === 'spot'
+      ? capitalizeFirstLetter(result.trading_mode)
+      : `${capitalizeFirstLetter(result.margin_mode)} ${capitalizeFirstLetter(result.trading_mode)}`;
+  return { 'Trading Mode': value };
+}
+
 export function generateBacktestSettingRows(result: StrategyBacktestResult) {
   const formatPriceStake = useFormatPriceStake(
     result.stake_currency_decimals,
     result.stake_currency,
   );
+  const tradingMode = formatTradingMode(result);
 
   return [
     { 'Backtesting from': timestampms(result.backtest_start_ts) },
     { 'Backtesting to': timestampms(result.backtest_end_ts) },
+    ...(Object.keys(tradingMode).length !== 0 ? [tradingMode] : []),
     {
       'BT execution time': humanizeDurationFromSeconds(
         result.backtest_run_end_ts - result.backtest_run_start_ts,
