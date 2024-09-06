@@ -123,6 +123,8 @@ export interface StrategyBacktestResult {
   trailing_only_offset_is_reached: boolean;
   use_custom_stoploss: boolean;
   minimal_roi: Record<string, number>;
+  margin_mode?: 'cross' | 'isolated';
+  trading_mode?: 'spot' | 'futures';
 
   /** @deprecated - replaced by use_exit_signal 2.x */
   use_sell_signal?: boolean;
