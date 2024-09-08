@@ -1,6 +1,7 @@
 import { Order, PairHistory, Trade, BTOrder } from '@/types';
 
 import { ScatterSeriesOption } from 'echarts';
+import { title } from 'process';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {
   return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
@@ -151,7 +152,7 @@ export function generateTradeSeries(
 ): ScatterSeriesOption {
   const { tradeData } = getTradeEntries(dataset, trades);
 
-  const openTrades = trades.filter((t) => t.is_open);
+  const openTrade = trades.find((t) => t.is_open);
 
   const tradesSeries: ScatterSeriesOption = {
     name: nameTrades,
@@ -185,39 +186,41 @@ export function generateTradeSeries(
     data: tradeData,
   };
   // Show distance to stoploss
-  if (openTrades.length > 0) {
+  if (openTrade) {
     // Ensure to import and "use" whatever feature in candleChart! (MarkLine, MarkArea, ...)
     // Offset to avoid having the line at the very end of the chart
     const offset = dataset.timeframe_ms * 10;
 
     tradesSeries.markLine = {
       symbol: 'none',
-      itemStyle: {
-        color: '#ff0000AA',
-      },
       label: {
         show: true,
         position: 'middle',
       },
-      lineStyle: {
-        type: 'solid',
-      },
-      data: openTrades.map((t) => {
-        return [
+      data: [
+        [
           {
             name: 'Stoploss',
-            yAxis: t.stop_loss_abs,
+            yAxis: openTrade.stop_loss_abs,
+            lineStyle: {
+              color: '#ff0000AA',
+              type: 'solid',
+            },
             xAxis:
-              dataset.data_stop_ts - offset > t.open_timestamp
-                ? t.open_timestamp
+              dataset.data_stop_ts - offset > openTrade.open_timestamp
+                ? openTrade.open_timestamp
                 : dataset.data_stop_ts - offset,
           },
           {
-            yAxis: t.stop_loss_abs,
-            xAxis: t.close_timestamp ?? dataset.data_stop_ts + dataset.timeframe_ms,
+            lineStyle: {
+              color: '#ff0000AA',
+              type: 'solid',
+            },
+            yAxis: openTrade.stop_loss_abs,
+            xAxis: openTrade.close_timestamp ?? dataset.data_stop_ts + dataset.timeframe_ms,
           },
-        ];
-      }),
+        ],
+      ],
     };
   }
   return tradesSeries;
