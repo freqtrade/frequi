@@ -36,7 +36,7 @@ export const useColorStore = defineStore('colorStore', {
   },
   persist: {
     key: STORE_UI_COLORS,
-    paths: ['colorPreference'],
+    pick: ['colorPreference'],
   },
 });
 

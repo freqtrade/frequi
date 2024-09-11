@@ -250,7 +250,7 @@ export const usePairlistConfigStore = defineStore(
   {
     persist: {
       key: 'ftPairlistConfig',
-      paths: ['savedConfigs', 'configName'],
+      pick: ['savedConfigs', 'configName'],
     },
   },
 );
