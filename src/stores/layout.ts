@@ -117,7 +117,7 @@ export const useLayoutStore = defineStore('layoutStore', {
   },
   persist: {
     key: STORE_LAYOUTS,
-    afterRestore: (context) => {
+    afterHydrate: (context) => {
       if (
         context.store.dashboardLayout === null ||
         typeof context.store.dashboardLayout === 'string' ||
