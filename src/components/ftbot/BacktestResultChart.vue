@@ -3,14 +3,14 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 
 import { ChartSliderPosition, Trade } from '@/types';
 
-defineProps({
-  timeframe: { required: true, type: String },
-  strategy: { required: true, type: String },
-  freqaiModel: { required: false, default: undefined, type: String },
-  timerange: { required: true, type: String },
-  pairlist: { required: true, type: Array as () => string[] },
-  trades: { required: true, type: Array as () => Trade[] },
-});
+defineProps<{
+  timeframe: string;
+  strategy: string;
+  freqaiModel?: string;
+  timerange: string;
+  pairlist: string[];
+  trades: Trade[];
+}>();
 const botStore = useBotStore();
 const isBarVisible = ref({ right: true, left: true });
 const sliderPosition = ref<ChartSliderPosition>();
