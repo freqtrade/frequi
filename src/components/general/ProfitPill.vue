@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const props = defineProps({
-  profitRatio: { required: false, default: undefined, type: Number },
-  profitAbs: { required: false, default: undefined, type: Number },
-  stakeCurrency: { required: true, type: String },
-  profitDesc: { required: false, default: '', type: String },
-});
+const props = defineProps<{
+  profitRatio?: number;
+  profitAbs?: number;
+  stakeCurrency: string;
+  profitDesc?: string;
+}>();
 const isProfitable = computed(() => {
   return (
     (props.profitRatio !== undefined && props.profitRatio > 0) ||
