@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-import { ChartSliderPosition, Trade } from '@/types';
+import { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
 
 defineProps<{
   timeframe: string;
   strategy: string;
   freqaiModel?: string;
   timerange: string;
-  pairlist: string[];
-  trades: Trade[];
+  backtestResult: StrategyBacktestResult;
 }>();
 const botStore = useBotStore();
 const isBarVisible = ref({ right: true, left: true });
@@ -61,19 +60,19 @@ const navigateChartToTrade = (trade: Trade) => {
           v-if="isBarVisible.left"
           class="col-md-2 overflow-y-auto overflow-x-hidden"
           style="max-height: calc(100vh - 200px)"
-          :pairlist="pairlist"
-          :trades="trades"
+          :pairlist="backtestResult.pairlist"
+          :trades="backtestResult.trades"
           sort-method="profit"
           :backtest-mode="true"
         />
       </Transition>
       <CandleChartContainer
-        :available-pairs="pairlist"
+        :available-pairs="backtestResult.pairlist"
         :historic-view="!!true"
         :timeframe="timeframe"
         :timerange="timerange"
         :strategy="strategy"
-        :trades="trades"
+        :trades="backtestResult.trades"
         class="flex-shrink-1 candle-chart-container w-100 px-0 h-100 align-self-stretch"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
@@ -84,13 +83,17 @@ const navigateChartToTrade = (trade: Trade) => {
           v-if="isBarVisible.right"
           class="overflow-y-auto col-md-2 overflow-x-visible"
           style="max-height: calc(100vh - 200px)"
-          :trades="trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
+          :trades="backtestResult.trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
           @trade-select="navigateChartToTrade"
         />
       </Transition>
     </div>
     <BCard header="Single trades" class="row mt-2 w-100">
-      <TradeList class="row trade-history mt-2 w-100" :trades="trades" :show-filter="true" />
+      <TradeList
+        class="row trade-history mt-2 w-100"
+        :trades="backtestResult.trades"
+        :show-filter="true"
+      />
     </BCard>
   </div>
 </template>

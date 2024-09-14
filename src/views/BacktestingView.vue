@@ -213,8 +213,7 @@ watch(
             :timeframe="timeframe"
             :strategy="btStore.strategy"
             :timerange="btStore.timerange"
-            :pairlist="botStore.activeBot.selectedBacktestResult.pairlist"
-            :trades="botStore.activeBot.selectedBacktestResult.trades"
+            :backtest-result="botStore.activeBot.selectedBacktestResult"
             :freqai-model="btStore.freqAI.enabled ? btStore.freqAI.model : undefined"
           />
         </div>
