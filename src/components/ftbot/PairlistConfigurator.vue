@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-import PairlistConfigItem from './PairlistConfigItem.vue';
-import PairlistConfigBlacklist from './PairlistConfigBlacklist.vue';
-import PairlistConfigActions from './PairlistConfigActions.vue';
 import { Pairlist } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
-import ExchangeSelect from './ExchangeSelect.vue';
 
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();
