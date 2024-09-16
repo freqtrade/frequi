@@ -17,14 +17,21 @@ const exchangeList = computed(() => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return [
-    { label: 'Supported', options: supported.map((e) => e.name) },
-    { label: 'Unsupported', options: unsupported.map((e) => e.name) },
+    {
+      label: 'Supported',
+      options: supported.map((e) => ({ value: e.classname ?? e.name, text: e.name })),
+    },
+    {
+      label: 'Unsupported',
+      options: unsupported.map((e) => ({ value: e.classname ?? e.name, text: e.name })),
+    },
   ];
 });
 
 const tradeModesTyped = computed(() => {
   const val = botStore.activeBot.exchangeList.find(
-    (ex) => ex.name === exchangeModel.value.exchange,
+    (ex) =>
+      ex.name === exchangeModel.value.exchange || ex.classname === exchangeModel.value.exchange,
   )?.trade_modes;
   return val ?? [];
 });
