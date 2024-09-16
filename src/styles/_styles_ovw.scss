@@ -263,6 +263,10 @@
         background-size: 16px 12px;
         background-repeat: no-repeat;
         background-position: right 0.75rem center;
+        &:disabled {
+            color: darken($fg-color, 30%);
+            background: lighten($bg-dark, 10%);
+        }
     }
 
     .toast {
