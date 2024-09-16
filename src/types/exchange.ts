@@ -12,6 +12,9 @@ export interface Exchange {
   comment: string;
   dex?: boolean;
   trade_modes: TradeMode[];
+  is_alias?: boolean;
+  alias_for?: string | null;
+  classname?: string;
 }
 
 export interface ExchangeListResult {
