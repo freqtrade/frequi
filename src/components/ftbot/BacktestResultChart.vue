@@ -62,6 +62,7 @@ const navigateChartToTrade = (trade: Trade) => {
           style="max-height: calc(100vh - 200px)"
           :pairlist="backtestResult.pairlist"
           :trades="backtestResult.trades"
+          :starting-balance="backtestResult.starting_balance"
           sort-method="profit"
           :backtest-mode="true"
         />

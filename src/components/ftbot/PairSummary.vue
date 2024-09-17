@@ -22,6 +22,7 @@ const props = defineProps({
   trades: { required: true, type: Array as () => Trade[] },
   sortMethod: { default: 'normal', type: String },
   backtestMode: { required: false, default: false, type: Boolean },
+  startingBalance: { required: false, type: Number, default: 0 },
 });
 const botStore = useBotStore();
 const combinedPairList = computed(() => {
@@ -46,6 +47,9 @@ const combinedPairList = computed(() => {
       profit += trade.profit_ratio;
       profitAbs += trade.profit_abs ?? 0;
     });
+    if (props.sortMethod == 'profit' && props.startingBalance) {
+      profit = profitAbs / props.startingBalance;
+    }
     const tradeCount = trades.length;
     const trade = tradeCount ? trades[0] : undefined;
     if (trades.length > 0) {
@@ -112,7 +116,7 @@ const combinedPairList = computed(() => {
         button
         class="d-flex justify-content-between align-items-center py-1"
         :active="comb.pair === botStore.activeBot.selectedPair"
-        :title="`${comb.pair} - ${comb.tradeCount} trades`"
+        :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"
         @click="botStore.activeBot.selectedPair = comb.pair"
       >
         <div>
