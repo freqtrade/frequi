@@ -172,6 +172,8 @@ export const usePairlistConfigStore = defineStore(
         return Number(value);
       } else if (type === PairlistParamType.boolean) {
         return Boolean(value);
+      } else if (type === PairlistParamType.list) {
+        return value as string[];
       } else {
         return String(value);
       }

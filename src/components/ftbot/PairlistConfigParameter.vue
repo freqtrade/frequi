@@ -27,6 +27,10 @@ const paramValue = defineModel<any>();
       v-model="paramValue"
       :options="param.options"
     ></BFormSelect>
+    <BaseStringList
+      v-if="param.type === PairlistParamType.list"
+      v-model="paramValue"
+    ></BaseStringList>
 
     <template #label>
       <label> {{ param.description }}</label>

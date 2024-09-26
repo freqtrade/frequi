@@ -30,9 +30,10 @@ export enum PairlistParamType {
   number = 'number',
   boolean = 'boolean',
   option = 'option',
+  list = 'list',
 }
 
-export type PairlistParamValue = string | number | boolean;
+export type PairlistParamValue = string | number | boolean | string[];
 
 interface PairlistParameterBase {
   description: string;
@@ -65,11 +66,18 @@ export interface OptionPairlistParameter extends PairlistParameterBase {
   default: string;
 }
 
+export interface ListPairlistParameter extends PairlistParameterBase {
+  type: PairlistParamType.list;
+  value?: string[];
+  default: string;
+}
+
 export type PairlistParameter =
   | StringPairlistParameter
   | NumberPairlistParameter
   | BooleanPairlistParameter
-  | OptionPairlistParameter;
+  | OptionPairlistParameter
+  | ListPairlistParameter;
 
 export interface PairlistPayloadItem {
   method: string;
