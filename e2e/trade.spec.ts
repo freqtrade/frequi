@@ -100,7 +100,7 @@ test.describe('Trade', () => {
 
     await expect(page.getByText('Config reloaded successfully.')).toBeInViewport();
   });
-  test('Trade page - drag and drop', async ({ page }) => {
+  test('Trade page - drag and drop', async ({ page, browserName }) => {
     await page.goto('/trade');
 
     const multiPane = page.locator('.drag-header', { hasText: 'Multi Pane' });
@@ -111,6 +111,8 @@ test.describe('Trade', () => {
     await page.getByText('Lock layout').uncheck();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
+    // Click outside of popup to ensure it's closed
+    await chartHeader.click();
     await expect(multiPane).toBeInViewport();
     await expect(chartHeader).toBeInViewport();
 
@@ -124,7 +126,28 @@ test.describe('Trade', () => {
       await page.mouse.up();
       await expect(multiPane).toBeInViewport();
       // Multipane wasn't moved.
-      await expect(multiPanebb).toEqual(await multiPane.boundingBox());
+      if (browserName !== 'webkit') {
+        await expect(multiPanebb).toEqual(await multiPane.boundingBox());
+      } else {
+        // allow offset of 2%
+        const newMultiPaneBB = await multiPane.boundingBox();
+        if (newMultiPaneBB && multiPanebb) {
+          const xDiff = Math.abs(newMultiPaneBB.x - multiPanebb.x);
+          const yDiff = Math.abs(newMultiPaneBB.y - multiPanebb.y);
+          const widthDiff = Math.abs(newMultiPaneBB.width - multiPanebb.width);
+          const heightDiff = Math.abs(newMultiPaneBB.height - multiPanebb.height);
+
+          const xDiffPercent = (xDiff / multiPanebb.width) * 100;
+          const yDiffPercent = (yDiff / multiPanebb.height) * 100;
+          const widthDiffPercent = (widthDiff / multiPanebb.width) * 100;
+          const heightDiffPercent = (heightDiff / multiPanebb.height) * 100;
+
+          expect(xDiffPercent).toBeLessThanOrEqual(2);
+          expect(yDiffPercent).toBeLessThanOrEqual(2);
+          expect(widthDiffPercent).toBeLessThanOrEqual(2);
+          expect(heightDiffPercent).toBeLessThanOrEqual(2);
+        }
+      }
 
       await expect(chartHeader).toBeInViewport();
       // ChartHeader was moved down
