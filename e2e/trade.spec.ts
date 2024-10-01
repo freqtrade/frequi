@@ -100,7 +100,7 @@ test.describe('Trade', () => {
 
     await expect(page.getByText('Config reloaded successfully.')).toBeInViewport();
   });
-  test('Trade page - drag and drop', async ({ page, browserName }) => {
+  test('Trade page - drag and drop', async ({ page }) => {
     await Promise.all([
       page.goto('/trade'),
       // Wait for network requests
@@ -138,27 +138,7 @@ test.describe('Trade', () => {
       await page.mouse.up();
       await expect(multiPane).toBeInViewport();
       // Multipane wasn't moved.
-      // if (browserName !== 'webkit') {
       await expect(multiPanebb).toEqual(await multiPane.boundingBox());
-      // } else {
-      //   // allow offset of 2%
-      //   const newMultiPaneBB = await multiPane.boundingBox();
-      //   if (newMultiPaneBB && multiPanebb) {
-      //     const xDiff = Math.abs((newMultiPaneBB.x - multiPanebb.x) / multiPanebb.x);
-      //     const yDiff = Math.abs((newMultiPaneBB.y - multiPanebb.y) / multiPanebb.y);
-      //     const widthDiff = Math.abs(
-      //       (newMultiPaneBB.width - multiPanebb.width) / multiPanebb.width,
-      //     );
-      //     const heightDiff = Math.abs(
-      //       (newMultiPaneBB.height - multiPanebb.height) / multiPanebb.height,
-      //     );
-
-      //     expect(xDiff).toBeLessThanOrEqual(0.02);
-      //     expect(yDiff).toBeLessThanOrEqual(0.02);
-      //     expect(widthDiff).toBeLessThanOrEqual(0.02);
-      //     expect(heightDiff).toBeLessThanOrEqual(0.02);
-      //   }
-      // }
 
       await expect(chartHeader).toBeInViewport();
       // ChartHeader was moved down
