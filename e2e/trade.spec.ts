@@ -132,20 +132,19 @@ test.describe('Trade', () => {
         // allow offset of 2%
         const newMultiPaneBB = await multiPane.boundingBox();
         if (newMultiPaneBB && multiPanebb) {
-          const xDiff = Math.abs(newMultiPaneBB.x - multiPanebb.x);
-          const yDiff = Math.abs(newMultiPaneBB.y - multiPanebb.y);
-          const widthDiff = Math.abs(newMultiPaneBB.width - multiPanebb.width);
-          const heightDiff = Math.abs(newMultiPaneBB.height - multiPanebb.height);
+          const xDiff = Math.abs((newMultiPaneBB.x - multiPanebb.x) / multiPanebb.x);
+          const yDiff = Math.abs((newMultiPaneBB.y - multiPanebb.y) / multiPanebb.y);
+          const widthDiff = Math.abs(
+            (newMultiPaneBB.width - multiPanebb.width) / multiPanebb.width,
+          );
+          const heightDiff = Math.abs(
+            (newMultiPaneBB.height - multiPanebb.height) / multiPanebb.height,
+          );
 
-          const xDiffPercent = (xDiff / multiPanebb.width) * 100;
-          const yDiffPercent = (yDiff / multiPanebb.height) * 100;
-          const widthDiffPercent = (widthDiff / multiPanebb.width) * 100;
-          const heightDiffPercent = (heightDiff / multiPanebb.height) * 100;
-
-          expect(xDiffPercent).toBeLessThanOrEqual(2);
-          expect(yDiffPercent).toBeLessThanOrEqual(2);
-          expect(widthDiffPercent).toBeLessThanOrEqual(2);
-          expect(heightDiffPercent).toBeLessThanOrEqual(2);
+          expect(xDiff).toBeLessThanOrEqual(0.02);
+          expect(yDiff).toBeLessThanOrEqual(0.02);
+          expect(widthDiff).toBeLessThanOrEqual(0.02);
+          expect(heightDiff).toBeLessThanOrEqual(0.02);
         }
       }
 
