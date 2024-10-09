@@ -1,19 +1,9 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
+import prettierConfig from '@vue/eslint-config-prettier';
 import vueEslintConfig from '@vue/eslint-config-typescript';
-import prettierConfig from "@vue/eslint-config-prettier";
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import tseslint from 'typescript-eslint';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 export default [
   { languageOptions: { globals: globals.browser } },
@@ -24,7 +14,7 @@ export default [
     extends: [
       'recommended',
       // 'strict',
-    ]
+    ],
   }),
   prettierConfig,
   {
