@@ -1,5 +1,7 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
+import vueEslintConfig from '@vue/eslint-config-typescript';
+import prettierConfig from "@vue/eslint-config-prettier";
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import path from 'node:path';
@@ -18,8 +20,13 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
-  ...compat.extends('@vue/eslint-config-typescript/recommended'),
-  ...compat.extends('@vue/eslint-config-prettier'),
+  ...vueEslintConfig({
+    extends: [
+      'recommended',
+      // 'strict',
+    ]
+  }),
+  prettierConfig,
   {
     languageOptions: {
       parserOptions: {
