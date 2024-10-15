@@ -11,12 +11,12 @@ const emit = defineEmits<{ 'trade-select': [trade: Trade] }>();
 
 const botStore = useBotStore();
 const selectedTrade = ref({} as Trade);
-const sortDescendingOrder = ref(true)
-const sortMethod = ref('openDate')
+const sortDescendingOrder = ref(true);
+const sortMethod = ref('openDate');
 const sortMethodOptions = [
-  {text: 'Open date', value: 'openDate'},
-  {text: 'Profit', value: 'profit'},
-]
+  { text: 'Open date', value: 'openDate' },
+  { text: 'Profit %', value: 'profit' },
+];
 
 const onTradeSelect = (trade: Trade) => {
   selectedTrade.value = trade;
@@ -28,10 +28,10 @@ const sortedTrades = computed(() => {
     return props.trades
       .slice()
       .sort((a, b) =>
-        sortDescendingOrder.value    
+        sortDescendingOrder.value
           ? b.profit_ratio - a.profit_ratio
           : a.profit_ratio - b.profit_ratio,
-    )
+      );
   } else {
     return props.trades
       .slice()
@@ -57,11 +57,7 @@ watch(
   <div>
     <div class="d-flex justify-content-center">
       <span class="me-2">Sort by:</span>
-      <BFormRadioGroup
-        v-model="sortMethod"
-        :options="sortMethodOptions"
-        name="radio-options"
-      />
+      <BFormRadioGroup v-model="sortMethod" :options="sortMethodOptions" name="radio-options" />
     </div>
     <BListGroup>
       <BListGroupItem
