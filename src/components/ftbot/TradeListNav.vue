@@ -24,23 +24,10 @@ const onTradeSelect = (trade: Trade) => {
 };
 
 const sortedTrades = computed(() => {
-  if (sortMethod.value === 'profit') {
-    return props.trades
-      .slice()
-      .sort((a, b) =>
-        sortDescendingOrder.value
-          ? b.profit_ratio - a.profit_ratio
-          : a.profit_ratio - b.profit_ratio,
-      );
-  } else {
-    return props.trades
-      .slice()
-      .sort((a, b) =>
-        sortDescendingOrder.value
-          ? b.open_timestamp - a.open_timestamp
-          : a.open_timestamp - b.open_timestamp,
-      );
-  }
+  const field: keyof Trade = sortMethod.value === 'profit' ? 'profit_ratio' : 'open_timestamp';
+  return sortDescendingOrder.value
+    ? props.trades.slice().sort((a, b) => b[field] - a[field])
+    : props.trades.slice().sort((a, b) => a[field] - b[field]);
 });
 
 const ordersVisible = ref(sortedTrades.value.map(() => false));
