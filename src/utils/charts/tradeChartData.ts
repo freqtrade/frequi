@@ -3,7 +3,7 @@ import { Order, PairHistory, Trade, BTOrder } from '@/types';
 import { ScatterSeriesOption } from 'echarts';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {
-  return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
+  return `${order.ft_order_side === 'buy' ? '-' : '+'}${formatPriceCurrency(
     'cost' in order ? order.cost : order.amount * order.safe_price,
     quoteCurrency,
   )}`;
