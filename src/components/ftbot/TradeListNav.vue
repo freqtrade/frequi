@@ -11,7 +11,12 @@ const emit = defineEmits<{ 'trade-select': [trade: Trade] }>();
 
 const botStore = useBotStore();
 const selectedTrade = ref({} as Trade);
-const sortNewestFirst = ref(true);
+const sortDescendingOrder = ref(true);
+const sortMethod = ref('openDate');
+const sortMethodOptions = [
+  { text: 'Open date', value: 'openDate' },
+  { text: 'Profit %', value: 'profit' },
+];
 
 const onTradeSelect = (trade: Trade) => {
   selectedTrade.value = trade;
@@ -19,13 +24,10 @@ const onTradeSelect = (trade: Trade) => {
 };
 
 const sortedTrades = computed(() => {
-  return props.trades
-    .slice()
-    .sort((a, b) =>
-      sortNewestFirst.value
-        ? b.open_timestamp - a.open_timestamp
-        : a.open_timestamp - b.open_timestamp,
-    );
+  const field: keyof Trade = sortMethod.value === 'profit' ? 'profit_ratio' : 'open_timestamp';
+  return sortDescendingOrder.value
+    ? props.trades.slice().sort((a, b) => b[field] - a[field])
+    : props.trades.slice().sort((a, b) => a[field] - b[field]);
 });
 
 const ordersVisible = ref(sortedTrades.value.map(() => false));
@@ -40,13 +42,17 @@ watch(
 
 <template>
   <div>
+    <div class="d-flex justify-content-center">
+      <span class="me-2">Sort by:</span>
+      <BFormRadioGroup v-model="sortMethod" :options="sortMethodOptions" name="radio-options" />
+    </div>
     <BListGroup>
       <BListGroupItem
         button
         class="d-flex flex-wrap justify-content-center align-items-center"
         :title="'Trade Navigation'"
-        @click="sortNewestFirst = !sortNewestFirst"
-        >Trade Navigation {{ sortNewestFirst ? '&#8595;' : '&#8593;' }}
+        @click="sortDescendingOrder = !sortDescendingOrder"
+        >Trade Navigation {{ sortDescendingOrder ? '&#8595;' : '&#8593;' }}
       </BListGroupItem>
       <BListGroupItem
         v-for="(trade, i) in sortedTrades"
