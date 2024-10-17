@@ -42,7 +42,7 @@ jobs:
       run: pnpm run lint-ci
 
     - name: Run type check
-      run: pnpm run check-types
+      run: pnpm run typecheck
 
     - name: Run Tests
       run: pnpm run test:unit

@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "check-types": "vue-tsc --noEmit",
+    "typecheck": "vue-tsc --noEmit",
     "lint": "eslint src tests e2e",
     "lint-ci": "eslint --no-fix src tests e2e",
     "test:e2e": "playwright test",
