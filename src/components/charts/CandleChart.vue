@@ -649,12 +649,10 @@ function initializeChartOptions() {
 function updateSliderPosition() {
   if (!props.sliderPosition) return;
 
-  const start = timestampms(props.sliderPosition.startValue - props.dataset.timeframe_ms * 40);
-  const end = timestampms(
-    props.sliderPosition.endValue
-      ? props.sliderPosition.endValue + props.dataset.timeframe_ms * 40
-      : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80,
-  );
+  const start = props.sliderPosition.startValue - props.dataset.timeframe_ms * 40;
+  const end = props.sliderPosition.endValue
+    ? props.sliderPosition.endValue + props.dataset.timeframe_ms * 40
+    : props.sliderPosition.startValue + props.dataset.timeframe_ms * 80;
   if (candleChart.value) {
     candleChart.value.dispatchAction({
       type: 'dataZoom',
