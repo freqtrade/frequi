@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ChartType, ChartTypeString, IndicatorConfig } from '@/types';
 
-import { watchDebounced } from '@vueuse/core';
-
 const props = defineProps({
   modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
   columns: { required: true, type: Array as () => string[] },
@@ -16,6 +14,7 @@ const availableGraphTypes = ref<ChartTypeString[]>(Object.keys(ChartType) as Cha
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
 const fillTo = ref('');
+const scatterSymbolSize = ref(3);
 
 function newColor() {
   selColor.value = randomColor();
@@ -31,6 +30,9 @@ const combinedIndicator = computed<IndicatorConfig>(() => {
   };
   if (fillTo.value && graphType.value === ChartType.line) {
     val.fill_to = fillTo.value;
+  }
+  if (graphType.value == ChartType.scatter) {
+    val.scatterSymbolSize = scatterSymbolSize.value;
   }
   return {
     [selAvailableIndicator.value]: val,
@@ -59,7 +61,7 @@ watch(
 );
 
 watchDebounced(
-  [selColor, graphType, fillTo],
+  [selColor, graphType, fillTo, scatterSymbolSize],
   () => {
     emitIndicator();
   },
@@ -108,5 +110,12 @@ watchDebounced(
       class="mt-1"
       label="Area chart - Fill to (leave empty for line chart)"
     />
+    <BFormGroup
+      v-if="graphType === ChartType.scatter"
+      label="Scatter symbol size"
+      label-class="mt-1"
+    >
+      <BFormSpinbutton v-model="scatterSymbolSize" />
+    </BFormGroup>
   </div>
 </template>

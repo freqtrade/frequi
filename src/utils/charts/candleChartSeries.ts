@@ -24,6 +24,12 @@ export function generateCandleSeries(
     },
     showSymbol: false,
   };
+  if (value.type === ChartType.scatter) {
+    sp['symbolSize'] = value.scatterSymbolSize ?? 3;
+    sp['emphasis'] = {
+      disabled: true,
+    };
+  }
   return sp;
 }
 

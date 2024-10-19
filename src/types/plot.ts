@@ -10,6 +10,7 @@ export interface IndicatorConfig {
   color?: string;
   type?: ChartType | ChartTypeString;
   fill_to?: string;
+  scatterSymbolSize?: number;
 }
 
 export interface PlotConfig {
