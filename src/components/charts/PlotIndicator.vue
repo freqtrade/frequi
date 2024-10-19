@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { ChartType, ChartTypeString, IndicatorConfig } from '@/types';
 
-import { watchDebounced } from '@vueuse/core';
-
-const DEFAULT_SCATTER_SYMBOL_SIZE = 3;
-
 const props = defineProps({
   modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
   columns: { required: true, type: Array as () => string[] },
@@ -18,7 +14,7 @@ const availableGraphTypes = ref<ChartTypeString[]>(Object.keys(ChartType) as Cha
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
 const fillTo = ref('');
-const scatterSymbolSize = ref(DEFAULT_SCATTER_SYMBOL_SIZE);
+const scatterSymbolSize = ref(3);
 
 function newColor() {
   selColor.value = randomColor();
