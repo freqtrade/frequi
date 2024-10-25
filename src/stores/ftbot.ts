@@ -52,6 +52,8 @@ import {
   EntryStats,
   PairIntervalTuple,
   PairHistory,
+  HyperoptLossListResponse,
+  HyperoptLossObj,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { useWebSocket } from '@vueuse/core';
@@ -106,6 +108,7 @@ export function createBotSubStore(botId: string, botName: string) {
         strategyPlotConfig: undefined as PlotConfig | undefined,
         strategyList: [] as string[],
         freqaiModelList: [] as string[],
+        hyperoptLossList: [] as HyperoptLossObj[],
         exchangeList: [] as Exchange[],
         strategy: {} as StrategyResult,
         pairlist: [] as string[],
@@ -498,6 +501,17 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const { data } = await api.get<FreqAIModelListResult>('/freqaimodels');
           this.freqaiModelList = data.freqaimodels;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getHyperoptLossList() {
+        try {
+          // Only available starting with 2.40
+          const { data } = await api.get<HyperoptLossListResponse>('/hyperopt-loss');
+          this.hyperoptLossList = data.loss_functions;
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);

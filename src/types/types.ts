@@ -189,6 +189,15 @@ export interface FreqAIModelListResult {
   freqaimodels: string[];
 }
 
+export interface HyperoptLossObj {
+  name: string;
+  description: string;
+}
+
+export interface HyperoptLossListResponse {
+  loss_functions: HyperoptLossObj[];
+}
+
 export interface SysInfoResponse {
   cpu_pct: number[];
   ram_pct: number;
