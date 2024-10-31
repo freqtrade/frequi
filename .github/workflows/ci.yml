@@ -96,6 +96,7 @@ jobs:
 
 
   docker:
+    if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'release') && github.repository == 'freqtrade/frequi'
     needs: build
     runs-on: ubuntu-latest
 
