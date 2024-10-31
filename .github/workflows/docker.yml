@@ -52,7 +52,7 @@ jobs:
       id: build
       uses: docker/build-push-action@v6
       with:
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: ${{ matrix.platform }}
         context: .
         tags: ${{ steps.meta.outputs.tags }}
         outputs: type=image,name=freqtradeorg/frequi,push-by-digest=true,name-canonical=true,push=true
