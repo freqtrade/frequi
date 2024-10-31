@@ -5,9 +5,8 @@ on:
     branches:
       - main
       - docker_container
-  # pull_request:
-  #   branches:
-  #     - main
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
@@ -43,11 +42,14 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
+      id: build-and-push
       uses: docker/build-push-action@v6
       with:
-        platforms: linux/amd64,linux/arm64,linux/arm/v7,
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
         context: .
         push: true
         tags: |
-          freqtradeorg/frequi:latest
-          ghcr.io/freqtrade/frequi:latest
+          ${{ github.ref == 'refs/heads/main' && 'freqtradeorg/frequi:latest' || '' }}
+          ${{ github.ref == 'refs/heads/main' && 'ghcr.io/freqtrade/frequi:latest' || '' }}
+          ${{ github.event_name == 'release' && github.event.release.tag_name != '' && format('freqtradeorg/frequi:{0}', github.event.release.tag_name) || '' }}
+          ${{ github.event_name == 'release' && github.event.release.tag_name != '' && format('ghcr.io/freqtrade/frequi:{0}', github.event.release.tag_name) || '' }}
