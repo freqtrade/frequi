@@ -30,11 +30,8 @@ const availablePairs = computed<string[]>(() => {
 
 onMounted(() => {
   if (botStore.activeBot.isWebserverMode) {
-    // this.refresh();
-    botStore.activeBot.getAvailablePairs({ timeframe: botStore.activeBot.timeframe });
-    // .then((val) => {
-    // console.log(val);
-    // });
+    // Get available pairs for all timeframes
+    botStore.activeBot.getAvailablePairs({});
   } else if (!botStore.activeBot.whitelist || botStore.activeBot.whitelist.length === 0) {
     botStore.activeBot.getWhitelist();
   }
