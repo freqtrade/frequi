@@ -168,8 +168,6 @@ jobs:
         if-no-files-found: error
         retention-days: 1
 
-
-
   docker-merge:
     runs-on: ubuntu-latest
     needs:
@@ -218,8 +216,8 @@ jobs:
       working-directory: /tmp/digests
       run: |
         docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-          $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+          $(printf 'freqtradeorg/frequi@sha256:%s ' *)
 
     - name: Inspect image
       run: |
-        docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+        docker buildx imagetools inspect freqtradeorg/frequi:${{ steps.meta.outputs.version }}
