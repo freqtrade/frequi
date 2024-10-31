@@ -1,9 +1,10 @@
 name: Build and Publish Docker Container
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+      - docker_container
   # pull_request:
   #   branches:
   #     - main
