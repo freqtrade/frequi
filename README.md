@@ -15,11 +15,25 @@ Using FreqUI, does require [freqtrade](https://github.com/freqtrade/freqtrade) t
 In newer versions (2021.2 and newer), freqUI is builtin to freqtrade, so manual setup of freqUI will no longer be necessary unless you want to modify freqUI.
 Instructions for this end-user setup can be found in the [freqtrade API documentation](https://www.freqtrade.io/en/stable/rest-api/).
 
+### Running a standalone version of FreqUI
+
+Using Docker, you can also run a pre-built docker image of FreqUI.
+
+```bash
+docker compose up -d
+```
+
+This will start a pre-built container with FreqUI running on port 3000 - which defaults to the latest version of freqUI.
+You can use `docker compose pull` to update to the latest version of the UI.
+
+Please note: This is a standalone version of FreqUI, and will still require a correctly configured freqtrade bot.
+You'll need to correctly configure [CORS](https://www.freqtrade.io/en/stable/rest-api/#cors) in freqtrade to allow FreqUI to connect to the API.
+
 ## Developer project setup
 
 It will require [freqtrade](https://github.com/freqtrade/freqtrade) to be running on the same host with the API enabled under (`localhost:8080`). You can either use the webpack proxy (port can be changed in `vue.config.js`) - or connect directly to the API (recommended).
 
-You will also have to have CORS for freqtrade configured correctly based on the [freqtrade documentation](https://www.freqtrade.io/en/latest/rest-api/#cors).
+You will also have to have CORS for freqtrade configured correctly based on the [freqtrade documentation](https://www.freqtrade.io/en/stable/rest-api/#cors).
 Most likely, the correct entry will be `http://localhost:3000` or `http://127.0.0.1:3000` - but the URL must match the URL you use to access FreqUI.
 Ports can vary, so check the URL you're using.
 
