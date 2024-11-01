@@ -226,8 +226,3 @@ jobs:
     - name: Inspect image
       run: |
         docker buildx imagetools inspect freqtradeorg/frequi:${{ steps.meta.outputs.version }}
-
-    - name: Push image to GHCR
-      run: |
-        tags=$(echo ${{ steps.meta.outputs.tags }} | jq -r '.[] | "--tag ghcr.io/freqtrade/frequi:" + .')
-        docker buildx imagetools create $tags freqtradeorg/frequi:${{ steps.meta.outputs.version }}
