@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 import type { ExchangeSelection } from '@/types';
 
 const exchangeModel = defineModel<ExchangeSelection>({ required: true });
