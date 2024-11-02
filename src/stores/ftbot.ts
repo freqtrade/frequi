@@ -54,6 +54,7 @@ import {
   PairHistory,
   HyperoptLossListResponse,
   HyperoptLossObj,
+  DownloadDataPayload,
 } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { useWebSocket } from '@vueuse/core';
@@ -698,6 +699,18 @@ export function createBotSubStore(botId: string, botName: string) {
       async getBackgroundJobStatus(jobId: string) {
         try {
           const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async startDataDownload(payload: DownloadDataPayload) {
+        try {
+          const { data } = await api.post<DownloadDataPayload, AxiosResponse<BgTaskStarted>>(
+            '/download_data',
+            payload,
+          );
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
