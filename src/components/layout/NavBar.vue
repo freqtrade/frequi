@@ -116,6 +116,11 @@ watch(
           <BNavItem to="/logs">Logs</BNavItem>
           <BNavItem v-if="botStore.canRunBacktest" to="/backtest">Backtest</BNavItem>
           <BNavItem
+            v-if="botStore.isWebserverMode && botStore.activeBot.botApiVersion >= 2.41"
+            to="/download_data"
+            >Download Data</BNavItem
+          >
+          <BNavItem
             v-if="
               (botStore.activeBot?.isWebserverMode ?? false) &&
               botStore.activeBot.botApiVersion >= 2.3

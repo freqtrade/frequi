@@ -44,6 +44,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     activeBot: (state) => state.botStores[state.selectedBot] as BotSubStore,
     activeBotorUndefined: (state) => state.botStores[state.selectedBot] as BotSubStore | undefined,
     canRunBacktest: (state) => state.botStores[state.selectedBot]?.canRunBacktest ?? false,
+    isWebserverMode: (state) => state.botStores[state.selectedBot]?.isWebserverMode ?? false,
     selectedBotObj: (state) => state.availableBots[state.selectedBot],
     nextBotId: (state) => {
       let botCount = Object.keys(state.availableBots).length;
