@@ -7,6 +7,7 @@ export * from './botComparison';
 export * from './candleTypes';
 export * from './chart';
 export * from './daily';
+export * from './downloadData';
 export * from './exchange';
 export * from './gridLayout';
 export * from './locks';
