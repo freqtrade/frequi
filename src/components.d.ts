@@ -129,6 +129,7 @@ declare module 'vue' {
     IMdiPause: typeof import('~icons/mdi/pause')['default']
     IMdiPencil: typeof import('~icons/mdi/pencil')['default']
     IMdiPlay: typeof import('~icons/mdi/play')['default']
+    IMdiPlus: typeof import('~icons/mdi/plus')['default']
     IMdiPlusBoxMultipleOutline: typeof import('~icons/mdi/plus-box-multiple-outline')['default']
     IMdiPlusBoxOutline: typeof import('~icons/mdi/plus-box-outline')['default']
     IMdiRefresh: typeof import('~icons/mdi/refresh')['default']
