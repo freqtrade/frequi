@@ -41,37 +41,40 @@ async function startDownload() {
 </script>
 
 <template>
-  <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-column">
-    <h2>Download Data</h2>
-    <div class="d-flex flex-row gap-5">
-      <div class="d-flex flex-fill align-items-end gap-2">
-        <div class="d-flex flex-column flex-shrink">
-          <h4 class="text-start">Select Pairs</h4>
-          <div v-for="(pair, index) in pairs" :key="index">
-            <BFormInput v-model="pairs[index]" placeholder="Pair"></BFormInput>
+  <div class="container">
+    <BCard header="Downloading Data">
+      <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-column">
+        <div class="d-flex flex-row gap-5">
+          <div class="d-flex flex-fill align-items-end gap-2">
+            <div class="d-flex flex-column flex-shrink">
+              <h4 class="text-start">Select Pairs</h4>
+              <div v-for="(pair, index) in pairs" :key="index">
+                <BFormInput v-model="pairs[index]" placeholder="Pair"></BFormInput>
+              </div>
+            </div>
+            <BButton variant="primary" title="Add Pair" @click="addPair"><i-mdi-plus /></BButton>
+          </div>
+          <div class="d-flex flex-fill align-items-end gap-2">
+            <div class="d-flex flex-column flex-shrink">
+              <h4 class="text-start">Select timeframes</h4>
+              <div v-for="(tf, index) in timeframes" :key="index">
+                <BFormInput v-model="timeframes[index]" placeholder="Timeframe"></BFormInput>
+              </div>
+            </div>
+            <BButton variant="primary" title="Add timeframe" @click="addTimeframe"
+              ><i-mdi-plus
+            /></BButton>
           </div>
         </div>
-        <BButton variant="primary" title="Add Pair" @click="addPair"><i-mdi-plus /></BButton>
-      </div>
-      <div class="d-flex flex-fill align-items-end gap-2">
-        <div class="d-flex flex-column flex-shrink">
-          <h4 class="text-start">Select timeframes</h4>
-          <div v-for="(tf, index) in timeframes" :key="index">
-            <BFormInput v-model="timeframes[index]" placeholder="Timeframe"></BFormInput>
-          </div>
+        <div class="mb-2 border rounded-1 p-2 text-start">
+          <BFormCheckbox v-model="exchange.customExchange" class="mb-2">
+            Custom Exchange
+          </BFormCheckbox>
+          <ExchangeSelect v-if="exchange.customExchange" v-model="exchange.selectedExchange" />
         </div>
-        <BButton variant="primary" title="Add timeframe" @click="addTimeframe"
-          ><i-mdi-plus
-        /></BButton>
+        <BButton variant="primary" @click="startDownload">Start Download</BButton>
       </div>
-    </div>
-    <div class="mb-2 border rounded-1 p-2 text-start">
-      <BFormCheckbox v-model="exchange.customExchange" class="mb-2">
-        Custom Exchange
-      </BFormCheckbox>
-      <ExchangeSelect v-if="exchange.customExchange" v-model="exchange.selectedExchange" />
-    </div>
-    <BButton variant="primary" @click="startDownload">Start Download</BButton>
+    </BCard>
   </div>
 </template>
 
