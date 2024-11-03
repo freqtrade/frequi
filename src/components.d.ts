@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BackgroundJobTracking: typeof import('./components/ftbot/BackgroundJobTracking.vue')['default']
     BacktestGraphs: typeof import('./components/ftbot/BacktestGraphs.vue')['default']
     BacktestHistoryLoad: typeof import('./components/ftbot/BacktestHistoryLoad.vue')['default']
     BacktestResultAnalysis: typeof import('./components/ftbot/BacktestResultAnalysis.vue')['default']
@@ -62,6 +63,8 @@ declare module 'vue' {
     BotStatus: typeof import('./components/ftbot/BotStatus.vue')['default']
     BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
     BPopover: typeof import('bootstrap-vue-next/components/BPopover')['BPopover']
+    BProgress: typeof import('bootstrap-vue-next/components/BProgress')['BProgress']
+    BProgressBar: typeof import('bootstrap-vue-next/components/BProgress')['BProgressBar']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
     BSpinner: typeof import('bootstrap-vue-next/components/BSpinner')['BSpinner']
     BTab: typeof import('bootstrap-vue-next/components/BTabs')['BTab']
@@ -117,6 +120,7 @@ declare module 'vue' {
     IMdiContentSave: typeof import('~icons/mdi/content-save')['default']
     IMdiDelete: typeof import('~icons/mdi/delete')['default']
     IMdiDiceMultiple: typeof import('~icons/mdi/dice-multiple')['default']
+    IMdiDownloadBoxOutline: typeof import('~icons/mdi/download-box-outline')['default']
     IMdiEye: typeof import('~icons/mdi/eye')['default']
     IMdiEyeOff: typeof import('~icons/mdi/eye-off')['default']
     IMdiFolderLock: typeof import('~icons/mdi/folder-lock')['default']
