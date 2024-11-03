@@ -4,7 +4,7 @@ import { AxiosInstance } from 'axios';
 const jobs = ref<Record<string, { jobType: string; status: string }>>({});
 
 export function useBackgroundJob() {
-  function start(api: AxiosInstance, showAlert: any, jobId: string, jobType: string) {
+  function startBgJob(api: AxiosInstance, showAlert: any, jobId: string, jobType: string) {
     async function getBackgroundJobStatus(jobId: string) {
       try {
         const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
@@ -51,6 +51,6 @@ export function useBackgroundJob() {
 
   return {
     runningJobs,
-    start,
+    startBgJob,
   };
 }

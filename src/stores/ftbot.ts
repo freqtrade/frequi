@@ -711,6 +711,8 @@ export function createBotSubStore(botId: string, botName: string) {
             '/download_data',
             payload,
           );
+          const { startBgJob } = useBackgroundJob();
+          startBgJob(api, showAlert, data.job_id, 'download_data');
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
