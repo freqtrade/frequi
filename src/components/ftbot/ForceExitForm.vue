@@ -65,6 +65,10 @@ const amountInBase = computed<string>(() => {
     ? `~${formatPriceCurrency(amountDebounced.value * props.trade.current_rate, props.trade.quote_currency || '', props.stakeCurrencyDecimals)} (Estimated value) `
     : '';
 });
+const orderTypeOptions = [
+  { value: 'market', text: 'Market' },
+  { value: 'limit', text: 'Limit' },
+];
 </script>
 
 <template>
@@ -109,13 +113,16 @@ const amountInBase = computed<string>(() => {
           invalid-feedback="OrderType"
           :state="ordertype !== undefined"
         >
-          <BFormSelect
+          <BFormRadioGroup
+            id="ordertype-input"
             v-model="ordertype"
-            :options="['market', 'limit']"
-            style="min-width: 7em"
+            :options="orderTypeOptions"
+            name="radios-btn-orderType"
+            buttons
+            button-variant="outline-primary"
+            style="min-width: 10em"
             size="sm"
-          >
-          </BFormSelect>
+          ></BFormRadioGroup>
         </BFormGroup>
       </form>
     </BModal>
