@@ -42,7 +42,7 @@ async function startDownload() {
 
 <template>
   <div class="container">
-    <BackgroundJobTracking />
+    <BackgroundJobTracking class="mb-4" />
     <BCard header="Downloading Data">
       <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-column">
         <div class="d-flex flex-row gap-5">
