@@ -104,6 +104,8 @@ const inputSelect = (bvModalEvt) => {
         label-for="order-direction"
         invalid-feedback="Order direction must be set"
         :state="orderSide !== undefined"
+        label-class="mb-1"
+        class="mb-2"
       >
         <BFormRadioGroup
           id="order-direction"
@@ -121,6 +123,8 @@ const inputSelect = (bvModalEvt) => {
         label-for="pair-input"
         invalid-feedback="Pair is required"
         :state="selectedPair !== undefined"
+        label-class="mb-1"
+        class="mb-2"
       >
         <BFormInput
           id="pair-input"
@@ -136,6 +140,8 @@ const inputSelect = (bvModalEvt) => {
         label-for="price-input"
         invalid-feedback="Price must be empty or a positive number"
         :state="!price || price > 0"
+        label-class="mb-1"
+        class="mb-2"
       >
         <BFormInput
           id="price-input"
@@ -150,6 +156,8 @@ const inputSelect = (bvModalEvt) => {
         label-for="stake-input"
         invalid-feedback="Stake-amount must be empty or a positive number"
         :state="!stakeAmount || stakeAmount > 0"
+        label-class="mb-1"
+        class="mb-2"
       >
         <BFormInput
           id="stake-input"
@@ -165,6 +173,8 @@ const inputSelect = (bvModalEvt) => {
         label-for="leverage-input"
         invalid-feedback="Leverage must be empty or a positive number"
         :state="!leverage || leverage > 0"
+        label-class="mb-0"
+        class="mb-2"
       >
         <BFormInput
           id="leverage-input"
@@ -179,6 +189,8 @@ const inputSelect = (bvModalEvt) => {
         label-for="ordertype-input"
         invalid-feedback="OrderType"
         :state="true"
+        label-class="mb-1"
+        class="mb-2"
       >
         <BFormRadioGroup
           id="ordertype-input"
@@ -195,6 +207,8 @@ const inputSelect = (bvModalEvt) => {
         v-if="botStore.activeBot.botApiVersion > 1.16"
         label="*Custom entry tag Optional]"
         label-for="enterTag-input"
+        label-class="mb-1"
+        class="mb-2"
       >
         <BFormInput
           id="enterTag-input"
