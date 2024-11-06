@@ -33,8 +33,8 @@ importers:
         specifier: ^0.25.10
         version: 0.25.10(vue@3.5.12(typescript@5.6.3))
       core-js:
-        specifier: ^3.38.1
-        version: 3.38.1
+        specifier: ^3.39.0
+        version: 3.39.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1215,8 +1215,8 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  core-js@3.38.1:
-    resolution: {integrity: sha512-OP35aUorbU3Zvlx7pjsFdu1rGNnD4pgw/CWoYzRY3t2EzoVT7shKHY1dlAy3f41cGIO7ZDPQimhGFTlEYkG/Hw==}
+  core-js@3.39.0:
+    resolution: {integrity: sha512-raM0ew0/jJUqkJ0E6e8UDtl+y/7ktFivgWvqw8dNSQeNWoSDLvQ1H/RN3aPXB9tBd4/FhyR4RDPGhsNIMsAn7g==}
 
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -3551,7 +3551,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  core-js@3.38.1: {}
+  core-js@3.39.0: {}
 
   cross-spawn@7.0.3:
     dependencies:
