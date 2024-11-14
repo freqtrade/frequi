@@ -11,7 +11,19 @@ const props = defineProps({
   keyHeaders: { type: Array as PropType<string[]>, default: () => [] },
 });
 
-const tableItems = computed(() => props.results as unknown as TableItem[]);
+const tableItems = computed(
+  () =>
+    props.results.map((v) => {
+      if (props.keyHeaders.length > 0) {
+        return {
+          ...v,
+          key:
+            typeof v['key'] === 'string' ? Array(props.keyHeaders.length).fill(v['key']) : v['key'],
+        };
+      }
+      return v;
+    }) as unknown as TableItem[],
+);
 
 const perTagReason = computed(() => {
   // TODO: should be TableField - but it's not working correctly
@@ -20,7 +32,7 @@ const perTagReason = computed(() => {
     // Keys could be an array
     for (let i = 0; i < props.keyHeaders.length; i += 1) {
       firstFields.push({
-        key: `key`,
+        key: `key[${i}]`,
         label: props.keyHeaders[i],
         formatter: (value, _, item) =>
           Array.isArray(value) ? value[i] : value || item['exit_reason'] || 'OTHER',
@@ -58,6 +70,7 @@ const perTagReason = computed(() => {
     { key: 'losses', label: 'Losses' },
   ];
 });
+console.log(props.title, 'xxx', perTagReason);
 </script>
 <template>
   <BCard :header="title">
