@@ -8,6 +8,8 @@ export interface BackgroundTaskStatus {
   status: string;
   running: boolean;
   progress?: number;
+  // TODO: type this properly
+  progress_tasks?: Record<string, any>;
 }
 
 export interface BackgroundTaskResult {

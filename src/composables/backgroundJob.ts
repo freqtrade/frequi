@@ -1,7 +1,7 @@
 import { BackgroundTaskStatus } from '@/types';
 import { AxiosInstance } from 'axios';
 
-const jobs = ref<Record<string, { jobType: string; status: string }>>({});
+const jobs = ref<Record<string, { jobType: string; taskStatus?: BackgroundTaskStatus }>>({});
 
 export function useBackgroundJob() {
   function startBgJob(api: AxiosInstance, showAlert: any, jobId: string, jobType: string) {
@@ -17,7 +17,7 @@ export function useBackgroundJob() {
 
     const evaluating = ref(false);
     const result = ref<BackgroundTaskStatus | null>(null);
-    jobs.value[jobId] = { jobType, status: 'starting' };
+    jobs.value[jobId] = { jobType };
 
     const interval = window.setInterval(async () => {
       try {
@@ -25,8 +25,7 @@ export function useBackgroundJob() {
         if (!result.value.running) {
           clearJobFromList();
         }
-        jobs.value[jobId] = { ...jobs.value[jobId], status: result.value.status };
-        console.log('got result', result.value);
+        jobs.value[jobId] = { ...jobs.value[jobId], taskStatus: result.value };
       } catch (error) {
         console.error(error);
         showAlert('Failed to get background job status', 'error');
@@ -48,9 +47,18 @@ export function useBackgroundJob() {
   }
 
   const runningJobs = computed(() => jobs.value);
+  function clearJobs() {
+    // Clear all jobs that are not running
+    for (const [jobId, job] of Object.entries(jobs.value)) {
+      if (job.taskStatus?.status !== 'running') {
+        delete jobs.value[jobId];
+      }
+    }
+  }
 
   return {
     runningJobs,
     startBgJob,
+    clearJobs,
   };
 }
