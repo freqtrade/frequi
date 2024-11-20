@@ -55,11 +55,9 @@ async function startDownload() {
           <div class="d-flex flex-fill align-items-end gap-2">
             <div class="d-flex flex-column flex-shrink">
               <h4 class="text-start">Select Pairs</h4>
-              <div v-for="(pair, index) in pairs" :key="index">
-                <BFormInput v-model="pairs[index]" placeholder="Pair"></BFormInput>
-              </div>
+              <BaseStringList v-model="pairs" placeholder="Pair" size="md" />
             </div>
-            <BButton variant="primary" title="Add Pair" @click="addPair"><i-mdi-plus /></BButton>
+
             <div class="d-flex flex-column gap-1">
               <BButton
                 v-for="pt in pairTemplates"
@@ -75,13 +73,8 @@ async function startDownload() {
           <div class="d-flex flex-fill align-items-end gap-2">
             <div class="d-flex flex-column flex-shrink">
               <h4 class="text-start">Select timeframes</h4>
-              <div v-for="(tf, index) in timeframes" :key="index">
-                <BFormInput v-model="timeframes[index]" placeholder="Timeframe"></BFormInput>
-              </div>
+              <BaseStringList v-model="timeframes" placeholder="Timeframe" size="md" />
             </div>
-            <BButton variant="primary" title="Add timeframe" @click="addTimeframe"
-              ><i-mdi-plus
-            /></BButton>
           </div>
         </div>
         <div class="mb-2 border rounded-1 p-2 text-start">
