@@ -696,6 +696,15 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
+      async getBackgroundJobs() {
+        try {
+          const { data } = await api.get<BackgroundTaskStatus[]>('/background');
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
       async getBackgroundJobStatus(jobId: string) {
         try {
           const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
