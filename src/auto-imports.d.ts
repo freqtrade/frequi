@@ -376,6 +376,7 @@ declare global {
   export type { OpenTradeVizOptions } from './stores/settings'
   import('./stores/settings')
 }
+
 // for vue template auto import
 import { UnwrapRef } from 'vue'
 declare module 'vue' {
