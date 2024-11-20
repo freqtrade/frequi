@@ -650,6 +650,10 @@ export function createBotSubStore(botId: string, botName: string) {
           this.botState = data;
           this.botStatusAvailable = true;
           this.startWebSocket();
+          if (this.isWebserverMode) {
+            const { recoverBgJobs } = useBackgroundJob();
+            recoverBgJobs(api, showAlert).then();
+          }
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
@@ -690,15 +694,6 @@ export function createBotSubStore(botId: string, botName: string) {
       async getPairlistEvalResult(jobId: string) {
         try {
           const { data } = await api.get<PairlistEvalResponse>(`/pairlists/evaluate/${jobId}`);
-          return Promise.resolve(data);
-        } catch (error) {
-          console.error(error);
-          return Promise.reject(error);
-        }
-      },
-      async getBackgroundJobs() {
-        try {
-          const { data } = await api.get<BackgroundTaskStatus[]>('/background');
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);

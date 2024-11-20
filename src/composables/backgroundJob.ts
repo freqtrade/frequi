@@ -3,49 +3,65 @@ import { AxiosInstance } from 'axios';
 
 const jobs = ref<Record<string, { jobType: string; taskStatus?: BackgroundTaskStatus }>>({});
 
-export function useBackgroundJob() {
-  function startBgJob(api: AxiosInstance, showAlert: any, jobId: string, jobType: string) {
-    async function getBackgroundJobStatus(jobId: string) {
-      try {
-        const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
-        return Promise.resolve(data);
-      } catch (error) {
-        console.error(error);
-        return Promise.reject(error);
-      }
+function startBgJob(api: AxiosInstance, showAlert: any, jobId: string, jobType: string) {
+  async function getBackgroundJobStatus(jobId: string) {
+    try {
+      const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
+      return Promise.resolve(data);
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
     }
-
-    const evaluating = ref(false);
-    const result = ref<BackgroundTaskStatus | null>(null);
-    jobs.value[jobId] = { jobType };
-
-    const interval = window.setInterval(async () => {
-      try {
-        result.value = await getBackgroundJobStatus(jobId);
-        if (!result.value.running) {
-          clearJobFromRunningList();
-        }
-        jobs.value[jobId] = { ...jobs.value[jobId], taskStatus: result.value };
-      } catch (error) {
-        console.error(error);
-        showAlert('Failed to get background job status', 'error');
-        clearJobFromRunningList();
-      }
-    }, 500);
-
-    function clearJobFromRunningList() {
-      if (interval) {
-        clearInterval(interval);
-      }
-      evaluating.value = false;
-    }
-
-    return {
-      evaluating,
-      result,
-    };
   }
 
+  const evaluating = ref(false);
+  const result = ref<BackgroundTaskStatus | null>(null);
+  jobs.value[jobId] = { jobType };
+
+  const interval = window.setInterval(async () => {
+    try {
+      result.value = await getBackgroundJobStatus(jobId);
+      if (!result.value.running) {
+        clearJobFromRunningList();
+      }
+      jobs.value[jobId] = { ...jobs.value[jobId], taskStatus: result.value };
+    } catch (error) {
+      console.error(error);
+      showAlert('Failed to get background job status', 'error');
+      clearJobFromRunningList();
+    }
+  }, 500);
+
+  function clearJobFromRunningList() {
+    if (interval) {
+      clearInterval(interval);
+    }
+    evaluating.value = false;
+  }
+
+  return {
+    evaluating,
+    result,
+  };
+}
+
+async function recoverBgJobs(api: AxiosInstance, showAlert: any) {
+  try {
+    const { data } = await api.get<BackgroundTaskStatus[]>('/background');
+
+    for (const job of data) {
+      if (job.running) {
+        startBgJob(api, showAlert, job.job_id, job.job_category);
+      } else {
+        jobs.value[job.job_id] = { jobType: job.job_category, taskStatus: job };
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function useBackgroundJob() {
   const runningJobs = computed(() => jobs.value);
 
   function clearJobs() {
@@ -61,5 +77,6 @@ export function useBackgroundJob() {
     runningJobs,
     startBgJob,
     clearJobs,
+    recoverBgJobs,
   };
 }
