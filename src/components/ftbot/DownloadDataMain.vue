@@ -5,6 +5,8 @@ const botStore = useBotStore();
 const pairs = ref<string[]>(['XRP/USDT', 'BTC/USDT']);
 const timeframes = ref<string[]>(['5m', '1h']);
 
+const { pairTemplates } = usePairTemplates();
+
 const exchange = ref({
   customExchange: false,
   selectedExchange: {
@@ -18,6 +20,10 @@ const exchange = ref({
 
 function addPair() {
   pairs.value.push('');
+}
+
+function addPairs(_pairs: string[]) {
+  pairs.value.push(..._pairs);
 }
 function addTimeframe() {
   timeframes.value.push('');
@@ -54,6 +60,17 @@ async function startDownload() {
               </div>
             </div>
             <BButton variant="primary" title="Add Pair" @click="addPair"><i-mdi-plus /></BButton>
+            <div class="d-flex flex-column gap-1">
+              <BButton
+                v-for="pt in pairTemplates"
+                :key="pt.idx"
+                variant="secondary"
+                :title="pt.pairs"
+                @click="addPairs(pt.pairs)"
+              >
+                {{ pt.description }}
+              </BButton>
+            </div>
           </div>
           <div class="d-flex flex-fill align-items-end gap-2">
             <div class="d-flex flex-column flex-shrink">
