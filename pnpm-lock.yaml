@@ -30,8 +30,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(@popperjs/core@2.11.8)
       bootstrap-vue-next:
-        specifier: ^0.25.14
-        version: 0.25.14(vue@3.5.12(typescript@5.6.3))
+        specifier: ^0.26.0
+        version: 0.26.0(vue@3.5.12(typescript@5.6.3))
       core-js:
         specifier: ^3.39.0
         version: 3.39.0
@@ -1096,10 +1096,10 @@ packages:
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
 
-  bootstrap-vue-next@0.25.14:
-    resolution: {integrity: sha512-1p97pRH5oz10Uw9fsGURlV122tTuRON7WmzdWku7F3x08MeIb/t83KI5fOM7K2zU6u7KZFBzNAfNsEN64n84OQ==}
+  bootstrap-vue-next@0.26.0:
+    resolution: {integrity: sha512-XTeW3JeuXcDUHHJ3/x3Pt9cPDt68vDrOKMdv0vwK1toVkwq/YdO0lyTb7O4TQikCQ+yQrhxnVyXcx/CsytQOqg==}
     peerDependencies:
-      vue: ^3.5.3
+      vue: ^3.5.13
 
   bootstrap@5.3.3:
     resolution: {integrity: sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==}
@@ -3414,7 +3414,7 @@ snapshots:
 
   boolbase@1.0.0: {}
 
-  bootstrap-vue-next@0.25.14(vue@3.5.12(typescript@5.6.3)):
+  bootstrap-vue-next@0.26.0(vue@3.5.12(typescript@5.6.3)):
     dependencies:
       vue: 3.5.12(typescript@5.6.3)
 
