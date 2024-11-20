@@ -23,17 +23,17 @@ export function useBackgroundJob() {
       try {
         result.value = await getBackgroundJobStatus(jobId);
         if (!result.value.running) {
-          clearJobFromList();
+          clearJobFromRunningList();
         }
         jobs.value[jobId] = { ...jobs.value[jobId], taskStatus: result.value };
       } catch (error) {
         console.error(error);
         showAlert('Failed to get background job status', 'error');
-        clearJobFromList();
+        clearJobFromRunningList();
       }
     }, 500);
 
-    function clearJobFromList() {
+    function clearJobFromRunningList() {
       if (interval) {
         clearInterval(interval);
       }
@@ -47,6 +47,7 @@ export function useBackgroundJob() {
   }
 
   const runningJobs = computed(() => jobs.value);
+
   function clearJobs() {
     // Clear all jobs that are not running
     for (const [jobId, job] of Object.entries(jobs.value)) {
