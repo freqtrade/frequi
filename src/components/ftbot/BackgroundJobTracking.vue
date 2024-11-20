@@ -45,6 +45,8 @@ const { runningJobs, clearJobs } = useBackgroundJob();
         </div>
       </BListGroupItem>
     </BListGroup>
-    <BButton size="sm" class="ms-auto" @click="clearJobs"><i-mdi-delete /></BButton>
+    <BButton v-if="Object.keys(runningJobs).length > 0" size="sm" class="ms-auto" @click="clearJobs"
+      ><i-mdi-delete
+    /></BButton>
   </div>
 </template>
