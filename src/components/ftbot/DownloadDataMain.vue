@@ -59,6 +59,7 @@ async function startDownload() {
             </div>
 
             <div class="d-flex flex-column gap-1">
+              <h6>Pairs from template</h6>
               <BButton
                 v-for="pt in pairTemplates"
                 :key="pt.idx"
