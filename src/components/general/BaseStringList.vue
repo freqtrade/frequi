@@ -31,7 +31,7 @@ withDefaults(
       :size="size"
       :title="`Add new value`"
       variant="secondary"
-      class="ms-auto mt-auto"
+      class="mt-auto"
       @click="values.push('')"
       ><i-mdi-plus-box-outline />
     </BButton>
