@@ -8,4 +8,6 @@ export interface DownloadDataPayload {
   timeframes: string[];
   timerange?: string;
   days?: number;
+  erase?: boolean;
+  download_trades?: boolean;
 }
