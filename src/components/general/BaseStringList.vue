@@ -21,6 +21,7 @@ withDefaults(
           :size="size"
           variant="outline-secondary"
           title="Delete this value."
+          class="d-flex align-items-center justify-content-center"
           @click="values.splice(idx, 1)"
         >
           <i-mdi-delete />
@@ -31,9 +32,10 @@ withDefaults(
       :size="size"
       :title="`Add new value`"
       variant="secondary"
-      class="mt-auto"
+      class="mt-auto d-flex align-items-center justify-content-center"
       @click="values.push('')"
-      ><i-mdi-plus-box-outline />
+    >
+      <i-mdi-plus-box-outline />
     </BButton>
   </div>
 </template>
