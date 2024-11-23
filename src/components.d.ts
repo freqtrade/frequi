@@ -190,4 +190,7 @@ declare module 'vue' {
     TradesLogChart: typeof import('./components/charts/TradesLogChart.vue')['default']
     ValuePair: typeof import('./components/general/ValuePair.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vBToggle: typeof import('bootstrap-vue-next/directives/BToggle')['vBToggle']
+  }
 }
