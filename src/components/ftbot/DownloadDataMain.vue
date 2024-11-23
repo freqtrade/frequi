@@ -131,8 +131,8 @@ async function startDownload() {
                 <BFormInput
                   v-model.number="timeSelection.days"
                   type="number"
+                  aria-label="Days to download"
                   min="1"
-                  max="500"
                   style="width: 100px"
                 />
               </div>
