@@ -62,7 +62,6 @@ async function startDownload() {
     }
   }
 
-  console.log(payload);
   await botStore.activeBot.startDataDownload(payload);
 }
 </script>
