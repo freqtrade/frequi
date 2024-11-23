@@ -98,10 +98,10 @@ watch(
 
 <template>
   <header>
-    <BNavbar toggleable="sm" dark variant="primary">
+    <BNavbar toggleable="md" dark variant="primary">
       <RouterLink class="navbar-brand" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="navbar-brand-title d-sm-none d-md-inline">Freqtrade UI</span>
+        <span class="navbar-brand-title d-sm-none d-lg-inline">Freqtrade UI</span>
       </RouterLink>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
