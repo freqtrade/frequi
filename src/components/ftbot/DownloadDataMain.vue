@@ -5,6 +5,12 @@ const botStore = useBotStore();
 const pairs = ref<string[]>(['XRP/USDT', 'BTC/USDT']);
 const timeframes = ref<string[]>(['5m', '1h']);
 
+const timeSelection = ref({
+  useCustomTimerange: false,
+  timerange: '',
+  days: 30,
+});
+
 const { pairTemplates } = usePairTemplates();
 
 const exchange = ref<{
@@ -35,8 +41,14 @@ async function startDownload() {
   const payload: DownloadDataPayload = {
     pairs: pairs.value.filter((pair) => pair !== ''),
     timeframes: timeframes.value.filter((tf) => tf !== ''),
-    timerange: '20240101-',
   };
+
+  // Add either timerange or days to the payload
+  if (timeSelection.value.useCustomTimerange && timeSelection.value.timerange) {
+    payload.timerange = timeSelection.value.timerange;
+  } else {
+    payload.days = timeSelection.value.days;
+  }
 
   // Include advanced options only if the section is open
   if (isAdvancedOpen.value) {
@@ -56,9 +68,9 @@ async function startDownload() {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-md px-1">
     <BackgroundJobTracking class="mb-4" />
-    <BCard header="Downloading Data" class="px-0">
+    <BCard header="Downloading Data" class="px-0 mx-1">
       <div class="d-flex mb-3 gap-3 flex-column">
         <div class="d-flex flex-column gap-3">
           <div class="d-flex flex-column flex-lg-row gap-3">
@@ -98,6 +110,32 @@ async function startDownload() {
               <div class="d-flex flex-column gap-2">
                 <h4 class="text-start">Select timeframes</h4>
                 <BaseStringList v-model="timeframes" placeholder="Timeframe" size="md" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Time selection section -->
+          <div class="px-3">
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="text-start mb-0">Time Selection</h4>
+                <BFormCheckbox v-model="timeSelection.useCustomTimerange" class="mb-0" switch>
+                  Use custom timerange
+                </BFormCheckbox>
+              </div>
+
+              <div v-if="timeSelection.useCustomTimerange">
+                <TimeRangeSelect v-model="timeSelection.timerange" />
+              </div>
+              <div v-else class="d-flex align-items-center gap-2">
+                <label>Days to download:</label>
+                <BFormInput
+                  v-model.number="timeSelection.days"
+                  type="number"
+                  min="1"
+                  max="500"
+                  style="width: 100px"
+                />
               </div>
             </div>
           </div>
