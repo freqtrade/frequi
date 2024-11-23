@@ -152,6 +152,10 @@ async function startDownload() {
               <i-mdi-chevron-up v-else />
             </BButton>
             <BCollapse id="advanced-options">
+              <BAlert variant="info" :model-value="true" class="mb-2">
+                Advanced options (Erase data, Download trades, and Custom Exchange settings) will
+                only be applied when this section is expanded.
+              </BAlert>
               <div class="mb-2 border rounded-1 p-2 text-start">
                 <BFormCheckbox v-model="erase" class="mb-2">Erase existing data</BFormCheckbox>
                 <BFormCheckbox v-model="downloadTrades" class="mb-2">
