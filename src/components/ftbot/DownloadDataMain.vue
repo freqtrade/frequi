@@ -77,11 +77,11 @@ async function startDownload() {
             <!-- Pairs section - keeping template buttons next to input -->
             <div class="flex-fill">
               <div class="d-flex flex-column gap-2">
-                <div class="d-flex justify-content-between px-3">
+                <div class="d-flex justify-content-between">
                   <h4 class="text-start">Select Pairs</h4>
                   <h5 class="text-start">Pairs from template</h5>
                 </div>
-                <div class="d-flex gap-2 px-3">
+                <div class="d-flex gap-2">
                   <BaseStringList
                     v-model="pairs"
                     placeholder="Pair"
@@ -115,7 +115,7 @@ async function startDownload() {
           </div>
 
           <!-- Time selection section -->
-          <div class="px-3">
+          <div class="px-3 border border p-2 rounded-1">
             <div class="d-flex flex-column gap-2">
               <div class="d-flex justify-content-between align-items-center">
                 <h4 class="text-start mb-0">Time Selection</h4>
@@ -141,7 +141,7 @@ async function startDownload() {
           </div>
 
           <!-- Advanced options section -->
-          <div class="mb-2 border rounded-1 p-2 text-start mx-3">
+          <div class="mb-2 border rounded-1 p-2 text-start">
             <BButton
               v-b-toggle.advanced-options
               class="mb-2"
