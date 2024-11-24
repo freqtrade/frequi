@@ -161,15 +161,15 @@ watch(
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <li
-            class="d-none d-sm-flex flex-sm-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
+            class="d-none d-md-flex flex-md-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
           >
-            <BNavText class="verticalCenter small me-2">
+            <BNavText class="small me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
             </BNavText>
-            <BNavText v-if="botStore.botCount === 1" class="verticalCenter">
+            <BNavText v-if="botStore.botCount === 1">
               {{
                 botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
                   ? 'Online'
@@ -179,7 +179,7 @@ watch(
           </li>
           <li v-if="botStore.hasBots" class="nav-item">
             <!-- Hide dropdown on xs, instead show below  -->
-            <BNavItemDropdown id="avatar-drop" right auto-close class="d-none d-sm-block">
+            <BNavItemDropdown id="avatar-drop" right auto-close class="d-none d-md-block">
               <template #button-content>
                 <BAvatar size="2em" button>FT</BAvatar>
               </template>
@@ -198,11 +198,11 @@ watch(
                 </BDropdownItem>
               </template>
             </BNavItemDropdown>
-            <div class="d-block d-sm-none">
+            <div class="d-block d-md-none">
               <!-- Visible only on XS -->
               <!-- <li class="nav-item text-secondary ms-2 d-sm-none d-flex justify-content-between">
                 <div class="d-flex">
-                  <b-nav-text class="verticalCenter small me-2">
+                  <b-nav-text class="small me-2">
                     {{
                       (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                       'No bot selected'
