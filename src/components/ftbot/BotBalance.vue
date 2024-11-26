@@ -76,7 +76,7 @@ onMounted(() => {
 <template>
   <div>
     <div class="mb-2">
-      <label class="me-auto h3">Balance</label>
+      <label class="me-auto h3">{{ showBotOnly ? 'Bot' : 'Account' }} Balance</label>
       <div class="float-end d-flex flex-row">
         <BButton
           v-if="canUseBotBalance"
