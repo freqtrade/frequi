@@ -22,10 +22,10 @@ importers:
         version: 11.3.0(vue@3.5.13(typescript@5.6.3))
       '@vueuse/integrations':
         specifier: ^11.3.0
-        version: 11.3.0(axios@1.7.7)(sortablejs@1.15.3)(vue@3.5.13(typescript@5.6.3))
+        version: 11.3.0(axios@1.7.8)(sortablejs@1.15.3)(vue@3.5.13(typescript@5.6.3))
       axios:
-        specifier: ^1.7.7
-        version: 1.7.7
+        specifier: ^1.7.8
+        version: 1.7.8
       bootstrap:
         specifier: ^5.3.3
         version: 5.3.3(@popperjs/core@2.11.8)
@@ -1068,8 +1068,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+  axios@1.7.8:
+    resolution: {integrity: sha512-Uu0wb7KNqK2t5K+YQyVCLM76prD5sRFjKHbJYCP1J7JFGEQ6nN7HWn9+04LAeiJ3ji54lgS/gZCH1oxyrf1SPw==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -3295,13 +3295,13 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.3.0(axios@1.7.7)(sortablejs@1.15.3)(vue@3.5.13(typescript@5.6.3))':
+  '@vueuse/integrations@11.3.0(axios@1.7.8)(sortablejs@1.15.3)(vue@3.5.13(typescript@5.6.3))':
     dependencies:
       '@vueuse/core': 11.3.0(vue@3.5.13(typescript@5.6.3))
       '@vueuse/shared': 11.3.0(vue@3.5.13(typescript@5.6.3))
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.6.3))
     optionalDependencies:
-      axios: 1.7.7
+      axios: 1.7.8
       sortablejs: 1.15.3
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -3356,7 +3356,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.7.7:
+  axios@1.7.8:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
