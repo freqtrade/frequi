@@ -15,7 +15,7 @@ COPY . /app
 
 RUN pnpm run build
 
-FROM nginx:1.27.2-alpine
+FROM nginx:1.27.3-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
 COPY  --from=ui-builder /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
