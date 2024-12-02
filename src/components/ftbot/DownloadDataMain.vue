@@ -2,7 +2,7 @@
 import { DownloadDataPayload, ExchangeSelection, MarginMode, TradingMode } from '@/types';
 
 const botStore = useBotStore();
-const pairs = ref<string[]>(['XRP/USDT', 'BTC/USDT']);
+const pairs = ref<string[]>(['BTC/USDT', 'ETH/USDT', '']);
 const timeframes = ref<string[]>(['5m', '1h']);
 
 const timeSelection = ref({
