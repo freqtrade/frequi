@@ -34,7 +34,7 @@ test.describe('Download Data View', () => {
           progress: null,
           progress_tasks: {
             0: { progress: 2, total: 2, description: 'Timeframe 5m' },
-            1: { progress: 2, total: 2, description: 'Downloading XRP/USDT' },
+            1: { progress: 2, total: 2, description: 'Downloading BTC/USDT' },
           },
         }),
       });
@@ -70,9 +70,9 @@ test.describe('Download Data View', () => {
       days: 3,
     });
 
-    expect(postData.pairs).toContain('XRP/USDT');
+    expect(postData.pairs).toContain('BTC/USDT');
     expect(postData.timeframes).toContain('5m');
-    await expect(page.getByText('Downloading XRP/USDT')).toBeVisible();
+    await expect(page.getByText('Downloading BTC/USDT')).toBeVisible();
     await expect(page.getByText('Timeframe 5m')).toBeVisible();
   });
   test('Download Data page with advanced settings', async ({ page }) => {
@@ -106,7 +106,7 @@ test.describe('Download Data View', () => {
       erase: true,
     });
 
-    expect(postData.pairs).toContain('XRP/USDT');
+    expect(postData.pairs).toContain('BTC/USDT');
     expect(postData.timeframes).toContain('5m');
   });
 });
