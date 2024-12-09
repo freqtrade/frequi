@@ -229,7 +229,7 @@ const fromPlotTemplateVisible = ref(false);
     </BFormGroup>
     <div class="col-mb-3">
       <hr />
-      <BFormGroup label="Target Plot" label-for="FieldSel">
+      <BFormGroup label="Target Plot" label-for="fieldSel">
         <EditValue
           v-model="selSubPlot"
           :allow-edit="!isMainPlot"
@@ -240,7 +240,7 @@ const fromPlotTemplateVisible = ref(false);
           @delete="deleteSubplot"
           @rename="renameSubplot"
         >
-          <BFormSelect id="FieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
+          <BFormSelect id="fieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
           </BFormSelect>
         </EditValue>
       </BFormGroup>
