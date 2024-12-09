@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { BaseSize } from 'bootstrap-vue-next';
+
 const values = defineModel<string[]>({ required: true });
 withDefaults(
   defineProps<{
     placeholder?: string;
-    size?: string;
+    size?: keyof BaseSize;
   }>(),
   {
     placeholder: '',
