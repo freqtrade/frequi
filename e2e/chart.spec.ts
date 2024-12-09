@@ -57,6 +57,13 @@ test.describe('Chart', () => {
     // Accept remapping and close
     await page.getByRole('button', { name: 'Apply Template' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
+
+    const indicatorPanel = await page.getByLabel('Indicators in this plot');
+    const options = await indicatorPanel.locator('option').allTextContents();
+    await expect(options).toContain('bb_lowerband');
+    await expect(options).toStrictEqual(['bb_upperband', 'bb_lowerband']);
+
+    // indicatorPanel.selectOption('bb_lowerband');
     // Close Plot configurator
     await page.getByRole('button', { name: 'Plot configurator' }).click();
 
