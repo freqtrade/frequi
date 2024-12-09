@@ -1,48 +1,11 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "compilerOptions": {
-    "target": "es2020",
-    "module": "ESNext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "Bundler",
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "allowJs": true,
-    // TODO: the below should actually be enabled.
-    "verbatimModuleSyntax": false,
-    "baseUrl": "src",
-    "types": [
-      "vite/client",
-      "unplugin-icons/types/vue",
-    ],
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
     }
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/components.d.ts",
-    "src/autoimport.d.ts",
-  ],
-  "exclude": [
-      "node_modules",
-      // "tests"
-  ],
-  "vueCompilerOptions": {
-    "target": 3,
-    "experimentalModelPropName": {
-      "": {
-        "b-form-radio": true
-      },
-    }
-  }
+  ]
 }
