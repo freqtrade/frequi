@@ -1,3 +1,5 @@
+import { defineConfig } from 'vitest/config';
+
 import createVuePlugin from '@vitejs/plugin-vue';
 import { BootstrapVueNextResolver } from 'bootstrap-vue-next';
 import { execSync } from 'child_process';
@@ -6,7 +8,6 @@ import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolve from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
-import { defineConfig } from 'vite';
 
 let commitHash: string = 'unknown';
 try {
