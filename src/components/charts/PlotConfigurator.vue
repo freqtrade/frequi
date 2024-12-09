@@ -32,7 +32,7 @@ const subplots = computed((): string[] => {
   // Subplot keys (for selection window)
   return ['main_plot', ...Object.keys(plotStore.editablePlotConfig.subplots)];
 });
-const usedColumns = computed((): { html: string; value: string }[] => {
+const usedColumns = computed((): { text: string; value: string }[] => {
   let usedCols: string[] = [];
   if (isMainPlot.value) {
     usedCols = Object.keys(plotStore.editablePlotConfig.main_plot);
@@ -42,9 +42,7 @@ const usedColumns = computed((): { html: string; value: string }[] => {
   }
   return usedCols.map((col) => ({
     value: col,
-    html: !props.columns.includes(col)
-      ? `<span title="Column not available">${col} <-- not available in this chart</span>`
-      : col,
+    text: !props.columns.includes(col) ? `${col} <-- not available in this chart` : col,
   }));
 });
 
