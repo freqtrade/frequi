@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GridItemData } from '@/types';
+import type { GridItemData } from '@/types';
 
 import { useLayoutStore, findGridLayout, TradeLayout } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
