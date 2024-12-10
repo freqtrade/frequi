@@ -1,4 +1,4 @@
-import { AlertType } from '@/types/alertTypes';
+import type { AlertType } from '@/types/alertTypes';
 
 export const useAlertsStore = defineStore('alerts', {
   state: () => {

@@ -1,6 +1,6 @@
-import { Order, PairHistory, Trade, BTOrder } from '@/types';
+import type { Order, PairHistory, Trade, BTOrder } from '@/types';
 
-import { ScatterSeriesOption } from 'echarts';
+import type { ScatterSeriesOption } from 'echarts';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {
   return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(

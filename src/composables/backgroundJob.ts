@@ -1,5 +1,5 @@
-import { BackgroundTaskStatus } from '@/types';
-import { AxiosInstance } from 'axios';
+import type { BackgroundTaskStatus } from '@/types';
+import type { AxiosInstance } from 'axios';
 
 const jobs = ref<Record<string, { jobType: string; taskStatus?: BackgroundTaskStatus }>>({});
 

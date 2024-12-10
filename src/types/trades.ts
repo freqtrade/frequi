@@ -1,4 +1,4 @@
-import { TradingMode } from './types';
+import type { TradingMode } from './types';
 
 export interface BTOrder {
   amount: number;

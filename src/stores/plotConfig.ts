@@ -1,4 +1,5 @@
-import { EMPTY_PLOTCONFIG, PlotConfig, PlotConfigStorage } from '@/types';
+import type { PlotConfig, PlotConfigStorage } from '@/types';
+import { EMPTY_PLOTCONFIG } from '@/types';
 
 const FT_PLOT_CONFIG_KEY = 'ftPlotConfig';
 

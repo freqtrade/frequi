@@ -1,4 +1,4 @@
-import { MarginMode, TradingMode } from './types';
+import type { MarginMode, TradingMode } from './types';
 
 export interface TradeMode {
   trading_mode: TradingMode;

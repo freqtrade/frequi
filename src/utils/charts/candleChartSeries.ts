@@ -1,5 +1,6 @@
-import { ChartType, IndicatorConfig } from '@/types';
-import { BarSeriesOption, LineSeriesOption, ScatterSeriesOption } from 'echarts';
+import type { IndicatorConfig } from '@/types';
+import { ChartType } from '@/types';
+import type { BarSeriesOption, LineSeriesOption, ScatterSeriesOption } from 'echarts';
 
 export type SupportedSeriesTypes = LineSeriesOption | BarSeriesOption | ScatterSeriesOption;
 

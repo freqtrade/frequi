@@ -1,5 +1,6 @@
 import { useSettingsStore } from '@/stores/settings';
-import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
+import type { FTWsMessage } from '@/types/wsMessageTypes';
+import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 export function showNotification(msg: FTWsMessage, botname: string) {
   const settingsStore = useSettingsStore();

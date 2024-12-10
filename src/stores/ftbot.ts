@@ -1,5 +1,5 @@
 import { useUserService } from '@/shared/userService';
-import {
+import type {
   BotState,
   Trade,
   PlotConfig,
@@ -9,12 +9,9 @@ import {
   LockResponse,
   ProfitInterface,
   BacktestResult,
-  BacktestSteps,
   LogLine,
   SysInfoResponse,
-  LoadingStatus,
   BacktestHistoryEntry,
-  RunModes,
   TimeSummaryPayload,
   BlacklistResponse,
   WhitelistResponse,
@@ -45,7 +42,6 @@ import {
   BacktestMetadataWithStrategyName,
   BacktestMetadataPatch,
   BacktestResultUpdate,
-  TimeSummaryOptions,
   PerformanceEntry,
   MixTagStats,
   ExitStats,
@@ -56,9 +52,12 @@ import {
   HyperoptLossObj,
   DownloadDataPayload,
 } from '@/types';
-import axios, { AxiosResponse } from 'axios';
+import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useWebSocket } from '@vueuse/core';
-import { FTWsMessage, FtWsMessageTypes } from '@/types/wsMessageTypes';
+import type { FTWsMessage } from '@/types/wsMessageTypes';
+import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 export function createBotSubStore(botId: string, botName: string) {
   const userService = useUserService(botId);

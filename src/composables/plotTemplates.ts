@@ -1,4 +1,4 @@
-import { IndicatorConfig, PlotConfig, PlotConfigTemplate } from '@/types';
+import type { IndicatorConfig, PlotConfig, PlotConfigTemplate } from '@/types';
 
 const plotTemplates = ref<PlotConfigTemplate>({
   BollingerBands: {

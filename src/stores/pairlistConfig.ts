@@ -1,16 +1,14 @@
 import { useBotStore } from './ftbotwrapper';
 
-import {
+import type {
   ExchangeSelection,
-  MarginMode,
   Pairlist,
   PairlistConfig,
-  PairlistParamType,
   PairlistParamValue,
   PairlistPayloadItem,
   PairlistsPayload,
-  TradingMode,
 } from '@/types';
+import { MarginMode, PairlistParamType, TradingMode } from '@/types';
 
 export const usePairlistConfigStore = defineStore(
   'pairlistConfig',

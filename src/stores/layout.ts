@@ -1,4 +1,4 @@
-import { GridItemData } from '@/types';
+import type { GridItemData } from '@/types';
 
 export enum TradeLayout {
   multiPane = 0,

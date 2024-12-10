@@ -1,5 +1,5 @@
 import { UserService } from '@/shared/userService';
-import {
+import type {
   BalanceInterface,
   BotDescriptor,
   BotDescriptors,
@@ -14,8 +14,8 @@ import {
   MultiReloadTradePayload,
   ProfitInterface,
   Trade,
-  TimeSummaryOptions,
 } from '@/types';
+import { TimeSummaryOptions } from '@/types';
 import { createBotSubStore } from './ftbot';
 const AUTH_SELECTED_BOT = 'ftSelectedBot';
 

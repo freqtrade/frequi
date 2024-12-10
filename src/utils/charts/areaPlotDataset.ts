@@ -1,4 +1,4 @@
-import { PlotConfig } from '@/types';
+import type { PlotConfig } from '@/types';
 
 /**
  * Calculate diff over 2 dataset columns and adds it to the end of the dataset

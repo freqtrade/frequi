@@ -1,4 +1,4 @@
-import { StrategyBacktestResult, Trade } from '@/types';
+import type { StrategyBacktestResult, Trade } from '@/types';
 
 function getSortedTrades(trades: Trade[]): Trade[] {
   const sortedTrades = trades.slice().sort((a, b) => a.profit_ratio - b.profit_ratio);

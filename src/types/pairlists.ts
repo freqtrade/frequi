@@ -1,6 +1,6 @@
-import { BackgroundTaskResult } from './backgroundtasks';
-import { WhitelistResponse } from './blacklist';
-import { MarginMode, TradingMode } from './types';
+import type { BackgroundTaskResult } from './backgroundtasks';
+import type { WhitelistResponse } from './blacklist';
+import type { MarginMode, TradingMode } from './types';
 
 export interface PairlistsResponse {
   pairlists: Pairlist[];

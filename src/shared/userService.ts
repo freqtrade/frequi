@@ -1,6 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 
-import {
+import type {
   AuthPayload,
   AuthResponse,
   BotDescriptors,

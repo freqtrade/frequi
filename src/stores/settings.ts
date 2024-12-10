@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UiVersion } from '@/types';
+import type { UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 const STORE_UI_SETTINGS = 'ftUISettings';

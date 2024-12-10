@@ -1,6 +1,6 @@
-import { ElementEvent } from 'echarts';
+import type { ElementEvent } from 'echarts';
 import humanizeDuration from 'humanize-duration';
-import ECharts from 'vue-echarts';
+import type ECharts from 'vue-echarts';
 import type { Ref } from 'vue';
 
 export function usePercentageTool(

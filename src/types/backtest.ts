@@ -1,5 +1,5 @@
-import { Lock } from './locks';
-import { ClosedTrade, Trade } from './trades';
+import type { Lock } from './locks';
+import type { ClosedTrade, Trade } from './trades';
 
 export interface BacktestPayload {
   strategy: string;

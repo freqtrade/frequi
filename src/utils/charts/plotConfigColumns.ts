@@ -1,4 +1,4 @@
-import { PlotConfig } from '@/types';
+import type { PlotConfig } from '@/types';
 
 /** Function to extract required indicator names from a plot configuration */
 export function plotConfigColumns(plotConfig: Partial<PlotConfig>): string[] {
