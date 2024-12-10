@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { ForceEnterPayload, OrderSides } from '@/types';
+import type { ForceEnterPayload } from '@/types';
+import { OrderSides } from '@/types';
 
 const props = defineProps({
   pair: { type: String, default: '' },

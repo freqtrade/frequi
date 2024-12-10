@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ExitReasonResults, PairResult } from '@/types';
-import { TableItem } from 'bootstrap-vue-next';
+import type { TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   title: { type: String, required: true },

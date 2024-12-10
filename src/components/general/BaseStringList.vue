@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BaseSize } from 'bootstrap-vue-next';
+import type { BaseSize } from 'bootstrap-vue-next';
 
 const values = defineModel<string[]>({ required: true });
 withDefaults(

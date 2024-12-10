@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PairlistParameter, PairlistParamType } from '@/types';
+import type { PairlistParameter } from '@/types';
+import { PairlistParamType } from '@/types';
 
 defineProps<{
   param: PairlistParameter;

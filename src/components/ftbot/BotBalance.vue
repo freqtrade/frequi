@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { BalanceValues } from '@/types';
-import { TableField } from 'bootstrap-vue-next';
+import type { BalanceValues } from '@/types';
+import type { TableField } from 'bootstrap-vue-next';
 
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);

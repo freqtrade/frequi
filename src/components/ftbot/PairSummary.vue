@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Lock, Trade } from '@/types';
+import type { Lock, Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 

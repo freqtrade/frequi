@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ProfitInterface } from '@/types';
-import { TableField, TableItem } from 'bootstrap-vue-next';
+import type { ProfitInterface } from '@/types';
+import type { TableField, TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   profit: { required: true, type: Object as () => ProfitInterface },

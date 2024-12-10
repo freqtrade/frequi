@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { DownloadDataPayload, ExchangeSelection, MarginMode, TradingMode } from '@/types';
+import type { DownloadDataPayload, ExchangeSelection } from '@/types';
+import { MarginMode, TradingMode } from '@/types';
 
 const botStore = useBotStore();
 const pairs = ref<string[]>(['BTC/USDT', 'ETH/USDT', '']);

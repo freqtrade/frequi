@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { PeriodicBreakdown } from '@/types';
-import { TableField, TableItem } from 'bootstrap-vue-next';
+import type { PeriodicBreakdown } from '@/types';
+import type { TableField, TableItem } from 'bootstrap-vue-next';
 
 defineProps({
   periodicBreakdown: {

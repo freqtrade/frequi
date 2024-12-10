@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { ForceSellPayload, Trade } from '@/types';
+import type { ForceSellPayload, Trade } from '@/types';
 
 const props = defineProps({
   trade: {

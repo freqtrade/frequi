@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 
-import { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
+import type { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
 
 defineProps<{
   timeframe: string;

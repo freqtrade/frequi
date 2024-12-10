@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
+import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
-import { TableField, TableItem } from 'bootstrap-vue-next';
+import type { TableField, TableItem } from 'bootstrap-vue-next';
 
 enum ModalReasons {
   removeTrade,

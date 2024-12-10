@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Lock } from '@/types';
+import type { Lock } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { TableField } from 'bootstrap-vue-next';
+import type { TableField } from 'bootstrap-vue-next';
 const botStore = useBotStore();
 
 const tableFields: TableField[] = [

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
+import type { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
 
 defineProps({
   backtestHistory: {

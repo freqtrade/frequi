@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePairlistConfigStore } from '@/stores/pairlistConfig';
-import { Pairlist } from '@/types';
+import type { Pairlist } from '@/types';
 
 const pairlistStore = usePairlistConfigStore();
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Trade } from '@/types';
+import type { Trade } from '@/types';
 
 defineProps({
   botApiVersion: {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { BacktestResultInMemory } from '@/types';
+import type { BacktestResultInMemory } from '@/types';
 
-import { TableField } from 'bootstrap-vue-next';
+import type { TableField } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResults: { required: true, type: Object as () => Record<string, BacktestResultInMemory> },

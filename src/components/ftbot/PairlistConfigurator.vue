@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pairlist } from '@/types';
+import type { Pairlist } from '@/types';
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 
 const botStore = useBotStore();

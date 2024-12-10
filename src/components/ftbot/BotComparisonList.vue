@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { ProfitInterface, ComparisonTableItems } from '@/types';
-import { TableField, TableItem } from 'bootstrap-vue-next';
+import type { ProfitInterface, ComparisonTableItems } from '@/types';
+import type { TableField, TableItem } from 'bootstrap-vue-next';
 
 const botStore = useBotStore();
 

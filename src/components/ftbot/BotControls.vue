@@ -1,8 +1,9 @@
 forceexit
 <script setup lang="ts">
-import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
+import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
+import MessageBox from '@/components/general/MessageBox.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { ForceSellPayload } from '@/types';
+import type { ForceSellPayload } from '@/types';
 
 import ForceEntryForm from './ForceEntryForm.vue';
 
