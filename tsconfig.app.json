@@ -8,7 +8,8 @@
     "src/**/*.vue",
   ],
   "exclude": [
-    "src/**/__tests__/*"
+    "src/**/__tests__/*",
+    "tests/**/*",
   ],
   "compilerOptions": {
     "composite": true,
