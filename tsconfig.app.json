@@ -16,8 +16,6 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     "noImplicitAny": false,
-    // TODO: the below should actually be enabled.
-    "verbatimModuleSyntax": false,
     "types": [
       "vite/client",
     ],

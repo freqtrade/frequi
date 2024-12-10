@@ -27,6 +27,7 @@ export default [
       // // disable eslint no-shadow as it's causing false positives on typescript enums
       // 'no-shadow': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
