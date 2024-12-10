@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import MessageBox, { MsgBoxObject } from '@/components/general/MessageBox.vue';
+import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
+import MessageBox from '@/components/general/MessageBox.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { BacktestHistoryEntry } from '@/types';
+import type { BacktestHistoryEntry } from '@/types';
 import InfoBox from '../general/InfoBox.vue';
 
 const botStore = useBotStore();

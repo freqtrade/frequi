@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EChartsOption } from 'echarts';
+import type { EChartsOption } from 'echarts';
 import ECharts from 'vue-echarts';
 
 import { PieChart } from 'echarts/charts';
@@ -14,7 +14,7 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
 import { useSettingsStore } from '@/stores/settings';
-import { BalanceValues } from '@/types';
+import type { BalanceValues } from '@/types';
 import { useElementSize } from '@vueuse/core';
 
 use([

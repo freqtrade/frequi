@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { BotDescriptor } from '@/types';
+import type { BotDescriptor } from '@/types';
 
 const props = defineProps({
   bot: { type: Object as () => BotDescriptor, required: true },

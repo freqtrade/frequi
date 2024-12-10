@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EChartsOption } from 'echarts';
+import type { EChartsOption } from 'echarts';
 import ECharts from 'vue-echarts';
 
 import { BarChart, LineChart } from 'echarts/charts';
@@ -15,7 +15,7 @@ import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 
 import { useSettingsStore } from '@/stores/settings';
-import {
+import type {
   ClosedTrade,
   CumProfitChartData,
   CumProfitData,

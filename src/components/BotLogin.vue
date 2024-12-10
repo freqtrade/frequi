@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserService } from '@/shared/userService';
-import { AuthPayload, AuthStorageWithBotId } from '@/types';
+import type { AuthPayload, AuthStorageWithBotId } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute, useRouter } from 'vue-router';

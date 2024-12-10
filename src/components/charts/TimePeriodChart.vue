@@ -14,9 +14,9 @@ import {
   VisualMapComponent,
 } from 'echarts/components';
 
-import { TimeSummaryReturnValue } from '@/types';
+import type { TimeSummaryReturnValue } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
-import { EChartsOption } from 'echarts';
+import type { EChartsOption } from 'echarts';
 import { useElementSize } from '@vueuse/core';
 import { useColorStore } from '@/stores/colors';
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ChartType, ChartTypeString, IndicatorConfig } from '@/types';
+import type { ChartTypeString, IndicatorConfig } from '@/types';
+import { ChartType } from '@/types';
 
 const props = defineProps({
   modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },

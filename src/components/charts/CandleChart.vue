@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import {
-  ChartSliderPosition,
-  ChartType,
-  IndicatorConfig,
-  PairHistory,
-  PlotConfig,
-  Trade,
-} from '@/types';
+import type { ChartSliderPosition, IndicatorConfig, PairHistory, PlotConfig, Trade } from '@/types';
+import { ChartType } from '@/types';
 
 import ECharts from 'vue-echarts';
 
-import { EChartsOption, ScatterSeriesOption } from 'echarts';
+import type { EChartsOption, ScatterSeriesOption } from 'echarts';
 import { BarChart, CandlestickChart, LineChart, ScatterChart } from 'echarts/charts';
 import {
   AxisPointerComponent,

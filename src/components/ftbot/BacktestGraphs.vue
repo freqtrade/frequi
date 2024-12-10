@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClosedTrade } from '@/types';
+import type { ClosedTrade } from '@/types';
 
 defineProps({
   trades: { required: true, type: Array as () => ClosedTrade[] },

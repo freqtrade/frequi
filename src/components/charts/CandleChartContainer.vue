@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { usePlotConfigStore } from '@/stores/plotConfig';
 import { useSettingsStore } from '@/stores/settings';
-import { ChartSliderPosition, LoadingStatus, PairHistory, Trade } from '@/types';
+import type { ChartSliderPosition, PairHistory, Trade } from '@/types';
+import { LoadingStatus } from '@/types';
 import VSelect from 'vue-select';
 
 import { useBotStore } from '@/stores/ftbotwrapper';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
-import { EChartsOption } from 'echarts';
+import type { EChartsOption } from 'echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -15,7 +15,7 @@ import {
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
 
-import { ClosedTrade } from '@/types';
+import type { ClosedTrade } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
 
 import { useColorStore } from '@/stores/colors';

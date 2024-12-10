@@ -1,6 +1,6 @@
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
-export async function setLoginInfo(page) {
+export async function setLoginInfo(page: Page) {
   await page.goto('/');
   await page.evaluate(() => {
     localStorage.setItem(
@@ -26,7 +26,7 @@ interface mockArray {
   method?: string;
 }
 
-function mockRequests(page, mocks: mockArray[]) {
+function mockRequests(page: Page, mocks: mockArray[]) {
   mocks.forEach((item) => {
     page.route(item.url, (route) => {
       return route.fulfill({ path: `./e2e/testData/${item.fixture}` });
@@ -53,7 +53,7 @@ export async function defaultMocks(page: Page) {
   mockRequests(page, mapping);
 }
 
-export function tradeMocks(page) {
+export function tradeMocks(page: Page) {
   const mapping: mockArray[] = [
     { name: '@Status', url: '**/api/v1/status', fixture: 'status_empty.json' },
     { name: '@Profit', url: '**/api/v1/profit', fixture: 'profit.json' },

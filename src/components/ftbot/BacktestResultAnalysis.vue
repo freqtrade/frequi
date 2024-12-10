@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { StrategyBacktestResult } from '@/types';
+import type { StrategyBacktestResult } from '@/types';
 
-import { TableField } from 'bootstrap-vue-next';
+import type { TableField } from 'bootstrap-vue-next';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },

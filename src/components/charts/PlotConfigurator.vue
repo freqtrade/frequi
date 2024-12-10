@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IndicatorConfig, PlotConfig } from '@/types';
+import type { IndicatorConfig, PlotConfig } from '@/types';
 
 const props = defineProps({
   columns: { required: true, type: Array as () => string[] },

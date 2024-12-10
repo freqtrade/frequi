@@ -2,7 +2,7 @@
 import LoginModal from '@/components/LoginModal.vue';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
-import { AuthStorageWithBotId, BotDescriptor } from '@/types';
+import type { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
 
 defineProps({
