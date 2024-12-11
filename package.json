@@ -43,7 +43,7 @@
   "devDependencies": {
     "@eslint/js": "^9.16.0",
     "@iconify-json/mdi": "^1.2.1",
-    "@playwright/test": "^1.49.0",
+    "@playwright/test": "^1.49.1",
     "@tsconfig/node22": "^22.0.0",
     "@types/echarts": "^4.9.22",
     "@types/node": "^22.10.1",
