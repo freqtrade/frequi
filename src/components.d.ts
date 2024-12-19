@@ -23,6 +23,7 @@ declare module 'vue' {
     BaseAlert: typeof import('./components/general/BaseAlert.vue')['default']
     BaseStringList: typeof import('./components/general/BaseStringList.vue')['default']
     BAvatar: typeof import('bootstrap-vue-next/components/BAvatar')['BAvatar']
+    BBadge: typeof import('bootstrap-vue-next/components/BBadge')['BBadge']
     BButton: typeof import('bootstrap-vue-next/components/BButton')['BButton']
     BCard: typeof import('bootstrap-vue-next/components/BCard')['BCard']
     BCardBody: typeof import('bootstrap-vue-next/components/BCard')['BCardBody']

@@ -66,6 +66,7 @@ const tableItems = computed<TableItem[]>(() => {
       balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
       isDryRun: botStore.allBotState[k]?.dry_run,
+      isOnline: botStore.botStores[k]?.isBotOnline,
     });
     if (v.profit_closed_coin !== undefined) {
       if (botStore.botStores[k].isSelected) {
@@ -97,22 +98,33 @@ const tableItems = computed<TableItem[]>(() => {
     :fields="tableFields"
   >
     <template #cell(botName)="{ item, value }">
-      <div class="d-flex flex-row">
-        <BFormCheckbox
-          v-if="item.botId && botStore.botCount > 1"
-          v-model="
-            botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
-          "
-          title="Show this bot in Dashboard"
-          >{{ value }}</BFormCheckbox
+      <div class="d-flex flex-row justify-content-between align-items-center">
+        <div>
+          <BFormCheckbox
+            v-if="item.botId && botStore.botCount > 1"
+            v-model="
+              botStore.botStores[(item as unknown as ComparisonTableItems).botId ?? ''].isSelected
+            "
+            title="Show this bot in Dashboard"
+            >{{ value }}</BFormCheckbox
+          >
+          <BFormCheckbox
+            v-if="!item.botId && botStore.botCount > 1"
+            v-model="allToggled"
+            title="Toggle all bots"
+            >{{ value }}</BFormCheckbox
+          >
+          <span v-if="botStore.botCount <= 1">{{ value }}</span>
+        </div>
+        <BBadge v-if="item.isOnline && item.isDryRun" class="align-items-center" variant="success"
+          >DryRun</BBadge
         >
-        <BFormCheckbox
-          v-if="!item.botId && botStore.botCount > 1"
-          v-model="allToggled"
-          title="Toggle all bots"
-          >{{ value }}</BFormCheckbox
+        <BBadge v-if="item.isOnline && !item.isDryRun" class="align-items-center" variant="warning"
+          >Live</BBadge
         >
-        <span v-if="botStore.botCount <= 1">{{ value }}</span>
+        <BBadge v-if="item.isOnline === false" class="align-items-center" variant="secondary"
+          >Offline</BBadge
+        >
       </div>
     </template>
     <template #cell(profitOpen)="{ item }">

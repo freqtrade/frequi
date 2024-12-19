@@ -12,4 +12,5 @@ export interface ComparisonTableItems {
   balance?: number;
   stakeCurrencyDecimals?: number;
   isDryRun?: boolean;
+  isOnline?: boolean;
 }
