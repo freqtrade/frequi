@@ -36,16 +36,15 @@ use([
 const CHART_ABS_PROFIT = 'Absolute profit';
 const CHART_TRADE_COUNT = 'Trade Count';
 
-const props = defineProps({
-  dailyStats: {
-    type: Object as () => TimeSummaryReturnValue,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    dailyStats: TimeSummaryReturnValue;
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
   },
-  showTitle: {
-    type: Boolean,
-    default: true,
-  },
-});
+);
 
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
