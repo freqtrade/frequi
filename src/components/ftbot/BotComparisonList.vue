@@ -117,7 +117,7 @@ const tableItems = computed<TableItem[]>(() => {
           <span v-if="botStore.botCount <= 1">{{ value }}</span>
         </div>
         <BBadge v-if="item.isOnline && item.isDryRun" class="align-items-center" variant="success"
-          >DryRun</BBadge
+          >Dry</BBadge
         >
         <BBadge v-if="item.isOnline && !item.isDryRun" class="align-items-center" variant="warning"
           >Live</BBadge
