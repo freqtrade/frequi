@@ -32,19 +32,22 @@ use([
   VisualMapComponent,
 ]);
 
-// Define Column labels here to avoid typos
-const CHART_ABS_PROFIT = 'Absolute profit';
-const CHART_TRADE_COUNT = 'Trade Count';
-
 const props = withDefaults(
   defineProps<{
     dailyStats: TimeSummaryReturnValue;
     showTitle?: boolean;
+    profitCol?: 'rel_profit' | 'abs_profit';
   }>(),
   {
     showTitle: true,
+    // TODO: rel_profit doesn't render properly.
+    profitCol: 'abs_profit',
   },
 );
+
+// Define Column labels here to avoid typos
+const CHART_PROFIT = props.profitCol === 'abs_profit' ? 'Absolute profit' : 'Relative profit';
+const CHART_TRADE_COUNT = 'Trade Count';
 
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
@@ -54,14 +57,14 @@ const { width } = useElementSize(dailyChart);
 
 const absoluteMin = computed(() =>
   props.dailyStats.data.reduce(
-    (min, p) => (p.abs_profit < min ? p.abs_profit : min),
-    props.dailyStats.data[0]?.abs_profit,
+    (min, p) => (p[props.profitCol] < min ? p[props.profitCol] : min),
+    props.dailyStats.data[0]?.[props.profitCol],
   ),
 );
 const absoluteMax = computed(() =>
   props.dailyStats.data.reduce(
-    (max, p) => (p.abs_profit > max ? p.abs_profit : max),
-    props.dailyStats.data[0]?.abs_profit,
+    (max, p) => (p[props.profitCol] > max ? p[props.profitCol] : max),
+    props.dailyStats.data[0]?.[props.profitCol],
   ),
 );
 const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
@@ -72,7 +75,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: {
-      dimensions: ['date', 'abs_profit', 'trade_count'],
+      dimensions: ['date', props.profitCol, 'trade_count'],
       source: props.dailyStats.data,
     },
     tooltip: {
@@ -85,7 +88,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
       },
     },
     legend: {
-      data: [CHART_ABS_PROFIT, CHART_TRADE_COUNT],
+      data: [CHART_PROFIT, CHART_TRADE_COUNT],
       right: '5%',
     },
     xAxis: [
@@ -115,7 +118,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     yAxis: [
       {
         type: 'value',
-        name: CHART_ABS_PROFIT,
+        name: CHART_PROFIT,
         splitLine: {
           show: false,
         },
@@ -134,7 +137,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     series: [
       {
         type: 'line',
-        name: CHART_ABS_PROFIT,
+        name: CHART_PROFIT,
         // Color is induced by visualMap
       },
       {
