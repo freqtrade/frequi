@@ -14,40 +14,36 @@ export interface FtBaseWsMessage {
   type: FtWsMessageTypes;
 }
 
+export interface FtBaseEntryExitFillMessage extends FtBaseWsMessage {
+  pair: string;
+  open_rate: number;
+  amount: number;
+  direction: string;
+  // ...
+}
+
 export interface FtWhitelistMessage extends FtBaseWsMessage {
   type: FtWsMessageTypes.whitelist;
   data: string[];
 }
 
-export interface FtEntryFillMessage extends FtBaseWsMessage {
+export interface FtEntryFillMessage extends FtBaseEntryExitFillMessage {
   type: FtWsMessageTypes.entryFill;
-  pair: string;
-  open_rate: number;
-  amount: number;
-  // ...
 }
 
-export interface FtExitFillMessage extends FtBaseWsMessage {
+export interface FtExitFillMessage extends FtBaseEntryExitFillMessage {
   type: FtWsMessageTypes.exitFill;
-  pair: string;
-  open_rate: number;
-  amount: number;
-  // ...
 }
 
-export interface FTEntryCancelMessage extends FtBaseWsMessage {
+export interface FTEntryCancelMessage extends FtBaseEntryExitFillMessage {
   type: FtWsMessageTypes.entryCancel;
-  pair: string;
   reason: string;
-  direction: string;
   // ...
 }
 
-export interface FTExitCancelMessage extends FtBaseWsMessage {
+export interface FTExitCancelMessage extends FtBaseEntryExitFillMessage {
   type: FtWsMessageTypes.exitCancel;
-  pair: string;
   reason: string;
-  direction: string;
   // ...
 }
 
