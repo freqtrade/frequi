@@ -8,11 +8,15 @@ export function showNotification(msg: FTWsMessage, botname: string) {
     switch (msg.type) {
       case FtWsMessageTypes.entryFill:
         console.log('entryFill', msg);
-        showAlert(`Entry fill for ${msg.pair} at ${msg.open_rate}`, 'success', botname);
+        showAlert(
+          `Entry fill: ${msg.pair} ${msg.direction} at ${msg.open_rate}`,
+          'success',
+          botname,
+        );
         break;
       case FtWsMessageTypes.exitFill:
         console.log('exitFill', msg);
-        showAlert(`Exit fill for ${msg.pair} at ${msg.open_rate}`, 'success', botname);
+        showAlert(`Exit fill: ${msg.pair} ${msg.direction} ${msg.open_rate}`, 'success', botname);
         break;
       case FtWsMessageTypes.exitCancel:
         console.log('exitCancel', msg);
