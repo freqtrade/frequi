@@ -20,7 +20,8 @@ function buildToolTip(
     trade.profit_abs ? '(' + formatPriceCurrency(trade.profit_abs, quoteCurrency) + ')' : ''
   }
   ${buildTooltipCost(order, quoteCurrency)}
-  Enter-tag: ${trade.enter_tag ?? ''}`;
+  Enter-tag: ${trade.enter_tag ?? ''}
+  Order Price: ${formatPriceCurrency(order.safe_price, quoteCurrency)}`;
   tooltip += `${'ft_order_tag' in order && order.ft_order_tag && trade.enter_tag != order.ft_order_tag ? '\nOrder-Tag: ' + order.ft_order_tag : ''}`;
   tooltip += `${trade.exit_reason ? '\nExit-Tag: ' + trade.exit_reason : ''}`;
   return tooltip;
