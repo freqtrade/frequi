@@ -38,7 +38,7 @@ const combinedPairList = computed(() => {
     allLocks.sort((a, b) => (a.lock_end_timestamp > b.lock_end_timestamp ? -1 : 1));
     if (allLocks.length > 0) {
       [locks] = allLocks;
-      lockReason = `${timestampms(locks.lock_end_timestamp)} - ${locks.reason}`;
+      lockReason = `${timestampms(locks.lock_end_timestamp)} - ${locks.side} - ${locks.reason}`;
     }
     let profitString = '';
     let profit = 0;
