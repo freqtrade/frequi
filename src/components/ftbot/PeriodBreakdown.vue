@@ -5,7 +5,7 @@ import type { TableField } from 'bootstrap-vue-next';
 import { TimeSummaryOptions } from '@/types';
 
 const botStore = useBotStore();
-const settings = useSettingsStore();
+const settingsStore = useSettingsStore();
 
 const props = defineProps<{
   multiBotView?: boolean;
@@ -29,7 +29,7 @@ const absRelSelections = ref([
 
 const selectedStats = computed(() => {
   if (props.multiBotView) {
-    switch (settings.timeProfitPeriod) {
+    switch (settingsStore.timeProfitPeriod) {
       case TimeSummaryOptions.weekly:
         return botStore.allWeeklyStatsSelectedBots;
       case TimeSummaryOptions.monthly:
@@ -39,7 +39,7 @@ const selectedStats = computed(() => {
     }
   }
 
-  switch (settings.timeProfitPeriod) {
+  switch (settingsStore.timeProfitPeriod) {
     case TimeSummaryOptions.weekly:
       return botStore.activeBot.weeklyStats;
     case TimeSummaryOptions.monthly:
@@ -86,9 +86,9 @@ const dailyFields = computed<TableField[]>(() => {
 
 function refreshSummary() {
   if (props.multiBotView) {
-    botStore.allGetTimeSummary(settings.timeProfitPeriod);
+    botStore.allGetTimeSummary(settingsStore.timeProfitPeriod);
   } else {
-    botStore.activeBot.getTimeSummary(settings.timeProfitPeriod);
+    botStore.activeBot.getTimeSummary(settingsStore.timeProfitPeriod);
   }
 }
 
@@ -109,7 +109,7 @@ onMounted(() => {
       <BFormRadioGroup
         v-if="hasWeekly"
         id="order-direction"
-        v-model="settings.timeProfitPeriod"
+        v-model="settingsStore.timeProfitPeriod"
         :options="periodicBreakdownSelections"
         name="radios-btn-default"
         size="sm"
@@ -119,7 +119,7 @@ onMounted(() => {
         @change="refreshSummary"
       ></BFormRadioGroup>
       <BFormRadioGroup
-        v-model="settings.timeProfitPreference"
+        v-model="settingsStore.timeProfitPreference"
         name="radios-btn-select"
         size="sm"
         :options="absRelSelections"
@@ -134,7 +134,7 @@ onMounted(() => {
         v-if="selectedStats"
         :daily-stats="selectedStatsSorted"
         :show-title="false"
-        :profit-col="settings.timeProfitPreference"
+        :profit-col="settingsStore.timeProfitPreference"
       />
     </div>
     <div v-if="!props.multiBotView">
