@@ -304,14 +304,25 @@
         }
     }
     .vue-grid-item>.vue-resizable-handle {
-        // Stupid workaround to have the Shevron actually show.
-        background-color: darken($fg-color, 50%);
+        background-color: lighten($bg-dark, 20%);
     }
 }
 
 .vue-grid-item {
     // Fix white corners in vue-grid-item.
     background-color: unset !important;
+}
+
+.vue-grid-item>.vue-resizable-handle {
+    margin-right: -4px;
+    margin-bottom: -4px;
+    mask-image: url('data:image/svg+xml;utf8,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><path transform="rotate(-90, 5, 5)" d="M3 3v4h4v-1H4V3z" fill="black"/></svg>');
+    mask-repeat: no-repeat;
+    mask-position: bottom right;
+    mask-size: contain;
+    background-color: var(--bs-secondary-color, #666); // Fallback to #666 if variable is not defined
+    cursor: se-resize;
+    background-image: unset;
 }
 
 body.ft-theme-transition,
