@@ -90,6 +90,31 @@ const units = {
 
 registerTransform(units.multiple);
 
+const colorStops = {
+  type: 'linear',
+  x: 0,
+  y: 0,
+  x2: 1,
+  y2: 0,
+  colorStops: [
+    {
+      offset: 0,
+      color: colorStore.colorProfit, // color at 0%
+    },
+    {
+      offset: 0.5,
+      color: colorStore.colorProfit, // color at 50%
+    },
+    {
+      offset: 0.5,
+      color: colorStore.colorLoss, // color at 50%
+    },
+    {
+      offset: 1,
+      color: colorStore.colorLoss, // color at 100%
+    },
+  ],
+};
 const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
   return {
     title: {
@@ -119,7 +144,18 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
       },
     },
     legend: {
-      data: [CHART_PROFIT.value, CHART_TRADE_COUNT],
+      data: [
+        {
+          name: CHART_PROFIT.value,
+          lineStyle: {
+            color: colorStops,
+          },
+          itemStyle: {
+            color: colorStops,
+          },
+        },
+        { name: CHART_TRADE_COUNT },
+      ],
       right: '5%',
     },
     xAxis: [
