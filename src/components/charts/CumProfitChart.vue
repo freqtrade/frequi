@@ -241,6 +241,8 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
         },
       ],
       grid: {
+        left: '55',
+        right: '20',
         bottom: 80,
       },
       dataZoom: [
