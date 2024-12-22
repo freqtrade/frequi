@@ -59,7 +59,6 @@ const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 
 const dailyChart = ref(null);
-const { width } = useElementSize(dailyChart);
 
 const absoluteMin = computed(
   () =>
@@ -176,6 +175,11 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         nameGap: 30,
       },
     ],
+    grid: {
+      left: '50',
+      right: '45',
+      bottom: '15%',
+    },
     series: [
       {
         type: 'line',
@@ -203,7 +207,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     ref="dailyChart"
     :option="dailyChartOptions"
     :theme="settingsStore.chartTheme"
-    :style="{ height: width * 0.6 + 'px' }"
+    :style="{ height: '100%' }"
     autoresize
   />
 </template>
@@ -211,5 +215,6 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
 <style lang="scss" scoped>
 .echarts {
   min-height: 240px;
+  height: 100%;
 }
 </style>

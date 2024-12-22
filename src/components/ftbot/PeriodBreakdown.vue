@@ -99,7 +99,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="d-flex flex-column h-100">
     <div v-if="!props.multiBotView" class="mb-2">
       <h3 class="me-auto d-inline">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
       <BButton class="float-end" size="sm" @click="refreshSummary">
