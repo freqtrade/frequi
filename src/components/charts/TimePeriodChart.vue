@@ -18,10 +18,7 @@ import {
 import { registerTransform } from 'echarts';
 
 import type { TimeSummaryReturnValue } from '@/types';
-import { useSettingsStore } from '@/stores/settings';
 import type { EChartsOption } from 'echarts';
-import { useElementSize } from '@vueuse/core';
-import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,
