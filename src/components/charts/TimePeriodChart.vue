@@ -11,8 +11,11 @@ import {
   LegendComponent,
   TitleComponent,
   TooltipComponent,
+  TransformComponent,
   VisualMapComponent,
 } from 'echarts/components';
+
+import { registerTransform } from 'echarts';
 
 import type { TimeSummaryReturnValue } from '@/types';
 import { useSettingsStore } from '@/stores/settings';
@@ -30,6 +33,7 @@ use([
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
+  TransformComponent,
 ]);
 
 const props = withDefaults(
@@ -46,7 +50,9 @@ const props = withDefaults(
 );
 
 // Define Column labels here to avoid typos
-const CHART_PROFIT = props.profitCol === 'abs_profit' ? 'Absolute profit' : 'Relative profit';
+const CHART_PROFIT = computed(() =>
+  props.profitCol === 'abs_profit' ? 'Absolute profit' : 'Relative profit',
+);
 const CHART_TRADE_COUNT = 'Trade Count';
 
 const settingsStore = useSettingsStore();
@@ -55,18 +61,41 @@ const colorStore = useColorStore();
 const dailyChart = ref(null);
 const { width } = useElementSize(dailyChart);
 
-const absoluteMin = computed(() =>
-  props.dailyStats.data.reduce(
-    (min, p) => (p[props.profitCol] < min ? p[props.profitCol] : min),
-    props.dailyStats.data[0]?.[props.profitCol],
-  ),
+const absoluteMin = computed(
+  () =>
+    props.dailyStats.data.reduce(
+      (min, p) => (p[props.profitCol] < min ? p[props.profitCol] : min),
+      props.dailyStats.data[0]?.[props.profitCol],
+    ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
-const absoluteMax = computed(() =>
-  props.dailyStats.data.reduce(
-    (max, p) => (p[props.profitCol] > max ? p[props.profitCol] : max),
-    props.dailyStats.data[0]?.[props.profitCol],
-  ),
+const absoluteMax = computed(
+  () =>
+    props.dailyStats.data.reduce(
+      (max, p) => (p[props.profitCol] > max ? p[props.profitCol] : max),
+      props.dailyStats.data[0]?.[props.profitCol],
+    ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
+
+const units = {
+  multiple: {
+    // the tranform code
+    type: 'units:multiple',
+    transform: function (params) {
+      const rawData = params.upstream.cloneRawData();
+      const { dimension, factor } = params.config; // add default case and error management
+      const data = rawData.map((o) => ({ ...o, [dimension]: (o[dimension] * factor).toFixed(2) }));
+      return [
+        {
+          dimensions: params.upstream.cloneAllDimensionInfo(),
+          data,
+        },
+      ];
+    },
+  },
+};
+
+registerTransform(units.multiple);
+
 const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
   return {
     title: {
@@ -74,10 +103,18 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    dataset: {
-      dimensions: ['date', props.profitCol, 'trade_count'],
-      source: props.dailyStats.data,
-    },
+    dataset: [
+      {
+        dimensions: ['date', props.profitCol, 'trade_count'],
+        source: props.dailyStats.data,
+      },
+      {
+        transform: {
+          type: 'units:multiple',
+          config: { dimension: props.profitCol, factor: props.profitCol == 'rel_profit' ? 100 : 1 },
+        },
+      },
+    ],
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -88,7 +125,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
       },
     },
     legend: {
-      data: [CHART_PROFIT, CHART_TRADE_COUNT],
+      data: [CHART_PROFIT.value, CHART_TRADE_COUNT],
       right: '5%',
     },
     xAxis: [
@@ -118,13 +155,18 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     yAxis: [
       {
         type: 'value',
-        name: CHART_PROFIT,
+        name: CHART_PROFIT.value,
         splitLine: {
           show: false,
         },
         nameRotate: 90,
         nameLocation: 'middle',
         nameGap: 35,
+        axisLabel: {
+          formatter: (value) => {
+            return props.profitCol === 'rel_profit' ? `${value}%` : `${value}`;
+          },
+        },
       },
       {
         type: 'value',
@@ -137,8 +179,9 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     series: [
       {
         type: 'line',
-        name: CHART_PROFIT,
+        name: CHART_PROFIT.value,
         // Color is induced by visualMap
+        datasetIndex: 1,
       },
       {
         type: 'bar',
@@ -147,6 +190,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
           color: 'rgba(150,150,150,0.3)',
         },
         yAxisIndex: 1,
+        datasetIndex: 1,
       },
     ],
   };

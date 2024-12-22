@@ -16,6 +16,12 @@ const periodicBreakdownSelections = computed(() => {
   }
   return vals;
 });
+
+const absRelSelections = ref([
+  { value: 'abs_profit', text: 'Abs $' },
+  { value: 'rel_profit', text: 'Rel %' },
+]);
+const absRelCol = ref<'abs_profit' | 'rel_profit'>('abs_profit');
 const periodicBreakdownPeriod = ref<TimeSummaryOptions>(TimeSummaryOptions.daily);
 
 const selectedStats = computed(() => {
@@ -80,24 +86,36 @@ onMounted(() => {
         <i-mdi-refresh />
       </BButton>
     </div>
-    <BFormRadioGroup
-      v-if="hasWeekly"
-      id="order-direction"
-      v-model="periodicBreakdownPeriod"
-      :options="periodicBreakdownSelections"
-      name="radios-btn-default"
-      size="sm"
-      buttons
-      style="min-width: 10em"
-      button-variant="outline-primary"
-      @change="refreshSummary"
-    ></BFormRadioGroup>
+    <div class="d-flex align-items-center justify-content-between">
+      <BFormRadioGroup
+        v-if="hasWeekly"
+        id="order-direction"
+        v-model="periodicBreakdownPeriod"
+        :options="periodicBreakdownSelections"
+        name="radios-btn-default"
+        size="sm"
+        buttons
+        style="min-width: 10em"
+        button-variant="outline-primary"
+        @change="refreshSummary"
+      ></BFormRadioGroup>
+      <BFormRadioGroup
+        v-model="absRelCol"
+        name="radios-btn-select"
+        size="sm"
+        :options="absRelSelections"
+        buttons
+        button-variant="outline-primary"
+      >
+      </BFormRadioGroup>
+    </div>
 
     <div class="ps-1">
       <TimePeriodChart
         v-if="selectedStats"
         :daily-stats="selectedStatsSorted"
         :show-title="false"
+        :profit-col="absRelCol"
       />
     </div>
     <div>
