@@ -3,6 +3,12 @@ export enum TimeSummaryOptions {
   weekly = 'weekly',
   monthly = 'monthly',
 }
+
+export enum TimeSummaryCols {
+  abs_profit = 'abs_profit',
+  rel_profit = 'rel_profit',
+}
+
 export interface TimeSummaryPayload {
   timescale?: number;
 }

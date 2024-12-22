@@ -17,7 +17,7 @@ import {
 
 import { registerTransform } from 'echarts';
 
-import type { TimeSummaryReturnValue } from '@/types';
+import type { TimeSummaryCols, TimeSummaryReturnValue } from '@/types';
 import type { EChartsOption } from 'echarts';
 
 use([
@@ -37,12 +37,10 @@ const props = withDefaults(
   defineProps<{
     dailyStats: TimeSummaryReturnValue;
     showTitle?: boolean;
-    profitCol?: 'rel_profit' | 'abs_profit';
+    profitCol: TimeSummaryCols;
   }>(),
   {
     showTitle: true,
-    // TODO: rel_profit doesn't render properly.
-    profitCol: 'abs_profit',
   },
 );
 

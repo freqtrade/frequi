@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { UiVersion } from '@/types';
+import { TimeSummaryCols, TimeSummaryOptions, type UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 const STORE_UI_SETTINGS = 'ftUISettings';
@@ -32,6 +32,8 @@ export const useSettingsStore = defineStore('uiSettings', {
       profitDistributionBins: 20,
       confirmDialog: true,
       chartLabelSide: 'right' as 'left' | 'right',
+      timeProfitPeriod: TimeSummaryOptions.daily,
+      timeProfitPreference: TimeSummaryCols.abs_profit,
     };
   },
   getters: {

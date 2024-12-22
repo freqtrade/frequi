@@ -5,6 +5,7 @@ import type { TableField } from 'bootstrap-vue-next';
 import { TimeSummaryOptions } from '@/types';
 
 const botStore = useBotStore();
+const settings = useSettingsStore();
 
 const props = defineProps<{
   multiBotView?: boolean;
@@ -25,12 +26,10 @@ const absRelSelections = ref([
   { value: 'abs_profit', text: 'Abs $' },
   { value: 'rel_profit', text: 'Rel %' },
 ]);
-const absRelCol = ref<'abs_profit' | 'rel_profit'>('abs_profit');
-const periodicBreakdownPeriod = ref<TimeSummaryOptions>(TimeSummaryOptions.daily);
 
 const selectedStats = computed(() => {
   if (props.multiBotView) {
-    switch (periodicBreakdownPeriod.value) {
+    switch (settings.timeProfitPeriod) {
       case TimeSummaryOptions.weekly:
         return botStore.allWeeklyStatsSelectedBots;
       case TimeSummaryOptions.monthly:
@@ -40,7 +39,7 @@ const selectedStats = computed(() => {
     }
   }
 
-  switch (periodicBreakdownPeriod.value) {
+  switch (settings.timeProfitPeriod) {
     case TimeSummaryOptions.weekly:
       return botStore.activeBot.weeklyStats;
     case TimeSummaryOptions.monthly:
@@ -87,9 +86,9 @@ const dailyFields = computed<TableField[]>(() => {
 
 function refreshSummary() {
   if (props.multiBotView) {
-    botStore.allGetTimeSummary(periodicBreakdownPeriod.value);
+    botStore.allGetTimeSummary(settings.timeProfitPeriod);
   } else {
-    botStore.activeBot.getTimeSummary(periodicBreakdownPeriod.value);
+    botStore.activeBot.getTimeSummary(settings.timeProfitPeriod);
   }
 }
 
@@ -110,7 +109,7 @@ onMounted(() => {
       <BFormRadioGroup
         v-if="hasWeekly"
         id="order-direction"
-        v-model="periodicBreakdownPeriod"
+        v-model="settings.timeProfitPeriod"
         :options="periodicBreakdownSelections"
         name="radios-btn-default"
         size="sm"
@@ -120,7 +119,7 @@ onMounted(() => {
         @change="refreshSummary"
       ></BFormRadioGroup>
       <BFormRadioGroup
-        v-model="absRelCol"
+        v-model="settings.timeProfitPreference"
         name="radios-btn-select"
         size="sm"
         :options="absRelSelections"
@@ -135,7 +134,7 @@ onMounted(() => {
         v-if="selectedStats"
         :daily-stats="selectedStatsSorted"
         :show-title="false"
-        :profit-col="absRelCol"
+        :profit-col="settings.timeProfitPreference"
       />
     </div>
     <div v-if="!props.multiBotView">
