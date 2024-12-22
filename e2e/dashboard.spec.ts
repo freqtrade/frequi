@@ -20,8 +20,8 @@ test.describe('Dashboard', () => {
     ]);
     await expect(page.locator('.drag-header', { hasText: 'Bot comparison' })).toBeVisible();
     await expect(page.locator('.drag-header', { hasText: 'Bot comparison' })).toBeInViewport();
-    await expect(page.locator('.drag-header', { hasText: 'Daily Profit' })).toBeVisible();
-    await expect(page.locator('.drag-header', { hasText: 'Daily Profit' })).toBeInViewport();
+    await expect(page.locator('.drag-header', { hasText: 'Profit over time' })).toBeVisible();
+    await expect(page.locator('.drag-header', { hasText: 'Profit over time' })).toBeInViewport();
     await expect(page.locator('.drag-header', { hasText: 'Open trades' })).toBeVisible();
     await expect(page.locator('.drag-header', { hasText: 'Open trades' })).toBeInViewport();
     await expect(page.locator('.drag-header', { hasText: 'Cumulative Profit' })).toBeVisible();
