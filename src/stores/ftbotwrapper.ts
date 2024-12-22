@@ -150,6 +150,50 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       };
       return dailyReturn;
     },
+    allWeeklyStatsSelectedBots: (state): TimeSummaryReturnValue => {
+      const resp: Record<string, TimeSummaryRecord> = {};
+      Object.entries(state.botStores).forEach(([, botStore]) => {
+        if (botStore.isSelected) {
+          botStore.weeklyStats?.data?.forEach((d) => {
+            if (!resp[d.date]) {
+              resp[d.date] = { ...d };
+            } else {
+              resp[d.date].abs_profit += d.abs_profit;
+              resp[d.date].fiat_value += d.fiat_value;
+              resp[d.date].trade_count += d.trade_count;
+            }
+          });
+        }
+      });
+
+      return {
+        stake_currency: 'USDT',
+        fiat_display_currency: 'USD',
+        data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
+      };
+    },
+    allMonthlyStatsSelectedBots: (state): TimeSummaryReturnValue => {
+      const resp: Record<string, TimeSummaryRecord> = {};
+      Object.entries(state.botStores).forEach(([, botStore]) => {
+        if (botStore.isSelected) {
+          botStore.monthlyStats?.data?.forEach((d) => {
+            if (!resp[d.date]) {
+              resp[d.date] = { ...d };
+            } else {
+              resp[d.date].abs_profit += d.abs_profit;
+              resp[d.date].fiat_value += d.fiat_value;
+              resp[d.date].trade_count += d.trade_count;
+            }
+          });
+        }
+      });
+
+      return {
+        stake_currency: 'USDT',
+        fiat_display_currency: 'USD',
+        data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
+      };
+    },
   },
   actions: {
     selectBot(botId: string) {
@@ -329,6 +373,16 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     },
     async reloadTradeMulti(deletePayload: MultiReloadTradePayload) {
       return this.botStores[deletePayload.botId].reloadTrade(deletePayload.tradeid);
+    },
+    async allGetTimeSummary(period: TimeSummaryOptions, payload?: TimeSummaryPayload) {
+      const updates: Promise<TimeSummaryReturnValue>[] = [];
+
+      this.allBotStores.forEach((bot) => {
+        if (bot.isBotOnline && bot.isSelected) {
+          updates.push(bot.getTimeSummary(period, payload));
+        }
+      });
+      await Promise.all(updates);
     },
   },
 });

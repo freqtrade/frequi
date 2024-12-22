@@ -6,7 +6,11 @@ import { TimeSummaryOptions } from '@/types';
 
 const botStore = useBotStore();
 
-const hasWeekly = computed(() => botStore.activeBot.botApiVersion >= 2.33);
+const props = defineProps<{
+  multiBotView?: boolean;
+}>();
+
+const hasWeekly = computed(() => botStore.activeBot.botApiVersion >= 2.33 || props.multiBotView);
 
 const periodicBreakdownSelections = computed(() => {
   const vals = [{ value: TimeSummaryOptions.daily, text: 'Days' }];
@@ -25,13 +29,25 @@ const absRelCol = ref<'abs_profit' | 'rel_profit'>('abs_profit');
 const periodicBreakdownPeriod = ref<TimeSummaryOptions>(TimeSummaryOptions.daily);
 
 const selectedStats = computed(() => {
+  if (props.multiBotView) {
+    switch (periodicBreakdownPeriod.value) {
+      case TimeSummaryOptions.weekly:
+        return botStore.allWeeklyStatsSelectedBots;
+      case TimeSummaryOptions.monthly:
+        return botStore.allMonthlyStatsSelectedBots;
+      default:
+        return botStore.allDailyStatsSelectedBots;
+    }
+  }
+
   switch (periodicBreakdownPeriod.value) {
     case TimeSummaryOptions.weekly:
       return botStore.activeBot.weeklyStats;
     case TimeSummaryOptions.monthly:
       return botStore.activeBot.monthlyStats;
+    default:
+      return botStore.activeBot.dailyStats;
   }
-  return botStore.activeBot.dailyStats;
 });
 
 const selectedStatsSorted = computed(() => {
@@ -70,7 +86,11 @@ const dailyFields = computed<TableField[]>(() => {
 });
 
 function refreshSummary() {
-  botStore.activeBot.getTimeSummary(periodicBreakdownPeriod.value);
+  if (props.multiBotView) {
+    botStore.allGetTimeSummary(periodicBreakdownPeriod.value);
+  } else {
+    botStore.activeBot.getTimeSummary(periodicBreakdownPeriod.value);
+  }
 }
 
 onMounted(() => {
@@ -80,7 +100,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="mb-2">
+    <div v-if="!props.multiBotView" class="mb-2">
       <h3 class="me-auto d-inline">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
       <BButton class="float-end" size="sm" @click="refreshSummary">
         <i-mdi-refresh />
@@ -118,7 +138,7 @@ onMounted(() => {
         :profit-col="absRelCol"
       />
     </div>
-    <div>
+    <div v-if="!props.multiBotView">
       <BTable class="table-sm" :items="selectedStats.data" :fields="dailyFields"> </BTable>
     </div>
   </div>

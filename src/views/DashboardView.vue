@@ -102,12 +102,8 @@ onMounted(async () => {
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer :header="`Daily Profit ${botStore.botCount > 1 ? 'combined' : ''}`">
-          <TimePeriodChart
-            v-if="botStore.allDailyStatsSelectedBots"
-            :daily-stats="botStore.allDailyStatsSelectedBots"
-            :show-title="false"
-          />
+        <DraggableContainer :header="`Profit over time ${botStore.botCount > 1 ? 'combined' : ''}`">
+          <PeriodBreakdown multi-bot-view />
         </DraggableContainer>
       </GridItem>
       <GridItem
