@@ -18,7 +18,7 @@ import {
 import { registerTransform } from 'echarts';
 
 import type { TimeSummaryCols, TimeSummaryReturnValue } from '@/types';
-import type { EChartsOption } from 'echarts';
+import type { EChartsOption, LinearGradientObject } from 'echarts';
 
 use([
   BarChart,
@@ -90,7 +90,7 @@ const units = {
 
 registerTransform(units.multiple);
 
-const colorStops = {
+const colorStops: LinearGradientObject = {
   type: 'linear',
   x: 0,
   y: 0,
