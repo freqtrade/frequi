@@ -1,4 +1,4 @@
-FROM node:23.4.0-alpine AS ui-builder
+FROM node:23.5.0-alpine AS ui-builder
 
 RUN mkdir /app \
     && corepack enable
