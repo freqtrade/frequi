@@ -123,8 +123,8 @@ const chartOptions = computed((): EChartsOption => {
       <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
     <BFormGroup
-      class="z-2"
-      :class="showTitle ? 'ms-5 ps-5' : 'position-absolute'"
+      class="z-2 position-absolute fixed-top"
+      :class="{ 'mx-auto': showTitle }"
       label="Bins"
       style="width: 33%; min-width: 12rem"
       label-for="input-bins"
