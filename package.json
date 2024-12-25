@@ -23,7 +23,7 @@
     "@vueuse/integrations": "^12.2.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "bootstrap-vue-next": "^0.26.15",
+    "bootstrap-vue-next": "^0.26.18",
     "core-js": "^3.39.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
