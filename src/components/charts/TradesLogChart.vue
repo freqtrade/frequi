@@ -69,6 +69,7 @@ const chartOptions = computed((): EChartsOption => {
   // const { chartData } = this;
   // Show a maximum of 50 trades by default - allowing to zoom out further.
   const datazoomStart = chartData.value.length > 0 ? (1 - 50 / chartData.value.length) * 100 : 100;
+  console.log(datazoomStart);
   return {
     title: {
       text: 'Trades log',
@@ -93,7 +94,7 @@ const chartOptions = computed((): EChartsOption => {
       },
     },
     xAxis: {
-      type: 'value',
+      type: 'category',
       show: false,
     },
     yAxis: [
@@ -145,7 +146,6 @@ const chartOptions = computed((): EChartsOption => {
       {
         type: 'bar',
         name: CHART_PROFIT,
-        barGap: '0%',
         barCategoryGap: '0%',
         animation: false,
         label: {
