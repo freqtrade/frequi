@@ -130,7 +130,7 @@ async function startDownload() {
               <div v-else class="d-flex align-items-center gap-2">
                 <label>Days to download:</label>
                 <BFormInput
-                  v-model.number="timeSelection.days"
+                  v-model="timeSelection.days"
                   type="number"
                   aria-label="Days to download"
                   min="1"
