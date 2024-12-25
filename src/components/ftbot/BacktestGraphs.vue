@@ -6,21 +6,9 @@ defineProps({
 });
 </script>
 <template>
-  <div class="text-center flex-fill mt-2 d-flex flex-column">
-    <TradesLogChart :trades="trades" class="trades-log" />
-    <CumProfitChart :trades="trades" class="cum-profit" :show-title="true" />
-    <hr />
-    <ProfitDistributionChart class="mt-3" :trades="trades" :show-title="true" />
+  <div class="text-center flex-fill d-flex flex-column h-100">
+    <TradesLogChart :trades="trades" class="flex-grow-1" />
+    <CumProfitChart :trades="trades" class="flex-grow-1" :show-title="true" />
+    <ProfitDistributionChart class="flex-grow-1" :trades="trades" :show-title="true" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.trades-log {
-  height: 350px !important;
-  max-height: 350px;
-}
-.cum-profit {
-  height: 350px !important;
-  max-height: 350px;
-}
-</style>

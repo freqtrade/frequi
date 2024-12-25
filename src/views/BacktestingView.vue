@@ -147,7 +147,7 @@ watch(
         </div>
       </div>
     </div>
-    <div class="d-flex flex-md-row">
+    <div class="d-flex flex-md-row h-100">
       <!-- Left bar -->
       <div
         v-if="btFormMode !== 'visualize'"
@@ -178,8 +178,8 @@ watch(
         </Transition>
       </div>
       <!-- End Left bar -->
-      <div class="d-flex flex-column flex-fill mw-100">
-        <div class="d-md-flex">
+      <div class="d-flex flex-column flex-fill mw-100 h-100">
+        <div class="d-md-flex h-100">
           <div
             v-if="btFormMode === 'historicResults'"
             class="flex-fill d-flex flex-column bt-config"
