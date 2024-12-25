@@ -67,7 +67,7 @@ test.describe('Download Data View', () => {
     expect(postData).toMatchObject({
       pairs: expect.any(Array),
       timeframes: expect.any(Array),
-      days: 3,
+      days: '3',
     });
 
     expect(postData.pairs).toContain('BTC/USDT');
@@ -102,7 +102,7 @@ test.describe('Download Data View', () => {
     expect(postData).toMatchObject({
       pairs: expect.any(Array),
       timeframes: expect.any(Array),
-      days: 3,
+      days: '3',
       erase: true,
     });
 
