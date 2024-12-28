@@ -85,6 +85,12 @@ const responsiveGridLayouts = computed(() => {
           </div>
           <BTabs content-class="mt-3 mx-1" class="mt-1">
             <BTab title="Pairs combined" active>
+              <template #title>
+                <div title="Pairs combined">
+                  <i-mdi-view-list />
+                </div>
+                <!-- <span class="ms-1">Pairs combined</span> -->
+              </template>
               <PairSummary
                 :pairlist="botStore.activeBot.whitelist"
                 :current-locks="botStore.activeBot.activeLocks"
@@ -92,22 +98,46 @@ const responsiveGridLayouts = computed(() => {
               />
             </BTab>
             <BTab title="General">
+              <template #title>
+                <i-mdi-information />
+                <!-- <span class="ms-1">General</span> -->
+              </template>
               <BotStatus />
             </BTab>
             <BTab title="Performance" lazy>
+              <template #title>
+                <i-mdi-chart-line />
+                <!-- <span class="ms-1">Performance</span> -->
+              </template>
               <BotPerformance />
             </BTab>
             <BTab title="Balance" lazy>
+              <template #title>
+                <i-mdi-bank />
+                <!-- <span class="ms-1">Balance</span> -->
+              </template>
               <BotBalance />
             </BTab>
             <BTab title="Time Breakdown" lazy>
+              <template #title>
+                <i-mdi-folder-clock />
+                <!-- <span class="ms-1">Time Breakdown</span> -->
+              </template>
               <PeriodBreakdown />
             </BTab>
 
             <BTab title="Pairlist" lazy>
+              <template #title>
+                <i-mdi-format-list-group />
+                <!-- <span class="ms-1">Pairlist</span> -->
+              </template>
               <PairListLive />
             </BTab>
             <BTab title="Pair Locks" lazy>
+              <template #title>
+                <i-mdi-lock-alert />
+                <!-- <span class="ms-1">Pair Locks</span> -->
+              </template>
               <PairLockList />
             </BTab>
           </BTabs>
