@@ -1,7 +1,12 @@
 <script setup lang="ts">
-defineProps({
-  header: { required: false, type: String, default: '' },
-});
+withDefaults(
+  defineProps<{
+    header?: string;
+  }>(),
+  {
+    header: '',
+  },
+);
 </script>
 
 <template>
