@@ -684,13 +684,19 @@ watch(
 );
 
 watch(
-  () => props.dataset,
-  () => updateChart(),
+  () => props.plotConfig,
+  () => initializeChartOptions(),
 );
 
 watch(
-  () => props.plotConfig,
-  () => initializeChartOptions(),
+  () => props.theme,
+  () => {
+    initializeChartOptions();
+  },
+);
+watch(
+  () => props.dataset,
+  () => updateChart(),
 );
 
 watch(
@@ -701,13 +707,6 @@ watch(
 watch(
   () => props.sliderPosition,
   () => updateSliderPosition(),
-);
-
-watch(
-  () => props.theme,
-  () => {
-    initializeChartOptions();
-  },
 );
 </script>
 
