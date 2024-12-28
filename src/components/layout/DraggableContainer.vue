@@ -19,7 +19,7 @@ defineProps({
 
 <style scoped>
 .card-header {
-  padding: 0.25rem 0.5rem;
+  padding: 0.15rem 0.5rem;
 }
 .card-body {
   /* Padding should be controled by the contained element */
