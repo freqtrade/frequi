@@ -160,6 +160,7 @@ declare module 'vue' {
     LoginModal: typeof import('./components/LoginModal.vue')['default']
     LogViewer: typeof import('./components/ftbot/LogViewer.vue')['default']
     Main: typeof import('./components/ftbot/DownloadData/Main.vue')['default']
+    MarketChangeChart: typeof import('./components/charts/MarketChangeChart.vue')['default']
     MessageBox: typeof import('./components/general/MessageBox.vue')['default']
     NavBar: typeof import('./components/layout/NavBar.vue')['default']
     NavFooter: typeof import('./components/layout/NavFooter.vue')['default']

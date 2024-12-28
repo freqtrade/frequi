@@ -1,14 +1,3 @@
-<template>
-  <e-charts
-    v-if="marketChangeData?.data"
-    ref="dailyChart"
-    :option="dailyChartOptions"
-    :theme="settingsStore.chartTheme"
-    :style="{ height: width * 0.6 + 'px' }"
-    autoresize
-  />
-</template>
-
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
@@ -27,11 +16,9 @@ import {
   VisualMapComponent,
 } from 'echarts/components';
 
-import { BacktestMarketChange } from '@/types';
-import { useSettingsStore } from '@/stores/settings';
-import { EChartsOption } from 'echarts';
+import type { BacktestMarketChange } from '@/types';
+import type { EChartsOption } from 'echarts';
 import { useElementSize } from '@vueuse/core';
-import { dataZoomPartial } from '@/shared/charts/chartZoom';
 
 use([
   LineChart,
@@ -151,6 +138,17 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
   };
 });
 </script>
+
+<template>
+  <ECharts
+    v-if="marketChangeData?.data"
+    ref="dailyChart"
+    :option="dailyChartOptions"
+    :theme="settingsStore.chartTheme"
+    :style="{ height: width * 0.6 + 'px' }"
+    autoresize
+  />
+</template>
 
 <style lang="scss" scoped>
 .echarts {
