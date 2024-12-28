@@ -77,6 +77,9 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
       },
     },
+    grid: {
+      ...echartsGridDefault,
+    },
     legend: {
       data: [CHART_MARKET_CHANGE],
       right: '5%',

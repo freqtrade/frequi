@@ -111,8 +111,8 @@ const chartOptions = computed((): EChartsOption => {
       },
     ],
     grid: {
-      right: 50,
-      bottom: 80,
+      ...echartsGridDefault,
+      left: 80,
     },
     dataZoom: [
       {

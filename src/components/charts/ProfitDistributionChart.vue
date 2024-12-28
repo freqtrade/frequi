@@ -95,9 +95,10 @@ const chartOptions = computed((): EChartsOption => {
         position: 'left',
       },
     ],
-    // grid: {
-    // bottom: 80,
-    // },
+    grid: {
+      ...echartsGridDefault,
+      bottom: 50,
+    },
 
     series: [
       {

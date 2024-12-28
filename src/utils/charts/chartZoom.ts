@@ -8,3 +8,9 @@ export const dataZoomPartial = {
   handleIcon,
   handleSize: '80%',
 };
+
+export const echartsGridDefault = {
+  left: '55',
+  right: '30',
+  bottom: 80,
+};
