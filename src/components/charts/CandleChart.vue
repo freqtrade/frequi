@@ -219,6 +219,7 @@ function updateChart(initial = false) {
           // open, close, low, high
           y: [colOpen, colClose, colLow, colHigh],
         },
+        ...generateMarkArea(props.dataset),
       },
       {
         name: 'Volume',

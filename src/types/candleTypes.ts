@@ -30,6 +30,16 @@ export interface PairHistoryPayload {
   columns?: string[];
 }
 
+export interface MarkArea {
+  type: 'area';
+  start?: string;
+  end?: string;
+  y_start?: number;
+  y_end?: number;
+  color?: string;
+  label?: string;
+}
+
 export interface PairHistory {
   strategy: string;
   pair: string;
@@ -42,6 +52,8 @@ export interface PairHistory {
   all_columns?: string[];
   /** Actual data */
   data: number[][];
+  annotations: MarkArea[];
+
   length: number;
   /** Number of buy signals in this response */
   buy_signals: number;

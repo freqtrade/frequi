@@ -61,6 +61,7 @@ declare global {
   const generateBacktestMetricRows: typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']
   const generateBacktestSettingRows: typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']
   const generateCandleSeries: typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']
+  const generateMarkArea: typeof import('./utils/charts/tradeChartData')['generateMarkArea']
   const generateTradeSeries: typeof import('./utils/charts/tradeChartData')['generateTradeSeries']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
@@ -447,6 +448,7 @@ declare module 'vue' {
     readonly generateBacktestMetricRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']>
     readonly generateBacktestSettingRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']>
     readonly generateCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateCandleSeries']>
+    readonly generateMarkArea: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateMarkArea']>
     readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
