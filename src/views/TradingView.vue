@@ -55,10 +55,11 @@ const responsiveGridLayouts = computed(() => {
 <template>
   <GridLayout
     class="h-100 w-100"
+    style="padding: 1px"
     :row-height="50"
     :layout="gridLayoutData"
     :vertical-compact="false"
-    :margin="[5, 5]"
+    :margin="[1, 1]"
     :responsive-layouts="responsiveGridLayouts"
     :is-resizable="!isLayoutLocked"
     :is-draggable="!isLayoutLocked"
