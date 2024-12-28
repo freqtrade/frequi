@@ -40,6 +40,7 @@ export interface PairHistory {
    * Contains all columns - columns may be filtered to the ones available.
    */
   all_columns?: string[];
+  /** Actual data */
   data: number[][];
   length: number;
   /** Number of buy signals in this response */
