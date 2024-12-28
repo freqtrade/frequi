@@ -83,7 +83,7 @@ const responsiveGridLayouts = computed(() => {
           <div class="mt-1 d-flex justify-content-center">
             <BotControls class="mt-1 mb-2" />
           </div>
-          <BTabs content-class="mt-3" class="mt-1">
+          <BTabs content-class="mt-3 mx-1" class="mt-1">
             <BTab title="Pairs combined" active>
               <PairSummary
                 :pairlist="botStore.activeBot.whitelist"
