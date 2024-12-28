@@ -675,10 +675,12 @@ function updateSliderPosition() {
 // }
 // }
 
-watch(
-  [() => props.useUTC, () => props.theme, () => props.plotConfig],
-  () => initializeChartOptions(),
-  { immediate: true },
+onMounted(() => {
+  initializeChartOptions();
+});
+
+watch([() => props.useUTC, () => props.theme, () => props.plotConfig], () =>
+  initializeChartOptions(),
 );
 
 watch([() => props.dataset, () => props.heikinAshi], () => updateChart());
