@@ -674,35 +674,14 @@ function updateSliderPosition() {
 //   this.signalsCalculated = true;
 // }
 // }
-onMounted(() => {
-  initializeChartOptions();
-});
 
 watch(
-  () => props.useUTC,
+  [() => props.useUTC, () => props.theme, () => props.plotConfig],
   () => initializeChartOptions(),
+  { immediate: true },
 );
 
-watch(
-  () => props.plotConfig,
-  () => initializeChartOptions(),
-);
-
-watch(
-  () => props.theme,
-  () => {
-    initializeChartOptions();
-  },
-);
-watch(
-  () => props.dataset,
-  () => updateChart(),
-);
-
-watch(
-  () => props.heikinAshi,
-  () => updateChart(),
-);
+watch([() => props.dataset, () => props.heikinAshi], () => updateChart());
 
 watch(
   () => props.sliderPosition,
