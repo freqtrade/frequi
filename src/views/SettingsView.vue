@@ -64,6 +64,13 @@ const resetDynamicLayout = () => {
               >Show Confirm Dialog for Trade Exits</BFormCheckbox
             >
           </BFormGroup>
+          <BFormGroup
+            description="Show text on multi pane buttons. If disabled, only shows images."
+          >
+            <BFormCheckbox v-model="settingsStore.multiPaneButtonsShowText"
+              >Show Text on Multi Pane Buttons</BFormCheckbox
+            >
+          </BFormGroup>
         </div>
 
         <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">

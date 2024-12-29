@@ -6,6 +6,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 
 const botStore = useBotStore();
 const layoutStore = useLayoutStore();
+const settingsStore = useSettingsStore();
 const currentBreakpoint = ref('');
 
 const breakpointChanged = (newBreakpoint: string) => {
@@ -86,10 +87,11 @@ const responsiveGridLayouts = computed(() => {
           <BTabs content-class="mt-3 mx-1" class="mt-1">
             <BTab title="Pairs combined" active>
               <template #title>
-                <div title="Pairs combined">
-                  <i-mdi-view-list />
-                </div>
-                <!-- <span class="ms-1">Pairs combined</span> -->
+                <div title="Pairs combined"></div>
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
+                  >Pairs combined</span
+                >
+                <i-mdi-view-list v-else />
               </template>
               <PairSummary
                 :pairlist="botStore.activeBot.whitelist"
@@ -99,44 +101,46 @@ const responsiveGridLayouts = computed(() => {
             </BTab>
             <BTab title="General">
               <template #title>
-                <i-mdi-information />
-                <!-- <span class="ms-1">General</span> -->
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
+                <i-mdi-information v-else />
               </template>
               <BotStatus />
             </BTab>
             <BTab title="Performance" lazy>
               <template #title>
-                <i-mdi-chart-line />
-                <!-- <span class="ms-1">Performance</span> -->
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Performance</span>
+                <i-mdi-chart-line v-else />
               </template>
               <BotPerformance />
             </BTab>
             <BTab title="Balance" lazy>
               <template #title>
-                <i-mdi-bank />
-                <!-- <span class="ms-1">Balance</span> -->
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
+                <i-mdi-bank v-else />
               </template>
               <BotBalance />
             </BTab>
             <BTab title="Time Breakdown" lazy>
               <template #title>
-                <i-mdi-folder-clock />
-                <!-- <span class="ms-1">Time Breakdown</span> -->
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
+                  >Time Breakdown</span
+                >
+                <i-mdi-folder-clock v-else />
               </template>
               <PeriodBreakdown />
             </BTab>
 
             <BTab title="Pairlist" lazy>
               <template #title>
-                <i-mdi-format-list-group />
-                <!-- <span class="ms-1">Pairlist</span> -->
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
+                <i-mdi-format-list-group v-else />
               </template>
               <PairListLive />
             </BTab>
             <BTab title="Pair Locks" lazy>
               <template #title>
-                <i-mdi-lock-alert />
-                <!-- <span class="ms-1">Pair Locks</span> -->
+                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
+                <i-mdi-lock-alert v-else />
               </template>
               <PairLockList />
             </BTab>

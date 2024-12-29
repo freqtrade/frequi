@@ -34,6 +34,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       chartLabelSide: 'right' as 'left' | 'right',
       timeProfitPeriod: TimeSummaryOptions.daily,
       timeProfitPreference: TimeSummaryCols.abs_profit,
+      multiPaneButtonsShowText: false,
     };
   },
   getters: {
