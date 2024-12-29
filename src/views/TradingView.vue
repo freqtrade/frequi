@@ -87,11 +87,12 @@ const responsiveGridLayouts = computed(() => {
           <BTabs content-class="mt-3 mx-1" class="mt-1">
             <BTab title="Pairs combined" active>
               <template #title>
-                <div title="Pairs combined"></div>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                  >Pairs combined</span
-                >
-                <i-mdi-view-list v-else />
+                <div title="Pairs combined">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
+                    >Pairs combined</span
+                  >
+                  <i-mdi-view-list v-else />
+                </div>
               </template>
               <PairSummary
                 :pairlist="botStore.activeBot.whitelist"
@@ -101,46 +102,60 @@ const responsiveGridLayouts = computed(() => {
             </BTab>
             <BTab title="General">
               <template #title>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
-                <i-mdi-information v-else />
+                <div title="General">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
+                  <i-mdi-information v-else />
+                </div>
               </template>
               <BotStatus />
             </BTab>
             <BTab title="Performance" lazy>
               <template #title>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Performance</span>
-                <i-mdi-chart-line v-else />
+                <div title="Performance">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
+                    >Performance</span
+                  >
+                  <i-mdi-chart-line v-else />
+                </div>
               </template>
               <BotPerformance />
             </BTab>
             <BTab title="Balance" lazy>
               <template #title>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
-                <i-mdi-bank v-else />
+                <div title="Balance">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
+                  <i-mdi-bank v-else />
+                </div>
               </template>
               <BotBalance />
             </BTab>
             <BTab title="Time Breakdown" lazy>
               <template #title>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                  >Time Breakdown</span
-                >
-                <i-mdi-folder-clock v-else />
+                <div title="Time Breakdown">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
+                    >Time Breakdown</span
+                  >
+                  <i-mdi-folder-clock v-else />
+                </div>
               </template>
               <PeriodBreakdown />
             </BTab>
 
             <BTab title="Pairlist" lazy>
               <template #title>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
-                <i-mdi-format-list-group v-else />
+                <div title="Pairlist">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
+                  <i-mdi-format-list-group v-else />
+                </div>
               </template>
               <PairListLive />
             </BTab>
             <BTab title="Pair Locks" lazy>
               <template #title>
-                <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
-                <i-mdi-lock-alert v-else />
+                <div title="Pair Locks">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
+                  <i-mdi-lock-alert v-else />
+                </div>
               </template>
               <PairLockList />
             </BTab>
