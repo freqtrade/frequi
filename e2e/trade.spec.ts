@@ -31,10 +31,9 @@ test.describe('Trade', () => {
     await expect(page.locator('button', { hasText: 'ETH/USDT' })).toBeInViewport();
 
     // // Click on Performance button and wait for response
-    await Promise.all([
-      page.waitForResponse('**/performance'),
-      page.click('button:has-text("Performance")'),
-    ]);
+    const performanceButton = page.getByRole('tab', { name: 'Performance' });
+    await expect(performanceButton).toBeVisible();
+    await Promise.all([page.waitForResponse('**/performance'), performanceButton.click()]);
 
     // // Check visibility of Profit USDT
     await expect(page.locator('th:has-text("Profit USDT")')).toBeInViewport();
@@ -67,7 +66,8 @@ test.describe('Trade', () => {
     // // Click on General tab
     const performancePair = page.locator('td:has-text("XRP/USDT")');
     await expect(performancePair).toBeInViewport();
-    await page.click('button[role="tab"]:has-text("General")');
+    await page.getByRole('tab', { name: 'General' }).click();
+    // await page.click('button[role="tab"]:has-text("General")');
 
     // // Check visibility of elements
     await expect(performancePair).not.toBeInViewport();
