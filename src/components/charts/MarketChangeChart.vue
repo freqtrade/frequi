@@ -18,7 +18,6 @@ import {
 
 import type { BacktestMarketChange } from '@/types';
 import type { EChartsOption } from 'echarts';
-import { useElementSize } from '@vueuse/core';
 
 use([
   LineChart,
@@ -49,10 +48,9 @@ const props = defineProps({
 
 const settingsStore = useSettingsStore();
 
-const dailyChart = ref(null);
-const { width } = useElementSize(dailyChart);
+const marketChangeChart = ref(null);
 
-const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
+const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   if (!props.marketChangeData) {
     return {};
   }
@@ -145,10 +143,9 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
 <template>
   <ECharts
     v-if="marketChangeData?.data"
-    ref="dailyChart"
-    :option="dailyChartOptions"
+    ref="marketChangeChart"
+    :option="marketChangeOptions"
     :theme="settingsStore.chartTheme"
-    :style="{ height: width * 0.6 + 'px' }"
     autoresize
   />
 </template>
@@ -156,5 +153,6 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
 <style lang="scss" scoped>
 .echarts {
   min-height: 240px;
+  height: 100%;
 }
 </style>
