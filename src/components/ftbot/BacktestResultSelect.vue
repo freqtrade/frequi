@@ -45,7 +45,7 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
         @click="setBacktestResult(key)"
       >
         <template v-if="!result.metadata.editing">
-          <BacktestResultSelectEntry :backtest-result="result" />
+          <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
           <div class="d-flex">
             <BButton
               v-if="canUseModify"
