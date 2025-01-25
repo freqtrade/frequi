@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - ci/**
-      - docker_container
 
   pull_request:
     branches:
