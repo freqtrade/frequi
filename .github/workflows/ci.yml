@@ -48,6 +48,19 @@ jobs:
     - name: Run Tests
       run: pnpm run test:unit
 
+    - name: Build build
+      run: pnpm run build
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v4
+      # Ideally this would upload the zip file from below - but this action currently does not support this.
+      with:
+        name: freqUI-${{ matrix.node }}
+        path: |
+          dist
+          !dist/**/*.map
+        retention-days: 10
+
     # Playwright section
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
@@ -64,21 +77,8 @@ jobs:
 
     # End Playwright section
 
-    - name: Build build
-      run: pnpm run build
-
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v4
-      # Ideally this would upload the zip file from below - but this action currently does not support this.
-      with:
-        name: freqUI-${{ matrix.node }}
-        path: |
-          dist
-          !dist/**/*.map
-        retention-days: 10
-
     - name: Zip files for release
-      if: github.event_name == 'release' && matrix.node == '18'
+      if: github.event_name == 'release' && matrix.node == '22'
       run: |
         cd dist/
         zip -r ../freqUI.zip .
@@ -87,7 +87,7 @@ jobs:
 
     - name: Upload release binaries
       uses: alexellis/upload-assets@0.4.1
-      if: github.event_name == 'release' && matrix.node == '18'
+      if: github.event_name == 'release' && matrix.node == '22'
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
