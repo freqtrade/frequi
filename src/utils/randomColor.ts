@@ -1,3 +1,3 @@
 export default function () {
-  return `#${((Math.random() * 0xffffff) << 0).toString(16)}`;
+  return `#${(Math.floor(Math.random() * (0xFFFFFF - 0x100000 + 1)) + 0x100000).toString(16)}`;
 }
