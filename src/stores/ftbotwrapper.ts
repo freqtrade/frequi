@@ -388,8 +388,6 @@ export const useBotStore = defineStore('ftbot-wrapper', {
 });
 
 export function initBots() {
-  UserService.migrateLogin();
-
   const botStore = useBotStore();
   // This might need to be moved to the parent (?)
   Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {

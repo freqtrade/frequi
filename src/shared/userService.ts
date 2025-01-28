@@ -228,41 +228,6 @@ export class UserService {
     }
     return '';
   }
-
-  /**
-   * Call on startup to migrate old login info to new login
-   */
-  public static migrateLogin() {
-    const AUTH_REFRESH_TOKEN = 'auth_ref_token'; // Legacy key - do not use
-    const AUTH_ACCESS_TOKEN = 'auth_access_token';
-    const AUTH_API_URL = 'auth_api_url';
-    const AUTO_REFRESH = 'ft_auto_refresh';
-
-    const apiUrl = JSON.parse(localStorage.getItem(AUTH_API_URL) || '{}');
-    const refreshToken = JSON.parse(localStorage.getItem(AUTH_REFRESH_TOKEN) || '{}');
-    const accessToken = JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN) || '{}');
-    const autoRefresh: boolean = JSON.parse(localStorage.getItem(AUTO_REFRESH) || '{}');
-    if (
-      typeof apiUrl === 'string' &&
-      typeof refreshToken === 'string' &&
-      typeof accessToken === 'string'
-    ) {
-      const loginInfo: AuthStorage = {
-        botName: '',
-        apiUrl,
-        refreshToken,
-        accessToken,
-        autoRefresh,
-      };
-      const x = new UserService('ftbot.0');
-      x.storeLoginInfo(loginInfo);
-    }
-
-    localStorage.removeItem(AUTH_REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_ACCESS_TOKEN);
-    localStorage.removeItem(AUTH_API_URL);
-    localStorage.removeItem(AUTO_REFRESH);
-  }
 }
 
 export function useUserService(botId: string) {
