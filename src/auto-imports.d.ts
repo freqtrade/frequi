@@ -176,7 +176,7 @@ declare global {
   const useAlertForBot: typeof import('./utils/alerts')['useAlertForBot']
   const useAlertsStore: typeof import('./stores/alertsStore')['useAlertsStore']
   const useAnimate: typeof import('@vueuse/core')['useAnimate']
-  const useApi: typeof import('./composables/apiService')['useApi']
+  const useApi: typeof import('./composables/api')['useApi']
   const useArrayDifference: typeof import('@vueuse/core')['useArrayDifference']
   const useArrayEvery: typeof import('@vueuse/core')['useArrayEvery']
   const useArrayFilter: typeof import('@vueuse/core')['useArrayFilter']
@@ -568,7 +568,7 @@ declare module 'vue' {
     readonly useAlertForBot: UnwrapRef<typeof import('./utils/alerts')['useAlertForBot']>
     readonly useAlertsStore: UnwrapRef<typeof import('./stores/alertsStore')['useAlertsStore']>
     readonly useAnimate: UnwrapRef<typeof import('@vueuse/core')['useAnimate']>
-    readonly useApi: UnwrapRef<typeof import('./composables/apiService')['useApi']>
+    readonly useApi: UnwrapRef<typeof import('./composables/api')['useApi']>
     readonly useArrayDifference: UnwrapRef<typeof import('@vueuse/core')['useArrayDifference']>
     readonly useArrayEvery: UnwrapRef<typeof import('@vueuse/core')['useArrayEvery']>
     readonly useArrayFilter: UnwrapRef<typeof import('@vueuse/core')['useArrayFilter']>
