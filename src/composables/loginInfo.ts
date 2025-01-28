@@ -13,19 +13,14 @@ import type {
 const AUTH_LOGIN_INFO = 'ftAuthLoginInfo';
 const APIBASE = '/api/v1';
 
-/**
- * Get all login infos for all registered bots
- */
-function getAllLoginInfos(): AuthStorageMulti {
-  const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
-  return info;
-}
+// Global state for all login infos
+const allLoginInfos = useStorage<AuthStorageMulti>(AUTH_LOGIN_INFO, {});
 
 /**
  * Get available bots with their descriptors
  */
 export function getAvailableBots(): BotDescriptors {
-  const allInfo = getAllLoginInfos();
+  const allInfo = allLoginInfos.value;
   const response: BotDescriptors = {};
   Object.keys(allInfo)
     .sort((a, b) => (allInfo[a].sortId ?? 0) - (allInfo[b].sortId ?? 0))
@@ -45,8 +40,7 @@ export function getAvailableBots(): BotDescriptors {
  * Get list of available bot IDs
  */
 export function getAvailableBotList(): string[] {
-  const allInfo = getAllLoginInfos();
-  return Object.keys(allInfo);
+  return Object.keys(allLoginInfos.value);
 }
 
 export function useLoginInfo(botId: string) {
@@ -56,18 +50,19 @@ export function useLoginInfo(botId: string) {
    * Store login info for current botId in the object of all bots
    */
   function storeLoginInfo(loginInfo: AuthStorage): void {
-    const allInfo = getAllLoginInfos();
-    allInfo[botId] = loginInfo;
-    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(allInfo));
+    allLoginInfos.value[botId] = loginInfo;
   }
 
   /**
    * Get login info for current bot
    */
   function getLoginInfo(): AuthStorage {
-    const info = getAllLoginInfos();
-    if (botId in info && 'apiUrl' in info[botId] && 'refreshToken' in info[botId]) {
-      return info[botId];
+    if (
+      botId in allLoginInfos.value &&
+      'apiUrl' in allLoginInfos.value[botId] &&
+      'refreshToken' in allLoginInfos.value[botId]
+    ) {
+      return allLoginInfos.value[botId];
     }
     return {
       botName: '',
@@ -118,9 +113,7 @@ export function useLoginInfo(botId: string) {
 
   function logout(): void {
     console.log('Logging out');
-    const info = getAllLoginInfos();
-    delete info[botId];
-    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
+    delete allLoginInfos.value[botId];
   }
 
   async function loginCall(auth: AuthPayload): Promise<AuthStorage> {
