@@ -36,6 +36,8 @@ export interface ProfitInterface {
   /** DO NOT USE, this is rounded pct */
   best_rate: number;
   best_pair_profit_ratio: number;
+
+  best_pair_profit_abs?: number;
   winning_trades: number;
   losing_trades: number;
   profit_factor?: number;
