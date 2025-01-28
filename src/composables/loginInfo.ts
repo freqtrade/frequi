@@ -46,11 +46,17 @@ export function getAvailableBotList(): string[] {
 export function useLoginInfo(botId: string) {
   console.log('botId', botId);
 
+  const currentInfo = computed({
+    get: () => allLoginInfos.value[botId],
+    set: (val) => (allLoginInfos.value[botId] = val),
+  });
+
   /**
    * Store login info for current botId in the object of all bots
    */
   function storeLoginInfo(loginInfo: AuthStorage): void {
-    allLoginInfos.value[botId] = loginInfo;
+    // allLoginInfos.value[botId] = loginInfo;
+    currentInfo.value = loginInfo;
   }
 
   /**
@@ -75,41 +81,20 @@ export function useLoginInfo(botId: string) {
   }
 
   function updateBot(newValues: Partial<BotDescriptor>): void {
-    const newInfo = getLoginInfo();
-    Object.assign(newInfo, newValues);
-    storeLoginInfo(newInfo);
-  }
-
-  function setAccessToken(token: string): void {
-    const loginInfo = getLoginInfo();
-    loginInfo.accessToken = token;
-    storeLoginInfo(loginInfo);
-  }
-
-  function setAutoRefresh(autoRefresh: boolean): void {
-    const loginInfo = getLoginInfo();
-    loginInfo.autoRefresh = autoRefresh;
-    storeLoginInfo(loginInfo);
+    Object.assign(currentInfo.value, newValues);
   }
 
   function setRefreshTokenExpired(): void {
-    const loginInfo = getLoginInfo();
-    loginInfo.refreshToken = '';
-    loginInfo.accessToken = '';
-    storeLoginInfo(loginInfo);
+    currentInfo.value.refreshToken = '';
+    currentInfo.value.accessToken = '';
   }
 
-  function getAutoRefresh(): boolean {
-    return getLoginInfo().autoRefresh;
-  }
-
-  function getAccessToken(): string {
-    return getLoginInfo().accessToken;
-  }
-
-  function getAPIUrl(): string {
-    return getLoginInfo().apiUrl;
-  }
+  const autoRefresh = computed({
+    get: () => currentInfo.value.autoRefresh,
+    set: (val) => (currentInfo.value.autoRefresh = val),
+  });
+  const accessToken = computed(() => currentInfo.value.accessToken);
+  const apiUrl = computed(() => currentInfo.value.apiUrl);
 
   function logout(): void {
     console.log('Logging out');
@@ -145,11 +130,11 @@ export function useLoginInfo(botId: string) {
 
   function refreshToken(): Promise<string> {
     console.log('Refreshing token...');
-    const token = getLoginInfo().refreshToken;
+    const token = currentInfo.value.refreshToken;
     return new Promise((resolve, reject) => {
       axios
         .post<Record<string, never>, AxiosResponse<AuthResponse>>(
-          `${getAPIUrl()}${APIBASE}/token/refresh`,
+          `${apiUrl.value}${APIBASE}/token/refresh`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -157,7 +142,7 @@ export function useLoginInfo(botId: string) {
         )
         .then((response) => {
           if (response.data.access_token) {
-            setAccessToken(response.data.access_token);
+            currentInfo.value.accessToken = response.data.access_token;
             resolve(response.data.access_token);
           }
         })
@@ -174,8 +159,8 @@ export function useLoginInfo(botId: string) {
     });
   }
 
-  function getBaseUrl(): string {
-    const baseURL = getAPIUrl();
+  const baseUrl = computed<string>(() => {
+    const baseURL = apiUrl.value;
     if (baseURL === null) {
       return APIBASE;
     }
@@ -183,30 +168,29 @@ export function useLoginInfo(botId: string) {
       return `${baseURL}${APIBASE}`;
     }
     return `${baseURL}${APIBASE}`;
-  }
+  });
 
-  function getBaseWsUrl(): string {
-    const baseUrl = getBaseUrl();
-    if (baseUrl.startsWith('http://')) {
-      return baseUrl.replace('http://', 'ws://');
+  const baseWsUrl = computed<string>(() => {
+    const baseURL = baseUrl.value;
+    if (baseURL.startsWith('http://')) {
+      return baseURL.replace('http://', 'ws://');
     }
-    if (baseUrl.startsWith('https://')) {
-      return baseUrl.replace('https://', 'wss://');
+    if (baseURL.startsWith('https://')) {
+      return baseURL.replace('https://', 'wss://');
     }
     return '';
-  }
+  });
 
   return {
     updateBot,
-    setAutoRefresh,
     getLoginInfo,
-    setRefreshTokenExpired,
-    getAutoRefresh,
-    getAccessToken,
+    autoRefresh,
+    accessToken,
+    apiUrl,
     logout,
     login,
     refreshToken,
-    getBaseUrl,
-    getBaseWsUrl,
+    baseUrl,
+    baseWsUrl,
   };
 }

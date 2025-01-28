@@ -175,7 +175,7 @@ export function createBotSubStore(botId: string, botName: string) {
     },
     actions: {
       botAdded() {
-        this.autoRefresh = loginInfo.getAutoRefresh();
+        this.autoRefresh = loginInfo.autoRefresh.value;
       },
       async fetchPing() {
         try {
@@ -206,7 +206,7 @@ export function createBotSubStore(botId: string, botName: string) {
           this.refreshFrequent();
           this.refreshSlow(true);
         }
-        loginInfo.setAutoRefresh(newRefreshValue);
+        loginInfo.autoRefresh.value = newRefreshValue;
       },
       setIsBotOnline(isBotOnline: boolean) {
         if (!this.isBotOnline && isBotOnline && this.isBotLoggedIn) {
@@ -1156,7 +1156,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
         const { send, close } = useWebSocket(
           // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
-          `${loginInfo.getBaseWsUrl()}/message/ws?token=${loginInfo.getAccessToken()}`,
+          `${loginInfo.baseWsUrl.value}/message/ws?token=${loginInfo.accessToken.value}`,
           {
             autoReconnect: {
               delay: 10000,

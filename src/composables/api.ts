@@ -6,14 +6,14 @@ type UserServiceType = ReturnType<typeof useLoginInfo>;
 
 export function useApi(userService: UserServiceType, botId: string) {
   const api = axios.create({
-    baseURL: userService.getBaseUrl(),
+    baseURL: userService.baseUrl.value,
     timeout: 20000,
     withCredentials: true,
   });
   // Sent auth headers interceptor
   api.interceptors.request.use(
     (request) => {
-      const token = userService.getAccessToken();
+      const token = userService.autoRefresh.value;
       try {
         if (token) {
           request.headers = request.headers as AxiosHeaders;
