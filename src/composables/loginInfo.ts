@@ -49,10 +49,9 @@ export function useLoginInfo(botId: string) {
     set: (val) => (currentInfo.value.autoRefresh = val),
   });
   const accessToken = computed(() => currentInfo.value.accessToken);
-  const apiUrl = computed(() => currentInfo.value.apiUrl);
 
   const baseUrl = computed<string>(() => {
-    const baseURL = apiUrl.value;
+    const baseURL = currentInfo.value.apiUrl;
     if (baseURL === null) {
       return APIBASE;
     }
@@ -141,7 +140,7 @@ export function useLoginInfo(botId: string) {
     return new Promise((resolve, reject) => {
       axios
         .post<Record<string, never>, AxiosResponse<AuthResponse>>(
-          `${apiUrl.value}${APIBASE}/token/refresh`,
+          `${currentInfo.value.apiUrl}${APIBASE}/token/refresh`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -171,7 +170,6 @@ export function useLoginInfo(botId: string) {
     getLoginInfo,
     autoRefresh,
     accessToken,
-    apiUrl,
     logout,
     login,
     refreshToken,
