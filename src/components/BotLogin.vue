@@ -74,8 +74,8 @@ const handleSubmit = async () => {
   // Push the name to submitted names
   try {
     const botId = botEdit.value ? props.existingAuth.botId : botStore.nextBotId;
-    const userService = useUserService(botId);
-    await userService.login(auth.value);
+    const { login } = useUserService(botId);
+    await login(auth.value);
     if (botEdit.value) {
       // Bot editing ...
       botStore.botStores[botId].isBotLoggedIn = true;

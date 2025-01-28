@@ -13,63 +13,61 @@ import type {
 const AUTH_LOGIN_INFO = 'ftAuthLoginInfo';
 const APIBASE = '/api/v1';
 
-export class UserService {
-  private botId: string;
+/**
+ * Get all login infos for all registered bots
+ */
+function getAllLoginInfos(): AuthStorageMulti {
+  const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
+  return info;
+}
 
-  constructor(botId: string) {
-    console.log('botId', botId);
-    this.botId = botId;
-  }
+/**
+ * Get available bots with their descriptors
+ */
+export function getAvailableBots(): BotDescriptors {
+  const allInfo = getAllLoginInfos();
+  const response: BotDescriptors = {};
+  Object.keys(allInfo)
+    .sort((a, b) => (allInfo[a].sortId ?? 0) - (allInfo[b].sortId ?? 0))
+    .forEach((k, idx) => {
+      response[k] = {
+        botId: k,
+        botName: allInfo[k].botName,
+        botUrl: allInfo[k].apiUrl,
+        sortId: allInfo[k].sortId ?? idx,
+      };
+    });
 
-  public updateBot(newValues: Partial<BotDescriptor>): void {
-    const newInfo = this.getLoginInfo();
-    Object.assign(newInfo, newValues);
+  return response;
+}
 
-    this.storeLoginInfo(newInfo);
-  }
+/**
+ * Get list of available bot IDs
+ */
+export function getAvailableBotList(): string[] {
+  const allInfo = getAllLoginInfos();
+  return Object.keys(allInfo);
+}
+
+export function useUserService(botId: string) {
+  console.log('botId', botId);
 
   /**
-   * Stores info for current botId in the object of all bots.
+   * Store login info for current botId in the object of all bots
    */
-  private storeLoginInfo(loginInfo: AuthStorage): void {
-    const allInfo = UserService.getAllLoginInfos();
-    allInfo[this.botId] = loginInfo;
+  function storeLoginInfo(loginInfo: AuthStorage): void {
+    const allInfo = getAllLoginInfos();
+    allInfo[botId] = loginInfo;
     localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(allInfo));
   }
 
-  private setAccessToken(token: string): void {
-    const loginInfo = this.getLoginInfo();
-    loginInfo.accessToken = token;
-    this.storeLoginInfo(loginInfo);
-  }
-
   /**
-   * Store autorefresh preference for this bot instance
-   * @param autoRefresh new autoRefresh value
+   * Get login info for current bot
    */
-  public setAutoRefresh(autoRefresh: boolean): void {
-    const loginInfo = this.getLoginInfo();
-    loginInfo.autoRefresh = autoRefresh;
-    this.storeLoginInfo(loginInfo);
-  }
-
-  /**
-   * Retrieve full logininfo object (for all registered bots)
-   * @returns
-   */
-  private static getAllLoginInfos(): AuthStorageMulti {
-    const info = JSON.parse(localStorage.getItem(AUTH_LOGIN_INFO) || '{}');
-    return info;
-  }
-
-  /**
-   * Retrieve Login info object for the given bot
-   * @returns Login Info object
-   */
-  public getLoginInfo(): AuthStorage {
-    const info = UserService.getAllLoginInfos();
-    if (this.botId in info && 'apiUrl' in info[this.botId] && 'refreshToken' in info[this.botId]) {
-      return info[this.botId];
+  function getLoginInfo(): AuthStorage {
+    const info = getAllLoginInfos();
+    if (botId in info && 'apiUrl' in info[botId] && 'refreshToken' in info[botId]) {
+      return info[botId];
     }
     return {
       botName: '',
@@ -81,58 +79,51 @@ export class UserService {
     };
   }
 
-  setRefreshTokenExpired(): void {
-    const loginInfo = this.getLoginInfo();
+  function updateBot(newValues: Partial<BotDescriptor>): void {
+    const newInfo = getLoginInfo();
+    Object.assign(newInfo, newValues);
+    storeLoginInfo(newInfo);
+  }
+
+  function setAccessToken(token: string): void {
+    const loginInfo = getLoginInfo();
+    loginInfo.accessToken = token;
+    storeLoginInfo(loginInfo);
+  }
+
+  function setAutoRefresh(autoRefresh: boolean): void {
+    const loginInfo = getLoginInfo();
+    loginInfo.autoRefresh = autoRefresh;
+    storeLoginInfo(loginInfo);
+  }
+
+  function setRefreshTokenExpired(): void {
+    const loginInfo = getLoginInfo();
     loginInfo.refreshToken = '';
     loginInfo.accessToken = '';
-    this.storeLoginInfo(loginInfo);
+    storeLoginInfo(loginInfo);
   }
 
-  public static getAvailableBots(): BotDescriptors {
-    const allInfo = UserService.getAllLoginInfos();
-    const response: BotDescriptors = {};
-    Object.keys(allInfo)
-      .sort((a, b) => (allInfo[a].sortId ?? 0) - (allInfo[b].sortId ?? 0))
-      .forEach((k, idx) => {
-        response[k] = {
-          botId: k,
-          botName: allInfo[k].botName,
-          botUrl: allInfo[k].apiUrl,
-          sortId: allInfo[k].sortId ?? idx,
-        };
-      });
-
-    return response;
+  function getAutoRefresh(): boolean {
+    return getLoginInfo().autoRefresh;
   }
 
-  public static getAvailableBotList(): string[] {
-    const allInfo = UserService.getAllLoginInfos();
-    return Object.keys(allInfo);
+  function getAccessToken(): string {
+    return getLoginInfo().accessToken;
   }
 
-  public getAutoRefresh(): boolean {
-    return this.getLoginInfo().autoRefresh;
+  function getAPIUrl(): string {
+    return getLoginInfo().apiUrl;
   }
 
-  public getAccessToken(): string {
-    return this.getLoginInfo().accessToken;
-  }
-
-  private getAPIUrl(): string {
-    return this.getLoginInfo().apiUrl;
-  }
-
-  public logout(): void {
+  function logout(): void {
     console.log('Logging out');
-
-    // Logout - removing info for this particular bot.
-    const info = UserService.getAllLoginInfos();
-    delete info[this.botId];
+    const info = getAllLoginInfos();
+    delete info[botId];
     localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
   }
 
-  private async loginCall(auth: AuthPayload): Promise<AuthStorage> {
-    //  Login using username / password
+  async function loginCall(auth: AuthPayload): Promise<AuthStorage> {
     const { data } = await axios.post<Record<string, never>, AxiosResponse<AuthResponse>>(
       `${auth.url}/api/v1/token/login`,
       {},
@@ -154,18 +145,18 @@ export class UserService {
     return Promise.reject('login failed');
   }
 
-  public async login(auth: AuthPayload) {
-    const obj = await this.loginCall(auth);
-    this.storeLoginInfo(obj);
+  async function login(auth: AuthPayload) {
+    const obj = await loginCall(auth);
+    storeLoginInfo(obj);
   }
 
-  public refreshToken(): Promise<string> {
+  function refreshToken(): Promise<string> {
     console.log('Refreshing token...');
-    const token = this.getLoginInfo().refreshToken;
+    const token = getLoginInfo().refreshToken;
     return new Promise((resolve, reject) => {
       axios
         .post<Record<string, never>, AxiosResponse<AuthResponse>>(
-          `${this.getAPIUrl()}${APIBASE}/token/refresh`,
+          `${getAPIUrl()}${APIBASE}/token/refresh`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -173,17 +164,15 @@ export class UserService {
         )
         .then((response) => {
           if (response.data.access_token) {
-            this.setAccessToken(response.data.access_token);
-            // Return plain access token
+            setAccessToken(response.data.access_token);
             resolve(response.data.access_token);
           }
         })
         .catch((err) => {
           console.error(err);
           if (err.response && err.response.status === 401) {
-            // Refresh token did not refresh.
             console.log('Refresh token did not refresh.');
-            this.setRefreshTokenExpired();
+            setRefreshTokenExpired();
           } else if (err.response && (err.response.status === 500 || err.response.status === 404)) {
             console.log('Bot seems to be offline... - retrying later');
           }
@@ -192,10 +181,9 @@ export class UserService {
     });
   }
 
-  public getBaseUrl(): string {
-    const baseURL = this.getAPIUrl();
+  function getBaseUrl(): string {
+    const baseURL = getAPIUrl();
     if (baseURL === null) {
-      // Relative url
       return APIBASE;
     }
     if (!baseURL.endsWith(APIBASE)) {
@@ -204,8 +192,8 @@ export class UserService {
     return `${baseURL}${APIBASE}`;
   }
 
-  public getBaseWsUrl(): string {
-    const baseUrl = this.getBaseUrl();
+  function getBaseWsUrl(): string {
+    const baseUrl = getBaseUrl();
     if (baseUrl.startsWith('http://')) {
       return baseUrl.replace('http://', 'ws://');
     }
@@ -214,9 +202,18 @@ export class UserService {
     }
     return '';
   }
-}
 
-export function useUserService(botId: string) {
-  const userservice = new UserService(botId);
-  return userservice;
+  return {
+    updateBot,
+    setAutoRefresh,
+    getLoginInfo,
+    setRefreshTokenExpired,
+    getAutoRefresh,
+    getAccessToken,
+    logout,
+    login,
+    refreshToken,
+    getBaseUrl,
+    getBaseWsUrl,
+  };
 }

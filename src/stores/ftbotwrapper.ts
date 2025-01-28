@@ -1,4 +1,4 @@
-import { UserService } from '@/shared/userService';
+import { getAvailableBots } from '@/shared/userService';
 import type {
   BalanceInterface,
   BotDescriptor,
@@ -389,8 +389,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
 
 export function initBots() {
   const botStore = useBotStore();
-  // This might need to be moved to the parent (?)
-  Object.entries(UserService.getAvailableBots()).forEach(([, v]) => {
+  Object.entries(getAvailableBots()).forEach(([, v]) => {
     botStore.addBot(v);
   });
   botStore.selectFirstBot();

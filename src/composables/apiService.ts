@@ -1,9 +1,11 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AxiosHeaders } from 'axios';
 import axios from 'axios';
-import type { UserService } from '../shared/userService';
+import type { useUserService } from '../shared/userService';
 
-export function useApi(userService: UserService, botId: string) {
+type UserServiceType = ReturnType<typeof useUserService>;
+
+export function useApi(userService: UserServiceType, botId: string) {
   const api = axios.create({
     baseURL: userService.getBaseUrl(),
     timeout: 20000,
