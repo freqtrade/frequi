@@ -60,8 +60,8 @@ import type { FTWsMessage } from '@/types/wsMessageTypes';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 export function createBotSubStore(botId: string, botName: string) {
-  const userService = useUserService(botId);
-  const { api } = useApi(userService, botId);
+  const loginInfo = useLoginInfo(botId);
+  const { api } = useApi(loginInfo, botId);
 
   const { showAlert } = useAlertForBot(botName);
 
@@ -175,7 +175,7 @@ export function createBotSubStore(botId: string, botName: string) {
     },
     actions: {
       botAdded() {
-        this.autoRefresh = userService.getAutoRefresh();
+        this.autoRefresh = loginInfo.getAutoRefresh();
       },
       async fetchPing() {
         try {
@@ -190,13 +190,13 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       logout() {
-        userService.logout();
+        loginInfo.logout();
       },
       getLoginInfo() {
-        return userService.getLoginInfo();
+        return loginInfo.getLoginInfo();
       },
       updateBot(updatedBotInfo: Partial<BotDescriptor>) {
-        userService.updateBot(updatedBotInfo);
+        loginInfo.updateBot(updatedBotInfo);
       },
       setAutoRefresh(newRefreshValue: boolean) {
         this.autoRefresh = newRefreshValue;
@@ -206,7 +206,7 @@ export function createBotSubStore(botId: string, botName: string) {
           this.refreshFrequent();
           this.refreshSlow(true);
         }
-        userService.setAutoRefresh(newRefreshValue);
+        loginInfo.setAutoRefresh(newRefreshValue);
       },
       setIsBotOnline(isBotOnline: boolean) {
         if (!this.isBotOnline && isBotOnline && this.isBotLoggedIn) {
@@ -1156,7 +1156,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
         const { send, close } = useWebSocket(
           // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
-          `${userService.getBaseWsUrl()}/message/ws?token=${userService.getAccessToken()}`,
+          `${loginInfo.getBaseWsUrl()}/message/ws?token=${loginInfo.getAccessToken()}`,
           {
             autoReconnect: {
               delay: 10000,

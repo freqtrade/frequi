@@ -2,7 +2,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AxiosHeaders } from 'axios';
 import axios from 'axios';
 
-type UserServiceType = ReturnType<typeof useUserService>;
+type UserServiceType = ReturnType<typeof useLoginInfo>;
 
 export function useApi(userService: UserServiceType, botId: string) {
   const api = axios.create({

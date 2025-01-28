@@ -49,7 +49,7 @@ export function getAvailableBotList(): string[] {
   return Object.keys(allInfo);
 }
 
-export function useUserService(botId: string) {
+export function useLoginInfo(botId: string) {
   console.log('botId', botId);
 
   /**

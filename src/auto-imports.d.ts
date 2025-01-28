@@ -65,8 +65,8 @@ declare global {
   const generateMarkArea: typeof import('./utils/charts/tradeChartData')['generateMarkArea']
   const generateTradeSeries: typeof import('./utils/charts/tradeChartData')['generateTradeSeries']
   const getActivePinia: typeof import('pinia')['getActivePinia']
-  const getAvailableBotList: typeof import('./composables/userService')['getAvailableBotList']
-  const getAvailableBots: typeof import('./composables/userService')['getAvailableBots']
+  const getAvailableBotList: typeof import('./composables/loginInfo')['getAvailableBotList']
+  const getAvailableBots: typeof import('./composables/loginInfo')['getAvailableBots']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getDiffColumnsFromPlotConfig: typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']
@@ -258,6 +258,7 @@ declare global {
   const useLayoutStore: typeof import('./stores/layout')['useLayoutStore']
   const useLink: typeof import('vue-router')['useLink']
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
+  const useLoginInfo: typeof import('./composables/loginInfo')['useLoginInfo']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
   const useManualRefHistory: typeof import('@vueuse/core')['useManualRefHistory']
   const useMediaControls: typeof import('@vueuse/core')['useMediaControls']
@@ -340,7 +341,7 @@ declare global {
   const useTransition: typeof import('@vueuse/core')['useTransition']
   const useUrlSearchParams: typeof import('@vueuse/core')['useUrlSearchParams']
   const useUserMedia: typeof import('@vueuse/core')['useUserMedia']
-  const useUserService: typeof import('./composables/userService')['useUserService']
+  const useUserService: typeof import('./composables/loginInfo')['useUserService']
   const useVModel: typeof import('@vueuse/core')['useVModel']
   const useVModels: typeof import('@vueuse/core')['useVModels']
   const useVibrate: typeof import('@vueuse/core')['useVibrate']
@@ -457,8 +458,8 @@ declare module 'vue' {
     readonly generateMarkArea: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateMarkArea']>
     readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
-    readonly getAvailableBotList: UnwrapRef<typeof import('./composables/userService')['getAvailableBotList']>
-    readonly getAvailableBots: UnwrapRef<typeof import('./composables/userService')['getAvailableBots']>
+    readonly getAvailableBotList: UnwrapRef<typeof import('./composables/loginInfo')['getAvailableBotList']>
+    readonly getAvailableBots: UnwrapRef<typeof import('./composables/loginInfo')['getAvailableBots']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
@@ -650,6 +651,7 @@ declare module 'vue' {
     readonly useLayoutStore: UnwrapRef<typeof import('./stores/layout')['useLayoutStore']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
+    readonly useLoginInfo: UnwrapRef<typeof import('./composables/loginInfo')['useLoginInfo']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>
     readonly useMediaControls: UnwrapRef<typeof import('@vueuse/core')['useMediaControls']>
@@ -732,7 +734,6 @@ declare module 'vue' {
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
-    readonly useUserService: UnwrapRef<typeof import('./composables/userService')['useUserService']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>
     readonly useVModels: UnwrapRef<typeof import('@vueuse/core')['useVModels']>
     readonly useVibrate: UnwrapRef<typeof import('@vueuse/core')['useVibrate']>
