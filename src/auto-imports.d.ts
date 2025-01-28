@@ -17,6 +17,7 @@ declare global {
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const availableBots: typeof import('./composables/loginInfo')['availableBots']
   const binData: typeof import('./utils/charts/binCount')['binData']
   const calculateDiff: typeof import('./utils/charts/areaPlotDataset')['calculateDiff']
   const computed: typeof import('vue')['computed']
@@ -410,6 +411,7 @@ declare module 'vue' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly availableBots: UnwrapRef<typeof import('./composables/loginInfo')['availableBots']>
     readonly binData: UnwrapRef<typeof import('./utils/charts/binCount')['binData']>
     readonly calculateDiff: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['calculateDiff']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -459,7 +461,6 @@ declare module 'vue' {
     readonly generateTradeSeries: UnwrapRef<typeof import('./utils/charts/tradeChartData')['generateTradeSeries']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getAvailableBotList: UnwrapRef<typeof import('./composables/loginInfo')['getAvailableBotList']>
-    readonly getAvailableBots: UnwrapRef<typeof import('./composables/loginInfo')['getAvailableBots']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>

@@ -19,7 +19,7 @@ const allLoginInfos = useStorage<AuthStorageMulti>(AUTH_LOGIN_INFO, {});
 /**
  * Get available bots with their descriptors
  */
-export function getAvailableBots(): BotDescriptors {
+export const availableBots = computed<BotDescriptors>(() => {
   const allInfo = allLoginInfos.value;
   const response: BotDescriptors = {};
   Object.keys(allInfo)
@@ -34,14 +34,7 @@ export function getAvailableBots(): BotDescriptors {
     });
 
   return response;
-}
-
-/**
- * Get list of available bot IDs
- */
-export function getAvailableBotList(): string[] {
-  return Object.keys(allLoginInfos.value);
-}
+});
 
 export function useLoginInfo(botId: string) {
   console.log('botId', botId);
@@ -50,14 +43,6 @@ export function useLoginInfo(botId: string) {
     get: () => allLoginInfos.value[botId],
     set: (val) => (allLoginInfos.value[botId] = val),
   });
-
-  /**
-   * Store login info for current botId in the object of all bots
-   */
-  function storeLoginInfo(loginInfo: AuthStorage): void {
-    // allLoginInfos.value[botId] = loginInfo;
-    currentInfo.value = loginInfo;
-  }
 
   /**
    * Get login info for current bot
@@ -124,8 +109,8 @@ export function useLoginInfo(botId: string) {
   }
 
   async function login(auth: AuthPayload) {
-    const obj = await loginCall(auth);
-    storeLoginInfo(obj);
+    const loginInfo = await loginCall(auth);
+    currentInfo.value = loginInfo;
   }
 
   function refreshToken(): Promise<string> {

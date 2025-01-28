@@ -388,7 +388,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
 
 export function initBots() {
   const botStore = useBotStore();
-  Object.entries(getAvailableBots()).forEach(([, v]) => {
+  Object.entries(availableBots.value).forEach(([, v]) => {
     botStore.addBot(v);
   });
   botStore.selectFirstBot();
