@@ -1,7 +1,6 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AxiosHeaders } from 'axios';
 import axios from 'axios';
-import type { useUserService } from '../shared/userService';
 
 type UserServiceType = ReturnType<typeof useUserService>;
 

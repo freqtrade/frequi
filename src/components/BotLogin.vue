@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useUserService } from '@/shared/userService';
 import type { AuthPayload, AuthStorageWithBotId } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';

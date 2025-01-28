@@ -1,4 +1,3 @@
-import { useUserService } from '@/shared/userService';
 import type {
   BotState,
   Trade,

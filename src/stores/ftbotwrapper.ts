@@ -1,4 +1,3 @@
-import { getAvailableBots } from '@/shared/userService';
 import type {
   BalanceInterface,
   BotDescriptor,
