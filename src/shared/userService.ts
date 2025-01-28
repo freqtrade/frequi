@@ -37,15 +37,6 @@ export class UserService {
     localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(allInfo));
   }
 
-  /**
-   * Logout - removing info for this particular bot.
-   */
-  private removeLoginInfo(): void {
-    const info = UserService.getAllLoginInfos();
-    delete info[this.botId];
-    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
-  }
-
   private setAccessToken(token: string): void {
     const loginInfo = this.getLoginInfo();
     loginInfo.accessToken = token;
@@ -127,10 +118,6 @@ export class UserService {
     return this.getLoginInfo().accessToken;
   }
 
-  private getRefreshToken() {
-    return this.getLoginInfo().refreshToken;
-  }
-
   private getAPIUrl(): string {
     return this.getLoginInfo().apiUrl;
   }
@@ -138,7 +125,10 @@ export class UserService {
   public logout(): void {
     console.log('Logging out');
 
-    this.removeLoginInfo();
+    // Logout - removing info for this particular bot.
+    const info = UserService.getAllLoginInfos();
+    delete info[this.botId];
+    localStorage.setItem(AUTH_LOGIN_INFO, JSON.stringify(info));
   }
 
   private async loginCall(auth: AuthPayload): Promise<AuthStorage> {
@@ -171,7 +161,7 @@ export class UserService {
 
   public refreshToken(): Promise<string> {
     console.log('Refreshing token...');
-    const token = this.getRefreshToken();
+    const token = this.getLoginInfo().refreshToken;
     return new Promise((resolve, reject) => {
       axios
         .post<Record<string, never>, AxiosResponse<AuthResponse>>(
