@@ -44,6 +44,35 @@ export function useLoginInfo(botId: string) {
     set: (val) => (allLoginInfos.value[botId] = val),
   });
 
+  const autoRefresh = computed({
+    get: () => currentInfo.value.autoRefresh,
+    set: (val) => (currentInfo.value.autoRefresh = val),
+  });
+  const accessToken = computed(() => currentInfo.value.accessToken);
+  const apiUrl = computed(() => currentInfo.value.apiUrl);
+
+  const baseUrl = computed<string>(() => {
+    const baseURL = apiUrl.value;
+    if (baseURL === null) {
+      return APIBASE;
+    }
+    if (!baseURL.endsWith(APIBASE)) {
+      return `${baseURL}${APIBASE}`;
+    }
+    return `${baseURL}${APIBASE}`;
+  });
+
+  const baseWsUrl = computed<string>(() => {
+    const baseURL = baseUrl.value;
+    if (baseURL.startsWith('http://')) {
+      return baseURL.replace('http://', 'ws://');
+    }
+    if (baseURL.startsWith('https://')) {
+      return baseURL.replace('https://', 'wss://');
+    }
+    return '';
+  });
+
   /**
    * Get login info for current bot
    */
@@ -73,13 +102,6 @@ export function useLoginInfo(botId: string) {
     currentInfo.value.refreshToken = '';
     currentInfo.value.accessToken = '';
   }
-
-  const autoRefresh = computed({
-    get: () => currentInfo.value.autoRefresh,
-    set: (val) => (currentInfo.value.autoRefresh = val),
-  });
-  const accessToken = computed(() => currentInfo.value.accessToken);
-  const apiUrl = computed(() => currentInfo.value.apiUrl);
 
   function logout(): void {
     console.log('Logging out');
@@ -143,28 +165,6 @@ export function useLoginInfo(botId: string) {
         });
     });
   }
-
-  const baseUrl = computed<string>(() => {
-    const baseURL = apiUrl.value;
-    if (baseURL === null) {
-      return APIBASE;
-    }
-    if (!baseURL.endsWith(APIBASE)) {
-      return `${baseURL}${APIBASE}`;
-    }
-    return `${baseURL}${APIBASE}`;
-  });
-
-  const baseWsUrl = computed<string>(() => {
-    const baseURL = baseUrl.value;
-    if (baseURL.startsWith('http://')) {
-      return baseURL.replace('http://', 'ws://');
-    }
-    if (baseURL.startsWith('https://')) {
-      return baseURL.replace('https://', 'wss://');
-    }
-    return '';
-  });
 
   return {
     updateBot,
