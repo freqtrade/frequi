@@ -131,10 +131,6 @@ export class UserService {
     return this.getLoginInfo().refreshToken;
   }
 
-  public loggedIn() {
-    return this.getLoginInfo().refreshToken !== '';
-  }
-
   private getAPIUrl(): string {
     return this.getLoginInfo().apiUrl;
   }
