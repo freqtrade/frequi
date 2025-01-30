@@ -209,6 +209,7 @@ declare global {
   const useColorMode: typeof import('@vueuse/core')['useColorMode']
   const useColorStore: typeof import('./stores/colors')['useColorStore']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
+  const useCountdown: typeof import('@vueuse/core')['useCountdown']
   const useCounter: typeof import('@vueuse/core')['useCounter']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVar: typeof import('@vueuse/core')['useCssVar']
