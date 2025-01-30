@@ -1,3 +1,5 @@
-export default function () {
-  return `#${((Math.random() * 0xffffff) << 0).toString(16)}`;
+export function randomColor() {
+  return `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, '0')}`;
 }
