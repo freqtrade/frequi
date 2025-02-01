@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
+import { MarginMode, TradingMode } from '@/types';
+import type { ExchangeSelection, PairHistoryPayload } from '@/types';
 
 const botStore = useBotStore();
 const strategy = ref('');
@@ -40,14 +42,21 @@ onMounted(() => {
 function refreshOHLCV(pair: string, columns: string[]) {
   if (botStore.activeBot.plotPair && finalTimeframe.value) {
     if (botStore.activeBot.isWebserverMode) {
-      botStore.activeBot.getPairHistory({
+      const payload: PairHistoryPayload = {
         pair: pair,
         timeframe: finalTimeframe.value,
         timerange: timerange.value,
         strategy: strategy.value,
         // freqaimodel: freqaiModel.value,
         columns: columns,
-      });
+        live_mode: useLiveData.value,
+      };
+      if (exchange.value.customExchange) {
+        payload.exchange = exchange.value.selectedExchange.exchange;
+        payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
+        payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
+      }
+      botStore.activeBot.getPairHistory(payload);
     } else {
       botStore.activeBot.getPairCandles({
         pair: pair,
@@ -57,6 +66,22 @@ function refreshOHLCV(pair: string, columns: string[]) {
     }
   }
 }
+
+const useLiveData = ref(false);
+
+const exchange = ref<{
+  customExchange: boolean;
+  selectedExchange: ExchangeSelection;
+}>({
+  customExchange: false,
+  selectedExchange: {
+    exchange: botStore.activeBot.botState.exchange,
+    trade_mode: {
+      margin_mode: MarginMode.NONE,
+      trading_mode: TradingMode.SPOT,
+    },
+  },
+});
 </script>
 
 <template>
@@ -74,8 +99,27 @@ function refreshOHLCV(pair: string, columns: string[]) {
         <div class="col-12 col-md-3 text-start">
           <span>Timeframe</span>
           <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+          <BFormCheckbox
+            v-if="botStore.activeBot.botState.api_version >= 2.42"
+            v-model="useLiveData"
+            class="align-self-center"
+            title="Use live data from the exchange. Only use if you don't have data downloaded locally."
+          >
+            Use Live Data
+          </BFormCheckbox>
         </div>
         <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+      </div>
+      <div
+        v-if="botStore.activeBot.botState.api_version >= 2.42"
+        class="mb-2 border rounded-1 p-2 text-start"
+      >
+        <BFormCheckbox v-model="exchange.customExchange" v-b-toggle.custom-exchange class="mb-2">
+          Custom Exchange
+        </BFormCheckbox>
+        <BCollapse id="custom-exchange">
+          <ExchangeSelect v-model="exchange.selectedExchange" />
+        </BCollapse>
       </div>
     </div>
 

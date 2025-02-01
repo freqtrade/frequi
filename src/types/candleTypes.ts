@@ -30,6 +30,7 @@ export interface PairHistoryPayload extends ExchangeSelectPayload {
   strategy: string;
   freqaimodel?: string;
   columns?: string[];
+  live_mode?: boolean;
 }
 
 export interface MarkArea {
