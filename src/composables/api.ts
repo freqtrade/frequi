@@ -13,7 +13,7 @@ export function useApi(userService: UserServiceType, botId: string) {
   // Sent auth headers interceptor
   api.interceptors.request.use(
     (request) => {
-      const token = userService.autoRefresh.value;
+      const token = userService.accessToken.value;
       try {
         if (token) {
           request.headers = request.headers as AxiosHeaders;
