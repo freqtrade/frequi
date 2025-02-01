@@ -64,8 +64,8 @@ onMounted(() => {
         :historic-view="botStore.activeBot.isWebserverMode"
         :timeframe="finalTimeframe"
         :trades="botStore.activeBot.trades"
-        :timerange="botStore.activeBot.isWebserverMode ? timerange : ''"
-        :strategy="botStore.activeBot.isWebserverMode ? strategy : ''"
+        :timerange="botStore.activeBot.isWebserverMode ? timerange : undefined"
+        :strategy="botStore.activeBot.isWebserverMode ? strategy : undefined"
         :plot-config-modal="false"
       >
       </CandleChartContainer>
