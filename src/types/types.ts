@@ -233,3 +233,9 @@ export enum LoadingStatus {
   success,
   error,
 }
+
+export interface ExchangeSelectPayload {
+  exchange?: string;
+  trading_mode?: TradingMode;
+  margin_mode?: MarginMode;
+}

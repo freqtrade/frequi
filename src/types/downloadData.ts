@@ -1,10 +1,7 @@
-import type { MarginMode, TradingMode } from './types';
+import type { ExchangeSelectPayload } from './types';
 
-export interface DownloadDataPayload {
+export interface DownloadDataPayload extends ExchangeSelectPayload {
   pairs: string[];
-  exchange?: string;
-  trading_mode?: TradingMode;
-  margin_mode?: MarginMode;
   timeframes: string[];
   timerange?: string;
   days?: number;
