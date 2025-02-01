@@ -3,7 +3,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 
 import type { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
 
-defineProps<{
+const props = defineProps<{
   timeframe: string;
   strategy: string;
   freqaiModel?: string;
@@ -20,6 +20,17 @@ const navigateChartToTrade = (trade: Trade) => {
     endValue: trade.close_timestamp,
   };
 };
+
+function refreshOHLCV(pair: string, columns: string[]) {
+  botStore.activeBot.getPairHistory({
+    pair: pair,
+    timeframe: props.timeframe,
+    timerange: props.timerange,
+    strategy: props.strategy,
+    freqaimodel: props.freqaiModel,
+    columns: columns,
+  });
+}
 </script>
 
 <template>
@@ -77,6 +88,7 @@ const navigateChartToTrade = (trade: Trade) => {
         class="flex-shrink-1 candle-chart-container w-100 px-0 h-100 align-self-stretch"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
+        @refresh-data="refreshOHLCV"
       >
       </CandleChartContainer>
       <Transition name="fade">

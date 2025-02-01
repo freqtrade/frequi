@@ -16,16 +16,18 @@ const props = defineProps({
   historicView: { required: false, default: false, type: Boolean },
   plotConfigModal: { required: false, default: true, type: Boolean },
   /** Only required if historicView is true */
-  timerange: { required: false, default: '', type: String },
-  /** Only required if historicView is true */
   strategy: { required: false, default: '', type: String },
-  freqaiModel: { required: false, default: undefined, type: String },
   sliderPosition: {
     required: false,
     type: Object as () => ChartSliderPosition,
     default: () => undefined,
   },
 });
+
+const emit = defineEmits<{
+  refreshData: [pair: string, columns: string[]];
+}>();
+
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 const botStore = useBotStore();
@@ -84,25 +86,7 @@ function showConfigurator() {
 }
 
 function refresh() {
-  // console.log('refresh', botStore.activeBot.plotPair, props.timeframe);
-  if (botStore.activeBot.plotPair && props.timeframe) {
-    if (props.historicView) {
-      botStore.activeBot.getPairHistory({
-        pair: botStore.activeBot.plotPair,
-        timeframe: props.timeframe,
-        timerange: props.timerange,
-        strategy: props.strategy,
-        freqaimodel: props.freqaiModel,
-        columns: plotStore.usedColumns,
-      });
-    } else {
-      botStore.activeBot.getPairCandles({
-        pair: botStore.activeBot.plotPair,
-        timeframe: props.timeframe,
-        columns: plotStore.usedColumns,
-      });
-    }
-  }
+  emit('refreshData', botStore.activeBot.plotPair, plotStore.usedColumns);
 }
 
 watch(
@@ -140,7 +124,6 @@ watch(
     );
 
     if (settingsStore.useReducedPairCalls && hasAllColumns) {
-      console.log('triggering refresh');
       refresh();
     }
   },

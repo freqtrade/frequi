@@ -51,6 +51,14 @@ const responsiveGridLayouts = computed(() => {
     sm: layoutStore.getTradingLayoutSm,
   };
 });
+
+function refreshOHLCV(pair: string, columns: string[]) {
+  botStore.activeBot.getPairCandles({
+    pair: pair,
+    timeframe: botStore.activeBot.timeframe,
+    columns: columns,
+  });
+}
 </script>
 
 <template>
@@ -241,6 +249,7 @@ const responsiveGridLayouts = computed(() => {
             :historic-view="!!false"
             :timeframe="botStore.activeBot.timeframe"
             :trades="botStore.activeBot.allTrades"
+            @refresh-data="refreshOHLCV"
           >
           </CandleChartContainer>
         </DraggableContainer>

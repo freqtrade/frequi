@@ -36,6 +36,27 @@ onMounted(() => {
     botStore.activeBot.getWhitelist();
   }
 });
+
+function refreshOHLCV(pair: string, columns: string[]) {
+  if (botStore.activeBot.plotPair && finalTimeframe.value) {
+    if (botStore.activeBot.isWebserverMode) {
+      botStore.activeBot.getPairHistory({
+        pair: pair,
+        timeframe: finalTimeframe.value,
+        timerange: timerange.value,
+        strategy: strategy.value,
+        // freqaimodel: freqaiModel.value,
+        columns: columns,
+      });
+    } else {
+      botStore.activeBot.getPairCandles({
+        pair: pair,
+        timeframe: finalTimeframe.value,
+        columns: columns,
+      });
+    }
+  }
+}
 </script>
 
 <template>
@@ -67,6 +88,7 @@ onMounted(() => {
         :timerange="botStore.activeBot.isWebserverMode ? timerange : undefined"
         :strategy="botStore.activeBot.isWebserverMode ? strategy : undefined"
         :plot-config-modal="false"
+        @refresh-data="refreshOHLCV"
       >
       </CandleChartContainer>
     </div>
