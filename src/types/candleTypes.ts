@@ -1,3 +1,5 @@
+import type { ExchangeSelectPayload } from './types';
+
 export interface AvailablePairPayload {
   timeframe?: string;
   stake_currency?: string;
@@ -21,7 +23,7 @@ export interface PairCandlePayload {
   columns?: string[];
 }
 
-export interface PairHistoryPayload {
+export interface PairHistoryPayload extends ExchangeSelectPayload {
   pair: string;
   timeframe: string;
   timerange: string;
