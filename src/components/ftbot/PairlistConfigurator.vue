@@ -98,13 +98,16 @@ watch(
         </div>
 
         <div class="mb-2 border rounded-1 p-2 text-start">
-          <BFormCheckbox v-model="pairlistStore.customExchange" class="mb-2">
+          <BFormCheckbox
+            v-model="pairlistStore.customExchange"
+            v-b-toggle.custom-exchange
+            class="mb-2"
+          >
             Custom Exchange
           </BFormCheckbox>
-          <ExchangeSelect
-            v-if="pairlistStore.customExchange"
-            v-model="pairlistStore.selectedExchange"
-          />
+          <BCollapse id="custom-exchange">
+            <ExchangeSelect v-model="pairlistStore.selectedExchange" />
+          </BCollapse>
         </div>
       </div>
       <PairlistConfigBlacklist />
