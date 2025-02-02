@@ -6,7 +6,7 @@ import type { ExchangeSelection, Markets, MarketsPayload, PairHistoryPayload } f
 const botStore = useBotStore();
 const strategy = ref('');
 const timerange = ref('');
-const selectedTimeframe = ref('');
+const selectedTimeframe = ref('1h');
 
 const finalTimeframe = computed<string>(() => {
   return botStore.activeBot.isWebserverMode
