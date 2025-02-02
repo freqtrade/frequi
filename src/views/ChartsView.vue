@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { MarginMode, TradingMode } from '@/types';
-import type { ExchangeSelection, PairHistoryPayload } from '@/types';
+import type { ExchangeSelection, Markets, MarketsPayload, PairHistoryPayload } from '@/types';
 
 const botStore = useBotStore();
 const strategy = ref('');
@@ -16,6 +16,9 @@ const finalTimeframe = computed<string>(() => {
 
 const availablePairs = computed<string[]>(() => {
   if (botStore.activeBot.isWebserverMode) {
+    if (useLiveData.value) {
+      return Object.keys(markets.value?.markets || {}).sort() || [];
+    }
     if (finalTimeframe.value && finalTimeframe.value !== '') {
       const tf = finalTimeframe.value;
       return botStore.activeBot.pairlistWithTimeframe
@@ -66,9 +69,6 @@ function refreshOHLCV(pair: string, columns: string[]) {
     }
   }
 }
-
-const useLiveData = ref(false);
-
 const exchange = ref<{
   customExchange: boolean;
   selectedExchange: ExchangeSelection;
@@ -82,6 +82,27 @@ const exchange = ref<{
     },
   },
 });
+
+const useLiveData = ref(true);
+const markets = ref<Markets | null>(null);
+watch(
+  useLiveData,
+  async () => {
+    if (botStore.activeBot.isWebserverMode && useLiveData.value) {
+      const payload: MarketsPayload = {};
+      if (exchange.value.customExchange) {
+        payload.exchange = exchange.value.selectedExchange.exchange;
+        payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
+        payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
+      }
+
+      markets.value = await botStore.activeBot.getMarkets(payload);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <template>
