@@ -51,6 +51,8 @@ import type {
   HyperoptLossObj,
   DownloadDataPayload,
   BacktestMarketChange,
+  Markets,
+  MarketsPayload,
 } from '@/types';
 import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
 import type { AxiosResponse } from 'axios';
@@ -537,6 +539,17 @@ export function createBotSubStore(botId: string, botName: string) {
           // result is of type AvailablePairResult
           this.pairlist = data.pairs;
           this.pairlistWithTimeframe = data.pair_interval;
+          return Promise.resolve(data);
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      },
+      async getMarkets(payload: MarketsPayload) {
+        try {
+          const { data } = await api.get<Markets>(`/markets`, {
+            params: { ...payload },
+          });
           return Promise.resolve(data);
         } catch (error) {
           console.error(error);
