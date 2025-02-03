@@ -112,14 +112,21 @@ watch(
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
+      <div
+        v-if="botStore.activeBot.botState.api_version >= 2.42"
+        class="mb-2 border rounded-1 p-2 text-start col-12 col-md-6"
+      >
+        <BFormCheckbox v-model="exchange.customExchange" v-b-toggle.custom-exchange>
+          Custom Exchange
+        </BFormCheckbox>
+        <BCollapse id="custom-exchange">
+          <ExchangeSelect v-model="exchange.selectedExchange" />
+        </BCollapse>
+      </div>
       <div class="d-flex flex-wrap mx-1 gap-1 gap-md-2">
         <div class="col-12 col-md-3 text-start me-md-1">
           <span>Strategy</span>
-          <StrategySelect v-model="strategy" class="mt-1"></StrategySelect>
-        </div>
-        <div class="col-12 col-md-3 text-start">
-          <span>Timeframe</span>
-          <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+          <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
           <BFormCheckbox
             v-if="botStore.activeBot.botState.api_version >= 2.42"
             v-model="useLiveData"
@@ -129,18 +136,11 @@ watch(
             Use Live Data
           </BFormCheckbox>
         </div>
+        <div class="col-12 col-md-3 text-start">
+          <span>Timeframe</span>
+          <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+        </div>
         <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
-      </div>
-      <div
-        v-if="botStore.activeBot.botState.api_version >= 2.42"
-        class="mb-2 border rounded-1 p-2 text-start"
-      >
-        <BFormCheckbox v-model="exchange.customExchange" v-b-toggle.custom-exchange class="mb-2">
-          Custom Exchange
-        </BFormCheckbox>
-        <BCollapse id="custom-exchange">
-          <ExchangeSelect v-model="exchange.selectedExchange" />
-        </BCollapse>
       </div>
     </div>
 
