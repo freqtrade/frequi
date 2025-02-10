@@ -235,7 +235,12 @@ function updateChart(initial = false) {
           y: colVolume,
         },
       },
-      {
+    ],
+  };
+
+  if (Array.isArray(options.series)) {
+    if (colEntryData >= 0) {
+      options.series.push({
         name: 'Entry',
         type: 'scatter',
         symbol: 'triangle',
@@ -252,15 +257,10 @@ function updateChart(initial = false) {
           x: colDate,
           y: colEntryData,
         },
-      },
-    ],
-  };
+      });
+    }
 
-  if (colExitData >= 0) {
-    // if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-    //   chartOptions.value.legend.data.push('Long exit');
-    // }
-    if (Array.isArray(options.series)) {
+    if (colExitData >= 0) {
       options.series.push({
         name: 'Exit',
         type: 'scatter',
@@ -280,9 +280,7 @@ function updateChart(initial = false) {
         },
       });
     }
-  }
 
-  if (Array.isArray(options.series)) {
     if (colShortEntryData >= 0) {
       options.series.push({
         // Short entry
