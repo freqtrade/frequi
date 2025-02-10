@@ -239,92 +239,64 @@ function updateChart(initial = false) {
   };
 
   if (Array.isArray(options.series)) {
-    if (colEntryData >= 0) {
-      options.series.push({
+    const signalConfigs = [
+      {
+        colData: colEntryData,
         name: 'Entry',
-        type: 'scatter',
         symbol: 'triangle',
         symbolSize: 10,
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: buySignalColor,
-        },
-        tooltip: {
-          valueFormatter: (value) => (value ? `Long entry ${value}` : ''),
-        },
-        encode: {
-          x: colDate,
-          y: colEntryData,
-        },
-      });
-    }
-
-    if (colExitData >= 0) {
-      options.series.push({
+        color: buySignalColor,
+        tooltipPrefix: 'Long entry',
+      },
+      {
+        colData: colExitData,
         name: 'Exit',
-        type: 'scatter',
         symbol: 'diamond',
         symbolSize: 8,
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: sellSignalColor,
-        },
-        tooltip: {
-          valueFormatter: (value) => (value ? `Long exit ${value}` : ''),
-        },
-        encode: {
-          x: colDate,
-          y: colExitData,
-        },
-      });
-    }
-
-    if (colShortEntryData >= 0) {
-      options.series.push({
-        // Short entry
+        color: sellSignalColor,
+        tooltipPrefix: 'Long exit',
+      },
+      {
+        colData: colShortEntryData,
         name: 'Entry',
-        type: 'scatter',
         symbol: 'triangle',
-        symbolRotate: 180,
         symbolSize: 10,
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: shortEntrySignalColor,
-        },
-        tooltip: {
-          valueFormatter: (value) => (value ? `Short entry ${value}` : ''),
-          // Hide tooltip - it's already there for longs.
-          // show: false,
-        },
-        encode: {
-          x: colDate,
-          y: colShortEntryData,
-        },
-      });
-    }
-    if (colShortExitData >= 0) {
-      options.series.push({
-        // Short exit
+        symbolRotate: 180,
+        color: shortEntrySignalColor,
+        tooltipPrefix: 'Short entry',
+      },
+      {
+        colData: colShortExitData,
         name: 'Exit',
-        type: 'scatter',
         symbol: 'pin',
         symbolSize: 8,
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        itemStyle: {
-          color: shortexitSignalColor,
-        },
-        tooltip: {
-          valueFormatter: (value) => (value ? `Short exit ${value}` : ''),
-        },
-        encode: {
-          x: colDate,
-          y: colShortExitData,
-        },
-      });
+        color: shortexitSignalColor,
+        tooltipPrefix: 'Short exit',
+      },
+    ];
+
+    for (const config of signalConfigs) {
+      if (config.colData >= 0) {
+        options.series.push({
+          name: config.name,
+          type: 'scatter',
+          symbol: config.symbol,
+          symbolSize: config.symbolSize,
+          symbolRotate: config.symbolRotate ?? 0,
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          itemStyle: {
+            color: config.color,
+          },
+          tooltip: {
+            valueFormatter: (value) => (value ? `${config.tooltipPrefix} ${value}` : ''),
+          },
+          encode: {
+            x: colDate,
+            y: config.colData,
+          },
+        });
+      }
     }
   }
 
