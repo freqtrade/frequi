@@ -18,6 +18,17 @@ const FtTheme = definePreset(Aura, {
       900: '#0089a1',
       950: '#0089a1',
     },
+    // overrides examples: https://github.com/primefaces/primeuix/blob/main/packages/themes/src/presets/aura/base/index.ts
+    colorscheme: {
+      // dark: {
+      //   content: {
+      //     background: '#123123',
+      //   },
+      //   mask: {
+      //     background: '#00ff00',
+      //   },
+      // },
+    },
   },
 });
 
