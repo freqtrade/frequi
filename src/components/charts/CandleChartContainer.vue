@@ -144,32 +144,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex h-100">
-    <div class="flex-fill w-100 flex-col align-items-stretch flex h-100">
+  <div class="flex h-full">
+    <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
       <div class="flex me-0">
-        <div class="ms-1 ms-md-2 flex flex-wrap flex-md-nowrap align-items-center w-auto">
+        <div class="ms-1 ms-md-2 flex flex-wrap flex-md-nowrap items-center gap-1">
           <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-          <VSelect
+          <Select
             v-model="botStore.activeBot.plotPair"
             class="ms-md-2"
             :options="availablePairs"
-            style="min-width: 7em"
-            size="sm"
+            size="small"
             :clearable="false"
             @input="refresh"
           >
-          </VSelect>
+          </Select>
 
-          <BButton
+          <Button
             title="Refresh chart"
-            class="ms-2"
+            severity="secondary"
             :disabled="!!!botStore.activeBot.plotPair || isLoadingDataset"
-            size="sm"
+            size="small"
             @click="refresh"
           >
             <i-mdi-refresh />
-          </BButton>
-          <BSpinner v-if="isLoadingDataset" small class="ms-2" label="Spinning" />
+          </Button>
+          <ProgressSpinner v-if="isLoadingDataset" small label="Spinning" />
           <div class="flex flex-col">
             <div class="flex flex-row flex-wrap">
               <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
@@ -189,24 +188,29 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="ms-auto flex align-items-center w-auto">
-          <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles">
+        <div class="ms-auto flex align-center">
+          <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
             <small class="text-nowrap">Heikin Ashi</small>
-          </BFormCheckbox>
+          </BaseCheckbox>
 
           <div class="ms-2">
             <PlotConfigSelect></PlotConfigSelect>
           </div>
 
           <div class="ms-2 me-0 me-md-1">
-            <BButton size="sm" title="Plot configurator" @click="showConfigurator">
+            <Button
+              size="small"
+              title="Plot configurator"
+              severity="secondary"
+              @click="showConfigurator"
+            >
               <i-mdi-cog width="12" height="12" />
-            </BButton>
+            </Button>
           </div>
         </div>
       </div>
-      <div class="h-100 w-100 flex">
-        <div class="flex-grow-1">
+      <div class="h-full w-full flex">
+        <div class="grow">
           <CandleChart
             v-if="hasDataset"
             :dataset="dataset"
@@ -221,8 +225,8 @@ onMounted(() => {
             :label-side="settingsStore.chartLabelSide"
           />
           <div v-else class="m-auto">
-            <BSpinner v-if="isLoadingDataset" label="Spinning" />
-            <div v-else style="font-size: 1.5rem">
+            <ProgressSpinner v-if="isLoadingDataset" label="Spinning" />
+            <div v-else class="text-lg">
               {{ noDatasetText }}
             </div>
             <p v-if="botStore.activeBot.historyTakesLonger">

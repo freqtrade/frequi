@@ -106,7 +106,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col h-100">
+  <div class="flex flex-col h-full">
     <!-- <div v-if="isWebserverMode" class="me-auto ms-3"> -->
     <!-- Currently only available in Webserver mode -->
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
@@ -116,7 +116,7 @@ watch(
         <BButton v-b-toggle.ws-settings class="ms-auto align-self-start col-12 col-md-2"
           >Show/hide setup</BButton
         >
-        <BCollapse id="ws-settings" visible class="w-100">
+        <BCollapse id="ws-settings" visible class="w-full">
           <div
             v-if="botStore.activeBot.botState.api_version >= 2.42"
             class="mb-2 border rounded-1 p-2 text-start col-12 col-md-6"
@@ -151,7 +151,7 @@ watch(
       </div>
     </div>
 
-    <div class="mx-md-2 mt-2 pb-1 h-100">
+    <div class="mx-md-2 mt-2 pb-1 h-full">
       <CandleChartContainer
         :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"
