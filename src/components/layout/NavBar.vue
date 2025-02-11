@@ -98,27 +98,47 @@ watch(
 
 <template>
   <header>
-    <BNavbar toggleable="md" dark variant="primary">
-      <RouterLink class="navbar-brand" exact to="/">
+    <div class="flex bg-primary2 bg-black">
+      <RouterLink class="flex flex-row items-center" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="navbar-brand-title d-sm-none d-lg-inline">Freqtrade UI</span>
+        <span class="text-slate-200 text-lg sm:hidden lg:inline">Freqtrade UI</span>
       </RouterLink>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
       <!-- <ReloadControl class="me-3" /> -->
       <BNavbarToggle target="nav-collapse"></BNavbarToggle>
 
-      <BCollapse id="nav-collapse" class="text-center" is-nav>
-        <BNavbarNav>
-          <BNavItem v-if="!botStore.canRunBacktest" to="/trade">Trade</BNavItem>
-          <BNavItem v-if="!botStore.canRunBacktest" to="/dashboard">Dashboard</BNavItem>
-          <BNavItem to="/graph">Chart</BNavItem>
-          <BNavItem to="/logs">Logs</BNavItem>
-          <BNavItem v-if="botStore.canRunBacktest" to="/backtest">Backtest</BNavItem>
-          <BNavItem
+      <div id="nav-collapse" class="flex justify-between w-full text-center items-center" is-nav>
+        <div class="flex items-center">
+          <Button
+            v-if="!botStore.canRunBacktest"
+            label="Trade"
+            size="small"
+            variant="link"
+            to="/trade"
+          ></Button>
+          <Button
+            v-if="!botStore.canRunBacktest"
+            label="Dashboard"
+            size="small"
+            variant="link"
+            to="/dashboard"
+          ></Button>
+          <Button label="Chart" variant="link" to="/graph" size="small"></Button>
+          <Button severity="danger" label="Logs" variant="link" to="/logs" size="small"></Button>
+          <Button
+            v-if="botStore.canRunBacktest"
+            label="Backtest"
+            size="small"
+            variant="link"
+            to="/backtest"
+          ></Button>
+          <Button
             v-if="botStore.isWebserverMode && botStore.activeBot.botApiVersion >= 2.41"
+            size="small"
+            variant="link"
             to="/download_data"
-            >Download Data</BNavItem
+            >Download Data</Button
           >
           <BNavItem
             v-if="
@@ -129,10 +149,10 @@ watch(
             >Pairlist Config</BNavItem
           >
           <ThemeSelect />
-        </BNavbarNav>
+        </div>
 
         <!-- Right aligned nav items -->
-        <BNavbarNav class="ms-auto" menu-class="w-100">
+        <div class="flex ms-auto">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div
             v-if="!settingsStore.confirmDialog"
@@ -143,41 +163,43 @@ watch(
             <i-mdi-run-fast />
             <i-mdi-alert />
           </div>
-          <div class="d-flex justify-content-between">
-            <BDropdown
+          <div class="flex justify-between">
+            <Select
               v-if="botStore.botCount > 1"
-              size="sm"
+              size="small"
               class="m-1"
               no-caret
-              variant="info"
+              severity="info"
               toggle-class="d-flex align-items-center "
               menu-class="my-0 py-0"
             >
-              <template #button-content>
+              <template #value>
                 <BotEntry :bot="botStore.selectedBotObj" :no-buttons="true" />
               </template>
-              <BotList :small="true" />
-            </BDropdown>
+              <template #option>
+                <BotList :small="true" />
+              </template>
+            </Select>
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <li
-            class="d-none d-md-flex flex-md-wrap flex-lg-nowrap align-items-center nav-item text-secondary me-2"
+            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-secondary me-2"
           >
-            <BNavText class="small me-2">
+            <span class="small me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
-            </BNavText>
-            <BNavText v-if="botStore.botCount === 1">
+            </span>
+            <span v-if="botStore.botCount === 1">
               {{
                 botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
                   ? 'Online'
                   : 'Offline'
               }}
-            </BNavText>
+            </span>
           </li>
-          <li v-if="botStore.hasBots" class="nav-item">
+          <li v-if="botStore.hasBots" class="md:hidden">
             <!-- Hide dropdown on xs, instead show below  -->
             <BNavItemDropdown id="avatar-drop" right auto-close class="d-none d-md-block">
               <template #button-content>
@@ -226,9 +248,9 @@ watch(
             <!-- should open Modal window! -->
             <LoginModal v-if="route?.path !== '/login'" />
           </li>
-        </BNavbarNav>
-      </BCollapse>
-    </BNavbar>
+        </div>
+      </div>
+    </div>
   </header>
 </template>
 

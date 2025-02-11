@@ -38,7 +38,9 @@ const toggleNight = () => {
 </script>
 
 <template>
-  <BNavItem @click="toggleNight">
-    <i-mdi-brightness-6 />
-  </BNavItem>
+  <Button variant="link" title="Toggle Night Mode" @click="toggleNight">
+    <template #icon>
+      <i-mdi-brightness-6 />
+    </template>
+  </Button>
 </template>

@@ -31,10 +31,10 @@ const autoRefreshLoc = computed({
 </script>
 
 <template>
-  <div v-if="bot" class="d-flex align-items-center justify-content-between w-100">
+  <div v-if="bot" class="flex items-center justify-between w-full">
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
-    <div class="d-flex align-items-center">
+    <div class="flex items-center">
       <BFormCheckbox
         v-model="autoRefreshLoc"
         input-class="ms-auto my-auto"
@@ -57,7 +57,7 @@ const autoRefreshLoc = computed({
         </div>
       </BFormCheckbox>
 
-      <div v-if="!noButtons" class="float-end d-flex flex-align-center">
+      <div v-if="!noButtons" class="float-end flex align-center">
         <BButton
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           class="ms-1"
