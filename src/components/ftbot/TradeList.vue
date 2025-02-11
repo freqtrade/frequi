@@ -327,7 +327,7 @@ watch(
   padding: 0 0.2em;
 }
 .table-sm {
-  font-size: $fontsize-small;
+  // font-size: $fontsize-small;
 }
 .btn-xs {
   padding: 0.1rem 0.25rem;

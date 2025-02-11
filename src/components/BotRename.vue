@@ -35,13 +35,13 @@ const save = () => {
     />
 
     <div class="flex ms-2 no-min-w">
-      <BButton type="submit" size="sm" title="Save" class="no-min-w">
+      <Button type="submit" size="small" title="Save" class="no-min-w">
         <i-mdi-check />
-      </BButton>
+      </Button>
 
-      <BButton class="ms-1 no-min-w" size="sm" title="Cancel" @click="$emit('cancelled')">
+      <Button class="ms-1 no-min-w" size="small" title="Cancel" @click="$emit('cancelled')">
         <i-mdi-close />
-      </BButton>
+      </Button>
     </div>
   </form>
 </template>

@@ -20,9 +20,7 @@ defineProps({
 
 <template>
   <div class="flex">
-    <div
-      class="px-1 flex flex-row flex-fill text-start justify-content-between align-items-center"
-    >
+    <div class="px-1 flex flex-row flex-fill text-start justify-content-between align-items-center">
       <span>
         <span class="me-1 fw-bold">{{ trade.pair }}</span>
         <small class="text-secondary">(#{{ trade.trade_id }})</small>
@@ -40,7 +38,7 @@ defineProps({
   padding: 0 0.2em;
 }
 .table-sm {
-  font-size: $fontsize-small;
+  // font-size: $fontsize-small;
 }
 .btn-xs {
   padding: 0.1rem 0.25rem;

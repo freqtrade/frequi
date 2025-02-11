@@ -58,21 +58,35 @@ const autoRefreshLoc = computed({
       </BFormCheckbox>
 
       <div v-if="!noButtons" class="float-end flex align-center">
-        <BButton
+        <Button
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           class="ms-1"
-          size="sm"
+          size="small"
+          severity="secondary"
           title="Edit bot"
           @click="$emit('edit')"
         >
           <i-mdi-pencil />
-        </BButton>
-        <BButton v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
+        </Button>
+        <Button
+          v-else
+          class="ms-1"
+          size="small"
+          severity="secondary"
+          title="Login again"
+          @click="$emit('editLogin')"
+        >
           <i-mdi-login />
-        </BButton>
-        <BButton class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
+        </Button>
+        <Button
+          class="ms-1"
+          size="small"
+          severity="secondary"
+          title="Delete bot"
+          @click="botRemoveModalVisible = true"
+        >
           <i-mdi-delete />
-        </BButton>
+        </Button>
       </div>
     </div>
     <BModal

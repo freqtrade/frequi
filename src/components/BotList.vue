@@ -54,9 +54,9 @@ const stopEditBot = (botId: string) => {
 
 <template>
   <div v-if="botStore.botCount > 0">
-    <h3 v-if="!small">Available bots</h3>
-    <BListGroup ref="sortContainer">
-      <BListGroupItem
+    <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
+    <div ref="sortContainer">
+      <div
         v-for="bot in botListComp"
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
@@ -64,10 +64,10 @@ const stopEditBot = (botId: string) => {
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
-        class="flex align-items-center"
+        class="flex items-center"
         @click="botStore.selectBot(bot.botId)"
       >
-        <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
+        <i-mdi-reorder-horizontal v-if="!small" class="cursor-pointer me-2 fs-4" />
         <BotRename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"
@@ -82,8 +82,8 @@ const stopEditBot = (botId: string) => {
           @edit="editBot(bot.botId)"
           @edit-login="editBotLogin(bot.botId)"
         />
-      </BListGroupItem>
-    </BListGroup>
+      </div>
+    </div>
     <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
   </div>
 </template>
