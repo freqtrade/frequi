@@ -30,7 +30,7 @@ const resetDynamicLayout = () => {
   <Card class="mx-auto mt-3 p-4 text-sm max-w-4xl">
     <template #title>FreqUI Settings</template>
     <template #content>
-      <div class="flex flex-col gap-4 text-start text-surface-300">
+      <div class="flex flex-col gap-4 text-start dark:text-surface-300">
         <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
 
         <div class="border border-surface-400 rounded p-4 space-y-4">
@@ -48,7 +48,9 @@ const resetDynamicLayout = () => {
             <Button severity="secondary" size="small" @click="resetDynamicLayout"
               >Reset layout</Button
             >
-            <small class="block text-surface-500">Reset dynamic layouts to how they were.</small>
+            <small class="block text-surface-600 dark:text-surface-400"
+              >Reset dynamic layouts to how they were.</small
+            >
           </div>
 
           <Divider />
@@ -63,7 +65,9 @@ const resetDynamicLayout = () => {
               size="small"
               class="w-full"
             />
-            <small class="text-surface-500">Decide if open trades should be visualized</small>
+            <small class="text-surface-600 dark:text-surface-400"
+              >Decide if open trades should be visualized</small
+            >
           </div>
 
           <div class="space-y-1">
@@ -74,7 +78,7 @@ const resetDynamicLayout = () => {
               class="w-full"
               size="small"
             />
-            <small class="text-surface-500"
+            <small class="text-surface-600 dark:text-surface-400"
               >Select timezone (UTC is recommended as exchanges usually work in UTC)</small
             >
           </div>
@@ -112,7 +116,7 @@ const resetDynamicLayout = () => {
                 <label class="ml-2">Right</label>
               </div>
             </div>
-            <small class="text-surface-500"
+            <small class="text-surface-600 dark:text-surface-400"
               >Should the scale be displayed on the right or left?</small
             >
           </div>

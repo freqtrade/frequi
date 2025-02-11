@@ -17,6 +17,9 @@ myApp.use(pinia);
 myApp.use(PrimeVue, {
   theme: {
     preset: FtTheme,
+    options: {
+      darkModeSelector: '.ft-dark-theme',
+    },
   },
 });
 
