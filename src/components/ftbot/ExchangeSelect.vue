@@ -60,7 +60,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-100 flex">
+  <div class="w-full flex">
     <BFormSelect
       id="exchange-select"
       v-model="exchangeModel.exchange"

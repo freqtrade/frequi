@@ -224,7 +224,7 @@ watch(
 </script>
 
 <template>
-  <div class="h-100 overflow-auto w-100">
+  <div class="h-full overflow-auto w-full">
     <BTable
       ref="tradesTable"
       small
@@ -292,7 +292,7 @@ watch(
         <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
       </template>
     </BTable>
-    <div class="w-100 flex justify-content-between">
+    <div class="w-full flex justify-content-between">
       <BPagination
         v-if="!activeTrades"
         v-model="currentPage"

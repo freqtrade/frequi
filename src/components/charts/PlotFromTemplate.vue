@@ -58,11 +58,11 @@ const showIndicatorMapping = ref(false);
       <h5 class="mt-1 text-center">Re-map indicators</h5>
       <div v-for="indicator in Object.keys(indicatorMap)" :key="indicator">
         <div class="flex gap-2 align-items-center">
-          <span class="flex-grow-1 w-100">{{ indicator }}</span>
+          <span class="flex-grow-1 w-full">{{ indicator }}</span>
           <BFormSelect
             :id="`indicator-${indicator}`"
             v-model="indicatorMap[indicator]"
-            class="flex-grow-1 w-100"
+            class="flex-grow-1 w-full"
             :options="columns"
           >
           </BFormSelect>

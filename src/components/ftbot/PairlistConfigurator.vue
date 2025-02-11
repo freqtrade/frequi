@@ -144,13 +144,13 @@ watch(
       <div class="position-relative flex-fill overflow-auto">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
-          class="position-lg-absolute w-100"
+          class="position-lg-absolute w-full"
           :content="pairlistStore.configJSON"
           :is-valid="pairlistStore.pairlistValid"
         />
         <CopyableTextfield
           v-if="selectedView === 'Results'"
-          class="position-lg-absolute w-100"
+          class="position-lg-absolute w-full"
           :content="pairlistStore.whitelist"
         />
       </div>

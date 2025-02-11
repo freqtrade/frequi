@@ -13,7 +13,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="w-100 flex">
+    <div class="w-full flex">
       <BFormSelect
         id="freqaiModel-select"
         v-model="locFreqaiModel"

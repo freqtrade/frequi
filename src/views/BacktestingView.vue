@@ -78,7 +78,7 @@ watch(
         <p v-if="!botStore.activeBot.canRunBacktest">
           Bot must be in webserver mode to enable Backtesting.
         </p>
-        <div class="w-100">
+        <div class="w-full">
           <div
             class="mx-md-5 flex flex-wrap justify-content-md-center justify-content-between mb-4 gap-2"
           >
@@ -147,7 +147,7 @@ watch(
         </div>
       </div>
     </div>
-    <div class="flex flex-md-row h-100">
+    <div class="flex flex-md-row h-full">
       <!-- Left bar -->
       <div
         v-if="btFormMode !== 'visualize'"
@@ -178,8 +178,8 @@ watch(
         </Transition>
       </div>
       <!-- End Left bar -->
-      <div class="flex flex-col flex-fill mw-100 h-100">
-        <div class="d-mflex h-100">
+      <div class="flex flex-col flex-fill mw-full h-full">
+        <div class="d-mflex h-full">
           <div
             v-if="btFormMode === 'historicResults'"
             class="flex-fill flex flex-col bt-config"
@@ -208,7 +208,7 @@ watch(
           />
         </div>
 
-        <div v-if="hasBacktestResult && btFormMode === 'visualize'" class="text-center w-100 mt-2">
+        <div v-if="hasBacktestResult && btFormMode === 'visualize'" class="text-center w-full mt-2">
           <BacktestResultChart
             :timeframe="timeframe"
             :strategy="btStore.strategy"

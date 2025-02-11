@@ -10,13 +10,13 @@ withDefaults(
 </script>
 
 <template>
-  <div class="card h-100 w-100">
+  <div class="card h-full w-full">
     <div class="drag-header card-header">
       <slot name="header">
         {{ header }}
       </slot>
     </div>
-    <div class="card-body h-100 w-100 overflow-auto">
+    <div class="card-body h-full w-full overflow-auto">
       <slot></slot>
     </div>
   </div>

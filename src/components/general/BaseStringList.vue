@@ -16,7 +16,7 @@ withDefaults(
 
 <template>
   <div class="flex flex-row gap-2">
-    <div class="flex gap-1 flex-col w-100">
+    <div class="flex gap-1 flex-col w-full">
       <div v-for="(val, idx) in values" :key="idx" class="flex flex-row gap-1">
         <BFormInput v-model="values[idx]" size="sm" :placeholder="placeholder"></BFormInput>
         <BButton

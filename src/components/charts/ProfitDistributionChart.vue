@@ -119,7 +119,7 @@ const chartOptions = computed((): EChartsOption => {
 </script>
 
 <template>
-  <div class="flex flex-col h-100 position-relative">
+  <div class="flex flex-col h-full position-relative">
     <div class="flex-grow-1">
       <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>

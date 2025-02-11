@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="w-100 flex">
+    <div class="w-full flex">
       <BFormSelect
         id="strategy-select"
         v-model="locStrategy"
@@ -46,7 +46,7 @@ onMounted(() => {
     <textarea
       v-if="showDetails && botStore.activeBot.strategy"
       v-model="strategyCode"
-      class="w-100 h-100"
+      class="w-full h-full"
     ></textarea>
   </div>
 </template>

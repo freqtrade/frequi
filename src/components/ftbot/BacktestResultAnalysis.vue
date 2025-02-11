@@ -30,7 +30,7 @@ const backtestsettingFields: TableField[] = [
 </script>
 
 <template>
-  <div class="px-0 mw-100">
+  <div class="px-0 mw-full">
     <div class="flex justify-content-center">
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>

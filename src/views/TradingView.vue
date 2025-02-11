@@ -63,7 +63,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
 
 <template>
   <GridLayout
-    class="h-100 w-100"
+    class="h-full w-full"
     style="padding: 1px"
     :row-height="50"
     :layout="gridLayoutData"

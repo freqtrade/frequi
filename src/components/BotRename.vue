@@ -28,7 +28,7 @@ const save = () => {
     <BFormInput
       v-model="newName"
       size="sm"
-      class="w-100"
+      class="w-full"
       placeholder="Bot name"
       style="border-style: solid; border-width: 1px"
       autofocus

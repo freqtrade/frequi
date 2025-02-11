@@ -73,7 +73,7 @@ function handleForceEntry(item: Trade) {
         @reload-trade="handleReloadTrade"
         @force-entry="handleForceEntry"
       />
-      <BButton class="mt-1 w-100 text-start" size="sm" @click="popoverOpen = false">
+      <BButton class="mt-1 w-full text-start" size="sm" @click="popoverOpen = false">
         <i-mdi-cancel class="me-1" />Close Actions menu
       </BButton>
     </BPopover>

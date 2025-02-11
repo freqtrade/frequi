@@ -28,7 +28,7 @@ const backtestResultFields = computed<TableField[]>(() => {
 </script>
 
 <template>
-  <div class="px-0 mw-100">
+  <div class="px-0 mw-full">
     <div class="flex justify-content-center">
       <h3>Backtest-result comparison</h3>
     </div>

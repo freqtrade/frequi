@@ -30,7 +30,7 @@ const tradeClick = (trade) => {
 </script>
 
 <template>
-  <div class="h-100 overflow-auto p-1">
+  <div class="h-full overflow-auto p-1">
     <BListGroup id="tradeList">
       <BListGroupItem
         v-for="trade in filteredTrades"
@@ -44,7 +44,7 @@ const tradeClick = (trade) => {
 
     <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
-    <div class="w-100 flex justify-content-between mt-1">
+    <div class="w-full flex justify-content-between mt-1">
       <BPagination
         v-if="!activeTrades"
         v-model="currentPage"

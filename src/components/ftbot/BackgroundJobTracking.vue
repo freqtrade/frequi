@@ -4,7 +4,7 @@ const { runningJobs, clearJobs } = useBackgroundJob();
 
 <template>
   <div class="flex flex-row align-items-end gap-1">
-    <BListGroup class="ms-2 w-100 flex-grow">
+    <BListGroup class="ms-2 w-full flex-grow">
       <BListGroupItem
         v-for="(job, key) in runningJobs"
         :key="key"
@@ -20,21 +20,21 @@ const { runningJobs, clearJobs } = useBackgroundJob();
         </div>
         <BProgress
           v-if="job.taskStatus?.progress"
-          class="w-100 flex-grow"
+          class="w-full flex-grow"
           :value="job.taskStatus?.progress"
           show-progress
           :max="100"
           striped
         />
-        <div v-if="job.taskStatus?.progress_tasks" class="flex flex-col w-100 flex-grow gap-2">
+        <div v-if="job.taskStatus?.progress_tasks" class="flex flex-col w-full flex-grow gap-2">
           <div
             v-for="[tkey, t] in Object.entries(job.taskStatus?.progress_tasks)"
             :key="tkey"
-            class="w-100"
+            class="w-full"
           >
             {{ t.description }}
             <BProgress
-              class="w-100 flex-grow"
+              class="w-full flex-grow"
               :value="t.progress"
               show-progress
               :variant="job.taskStatus?.status === 'success' ? 'success' : 'primary'"

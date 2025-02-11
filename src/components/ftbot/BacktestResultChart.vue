@@ -65,7 +65,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         </BButton>
       </div>
     </div>
-    <div class="text-center flex flex-row h-100 align-items-stretch">
+    <div class="text-center flex flex-row h-full align-items-stretch">
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
@@ -85,7 +85,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :timerange="timerange"
         :strategy="strategy"
         :trades="backtestResult.trades"
-        class="flex-shrink-1 candle-chart-container w-100 px-0 h-100 align-self-stretch"
+        class="flex-shrink-1 candle-chart-container w-full px-0 h-full align-self-stretch"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
         @refresh-data="refreshOHLCV"
@@ -101,9 +101,9 @@ function refreshOHLCV(pair: string, columns: string[]) {
         />
       </Transition>
     </div>
-    <BCard header="Single trades" class="row mt-2 w-100">
+    <BCard header="Single trades" class="row mt-2 w-full">
       <TradeList
-        class="row trade-history mt-2 w-100"
+        class="row trade-history mt-2 w-full"
         :trades="backtestResult.trades"
         :show-filter="true"
       />
