@@ -13,20 +13,16 @@ const autoRefreshLoc = computed({
 </script>
 
 <template>
-  <div class="d-flex align-items-center ms-2">
-    <BFormCheckbox
-      v-model="autoRefreshLoc"
-      input-class="float-end my-auto mt-1"
-      title="AutoRefresh"
-    ></BFormCheckbox>
-    <BButton
+  <div class="flex items-center ms-2">
+    <Checkbox v-model="autoRefreshLoc" binary title="AutoRefresh"></Checkbox>
+    <Button
       class="m-1"
-      variant="secondary"
-      size="sm"
+      severity="secondary"
+      size="small"
       title="Auto Refresh All bots"
       @click="botStore.allRefreshFull"
     >
       <i-mdi-refresh />
-    </BButton>
+    </Button>
   </div>
 </template>
