@@ -197,9 +197,9 @@ watch(
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <li
-            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-secondary me-2"
+            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
           >
-            <span class="small me-2">
+            <span class="text-xs me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
