@@ -101,7 +101,7 @@ watch(
     <div class="flex bg-primary2 bg-black">
       <RouterLink class="flex flex-row items-center" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-lg sm:hidden lg:inline">Freqtrade UI</span>
+        <span class="text-slate-200 text-lg hidden lg:inline">Freqtrade UI</span>
       </RouterLink>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->
@@ -109,45 +109,59 @@ watch(
       <BNavbarToggle target="nav-collapse"></BNavbarToggle>
 
       <div id="nav-collapse" class="flex justify-between w-full text-center items-center" is-nav>
-        <div class="flex items-center">
+        <div class="items-center hidden md:flex">
           <Button
             v-if="!botStore.canRunBacktest"
             label="Trade"
             size="small"
             variant="link"
+            as="router-link"
             to="/trade"
           ></Button>
           <Button
             v-if="!botStore.canRunBacktest"
             label="Dashboard"
+            as="router-link"
             size="small"
             variant="link"
             to="/dashboard"
           ></Button>
-          <Button label="Chart" variant="link" to="/graph" size="small"></Button>
-          <Button severity="danger" label="Logs" variant="link" to="/logs" size="small"></Button>
+          <Button label="Chart" as="router-link" variant="link" to="/graph" size="small"></Button>
+          <Button
+            severity="danger"
+            label="Logs"
+            as="router-link"
+            variant="link"
+            to="/logs"
+            size="small"
+          ></Button>
           <Button
             v-if="botStore.canRunBacktest"
             label="Backtest"
             size="small"
+            as="router-link"
             variant="link"
             to="/backtest"
           ></Button>
           <Button
             v-if="botStore.isWebserverMode && botStore.activeBot.botApiVersion >= 2.41"
             size="small"
+            as="router-link"
             variant="link"
             to="/download_data"
             >Download Data</Button
           >
-          <BNavItem
+          <Button
             v-if="
               (botStore.activeBot?.isWebserverMode ?? false) &&
               botStore.activeBot.botApiVersion >= 2.3
             "
+            size="small"
+            as="router-link"
+            variant="link"
+            label="Pairlist Config"
             to="/pairlist_config"
-            >Pairlist Config</BNavItem
-          >
+          ></Button>
           <ThemeSelect />
         </div>
 
