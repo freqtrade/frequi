@@ -3,7 +3,7 @@ const alertStore = useAlertsStore();
 </script>
 <template>
   <Teleport to="body">
-    <div class="toast-container position-fixed p-3 top-0 mt-5 end-0">
+    <div class="fixed p-3 top-0 mt-5 end-0">
       <BToast
         v-for="(alert, idx) in alertStore.activeMessages"
         :key="idx"

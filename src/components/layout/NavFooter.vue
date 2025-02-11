@@ -5,50 +5,75 @@ const botStore = useBotStore();
 </script>
 
 <template>
-  <footer class="d-md-none">
+  <footer class="md:hidden">
     <!-- Only visible on xs (phone) viewport! -->
     <hr class="my-0" />
-    <div class="d-flex flex-align-center justify-content-between px-2">
-      <RouterLink
+    <div class="flex gap-2 justify-between px-2">
+      <Button
         v-if="!botStore.canRunBacktest"
+        icon-pos="top"
+        variant="link"
+        as="router-link"
         class="nav-link navbar-nav align-items-center"
         to="/open_trades"
+        label="Trades"
       >
-        <i-mdi-folder-open height="24" width="24" />
-        Trades
-      </RouterLink>
-      <RouterLink
+        <template #icon>
+          <i-mdi-folder-open height="24" width="24" />
+        </template>
+      </Button>
+      <Button
         v-if="!botStore.canRunBacktest"
+        icon-pos="top"
+        variant="link"
+        as="router-link"
         class="nav-link navbar-nav align-items-center"
         to="/trade_history"
+        label="History"
       >
-        <i-mdi-folder-lock height="24" width="24" />
-        History
-      </RouterLink>
-      <RouterLink
+        <template #icon>
+          <i-mdi-folder-lock height="24" width="24" />
+        </template>
+      </Button>
+      <Button
         v-if="!botStore.canRunBacktest"
+        icon-pos="top"
+        variant="link"
+        as="router-link"
         class="nav-link navbar-nav align-items-center"
         to="/pairlist"
+        label="Pairlist"
       >
-        <i-mdi-view-list height="24" width="24" />
-        Pairlist
-      </RouterLink>
-      <RouterLink
+        <template #icon>
+          <i-mdi-view-list height="24" width="24" />
+        </template>
+      </Button>
+      <Button
         v-if="!botStore.canRunBacktest"
+        icon-pos="top"
+        variant="link"
+        as="router-link"
         class="nav-link navbar-nav align-items-center"
         to="/balance"
+        label="Balance"
       >
-        <i-mdi-bank height="24" width="24" />
-        Balance
-      </RouterLink>
-      <RouterLink
+        <template #icon>
+          <i-mdi-bank height="24" width="24" />
+        </template>
+      </Button>
+      <Button
         v-if="!botStore.canRunBacktest"
+        icon-pos="top"
+        variant="link"
+        as="router-link"
         class="nav-link navbar-nav align-items-center"
         to="/dashboard"
+        label="Dashboard"
       >
-        <i-mdi-view-dashboard-outline height="24" width="24" />
-        Dashboard
-      </RouterLink>
+        <template #icon>
+          <i-mdi-view-dashboard-outline height="24" width="24" />
+        </template>
+      </Button>
     </div>
   </footer>
 </template>
