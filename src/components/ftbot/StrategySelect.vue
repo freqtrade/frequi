@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="w-100 d-flex">
+    <div class="w-100 flex">
       <BFormSelect
         id="strategy-select"
         v-model="locStrategy"

@@ -2,7 +2,7 @@
 
 <template>
   <div class="home">
-    <div class="d-flex justify-content-center">
+    <div class="flex justify-content-center">
       <BotList />
     </div>
     <hr />

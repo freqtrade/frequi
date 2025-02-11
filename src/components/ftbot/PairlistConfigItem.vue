@@ -22,8 +22,8 @@ function toggleVisible() {
 <template>
   <BCard no-body class="mb-2">
     <template #header>
-      <div class="d-flex text-start align-items-center">
-        <div class="d-flex flex-grow-1 align-items-center">
+      <div class="flex text-start align-items-center">
+        <div class="flex flex-grow-1 align-items-center">
           <i-mdi-reorder-horizontal
             role="button"
             class="handle me-2 fs-4 flex-shrink-0"
@@ -32,7 +32,7 @@ function toggleVisible() {
           />
           <div
             role="button"
-            class="d-flex flex-grow-1 align-items-start flex-column user-select-none"
+            class="flex flex-grow-1 align-items-start flex-col user-select-none"
             @click="toggleVisible"
           >
             <span class="fw-bold">{{ pairlist.name }}</span>

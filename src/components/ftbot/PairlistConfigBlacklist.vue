@@ -12,7 +12,7 @@ const configNames = computed(() =>
   <BCard no-body class="mb-2">
     <template #header>
       <div
-        class="d-flex flex-row align-items-center justify-content-between"
+        class="flex flex-row align-items-center justify-content-between"
         role="button"
         @click="visible = !visible"
       >
@@ -33,7 +33,7 @@ const configNames = computed(() =>
     </template>
     <BCollapse v-model="visible">
       <BCardBody>
-        <div class="d-flex mb-4 align-items-center gap-2">
+        <div class="flex mb-4 align-items-center gap-2">
           <span class="col-auto">Copy from:</span
           ><BFormSelect v-model="copyFromConfig" size="sm" :options="configNames" />
           <BButton title="Copy" size="sm" @click="pairlistStore.duplicateBlacklist(copyFromConfig)"

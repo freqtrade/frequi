@@ -26,7 +26,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="d-flex flex-column">
+  <div class="flex flex-col">
     <BButton
       v-if="botApiVersion <= 1.1"
       class="btn-xs text-start"

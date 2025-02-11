@@ -71,25 +71,25 @@ async function startDownload() {
   <div class="container-md px-1">
     <BackgroundJobTracking class="mb-4" />
     <BCard header="Downloading Data" class="px-0 mx-1">
-      <div class="d-flex mb-3 gap-3 flex-column">
-        <div class="d-flex flex-column gap-3">
-          <div class="d-flex flex-column flex-lg-row gap-3">
+      <div class="flex mb-3 gap-3 flex-col">
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-col flex-lg-row gap-3">
             <!-- Pairs section - keeping template buttons next to input -->
             <div class="flex-fill">
-              <div class="d-flex flex-column gap-2">
-                <div class="d-flex justify-content-between">
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-content-between">
                   <h4 class="text-start">Select Pairs</h4>
                   <h5 class="text-start">Pairs from template</h5>
                 </div>
-                <div class="d-flex gap-2">
+                <div class="flex gap-2">
                   <BaseStringList
                     v-model="pairs"
                     placeholder="Pair"
                     size="md"
                     class="flex-grow-1"
                   />
-                  <div class="d-flex flex-column gap-1">
-                    <div class="d-flex flex-column gap-1">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex flex-col gap-1">
                       <BButton
                         v-for="pt in pairTemplates"
                         :key="pt.idx"
@@ -107,7 +107,7 @@ async function startDownload() {
 
             <!-- Timeframes section -->
             <div class="flex-fill px-3">
-              <div class="d-flex flex-column gap-2">
+              <div class="flex flex-col gap-2">
                 <h4 class="text-start">Select timeframes</h4>
                 <BaseStringList v-model="timeframes" placeholder="Timeframe" size="md" />
               </div>
@@ -116,8 +116,8 @@ async function startDownload() {
 
           <!-- Time selection section -->
           <div class="px-3 border border p-2 rounded-1">
-            <div class="d-flex flex-column gap-2">
-              <div class="d-flex justify-content-between align-items-center">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-content-between align-items-center">
                 <h4 class="text-start mb-0">Time Selection</h4>
                 <BFormCheckbox v-model="timeSelection.useCustomTimerange" class="mb-0" switch>
                   Use custom timerange
@@ -127,7 +127,7 @@ async function startDownload() {
               <div v-if="timeSelection.useCustomTimerange">
                 <TimeRangeSelect v-model="timeSelection.timerange" />
               </div>
-              <div v-else class="d-flex align-items-center gap-2">
+              <div v-else class="flex align-items-center gap-2">
                 <label>Days to download:</label>
                 <BFormInput
                   v-model="timeSelection.days"

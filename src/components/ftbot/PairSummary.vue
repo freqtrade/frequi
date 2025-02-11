@@ -114,7 +114,7 @@ const combinedPairList = computed(() => {
         v-for="comb in combinedPairList"
         :key="comb.pair"
         button
-        class="d-flex justify-content-between align-items-center py-1"
+        class="flex justify-content-between align-items-center py-1"
         :active="comb.pair === botStore.activeBot.selectedPair"
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"
         @click="botStore.activeBot.selectedPair = comb.pair"

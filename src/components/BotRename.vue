@@ -24,7 +24,7 @@ const save = () => {
 </script>
 
 <template>
-  <form class="d-flex" @submit.prevent="save">
+  <form class="flex" @submit.prevent="save">
     <BFormInput
       v-model="newName"
       size="sm"
@@ -34,7 +34,7 @@ const save = () => {
       autofocus
     />
 
-    <div class="d-flex ms-2 no-min-w">
+    <div class="flex ms-2 no-min-w">
       <BButton type="submit" size="sm" title="Save" class="no-min-w">
         <i-mdi-check />
       </BButton>

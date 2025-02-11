@@ -35,7 +35,7 @@ watch(
 </script>
 
 <template>
-  <div class="d-flex flex-row">
+  <div class="flex flex-row">
     <BFormGroup class="flex-grow-1" :label="label" label-for="indicatorSelector">
       <VSelect
         v-model="selAvailableIndicator"

@@ -74,7 +74,7 @@ watchDebounced(
 
 <template>
   <div>
-    <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
+    <div class="flex flex-col flex-xl-row justify-content-between mt-1">
       <BFormGroup class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
         <BFormSelect
           id="plotTypeSelector"

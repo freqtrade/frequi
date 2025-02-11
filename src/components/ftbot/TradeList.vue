@@ -292,7 +292,7 @@ watch(
         <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
       </template>
     </BTable>
-    <div class="w-100 d-flex justify-content-between">
+    <div class="w-100 flex justify-content-between">
       <BPagination
         v-if="!activeTrades"
         v-model="currentPage"

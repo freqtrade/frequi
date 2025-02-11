@@ -87,7 +87,7 @@ onMounted(() => {
         title="Blacklist - Select (followed by a click on '-') to remove pairs"
         >Blacklist</label
       >
-      <div class="float-end d-flex d-flex-columns pe-1">
+      <div class="float-end flex flex-cols pe-1">
         <BButton
           id="blacklist-add-btn"
           class="me-1"

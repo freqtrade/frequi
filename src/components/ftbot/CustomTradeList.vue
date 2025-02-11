@@ -44,7 +44,7 @@ const tradeClick = (trade) => {
 
     <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
-    <div class="w-100 d-flex justify-content-between mt-1">
+    <div class="w-100 flex justify-content-between mt-1">
       <BPagination
         v-if="!activeTrades"
         v-model="currentPage"

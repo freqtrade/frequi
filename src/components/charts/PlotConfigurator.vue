@@ -256,7 +256,7 @@ const fromPlotTemplateVisible = ref(false);
         </BFormSelect>
       </BFormGroup>
     </div>
-    <div class="d-flex flex-row mt-1 gap-1">
+    <div class="flex flex-row mt-1 gap-1">
       <BButton
         variant="secondary"
         title="Remove indicator to plot"
@@ -305,7 +305,7 @@ const fromPlotTemplateVisible = ref(false);
     />
     <hr />
 
-    <div class="d-flex flex-row">
+    <div class="flex flex-row">
       <BButton
         class="ms-1 col"
         variant="secondary"

@@ -135,7 +135,7 @@ onMounted(async () => {
       >
         <DraggableContainer>
           <template #header>
-            <div class="d-flex justify-content-center">
+            <div class="flex justify-content-center">
               Open Trades
               <InfoBox
                 class="ms-2"
@@ -178,7 +178,7 @@ onMounted(async () => {
       >
         <DraggableContainer>
           <template #header>
-            <div class="d-flex justify-content-center">
+            <div class="flex justify-content-center">
               Closed Trades
               <InfoBox
                 class="ms-2"

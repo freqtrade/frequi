@@ -98,7 +98,7 @@ const tableItems = computed<TableItem[]>(() => {
     :fields="tableFields"
   >
     <template #cell(botName)="{ item, value }">
-      <div class="d-flex flex-row justify-content-between align-items-center">
+      <div class="flex flex-row justify-content-between align-items-center">
         <div>
           <BFormCheckbox
             v-if="item.botId && botStore.botCount > 1"

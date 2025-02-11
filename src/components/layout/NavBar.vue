@@ -170,7 +170,7 @@ watch(
               class="m-1"
               no-caret
               severity="info"
-              toggle-class="d-flex align-items-center "
+              toggle-class="flex align-items-center "
               menu-class="my-0 py-0"
             >
               <template #value>
@@ -222,8 +222,8 @@ watch(
             </BNavItemDropdown>
             <div class="d-block d-md-none">
               <!-- Visible only on XS -->
-              <!-- <li class="nav-item text-secondary ms-2 d-sm-none d-flex justify-content-between">
-                <div class="d-flex">
+              <!-- <li class="nav-item text-secondary ms-2 d-sm-none flex justify-content-between">
+                <div class="flex">
                   <b-nav-text class="small me-2">
                     {{
                       (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||

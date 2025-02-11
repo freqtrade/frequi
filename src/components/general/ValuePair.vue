@@ -8,8 +8,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="d-flex">
-    <div class="d-flex justify-content-between me-2" :class="classLabel">
+  <div class="flex">
+    <div class="flex justify-content-between me-2" :class="classLabel">
       <label>{{ description }}</label>
       <InfoBox v-if="help" :hint="help" />
     </div>

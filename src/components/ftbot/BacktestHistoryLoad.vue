@@ -40,7 +40,7 @@ function deleteBacktestResult(result: BacktestHistoryEntry) {
       Load Historic results from disk. You can click on multiple results to load all of them into
       freqUI.
     </p>
-    <div class="d-flex align-items-center">
+    <div class="flex align-items-center">
       <BFormGroup
         v-if="botStore.activeBot.backtestHistoryList.length > 0"
         class="my-2"
@@ -97,7 +97,7 @@ function deleteBacktestResult(result: BacktestHistoryEntry) {
             <small>{{ res.filename }}</small>
           </BTd>
           <BTd>
-            <div class="d-flex align-items-center">
+            <div class="flex align-items-center">
               <InfoBox
                 v-if="botStore.activeBot.botApiVersion >= 2.32"
                 :class="res.notes ? 'opacity-100' : 'opacity-0'"

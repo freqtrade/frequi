@@ -75,9 +75,9 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="d-flex flex-wrap flex-row mb-2 justify-content-end align-items-center">
+    <div class="flex flex-wrap flex-row mb-2 justify-content-end align-items-center">
       <label class="h3 me-auto mb-0">{{ showBotOnly ? 'Bot' : 'Account' }} Balance</label>
-      <div class="d-flex flex-row">
+      <div class="flex flex-row">
         <BButton
           v-if="canUseBotBalance"
           size="sm"

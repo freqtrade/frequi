@@ -57,7 +57,7 @@ const showIndicatorMapping = ref(false);
     <div v-else>
       <h5 class="mt-1 text-center">Re-map indicators</h5>
       <div v-for="indicator in Object.keys(indicatorMap)" :key="indicator">
-        <div class="d-flex gap-2 align-items-center">
+        <div class="flex gap-2 align-items-center">
           <span class="flex-grow-1 w-100">{{ indicator }}</span>
           <BFormSelect
             :id="`indicator-${indicator}`"
@@ -69,7 +69,7 @@ const showIndicatorMapping = ref(false);
         </div>
       </div>
     </div>
-    <div class="mt-2 d-flex gap-1 justify-content-end">
+    <div class="mt-2 flex gap-1 justify-content-end">
       <BButton size="sm" title="Abort" variant="secondary" @click="visible = false">
         <i-mdi-close />
       </BButton>

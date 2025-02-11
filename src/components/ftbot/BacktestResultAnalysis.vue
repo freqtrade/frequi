@@ -31,12 +31,12 @@ const backtestsettingFields: TableField[] = [
 
 <template>
   <div class="px-0 mw-100">
-    <div class="d-flex justify-content-center">
+    <div class="flex justify-content-center">
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
 
-    <div class="d-flex flex-column text-start ms-0 me-2 gap-2">
-      <div class="d-flex flex-column flex-xl-row">
+    <div class="flex flex-col text-start ms-0 me-2 gap-2">
+      <div class="flex flex-col flex-xl-row">
         <div class="px-0 px-xl-0 pe-xl-1 flex-fill">
           <BCard header="Strategy settings">
             <BTable

@@ -42,14 +42,14 @@ watch(
 
 <template>
   <div>
-    <div class="d-flex justify-content-center">
+    <div class="flex justify-content-center">
       <span class="me-2">Sort by:</span>
       <BFormRadioGroup v-model="sortMethod" :options="sortMethodOptions" name="radio-options" />
     </div>
     <BListGroup>
       <BListGroupItem
         button
-        class="d-flex flex-wrap justify-content-center align-items-center"
+        class="flex flex-wrap justify-content-center align-items-center"
         :title="'Trade Navigation'"
         @click="sortDescendingOrder = !sortDescendingOrder"
         >Trade Navigation {{ sortDescendingOrder ? '&#8595;' : '&#8593;' }}
@@ -58,13 +58,13 @@ watch(
         v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
         button
-        class="d-flex flex-column py-1 pe-1 align-items-stretch"
+        class="flex flex-col py-1 pe-1 align-items-stretch"
         :title="`${trade.pair}`"
         :active="trade.open_timestamp === selectedTrade.open_timestamp"
         @click="onTradeSelect(trade)"
       >
-        <div class="d-flex">
-          <div class="d-flex flex-column">
+        <div class="flex">
+          <div class="flex flex-col">
             <div>
               <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
                 trade.is_short ? 'S-' : 'L-'

@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="d-flex flex-column me-2 text-start">
+  <div class="flex flex-col me-2 text-start">
     <div class="fw-bold">
       {{ backtestResult.metadata.strategyName }} - {{ backtestResult.strategy.timeframe }}
     </div>

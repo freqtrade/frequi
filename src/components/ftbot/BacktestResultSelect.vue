@@ -33,7 +33,7 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
 </script>
 
 <template>
-  <div class="container d-flex flex-column align-items-stretch">
+  <div class="container flex flex-col align-items-stretch">
     <h3>Available results:</h3>
     <BListGroup class="ms-2">
       <BListGroupItem
@@ -41,12 +41,12 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
         :key="key"
         button
         :active="key === selectedBacktestResultKey"
-        class="d-flex justify-content-between align-items-center py-1 pe-1"
+        class="flex justify-content-between align-items-center py-1 pe-1"
         @click="setBacktestResult(key)"
       >
         <template v-if="!result.metadata.editing">
           <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
-          <div class="d-flex">
+          <div class="flex">
             <BButton
               v-if="canUseModify"
               class="flex-nowrap"

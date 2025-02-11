@@ -65,7 +65,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="d-flex justify-content-center">
+    <div class="flex justify-content-center">
       <div>
         <label for="dateFrom">Start Date</label>
         <Datepicker

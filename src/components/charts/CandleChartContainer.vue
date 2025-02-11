@@ -144,10 +144,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="d-flex h-100">
-    <div class="flex-fill w-100 flex-column align-items-stretch d-flex h-100">
-      <div class="d-flex me-0">
-        <div class="ms-1 ms-md-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
+  <div class="flex h-100">
+    <div class="flex-fill w-100 flex-col align-items-stretch flex h-100">
+      <div class="flex me-0">
+        <div class="ms-1 ms-md-2 flex flex-wrap flex-md-nowrap align-items-center w-auto">
           <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <VSelect
             v-model="botStore.activeBot.plotPair"
@@ -170,8 +170,8 @@ onMounted(() => {
             <i-mdi-refresh />
           </BButton>
           <BSpinner v-if="isLoadingDataset" small class="ms-2" label="Spinning" />
-          <div class="d-flex flex-column">
-            <div class="d-flex flex-row flex-wrap">
+          <div class="flex flex-col">
+            <div class="flex flex-row flex-wrap">
               <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
                 >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
               >
@@ -179,7 +179,7 @@ onMounted(() => {
                 >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
               >
             </div>
-            <div class="d-flex flex-row flex-wrap">
+            <div class="flex flex-row flex-wrap">
               <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
                 >Short entries: {{ dataset.enter_short_signals }}</small
               >
@@ -189,7 +189,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="ms-auto d-flex align-items-center w-auto">
+        <div class="ms-auto flex align-items-center w-auto">
           <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles">
             <small class="text-nowrap">Heikin Ashi</small>
           </BFormCheckbox>
@@ -205,7 +205,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="h-100 w-100 d-flex">
+      <div class="h-100 w-100 flex">
         <div class="flex-grow-1">
           <CandleChart
             v-if="hasDataset"

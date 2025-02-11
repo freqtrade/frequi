@@ -64,7 +64,7 @@ watch(
 </script>
 
 <template>
-  <div class="d-flex px-3 mb-3 gap-3 flex-column flex-lg-row">
+  <div class="flex px-3 mb-3 gap-3 flex-col flex-lg-row">
     <BListGroup ref="availablePairlistsEl" class="available-pairlists">
       <BListGroupItem
         v-for="pairlist in availablePairlists"
@@ -72,9 +72,9 @@ watch(
         :class="{
           'no-drag': pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
         }"
-        class="pairlist d-flex text-start align-items-center py-2 px-3"
+        class="pairlist flex text-start align-items-center py-2 px-3"
       >
-        <div class="d-flex flex-grow-1 align-items-start flex-column">
+        <div class="flex flex-grow-1 align-items-start flex-col">
           <span class="fw-bold">{{ pairlist.name }}</span>
           <span class="text-small">{{ pairlist.description }}</span>
         </div>
@@ -89,10 +89,10 @@ watch(
         </BButton>
       </BListGroupItem>
     </BListGroup>
-    <div class="d-flex flex-column flex-fill">
+    <div class="flex flex-col flex-fill">
       <PairlistConfigActions />
       <div class="border rounded-1 p-2 mb-2">
-        <div class="d-flex align-items-center gap-2 my-2">
+        <div class="flex align-items-center gap-2 my-2">
           <span class="col-auto">Stake currency: </span>
           <BFormInput v-model="pairlistStore.stakeCurrency" size="sm" />
         </div>
@@ -122,7 +122,7 @@ watch(
       </BAlert>
       <div
         ref="pairlistConfigsEl"
-        class="d-flex flex-column flex-grow-1 position-relative border rounded-1 p-1"
+        class="flex flex-col flex-grow-1 position-relative border rounded-1 p-1"
         :class="{ empty: configEmpty }"
       >
         <PairlistConfigItem
@@ -134,7 +134,7 @@ watch(
         />
       </div>
     </div>
-    <div class="d-flex flex-column col-12 col-lg-3">
+    <div class="flex flex-col col-12 col-lg-3">
       <BFormRadioGroup v-model="selectedView" class="mb-2" size="sm" buttons>
         <BFormRadio button value="Config"> Config</BFormRadio>
         <BFormRadio button value="Results" :disabled="pairlistStore.whitelist.length === 0">

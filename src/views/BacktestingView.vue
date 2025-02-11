@@ -71,16 +71,16 @@ watch(
 </script>
 
 <template>
-  <div class="d-flex flex-column pt-1 me-1" style="height: calc(100vh - 60px)">
+  <div class="flex flex-col pt-1 me-1" style="height: calc(100vh - 60px)">
     <div>
-      <div class="d-flex flex-row">
+      <div class="flex flex-row">
         <h2 class="ms-5">Backtesting</h2>
         <p v-if="!botStore.activeBot.canRunBacktest">
           Bot must be in webserver mode to enable Backtesting.
         </p>
         <div class="w-100">
           <div
-            class="mx-md-5 d-flex flex-wrap justify-content-md-center justify-content-between mb-4 gap-2"
+            class="mx-md-5 flex flex-wrap justify-content-md-center justify-content-between mb-4 gap-2"
           >
             <BFormRadio
               v-if="botStore.activeBot.botApiVersion >= 2.15"
@@ -147,12 +147,12 @@ watch(
         </div>
       </div>
     </div>
-    <div class="d-flex flex-md-row h-100">
+    <div class="flex flex-md-row h-100">
       <!-- Left bar -->
       <div
         v-if="btFormMode !== 'visualize'"
         :class="`${showLeftBar ? 'col-md-3' : ''}`"
-        class="sticky-top sticky-offset me-3 d-flex flex-column absolute"
+        class="sticky-top sticky-offset me-3 flex flex-col absolute"
         style="max-height: calc(100vh - 60px)"
       >
         <BButton
@@ -178,15 +178,15 @@ watch(
         </Transition>
       </div>
       <!-- End Left bar -->
-      <div class="d-flex flex-column flex-fill mw-100 h-100">
-        <div class="d-md-flex h-100">
+      <div class="flex flex-col flex-fill mw-100 h-100">
+        <div class="d-mflex h-100">
           <div
             v-if="btFormMode === 'historicResults'"
-            class="flex-fill d-flex flex-column bt-config"
+            class="flex-fill flex flex-col bt-config"
           >
             <BacktestHistoryLoad />
           </div>
-          <div v-if="btFormMode === 'run'" class="flex-fill d-flex flex-column bt-config">
+          <div v-if="btFormMode === 'run'" class="flex-fill flex flex-col bt-config">
             <BacktestRun />
           </div>
           <BacktestResultAnalysis

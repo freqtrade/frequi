@@ -119,8 +119,8 @@ function clickBacktest() {
         label-align-sm="right"
         label-for="stake-amount"
       >
-        <div class="d-flex align-items-center">
-          <div style="flex-basis: 100%" class="d-flex">
+        <div class="flex align-items-center">
+          <div style="flex-basis: 100%" class="flex">
             <BFormCheckbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
               >Unlimited stake</BFormCheckbox
             >
@@ -165,7 +165,7 @@ function clickBacktest() {
           class="align-items-center"
         >
           <template #label>
-            <div class="d-flex justify-content-center">
+            <div class="flex justify-content-center">
               <span class="me-2">Enable FreqAI:</span>
               <InfoBox
                 hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
@@ -212,7 +212,7 @@ function clickBacktest() {
   </BCard>
 
   <h3 class="mt-3">Backtesting summary</h3>
-  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center">
+  <div class="flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center">
     <BButton
       id="start-backtest"
       variant="primary"

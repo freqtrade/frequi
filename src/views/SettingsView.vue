@@ -29,9 +29,9 @@ const resetDynamicLayout = () => {
 <template>
   <div class="container mt-3">
     <BCard header="FreqUI Settings">
-      <div class="text-start d-flex flex-column gap-2">
+      <div class="text-start flex flex-col gap-2">
         <p>UI Version: {{ settingsStore.uiVersion }}</p>
-        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
+        <div class="flex flex-col border rounded p-2 mb-2 gap-2">
           <h4>UI settings</h4>
           <BFormGroup
             description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
@@ -73,7 +73,7 @@ const resetDynamicLayout = () => {
           </BFormGroup>
         </div>
 
-        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
+        <div class="flex flex-col border rounded p-2 mb-2 gap-2">
           <h4>Chart settings</h4>
           <BFormGroup
             description="Chart scale Side (Should the scale be displayed on the right or left?)"
@@ -112,7 +112,7 @@ const resetDynamicLayout = () => {
                 :key="option.value"
                 :value="option.value"
               >
-                <div class="d-flex">
+                <div class="flex">
                   <span class="me-2">{{ option.text }}</span>
                   <i-mdi-arrow-up-thin
                     :color="
@@ -135,7 +135,7 @@ const resetDynamicLayout = () => {
             </BFormRadioGroup>
           </BFormGroup>
         </div>
-        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
+        <div class="flex flex-col border rounded p-2 mb-2 gap-2">
           <BFormGroup description="Notifications">
             <h4>Notification Settings</h4>
             <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"

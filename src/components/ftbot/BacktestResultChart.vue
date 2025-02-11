@@ -35,7 +35,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
 
 <template>
   <div>
-    <div class="d-flex flex-row mb-1 align-items-center">
+    <div class="flex flex-row mb-1 align-items-center">
       <div class="me-2">
         <BButton
           aria-label="Close"
@@ -65,7 +65,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         </BButton>
       </div>
     </div>
-    <div class="text-center d-flex flex-row h-100 align-items-stretch">
+    <div class="text-center flex flex-row h-100 align-items-stretch">
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"

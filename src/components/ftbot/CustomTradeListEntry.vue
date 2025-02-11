@@ -19,9 +19,9 @@ defineProps({
 </script>
 
 <template>
-  <div class="d-flex">
+  <div class="flex">
     <div
-      class="px-1 d-flex flex-row flex-fill text-start justify-content-between align-items-center"
+      class="px-1 flex flex-row flex-fill text-start justify-content-between align-items-center"
     >
       <span>
         <span class="me-1 fw-bold">{{ trade.pair }}</span>

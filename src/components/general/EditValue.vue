@@ -82,14 +82,14 @@ function saveNewName() {
 </script>
 
 <template>
-  <form class="d-flex flex-row" @submit.prevent="saveNewName">
+  <form class="flex flex-row" @submit.prevent="saveNewName">
     <div class="flex-grow-1">
       <slot v-if="mode === EditState.None"> </slot>
       <BFormInput v-else v-model="localName" size="sm"> </BFormInput>
     </div>
     <div
-      class="flex-grow-2 mt-auto d-flex gap-1 ms-1"
-      :class="alignVertical ? 'flex-column' : 'flex-row'"
+      class="flex-grow-2 mt-auto flex gap-1 ms-1"
+      :class="alignVertical ? 'flex-col' : 'flex-row'"
     >
       <template v-if="allowEdit && mode === EditState.None">
         <BButton

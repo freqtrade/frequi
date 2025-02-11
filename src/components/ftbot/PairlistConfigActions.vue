@@ -4,7 +4,7 @@ import EditValue from '../general/EditValue.vue';
 const pairlistStore = usePairlistConfigStore();
 </script>
 <template>
-  <div class="d-flex flex-column flex-sm-row mb-2 gap-2">
+  <div class="flex flex-col flex-sm-row mb-2 gap-2">
     <BButton
       title="Save configuration"
       size="sm"
@@ -19,7 +19,7 @@ const pairlistStore = usePairlistConfigStore();
       :allow-add="true"
       :allow-duplicate="true"
       :allow-edit="true"
-      class="d-flex flex-grow-1"
+      class="flex flex-grow-1"
       @delete="pairlistStore.deleteConfig"
       @duplicate="(oldName: string, newName: string) => pairlistStore.duplicateConfig(newName)"
       @new="(name: string) => pairlistStore.newConfig(name)"

@@ -33,7 +33,7 @@ const botStore = useBotStore();
     />
     <div
       v-if="botStore.activeBot.detailTradeId && botStore.activeBot.tradeDetail"
-      class="d-flex flex-column"
+      class="flex flex-col"
     >
       <BButton
         size="sm"
