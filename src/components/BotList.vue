@@ -64,9 +64,10 @@ const stopEditBot = (botId: string) => {
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
-        class="flex items-center border border-surface-500 p-2"
+        class="flex items-center border p-2"
         :class="{
-          'border-primary': bot.botId === botStore.selectedBot,
+          'dark:border-surface-500': bot.botId !== botStore.selectedBot,
+          'bg-primary dark:bg-transparent dark:border-primary': bot.botId === botStore.selectedBot,
           'rounded-t-md': idx === 0,
           'rounded-b-md': idx === botListComp.length - 1,
         }"
