@@ -136,8 +136,8 @@ importers:
         specifier: ^15.14.0
         version: 15.14.0
       happy-dom:
-        specifier: ^16.8.1
-        version: 16.8.1
+        specifier: ^17.1.0
+        version: 17.1.0
       mutationobserver-shim:
         specifier: ^0.3.7
         version: 0.3.7
@@ -170,7 +170,7 @@ importers:
         version: 6.0.11(@types/node@22.13.1)(jiti@2.4.2)(sass@1.83.4)
       vitest:
         specifier: ^3.0.5
-        version: 3.0.5(@types/node@22.13.1)(happy-dom@16.8.1)(jiti@2.4.2)(sass@1.83.4)
+        version: 3.0.5(@types/node@22.13.1)(happy-dom@17.1.0)(jiti@2.4.2)(sass@1.83.4)
       vue-tsc:
         specifier: ^2.2.0
         version: 2.2.0(typescript@5.7.3)
@@ -1581,8 +1581,8 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  happy-dom@16.8.1:
-    resolution: {integrity: sha512-n0QrmT9lD81rbpKsyhnlz3DgnMZlaOkJPpgi746doA+HvaMC79bdWkwjrNnGJRvDrWTI8iOcJiVTJ5CdT/AZRw==}
+  happy-dom@17.1.0:
+    resolution: {integrity: sha512-9tUhXyePCjzUMycaHS/IzrIpF69xiq/laAT7golk4MtZ6t8ft5+Rv7U3lfrs2b4NMH0JTL3EhZzjfahrPmOnaQ==}
     engines: {node: '>=18.0.0'}
 
   has-flag@4.0.0:
@@ -3943,7 +3943,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@16.8.1:
+  happy-dom@17.1.0:
     dependencies:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
@@ -4622,7 +4622,7 @@ snapshots:
       jiti: 2.4.2
       sass: 1.83.4
 
-  vitest@3.0.5(@types/node@22.13.1)(happy-dom@16.8.1)(jiti@2.4.2)(sass@1.83.4):
+  vitest@3.0.5(@types/node@22.13.1)(happy-dom@17.1.0)(jiti@2.4.2)(sass@1.83.4):
     dependencies:
       '@vitest/expect': 3.0.5
       '@vitest/mocker': 3.0.5(vite@6.0.11(@types/node@22.13.1)(jiti@2.4.2)(sass@1.83.4))
@@ -4646,7 +4646,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.13.1
-      happy-dom: 16.8.1
+      happy-dom: 17.1.0
     transitivePeerDependencies:
       - jiti
       - less
