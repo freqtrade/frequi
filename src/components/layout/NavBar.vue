@@ -98,10 +98,10 @@ watch(
 
 <template>
   <header>
-    <div class="flex bg-primary2 bg-black">
-      <RouterLink class="flex flex-row items-center" exact to="/">
+    <div class="flex bg-primary2 bg-black border-b border-primary">
+      <RouterLink class="flex flex-row items-center pe-2 gap-2" exact to="/">
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-lg hidden lg:inline">Freqtrade UI</span>
+        <span class="text-slate-200 text-lg hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
 
       <!-- TODO: For XS breakpoint, this should be here...  -->

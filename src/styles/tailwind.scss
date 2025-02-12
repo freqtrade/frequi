@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body.ft-theme-transition,
+body.ft-theme-transition *,
+body.ft-theme-transition *:before,
+body.ft-theme-transition *:after {
+    transition:
+        background 750ms ease-in-out,
+        border-color 750ms ease-in-out,
+        background-color 750ms ease-in-out,
+    ;
+    transition-delay: 0 !important;
+}
+
+
+html {
+    // Set the default font size to 14px
+    font-size: 14px;
+}

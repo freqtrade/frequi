@@ -36,12 +36,7 @@ const autoRefreshLoc = computed({
 
     <div class="flex items-center gap-2">
       <div class="flex items-center">
-        <InputSwitch
-          v-model="autoRefreshLoc"
-          size="small"
-          class="mr-2"
-          @update:model-value="changeEvent"
-        />
+        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" @update:model-value="changeEvent" />
         <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
