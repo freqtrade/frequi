@@ -35,15 +35,15 @@ function scrollToBottom() {
   <div class="flex h-full p-0 align-items-start">
     <div
       ref="scrollContainer"
-      class="border border-surface-500 p-1 text-start text-xs pb-5 w-full h-full overflow-auto"
+      class="border border-surface-500 p-1 text-start text-sm pb-5 w-full h-full overflow-auto"
     >
       <pre
         v-for="(log, index) in botStore.activeBot.lastLogs"
         :key="index"
         class="m-0 overflow-visible"
         style="line-height: unset"
-      ><span class=" text-surface-400">{{ log[0] }} <span :class="getLogColor(log[3])">{{ log[3].padEnd(7, ' ') }}</span> {{ log[2] }} - </span
-      ><span class="text-surface-400">{{ log[4] }}</span
+      ><span class="text-surface-600 dark:text-surface-400">{{ log[0] }} <span :class="getLogColor(log[3])">{{ log[3].padEnd(7, ' ') }}</span> {{ log[2] }} - </span
+      ><span class="dark:text-surface-200">{{ log[4] }}</span
         ></pre>
     </div>
     <div class="flex flex-col gap-1 ms-1">
