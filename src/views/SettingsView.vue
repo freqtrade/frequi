@@ -27,7 +27,7 @@ const resetDynamicLayout = () => {
 </script>
 
 <template>
-  <Card class="mx-auto mt-3 p-4 text-sm max-w-4xl">
+  <Card class="mx-auto mt-3 p-4 max-w-4xl">
     <template #title>FreqUI Settings</template>
     <template #content>
       <div class="flex flex-col gap-4 text-start dark:text-surface-300">
