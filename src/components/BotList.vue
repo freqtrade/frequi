@@ -55,19 +55,24 @@ const stopEditBot = (botId: string) => {
 <template>
   <div v-if="botStore.botCount > 0">
     <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
-    <div ref="sortContainer">
+    <div ref="sortContainer" class="flex flex-col">
       <div
-        v-for="bot in botListComp"
+        v-for="(bot, idx) in botListComp"
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
         button
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
-        class="flex items-center"
+        class="flex items-center border border-surface-500 p-2"
+        :class="{
+          'border-primary': bot.botId === botStore.selectedBot,
+          'rounded-t-md': idx === 0,
+          'rounded-b-md': idx === botListComp.length - 1,
+        }"
         @click="botStore.selectBot(bot.botId)"
       >
-        <i-mdi-reorder-horizontal v-if="!small" class="cursor-pointer me-2 fs-4" />
+        <i-mdi-reorder-horizontal v-if="!small" class="handle cursor-pointer me-2 fs-4" />
         <BotRename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BotDescriptor } from '@/types';
+import InputText from 'primevue/inputtext';
 
 const props = defineProps({
   bot: { type: Object as () => BotDescriptor, required: true },
@@ -24,22 +25,21 @@ const save = () => {
 </script>
 
 <template>
-  <form class="flex" @submit.prevent="save">
-    <BFormInput
-      v-model="newName"
-      size="sm"
-      class="w-full"
-      placeholder="Bot name"
-      style="border-style: solid; border-width: 1px"
-      autofocus
-    />
+  <form class="flex w-full gap-2" @submit.prevent="save">
+    <InputText v-model="newName" size="small" class="w-full" placeholder="Bot name" autofocus />
 
-    <div class="flex ms-2 no-min-w">
-      <Button type="submit" size="small" title="Save" class="no-min-w">
+    <div class="flex gap-1">
+      <Button type="submit" size="small" severity="secondary" title="Save" class="w-8 h-8 !p-0">
         <i-mdi-check />
       </Button>
 
-      <Button class="ms-1 no-min-w" size="small" title="Cancel" @click="$emit('cancelled')">
+      <Button
+        size="small"
+        severity="secondary"
+        title="Cancel"
+        class="w-8 h-8 !p-0"
+        @click="$emit('cancelled')"
+      >
         <i-mdi-close />
       </Button>
     </div>

@@ -34,33 +34,31 @@ const autoRefreshLoc = computed({
   <div v-if="bot" class="flex items-center justify-between w-full">
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
-    <div class="flex items-center">
-      <BFormCheckbox
-        v-model="autoRefreshLoc"
-        input-class="ms-auto my-auto"
-        title="AutoRefresh"
-        variant="secondary"
-        switch
-        @update:model-value="changeEvent"
-      >
+    <div class="flex items-center gap-2">
+      <div class="flex items-center">
+        <InputSwitch
+          v-model="autoRefreshLoc"
+          size="small"
+          class="mr-2"
+          @update:model-value="changeEvent"
+        />
         <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
         >
           <i-mdi-circle
-            class="ms-2 me-1 align-middle"
-            :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
+            class="mx-1"
+            :class="botStore.botStores[bot.botId].isBotOnline ? 'text-green-500' : 'text-red-500'"
           />
         </div>
         <div v-else title="Login info expired, please login again.">
-          <i-mdi-cancel class="offline" />
+          <i-mdi-cancel class="text-red-500" />
         </div>
-      </BFormCheckbox>
+      </div>
 
-      <div v-if="!noButtons" class="float-end flex align-center">
+      <div v-if="!noButtons" class="flex items-center gap-1">
         <Button
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
-          class="ms-1"
           size="small"
           severity="secondary"
           title="Edit bot"
@@ -70,7 +68,6 @@ const autoRefreshLoc = computed({
         </Button>
         <Button
           v-else
-          class="ms-1"
           size="small"
           severity="secondary"
           title="Login again"
@@ -79,7 +76,6 @@ const autoRefreshLoc = computed({
           <i-mdi-login />
         </Button>
         <Button
-          class="ms-1"
           size="small"
           severity="secondary"
           title="Delete bot"
@@ -89,10 +85,12 @@ const autoRefreshLoc = computed({
         </Button>
       </div>
     </div>
+
     <BModal
       v-if="!noButtons"
       id="removeBotModal"
       v-model="botRemoveModalVisible"
+      class="hidden"
       title="Logout confirmation"
       @ok="confirmRemoveBot"
     >
@@ -100,17 +98,3 @@ const autoRefreshLoc = computed({
     </BModal>
   </div>
 </template>
-
-<style scoped lang="scss">
-.form-switch {
-  padding-left: 0;
-  display: flex;
-  flex-wrap: nowrap;
-}
-.online {
-  color: #1aa903;
-}
-.offline {
-  color: #e01515;
-}
-</style>
