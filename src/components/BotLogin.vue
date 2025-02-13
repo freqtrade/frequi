@@ -154,89 +154,73 @@ defineExpose({
 <template>
   <div>
     <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
-      <BFormGroup label="Bot Name" label-for="name-input">
-        <BFormInput
+      <div class="mb-4">
+        <label for="name-input" class="block text-sm font-medium">Bot Name</label>
+        <InputText
           id="name-input"
           v-model="auth.botName"
           placeholder="Bot Name"
+          class="mt-1 block w-full"
           @keydown.enter="handleOk"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        :state="urlState"
-        label="API Url"
-        label-for="url-input"
-        invalid-feedback="API Url required"
-      >
-        <BFormInput
+        />
+      </div>
+      <div class="mb-4">
+        <label for="url-input" class="block text-sm font-medium">API Url</label>
+        <InputText
           id="url-input"
           v-model="auth.url"
           required
           trim
-          :state="urlState"
+          :invalid="urlState"
+          class="mt-1 block w-full"
           @keydown.enter="handleOk"
-        ></BFormInput>
-        <BAlert
-          v-if="urlDuplicate"
-          class="mt-2 p-1 alert-wrap"
-          :model-value="true"
-          variant="warning"
-        >
+        />
+        <Message v-if="urlDuplicate" class="mt-2 text-sm" severity="warn">
           This URL is already in use by another bot.
-        </BAlert>
-      </BFormGroup>
-      <BFormGroup
-        :state="nameState"
-        label="Username"
-        label-for="username-input"
-        invalid-feedback="Name and Password are required."
-      >
-        <BFormInput
+        </Message>
+      </div>
+      <div class="mb-4">
+        <label for="username-input" class="block text-sm font-medium">Username</label>
+        <InputText
           id="username-input"
           v-model="auth.username"
           required
           placeholder="Freqtrader"
-          :state="nameState"
+          :invalid="nameState"
+          class="mt-1 block w-full"
           @keydown.enter="handleOk"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        label="Password"
-        label-for="password-input"
-        invalid-feedback="Invalid Password"
-        :state="pwdState"
-      >
-        <BFormInput
+        />
+      </div>
+      <div class="mb-4">
+        <label for="password-input" class="block text-sm font-medium">Password</label>
+        <InputText
           id="password-input"
           v-model="auth.password"
           required
           type="password"
-          :state="pwdState"
+          :invalid="pwdState"
+          class="mt-1 block w-full"
           @keydown.enter="handleOk"
-        ></BFormInput>
-      </BFormGroup>
+        />
+      </div>
       <div>
-        <BAlert v-if="errorMessage" class="alert-wrap" :model-value="true" variant="warning">
+        <Message v-if="errorMessage" class="mt-2 text-sm whitespace-pre-line" severity="warn">
           {{ errorMessage }}
           <br />
-          <span v-if="errorMessageCORS"
-            >Please also check your bot's CORS configuration:
-            <a href="https://www.freqtrade.io/en/latest/rest-api/#cors"
+          <span v-if="errorMessageCORS">
+            Please also check your bot's CORS configuration:
+            <a
+              href="https://www.freqtrade.io/en/latest/rest-api/#cors"
+              class="text-blue-500 underline"
               >Freqtrade CORS documentation</a
-            ></span
-          >
-        </BAlert>
+            >
+          </span>
+        </Message>
       </div>
-      <div v-if="inModal === false" class="float-end">
-        <BButton class="me-2" type="reset" variant="danger">Reset</BButton>
-        <BButton type="submit" variant="primary">Submit</BButton>
+      <div v-if="inModal === false" class="flex justify-end mt-4">
+        <Button label="Reset" class="p-button-danger mr-2" type="reset" />
+        <Button label="Submit" class="p-button-primary" type="submit" />
       </div>
     </form>
   </div>
 </template>
-
-<style scoped lang="scss">
-.alert-wrap {
-  white-space: pre-wrap;
-}
-</style>
