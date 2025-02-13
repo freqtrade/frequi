@@ -31,7 +31,9 @@ defineExpose({
 
 <template>
   <div>
-    <BButton @click="openLoginModal()"><i-mdi-login class="me-1" />{{ loginText }}</BButton>
+    <Button severity="secondary" @click="openLoginModal()"
+      ><i-mdi-login class="me-1" />{{ loginText }}</Button
+    >
     <BModal
       id="modal-prevent-closing"
       v-model="loginViewOpen"
