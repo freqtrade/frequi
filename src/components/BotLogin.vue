@@ -152,75 +152,78 @@ defineExpose({
 </script>
 
 <template>
-  <div>
-    <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
-      <div class="mb-4">
-        <label for="name-input" class="block text-sm font-medium">Bot Name</label>
-        <InputText
-          id="name-input"
-          v-model="auth.botName"
-          placeholder="Bot Name"
-          class="mt-1 block w-full"
-          @keydown.enter="handleOk"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="url-input" class="block text-sm font-medium">API Url</label>
-        <InputText
-          id="url-input"
-          v-model="auth.url"
-          required
-          trim
-          :invalid="urlState"
-          class="mt-1 block w-full"
-          @keydown.enter="handleOk"
-        />
-        <Message v-if="urlDuplicate" class="mt-2 text-sm" severity="warn">
-          This URL is already in use by another bot.
-        </Message>
-      </div>
-      <div class="mb-4">
-        <label for="username-input" class="block text-sm font-medium">Username</label>
-        <InputText
-          id="username-input"
-          v-model="auth.username"
-          required
-          placeholder="Freqtrader"
-          :invalid="nameState"
-          class="mt-1 block w-full"
-          @keydown.enter="handleOk"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="password-input" class="block text-sm font-medium">Password</label>
-        <InputText
-          id="password-input"
-          v-model="auth.password"
-          required
-          type="password"
-          :invalid="pwdState"
-          class="mt-1 block w-full"
-          @keydown.enter="handleOk"
-        />
-      </div>
-      <div>
-        <Message v-if="errorMessage" class="mt-2 text-sm whitespace-pre-line" severity="warn">
-          {{ errorMessage }}
-          <br />
-          <span v-if="errorMessageCORS">
-            Please also check your bot's CORS configuration:
-            <a
-              href="https://www.freqtrade.io/en/latest/rest-api/#cors"
-              class="text-blue-500 underline"
-              >Freqtrade CORS documentation</a
-            >
-          </span>
-        </Message>
-      </div>
-      <div v-if="inModal === false" class="flex justify-end mt-4">
-        <Button label="Reset" class="p-button-danger mr-2" type="reset" />
-        <Button label="Submit" class="p-button-primary" type="submit" />
-      </div>
-    </form>
-  </div>
+  <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
+    <div class="mb-4">
+      <label for="name-input" class="block text-sm font-medium">Bot Name</label>
+      <InputText
+        id="name-input"
+        v-model="auth.botName"
+        placeholder="Bot Name"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="url-input" class="block text-sm font-medium">API Url</label>
+      <InputText
+        id="url-input"
+        v-model="auth.url"
+        required
+        trim
+        :invalid="urlState"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+      <Message v-if="urlDuplicate" class="mt-2 text-sm" severity="warn">
+        This URL is already in use by another bot.
+      </Message>
+    </div>
+    <div class="mb-4">
+      <label for="username-input" class="block text-sm font-medium">Username</label>
+      <InputText
+        id="username-input"
+        v-model="auth.username"
+        required
+        placeholder="Freqtrader"
+        :invalid="nameState"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="password-input" class="block text-sm font-medium">Password</label>
+      <InputText
+        id="password-input"
+        v-model="auth.password"
+        required
+        type="password"
+        :invalid="pwdState"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+    </div>
+    <div>
+      <Message v-if="errorMessage" class="mt-2 text-sm whitespace-pre-line" severity="warn">
+        {{ errorMessage }}
+        <br />
+        <span v-if="errorMessageCORS">
+          Please also check your bot's CORS configuration:
+          <a
+            href="https://www.freqtrade.io/en/latest/rest-api/#cors"
+            class="text-blue-500 underline"
+            >Freqtrade CORS documentation</a
+          >
+        </span>
+      </Message>
+    </div>
+    <div class="flex justify-end gap-2 mt-4">
+      <Button label="Reset" severity="danger" type="reset" />
+      <Button v-if="inModal" label="Cancel" severity="secondary" type="button" />
+      <Button label="Submit" severity="primary" type="submit">
+        <template #icon>
+          <i-mdi-login />
+        </template>
+      </Button>
+    </div>
+  </form>
 </template>

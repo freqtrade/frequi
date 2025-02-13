@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BotLogin from '@/components/BotLogin.vue';
+import type BotLogin from '@/components/BotLogin.vue';
 import type { AuthStorageWithBotId } from '@/types';
 
 defineProps({
@@ -8,19 +8,16 @@ defineProps({
 const loginViewOpen = ref(false);
 const loginForm = ref<typeof BotLogin>();
 const loginInfo = ref<AuthStorageWithBotId | undefined>(undefined);
+
 const handleLoginResult = (result: boolean) => {
   if (result) {
     loginViewOpen.value = false;
   }
 };
-const handleOk = (evt) => {
-  evt.preventDefault();
-  loginForm.value?.handleSubmit();
-};
+
 const openLoginModal = async (botInfo: AuthStorageWithBotId | undefined = undefined) => {
   loginInfo.value = botInfo;
   await nextTick();
-  console.log('botinfo', botInfo);
   loginForm.value?.reset();
   loginViewOpen.value = true;
 };
@@ -34,18 +31,19 @@ defineExpose({
     <Button severity="secondary" @click="openLoginModal()"
       ><i-mdi-login class="me-1" />{{ loginText }}</Button
     >
-    <BModal
+    <Dialog
       id="modal-prevent-closing"
-      v-model="loginViewOpen"
-      title="Login to your bot"
-      @ok="handleOk"
+      v-model:visible="loginViewOpen"
+      header="Login to your bot"
+      :dismissable-mask="true"
     >
       <BotLogin
         ref="loginForm"
+        class="w-[1000px] max-w-[500px]"
         in-modal
         :existing-auth="loginInfo"
         @login-result="handleLoginResult"
       />
-    </BModal>
+    </Dialog>
   </div>
 </template>
