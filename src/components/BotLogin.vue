@@ -218,7 +218,13 @@ defineExpose({
     </div>
     <div class="flex justify-end gap-2 mt-4">
       <Button label="Reset" severity="danger" type="reset" />
-      <Button v-if="inModal" label="Cancel" severity="secondary" type="button" />
+      <Button
+        v-if="inModal"
+        label="Cancel"
+        severity="secondary"
+        type="button"
+        @click="emitLoginResult(true)"
+      />
       <Button label="Submit" severity="primary" type="submit">
         <template #icon>
           <i-mdi-login />

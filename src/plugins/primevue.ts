@@ -1,5 +1,7 @@
 import '@/styles/tailwind.scss';
 import PrimeVue from 'primevue/config';
+// import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 import { definePreset } from '@primevue/themes';
 import Aura from '@primevue/themes/aura';
 
@@ -32,4 +34,9 @@ const FtTheme = definePreset(Aura, {
   },
 });
 
-export { PrimeVue, FtTheme };
+export {
+  PrimeVue,
+  FtTheme,
+  // ConfirmationService,
+  ToastService,
+};
