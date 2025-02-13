@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 
+:root {
+    // default profit loss colors, could be overwritten by custom style
+    --color-profit: #12bb7b;
+    --color-loss: #ef5350;
+}
 body.ft-theme-transition,
 body.ft-theme-transition *,
 body.ft-theme-transition *:before,
