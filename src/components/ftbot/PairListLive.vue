@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
+import type Popover from 'primevue/popover';
 
 const newblacklistpair = ref('');
 const blackListShow = ref(false);
+const blacklistAddPopover = ref<InstanceType<typeof Popover>>();
 const blacklistSelect = ref<number[]>([]);
 const botStore = useBotStore();
 
@@ -18,11 +20,16 @@ const initBlacklist = () => {
 const addBlacklistPair = () => {
   if (newblacklistpair.value) {
     blackListShow.value = false;
+    blacklistAddPopover.value?.hide();
 
     botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
     newblacklistpair.value = '';
   }
 };
+
+function showPopover(event) {
+  blacklistAddPopover.value?.show(event);
+}
 
 const blacklistSelectClick = (key) => {
   const index = blacklistSelect.value.indexOf(key);
@@ -54,87 +61,93 @@ onMounted(() => {
 <template>
   <div>
     <div>
-      <h3>Whitelist Methods</h3>
+      <h3 class="text-3xl">Whitelist Methods</h3>
 
       <div v-if="botStore.activeBot.pairlistMethods.length" class="list wide">
         <div
           v-for="(method, key) in botStore.activeBot.pairlistMethods"
           :key="key"
-          class="pair white align-middle border border-secondary"
+          class="pair bg-white text-black align-middle border border-secondary"
         >
           {{ method }}
         </div>
       </div>
     </div>
     <!-- Show Whitelist -->
-    <h3 :title="`${botStore.activeBot.whitelist.length} pairs`">Whitelist</h3>
+    <h3 class="text-3xl" :title="`${botStore.activeBot.whitelist.length} pairs`">Whitelist</h3>
     <div v-if="botStore.activeBot.whitelist.length" class="list">
       <div
         v-for="(pair, key) in botStore.activeBot.whitelist"
         :key="key"
-        class="pair white align-middle border border-secondary text-small"
+        class="pair bg-white text-black align-middle border border-secondary text-small"
       >
         {{ pair }}
       </div>
     </div>
     <p v-else>List Unavailable. Please Login and make sure server is running.</p>
-    <hr />
+    <Divider />
 
     <!-- Blacklsit -->
     <div>
-      <label
-        class="me-auto h3"
-        title="Blacklist - Select (followed by a click on '-') to remove pairs"
-        >Blacklist</label
-      >
-      <div class="float-end flex flex-cols pe-1">
-        <BButton
-          id="blacklist-add-btn"
-          class="me-1"
-          :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
-          size="sm"
-          ><i-mdi-plus-box-outline />
-        </BButton>
-        <BButton
-          v-if="botStore.activeBot.botApiVersion >= 1.12"
-          size="sm"
-          class="col-6"
-          title="Select pairs to delete pairs from your blacklist."
-          :disabled="blacklistSelect.length === 0"
-          @click="deletePairs"
+      <div class="flex flex-row justify-center mb-1">
+        <label
+          class="text-3xl mb-2 w-full"
+          title="Blacklist - Select (followed by a click on '-') to remove pairs"
         >
-          <i-mdi-delete />
-        </BButton>
+          Blacklist
+        </label>
+        <div class="flex flex-cols items-center gap-1 pe-1">
+          <Button
+            ref="blacklist-add-btn"
+            severity="secondary"
+            :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
+            size="small"
+            @click="showPopover"
+          >
+            <template #icon>
+              <i-mdi-plus-box-outline />
+            </template>
+          </Button>
+          <Button
+            v-if="botStore.activeBot.botApiVersion >= 1.12"
+            size="small"
+            severity="secondary"
+            title="Select pairs to delete pairs from your blacklist."
+            :disabled="blacklistSelect.length === 0"
+            @click="deletePairs"
+          >
+            <template #icon>
+              <i-mdi-delete />
+            </template>
+          </Button>
+        </div>
       </div>
-      <BPopover
-        title="Add to blacklist"
-        target="blacklist-add-btn"
-        triggers="click"
-        teleport-to="body"
-        :show="blackListShow"
-      >
+      <Popover ref="blacklistAddPopover" class="p-1">
         <form ref="form" @submit.prevent="addBlacklistPair">
-          <div>
-            <BFormGroup label-cols="2" label="Pair" label-for="pair-input">
-              <BFormInput
-                id="pair-input"
-                v-model="newblacklistpair"
-                required
-                autofocus
-              ></BFormInput>
-            </BFormGroup>
-            <BButton id="blacklist-submit" class="float-end mb-2" size="sm" type="submit">
+          <div class="space-y-1">
+            <h4 class="font-bold mb-2">Add Pair to Blacklist</h4>
+            <div class="space-x-2">
+              <label for="pair-input">Pair</label>
+              <InputText id="pair-input" v-model="newblacklistpair" required autofocus></InputText>
+            </div>
+            <Button
+              id="blacklist-submit"
+              class="float-end mb-2"
+              size="small"
+              severity="primary"
+              type="submit"
+            >
               Add
-            </BButton>
+            </Button>
           </div>
         </form>
-      </BPopover>
+      </Popover>
     </div>
     <div v-if="botStore.activeBot.blacklist.length" class="list">
       <div
         v-for="(pair, key) in botStore.activeBot.blacklist"
         :key="key"
-        class="pair black border border-secondary"
+        class="pair bg-black text-white border border-surface-500"
         :class="blacklistSelect.indexOf(key) > -1 ? 'active' : ''"
         @click="blacklistSelectClick(key)"
       >
@@ -178,20 +191,9 @@ onMounted(() => {
 }
 
 .pair {
-  background: #41b883;
   padding: 0.5rem;
   border-radius: 5px;
   cursor: pointer;
   position: relative;
-}
-
-.white {
-  background: white;
-  color: black;
-}
-
-.black {
-  background: black;
-  color: white;
 }
 </style>
