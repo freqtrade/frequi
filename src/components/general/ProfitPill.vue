@@ -34,7 +34,7 @@ const profitString = computed((): string => {
   >
     <ProfitSymbol :profit="(profitRatio || profitAbs) ?? 0" />
 
-    <div class="flex justify-center items-center flex-grow-1">
+    <div class="flex justify-center items-center grow">
       {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
       <span
         v-if="profitString"

@@ -156,10 +156,7 @@ defineProps({
 </template>
 <style scoped>
 .detail-header {
-  border-bottom: 1px solid;
-  padding-bottom: 5px;
-  width: 100%;
-  display: block;
+  @apply text-xl font-semibold border-b pb-1 w-full block mb-1;
 }
 .color-up {
   color: v-bind('colorStore.colorUp');
