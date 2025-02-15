@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ProfitInterface } from '@/types';
-import type { TableField, TableItem } from 'bootstrap-vue-next';
 
 const props = defineProps({
   profit: { required: true, type: Object as () => ProfitInterface },
@@ -8,12 +7,7 @@ const props = defineProps({
   stakeCurrencyDecimals: { required: true, type: Number },
 });
 
-const profitFields: TableField[] = [
-  { key: 'metric', label: 'Metric' },
-  { key: 'value', label: 'Value' },
-];
-
-const profitItems = computed<TableItem[]>(() => {
+const profitItems = computed(() => {
   if (!props.profit) return [];
   return [
     {
@@ -118,10 +112,12 @@ const profitItems = computed<TableItem[]>(() => {
 </script>
 
 <template>
-  <BTable class="text-start" small borderless :items="profitItems" :fields="profitFields">
-    <template #cell(value)="row">
+  <DataTable class="text-start" small borderless :value="profitItems">
+    <Column field="metric" header="Metric"></Column>
+    <Column field="value" header="Value"></Column>
+    <!-- <template #cell(value)="row">
       <DateTimeTZ v-if="row.item.isTs && row.value" :date="row.value as number"></DateTimeTZ>
       <template v-else>{{ row.value }}</template>
-    </template>
-  </BTable>
+    </template> -->
+  </DataTable>
 </template>
