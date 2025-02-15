@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import type { TableField } from 'bootstrap-vue-next';
 
 const botStore = useBotStore();
 enum PerformanceOptions {
@@ -18,7 +17,13 @@ function formatTextLen(text: string, len: number) {
   return text;
 }
 
-const performanceTable = computed<TableField[]>(() => {
+const performanceTable = computed<
+  {
+    key: string;
+    label: string;
+    formatter?: (v: unknown) => string;
+  }[]
+>(() => {
   const textLength = 17;
   const initialCol = {
     [PerformanceOptions.performance]: { key: 'pair', label: 'Pair' },
@@ -97,23 +102,36 @@ onMounted(() => {
 <template>
   <div>
     <div class="mb-2">
-      <h3 class="me-auto d-inline">Performance</h3>
-      <BButton class="float-end" size="sm" @click="refreshSummary">
-        <i-mdi-refresh />
-      </BButton>
+      <h3 class="me-auto text-2xl inline">Performance</h3>
+      <Button class="float-end" size="small" severity="secondary" @click="refreshSummary">
+        <template #icon>
+          <i-mdi-refresh />
+        </template>
+      </Button>
     </div>
-    <BFormRadioGroup
+    <SelectButton
       v-if="hasAdvancedStats"
       id="order-direction"
       v-model="selectedOption"
       :options="options"
-      name="radios-btn-default"
-      size="sm"
-      buttons
-      style="min-width: 10em"
-      button-variant="outline-primary"
+      option-label="text"
+      option-value="value"
+      size="small"
       @change="refreshSummary"
-    ></BFormRadioGroup>
-    <BTable class="table-sm" :items="performanceData" :fields="performanceTable"></BTable>
+    ></SelectButton>
+    <DataTable size="small" class="text-center" :value="performanceData">
+      <Column
+        v-for="field in performanceTable"
+        :key="field.key"
+        :field="field.key"
+        :header="field.label"
+      >
+        <template #body="slotProps">
+          {{
+            field.formatter ? field.formatter(slotProps.data[field.key]) : slotProps.data[field.key]
+          }}
+        </template>
+      </Column>
+    </DataTable>
   </div>
 </template>

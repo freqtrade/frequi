@@ -79,7 +79,7 @@ onMounted(() => {
       <div
         v-for="(pair, key) in botStore.activeBot.whitelist"
         :key="key"
-        class="pair bg-white text-black align-middle border border-secondary text-small"
+        class="pair bg-white text-black align-middle border border-secondary"
       >
         {{ pair }}
       </div>
