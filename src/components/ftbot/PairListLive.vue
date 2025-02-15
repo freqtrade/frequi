@@ -147,7 +147,7 @@ onMounted(() => {
       <div
         v-for="(pair, key) in botStore.activeBot.blacklist"
         :key="key"
-        class="pair bg-black text-white border border-surface-500"
+        class="pair bg-black text-white"
         :class="blacklistSelect.indexOf(key) > -1 ? 'active' : ''"
         @click="blacklistSelectClick(key)"
       >
@@ -191,9 +191,6 @@ onMounted(() => {
 }
 
 .pair {
-  padding: 0.5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  position: relative;
+  @apply p-2 border rounded cursor-pointer relative border-surface-500;
 }
 </style>
