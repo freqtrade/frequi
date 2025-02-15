@@ -2,6 +2,7 @@
 import type { Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
+import DataView from 'primevue/dataview';
 
 const props = defineProps({
   trades: { required: true, type: Array as () => Trade[] },
@@ -31,27 +32,27 @@ const tradeClick = (trade) => {
 
 <template>
   <div class="h-full overflow-auto p-1">
-    <BListGroup id="tradeList">
-      <BListGroupItem
+    <div id="tradeList">
+      <div
         v-for="trade in filteredTrades"
         :key="trade.trade_id"
-        class="border border-secondary rounded my-05 px-1"
+        class="border border-surface-500 rounded my-0.5 px-1 py-2"
         @click="tradeClick(trade)"
       >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
-      </BListGroupItem>
-    </BListGroup>
+      </div>
+    </div>
 
     <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
     <div class="w-full flex justify-content-between mt-1">
-      <BPagination
+      <Paginator
         v-if="!activeTrades"
         v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
+        :total-records="rows"
+        :rows="perPage"
         aria-controls="tradeList"
-      ></BPagination>
+      ></Paginator>
       <BFormInput
         v-if="showFilter"
         v-model="filterText"
