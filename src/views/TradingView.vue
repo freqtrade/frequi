@@ -89,7 +89,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         drag-allow-from=".card-header"
       >
         <DraggableContainer header="Multi Pane">
-          <div class="mt-1 flex justify-content-center">
+          <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
           <BTabs content-class="mt-3 mx-1" class="mt-1">

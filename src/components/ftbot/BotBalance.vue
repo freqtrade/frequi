@@ -80,6 +80,7 @@ onMounted(() => {
         <Button
           v-if="canUseBotBalance"
           size="small"
+          severity="secondary"
           :tooltip="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
           @click="showBotOnly = !showBotOnly"
         >
@@ -90,6 +91,7 @@ onMounted(() => {
         </Button>
         <Button
           size="small"
+          severity="secondary"
           :tooltip="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           @click="hideSmallBalances = !hideSmallBalances"
         >
@@ -98,7 +100,7 @@ onMounted(() => {
             <i-mdi-eye v-else />
           </template>
         </Button>
-        <Button size="small" @click="refreshBalance">
+        <Button size="small" severity="secondary" @click="refreshBalance">
           <template #icon>
             <i-mdi-refresh />
           </template>
