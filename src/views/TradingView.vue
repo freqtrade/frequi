@@ -92,82 +92,86 @@ function refreshOHLCV(pair: string, columns: string[]) {
           <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
-          <BTabs content-class="mt-3 mx-1" class="mt-1">
-            <BTab title="Pairs combined" active>
-              <template #title>
+          <Tabs value="0">
+            <TabList>
+              <Tab value="0" severity="secondary">
                 <div title="Pairs combined">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
                     >Pairs combined</span
                   >
                   <i-mdi-view-list v-else />
                 </div>
-              </template>
-              <PairSummary
-                :pairlist="botStore.activeBot.whitelist"
-                :current-locks="botStore.activeBot.activeLocks"
-                :trades="botStore.activeBot.openTrades"
-              />
-            </BTab>
-            <BTab title="General">
-              <template #title>
+              </Tab>
+              <Tab value="1" severity="secondary">
                 <div title="General">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
                   <i-mdi-information v-else />
                 </div>
-              </template>
-              <BotStatus />
-            </BTab>
-            <BTab title="Performance" lazy>
-              <template #title>
+              </Tab>
+              <Tab value="2" severity="secondary">
                 <div title="Performance">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
                     >Performance</span
                   >
                   <i-mdi-chart-line v-else />
                 </div>
-              </template>
-              <BotPerformance />
-            </BTab>
-            <BTab title="Balance" lazy>
-              <template #title>
+              </Tab>
+              <Tab value="3" severity="secondary">
                 <div title="Balance">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
                   <i-mdi-bank v-else />
                 </div>
-              </template>
-              <BotBalance />
-            </BTab>
-            <BTab title="Time Breakdown" lazy>
-              <template #title>
+              </Tab>
+              <Tab value="4" severity="secondary">
                 <div title="Time Breakdown">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
                     >Time Breakdown</span
                   >
                   <i-mdi-folder-clock v-else />
                 </div>
-              </template>
-              <PeriodBreakdown />
-            </BTab>
-
-            <BTab title="Pairlist" lazy>
-              <template #title>
+              </Tab>
+              <Tab value="5" severity="secondary">
                 <div title="Pairlist">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
                   <i-mdi-format-list-group v-else />
                 </div>
-              </template>
-              <PairListLive />
-            </BTab>
-            <BTab title="Pair Locks" lazy>
-              <template #title>
+              </Tab>
+              <Tab value="6" severity="secondary">
                 <div title="Pair Locks">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
                   <i-mdi-lock-alert v-else />
                 </div>
-              </template>
-              <PairLockList />
-            </BTab>
-          </BTabs>
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel value="0">
+                <PairSummary
+                  :pairlist="botStore.activeBot.whitelist"
+                  :current-locks="botStore.activeBot.activeLocks"
+                  :trades="botStore.activeBot.openTrades"
+                />
+              </TabPanel>
+              <TabPanel value="1">
+                <BotStatus />
+              </TabPanel>
+              <TabPanel value="2" lazy>
+                <BotPerformance />
+              </TabPanel>
+              <TabPanel value="3" lazy>
+                <BotBalance />
+              </TabPanel>
+              <TabPanel value="4" lazy>
+                <PeriodBreakdown />
+              </TabPanel>
+
+              <TabPanel value="5" lazy>
+                <PairListLive />
+              </TabPanel>
+              <TabPanel value="6" lazy>
+                <PairLockList />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </DraggableContainer>
       </GridItem>
       <GridItem
