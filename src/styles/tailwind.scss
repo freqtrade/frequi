@@ -25,3 +25,8 @@ html {
     // Set the default font size to 14px
     font-size: 14px;
 }
+
+.vue-grid-item {
+    // Fix white corners in vue-grid-item.
+    background-color: unset !important;
+}
