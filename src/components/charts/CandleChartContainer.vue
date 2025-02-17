@@ -241,16 +241,16 @@ onMounted(() => {
         </Transition>
       </div>
     </div>
-    <BModal
+    <Dialog
       v-if="plotConfigModal"
       id="plotConfiguratorModal"
-      v-model="showPlotConfigModal"
+      v-model:visible="showPlotConfigModal"
       title="Plot Configurator"
       ok-only
       hide-backdrop
     >
       <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
-    </BModal>
+    </Dialog>
   </div>
 </template>
 
