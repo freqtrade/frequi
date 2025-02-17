@@ -146,8 +146,11 @@ const reset = () => {
 };
 
 defineExpose({
-  handleSubmit,
   reset,
+});
+
+onMounted(() => {
+  reset();
 });
 </script>
 
