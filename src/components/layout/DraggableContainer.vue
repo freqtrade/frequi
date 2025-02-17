@@ -10,7 +10,9 @@ withDefaults(
 </script>
 
 <template>
-  <div class="h-full w-full border dark:border-surface-800 border-surface-200 rounded">
+  <div
+    class="flex flex-col h-full w-full border dark:border-surface-800 border-surface-200 rounded"
+  >
     <div
       class="drag-header py-1 px-2 dark:bg-surface-800 bg-surface-100 border-b border-surface-500"
     >
