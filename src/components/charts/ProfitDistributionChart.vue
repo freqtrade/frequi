@@ -119,28 +119,27 @@ const chartOptions = computed((): EChartsOption => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full position-relative">
-    <div class="flex-grow-1">
+  <div class="flex flex-col h-full relative">
+    <div class="grow mb-2">
       <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
-    <BFormGroup
-      class="z-2 position-absolute fixed-top"
+    <div
+      class="z-2 absolute fixed-top flex items-center gap-10 ms-2"
       :class="{ 'mx-auto': showTitle }"
-      label="Bins"
-      style="width: 33%; min-width: 12rem"
       label-for="input-bins"
-      label-cols="6"
-      content-cols="6"
       size="sm"
     >
-      <BFormSelect
+      <label for="input-bins">Bins</label>
+      <Select
         id="input-bins"
         v-model="settingsStore.profitDistributionBins"
-        size="sm"
+        size="small"
+        option-label="text"
+        option-value="value"
         class="mt-1"
         :options="binOptions"
-      ></BFormSelect>
-    </BFormGroup>
+      ></Select>
+    </div>
   </div>
 </template>
 
