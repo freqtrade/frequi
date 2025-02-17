@@ -238,53 +238,63 @@ const fromPlotTemplateVisible = ref(false);
           @delete="deleteSubplot"
           @rename="renameSubplot"
         >
-          <BFormSelect id="fieldSel" v-model="selSubPlot" :options="subplots" :select-size="5">
-          </BFormSelect>
+          <ListBox
+            id="fieldSel"
+            v-model="selSubPlot"
+            :options="subplots"
+            size="small"
+            :pt="{
+              list: {
+                class: 'h-36',
+              },
+            }"
+          >
+          </ListBox>
         </EditValue>
       </BFormGroup>
     </div>
     <hr />
     <div>
       <BFormGroup label="Indicators in this plot" label-for="selectedIndicators">
-        <BFormSelect
+        <ListBox
           id="selectedIndicators"
           v-model="selIndicatorName"
           :disabled="addNewIndicator"
           :options="usedColumns"
           :select-size="4"
         >
-        </BFormSelect>
+        </ListBox>
       </BFormGroup>
     </div>
     <div class="flex flex-row mt-1 gap-1">
-      <BButton
-        variant="secondary"
+      <Button
+        severity="secondary"
         title="Remove indicator to plot"
-        size="sm"
+        size="small"
         :disabled="!selIndicatorName"
         class="col"
         @click="removeIndicator"
       >
         Remove indicator
-      </BButton>
-      <BButton
-        variant="secondary"
+      </Button>
+      <Button
+        severity="secondary"
         title="Load indicator config from template"
-        size="sm"
+        size="small"
         @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
       >
         Indicator from template
-      </BButton>
-      <BButton
-        variant="primary"
+      </Button>
+      <Button
+        severity="primary"
         title="Add indicator to plot"
-        size="sm"
+        size="small"
         class="col"
         :disabled="addNewIndicator"
         @click="clickAddNewIndicator"
       >
         Add new indicator
-      </BButton>
+      </Button>
     </div>
 
     <PlotIndicatorSelect
@@ -305,71 +315,67 @@ const fromPlotTemplateVisible = ref(false);
     />
     <hr />
 
-    <div class="flex flex-row">
-      <BButton
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
+    <div class="flex flex-row gap-1">
+      <Button
+        severity="secondary"
+        size="small"
         :disabled="addNewIndicator"
         title="Reset to last saved configuration"
         @click="loadPlotConfig"
-        >Reset</BButton
+        >Reset</Button
       >
 
       <!--
         Does Resetting a config to "nothing" make sense, or can this be done via "delete / create"?
-        <b-button
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
+        <Button
+        class="ms-1 "
+        severity="secondary"
+        size="small"
         :disabled="addNewIndicator"
         title="Start with empty configuration"
         @click="clearConfig"
-        >Reset</b-button
+        >Reset</Button
       > -->
-      <BButton
+      <Button
         :disabled="
           (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
           !botStore.activeBot.isBotOnline ||
           addNewIndicator
         "
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
+        severity="secondary"
+        size="small"
         @click="loadPlotConfigFromStrategy"
       >
         From strategy
-      </BButton>
-      <BButton
+      </Button>
+      <Button
         id="showButton"
-        class="ms-1 col"
-        variant="secondary"
-        size="sm"
+        severity="secondary"
+        size="small"
         :disabled="addNewIndicator"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
-        >{{ showConfig ? 'Hide' : 'Show' }}</BButton
+        >{{ showConfig ? 'Hide' : 'Show' }}</Button
       >
 
-      <BButton
-        class="ms-1 col"
-        variant="primary"
-        size="sm"
+      <Button
+        severity="primary"
+        size="small"
         data-toggle="tooltip"
         :disabled="addNewIndicator"
         title="Save configuration"
         @click="savePlotConfig"
-        >Save</BButton
+        >Save</Button
       >
     </div>
-    <BButton
+    <Button
       v-if="showConfig"
       class="ms-1 mt-1"
-      variant="secondary"
-      size="sm"
+      severity="secondary"
+      size="small"
       title="Load configuration from text box below"
       @click="loadConfigFromString"
-      >Load from String</BButton
+      >Load from String</Button
     >
     <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
       <BFormTextarea

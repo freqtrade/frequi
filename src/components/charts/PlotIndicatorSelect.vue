@@ -26,6 +26,10 @@ onMounted(() => {
   selAvailableIndicator.value = props.modelValue;
 });
 
+watch(selAvailableIndicator, () => {
+  emitIndicator();
+});
+
 watch(
   () => props.modelValue,
   (newValue) => {
@@ -36,18 +40,13 @@ watch(
 
 <template>
   <div class="flex flex-row">
-    <BFormGroup class="flex-grow-1" :label="label" label-for="indicatorSelector">
-      <VSelect
-        v-model="selAvailableIndicator"
-        :options="columns"
-        size="sm"
-        :clearable="false"
-        @option:selected="emitIndicator"
-      >
-      </VSelect>
-    </BFormGroup>
-    <BButton size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
+    <div class="flex flex-col grow">
+      <label for="selAvailableIndicator" class="form-label">{{ label }}</label>
+      <Select v-model="selAvailableIndicator" :options="columns" size="small" :clearable="false">
+      </Select>
+    </div>
+    <Button size="small" title="Abort" class="ms-1 mt-auto" severity="secondary" @click="abort">
       <i-mdi-close />
-    </BButton>
+    </Button>
   </div>
 </template>
