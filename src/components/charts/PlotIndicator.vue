@@ -74,31 +74,34 @@ watchDebounced(
 
 <template>
   <div>
-    <div class="flex flex-col flex-xl-row justify-content-between mt-1">
-      <label for="plotTypeSelector" class="form-label">Type</label>
-      <Select id="plotTypeSelector" v-model="graphType" size="small" :options="availableGraphTypes">
-      </Select>
-      <BFormGroup label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
-        <BInputGroup>
-          <template #prepend>
-            <InputText
-              v-model="selColor"
-              type="color"
-              size="small"
-              class="p-0"
-              style="max-width: 29px"
-            ></InputText>
-          </template>
+    <div class="flex flex-col lg:flex-row justify-between mt-1">
+      <div class="flex flex-col w-full">
+        <label for="plotTypeSelector" class="form-label">Type</label>
+        <Select
+          id="plotTypeSelector"
+          v-model="graphType"
+          class="text-left"
+          size="small"
+          :options="availableGraphTypes"
+        >
+        </Select>
+      </div>
+      <div class="flex flex-col w-full">
+        <label for="selAvailableIndicator" class="colsel">Color</label>
+        <InputGroup>
+          <InputGroupAddon class="!p-0">
+            <ColorPicker v-model="selColor" type="color" class="m-auto"></ColorPicker>
+          </InputGroupAddon>
           <InputText id="colsel" v-model="selColor" size="small" class="grow"> </InputText>
-          <template #append>
+          <InputGroupAddon>
             <Button severity="primary" size="small" @click="newColor">
               <template #icon>
                 <i-mdi-dice-multiple />
               </template>
             </Button>
-          </template>
-        </BInputGroup>
-      </BFormGroup>
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
     </div>
     <PlotIndicatorSelect
       v-if="graphType === ChartType.line"

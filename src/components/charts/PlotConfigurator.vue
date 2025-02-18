@@ -259,6 +259,8 @@ const fromPlotTemplateVisible = ref(false);
         v-model="selIndicatorName"
         size="small"
         empty-message="No indicators selected"
+        option-label="text"
+        option-value="value"
         :disabled="addNewIndicator"
         :options="usedColumns"
       >
@@ -305,12 +307,12 @@ const fromPlotTemplateVisible = ref(false);
 
     <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" :columns="columns" />
 
-    <!-- <PlotIndicator
+    <PlotIndicator
       v-if="selIndicatorName && !fromPlotTemplateVisible"
       v-model="selIndicator"
       class="mt-1"
       :columns="columns"
-    /> -->
+    />
     <Divider />
 
     <div class="flex flex-row gap-1">
