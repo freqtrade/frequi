@@ -75,31 +75,27 @@ watchDebounced(
 <template>
   <div>
     <div class="flex flex-col flex-xl-row justify-content-between mt-1">
-      <BFormGroup class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
-        <BFormSelect
-          id="plotTypeSelector"
-          v-model="graphType"
-          size="sm"
-          :options="availableGraphTypes"
-        >
-        </BFormSelect>
-      </BFormGroup>
+      <label for="plotTypeSelector" class="form-label">Type</label>
+      <Select id="plotTypeSelector" v-model="graphType" size="small" :options="availableGraphTypes">
+      </Select>
       <BFormGroup label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
         <BInputGroup>
           <template #prepend>
-            <BFormInput
+            <InputText
               v-model="selColor"
               type="color"
-              size="sm"
+              size="small"
               class="p-0"
               style="max-width: 29px"
-            ></BFormInput>
+            ></InputText>
           </template>
-          <BFormInput id="colsel" v-model="selColor" size="sm" class="flex-grow-1"> </BFormInput>
+          <InputText id="colsel" v-model="selColor" size="small" class="grow"> </InputText>
           <template #append>
-            <BButton variant="primary" size="sm" @click="newColor">
-              <i-mdi-dice-multiple />
-            </BButton>
+            <Button severity="primary" size="small" @click="newColor">
+              <template #icon>
+                <i-mdi-dice-multiple />
+              </template>
+            </Button>
           </template>
         </BInputGroup>
       </BFormGroup>

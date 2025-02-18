@@ -222,49 +222,47 @@ const fromPlotTemplateVisible = ref(false);
 
 <template>
   <div v-if="columns">
-    <BFormGroup label="Plot config name" label-for="idPlotConfigName">
-      <PlotConfigSelect allow-edit></PlotConfigSelect>
-    </BFormGroup>
-    <div class="col-mb-3">
-      <hr />
-      <BFormGroup label="Target Plot" label-for="fieldSel">
-        <EditValue
-          v-model="selSubPlot"
-          :allow-edit="!isMainPlot"
-          allow-add
-          editable-name="plot configuration"
-          align-vertical
-          @new="addSubplot"
-          @delete="deleteSubplot"
-          @rename="renameSubplot"
-        >
-          <ListBox
-            id="fieldSel"
-            v-model="selSubPlot"
-            :options="subplots"
-            size="small"
-            :pt="{
-              list: {
-                class: 'h-36',
-              },
-            }"
-          >
-          </ListBox>
-        </EditValue>
-      </BFormGroup>
-    </div>
-    <hr />
+    <label for="idPlotConfigName">Plot config name</label>
+    <PlotConfigSelect allow-edit></PlotConfigSelect>
     <div>
-      <BFormGroup label="Indicators in this plot" label-for="selectedIndicators">
+      <Divider />
+      <label for="fieldSel" class="mb">Target Plot</label>
+      <EditValue
+        v-model="selSubPlot"
+        :allow-edit="!isMainPlot"
+        allow-add
+        editable-name="plot configuration"
+        align-vertical
+        @new="addSubplot"
+        @delete="deleteSubplot"
+        @rename="renameSubplot"
+      >
         <ListBox
-          id="selectedIndicators"
-          v-model="selIndicatorName"
-          :disabled="addNewIndicator"
-          :options="usedColumns"
-          :select-size="4"
+          id="fieldSel"
+          v-model="selSubPlot"
+          :options="subplots"
+          size="small"
+          :pt="{
+            list: {
+              class: 'h-36',
+            },
+          }"
         >
         </ListBox>
-      </BFormGroup>
+      </EditValue>
+    </div>
+    <Divider />
+    <div>
+      <label for="selectedIndicators">Indicators in this plot</label>
+      <ListBox
+        id="selectedIndicators"
+        v-model="selIndicatorName"
+        size="small"
+        empty-message="No indicators selected"
+        :disabled="addNewIndicator"
+        :options="usedColumns"
+      >
+      </ListBox>
     </div>
     <div class="flex flex-row mt-1 gap-1">
       <Button
@@ -307,13 +305,13 @@ const fromPlotTemplateVisible = ref(false);
 
     <PlotFromTemplate v-model:visible="fromPlotTemplateVisible" :columns="columns" />
 
-    <PlotIndicator
+    <!-- <PlotIndicator
       v-if="selIndicatorName && !fromPlotTemplateVisible"
       v-model="selIndicator"
       class="mt-1"
       :columns="columns"
-    />
-    <hr />
+    /> -->
+    <Divider />
 
     <div class="flex flex-row gap-1">
       <Button
@@ -377,24 +375,20 @@ const fromPlotTemplateVisible = ref(false);
       @click="loadConfigFromString"
       >Load from String</Button
     >
-    <div v-if="showConfig" class="col-mb-5 ms-1 mt-2">
-      <BFormTextarea
+    <div v-if="showConfig" class="w-full ms-1 mt-2">
+      <Textarea
         id="TextArea"
         v-model="plotConfigJson"
-        class="textArea"
-        size="sm"
+        class="w-full min-h-[250px]"
+        size="small"
         :state="tempPlotConfigValid"
       >
-      </BFormTextarea>
+      </Textarea>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.textArea {
-  min-height: 250px;
-}
-
 .form-group {
   margin-bottom: 0.5rem;
 }
