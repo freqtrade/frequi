@@ -110,12 +110,17 @@ watchDebounced(
       class="mt-1"
       label="Area chart - Fill to (leave empty for line chart)"
     />
-    <BFormGroup
-      v-if="graphType === ChartType.scatter"
-      label="Scatter symbol size"
-      label-class="mt-1"
-    >
-      <BFormSpinbutton v-model="scatterSymbolSize" />
-    </BFormGroup>
+    <div v-if="graphType === ChartType.scatter" class="flex flex-col mt-2 gap-1 items-center">
+      <label for="scatterSymbolSize" class="text-nowrap">Scatter symbol size</label>
+      <InputNumber
+        id="scatterSymbolSize"
+        v-model="scatterSymbolSize"
+        :min="0"
+        show-buttons
+        size="small"
+        button-layout="horizontal"
+        class="text-center w-full"
+      />
+    </div>
   </div>
 </template>
