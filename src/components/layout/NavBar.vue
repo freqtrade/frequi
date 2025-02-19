@@ -213,18 +213,22 @@ function toggleMenu(event) {
           <div class="flex justify-between">
             <Select
               v-if="botStore.botCount > 1"
+              :model-value="botStore.selectedBotObj"
               size="small"
               class="m-1"
               no-caret
               severity="info"
               toggle-class="flex align-items-center "
               menu-class="my-0 py-0"
+              :options="botStore.availableBotsSorted"
+              @update:model-value="botStore.selectBot($event.botId)"
             >
-              <template #value>
-                <BotEntry :bot="botStore.selectedBotObj" :no-buttons="true" />
+              <template #value="{ value }">
+                <BotEntry :bot="value" :no-buttons="true" />
               </template>
-              <template #option>
-                <BotList :small="true" />
+
+              <template #option="{ option }">
+                <BotEntry :bot="option" :no-buttons="true" />
               </template>
             </Select>
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
