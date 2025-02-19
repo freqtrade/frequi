@@ -67,9 +67,9 @@
     "sass": "^1.85.0",
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.24.1",
-    "unplugin-auto-import": "^19.0.0",
-    "unplugin-icons": "^22.0.0",
-    "unplugin-vue-components": "^28.0.0",
+    "unplugin-auto-import": "^19.1.0",
+    "unplugin-icons": "^22.1.0",
+    "unplugin-vue-components": "^28.4.0",
     "vite": "^6.1.1",
     "vitest": "^3.0.6",
     "vue-tsc": "^2.2.0"
