@@ -57,7 +57,7 @@ const resetDynamicLayout = () => {
 
           <div class="space-y-1">
             <label class="block text-sm">Show open trades in header</label>
-            <Dropdown
+            <Select
               v-model="settingsStore.openTradesInTitle"
               :options="openTradesOptions"
               option-label="text"
@@ -72,7 +72,7 @@ const resetDynamicLayout = () => {
 
           <div class="space-y-1">
             <label class="block text-sm">UTC Timezone</label>
-            <Dropdown
+            <Select
               v-model="settingsStore.timezone"
               :options="timezoneOptions"
               class="w-full"
