@@ -16,7 +16,7 @@ const loginModal = ref<typeof LoginModal>();
 const sortContainer = ref<HTMLElement | null>(null);
 const botListComp = computed<BotDescriptor[]>(() => {
   //Convert to array
-  return Object.values(botStore.availableBots).sort((a, b) => (a.sortId ?? 0) - (b.sortId ?? 0));
+  return botStore.availableBotsSorted;
 });
 
 useSortable(sortContainer, botListComp, {

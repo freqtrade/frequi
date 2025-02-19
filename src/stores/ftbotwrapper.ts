@@ -43,6 +43,9 @@ export const useBotStore = defineStore('ftbot-wrapper', {
   getters: {
     hasBots: (state) => Object.keys(state.availableBots).length > 0,
     botCount: (state) => Object.keys(state.availableBots).length,
+    availableBotsSorted: (state) => {
+      return Object.values(state.availableBots).sort((a, b) => (a.sortId ?? 0) - (b.sortId ?? 0));
+    },
     allBotStores: (state) => Object.values(state.botStores),
     activeBot: (state) => state.botStores[state.selectedBot] as BotSubStore,
     activeBotorUndefined: (state) => state.botStores[state.selectedBot] as BotSubStore | undefined,
