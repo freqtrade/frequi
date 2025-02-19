@@ -5,6 +5,8 @@ import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
 import { useLayoutStore } from '@/stores/layout';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute } from 'vue-router';
+import Menu from 'primevue/menu';
+import type { MenuItem } from 'primevue/menuitem';
 
 const botStore = useBotStore();
 
@@ -94,6 +96,41 @@ watch(
     }
   },
 );
+
+const menuItems = ref<MenuItem[]>([
+  {
+    label: `V: ${settingsStore.uiVersion}`,
+    disabled: true,
+  },
+  {
+    label: 'Settings',
+    icon: 'i-mdi-cog',
+    command: () => router.push('/settings'),
+  },
+  {
+    label: 'Lock dynamic Layout',
+    checkbox: true,
+    checked: computed(() => layoutStore.layoutLocked),
+    command: () => {
+      layoutStore.layoutLocked = !layoutStore.layoutLocked;
+    },
+  },
+  {
+    label: 'Reset Layout',
+    icon: 'i-mdi-lock-reset',
+    command: resetDynamicLayout,
+  },
+  {
+    label: 'Logout',
+    icon: 'i-mdi-logout',
+    command: clickLogout,
+    visible: botStore.hasBots && botStore.botCount === 1,
+  },
+]);
+const menu = ref<InstanceType<typeof Menu> | null>();
+function toggleMenu(event) {
+  menu.value?.toggle(event);
+}
 </script>
 
 <template>
@@ -103,10 +140,6 @@ watch(
         <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="text-slate-200 text-lg hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
-
-      <!-- TODO: For XS breakpoint, this should be here...  -->
-      <!-- <ReloadControl class="me-3" /> -->
-      <BNavbarToggle target="nav-collapse"></BNavbarToggle>
 
       <div id="nav-collapse" class="flex justify-between w-full text-center items-center" is-nav>
         <div class="items-center hidden md:flex">
@@ -196,7 +229,7 @@ watch(
             </Select>
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
-          <li
+          <div
             class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
           >
             <span class="text-xs me-2">
@@ -212,56 +245,35 @@ watch(
                   : 'Offline'
               }}
             </span>
-          </li>
-          <li v-if="botStore.hasBots" class="md:hidden">
+          </div>
+          <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
-            <BNavItemDropdown id="avatar-drop" right auto-close class="d-none d-md-block">
-              <template #button-content>
-                <BAvatar size="2em" button>FT</BAvatar>
-              </template>
-              <span class="ps-3">V: {{ settingsStore.uiVersion }}</span>
-              <!-- Link active-class to non-existant class to avoid it getting the "light" active color -->
-              <BDropdownItem active-class="non-existant" to="/settings">Settings</BDropdownItem>
-              <div class="ps-3">
-                <BFormCheckbox v-model="layoutStore.layoutLocked">Lock layout</BFormCheckbox>
-              </div>
-              <BDropdownItem @click="resetDynamicLayout">Reset Layout</BDropdownItem>
-              <template v-if="botStore.botCount === 1">
-                <BDropdownDivider />
-                <BDropdownItem active-class="non-existant" @click="clickLogout()">
-                  <i-mdi-logout class="me-1" />
-                  Sign Out
-                </BDropdownItem>
-              </template>
-            </BNavItemDropdown>
-            <div class="d-block d-md-none">
-              <!-- Visible only on XS -->
-              <!-- <li class="nav-item text-secondary ms-2 d-sm-none flex justify-content-between">
-                <div class="flex">
-                  <b-nav-text class="small me-2">
-                    {{
-                      (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
-                      'No bot selected'
-                    }}
-                  </b-nav-text>
+            <Button severity="secondary" rounded @click="toggleMenu">
+              <!-- <Avatar label="FT" shape="circle"></Avatar> -->
+              FT
+              <i-mdi-chevron-down />
+            </Button>
+            <Menu ref="menu" :model="menuItems" popup class="w-56">
+              <template #item="{ item }">
+                <div
+                  class="flex flex-row items-center gap-2 p-1"
+                  :class="{
+                    'cursor-pointer': !item.disabled,
+                  }"
+                >
+                  <i-mdi-cog v-if="item.icon === 'i-mdi-cog'" />
+                  <i-mdi-logout v-if="item.icon === 'i-mdi-logout'" />
+                  <i-mdi-lock-reset v-if="item.icon === 'i-mdi-lock-reset'" />
+                  <Checkbox v-if="item.checkbox" v-model="item.checked" binary />
+                  <span>{{ item.label }}</span>
                 </div>
-              </li> -->
-              <BNavItem class="py-0" to="/settings" title="Settings">
-                Settings <i-mdi-cog class="ms-auto" />
-              </BNavItem>
-              <BNavItem
-                v-if="botStore.botCount === 1"
-                class="nav-link navbar-nav"
-                to="/"
-                @click="clickLogout()"
-                >Sign Out</BNavItem
-              >
-            </div>
-          </li>
-          <li v-else>
+              </template>
+            </Menu>
+          </div>
+          <div v-else>
             <!-- should open Modal window! -->
             <LoginModal v-if="route?.path !== '/login'" />
-          </li>
+          </div>
         </div>
       </div>
     </div>
