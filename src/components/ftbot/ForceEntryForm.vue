@@ -83,9 +83,6 @@ const handleEntry = () => {
   // Trigger submit handler
   handleSubmit();
 };
-const inputSelect = (bvModalEvt) => {
-  bvModalEvt.srcElement?.select();
-};
 </script>
 
 <template>
@@ -93,7 +90,6 @@ const inputSelect = (bvModalEvt) => {
     v-model:visible="model"
     :header="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
     modal
-    class="p-fluid"
     @show="resetForm"
     @hide="resetForm"
   >
