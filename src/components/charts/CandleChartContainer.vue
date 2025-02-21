@@ -188,7 +188,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="ms-auto flex align-center">
+        <div class="ms-auto flex items-center">
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
             <small class="text-nowrap">Heikin Ashi</small>
           </BaseCheckbox>
@@ -204,7 +204,9 @@ onMounted(() => {
               severity="secondary"
               @click="showConfigurator"
             >
-              <i-mdi-cog width="12" height="12" />
+              <template #icon>
+                <i-mdi-cog width="12" height="12" />
+              </template>
             </Button>
           </div>
         </div>
