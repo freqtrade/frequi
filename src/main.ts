@@ -19,6 +19,10 @@ myApp.use(PrimeVue, {
     preset: FtTheme,
     options: {
       darkModeSelector: '.ft-dark-theme',
+      cssLayer: {
+        name: 'primevue',
+        // order: 'tailwind-base, primevue, tailwind-utilities',
+      },
     },
   },
 });

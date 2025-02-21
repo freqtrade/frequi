@@ -1,13 +1,37 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+    @tailwind base;
+}
+
+@layer tailwind-utilities {
+    @tailwind components;
+    @tailwind utilities;
+}
 
 
 :root {
     // default profit loss colors, could be overwritten by custom style
     --color-profit: #12bb7b;
     --color-loss: #ef5350;
+
 }
+
+@layer components {
+    // Base component style overrides
+    :root {
+
+        --p-datatable-row-background: unset;
+        --p-content-background: unset;
+        // --p-datatable-header-cell-background: unset;
+    }
+}
+
+
 body.ft-theme-transition,
 body.ft-theme-transition *,
 body.ft-theme-transition *:before,
@@ -30,3 +54,4 @@ html {
     // Fix white corners in vue-grid-item.
     background-color: unset !important;
 }
+

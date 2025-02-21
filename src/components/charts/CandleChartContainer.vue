@@ -227,7 +227,7 @@ onMounted(() => {
             :label-side="settingsStore.chartLabelSide"
           />
           <div v-else class="m-auto">
-            <ProgressSpinner v-if="isLoadingDataset" label="Spinning" />
+            <ProgressSpinner v-if="isLoadingDataset" class="w-10 h-10" label="Spinning" />
             <div v-else class="text-lg">
               {{ noDatasetText }}
             </div>
