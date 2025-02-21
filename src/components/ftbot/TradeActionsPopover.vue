@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
+import Popover from 'primevue/popover';
 
 defineProps({
   trade: { type: Object as () => Trade, required: true },
@@ -41,25 +42,26 @@ function handleForceEntry(item: Trade) {
   popoverOpen.value = false;
   emit('forceEntry', item);
 }
+const popover = ref<InstanceType<typeof Popover> | null>(null);
 </script>
 
 <template>
   <div>
-    <BButton
+    <Button
       :id="`btn-actions-${id}`"
       class="btn-xs"
-      size="sm"
+      size="small"
+      severity="secondary"
       title="Actions"
-      @click="popoverOpen = !popoverOpen"
+      @click="popover?.toggle"
     >
       <i-mdi-gesture-tap />
-    </BButton>
-    <BPopover
-      teleport-to="body"
+    </Button>
+    <Popover
+      ref="popover"
       :target="`btn-actions-${id}`"
       :title="`Actions for ${trade.pair}`"
       triggers="manual"
-      :show="popoverOpen"
       placement="left"
     >
       <TradeActions
@@ -73,9 +75,15 @@ function handleForceEntry(item: Trade) {
         @reload-trade="handleReloadTrade"
         @force-entry="handleForceEntry"
       />
-      <BButton class="mt-1 w-full text-start" size="sm" @click="popoverOpen = false">
-        <i-mdi-cancel class="me-1" />Close Actions menu
-      </BButton>
-    </BPopover>
+      <Button
+        class="mt-1 w-full text-start"
+        size="small"
+        severity="secondary"
+        label="Close Actions menu"
+        @click="popover?.hide"
+      >
+        <template #icon><i-mdi-cancel class="me-1" /></template>
+      </Button>
+    </Popover>
   </div>
 </template>

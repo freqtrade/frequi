@@ -26,79 +26,108 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <BButton
+  <div class="flex flex-col gap-1">
+    <Button
       v-if="botApiVersion <= 1.1"
-      class="btn-xs text-start"
-      size="sm"
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Forceexit"
+      label="Forceexit"
       @click="$emit('forceExit', trade)"
     >
-      <i-mdi-close-box class="me-1" />Forceexit
-    </BButton>
-    <BButton
+      <template #icon>
+        <i-mdi-close-box />
+      </template>
+    </Button>
+    <Button
       v-if="botApiVersion > 1.1"
-      class="btn-xs text-start"
-      size="sm"
+      size="small"
+      class="!justify-start"
+      severity="secondary"
       title="Forceexit limit"
+      label="Forceexit limit"
       @click="$emit('forceExit', trade, 'limit')"
     >
-      <i-mdi-close-box class="me-1" />Forceexit limit
-    </BButton>
-    <BButton
+      <template #icon>
+        <i-mdi-close-box />
+      </template>
+    </Button>
+    <Button
       v-if="botApiVersion > 1.1"
-      class="btn-xs text-start mt-1"
-      size="sm"
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Forceexit market"
+      label="Forceexit market"
       @click="$emit('forceExit', trade, 'market')"
     >
-      <i-mdi-close-box class="me-1" />Forceexit market
-    </BButton>
-    <BButton
+      <template #icon>
+        <i-mdi-close-box />
+      </template>
+    </Button>
+    <Button
       v-if="botApiVersion > 2.16"
-      class="btn-xs text-start mt-1"
-      size="sm"
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Forceexit partial"
+      label="Forceexit partial"
       @click="$emit('forceExitPartial', trade)"
     >
-      <i-mdi-close-box-multiple class="me-1" />Forceexit partial
-    </BButton>
-    <BButton
+      <template #icon>
+        <i-mdi-close-box-multiple />
+      </template>
+    </Button>
+    <Button
       v-if="botApiVersion >= 2.24 && (trade.open_order_id || trade.has_open_orders)"
-      class="btn-xs text-start mt-1"
-      size="sm"
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Cancel open orders"
+      label="Cancel open orders"
       @click="$emit('cancelOpenOrder', trade)"
     >
-      <i-mdi-cancel class="me-1" />Cancel open order
-    </BButton>
-    <BButton
+      <template #icon>
+        <i-mdi-cancel />
+      </template>
+    </Button>
+    <Button
       v-if="enableForceEntry"
-      class="btn-xs text-start mt-1"
-      size="sm"
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Increase position"
+      label="Increase position"
       @click="$emit('forceEntry', trade)"
     >
-      <i-mdi-plus-box-multiple-outline class="me-1" />Increase position
-    </BButton>
-    <BButton
+      <template #icon>
+        <i-mdi-plus-box-multiple-outline />
+      </template>
+    </Button>
+    <Button
       v-if="botApiVersion >= 2.28"
-      class="btn-xs text-start mt-1"
-      size="sm"
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Reload"
+      label="Reload"
       @click="$emit('reloadTrade', trade)"
     >
-      <i-mdi-reload-alert class="me-1" />Reload Trade
-    </BButton>
-    <BButton
-      class="btn-xs text-start mt-1"
-      size="sm"
+      <template #icon><i-mdi-reload-alert /> </template>
+    </Button>
+    <Button
+      class="!justify-start"
+      size="small"
+      severity="secondary"
       title="Delete trade"
+      label="Delete trade"
       @click="$emit('deleteTrade', trade)"
     >
-      <i-mdi-delete class="me-1" />
-      Delete
-    </BButton>
+      <template #icon>
+        <i-mdi-delete />
+      </template>
+    </Button>
   </div>
 </template>
 
