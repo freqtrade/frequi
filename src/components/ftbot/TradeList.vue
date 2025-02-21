@@ -278,7 +278,7 @@ watch(
 
     <ForceExitForm
       v-if="activeTrades"
-      v-model:visible="forceExitVisible"
+      v-model="forceExitVisible"
       :trade="feTrade"
       :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
     />

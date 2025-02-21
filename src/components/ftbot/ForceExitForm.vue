@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { ForceSellPayload, Trade } from '@/types';
+import { ref, computed } from 'vue';
+import { refDebounced } from '@vueuse/core';
 
 const props = defineProps({
   trade: {
@@ -27,7 +29,7 @@ const checkFormValidity = () => {
   return valid;
 };
 
-function handleSubmit() {
+async function handleSubmit() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -41,6 +43,7 @@ function handleSubmit() {
   if (amount.value) {
     payload.amount = amount.value;
   }
+  await nextTick();
   botStore.activeBot.forceexit(payload);
   model.value = false;
 }
@@ -53,7 +56,7 @@ function resetForm() {
     'limit';
 }
 
-function handleEntry() {
+function handleExit() {
   // Trigger submit handler
   handleSubmit();
 }
@@ -72,59 +75,61 @@ const orderTypeOptions = [
 </script>
 
 <template>
-  <div>
-    <BModal
-      id="forceexit-modal"
-      v-model="model"
-      title="Force exiting a trade"
-      @show="resetForm"
-      @hidden="resetForm"
-      @ok="handleEntry"
-    >
-      <form ref="form" @submit.stop.prevent="handleSubmit">
-        <p>
+  <Dialog
+    v-model:visible="model"
+    :header="`Force exiting a trade`"
+    modal
+    @show="resetForm"
+    @hide="resetForm"
+  >
+    <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
+      <div class="mb-4">
+        <p class="mb-2">
           <span>Exiting Trade #{{ trade.trade_id }} {{ trade.pair }}.</span>
           <br />
           <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
         </p>
-        <BFormGroup
-          label-for="stake-input"
-          invalid-feedback="Amount must be empty or a positive number"
-          :state="amount !== undefined && amount > 0"
-        >
-          <template #label>
-            <span class="fst-italic">*Amount in {{ trade.base_currency }} [optional]</span>
-            <span class="ms-1 fst-italic">{{ amountInBase }}</span>
-          </template>
-          <BFormInput id="stake-input" v-model="amount" type="number" step="0.000001"></BFormInput>
-          <BFormInput
+      </div>
+
+      <div>
+        <label for="stake-input" class="block font-medium mb-1">
+          Amount in {{ trade.base_currency }} [optional]
+          <span class="text-sm italic ml-1">{{ amountInBase }}</span>
+        </label>
+        <div class="space-y-2">
+          <InputNumber
             id="stake-input"
             v-model="amount"
-            type="range"
-            step="0.000001"
-            min="0"
+            :min="0"
             :max="trade.amount"
-          ></BFormInput>
-        </BFormGroup>
+            :use-grouping="false"
+            :step="0.000001"
+            :max-fraction-digits="8"
+            class="w-full"
+            show-buttons
+          />
+          <Slider v-model="amount" :min="0" :max="trade.amount" :step="0.000001" class="w-full" />
+        </div>
+      </div>
 
-        <BFormGroup
-          label="*OrderType"
-          label-for="ordertype-input"
-          invalid-feedback="OrderType"
-          :state="ordertype !== undefined"
-        >
-          <BFormRadioGroup
-            id="ordertype-input"
-            v-model="ordertype"
-            :options="orderTypeOptions"
-            name="radios-btn-orderType"
-            buttons
-            button-variant="outline-primary"
-            style="min-width: 10em"
-            size="sm"
-          ></BFormRadioGroup>
-        </BFormGroup>
-      </form>
-    </BModal>
-  </div>
+      <div>
+        <label class="block font-medium mb-1">*OrderType</label>
+        <SelectButton
+          v-model="ordertype"
+          :options="orderTypeOptions"
+          option-label="text"
+          option-value="value"
+          size="small"
+          class="w-full"
+        />
+      </div>
+    </form>
+
+    <template #footer>
+      <div class="flex justify-end gap-2">
+        <Button severity="secondary" size="small" @click="model = false">Cancel</Button>
+        <Button severity="primary" size="small" @click="handleExit">Exit Position</Button>
+      </div>
+    </template>
+  </Dialog>
 </template>
