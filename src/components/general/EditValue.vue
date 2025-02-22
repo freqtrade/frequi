@@ -85,7 +85,7 @@ function saveNewName() {
   <form class="flex flex-row" @submit.prevent="saveNewName">
     <div class="grow">
       <slot v-if="mode === EditState.None"> </slot>
-      <InputText v-else v-model="localName" size="small"> </InputText>
+      <InputText v-else v-model="localName" size="small" fluid> </InputText>
     </div>
     <div class="mt-auto flex gap-1 ms-1" :class="alignVertical ? 'flex-col' : 'flex-row'">
       <template v-if="allowEdit && mode === EditState.None">
