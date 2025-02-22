@@ -16,7 +16,12 @@ withDefaults(
   <div class="flex flex-row gap-2">
     <div class="flex gap-1 flex-col w-full">
       <div v-for="(val, idx) in values" :key="idx" class="flex flex-row gap-1">
-        <InputText v-model="values[idx]" size="sm" :placeholder="placeholder"></InputText>
+        <InputText
+          v-model="values[idx]"
+          size="small"
+          class="w-full"
+          :placeholder="placeholder"
+        ></InputText>
         <Button
           :size="size"
           severity="secondary"
