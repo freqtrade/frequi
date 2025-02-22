@@ -20,59 +20,55 @@ function toggleVisible() {
 </script>
 
 <template>
-  <BCard no-body class="mb-2">
-    <template #header>
-      <div class="flex text-start align-items-center">
-        <div class="flex flex-grow-1 align-items-center">
-          <i-mdi-reorder-horizontal
-            role="button"
-            class="handle me-2 fs-4 flex-shrink-0"
-            width="24"
-            height="24"
-          />
-          <div
-            role="button"
-            class="flex flex-grow-1 align-items-start flex-col user-select-none"
-            @click="toggleVisible"
-          >
-            <span class="fw-bold">{{ pairlist.name }}</span>
-            <span class="text-small">{{ pairlist.description }}</span>
-          </div>
-        </div>
-        <i-mdi-close
-          role="button"
-          width="24"
-          height="24"
-          class="mx-2"
-          @click="pairlistStore.removeFromConfig(index)"
-        />
-        <i-mdi-chevron-down
-          v-if="!pairlist.showParameters"
-          :class="hasParameters && !pairlist.showParameters ? 'visible' : 'invisible'"
-          role="button"
-          class="fs-4"
-          @click="toggleVisible"
-        />
-        <i-mdi-chevron-up
-          v-if="pairlist.showParameters"
-          :class="hasParameters && pairlist.showParameters ? 'visible' : 'invisible'"
-          role="button"
-          class="fs-4"
-          @click="toggleVisible"
-        />
+  <div class="flex w-full text-start rounded items-center bg-surface-700 p-2">
+    <div class="flex flex-grow items-center">
+      <i-mdi-reorder-horizontal
+        role="button"
+        class="handle me-2 ms-2 flex-shrink"
+        width="24"
+        height="24"
+      />
+      <div
+        role="button"
+        class="flex flex-grow items-start flex-col user-select-none"
+        @click="toggleVisible"
+      >
+        <span class="font-bold">{{ pairlist.name }}</span>
+        <span class="text-sm">{{ pairlist.description }}</span>
       </div>
-    </template>
-    <BCollapse v-model="pairlist.showParameters">
-      <BCardBody>
-        <PairlistConfigParameter
-          v-for="(parameter, key) in pairlist.params"
-          :key="key"
-          v-model="pairlist.params[key].value"
-          :param="parameter"
-        />
-      </BCardBody>
-    </BCollapse>
-  </BCard>
+    </div>
+    <i-mdi-close
+      role="button"
+      width="24"
+      height="24"
+      class="mx-2"
+      @click="pairlistStore.removeFromConfig(index)"
+    />
+    <i-mdi-chevron-down
+      v-if="!pairlist.showParameters"
+      :class="hasParameters && !pairlist.showParameters ? 'visible' : 'invisible'"
+      role="button"
+      class="fs-4"
+      @click="toggleVisible"
+    />
+    <i-mdi-chevron-up
+      v-if="pairlist.showParameters"
+      :class="hasParameters && pairlist.showParameters ? 'visible' : 'invisible'"
+      role="button"
+      class="fs-4"
+      @click="toggleVisible"
+    />
+  </div>
+  <Transition>
+    <div v-if="pairlist.showParameters" class="p-2">
+      <PairlistConfigParameter
+        v-for="(parameter, key) in pairlist.params"
+        :key="key"
+        v-model="pairlist.params[key].value"
+        :param="parameter"
+      />
+    </div>
+  </Transition>
 </template>
 
 <style lang="scss" scoped></style>
