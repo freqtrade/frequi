@@ -10,27 +10,14 @@ const { copy, isSupported } = useClipboard();
 </script>
 
 <template>
-  <div class="copy-container position-relative">
+  <div class="relative group">
     <i-mdi-content-copy
       v-if="isSupported && isValid"
-      role="button"
-      class="copy-button position-absolute end-0 mt-1 me-2"
+      class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity hover:cursor-pointer"
       @click="copy(typeof content === 'string' ? content : JSON.stringify(content))"
     />
-    <pre class="text-start border p-1 mb-0"><code>{{ content }}</code></pre>
+    <pre
+      class="text-start border rounded border-surface-500 p-2 m-0 bg-surface-50 dark:bg-surface-900 overflow-auto"
+    ><code>{{ content }}</code></pre>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.copy-container {
-  .copy-button {
-    opacity: 0;
-  }
-
-  &:hover {
-    .copy-button {
-      opacity: 1;
-    }
-  }
-}
-</style>
