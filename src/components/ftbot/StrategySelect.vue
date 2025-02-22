@@ -33,6 +33,7 @@ onMounted(() => {
       <Select
         id="strategy-select"
         v-model="locStrategy"
+        filter
         fluid
         :options="botStore.activeBot.strategyList"
       >
