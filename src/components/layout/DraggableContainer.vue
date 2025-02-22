@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineOptions({
+  inheritAttrs: false,
+});
 withDefaults(
   defineProps<{
     header?: string;
@@ -20,7 +23,7 @@ withDefaults(
         {{ header }}
       </slot>
     </div>
-    <div class="p-0 h-full w-full overflow-auto">
+    <div class="p-0 h-full w-full overflow-auto" v-bind="$attrs">
       <slot></slot>
     </div>
   </div>
