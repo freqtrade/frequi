@@ -11,30 +11,30 @@ const paramValue = defineModel<any>();
 </script>
 
 <template>
-  <BFormGroup label-cols="4" label-size="md" class="pb-1 text-start" :description="param.help">
-    <BFormInput
-      v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
-      v-model="paramValue"
-      size="sm"
-    ></BFormInput>
+  <div class="pb-1 flex flex-row text-start">
+    <label class="w-2/5"> {{ param.description }}</label>
+    <div class="flex flex-col w-full">
+      <InputText
+        v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
+        v-model="paramValue"
+        size="small"
+      ></InputText>
 
-    <BFormCheckbox
-      v-if="param.type === PairlistParamType.boolean"
-      v-model="paramValue"
-    ></BFormCheckbox>
+      <BaseCheckbox
+        v-if="param.type === PairlistParamType.boolean"
+        v-model="paramValue"
+      ></BaseCheckbox>
 
-    <BFormSelect
-      v-if="param.type === PairlistParamType.option"
-      v-model="paramValue"
-      :options="param.options"
-    ></BFormSelect>
-    <BaseStringList
-      v-if="param.type === PairlistParamType.list"
-      v-model="paramValue"
-    ></BaseStringList>
-
-    <template #label>
-      <label> {{ param.description }}</label>
-    </template>
-  </BFormGroup>
+      <BFormSelect
+        v-if="param.type === PairlistParamType.option"
+        v-model="paramValue"
+        :options="param.options"
+      ></BFormSelect>
+      <BaseStringList
+        v-if="param.type === PairlistParamType.list"
+        v-model="paramValue"
+      ></BaseStringList>
+      <span class="text-muted text-sm text-surface-500">{{ param.help }}</span>
+    </div>
+  </div>
 </template>
