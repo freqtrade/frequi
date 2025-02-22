@@ -168,7 +168,13 @@ onMounted(() => {
           >
             <i-mdi-refresh />
           </Button>
-          <ProgressSpinner v-if="isLoadingDataset" small label="Spinning" />
+          <ProgressSpinner
+            v-if="isLoadingDataset"
+            class="w-8 h-8"
+            stroke-width="8"
+            small
+            label="Spinning"
+          />
           <div class="flex flex-col">
             <div class="flex flex-row flex-wrap">
               <small v-if="dataset" class="ms-2 text-xs text-nowrap" title="Long entry signals"
@@ -227,7 +233,7 @@ onMounted(() => {
             :label-side="settingsStore.chartLabelSide"
           />
           <div v-else class="m-auto">
-            <ProgressSpinner v-if="isLoadingDataset" class="w-10 h-10" label="Spinning" />
+            <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" label="Spinning" />
             <div v-else class="text-lg">
               {{ noDatasetText }}
             </div>
