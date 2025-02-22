@@ -21,15 +21,20 @@
 
 }
 
+
 @layer components {
     // Base component style overrides
     :root {
 
         --p-datatable-row-background: unset;
+    }
+
+    .ft-dark-theme {
         --p-content-background: unset;
-        // --p-datatable-header-cell-background: unset;
+        --p-menu-background: var(--p-surface-900);
     }
 }
+
 
 
 body.ft-theme-transition,
