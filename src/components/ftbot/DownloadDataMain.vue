@@ -167,16 +167,15 @@ async function startDownload() {
                 <div
                   class="mb-2 border dark:border-surface-700 border-surface-300 rounded p-2 text-start"
                 >
-                  <BaseCheckbox
-                    v-model="exchange.customExchange"
-                    v-b-toggle.custom-exchange
-                    class="mb-2"
-                  >
+                  <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
                     Custom Exchange
                   </BaseCheckbox>
-                  <BCollapse id="custom-exchange">
-                    <ExchangeSelect v-model="exchange.selectedExchange" />
-                  </BCollapse>
+                  <Transition name="fade">
+                    <ExchangeSelect
+                      v-if="exchange.customExchange"
+                      v-model="exchange.selectedExchange"
+                    />
+                  </Transition>
                 </div>
               </div>
             </Transition>
