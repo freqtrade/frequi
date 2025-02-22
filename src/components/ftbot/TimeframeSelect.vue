@@ -44,10 +44,10 @@ const emitSelectedTimeframe = () => {
 </script>
 
 <template>
-  <BFormSelect
+  <Select
     v-model="selectedTimeframe"
     placeholder="Use strategy default"
     :options="availableTimeframes"
     @change="emitSelectedTimeframe"
-  ></BFormSelect>
+  ></Select>
 </template>
