@@ -104,16 +104,15 @@ watch(
         </div>
 
         <div class="mb-2 border rounded border-surface-500 p-2 text-start">
-          <BaseCheckbox
-            v-model="pairlistStore.customExchange"
-            v-b-toggle.custom-exchange
-            class="mb-2"
-          >
+          <BaseCheckbox v-model="pairlistStore.customExchange" class="mb-2">
             Custom Exchange
           </BaseCheckbox>
-          <BCollapse id="custom-exchange">
-            <ExchangeSelect v-model="pairlistStore.selectedExchange" />
-          </BCollapse>
+          <Transition name="fade">
+            <ExchangeSelect
+              v-if="pairlistStore.customExchange"
+              v-model="pairlistStore.selectedExchange"
+            />
+          </Transition>
         </div>
       </div>
       <PairlistConfigBlacklist />
