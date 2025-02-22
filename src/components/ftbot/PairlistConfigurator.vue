@@ -64,65 +64,70 @@ watch(
 </script>
 
 <template>
-  <div class="flex px-3 mb-3 gap-3 flex-col flex-lg-row">
-    <BListGroup ref="availablePairlistsEl" class="available-pairlists">
-      <BListGroupItem
+  <div class="flex px-3 mb-3 gap-3 flex-col lg:flex-row">
+    <div
+      ref="availablePairlistsEl"
+      class="divide-y border-x border-surface-500 rounded border-y divide-solid divide-y-3 divide-surface-500"
+    >
+      <div
         v-for="pairlist in availablePairlists"
         :key="pairlist.name"
         :class="{
-          'no-drag': pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
+          'no-drag text-gray-500 hover:cursor-default':
+            pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
         }"
-        class="pairlist flex text-start align-items-center py-2 px-3"
+        class="pairlist flex text-start items-center py-2 px-3 hover:cursor-grab"
       >
-        <div class="flex flex-grow-1 align-items-start flex-col">
-          <span class="fw-bold">{{ pairlist.name }}</span>
-          <span class="text-small">{{ pairlist.description }}</span>
+        <div class="flex flex-grow items-start flex-col">
+          <span class="font-bold">{{ pairlist.name }}</span>
+          <span class="text-sm text-muted-color">{{ pairlist.description }}</span>
         </div>
-        <BButton
-          class="p-0 add-pairlist"
-          style="border: none"
-          variant="outline-light"
+        <Button
+          severity="secondary"
+          class="dark:text-white"
+          variant="text"
           :disabled="pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator"
           @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
         >
-          <i-mdi-arrow-right-bold-box-outline class="fs-4" />
-        </BButton>
-      </BListGroupItem>
-    </BListGroup>
-    <div class="flex flex-col flex-fill">
+          <template #icon>
+            <i-mdi-arrow-right-bold-box-outline />
+          </template>
+        </Button>
+      </div>
+    </div>
+    <div class="flex flex-col flex-grow">
       <PairlistConfigActions />
-      <div class="border rounded-1 p-2 mb-2">
-        <div class="flex align-items-center gap-2 my-2">
+      <div class="border rounded border-surface-500 p-2 mb-2">
+        <div class="flex items-center gap-2 my-2">
           <span class="col-auto">Stake currency: </span>
-          <BFormInput v-model="pairlistStore.stakeCurrency" size="sm" />
+          <InputText v-model="pairlistStore.stakeCurrency" size="small" />
         </div>
 
-        <div class="mb-2 border rounded-1 p-2 text-start">
-          <BFormCheckbox
+        <div class="mb-2 border rounded border-surface-500 p-2 text-start">
+          <BaseCheckbox
             v-model="pairlistStore.customExchange"
             v-b-toggle.custom-exchange
             class="mb-2"
           >
             Custom Exchange
-          </BFormCheckbox>
+          </BaseCheckbox>
           <BCollapse id="custom-exchange">
             <ExchangeSelect v-model="pairlistStore.selectedExchange" />
           </BCollapse>
         </div>
       </div>
       <PairlistConfigBlacklist />
-      <BAlert
-        :model-value="
-          pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator
-        "
-        variant="warning"
+      <Message
+        v-if="pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator"
+        class="my-2"
+        severity="warn"
       >
         First entry in the pairlist must be a Generating pairlist, like StaticPairList or
         VolumePairList.
-      </BAlert>
+      </Message>
       <div
         ref="pairlistConfigsEl"
-        class="flex flex-col flex-grow-1 position-relative border rounded-1 p-1"
+        class="flex flex-col flex-grow relative border rounded border-surface-500 p-1 gap-2"
         :class="{ empty: configEmpty }"
       >
         <PairlistConfigItem
@@ -134,13 +139,13 @@ watch(
         />
       </div>
     </div>
-    <div class="flex flex-col col-12 col-lg-3">
-      <BFormRadioGroup v-model="selectedView" class="mb-2" size="sm" buttons>
+    <div class="flex flex-col">
+      <SelectButton v-model="selectedView" class="mb-2" size="small" buttons>
         <BFormRadio button value="Config"> Config</BFormRadio>
         <BFormRadio button value="Results" :disabled="pairlistStore.whitelist.length === 0">
           Results</BFormRadio
         >
-      </BFormRadioGroup>
+      </SelectButton>
       <div class="position-relative flex-fill overflow-auto">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
@@ -160,25 +165,12 @@ watch(
 
 <style lang="scss" scoped>
 .pairlist {
-  &:hover {
-    cursor: grab;
-  }
-  &.no-drag {
-    color: gray;
-  }
-  &.no-drag:hover {
-    cursor: default;
-  }
   &.dragging {
-    border: 1px solid white;
-    border-radius: 0;
+    @apply border-white border bg-white dark:bg-black;
+    // border: 1px solid white;
+    // border-radius: 0;
   }
 }
-
-[data-bs-theme='light'] .add-pairlist {
-  color: black;
-}
-
 .empty {
   &:after {
     content: 'Drag pairlist here';
