@@ -139,23 +139,26 @@ watch(
         />
       </div>
     </div>
-    <div class="flex flex-col">
-      <SelectButton v-model="selectedView" class="mb-2" size="small" buttons>
-        <BFormRadio button value="Config"> Config</BFormRadio>
-        <BFormRadio button value="Results" :disabled="pairlistStore.whitelist.length === 0">
-          Results</BFormRadio
-        >
+    <div class="flex flex-col w-full lg:w-3/12">
+      <SelectButton
+        v-model="selectedView"
+        class="mb-2"
+        size="small"
+        :options="['Config', 'Results']"
+        :option-disabled="pairlistStore.whitelist.length === 0 ? 'Results' : ''"
+      >
+        <!-- TODO primevue: Fix selectButton "disabled" state-->
       </SelectButton>
-      <div class="position-relative flex-fill overflow-auto">
+      <div class="relative overflow-auto">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
-          class="position-lg-absolute w-full"
+          class="lg:a22bsolute w-full"
           :content="pairlistStore.configJSON"
           :is-valid="pairlistStore.pairlistValid"
         />
         <CopyableTextfield
           v-if="selectedView === 'Results'"
-          class="position-lg-absolute w-full"
+          class="lg:abs22olute w-full"
           :content="pairlistStore.whitelist"
         />
       </div>
