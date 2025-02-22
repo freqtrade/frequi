@@ -20,55 +20,59 @@ function toggleVisible() {
 </script>
 
 <template>
-  <div class="flex w-full text-start rounded items-center bg-surface-700 p-2">
-    <div class="flex flex-grow items-center">
-      <i-mdi-reorder-horizontal
+  <div class="shadow rounded border border-surface-300 dark:border-surface-700">
+    <div
+      class="flex w-full text-start items-center bg-surface-200 dark:bg-surface-700 p-2 border-b border-surface-300 dark:border-surface-600"
+    >
+      <div class="flex flex-grow items-center">
+        <i-mdi-reorder-horizontal
+          role="button"
+          class="handle me-2 ms-2 flex-shrink"
+          width="24"
+          height="24"
+        />
+        <div
+          role="button"
+          class="flex flex-grow items-start flex-col user-select-none"
+          @click="toggleVisible"
+        >
+          <span class="font-bold">{{ pairlist.name }}</span>
+          <span class="text-sm">{{ pairlist.description }}</span>
+        </div>
+      </div>
+      <i-mdi-close
         role="button"
-        class="handle me-2 ms-2 flex-shrink"
         width="24"
         height="24"
+        class="mx-2"
+        @click="pairlistStore.removeFromConfig(index)"
       />
-      <div
+      <i-mdi-chevron-down
+        v-if="!pairlist.showParameters"
+        :class="hasParameters && !pairlist.showParameters ? 'visible' : 'invisible'"
         role="button"
-        class="flex flex-grow items-start flex-col user-select-none"
+        class="fs-4"
         @click="toggleVisible"
-      >
-        <span class="font-bold">{{ pairlist.name }}</span>
-        <span class="text-sm">{{ pairlist.description }}</span>
-      </div>
-    </div>
-    <i-mdi-close
-      role="button"
-      width="24"
-      height="24"
-      class="mx-2"
-      @click="pairlistStore.removeFromConfig(index)"
-    />
-    <i-mdi-chevron-down
-      v-if="!pairlist.showParameters"
-      :class="hasParameters && !pairlist.showParameters ? 'visible' : 'invisible'"
-      role="button"
-      class="fs-4"
-      @click="toggleVisible"
-    />
-    <i-mdi-chevron-up
-      v-if="pairlist.showParameters"
-      :class="hasParameters && pairlist.showParameters ? 'visible' : 'invisible'"
-      role="button"
-      class="fs-4"
-      @click="toggleVisible"
-    />
-  </div>
-  <Transition>
-    <div v-if="pairlist.showParameters" class="p-2">
-      <PairlistConfigParameter
-        v-for="(parameter, key) in pairlist.params"
-        :key="key"
-        v-model="pairlist.params[key].value"
-        :param="parameter"
+      />
+      <i-mdi-chevron-up
+        v-if="pairlist.showParameters"
+        :class="hasParameters && pairlist.showParameters ? 'visible' : 'invisible'"
+        role="button"
+        class="fs-4"
+        @click="toggleVisible"
       />
     </div>
-  </Transition>
+    <Transition>
+      <div v-if="pairlist.showParameters" class="p-2">
+        <PairlistConfigParameter
+          v-for="(parameter, key) in pairlist.params"
+          :key="key"
+          v-model="pairlist.params[key].value"
+          :param="parameter"
+        />
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <style lang="scss" scoped></style>
