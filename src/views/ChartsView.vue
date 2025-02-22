@@ -113,41 +113,40 @@ watch(
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
       <div class="flex flex-col flex-md-row-reverse border rounded-1 p-1">
-        <BButton v-b-toggle.ws-settings class="ms-auto align-self-start col-12 col-md-2"
-          >Show/hide setup</BButton
-        >
-        <BCollapse id="ws-settings" visible class="w-full">
-          <div
+        <Panel header="a" toggleable>
+          <Panel
             v-if="botStore.activeBot.botState.api_version >= 2.42"
-            class="mb-2 border rounded-1 p-2 text-start col-12 col-md-6"
+            toggleable
+            header="Exchange"
+            class="mb-2 p-2 text-start col-12 col-md-6"
           >
-            <BFormCheckbox v-model="exchange.customExchange" v-b-toggle.custom-exchange>
-              Custom Exchange
-            </BFormCheckbox>
-            <BCollapse id="custom-exchange">
-              <ExchangeSelect v-model="exchange.selectedExchange" />
-            </BCollapse>
-          </div>
-          <div class="flex flex-wrap mx-1 gap-1 gap-md-2">
-            <div class="col-12 col-md-3 text-start me-md-1">
+            <template #header>
+              <BaseCheckbox v-model="exchange.customExchange" v-b-toggle.custom-exchange>
+                Custom Exchange
+              </BaseCheckbox>
+            </template>
+            <ExchangeSelect v-model="exchange.selectedExchange" />
+          </Panel>
+          <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 gap-md-2">
+            <div class="text-start me-md-1 col-span-2">
               <span>Strategy</span>
               <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
-              <BFormCheckbox
+              <BaseCheckbox
                 v-if="botStore.activeBot.botState.api_version >= 2.42"
                 v-model="useLiveData"
                 class="align-self-center"
                 title="Use live data from the exchange. Only use if you don't have data downloaded locally."
               >
                 Use Live Data
-              </BFormCheckbox>
+              </BaseCheckbox>
             </div>
-            <div class="col-12 col-md-3 text-start">
+            <div class="flex flex-col text-start">
               <span>Timeframe</span>
               <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
             </div>
-            <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+            <TimeRangeSelect v-model="timerange" class="col-span-3 md:col-span-2"></TimeRangeSelect>
           </div>
-        </BCollapse>
+        </Panel>
       </div>
     </div>
 
