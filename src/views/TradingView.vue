@@ -86,7 +86,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :y="gridLayoutMultiPane.y"
         :w="gridLayoutMultiPane.w"
         :h="gridLayoutMultiPane.h"
-        drag-allow-from=".card-header"
+        drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Multi Pane">
           <div class="mt-1 flex justify-center">
@@ -182,7 +182,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :y="gridLayoutOpenTrades.y"
         :w="gridLayoutOpenTrades.w"
         :h="gridLayoutOpenTrades.h"
-        drag-allow-from=".card-header"
+        drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Open Trades">
           <TradeList
@@ -202,7 +202,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :y="gridLayoutTradeHistory.y"
         :w="gridLayoutTradeHistory.w"
         :h="gridLayoutTradeHistory.h"
-        drag-allow-from=".card-header"
+        drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Closed Trades">
           <TradeList
@@ -227,7 +227,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :w="gridLayoutTradeDetail.w"
         :h="gridLayoutTradeDetail.h"
         :min-h="4"
-        drag-allow-from=".card-header"
+        drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Trade Detail">
           <TradeDetail
@@ -245,7 +245,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :w="gridLayoutChartView.w"
         :h="gridLayoutChartView.h"
         :min-h="6"
-        drag-allow-from=".card-header"
+        drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Chart">
           <CandleChartContainer
