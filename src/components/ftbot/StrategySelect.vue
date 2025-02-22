@@ -30,16 +30,19 @@ onMounted(() => {
 <template>
   <div>
     <div class="w-full flex">
-      <BFormSelect
+      <Select
         id="strategy-select"
         v-model="locStrategy"
+        fluid
         :options="botStore.activeBot.strategyList"
       >
-      </BFormSelect>
+      </Select>
       <div class="ms-1">
-        <BButton @click="botStore.activeBot.getStrategyList">
-          <i-mdi-refresh />
-        </BButton>
+        <Button severity="secondary" variant="outlined" @click="botStore.activeBot.getStrategyList">
+          <template #icon>
+            <i-mdi-refresh />
+          </template>
+        </Button>
       </div>
     </div>
 
