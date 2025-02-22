@@ -4,44 +4,45 @@ import EditValue from '../general/EditValue.vue';
 const pairlistStore = usePairlistConfigStore();
 </script>
 <template>
-  <div class="flex flex-col flex-sm-row mb-2 gap-2">
-    <BButton
+  <div class="flex flex-col sm:flex-row mb-2 gap-2">
+    <Button
       title="Save configuration"
-      size="sm"
-      variant="primary"
+      size="small"
+      severity="primary"
       @click="pairlistStore.saveConfig(pairlistStore.config.name)"
     >
       <i-mdi-content-save />
-    </BButton>
+    </Button>
     <EditValue
       v-model="pairlistStore.config.name"
       editable-name="config"
       :allow-add="true"
       :allow-duplicate="true"
       :allow-edit="true"
-      class="flex flex-grow-1"
+      class="flex flex-grow"
       @delete="pairlistStore.deleteConfig"
       @duplicate="(oldName: string, newName: string) => pairlistStore.duplicateConfig(newName)"
       @new="(name: string) => pairlistStore.newConfig(name)"
       @rename="(oldName: string, newName: string) => pairlistStore.saveConfig(newName)"
     >
-      <BFormSelect
+      <Select
         v-model="pairlistStore.configName"
-        size="sm"
+        size="small"
+        class="w-full text-start"
         :options="pairlistStore.savedConfigs.map((c) => c.name)"
         @update:model-value="(config) => pairlistStore.selectOrCreateConfig(config as string)"
       />
     </EditValue>
-    <BButton
+    <Button
       title="Evaluate pairlist"
       :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
-      variant="primary"
+      severity="primary"
       class="px-5"
-      size="sm"
+      size="small"
       @click="pairlistStore.startPairlistEvaluation()"
     >
-      <BSpinner v-if="pairlistStore.evaluating" small></BSpinner>
+      <ProgressSpinner v-if="pairlistStore.evaluating" class="h-8 w-8"></ProgressSpinner>
       <span>{{ pairlistStore.evaluating ? '' : 'Evaluate' }}</span>
-    </BButton>
+    </Button>
   </div>
 </template>

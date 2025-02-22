@@ -33,27 +33,36 @@ const configNames = computed(() =>
     </template>
     <BCollapse v-model="visible">
       <BCardBody>
-        <div class="flex mb-4 align-items-center gap-2">
-          <span class="col-auto">Copy from:</span
-          ><BFormSelect v-model="copyFromConfig" size="sm" :options="configNames" />
-          <BButton title="Copy" size="sm" @click="pairlistStore.duplicateBlacklist(copyFromConfig)"
-            ><i-mdi-content-copy
-          /></BButton>
+        <div class="flex mb-4 items-center gap-2">
+          <span class="col-auto">Copy from:</span>
+          <Select v-model="copyFromConfig" size="small" class="flex-grow" :options="configNames" />
+          <Button
+            title="Copy"
+            size="small"
+            severity="secondary"
+            @click="pairlistStore.duplicateBlacklist(copyFromConfig)"
+          >
+            <template #icon>
+              <i-mdi-content-copy />
+            </template>
+          </Button>
         </div>
-        <BInputGroup
+        <InputGroup
           v-for="(item, i) in pairlistStore.config.blacklist"
           :key="i"
           class="mb-2"
           size="sm"
         >
-          <BFormInput v-model="pairlistStore.config.blacklist[i]" />
-          <template #append>
-            <BButton size="sm" @click="pairlistStore.removeFromBlacklist(i)"
-              ><i-mdi-close
-            /></BButton>
-          </template>
-        </BInputGroup>
-        <BButton size="sm" @click="pairlistStore.addToBlacklist()">Add</BButton>
+          <InputText v-model="pairlistStore.config.blacklist[i]" size="small" />
+          <InputGroupAddon>
+            <Button size="small" severity="secondary" @click="pairlistStore.removeFromBlacklist(i)">
+              <template #icon>
+                <i-mdi-close />
+              </template>
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
+        <Button size="small" @click="pairlistStore.addToBlacklist()">Add</Button>
       </BCardBody>
     </BCollapse>
   </BCard>
