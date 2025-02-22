@@ -111,47 +111,41 @@ watch(
     <!-- Currently only available in Webserver mode -->
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
-    <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
-      <div class="flex flex-col flex-md-row-reverse border rounded-1 p-1">
-        <Panel header="Settings" toggleable>
-          <Fieldset
-            v-if="botStore.activeBot.botState.api_version >= 2.42"
-            toggleable
-            legend="Exchange"
-            class="mb-2 p-2 text-start col-12 col-md-6"
-          >
-            <template #legend="{ toggleCallback }">
-              <BaseCheckbox
-                v-model="exchange.customExchange"
-                v-b-toggle.custom-exchange
-                @change="toggleCallback"
-              >
-                Custom Exchange
-              </BaseCheckbox>
-            </template>
-            <ExchangeSelect v-model="exchange.selectedExchange" />
-          </Fieldset>
-          <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 gap-md-2">
-            <div class="text-start me-md-1 col-span-2">
-              <span>Strategy</span>
-              <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
-              <BaseCheckbox
-                v-if="botStore.activeBot.botState.api_version >= 2.42"
-                v-model="useLiveData"
-                class="align-self-center"
-                title="Use live data from the exchange. Only use if you don't have data downloaded locally."
-              >
-                Use Live Data
-              </BaseCheckbox>
-            </div>
-            <div class="flex flex-col text-start">
-              <span>Timeframe</span>
-              <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
-            </div>
-            <TimeRangeSelect v-model="timerange" class="col-span-3 md:col-span-2"></TimeRangeSelect>
+    <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2 px-1">
+      <Panel header="Settings" toggleable>
+        <Fieldset
+          v-if="botStore.activeBot.botState.api_version >= 2.42"
+          toggleable
+          legend="Exchange"
+          class="mb-2 p-2 text-start col-12 col-md-6"
+        >
+          <template #legend="{ toggleCallback }">
+            <BaseCheckbox v-model="exchange.customExchange" @change="toggleCallback">
+              Custom Exchange
+            </BaseCheckbox>
+          </template>
+          <ExchangeSelect v-model="exchange.selectedExchange" />
+        </Fieldset>
+        <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 gap-md-2">
+          <div class="text-start me-md-1 col-span-2">
+            <span>Strategy</span>
+            <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
+            <BaseCheckbox
+              v-if="botStore.activeBot.botState.api_version >= 2.42"
+              v-model="useLiveData"
+              class="align-self-center"
+              title="Use live data from the exchange. Only use if you don't have data downloaded locally."
+            >
+              Use Live Data
+            </BaseCheckbox>
           </div>
-        </Panel>
-      </div>
+          <div class="flex flex-col text-start">
+            <span>Timeframe</span>
+            <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+          </div>
+          <TimeRangeSelect v-model="timerange" class="col-span-3 md:col-span-2"></TimeRangeSelect>
+        </div>
+      </Panel>
     </div>
 
     <div class="mx-md-2 mt-2 pb-1 h-full">
