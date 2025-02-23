@@ -14,9 +14,14 @@ onMounted(() => {
 <template>
   <div>
     <div class="w-full flex">
-      <Select v-model="locFreqaiModel" :options="botStore.activeBot.freqaiModelList"> </Select>
+      <Select v-model="locFreqaiModel" :options="botStore.activeBot.freqaiModelList" fluid>
+      </Select>
       <div class="ms-2">
-        <Button severity="secondary" variant="text" @click="botStore.activeBot.getFreqAIModelList">
+        <Button
+          severity="secondary"
+          variant="outlined"
+          @click="botStore.activeBot.getFreqAIModelList"
+        >
           <template #icon>
             <i-mdi-refresh />
           </template>
