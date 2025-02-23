@@ -13,14 +13,14 @@ defineProps({
 
 <template>
   <div class="flex flex-col me-2 text-start">
-    <div class="fw-bold">
+    <div class="font-bold">
       {{ backtestResult.metadata.strategyName }} - {{ backtestResult.strategy.timeframe }}
     </div>
-    <div class="text-small">
+    <div class="text-sm">
       TradeCount: {{ backtestResult.strategy.total_trades }} - Profit:
       {{ formatPercent(backtestResult.strategy.profit_total) }}
     </div>
-    <div v-if="canUseModify" class="text-small" style="white-space: pre-wrap">
+    <div v-if="canUseModify" class="text-sm" style="white-space: pre-wrap">
       {{ backtestResult.metadata.notes }}
     </div>
   </div>
