@@ -43,7 +43,7 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
         :key="key"
         button
         :active="key === selectedBacktestResultKey"
-        class="flex justify-between items-center py-1 pe-1"
+        class="flex justify-between items-center py-1 px-1"
         @click="setBacktestResult(key)"
       >
         <template v-if="!result.metadata.editing">
