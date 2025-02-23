@@ -106,6 +106,7 @@ function clickBacktest() {
         v-model="btStore.stakeAmount"
         placeholder="Use strategy default"
         :step="0.01"
+        size="small"
         :disabled="btStore.stakeAmountUnlimited"
       ></InputNumber>
     </div>
@@ -132,6 +133,7 @@ function clickBacktest() {
           id="freqai-identifier"
           v-model="btStore.freqAI.identifier"
           placeholder="Use config default"
+          size="small"
         ></InputText>
       </template>
       <template v-if="btStore.freqAI.enabled">

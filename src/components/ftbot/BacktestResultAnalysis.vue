@@ -23,7 +23,9 @@ const backtestResultSettings = computed(() => {
 <template>
   <div class="px-0 w-full">
     <div class="flex justify-center">
-      <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
+      <h3 class="font-bold text-2xl mb-2">
+        Backtest-result for {{ backtestResult.strategy_name }}
+      </h3>
     </div>
 
     <div class="flex flex-col text-start ms-0 me-2 gap-2">
