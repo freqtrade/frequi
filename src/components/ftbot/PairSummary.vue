@@ -115,14 +115,16 @@ const combinedPairList = computed(() => {
         class="w-full"
       />
     </div>
-    <div>
+    <div
+      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded border-surface-300 dark:border-surface-700"
+    >
       <div
         v-for="comb in combinedPairList"
         :key="comb.pair"
         button
-        class="flex cursor-pointer first:rounded-t last:rounded-b justify-between items-center px-1 py-1.5 border-b border first:border border-surface-500"
+        class="flex cursor-pointer last:rounded-b justify-between items-center px-1 py-1.5"
         :class="{
-          'bg-primary dark:border-primary dark:bg-inherit':
+          'bg-primary dark:border-primary dark:bg-inherit text-primary-contrast':
             comb.pair === botStore.activeBot.selectedPair,
         }"
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"
