@@ -41,8 +41,8 @@ const pairlistStore = usePairlistConfigStore();
       size="small"
       @click="pairlistStore.startPairlistEvaluation()"
     >
-      <ProgressSpinner v-if="pairlistStore.evaluating" class="h-8 w-8"></ProgressSpinner>
-      <span>{{ pairlistStore.evaluating ? '' : 'Evaluate' }}</span>
+      <ProgressSpinner v-if="pairlistStore.evaluating" class="h-5 w-5"></ProgressSpinner>
+      <span v-else>Evaluate</span>
     </Button>
   </div>
 </template>
