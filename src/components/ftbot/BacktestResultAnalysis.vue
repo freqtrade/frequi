@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { StrategyBacktestResult } from '@/types';
 
-import type { TableField } from 'bootstrap-vue-next';
+import DraggableContainer from '../layout/DraggableContainer.vue';
 
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
@@ -18,41 +18,31 @@ const backtestResultSettings = computed(() => {
 
   return formatObjectForTable({ value: tmp }, 'setting');
 });
-const backtestResultFields: TableField[] = [
-  { key: 'metric', label: 'Metric' },
-  { key: 'value', label: 'Value' },
-];
-
-const backtestsettingFields: TableField[] = [
-  { key: 'setting', label: 'Setting' },
-  { key: 'value', label: 'Value' },
-];
 </script>
 
 <template>
-  <div class="px-0 mw-full">
-    <div class="flex justify-content-center">
+  <div class="px-0 w-full">
+    <div class="flex justify-center">
       <h3>Backtest-result for {{ backtestResult.strategy_name }}</h3>
     </div>
 
     <div class="flex flex-col text-start ms-0 me-2 gap-2">
-      <div class="flex flex-col flex-xl-row">
-        <div class="px-0 px-xl-0 pe-xl-1 flex-fill">
-          <BCard header="Strategy settings">
-            <BTable
-              small
-              borderless
-              :items="backtestResultSettings"
-              :fields="backtestsettingFields"
-            >
-            </BTable>
-          </BCard>
+      <div class="flex flex-col xl:flex-row">
+        <div class="px-0 px-xl-0 pe-xl-1 flex-grow">
+          <DraggableContainer header="Strategy settings">
+            <DataTable small :value="backtestResultSettings">
+              <Column field="setting" header="Setting"></Column>
+              <Column field="value" header="Value"></Column>
+            </DataTable>
+          </DraggableContainer>
         </div>
-        <div class="px-0 px-xl-0 pt-2 pt-xl-0 ps-xl-1 flex-fill">
-          <BCard header="Metrics">
-            <BTable small borderless :items="backtestResultStats" :fields="backtestResultFields">
-            </BTable>
-          </BCard>
+        <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 flex-grow">
+          <DraggableContainer header="Metrics">
+            <DataTable small borderless :value="backtestResultStats">
+              <Column field="metric" header="Metric" />
+              <Column field="value" header="Value" />
+            </DataTable>
+          </DraggableContainer>
         </div>
       </div>
       <BacktestResultTablePer
@@ -87,10 +77,10 @@ const backtestsettingFields: TableField[] = [
         key-header="Pair"
         :stake-currency-decimals="backtestResult.stake_currency_decimals"
       />
-      <BCard v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
+      <DraggableContainer v-if="backtestResult.periodic_breakdown" header="Periodic breakdown">
         <BacktestResultPeriodBreakdown :periodic-breakdown="backtestResult.periodic_breakdown">
         </BacktestResultPeriodBreakdown>
-      </BCard>
+      </DraggableContainer>
 
       <BCard header="Single trades">
         <TradeList
