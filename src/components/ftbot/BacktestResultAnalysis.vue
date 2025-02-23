@@ -30,7 +30,7 @@ const backtestResultSettings = computed(() => {
       <div class="flex flex-col xl:flex-row">
         <div class="px-0 px-xl-0 pe-xl-1 flex-grow">
           <DraggableContainer header="Strategy settings">
-            <DataTable small :value="backtestResultSettings">
+            <DataTable size="small" :value="backtestResultSettings">
               <Column field="setting" header="Setting"></Column>
               <Column field="value" header="Value"></Column>
             </DataTable>
@@ -38,7 +38,7 @@ const backtestResultSettings = computed(() => {
         </div>
         <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 flex-grow">
           <DraggableContainer header="Metrics">
-            <DataTable small borderless :value="backtestResultStats">
+            <DataTable size="small" borderless :value="backtestResultStats">
               <Column field="metric" header="Metric" />
               <Column field="value" header="Value" />
             </DataTable>
@@ -82,13 +82,13 @@ const backtestResultSettings = computed(() => {
         </BacktestResultPeriodBreakdown>
       </DraggableContainer>
 
-      <BCard header="Single trades">
+      <DraggableContainer header="Single trades">
         <TradeList
           :trades="backtestResult.trades"
           :show-filter="true"
           :stake-currency="backtestResult.stake_currency"
         />
-      </BCard>
+      </DraggableContainer>
     </div>
   </div>
 </template>

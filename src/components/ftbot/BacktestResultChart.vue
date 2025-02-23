@@ -103,13 +103,13 @@ function refreshOHLCV(pair: string, columns: string[]) {
         />
       </Transition>
     </div>
-    <BCard header="Single trades" class="row mt-2 w-full">
+    <DraggableContainer header="Single trades" class="row mt-2 w-full">
       <TradeList
         class="row trade-history mt-2 w-full"
         :trades="backtestResult.trades"
         :show-filter="true"
       />
-    </BCard>
+    </DraggableContainer>
   </div>
 </template>
 

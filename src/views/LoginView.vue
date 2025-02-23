@@ -2,8 +2,8 @@
 
 <template>
   <div class="border max-w-xl mx-auto p-4">
-    <BCard header="Freqtrade bot Login">
+    <DraggableContainer header="Freqtrade bot Login">
       <BotLogin ref="loginForm" />
-    </BCard>
+    </DraggableContainer>
   </div>
 </template>

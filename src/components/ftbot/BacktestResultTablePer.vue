@@ -47,7 +47,7 @@ const perTagReason = computed(() => {
 </script>
 <template>
   <DraggableContainer :header="title">
-    <DataTable small hover stacked="sm" :value="tableItems">
+    <DataTable size="small" hover stacked="sm" :value="tableItems">
       <Column
         v-for="col in perTagReason"
         :key="col.key"
