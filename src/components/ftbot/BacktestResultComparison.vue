@@ -32,35 +32,24 @@ const backtestResultFields = computed(() => {
     <div class="flex justify-center">
       <h3 class="font-bold text-3xl">Backtest-result comparison</h3>
     </div>
-
-    <!-- <div class="flex">
-      <div v-for="[key, result] in Object.entries(backtestResults)" :key="key" class="border m-1">
-        <BacktestResultSelectEntry :backtest-result="result" />
-      </div>
-    </div> -->
     <div class="flex flex-col text-start ms-0 me-2 gap-2">
       <div class="flex flex-col flex-xl-row">
         <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 flex-fill">
-          <DataTable bordered :value="backtestResultStats" size="small">
+          <DataTable bordered :value="backtestResultStats" size="small" show-gridlines>
             <Column
               v-for="col in backtestResultFields"
               :key="col.key"
               :field="col.key"
               :label="col.label"
             >
-              <template #header="{ column }">
-                {{ column }}
-                <!-- asdf backtestResults[column] -->
-                <!-- <BacktestResultSelectEntry :backtest-result="backtestResults[column.key]" /> -->
-                <!-- <span>{{ col.label }}</span> -->
+              <template #header>
+                <BacktestResultSelectEntry
+                  v-if="col.key && col.key in backtestResults"
+                  :backtest-result="backtestResults[col.key]"
+                />
+                <span v-else>{{ col.label }}</span>
               </template>
             </Column>
-            <!-- <template
-              v-for="[key, result] in Object.entries(backtestResults)"
-              #header=""
-              :key="key"
-            >
-            </template> -->
           </DataTable>
         </div>
       </div>
