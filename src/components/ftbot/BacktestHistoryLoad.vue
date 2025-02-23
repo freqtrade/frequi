@@ -32,6 +32,9 @@ const filteredList = computed(() =>
       r.strategy.toLowerCase().includes(filterTextDebounced.value.toLowerCase()),
   ),
 );
+function rowClick(row) {
+  botStore.activeBot.getBacktestHistoryResult(row.data);
+}
 </script>
 
 <template>
@@ -64,11 +67,12 @@ const filteredList = computed(() =>
       v-if="botStore.activeBot.backtestHistoryList.length > 0"
       class="mt-2"
       responsive
-      small
+      size="small"
       show-gridlines
       :value="filteredList"
+      @row-click="rowClick"
     >
-      <Column field="strategy" header="Strategy"></Column>
+      <Column field="strategy" header="Strategy2"></Column>
       <Column field="timeframe" header="Details">
         <template #body="{ data }">
           <strong>{{ data.timeframe }}</strong>
