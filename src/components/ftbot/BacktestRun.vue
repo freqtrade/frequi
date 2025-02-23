@@ -3,6 +3,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BacktestPayload } from '@/types';
 
 import { useBtStore } from '@/stores/btStore';
+import Divider from 'primevue/divider';
 const botStore = useBotStore();
 const btStore = useBtStore();
 
@@ -55,167 +56,99 @@ function clickBacktest() {
     <span>Strategy</span>
     <StrategySelect v-model="btStore.strategy"></StrategySelect>
   </div>
-  <BCard :disabled="botStore.activeBot.backtestRunning">
+  <div
+    class="grid grid-cols-2 border border-surface-500 rounded gap-y-2 gap-2 items-center p-1 pt-3"
+    :disabled="botStore.activeBot.backtestRunning"
+  >
     <!-- Backtesting parameters -->
-    <BFormGroup
-      label-cols-lg="2"
-      label="Backtest params"
-      label-size="sm"
-      label-class="fw-bold pt-0"
-      class="mb-0"
-    >
-      <BFormGroup
-        label-cols-sm="5"
-        label="Timeframe:"
-        label-align-sm="right"
-        label-for="timeframe-select"
-      >
-        <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" />
-      </BFormGroup>
-      <BFormGroup
-        label-cols-sm="5"
-        label="Detail Timeframe:"
-        label-align-sm="right"
-        label-for="timeframe-detail-select"
-        title="Detail timeframe, to simulate intra-candle results. Not setting this will not use this functionality."
-      >
-        <TimeframeSelect
-          id="timeframe-detail-select"
-          v-model="btStore.selectedDetailTimeframe"
-          :below-timeframe="btStore.selectedTimeframe"
+    <h3 class="font-bold mb-2 col-span-2 text-center">Backtesting parameters</h3>
+    <label for="timeframe-select">Timeframe:</label>
+    <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" size="small" />
+    <label for="timeframe-detail-select" class="flex justify-end items-center gap-2"
+      >Detail Timeframe:
+      <InfoBox
+        hint="Detail timeframe, to simulate intra-candle results. Not setting this will not use this functionality."
+      />
+    </label>
+    <TimeframeSelect
+      id="timeframe-detail-select"
+      v-model="btStore.selectedDetailTimeframe"
+      size="small"
+      :below-timeframe="btStore.selectedTimeframe"
+    />
+
+    <label for="max-open-trades">Max open trades:</label>
+    <InputNumber
+      id="max-open-trades"
+      v-model="btStore.maxOpenTrades"
+      size="small"
+      placeholder="Use strategy default"
+      type="number"
+    ></InputNumber>
+    <label for="starting-capital">Starting capital:</label>
+    <InputNumber
+      id="starting-capital"
+      v-model="btStore.startingCapital"
+      size="small"
+      placeholder="Use config default"
+      type="number"
+      :step="0.001"
+    ></InputNumber>
+    <label for="stake-amount-bool">Stake amount:</label>
+    <div class="flex items-center">
+      <div class="flex basis-full">
+        <BaseCheckbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
+          >Unlimited stake</BaseCheckbox
+        >
+      </div>
+      <InputNumber
+        id="stake-amount"
+        v-model="btStore.stakeAmount"
+        placeholder="Use strategy default"
+        :step="0.01"
+        :disabled="btStore.stakeAmountUnlimited"
+      ></InputNumber>
+    </div>
+
+    <label for="enable-protections">Enable Protections:</label>
+    <BaseCheckbox id="enable-protections" v-model="btStore.enableProtections"></BaseCheckbox>
+    <template v-if="botStore.activeBot.botApiVersion >= 2.22">
+      <label for="enable-cache">Cache Backtest results:</label>
+      <BaseCheckbox id="enable-cache" v-model="btStore.allowCache"></BaseCheckbox>
+    </template>
+
+    <template v-if="botStore.activeBot.botApiVersion >= 2.22">
+      <div class="flex justify-end items-center">
+        <span class="me-2">Enable FreqAI:</span>
+        <InfoBox
+          hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
         />
-      </BFormGroup>
+      </div>
+      <BaseCheckbox id="enable-freqai" v-model="btStore.freqAI.enabled"></BaseCheckbox>
 
-      <BFormGroup
-        label-cols-sm="5"
-        label="Max open trades:"
-        label-align-sm="right"
-        label-for="max-open-trades"
-      >
-        <BFormInput
-          id="max-open-trades"
-          v-model="btStore.maxOpenTrades"
-          placeholder="Use strategy default"
-          type="number"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        label-cols-sm="5"
-        label="Starting capital:"
-        label-align-sm="right"
-        label-for="starting-capital"
-      >
-        <BFormInput
-          id="starting-capital"
-          v-model="btStore.startingCapital"
+      <template v-if="btStore.freqAI.enabled">
+        <label for="freqai-identifier">FreqAI identifier:</label>
+        <InputText
+          id="freqai-identifier"
+          v-model="btStore.freqAI.identifier"
           placeholder="Use config default"
-          type="number"
-          step="0.001"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        label-cols-sm="5"
-        label="Stake amount:"
-        label-align-sm="right"
-        label-for="stake-amount"
-      >
-        <div class="flex align-items-center">
-          <div style="flex-basis: 100%" class="flex">
-            <BFormCheckbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
-              >Unlimited stake</BFormCheckbox
-            >
-          </div>
-          <BFormInput
-            id="stake-amount"
-            v-model="btStore.stakeAmount"
-            type="number"
-            placeholder="Use strategy default"
-            step="0.01"
-            style="flex-basis: 100%"
-            :disabled="btStore.stakeAmountUnlimited"
-          ></BFormInput>
-        </div>
-      </BFormGroup>
-
-      <BFormGroup
-        label-cols-sm="5"
-        label="Enable Protections:"
-        label-align-sm="right"
-        label-for="enable-protections"
-        class="align-items-center"
-      >
-        <BFormCheckbox id="enable-protections" v-model="btStore.enableProtections"></BFormCheckbox>
-      </BFormGroup>
-      <BFormGroup
-        v-if="botStore.activeBot.botApiVersion >= 2.22"
-        label-cols-sm="5"
-        label="Cache Backtest results:"
-        label-align-sm="right"
-        label-for="enable-cache"
-        class="align-items-center"
-      >
-        <BFormCheckbox id="enable-cache" v-model="btStore.allowCache"></BFormCheckbox>
-      </BFormGroup>
-      <template v-if="botStore.activeBot.botApiVersion >= 2.22">
-        <BFormGroup
-          label-cols-sm="5"
-          label="Enable FreqAI:"
-          label-align-sm="right"
-          label-for="enable-freqai"
-          class="align-items-center"
-        >
-          <template #label>
-            <div class="flex justify-content-center">
-              <span class="me-2">Enable FreqAI:</span>
-              <InfoBox
-                hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
-              />
-            </div>
-          </template>
-          <BFormCheckbox id="enable-freqai" v-model="btStore.freqAI.enabled"></BFormCheckbox>
-        </BFormGroup>
-        <BFormGroup
-          v-if="btStore.freqAI.enabled"
-          label-cols-sm="5"
-          label="FreqAI identifier:"
-          label-align-sm="right"
-          label-for="freqai-identifier"
-        >
-          <BFormInput
-            id="freqai-identifier"
-            v-model="btStore.freqAI.identifier"
-            placeholder="Use config default"
-          ></BFormInput>
-        </BFormGroup>
-        <BFormGroup
-          v-if="btStore.freqAI.enabled"
-          label-cols-sm="5"
-          label="FreqAI Model"
-          label-align-sm="right"
-          label-for="freqai-model"
-        >
-          <FreqaiModelSelect id="freqai-model" v-model="btStore.freqAI.model"></FreqaiModelSelect>
-        </BFormGroup>
+        ></InputText>
       </template>
+      <template v-if="btStore.freqAI.enabled">
+        <label for="freqai-model">FreqAI Model:</label>
+        <FreqaiModelSelect id="freqai-model" v-model="btStore.freqAI.model"></FreqaiModelSelect>
+      </template>
+    </template>
 
-      <!-- <b-form-group label-cols-sm="5" label="Fee:" label-align-sm="right" label-for="fee">
-              <b-form-input
-                id="fee"
-                type="number"
-                placeholder="Use exchange default"
-                step="0.01"
-              ></b-form-input>
-            </b-form-group> -->
-      <hr />
-      <TimeRangeSelect v-model="btStore.timerange" class="mt-2"></TimeRangeSelect>
-    </BFormGroup>
-  </BCard>
+    <Divider class="col-span-2" />
+    <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-2 col-span-2"></TimeRangeSelect>
+  </div>
 
-  <h3 class="mt-3">Backtesting summary</h3>
-  <div class="flex flex-wrap flex-md-nowrap justify-content-between justify-content-md-center">
-    <BButton
+  <h3 class="mt-3 font-bold text-2xl">Backtesting summary</h3>
+  <div class="flex flex-wrap md:flex-nowrap justify-between md:justify-center">
+    <Button
       id="start-backtest"
-      variant="primary"
+      severity="primary"
       :disabled="
         !btStore.canRunBacktest ||
         botStore.activeBot.backtestRunning ||
@@ -225,28 +158,35 @@ function clickBacktest() {
       @click="clickBacktest"
     >
       Start backtest
-    </BButton>
-    <BButton
-      variant="secondary"
+    </Button>
+    <Button
+      severity="secondary"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       class="mx-1"
       @click="botStore.activeBot.pollBacktest"
     >
       Load backtest result
-    </BButton>
-    <BButton
-      variant="secondary"
+    </Button>
+    <Button
+      severity="secondary"
       class="mx-1"
       :disabled="!botStore.activeBot.backtestRunning"
       @click="botStore.activeBot.stopBacktest"
-      >Stop Backtest</BButton
     >
-    <BButton
-      variant="secondary"
+      Stop Backtest
+    </Button>
+    <Button
+      severity="secondary"
       class="mx-1"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       @click="botStore.activeBot.removeBacktest"
-      >Reset Backtest</BButton
     >
+      Reset Backtest
+    </Button>
   </div>
 </template>
+<style lang="scss" scoped>
+label {
+  @apply text-right;
+}
+</style>
