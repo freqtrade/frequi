@@ -35,37 +35,39 @@ function refreshOHLCV(pair: string, columns: string[]) {
 
 <template>
   <div>
-    <div class="flex flex-row mb-1 align-items-center">
+    <div class="flex flex-row mb-1 items-center">
       <div class="me-2">
-        <BButton
+        <Button
           aria-label="Close"
           title="Pair Navigation"
-          variant="outline-secondary"
-          size="sm"
+          severity="secondary"
+          variant="outlined"
+          size="small"
           @click="isBarVisible.left = !isBarVisible.left"
         >
           <i-mdi-chevron-right v-if="!isBarVisible.left" width="24" height="24" />
           <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
-        </BButton>
+        </Button>
       </div>
-      <span class="flex-fill">
+      <span class="flex-grow">
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>
       <div class="col-md-1 text-end">
-        <BButton
+        <Button
           aria-label="Close"
-          variant="outline-secondary"
+          variant="outlined"
           title="Trade Navigation"
-          size="sm"
+          size="small"
+          severity="secondary"
           @click="isBarVisible.right = !isBarVisible.right"
         >
           <i-mdi-chevron-right v-if="isBarVisible.right" width="24" height="24" />
           <i-mdi-chevron-left v-if="!isBarVisible.right" width="24" height="24" />
-        </BButton>
+        </Button>
       </div>
     </div>
-    <div class="text-center flex flex-row h-full align-items-stretch">
+    <div class="text-center flex flex-row h-full items-stretch">
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
@@ -94,7 +96,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
       <Transition name="fade">
         <TradeListNav
           v-if="isBarVisible.right"
-          class="overflow-y-auto col-md-2 overflow-x-visible"
+          class="overflow-y-auto overflow-x-visible min-w-56"
           style="max-height: calc(100vh - 200px)"
           :trades="backtestResult.trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
           @trade-select="navigateChartToTrade"
