@@ -137,7 +137,7 @@ function toggleMenu(event) {
   <header>
     <div class="flex bg-primary2 bg-black border-b border-primary">
       <RouterLink class="flex flex-row items-center pe-2 gap-2" exact to="/">
-        <img class="logo" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
+        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="text-slate-200 text-lg hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
 
@@ -283,24 +283,3 @@ function toggleMenu(event) {
     </div>
   </header>
 </template>
-
-<style lang="scss" scoped>
-.logo {
-  vertical-align: middle;
-  height: 30px;
-}
-
-.dropdown-toggle::after {
-  display: none;
-}
-
-.navbar-brand-title {
-  padding-left: 0.5em;
-}
-.navbar {
-  padding: 0.2rem 0rem;
-}
-.nav-link {
-  padding: 0rem;
-}
-</style>
