@@ -65,11 +65,11 @@ watch(
 
 <template>
   <div class="flex px-3 mb-3 gap-3 flex-col lg:flex-row">
-    <div
+    <ul
       ref="availablePairlistsEl"
       class="divide-y border-x border-surface-500 rounded border-y divide-solid divide-y-3 divide-surface-500"
     >
-      <div
+      <li
         v-for="pairlist in availablePairlists"
         :key="pairlist.name"
         :class="{
@@ -93,8 +93,8 @@ watch(
             <i-mdi-arrow-right-bold-box-outline />
           </template>
         </Button>
-      </div>
-    </div>
+      </li>
+    </ul>
     <div class="flex flex-col flex-grow">
       <PairlistConfigActions />
       <div class="border rounded border-surface-500 p-2 mb-2">

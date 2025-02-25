@@ -35,10 +35,10 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
 <template>
   <div class="flex flex-col items-stretch">
     <h3 class="font-bold text-2xl">Available results:</h3>
-    <div
+    <ul
       class="ms-2 divide-y border-x border-surface-500 rounded border-y divide-solid divide-y-3 divide-surface-500"
     >
-      <div
+      <li
         v-for="[key, result] in Object.entries(backtestHistory)"
         :key="key"
         button
@@ -83,7 +83,7 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
             </template>
           </Button>
         </template>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>

@@ -52,7 +52,7 @@ watch(
         </div>
       </RadioButtonGroup>
     </div>
-    <div
+    <ul
       class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded border-surface-300 dark:border-surface-700"
     >
       <Button
@@ -63,7 +63,7 @@ watch(
         @click="sortDescendingOrder = !sortDescendingOrder"
         >Trade Navigation {{ sortDescendingOrder ? '&#8595;' : '&#8593;' }}
       </Button>
-      <div
+      <li
         v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
         class="flex flex-col py-1 px-1 items-stretch"
@@ -111,9 +111,9 @@ watch(
             </ul>
           </div>
         </Transition>
-      </div>
+      </li>
       <div v-if="trades.length === 0">No trades to show...</div>
-    </div>
+    </ul>
   </div>
 </template>
 
