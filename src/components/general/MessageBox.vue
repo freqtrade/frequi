@@ -27,25 +27,10 @@ defineExpose({ show });
 </script>
 
 <template>
-  <Dialog
-    id="MsgBoxModal"
-    ref="removeTradeModal"
-    v-model:visible="showRef"
-    :header="title"
-    @ok="msgBoxOK"
-    @cancel="showRef = false"
-    @keyup.esc="showRef = false"
-    @keyup.enter="msgBoxOK"
-  >
+  <Dialog id="MsgBoxModal" ref="removeTradeModal" v-model:visible="showRef" modal :header="title">
     {{ message }}
     <template #footer>
-      <Button
-        label="Cancel"
-        variant="outlined"
-        severity="secondary"
-        autofocus
-        @click="showRef = false"
-      />
+      <Button label="Cancel" variant="outlined" severity="secondary" @click="showRef = false" />
       <Button label="Save" severity="primary" autofocus @click="msgBoxOK" />
     </template>
   </Dialog>
