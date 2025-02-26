@@ -55,21 +55,21 @@ const stopEditBot = (botId: string) => {
 <template>
   <div v-if="botStore.botCount > 0">
     <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
-    <div ref="sortContainer" class="flex flex-col">
-      <div
-        v-for="(bot, idx) in botListComp"
+    <ul
+      ref="sortContainer"
+      class="flex flex-col divide-y border-x border-surface-500 rounded border-y divide-solid divide-y-3 divide-surface-500"
+    >
+      <li
+        v-for="bot in botListComp"
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
         button
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
-        class="flex items-center border p-2"
+        class="flex items-center p-2"
         :class="{
-          'dark:border-surface-500': bot.botId !== botStore.selectedBot,
-          'bg-primary dark:bg-transparent dark:border-primary': bot.botId === botStore.selectedBot,
-          'rounded-t-md': idx === 0,
-          'rounded-b-md': idx === botListComp.length - 1,
+          'bg-primary dark:bg-primary-800': bot.botId === botStore.selectedBot,
         }"
         @click="botStore.selectBot(bot.botId)"
       >
@@ -88,8 +88,8 @@ const stopEditBot = (botId: string) => {
           @edit="editBot(bot.botId)"
           @edit-login="editBotLogin(bot.botId)"
         />
-      </div>
-    </div>
+      </li>
+    </ul>
     <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
   </div>
 </template>
