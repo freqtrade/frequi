@@ -74,9 +74,6 @@ importers:
       vue-router:
         specifier: ^4.5.0
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
-      vue-select:
-        specifier: ^4.0.0-beta.6
-        version: 4.0.0-beta.6(vue@3.5.13(typescript@5.7.3))
     devDependencies:
       '@eslint/js':
         specifier: ^9.19.0
@@ -2581,11 +2578,6 @@ packages:
     peerDependencies:
       vue: ^3.2.0
 
-  vue-select@4.0.0-beta.6:
-    resolution: {integrity: sha512-K+zrNBSpwMPhAxYLTCl56gaMrWZGgayoWCLqe5rWwkB8aUbAUh7u6sXjIR7v4ckp2WKC7zEEUY27g6h1MRsIHw==}
-    peerDependencies:
-      vue: 3.x
-
   vue-template-compiler@2.7.16:
     resolution: {integrity: sha512-AYbUWAJHLGGQM7+cNTELw+KsOG9nl2CnSv467WobS5Cv9uk3wFcnr1Etsz2sEIHEZvw1U+o9mRlEO6QbZvUPGQ==}
 
@@ -5052,10 +5044,6 @@ snapshots:
   vue-router@4.5.0(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       '@vue/devtools-api': 6.6.4
-      vue: 3.5.13(typescript@5.7.3)
-
-  vue-select@4.0.0-beta.6(vue@3.5.13(typescript@5.7.3)):
-    dependencies:
       vue: 3.5.13(typescript@5.7.3)
 
   vue-template-compiler@2.7.16:

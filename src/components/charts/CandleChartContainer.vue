@@ -3,7 +3,6 @@ import { usePlotConfigStore } from '@/stores/plotConfig';
 import { useSettingsStore } from '@/stores/settings';
 import type { ChartSliderPosition, PairHistory, Trade } from '@/types';
 import { LoadingStatus } from '@/types';
-import VSelect from 'vue-select';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import VSelect from 'vue-select';
-
 const props = defineProps({
   modelValue: { required: false, default: '', type: String },
   columns: { required: true, type: Array as () => string[] },
