@@ -2,13 +2,13 @@
 interface Props {
   value?: string;
   belowTimeframe?: string;
-  size?: '' | 'small' | 'large';
+  size?: undefined | 'small' | 'large';
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: '',
   belowTimeframe: '',
-  size: '',
+  size: undefined,
 });
 const emit = defineEmits<{ input: [value: string] }>();
 

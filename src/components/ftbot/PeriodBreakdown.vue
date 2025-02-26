@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import type { TableField } from 'bootstrap-vue-next';
-
 import { TimeSummaryOptions } from '@/types';
 
 const botStore = useBotStore();

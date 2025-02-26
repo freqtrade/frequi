@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BotDescriptor } from '@/types';
-import type { CheckboxValue } from 'bootstrap-vue-next';
 import type MessageBox from './general/MessageBox.vue';
 const msgBox = ref<typeof MessageBox>();
 
@@ -12,8 +11,8 @@ const props = defineProps({
 defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
 
-function changeEvent(v: CheckboxValue) {
-  botStore.botStores[props.bot.botId].setAutoRefresh(v as boolean);
+function changeEvent(v: boolean) {
+  botStore.botStores[props.bot.botId].setAutoRefresh(v);
 }
 
 function confirmRemoveBot() {
@@ -46,7 +45,7 @@ const autoRefreshLoc = computed({
 
     <div class="flex items-center gap-2">
       <div class="flex items-center">
-        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" @update:model-value="changeEvent" />
+        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" @change="changeEvent" />
         <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
