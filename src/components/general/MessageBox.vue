@@ -16,27 +16,37 @@ const msgBoxOK = () => {
   showRef.value = false;
 };
 
-const show = (msg: MsgBoxObject) => {
+function show(msg: MsgBoxObject) {
   title.value = msg.title;
   message.value = msg.message;
   showRef.value = true;
   accept.value = msg.accept;
-};
+}
 
 defineExpose({ show });
 </script>
 
 <template>
-  <BModal
+  <Dialog
     id="MsgBoxModal"
     ref="removeTradeModal"
-    v-model="showRef"
-    :title="title"
+    v-model:visible="showRef"
+    :header="title"
     @ok="msgBoxOK"
     @cancel="showRef = false"
     @keyup.esc="showRef = false"
     @keyup.enter="msgBoxOK"
   >
     {{ message }}
-  </BModal>
+    <template #footer>
+      <Button
+        label="Cancel"
+        variant="outlined"
+        severity="secondary"
+        autofocus
+        @click="showRef = false"
+      />
+      <Button label="Save" severity="primary" autofocus @click="msgBoxOK" />
+    </template>
+  </Dialog>
 </template>
