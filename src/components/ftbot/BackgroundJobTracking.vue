@@ -3,22 +3,17 @@ const { runningJobs, clearJobs } = useBackgroundJob();
 </script>
 
 <template>
-  <div class="flex flex-row align-items-end gap-1">
-    <BListGroup class="ms-2 w-full flex-grow">
-      <BListGroupItem
-        v-for="(job, key) in runningJobs"
-        :key="key"
-        class="flex gap-2 align-items-center"
-        :title="key"
-      >
+  <div class="flex flex-row align-end gap-1">
+    <ul class="ms-2 w-full flex-grow">
+      <li v-for="(job, key) in runningJobs" :key="key" class="flex gap-2 align-center" :title="key">
         <i-mdi-download-box-outline v-if="job.taskStatus?.job_category === 'download_data'" />
         <span v-else>{{ job.taskStatus?.job_category }}</span>
-        <div class="flex justify-content-between">
+        <div class="flex justify-between">
           <i-mdi-check v-if="job.taskStatus?.status === 'success'" class="text-success" title="" />
           <span v-else>{{ job.taskStatus?.status }} </span>
           <span v-if="job.taskStatus?.progress" class="w-25">{{ job.taskStatus?.progress }}</span>
         </div>
-        <BProgress
+        <ProgressBar
           v-if="job.taskStatus?.progress"
           class="w-full flex-grow"
           :value="job.taskStatus?.progress"
@@ -33,7 +28,7 @@ const { runningJobs, clearJobs } = useBackgroundJob();
             class="w-full"
           >
             {{ t.description }}
-            <BProgress
+            <ProgressBar
               class="w-full flex-grow"
               :value="t.progress"
               show-progress
@@ -43,10 +38,18 @@ const { runningJobs, clearJobs } = useBackgroundJob();
             />
           </div>
         </div>
-      </BListGroupItem>
-    </BListGroup>
-    <BButton v-if="Object.keys(runningJobs).length > 0" size="sm" class="ms-auto" @click="clearJobs"
-      ><i-mdi-delete
-    /></BButton>
+      </li>
+    </ul>
+    <Button
+      v-if="Object.keys(runningJobs).length > 0"
+      size="small"
+      severity="secondary"
+      class="ms-auto"
+      @click="clearJobs"
+    >
+      <template #icon>
+        <i-mdi-delete />
+      </template>
+    </Button>
   </div>
 </template>
