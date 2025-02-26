@@ -2,6 +2,8 @@
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BotDescriptor } from '@/types';
 import type { CheckboxValue } from 'bootstrap-vue-next';
+import type MessageBox from './general/MessageBox.vue';
+const msgBox = ref<typeof MessageBox>();
 
 const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },
@@ -10,16 +12,24 @@ const props = defineProps({
 defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
 
-const changeEvent = (v: CheckboxValue) => {
+function changeEvent(v: CheckboxValue) {
   botStore.botStores[props.bot.botId].setAutoRefresh(v as boolean);
-};
-const botRemoveModalVisible = ref(false);
+}
 
-const confirmRemoveBot = () => {
-  botRemoveModalVisible.value = false;
+function confirmRemoveBot() {
   botStore.removeBot(props.bot.botId);
-  console.log('removing bot.');
-};
+}
+
+function removeBotQuestion() {
+  msgBox.value?.show({
+    title: 'Logout confirmation',
+    message: `Really remove (logout) from ${props.bot.botName} (${props.bot.botId})?`,
+    accept: () => {
+      confirmRemoveBot();
+    },
+  });
+}
+
 const autoRefreshLoc = computed({
   get() {
     return botStore.botStores[props.bot.botId].autoRefresh;
@@ -70,26 +80,11 @@ const autoRefreshLoc = computed({
         >
           <i-mdi-login />
         </Button>
-        <Button
-          size="small"
-          severity="secondary"
-          title="Delete bot"
-          @click="botRemoveModalVisible = true"
-        >
+        <Button size="small" severity="secondary" title="Delete bot" @click="removeBotQuestion">
           <i-mdi-delete />
         </Button>
       </div>
     </div>
-
-    <BModal
-      v-if="!noButtons"
-      id="removeBotModal"
-      v-model="botRemoveModalVisible"
-      class="hidden"
-      title="Logout confirmation"
-      @ok="confirmRemoveBot"
-    >
-      Really remove (logout) from {{ bot.botName }} ({{ bot.botId }})?
-    </BModal>
+    <MessageBox ref="msgBox" />
   </div>
 </template>
