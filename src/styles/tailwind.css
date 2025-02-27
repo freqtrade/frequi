@@ -1,6 +1,6 @@
-// @tailwind base;
-// @tailwind components;
-// @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer tailwind-base, primevue, tailwind-utilities;
 
@@ -15,7 +15,7 @@
 
 
 :root {
-    // default profit loss colors, could be overwritten by custom style
+     /* default profit loss colors, could be overwritten by custom style */
     --color-profit: #12bb7b;
     --color-loss: #ef5350;
 
@@ -23,7 +23,7 @@
 
 
 @layer components {
-    // Base component style overrides
+    /* Base component style overrides */
     :root {
 
         --p-datatable-row-background: unset;
@@ -52,12 +52,12 @@ body.ft-theme-transition *:after {
 
 
 html {
-    // Set the default font size to 14px
+    /*  Set the default font size to 14px */
     font-size: 14px;
 }
 
 .vue-grid-item {
-    // Fix white corners in vue-grid-item.
+    /*  Fix white corners in vue-grid-item. */
     background-color: unset !important;
 }
 

@@ -1,4 +1,4 @@
-import '@/styles/tailwind.scss';
+import '@/styles/tailwind.css';
 import PrimeVue from 'primevue/config';
 // import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
