@@ -28,24 +28,31 @@
   --p-primary-contrast-color: var(--p-text-200);
 }
 
-@layer tailwind-base {
-}
-
-@layer tailwind-utilities {
-}
 
 
-@layer utilities {
+@layer utilities {p
   :root {
     /* default profit loss colors, could be overwritten by custom style */
     --color-profit: #12bb7b;
     --color-loss: #ef5350;
 
+    --p-tabs-tabpanel-padding: unset;
+
+
+    /* --p-button-sm-padding-y: 0.1rem;
+    --p-button-sm-padding-x: 0.4rem; */
+  }
+  .p-button-icon-only.p-button-sm {
+    --p-button-sm-icon-only-height: 2.25rem;
+    height: var(--p-button-sm-icon-only-width);
+    /* padding : 0.1rem 0.4rem 0.1rem 0.4rem; */
+    padding: unset;
+
   }
 }
 
 
-@layer components {
+@layer primevue {
     /* Base component style overrides */
     :root {
 
