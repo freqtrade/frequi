@@ -70,7 +70,7 @@ const handleForceExit = () => {
     <Button
       severity="secondary"
       size="small"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || isRunning"
       title="Start Trading"
       @click="botStore.activeBot.startBot()"
@@ -80,7 +80,7 @@ const handleForceExit = () => {
     <Button
       severity="secondary"
       size="small"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Stop Trading - Also stops handling open trades."
       @click="handleStopBot()"
@@ -90,7 +90,7 @@ const handleForceExit = () => {
     <Button
       severity="secondary"
       size="small"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="StopBuy - Stops buying, but still handles open trades"
       @click="handleStopBuy()"
@@ -100,7 +100,7 @@ const handleForceExit = () => {
     <Button
       severity="secondary"
       size="small"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       :disabled="!botStore.activeBot.isTrading"
       title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
       @click="handleReloadConfig()"
@@ -110,7 +110,7 @@ const handleForceExit = () => {
     <Button
       severity="secondary"
       size="small"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       :disabled="!botStore.activeBot.isTrading"
       title="Force exit all"
       @click="handleForceExit()"
@@ -121,7 +121,7 @@ const handleForceExit = () => {
       v-if="botStore.activeBot.botState && botStore.activeBot.botState.force_entry_enable"
       size="small"
       severity="secondary"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
       @click="forceEnter = true"
@@ -133,7 +133,7 @@ const handleForceExit = () => {
       size="small"
       severity="secondary"
       :disabled="botStore.activeBot.isTrading"
-      class="btn btn-secondary btn-sm ms-1"
+      class="ms-1"
       title="Start Trading mode"
       @click="botStore.activeBot.startTrade()"
     >

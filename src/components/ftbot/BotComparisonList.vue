@@ -78,24 +78,25 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
 </script>
 
 <template>
-  <DataTable small hover show-empty primary-key="botId" :value="tableItems">
+  <DataTable size="small" :value="tableItems">
     <Column field="botName" header="Bot">
       <template #body="{ data, field }">
         <div class="flex flex-row justify-between items-center">
           <div>
-            <Checkbox
+            <BaseCheckbox
               v-if="data.botId && botStore.botCount > 1"
               v-model="
                 botStore.botStores[(data as unknown as ComparisonTableItems).botId ?? ''].isSelected
               "
               title="Show this bot in Dashboard"
-              >{{ data[field] }}</Checkbox
+              >{{ data[field] }}</BaseCheckbox
             >
-            <BFormCheckbox
+            <BaseCheckbox
               v-if="!data.botId && botStore.botCount > 1"
               v-model="allToggled"
               title="Toggle all bots"
-              >{{ data[field] }}</BFormCheckbox
+              class="font-bold"
+              >{{ data[field] }}</BaseCheckbox
             >
             <span v-if="botStore.botCount <= 1">{{ data[field] }}</span>
           </div>
