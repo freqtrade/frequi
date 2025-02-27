@@ -4,7 +4,7 @@ const { runningJobs, clearJobs } = useBackgroundJob();
 
 <template>
   <div class="flex flex-row align-end gap-1">
-    <ul class="ms-2 w-full flex-grow">
+    <ul class="ms-2 w-full grow">
       <li v-for="(job, key) in runningJobs" :key="key" class="flex gap-2 align-center" :title="key">
         <i-mdi-download-box-outline v-if="job.taskStatus?.job_category === 'download_data'" />
         <span v-else>{{ job.taskStatus?.job_category }}</span>
@@ -15,13 +15,13 @@ const { runningJobs, clearJobs } = useBackgroundJob();
         </div>
         <ProgressBar
           v-if="job.taskStatus?.progress"
-          class="w-full flex-grow"
+          class="w-full grow"
           :value="job.taskStatus?.progress"
           show-progress
           :max="100"
           striped
         />
-        <div v-if="job.taskStatus?.progress_tasks" class="flex flex-col w-full flex-grow gap-2">
+        <div v-if="job.taskStatus?.progress_tasks" class="flex flex-col w-full grow gap-2">
           <div
             v-for="[tkey, t] in Object.entries(job.taskStatus?.progress_tasks)"
             :key="tkey"
@@ -29,7 +29,7 @@ const { runningJobs, clearJobs } = useBackgroundJob();
           >
             {{ t.description }}
             <ProgressBar
-              class="w-full flex-grow"
+              class="w-full grow"
               :value="t.progress"
               show-progress
               :variant="job.taskStatus?.status === 'success' ? 'success' : 'primary'"

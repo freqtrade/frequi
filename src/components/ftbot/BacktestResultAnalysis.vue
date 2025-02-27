@@ -30,7 +30,7 @@ const backtestResultSettings = computed(() => {
 
     <div class="flex flex-col text-start ms-0 me-2 gap-2">
       <div class="flex flex-col xl:flex-row">
-        <div class="px-0 px-xl-0 pe-xl-1 flex-grow">
+        <div class="px-0 px-xl-0 pe-xl-1 grow">
           <DraggableContainer header="Strategy settings">
             <DataTable size="small" :value="backtestResultSettings">
               <Column field="setting" header="Setting"></Column>
@@ -38,7 +38,7 @@ const backtestResultSettings = computed(() => {
             </DataTable>
           </DraggableContainer>
         </div>
-        <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 flex-grow">
+        <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 grow">
           <DraggableContainer header="Metrics">
             <DataTable size="small" borderless :value="backtestResultStats">
               <Column field="metric" header="Metric" />

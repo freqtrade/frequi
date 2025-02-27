@@ -57,7 +57,7 @@ function clickBacktest() {
     <StrategySelect v-model="btStore.strategy"></StrategySelect>
   </div>
   <div
-    class="grid grid-cols-2 border border-surface-500 rounded gap-y-2 gap-2 items-center p-1 pt-3"
+    class="grid grid-cols-2 border border-surface-500 rounded-sm gap-y-2 gap-2 items-center p-1 pt-3"
     :disabled="botStore.activeBot.backtestRunning"
   >
     <!-- Backtesting parameters -->

@@ -155,6 +155,8 @@ defineProps({
   </div>
 </template>
 <style scoped>
+@reference '../../styles/tailwind.css';
+
 .detail-header {
   @apply text-xl font-semibold border-b pb-1 w-full block mb-1;
 }

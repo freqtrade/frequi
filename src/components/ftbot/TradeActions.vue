@@ -29,7 +29,7 @@ defineEmits<{
   <div class="flex flex-col gap-1">
     <Button
       v-if="botApiVersion <= 1.1"
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Forceexit"
@@ -43,7 +43,7 @@ defineEmits<{
     <Button
       v-if="botApiVersion > 1.1"
       size="small"
-      class="!justify-start"
+      class="justify-start!"
       severity="secondary"
       title="Forceexit limit"
       label="Forceexit limit"
@@ -55,7 +55,7 @@ defineEmits<{
     </Button>
     <Button
       v-if="botApiVersion > 1.1"
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Forceexit market"
@@ -68,7 +68,7 @@ defineEmits<{
     </Button>
     <Button
       v-if="botApiVersion > 2.16"
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Forceexit partial"
@@ -81,7 +81,7 @@ defineEmits<{
     </Button>
     <Button
       v-if="botApiVersion >= 2.24 && (trade.open_order_id || trade.has_open_orders)"
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Cancel open orders"
@@ -94,7 +94,7 @@ defineEmits<{
     </Button>
     <Button
       v-if="enableForceEntry"
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Increase position"
@@ -107,7 +107,7 @@ defineEmits<{
     </Button>
     <Button
       v-if="botApiVersion >= 2.28"
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Reload"
@@ -117,7 +117,7 @@ defineEmits<{
       <template #icon><i-mdi-reload-alert /> </template>
     </Button>
     <Button
-      class="!justify-start"
+      class="justify-start!"
       size="small"
       severity="secondary"
       title="Delete trade"

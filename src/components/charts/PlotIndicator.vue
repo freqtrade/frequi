@@ -89,7 +89,7 @@ watchDebounced(
       <div class="flex flex-col w-full">
         <label for="selAvailableIndicator" class="colsel">Color</label>
         <InputGroup>
-          <InputGroupAddon class="!p-0">
+          <InputGroupAddon class="p-0!">
             <ColorPicker v-model="selColor" type="color" class="m-auto"></ColorPicker>
           </InputGroupAddon>
           <InputText id="colsel" v-model="selColor" size="small" class="grow"> </InputText>

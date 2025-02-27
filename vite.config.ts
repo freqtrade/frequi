@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolve from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
+import tailwindcss from '@tailwindcss/vite';
 
 import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 
@@ -41,6 +42,7 @@ export default defineConfig({
       dirs: ['src/composables', 'src/stores', 'src/utils/**'],
       vueTemplate: true,
     }),
+    tailwindcss(),
   ],
   resolve: {
     dedupe: ['vue'],

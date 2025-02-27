@@ -75,7 +75,7 @@ watch(
     <div
       class="flex md:flex-row h-full w-16"
       :class="{
-        '!w-96': showLeftBar,
+        'w-96!': showLeftBar,
       }"
     >
       <!-- Left bar -->

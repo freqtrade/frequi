@@ -27,7 +27,7 @@ const save = () => {
     <InputText v-model="newName" size="small" class="w-full" placeholder="Bot name" autofocus />
 
     <div class="flex gap-1">
-      <Button type="submit" size="small" severity="secondary" title="Save" class="w-8 h-8 !p-0">
+      <Button type="submit" size="small" severity="secondary" title="Save" class="w-8 h-8 p-0!">
         <i-mdi-check />
       </Button>
 
@@ -35,7 +35,7 @@ const save = () => {
         size="small"
         severity="secondary"
         title="Cancel"
-        class="w-8 h-8 !p-0"
+        class="w-8 h-8 p-0!"
         @click="$emit('cancelled')"
       >
         <i-mdi-close />

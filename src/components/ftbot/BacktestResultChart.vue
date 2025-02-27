@@ -49,7 +49,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
           <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
         </Button>
       </div>
-      <span class="flex-grow">
+      <span class="grow">
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>

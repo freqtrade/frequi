@@ -19,7 +19,7 @@ const pairlistStore = usePairlistConfigStore();
       :allow-add="true"
       :allow-duplicate="true"
       :allow-edit="true"
-      class="flex flex-grow"
+      class="flex grow"
       @delete="pairlistStore.deleteConfig"
       @duplicate="(oldName: string, newName: string) => pairlistStore.duplicateConfig(newName)"
       @new="(name: string) => pairlistStore.newConfig(name)"

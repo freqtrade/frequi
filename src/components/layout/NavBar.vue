@@ -252,7 +252,7 @@ function toggleMenu(event) {
           </div>
           <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
-            <Button severity="secondary" rounded @click="toggleMenu">
+            <Button severity="secondary" rounded-sm @click="toggleMenu">
               <!-- <Avatar label="FT" shape="circle"></Avatar> -->
               FT
               <i-mdi-chevron-down />

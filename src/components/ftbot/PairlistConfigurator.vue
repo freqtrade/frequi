@@ -67,7 +67,7 @@ watch(
   <div class="flex px-3 mb-3 gap-3 flex-col lg:flex-row">
     <ul
       ref="availablePairlistsEl"
-      class="divide-y border-x border-surface-500 rounded border-y divide-solid divide-y-3 divide-surface-500"
+      class="divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-y-3 divide-surface-500"
     >
       <li
         v-for="pairlist in availablePairlists"
@@ -78,7 +78,7 @@ watch(
         }"
         class="pairlist flex text-start items-center py-2 px-3 hover:cursor-grab"
       >
-        <div class="flex flex-grow items-start flex-col">
+        <div class="flex grow items-start flex-col">
           <span class="font-bold">{{ pairlist.name }}</span>
           <span class="text-sm text-muted-color">{{ pairlist.description }}</span>
         </div>
@@ -95,15 +95,15 @@ watch(
         </Button>
       </li>
     </ul>
-    <div class="flex flex-col flex-grow">
+    <div class="flex flex-col grow">
       <PairlistConfigActions />
-      <div class="border rounded border-surface-500 p-2 mb-2">
+      <div class="border rounded-sm border-surface-500 p-2 mb-2">
         <div class="flex items-center gap-2 my-2">
           <span class="col-auto">Stake currency: </span>
           <InputText v-model="pairlistStore.stakeCurrency" size="small" />
         </div>
 
-        <div class="mb-2 border rounded border-surface-500 p-2 text-start">
+        <div class="mb-2 border rounded-sm border-surface-500 p-2 text-start">
           <BaseCheckbox v-model="pairlistStore.customExchange" class="mb-2">
             Custom Exchange
           </BaseCheckbox>
@@ -126,7 +126,7 @@ watch(
       </Message>
       <div
         ref="pairlistConfigsEl"
-        class="flex flex-col flex-grow relative border rounded border-surface-500 p-1 gap-2"
+        class="flex flex-col grow relative border rounded-sm border-surface-500 p-1 gap-2"
         :class="{ empty: configEmpty }"
       >
         <PairlistConfigItem

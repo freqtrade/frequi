@@ -17,7 +17,7 @@ const { copy, isSupported } = useClipboard();
       @click="copy(typeof content === 'string' ? content : JSON.stringify(content))"
     />
     <pre
-      class="text-start border rounded border-surface-500 p-2 m-0 bg-surface-50 dark:bg-surface-900 overflow-auto"
+      class="text-start border rounded-sm border-surface-500 p-2 m-0 bg-surface-50 dark:bg-surface-900 overflow-auto"
     ><code>{{ content }}</code></pre>
   </div>
 </template>

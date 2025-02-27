@@ -33,7 +33,7 @@ const resetDynamicLayout = () => {
       <div class="flex flex-col gap-4 text-start dark:text-surface-300">
         <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
 
-        <div class="border border-surface-400 rounded p-4 space-y-4">
+        <div class="border border-surface-400 rounded-sm p-4 space-y-4">
           <h4 class="text-xl font-semibold">UI settings</h4>
 
           <BaseCheckbox v-model="layoutStore.layoutLocked" class="space-y-1">
@@ -101,7 +101,7 @@ const resetDynamicLayout = () => {
           </BaseCheckbox>
         </div>
 
-        <div class="border border-surface-400 rounded p-4 space-y-4">
+        <div class="border border-surface-400 rounded-sm p-4 space-y-4">
           <h4 class="text-lg font-semibold">Chart settings</h4>
 
           <div class="space-y-1">
@@ -173,7 +173,7 @@ const resetDynamicLayout = () => {
           </div>
         </div>
 
-        <div class="border rounded p-4 space-y-4">
+        <div class="border rounded-sm p-4 space-y-4">
           <h4 class="text-lg font-semibold">Notification Settings</h4>
           <div class="space-y-2">
             <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]">

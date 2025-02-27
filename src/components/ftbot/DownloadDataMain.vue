@@ -115,7 +115,7 @@ async function startDownload() {
           </div>
 
           <!-- Time selection section -->
-          <div class="px-3 border dark:border-surface-700 border-surface-300 p-2 rounded">
+          <div class="px-3 border dark:border-surface-700 border-surface-300 p-2 rounded-sm">
             <div class="flex flex-col gap-2">
               <div class="flex justify-between items-center">
                 <h4 class="text-start mb-0 font-bold text-lg">Time Selection</h4>
@@ -143,7 +143,7 @@ async function startDownload() {
 
           <!-- Advanced options section -->
           <div
-            class="mb-2 border dark:border-surface-700 border-surface-300 rounded p-2 text-start"
+            class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
           >
             <Button class="mb-2" severity="secondary" @click="isAdvancedOpen = !isAdvancedOpen">
               Advanced Options
@@ -157,7 +157,7 @@ async function startDownload() {
                   only be applied when this section is expanded.
                 </Message>
                 <div
-                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded p-2 text-start"
+                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
                 >
                   <BaseCheckbox v-model="erase" class="mb-2">Erase existing data</BaseCheckbox>
                   <BaseCheckbox v-model="downloadTrades" class="mb-2">
@@ -165,7 +165,7 @@ async function startDownload() {
                   </BaseCheckbox>
                 </div>
                 <div
-                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded p-2 text-start"
+                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
                 >
                   <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
                     Custom Exchange

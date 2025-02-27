@@ -20,20 +20,20 @@ function toggleVisible() {
 </script>
 
 <template>
-  <div class="shadow rounded border border-surface-300 dark:border-surface-700">
+  <div class="shadow-sm rounded-sm border border-surface-300 dark:border-surface-700">
     <div
       class="flex w-full text-start items-center bg-surface-200 dark:bg-surface-700 p-2 border-b border-surface-300 dark:border-surface-600"
     >
-      <div class="flex flex-grow items-center">
+      <div class="flex grow items-center">
         <i-mdi-reorder-horizontal
           role="button"
-          class="handle me-2 ms-2 flex-shrink"
+          class="handle me-2 ms-2 shrink"
           width="24"
           height="24"
         />
         <div
           role="button"
-          class="flex flex-grow items-start flex-col user-select-none"
+          class="flex grow items-start flex-col user-select-none"
           @click="toggleVisible"
         >
           <span class="font-bold">{{ pairlist.name }}</span>

@@ -116,7 +116,7 @@ const combinedPairList = computed(() => {
       />
     </div>
     <ul
-      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded border-surface-300 dark:border-surface-700"
+      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded-sm border-surface-300 dark:border-surface-700"
     >
       <li
         v-for="comb in combinedPairList"

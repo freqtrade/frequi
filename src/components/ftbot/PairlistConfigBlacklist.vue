@@ -11,7 +11,7 @@ const configNames = computed(() =>
   <Panel toggleable header="Blacklist" collapsed>
     <div class="flex mb-4 items-center gap-2">
       <span class="col-auto">Copy from:</span>
-      <Select v-model="copyFromConfig" size="small" class="flex-grow" :options="configNames" />
+      <Select v-model="copyFromConfig" size="small" class="grow" :options="configNames" />
       <Button
         title="Copy"
         size="small"
