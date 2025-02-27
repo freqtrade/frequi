@@ -18,12 +18,7 @@ function removePairLock(item: Lock) {
   <div>
     <div class="mb-2">
       <label class="me-auto text-xl">Pair Locks</label>
-      <Button
-        class="float-end"
-        size="small"
-        severity="secondary"
-        @click="botStore.activeBot.getLocks"
-      >
+      <Button class="float-end" severity="secondary" @click="botStore.activeBot.getLocks">
         <template #icon>
           <i-mdi-refresh />
         </template>

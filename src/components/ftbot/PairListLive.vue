@@ -159,13 +159,14 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
+@reference '../../styles/tailwind.css';
+
 .check {
-  // Hidden checkbox on blacklist selection
-  // background: white;
+  /* Hidden checkbox on blacklist selection */
   color: #41b883;
   opacity: 0;
-  // border-radius: 50%;
+  /* border-radius: 50%; */
   z-index: 5;
   width: 1.3em;
   height: 1.3em;
