@@ -1,7 +1,7 @@
 forceexit
 <script setup lang="ts">
 import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import MessageBox from '@/components/general/MessageBox.vue';
+import type MessageBox from '@/components/general/MessageBox.vue';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { ForceSellPayload } from '@/types';
 
@@ -66,78 +66,85 @@ const handleForceExit = () => {
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-row gap-1">
     <Button
+      size="large"
       severity="secondary"
-      size="small"
-      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || isRunning"
       title="Start Trading"
       @click="botStore.activeBot.startBot()"
     >
-      <i-mdi-play height="24" width="24" />
+      <template #icon>
+        <i-mdi-play />
+      </template>
     </Button>
     <Button
+      size="large"
       severity="secondary"
-      size="small"
-      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Stop Trading - Also stops handling open trades."
       @click="handleStopBot()"
     >
-      <i-mdi-stop height="24" width="24" />
+      <template #icon>
+        <i-mdi-stop />
+      </template>
     </Button>
     <Button
+      size="large"
       severity="secondary"
-      size="small"
-      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="StopBuy - Stops buying, but still handles open trades"
       @click="handleStopBuy()"
     >
-      <i-mdi-pause height="24" width="24" />
+      <template #icon>
+        <i-mdi-pause />
+      </template>
     </Button>
     <Button
+      size="large"
       severity="secondary"
-      size="small"
-      class="ms-1"
       :disabled="!botStore.activeBot.isTrading"
       title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
       @click="handleReloadConfig()"
     >
-      <i-mdi-reload height="24" width="24" />
+      <template #icon>
+        <i-mdi-reload />
+      </template>
     </Button>
     <Button
       severity="secondary"
-      size="small"
-      class="ms-1"
+      size="large"
       :disabled="!botStore.activeBot.isTrading"
       title="Force exit all"
       @click="handleForceExit()"
     >
-      <i-mdi-close-box-multiple height="24" width="24" />
+      <template #icon>
+        <i-mdi-close-box-multiple />
+      </template>
     </Button>
     <Button
       v-if="botStore.activeBot.botState && botStore.activeBot.botState.force_entry_enable"
-      size="small"
+      size="large"
       severity="secondary"
-      class="ms-1"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
       @click="forceEnter = true"
     >
-      <i-mdi-plus-box-multiple-outline style="font-size: 20px" />
+      <template #icon>
+        <i-mdi-plus-box-multiple-outline />
+      </template>
     </Button>
     <Button
       v-if="botStore.activeBot.isWebserverMode && false"
-      size="small"
+      size="large"
       severity="secondary"
       :disabled="botStore.activeBot.isTrading"
-      class="ms-1"
       title="Start Trading mode"
       @click="botStore.activeBot.startTrade()"
     >
-      <i-mdi-play class="fs-4" />
+      <template #icon>
+        <i-mdi-play />
+      </template>
     </Button>
     <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
     <MessageBox ref="msgBox" />

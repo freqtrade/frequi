@@ -76,7 +76,7 @@ onMounted(() => {
   <div>
     <div class="flex flex-wrap flex-row mb-2 justify-end items-center">
       <label class="text-xl ms-1 me-auto mb-0">{{ showBotOnly ? 'Bot' : 'Account' }} Balance</label>
-      <div class="flex flex-row">
+      <div class="flex flex-row gap-1">
         <Button
           v-if="canUseBotBalance"
           size="small"

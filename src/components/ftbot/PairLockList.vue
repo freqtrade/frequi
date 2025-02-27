@@ -17,14 +17,16 @@ function removePairLock(item: Lock) {
 <template>
   <div>
     <div class="mb-2">
-      <label class="me-auto h3">Pair Locks</label>
+      <label class="me-auto text-xl">Pair Locks</label>
       <Button
         class="float-end"
         size="small"
         severity="secondary"
         @click="botStore.activeBot.getLocks"
       >
-        <i-mdi-refresh />
+        <template #icon>
+          <i-mdi-refresh />
+        </template>
       </Button>
     </div>
     <div>
