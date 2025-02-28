@@ -3,9 +3,14 @@ const { runningJobs, clearJobs } = useBackgroundJob();
 </script>
 
 <template>
-  <div class="flex flex-row align-end gap-1">
-    <ul class="ms-2 w-full grow">
-      <li v-for="(job, key) in runningJobs" :key="key" class="flex gap-2 align-center" :title="key">
+  <div class="flex flex-row items-end gap-1">
+    <ul class="ms-2 w-full grow space-y-1">
+      <li
+        v-for="(job, key) in runningJobs"
+        :key="key"
+        class="border p-1 pb-2 rounded-sm dark:border-surface-700 border-surface-300 flex gap-2 items-center"
+        :title="key"
+      >
         <i-mdi-download-box-outline v-if="job.taskStatus?.job_category === 'download_data'" />
         <span v-else>{{ job.taskStatus?.job_category }}</span>
         <div class="flex justify-between">
@@ -16,24 +21,31 @@ const { runningJobs, clearJobs } = useBackgroundJob();
         <ProgressBar
           v-if="job.taskStatus?.progress"
           class="w-full grow"
-          :value="job.taskStatus?.progress"
+          :value="(job.taskStatus?.progress / 100) * 100"
           show-progress
           :max="100"
           striped
         />
-        <div v-if="job.taskStatus?.progress_tasks" class="flex flex-col w-full grow gap-2">
+        <div
+          v-if="job.taskStatus?.progress_tasks"
+          class="flex flex-col md:flex-row w-full grow gap-2"
+        >
           <div
             v-for="[tkey, t] in Object.entries(job.taskStatus?.progress_tasks)"
             :key="tkey"
             class="w-full"
           >
             {{ t.description }}
+
             <ProgressBar
               class="w-full grow"
-              :value="t.progress"
+              :value="Math.round((t.progress / t.total) * 100 * 100) / 100"
               show-progress
-              :variant="job.taskStatus?.status === 'success' ? 'success' : 'primary'"
-              :max="t.total"
+              :pt="{
+                value: {
+                  class: job.taskStatus.status === 'success' ? 'bg-emerald-500' : 'bg-amber-500',
+                },
+              }"
               striped
             />
           </div>
@@ -42,7 +54,6 @@ const { runningJobs, clearJobs } = useBackgroundJob();
     </ul>
     <Button
       v-if="Object.keys(runningJobs).length > 0"
-      size="small"
       severity="secondary"
       class="ms-auto"
       @click="clearJobs"

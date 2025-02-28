@@ -69,7 +69,7 @@ async function startDownload() {
 
 <template>
   <div class="px-1 mx-auto w-full max-w-4xl lg:max-w-7xl">
-    <!-- <BackgroundJobTracking class="mb-4" /> -->
+    <BackgroundJobTracking class="mb-4" />
     <DraggableContainer header="Downloading Data" class="mx-1 p-4">
       <div class="flex mb-3 gap-3 flex-col">
         <div class="flex flex-col gap-3">

@@ -103,7 +103,7 @@ onMounted(() => {
   <div>
     <div class="mb-2">
       <h3 class="me-auto text-2xl inline">Performance</h3>
-      <Button class="float-end" size="small" severity="secondary" @click="refreshSummary">
+      <Button class="float-end" severity="secondary" @click="refreshSummary">
         <template #icon>
           <i-mdi-refresh />
         </template>

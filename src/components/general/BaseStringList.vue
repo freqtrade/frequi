@@ -23,7 +23,6 @@ withDefaults(
           :placeholder="placeholder"
         ></InputText>
         <Button
-          :size="size"
           severity="secondary"
           variant="outlined"
           title="Delete this value."
@@ -37,7 +36,6 @@ withDefaults(
       </div>
     </div>
     <Button
-      :size="size"
       :title="`Add new value`"
       severity="secondary"
       class="mt-auto flex align-items-center justify-content-center"
