@@ -19,7 +19,7 @@ watch(
 <template>
   <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
     <NavBar />
-    <BaseAlert></BaseAlert>
+    <Toast />
     <BodyLayout class="grow overflow-auto" />
     <NavFooter />
   </div>
