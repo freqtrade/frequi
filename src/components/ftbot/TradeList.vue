@@ -144,32 +144,20 @@ function handleForceEntry(item: Trade) {
   increasePosition.value.visible = true;
 }
 
-const onRowClicked = (item) => {
+const onRowClicked = ({ data: item, index }) => {
   if (props.multiBotView && botStore.selectedBot !== item.botId) {
     // Multibotview - on click switch to the bot trade view
     botStore.selectBot(item.botId);
   }
   if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
     botStore.activeBot.setDetailTrade(item);
+    selectedItemIndex.value = index;
     if (props.multiBotView) {
       router.push({ name: 'Freqtrade Trading' });
     }
   } else {
     botStore.activeBot.setDetailTrade(null);
-  }
-};
-
-const onRowSelected = () => {
-  if (botStore.activeBot.detailTradeId) {
-    const itemIndex = props.trades.findIndex(
-      (v) => v.trade_id === botStore.activeBot.detailTradeId,
-    );
-    if (itemIndex >= 0) {
-      tradesTable.value?.selectRow(itemIndex);
-    } else {
-      console.log(`Unsetting item for tradeid ${selectedItemIndex.value}`);
-      selectedItemIndex.value = undefined;
-    }
+    selectedItemIndex.value = undefined;
   }
 };
 
@@ -179,7 +167,7 @@ watch(
     const index = props.trades.findIndex((v) => v.trade_id === val);
     // Unselect when another tradeTable is selected!
     if (index < 0) {
-      tradesTable.value?.clearSelected();
+      selectedItemIndex.value = undefined;
     }
   },
 );
@@ -208,7 +196,6 @@ watch(
       :scrollable="true"
       scroll-height="flex"
       @row-click="onRowClicked"
-      @row-select="onRowSelected"
     >
       <template #empty>
         {{ emptyText }}
