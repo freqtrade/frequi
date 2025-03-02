@@ -165,6 +165,7 @@ export interface StrategyBacktestResult {
   sortino?: number;
   sharpe?: number;
   calmar?: number;
+  sqn?: number;
   expectancy?: number;
   expectancy_ratio?: number;
 
