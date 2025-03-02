@@ -79,6 +79,9 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       Calmar: `${result.calmar ? result.calmar.toFixed(2) : 'N/A'}`,
     },
     {
+      'System Quality Number (SQN)': `${result.sqn ? result.sqn.toFixed(2) : 'N/A'}`,
+    },
+    {
       [`Expectancy ${result.expectancy_ratio ? '(ratio)' : ''}`]: `${
         result.expectancy
           ? result.expectancy_ratio
