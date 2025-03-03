@@ -11,10 +11,6 @@ const props = defineProps({
 defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
 
-function changeEvent(v: boolean) {
-  botStore.botStores[props.bot.botId].setAutoRefresh(v);
-}
-
 function confirmRemoveBot() {
   botStore.removeBot(props.bot.botId);
 }
@@ -33,8 +29,8 @@ const autoRefreshLoc = computed({
   get() {
     return botStore.botStores[props.bot.botId].autoRefresh;
   },
-  set() {
-    // pass
+  set(newValue) {
+    botStore.botStores[props.bot.botId].setAutoRefresh(newValue);
   },
 });
 </script>
@@ -45,7 +41,7 @@ const autoRefreshLoc = computed({
 
     <div class="flex items-center gap-2">
       <div class="flex items-center">
-        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" @change="changeEvent" />
+        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" />
         <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
