@@ -46,7 +46,7 @@
     "@playwright/test": "^1.50.1",
     "@tsconfig/node22": "^22.0.0",
     "@types/echarts": "^5.0.0",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.13.9",
     "@typescript-eslint/eslint-plugin": "^8.25.0",
     "@typescript-eslint/parser": "^8.25.0",
     "@vitejs/plugin-vue": "^5.2.1",
