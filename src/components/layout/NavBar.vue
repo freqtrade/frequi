@@ -97,6 +97,46 @@ watch(
   },
 );
 
+// Navigation items array
+const navItems = ref([
+  {
+    label: 'Trade',
+    to: '/trade',
+    visible: computed(() => !botStore.canRunBacktest),
+  },
+  {
+    label: 'Dashboard',
+    to: '/dashboard',
+    visible: computed(() => !botStore.canRunBacktest),
+  },
+  {
+    label: 'Chart',
+    to: '/graph',
+  },
+  {
+    label: 'Logs',
+    to: '/logs',
+  },
+  {
+    label: 'Backtest',
+    to: '/backtest',
+    visible: computed(() => botStore.canRunBacktest),
+  },
+  {
+    label: 'Download Data',
+    to: '/download_data',
+    visible: computed(() => botStore.isWebserverMode && botStore.activeBot.botApiVersion >= 2.41),
+  },
+  {
+    label: 'Pairlist Config',
+    to: '/pairlist_config',
+    visible: computed(
+      () =>
+        (botStore.activeBot?.isWebserverMode ?? false) && botStore.activeBot.botApiVersion >= 2.3,
+    ),
+  },
+]);
+
 const menuItems = ref<MenuItem[]>([
   {
     label: `V: ${settingsStore.uiVersion}`,
@@ -135,65 +175,26 @@ function toggleMenu(event) {
 
 <template>
   <header>
-    <div class="flex bg-primary2 bg-black border-b border-primary">
+    <div class="flex bg-primary2 bg-[#0089A1] border-b border-primary">
       <RouterLink class="flex flex-row items-center pe-2 gap-2" exact to="/">
         <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-lg hidden lg:inline text-nowrap">Freqtrade UI</span>
+        <span class="text-slate-200 text-xl hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
 
-      <div id="nav-collapse" class="flex justify-between w-full text-center items-center" is-nav>
+      <div
+        id="nav-collapse"
+        class="flex justify-between w-full text-center items-center ms-3"
+        is-nav
+      >
         <div class="items-center hidden md:flex">
           <Button
-            v-if="!botStore.canRunBacktest"
-            label="Trade"
+            v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
+            :key="index"
+            :label="item.label"
             size="small"
             variant="link"
             as="router-link"
-            to="/trade"
-          ></Button>
-          <Button
-            v-if="!botStore.canRunBacktest"
-            label="Dashboard"
-            as="router-link"
-            size="small"
-            variant="link"
-            to="/dashboard"
-          ></Button>
-          <Button label="Chart" as="router-link" variant="link" to="/graph" size="small"></Button>
-          <Button
-            severity="danger"
-            label="Logs"
-            as="router-link"
-            variant="link"
-            to="/logs"
-            size="small"
-          ></Button>
-          <Button
-            v-if="botStore.canRunBacktest"
-            label="Backtest"
-            size="small"
-            as="router-link"
-            variant="link"
-            to="/backtest"
-          ></Button>
-          <Button
-            v-if="botStore.isWebserverMode && botStore.activeBot.botApiVersion >= 2.41"
-            size="small"
-            as="router-link"
-            variant="link"
-            to="/download_data"
-            >Download Data</Button
-          >
-          <Button
-            v-if="
-              (botStore.activeBot?.isWebserverMode ?? false) &&
-              botStore.activeBot.botApiVersion >= 2.3
-            "
-            size="small"
-            as="router-link"
-            variant="link"
-            label="Pairlist Config"
-            to="/pairlist_config"
+            :to="item.to"
           ></Button>
           <ThemeSelect />
         </div>
