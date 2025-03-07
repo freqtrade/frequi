@@ -116,6 +116,7 @@ watch(
         <Fieldset
           v-if="botStore.activeBot.botState.api_version >= 2.42"
           toggleable
+          collapsed
           legend="Exchange"
           class="mb-2 p-2 text-start col-12 col-md-6"
         >
