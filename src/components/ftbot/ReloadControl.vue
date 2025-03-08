@@ -14,7 +14,7 @@ const autoRefreshLoc = computed({
 
 <template>
   <div class="flex items-center ms-2">
-    <Checkbox v-model="autoRefreshLoc" size="small" binary title="Auto Refresh"></Checkbox>
+    <BaseCheckbox v-model="autoRefreshLoc" size="small" title="Auto Refresh" />
     <Button
       class="m-1"
       severity="secondary"

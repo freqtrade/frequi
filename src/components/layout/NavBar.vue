@@ -199,9 +199,8 @@ function toggleMenu(event) {
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div
             v-if="!settingsStore.confirmDialog"
-            class="my-auto me-5"
+            class="my-auto me-5 flex text-yellow-300"
             title="Confirm dialog deactivated, Forced exits will be executed immediately. Be careful."
-            style="color: yellow"
           >
             <i-mdi-run-fast />
             <i-mdi-alert />
@@ -264,7 +263,7 @@ function toggleMenu(event) {
                   <i-mdi-cog v-if="item.icon === 'i-mdi-cog'" />
                   <i-mdi-logout v-if="item.icon === 'i-mdi-logout'" />
                   <i-mdi-lock-reset v-if="item.icon === 'i-mdi-lock-reset'" />
-                  <Checkbox v-if="item.checkbox" v-model="item.checked" binary />
+                  <BaseCheckbox v-if="item.checkbox" v-model="item.checked" />
                   <span>{{ item.label }}</span>
                 </div>
               </template>
