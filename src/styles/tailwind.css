@@ -27,15 +27,6 @@
 
 @layer frequi {
   /* Customization for freqUI components */
-
-
-
-  .ft-dark-theme {
-      --p-content-background: unset;
-      --p-menu-background: var(--p-surface-900);
-      --p-primary-contrast-color: var(--p-text-200);
-    }
-
   :root {
 
       --p-primary-50: #DBFAFF;
@@ -51,6 +42,11 @@
       --p-primary-950: #000D0F;
 
       --p-primary-color: var(--p-primary-600);
+
+
+      /* Secondary Button */
+      --p-button-secondary-background: var(--p-surface-200);
+      --p-button-secondary-hover-background: var(--p-surface-300);
 
     /* default profit loss colors, could be overwritten by custom style */
     --color-profit: #12bb7b;
@@ -73,6 +69,15 @@
 
       /* --p-primary-color: var(--p-primary-500); */
   }
+
+  .ft-dark-theme {
+      --p-content-background: unset;
+      --p-menu-background: var(--p-surface-900);
+      --p-primary-contrast-color: var(--p-text-200);
+      --p-button-secondary-background: var(--p-surface-700);
+      --p-button-secondary-hover-background: var(--p-surface-600);
+  }
+
   .p-button-icon-only.p-button-sm {
     --p-button-sm-icon-only-height: 2.25rem;
     /* height: var(--p-button-sm-icon-only-width); */
