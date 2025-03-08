@@ -175,23 +175,18 @@ function toggleMenu(event) {
 
 <template>
   <header>
-    <div class="flex bg-primary2 bg-[#0089A1] border-b border-primary">
-      <RouterLink class="flex flex-row items-center pe-2 gap-2" exact to="/">
+    <div class="flex bg-primary-500 border-b border-primary">
+      <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
         <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
         <span class="text-slate-200 text-xl hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
 
-      <div
-        id="nav-collapse"
-        class="flex justify-between w-full text-center items-center ms-3"
-        is-nav
-      >
+      <div class="flex justify-between w-full text-center items-center ms-3">
         <div class="items-center hidden md:flex">
           <Button
             v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
             :key="index"
             :label="item.label"
-            size="small"
             variant="link"
             as="router-link"
             :to="item.to"
@@ -237,7 +232,7 @@ function toggleMenu(event) {
           <div
             class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
           >
-            <span class="text-xs me-2">
+            <span class="text-sm me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
