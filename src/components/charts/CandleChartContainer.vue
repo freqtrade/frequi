@@ -252,7 +252,7 @@ onMounted(() => {
       v-if="plotConfigModal"
       id="plotConfiguratorModal"
       v-model:visible="showPlotConfigModal"
-      title="Plot Configurator"
+      header="Plot Configurator"
       ok-only
       hide-backdrop
     >
