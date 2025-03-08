@@ -69,7 +69,7 @@ watch(
         class="flex flex-col py-1 px-1 items-stretch"
         :title="`${trade.pair}`"
         :class="{
-          'bg-primary-200 text-primary-contrast':
+          'bg-primary-100 dark:bg-primary-800 text-primary-contrast':
             trade.open_timestamp === selectedTrade.open_timestamp,
         }"
         @click="onTradeSelect(trade)"
