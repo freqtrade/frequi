@@ -22,33 +22,79 @@
   }
 }
 
-@utility ft-dark-theme {
-  --p-content-background: unset;
-  --p-menu-background: var(--p-surface-900);
-  --p-primary-contrast-color: var(--p-text-200);
-}
 
 
 
-@layer utilities {p
+@layer frequi {
+  /* Customization for freqUI components */
+
+
+
+  .ft-dark-theme {
+      --p-content-background: unset;
+      --p-menu-background: var(--p-surface-900);
+      --p-primary-contrast-color: var(--p-text-200);
+    }
+
   :root {
+
+      --p-primary-50: #DBFAFF;
+      --p-primary-100: #B8F4FF;
+      --p-primary-200: #75EAFF;
+      --p-primary-300: #2EE0FF;
+      --p-primary-400: #00C3E6;
+      --p-primary-500: #0089A1;
+      --p-primary-600: #006C80;
+      --p-primary-700: #005261;
+      --p-primary-800: #003842;
+      --p-primary-900: #001A1F;
+      --p-primary-950: #000D0F;
+
+      --p-primary-color: var(--p-primary-600);
+
     /* default profit loss colors, could be overwritten by custom style */
     --color-profit: #12bb7b;
     --color-loss: #ef5350;
 
     --p-tabs-tabpanel-padding: unset;
 
+    --p-togglebutton-content-checked-background: var(--p-primary-500);
+    --p-togglebutton-sm-padding: 0;
 
+
+    --p-selectbutton-border-radius: var(--radius-sm);
+    --p-button-link-color: var(--p-surface-200);
+    /* --p-togglebutton-content-border-radius: var(--radius-sm); */
     /* --p-button-sm-padding-y: 0.1rem;
     --p-button-sm-padding-x: 0.4rem; */
+
+    /* --p-datatable-row-selected-background: var(--p-highlight-background); */
+    /* --p-datatable-row-selected-color: var(--p-primary-contrast); */
+
+      /* --p-primary-color: var(--p-primary-500); */
   }
   .p-button-icon-only.p-button-sm {
     --p-button-sm-icon-only-height: 2.25rem;
-    height: var(--p-button-sm-icon-only-width);
-    /* padding : 0.1rem 0.4rem 0.1rem 0.4rem; */
-    padding: unset;
+    /* height: var(--p-button-sm-icon-only-width); */
+    padding : 0.1rem 0.4rem 0.1rem 0.4rem;
+    /* padding: unset; */
 
   }
+  .p-button-icon-only {
+    /* padding : 0.1rem 0.4rem 0.1rem 0.4rem; */
+    padding: unset;
+    aspect-ratio: 1 / 1;
+  }
+
+  .p-selectbutton {
+    border-color: var(--p-primary-500);
+    border: 1px solid var(--p-primary-500);
+    &>.p-togglebutton {
+      border: none;
+
+    }
+  }
+
 }
 
 
