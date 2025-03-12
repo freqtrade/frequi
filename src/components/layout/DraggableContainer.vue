@@ -17,7 +17,7 @@ withDefaults(
     class="flex flex-col h-full w-full border dark:border-surface-800 border-surface-200 rounded-sm"
   >
     <div
-      class="drag-header py-1 px-2 dark:bg-surface-800 bg-surface-100 border-b border-surface-500"
+      class="drag-header py-1 px-2 dark:bg-surface-800 bg-surface-100 border-b border-surface-300 dark:border-surface-700"
     >
       <slot name="header">
         {{ header }}
