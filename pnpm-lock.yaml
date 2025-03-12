@@ -90,9 +90,6 @@ importers:
       '@tsconfig/node22':
         specifier: ^22.0.0
         version: 22.0.0
-      '@types/echarts':
-        specifier: ^5.0.0
-        version: 5.0.0
       '@types/node':
         specifier: ^22.13.10
         version: 22.13.10
@@ -817,10 +814,6 @@ packages:
 
   '@tsconfig/node22@22.0.0':
     resolution: {integrity: sha512-twLQ77zevtxobBOD4ToAtVmuYrpeYUh3qh+TEp+08IWhpsrIflVHqQ1F1CiPxQGL7doCdBIOOCF+1Tm833faNg==}
-
-  '@types/echarts@5.0.0':
-    resolution: {integrity: sha512-5uc/16BlYpzH8kU/u8aeRRgY2FV6yRY7RjPnYfUFPowl0F3kvNgfaz09PmeVdLkqdAtMft3XkCfqiJPJjG2DNQ==}
-    deprecated: This is a stub types definition. echarts provides its own type definitions, so you do not need this installed.
 
   '@types/element-resize-detector@1.1.6':
     resolution: {integrity: sha512-hj0o+gfpKB3XFdMwPBxyMxKkpUpjxI2CctMeaC7gelAsnRfqluiynlM5BOCxv27HnndVWh+utrXlqo1PLyW2Sg==}
@@ -3195,10 +3188,6 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@tsconfig/node22@22.0.0': {}
-
-  '@types/echarts@5.0.0':
-    dependencies:
-      echarts: 5.6.0
 
   '@types/element-resize-detector@1.1.6': {}
 
