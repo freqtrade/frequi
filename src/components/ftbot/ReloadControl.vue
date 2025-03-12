@@ -17,12 +17,15 @@ const autoRefreshLoc = computed({
     <BaseCheckbox v-model="autoRefreshLoc" size="small" title="Auto Refresh" />
     <Button
       class="m-1"
-      severity="secondary"
+      severity="contrast"
+      variant="outlined"
       size="small"
       title="Auto Refresh all bots now"
       @click="botStore.allRefreshFull"
     >
-      <i-mdi-refresh />
+      <template #icon>
+        <i-mdi-refresh />
+      </template>
     </Button>
   </div>
 </template>
