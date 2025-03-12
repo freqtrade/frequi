@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import type { PeriodicBreakdown } from '@/types';
 
-defineProps({
-  periodicBreakdown: {
-    type: Object as () => PeriodicBreakdown,
-    required: true,
-  },
+const props = defineProps<{
+  periodicBreakdown: PeriodicBreakdown;
+}>();
+
+const periodicBreakdownSelections = computed(() => {
+  const res = [
+    { value: 'day', text: 'Days' },
+    { value: 'week', text: 'Weeks' },
+    { value: 'month', text: 'Months' },
+  ];
+  if (props.periodicBreakdown.year) {
+    res.push({ value: 'year', text: 'Years' });
+  }
+
+  return res;
 });
-const periodicBreakdownSelections = [
-  { value: 'day', text: 'Days' },
-  { value: 'week', text: 'Weeks' },
-  { value: 'month', text: 'Months' },
-];
 
 const periodicBreakdownPeriod = ref<string>('month');
 </script>
