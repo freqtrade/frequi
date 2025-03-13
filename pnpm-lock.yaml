@@ -163,7 +163,7 @@ importers:
         specifier: ^28.4.1
         version: 28.4.1(@babel/parser@7.26.10)(@nuxt/kit@3.16.0)(vue@3.5.13(typescript@5.7.3))
       vite:
-        specifier: ^6.2.0
+        specifier: ^6.2.1
         version: 6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass@1.85.1)
       vitest:
         specifier: ^3.0.8
