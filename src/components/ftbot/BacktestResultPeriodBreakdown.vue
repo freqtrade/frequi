@@ -24,6 +24,13 @@ const periodicBreakdownPeriod = ref<string>('month');
 const periodicBreakdownFields = computed<TableField[]>(() => {
   return [
     { key: 'date', label: 'Date' },
+    { key: 'trades', label: 'Trades' },
+    { key: 'profit_abs', label: 'Total Profit', formatter: (v: number) => formatPrice(v, 3) },
+    {
+      key: 'profit_factor',
+      label: 'Profit Factor',
+      formatter: (v: number) => (v !== undefined ? v.toFixed(2) : 'N/A'),
+    },
     { key: 'wins', label: 'Wins' },
     { key: 'draws', label: 'Draws' },
     {
@@ -32,16 +39,11 @@ const periodicBreakdownFields = computed<TableField[]>(() => {
     },
     {
       key: 'wins',
-      label: 'winRate',
+      label: 'Win Rate',
       formatter: (v: number, k, item) =>
         ((v / (v + item.draws + (item.loses ?? item.losses))) * 100).toFixed(2) + '%',
     },
-    {
-      key: 'profit_factor',
-      label: 'Profit Factor',
-      formatter: (v: number) => (v !== undefined ? v.toFixed(2) : 'N/A'),
-    },
-  ];
+  ] as TableField[];
 });
 </script>
 
