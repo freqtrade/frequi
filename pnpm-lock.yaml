@@ -57,8 +57,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(pinia@3.0.1(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)))
       primevue:
-        specifier: ^4.3.1
-        version: 4.3.1(vue@3.5.13(typescript@5.7.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vue@3.5.13(typescript@5.7.3))
       sortablejs:
         specifier: ^1.15.6
         version: 1.15.6
@@ -85,8 +85,8 @@ importers:
         specifier: ^1.51.0
         version: 1.51.0
       '@primevue/auto-import-resolver':
-        specifier: ^4.3.1
-        version: 4.3.1
+        specifier: ^4.3.2
+        version: 4.3.2
       '@tailwindcss/vite':
         specifier: ^4.0.9
         version: 4.0.9(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.1)(sass@1.85.1)(yaml@2.7.0))
@@ -151,11 +151,11 @@ importers:
         specifier: ^1.85.1
         version: 1.85.1
       tailwindcss:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^4.0.14
+        version: 4.0.14
       tailwindcss-primeui:
         specifier: ^0.5.1
-        version: 0.5.1(tailwindcss@4.0.9)
+        version: 0.5.1(tailwindcss@4.0.14)
       typescript:
         specifier: ~5.7.3
         version: 5.7.3
@@ -639,22 +639,22 @@ packages:
     resolution: {integrity: sha512-/bYirtF3gJOGrRQfQ5tUyQOLEria7wg/UCqvpIydTAxLmj/UWgWwh2kAjYVp49eldm1+2sk4+TDkbAz8XcPpew==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/auto-import-resolver@4.3.1':
-    resolution: {integrity: sha512-Z3NSbREk/ZfhLwwCWAq9w7HMFyelfIqX7kGdV0/9YL8pHtB4G18dot5avG0alHWEjHkDPr2lkt3hai9+HduIDw==}
+  '@primevue/auto-import-resolver@4.3.2':
+    resolution: {integrity: sha512-9SPA8gBUowWPZioGhE97xScOdPs6oqgTxeb30v05IKdNE8wAzapeNPj/Bx9ic7wRcH4+QD+3z8CKOrV2bJAA0A==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/core@4.3.1':
-    resolution: {integrity: sha512-Z2JfYk7I477qdlWHH5yiqUK0cwNe5joZJLwFtSEFkmBi/ocXvkGNAYk8XYNCz6UTDePUQSHKseKJxMkFHlfRtw==}
+  '@primevue/core@4.3.2':
+    resolution: {integrity: sha512-8ghF6PdYKw77rLFZRl8C8kLHMKFMPg8f7xiPQIvLG0Cxl+FKsBrGp0xQxnEXsp2+6NX3Pv1jysrQjxSnuufz4w==}
     engines: {node: '>=12.11.0'}
     peerDependencies:
       vue: ^3.5.0
 
-  '@primevue/icons@4.3.1':
-    resolution: {integrity: sha512-67GFk/NdbVDuPx4tlbO01BBWujLiZTJJJSce63dvLr7082YukPfrQq4Kru+y5Qmrfkq0uaP1I3+Ut9Skr6ATfQ==}
+  '@primevue/icons@4.3.2':
+    resolution: {integrity: sha512-sT9MZQ7GNmi/pfpMFdHejt3s3Q5kIN6pV/xi5n21KbpQsgsXnQBYq/fyx+sfKvbUfDvYYIpKDSWXj6RYR3zIdw==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/metadata@4.3.1':
-    resolution: {integrity: sha512-AOnbzzYr0Y7w7M1jTypNQQyDtEbrzjCmjnFf8tQ72fAHpTU2+W7O7aw0oO17VCh5TLyZkCftwWG9N6SfCv3o+Q==}
+  '@primevue/metadata@4.3.2':
+    resolution: {integrity: sha512-LMfm9MGlIbS40JWCibBnf4aLbSciwnS5w0/3qo961hzaeWkjg93P7tSa6cR7JRRd80meUyMjXQb6O0e0JNxb1A==}
     engines: {node: '>=12.11.0'}
 
   '@rollup/rollup-android-arm-eabi@4.35.0':
@@ -2018,8 +2018,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  primevue@4.3.1:
-    resolution: {integrity: sha512-NSUpcWf2WpXgqOvjgXu5zQM3E5UEXoA2iXLi6xV+h1SBZ1TmgNfrjme96KRzfUY2RBsI0rTSUuPv0I+fXvtcmA==}
+  primevue@4.3.2:
+    resolution: {integrity: sha512-TCCLu66k0pW8LmL8ho4w8evPEwc1agCP4ojY5OIsr2pqYepzBqlsSP2GSSv+Kv5EwWqg4ufh0bor+XVJl9sIVw==}
     engines: {node: '>=12.11.0'}
 
   proto-list@1.2.4:
@@ -2156,6 +2156,9 @@ packages:
     resolution: {integrity: sha512-zNqp62N4c+pwBVkVJd8ByvujepVKAMxZBdYy5MzIDi/Zb2p8wTGo4RrQaqLQazm3teOWVmttzZYPH/GlOB3lgw==}
     peerDependencies:
       tailwindcss: '>=3.1.0'
+
+  tailwindcss@4.0.14:
+    resolution: {integrity: sha512-92YT2dpt671tFiHH/e1ok9D987N9fHD5VWoly1CdPD/Cd1HMglvZwP3nx2yTj2lbXDAHt8QssZkxTLCCTNL+xw==}
 
   tailwindcss@4.0.9:
     resolution: {integrity: sha512-12laZu+fv1ONDRoNR9ipTOpUD7RN9essRVkX36sjxuRUInpN7hIiHN4lBd/SIFjbISvnXzp8h/hXzmU8SQQYhw==}
@@ -2918,24 +2921,24 @@ snapshots:
 
   '@primeuix/utils@0.5.1': {}
 
-  '@primevue/auto-import-resolver@4.3.1':
+  '@primevue/auto-import-resolver@4.3.2':
     dependencies:
-      '@primevue/metadata': 4.3.1
+      '@primevue/metadata': 4.3.2
 
-  '@primevue/core@4.3.1(vue@3.5.13(typescript@5.7.3))':
+  '@primevue/core@4.3.2(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@primeuix/styled': 0.5.0
       '@primeuix/utils': 0.5.1
       vue: 3.5.13(typescript@5.7.3)
 
-  '@primevue/icons@4.3.1(vue@3.5.13(typescript@5.7.3))':
+  '@primevue/icons@4.3.2(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@primeuix/utils': 0.5.1
-      '@primevue/core': 4.3.1(vue@3.5.13(typescript@5.7.3))
+      '@primevue/core': 4.3.2(vue@3.5.13(typescript@5.7.3))
     transitivePeerDependencies:
       - vue
 
-  '@primevue/metadata@4.3.1': {}
+  '@primevue/metadata@4.3.2': {}
 
   '@rollup/rollup-android-arm-eabi@4.35.0':
     optional: true
@@ -4231,13 +4234,13 @@ snapshots:
 
   prettier@3.5.3: {}
 
-  primevue@4.3.1(vue@3.5.13(typescript@5.7.3)):
+  primevue@4.3.2(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       '@primeuix/styled': 0.5.0
       '@primeuix/styles': 1.0.0
       '@primeuix/utils': 0.5.1
-      '@primevue/core': 4.3.1(vue@3.5.13(typescript@5.7.3))
-      '@primevue/icons': 4.3.1(vue@3.5.13(typescript@5.7.3))
+      '@primevue/core': 4.3.2(vue@3.5.13(typescript@5.7.3))
+      '@primevue/icons': 4.3.2(vue@3.5.13(typescript@5.7.3))
     transitivePeerDependencies:
       - vue
 
@@ -4370,9 +4373,11 @@ snapshots:
       '@pkgr/core': 0.1.1
       tslib: 2.8.1
 
-  tailwindcss-primeui@0.5.1(tailwindcss@4.0.9):
+  tailwindcss-primeui@0.5.1(tailwindcss@4.0.14):
     dependencies:
-      tailwindcss: 4.0.9
+      tailwindcss: 4.0.14
+
+  tailwindcss@4.0.14: {}
 
   tailwindcss@4.0.9: {}
 
