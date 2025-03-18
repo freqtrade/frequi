@@ -68,6 +68,9 @@ function rowClick(row) {
       class="mt-2"
       responsive
       size="small"
+      scrollable
+      scroll-height="50rem"
+      :virtual-scroller-options="{ itemSize: 46 }"
       show-gridlines
       :value="filteredList"
       @row-click="rowClick"
