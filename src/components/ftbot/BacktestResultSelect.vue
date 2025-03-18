@@ -36,13 +36,15 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
   <div class="flex flex-col items-stretch">
     <h3 class="font-bold text-2xl">Available results:</h3>
     <ul
-      class="ms-2 divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-y-3 divide-surface-500"
+      class="ms-2 divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-surface-500"
     >
       <li
         v-for="[key, result] in Object.entries(backtestHistory)"
         :key="key"
         button
-        :active="key === selectedBacktestResultKey"
+        :class="{
+          'bg-primary dark:border-primary text-primary-contrast': key === selectedBacktestResultKey,
+        }"
         class="flex justify-between items-center py-1 px-1"
         @click="setBacktestResult(key)"
       >
