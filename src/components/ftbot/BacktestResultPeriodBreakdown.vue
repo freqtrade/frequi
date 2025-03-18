@@ -26,7 +26,21 @@ const periodicBreakdownFields = computed<TableField[]>(() => {
     { key: 'date', label: 'Date' },
     { key: 'wins', label: 'Wins' },
     { key: 'draws', label: 'Draws' },
-    { key: 'loses', label: 'Losses' },
+    {
+      key: props.periodicBreakdown[periodicBreakdownPeriod.value][0].loses ? 'loses' : 'losses',
+      label: 'Losses',
+    },
+    {
+      key: 'wins',
+      label: 'winRate',
+      formatter: (v: number, k, item) =>
+        ((v / (v + item.draws + (item.loses ?? item.losses))) * 100).toFixed(2) + '%',
+    },
+    {
+      key: 'profit_factor',
+      label: 'Profit Factor',
+      formatter: (v: number) => (v !== undefined ? v.toFixed(2) : 'N/A'),
+    },
   ];
 });
 </script>
