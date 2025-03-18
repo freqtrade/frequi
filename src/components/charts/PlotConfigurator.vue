@@ -224,33 +224,31 @@ const fromPlotTemplateVisible = ref(false);
   <div v-if="columns">
     <label for="idPlotConfigName">Plot config name</label>
     <PlotConfigSelect allow-edit></PlotConfigSelect>
-    <div>
-      <Divider />
-      <label for="fieldSel" class="mb">Target Plot</label>
-      <EditValue
+    <Divider />
+    <label for="fieldSel" class="mb">Target Plot</label>
+    <EditValue
+      v-model="selSubPlot"
+      :allow-edit="!isMainPlot"
+      allow-add
+      editable-name="plot configuration"
+      align-vertical
+      @new="addSubplot"
+      @delete="deleteSubplot"
+      @rename="renameSubplot"
+    >
+      <ListBox
+        id="fieldSel"
         v-model="selSubPlot"
-        :allow-edit="!isMainPlot"
-        allow-add
-        editable-name="plot configuration"
-        align-vertical
-        @new="addSubplot"
-        @delete="deleteSubplot"
-        @rename="renameSubplot"
+        :options="subplots"
+        size="small"
+        :pt="{
+          list: {
+            class: 'h-36',
+          },
+        }"
       >
-        <ListBox
-          id="fieldSel"
-          v-model="selSubPlot"
-          :options="subplots"
-          size="small"
-          :pt="{
-            list: {
-              class: 'h-36',
-            },
-          }"
-        >
-        </ListBox>
-      </EditValue>
-    </div>
+      </ListBox>
+    </EditValue>
     <Divider />
     <div>
       <label for="selectedIndicators">Indicators in this plot</label>

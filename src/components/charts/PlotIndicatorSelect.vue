@@ -44,7 +44,9 @@ watch(
       </Select>
     </div>
     <Button size="small" title="Abort" class="ms-1 mt-auto" severity="secondary" @click="abort">
-      <i-mdi-close />
+      <template #icon>
+        <i-mdi-close />
+      </template>
     </Button>
   </div>
 </template>
