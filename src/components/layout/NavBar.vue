@@ -7,6 +7,7 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute } from 'vue-router';
 import Menu from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';
+import { breakpointsTailwind } from '@vueuse/core';
 
 const botStore = useBotStore();
 
@@ -16,6 +17,10 @@ const route = useRoute();
 const router = useRouter();
 const favicon = ref<Favico | undefined>(undefined);
 const pingInterval = ref<number>();
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
+
+const isMobile = breakpoints.smallerOrEqual('md');
 
 async function clickLogout() {
   botStore.removeBot(botStore.selectedBot);
@@ -103,33 +108,46 @@ const navItems = ref([
     label: 'Trade',
     to: '/trade',
     visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-currency-usd',
   },
   {
     label: 'Dashboard',
     to: '/dashboard',
     visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-view-dashboard',
   },
   {
     label: 'Chart',
     to: '/graph',
+    icon: 'i-mdi-chart-line',
   },
   {
     label: 'Logs',
     to: '/logs',
+    icon: 'i-mdi-format-list-bulleted',
+  },
+  {
+    label: 'Settings',
+    to: '/settings',
+    mobileOnly: true,
+    icon: 'i-mdi-cog',
   },
   {
     label: 'Backtest',
     to: '/backtest',
     visible: computed(() => botStore.canRunBacktest),
+    icon: 'i-mdi-currency-usd',
   },
   {
     label: 'Download Data',
     to: '/download_data',
     visible: computed(() => botStore.isWebserverMode && botStore.activeBot.botApiVersion >= 2.41),
+    icon: 'i-mdi-download',
   },
   {
     label: 'Pairlist Config',
     to: '/pairlist_config',
+    icon: 'i-mdi-format-list-numbered-rtl',
     visible: computed(
       () =>
         (botStore.activeBot?.isWebserverMode ?? false) && botStore.activeBot.botApiVersion >= 2.3,
@@ -171,6 +189,7 @@ const menu = ref<InstanceType<typeof Menu> | null>();
 function toggleMenu(event) {
   menu.value?.toggle(event);
 }
+const drawerVisible = ref(false);
 </script>
 
 <template>
@@ -178,13 +197,14 @@ function toggleMenu(event) {
     <div class="flex bg-primary-500 border-b border-primary">
       <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
         <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-xl hidden lg:inline text-nowrap">Freqtrade UI</span>
+        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
-
       <div class="flex justify-between w-full text-center items-center ms-3">
         <div class="items-center hidden md:flex">
           <Button
-            v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
+            v-for="(item, index) in navItems.filter(
+              (item) => (item.visible ?? true) && !item.mobileOnly,
+            )"
             :key="index"
             :label="item.label"
             variant="link"
@@ -195,7 +215,7 @@ function toggleMenu(event) {
         </div>
 
         <!-- Right aligned nav items -->
-        <div class="flex ms-auto">
+        <div v-if="!isMobile" class="flex ms-auto">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div
             v-if="!settingsStore.confirmDialog"
@@ -277,6 +297,76 @@ function toggleMenu(event) {
             <!-- should open Modal window! -->
             <LoginModal v-if="route?.path !== '/login'" />
           </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div v-if="isMobile" class="ms-auto flex">
+          <Button class="text-surface-300" @click="drawerVisible = !drawerVisible">
+            <template #icon>
+              <i-mdi-menu />
+            </template>
+          </Button>
+          <Drawer
+            v-model:visible="drawerVisible"
+            header="Drawer"
+            position="right"
+            class="bg-primary-500"
+          >
+            <template #container>
+              <div class="flex flex-row items-center">
+                <h3 class="text-xl font-bold w-full text-center">FreqUI</h3>
+                <Button
+                  class="float-right mt-1 me-1"
+                  variant="outlined"
+                  @click="drawerVisible = !drawerVisible"
+                >
+                  <template #icon>
+                    <i-mdi-close />
+                  </template>
+                </Button>
+              </div>
+              <div class="flex flex-col gap-1 mt-4">
+                <Button
+                  v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
+                  :key="index"
+                  :label="item.label"
+                  variant="link"
+                  as="router-link"
+                  :to="item.to"
+                >
+                </Button>
+                <Divider />
+                <span class="text-(--p-primary-contrast-color) text-center"
+                  >Version: {{ settingsStore.uiVersion }}</span
+                >
+
+                <div class="flex flex-row items-center justify-center">
+                  <ThemeSelect show-text />
+                </div>
+                <Select
+                  v-if="botStore.botCount > 1"
+                  :model-value="botStore.selectedBotObj"
+                  size="small"
+                  class="m-1"
+                  no-caret
+                  severity="info"
+                  toggle-class="flex align-items-center "
+                  menu-class="my-0 py-0"
+                  :options="botStore.availableBotsSorted"
+                  @update:model-value="botStore.selectBot($event.botId)"
+                >
+                  <template #value="{ value }">
+                    <BotEntry :bot="value" :no-buttons="true" />
+                  </template>
+
+                  <template #option="{ option }">
+                    <BotEntry :bot="option" :no-buttons="true" />
+                  </template>
+                </Select>
+                <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
+              </div>
+            </template>
+          </Drawer>
         </div>
       </div>
     </div>
