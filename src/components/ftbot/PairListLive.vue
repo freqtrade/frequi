@@ -61,7 +61,7 @@ onMounted(() => {
 <template>
   <div>
     <div>
-      <h3 class="text-3xl">Whitelist Methods</h3>
+      <h3 class="text-xl">Whitelist Methods</h3>
 
       <ul v-if="botStore.activeBot.pairlistMethods.length" class="list wide">
         <li
@@ -74,7 +74,9 @@ onMounted(() => {
       </ul>
     </div>
     <!-- Show Whitelist -->
-    <h3 class="text-3xl" :title="`${botStore.activeBot.whitelist.length} pairs`">Whitelist</h3>
+    <h3 class="text-lg font-bold" :title="`${botStore.activeBot.whitelist.length} pairs`">
+      Whitelist
+    </h3>
     <ul v-if="botStore.activeBot.whitelist.length" class="list">
       <li
         v-for="(pair, key) in botStore.activeBot.whitelist"
@@ -91,7 +93,7 @@ onMounted(() => {
     <div>
       <div class="flex flex-row justify-center mb-1">
         <label
-          class="text-3xl mb-2 w-full"
+          class="text-lg font-bold mb-2 w-full"
           title="Blacklist - Select (followed by a click on '-') to remove pairs"
         >
           Blacklist

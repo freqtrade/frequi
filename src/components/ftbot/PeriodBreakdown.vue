@@ -73,8 +73,8 @@ onMounted(() => {
 <template>
   <div class="flex flex-col h-full">
     <div v-if="!props.multiBotView" class="mb-2">
-      <h3 class="me-auto inline text-lg">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
-      <Button class="float-end" size="small" severity="secondary" @click="refreshSummary">
+      <h3 class="me-auto inline text-xl">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
+      <Button class="float-end" severity="secondary" @click="refreshSummary">
         <template #icon>
           <i-mdi-refresh />
         </template>
