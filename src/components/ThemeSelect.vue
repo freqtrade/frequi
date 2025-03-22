@@ -4,6 +4,8 @@ import { useSettingsStore } from '@/stores/settings';
 const activeTheme = ref('');
 const settingsStore = useSettingsStore();
 
+withDefaults(defineProps<{ showText?: boolean }>(), { showText: false });
+
 const setTheme = (themeName: string) => {
   // If theme is already active, do nothing.
   if (activeTheme.value === themeName) {
@@ -43,7 +45,12 @@ const toggleNight = () => {
 </script>
 
 <template>
-  <Button variant="link" title="Toggle Night Mode" @click="toggleNight">
+  <Button
+    variant="link"
+    title="Toggle Night Mode"
+    :label="showText ? 'Toggle Night Mode' : ''"
+    @click="toggleNight"
+  >
     <template #icon>
       <i-mdi-brightness-6 />
     </template>
