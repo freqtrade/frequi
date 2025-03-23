@@ -119,8 +119,8 @@ test.describe('Trade', () => {
 
     const multiPanebb = await multiPane.boundingBox();
 
-    await page.locator('#avatar-drop').click();
-    await page.getByText('Lock layout').uncheck();
+    await page.getByRole('button', { name: 'FT' }).click();
+    await page.getByText('Lock dynamic Layout').click();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
     // Click outside of popup to ensure it's closed
