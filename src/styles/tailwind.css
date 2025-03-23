@@ -59,7 +59,7 @@
 
 
     --p-selectbutton-border-radius: var(--radius-sm);
-    --p-button-link-color: var(--p-surface-200);
+    /* --p-button-link-color: var(--p-surface-200); */
     /* --p-togglebutton-content-border-radius: var(--radius-sm); */
     /* --p-button-sm-padding-y: 0.1rem;
     --p-button-sm-padding-x: 0.4rem; */

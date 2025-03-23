@@ -15,7 +15,7 @@ const botStore = useBotStore();
         variant="link"
         size="small"
         as="router-link"
-        class="nav-link navbar-nav align-items-center"
+        class="align-items-center"
         to="/open_trades"
         label="Trades"
       >
@@ -29,7 +29,7 @@ const botStore = useBotStore();
         variant="link"
         size="small"
         as="router-link"
-        class="nav-link navbar-nav align-items-center"
+        class="align-items-center"
         to="/trade_history"
         label="History"
       >
@@ -43,7 +43,7 @@ const botStore = useBotStore();
         variant="link"
         size="small"
         as="router-link"
-        class="nav-link navbar-nav align-items-center"
+        class="align-items-center"
         to="/pairlist"
         label="Pairlist"
       >
@@ -57,7 +57,7 @@ const botStore = useBotStore();
         variant="link"
         size="small"
         as="router-link"
-        class="nav-link navbar-nav align-items-center"
+        class="align-items-center"
         to="/balance"
         label="Balance"
       >
@@ -71,7 +71,7 @@ const botStore = useBotStore();
         variant="link"
         size="small"
         as="router-link"
-        class="nav-link navbar-nav align-items-center"
+        class="align-items-center"
         to="/dashboard"
         label="Dashboard"
       >
