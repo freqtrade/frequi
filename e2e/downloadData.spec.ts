@@ -22,6 +22,16 @@ test.describe('Download Data View', () => {
       });
     });
 
+    page.route('**/api/v1/exchanges', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          exchanges: [],
+        }),
+      });
+    });
+
     page.route(`**/api/v1/background/${jobID}`, (route) => {
       route.fulfill({
         status: 200,
