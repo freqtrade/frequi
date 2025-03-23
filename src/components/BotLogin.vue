@@ -173,10 +173,11 @@ onMounted(() => {
         v-model="auth.url"
         required
         trim
-        :invalid="urlState"
+        :invalid="urlState === false"
         class="mt-1 block w-full"
         @keydown.enter="handleOk"
       />
+      <span v-if="urlState === false" class="mt-2 text-sm text-red-500">API URL required</span>
       <Message v-if="urlDuplicate" class="mt-2 text-sm" severity="warn">
         This URL is already in use by another bot.
       </Message>
@@ -188,11 +189,15 @@ onMounted(() => {
         v-model="auth.username"
         required
         placeholder="Freqtrader"
-        :invalid="nameState"
+        :invalid="nameState === false"
         class="mt-1 block w-full"
         @keydown.enter="handleOk"
       />
+      <span v-if="nameState === false" class="mt-2 text-sm text-red-500">
+        Name and Password are required.
+      </span>
     </div>
+    name: {{ nameState }} pwd:{{ pwdState }} url: {{ urlState }}
     <div class="mb-4">
       <label for="password-input" class="block text-sm font-medium">Password</label>
       <InputText
@@ -200,10 +205,11 @@ onMounted(() => {
         v-model="auth.password"
         required
         type="password"
-        :invalid="pwdState"
+        :invalid="pwdState === false"
         class="mt-1 block w-full"
         @keydown.enter="handleOk"
       />
+      <span v-if="pwdState === false" class="mt-2 text-sm text-red-500"> Invalid Password </span>
     </div>
     <div>
       <Message v-if="errorMessage" class="mt-2 text-sm whitespace-pre-line" severity="warn">
