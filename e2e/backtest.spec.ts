@@ -32,12 +32,13 @@ test.describe('Backtesting', () => {
     await expect(page.getByText('Run backtest')).toBeInViewport();
     await expect(page.getByText('Strategy', { exact: true })).toBeInViewport();
 
-    const strategySelect = page.locator('select[id="strategy-select"]');
+    const strategySelect = page.locator('#strategy-select').getByRole('combobox');
     await expect(strategySelect).toBeVisible();
     await expect(strategySelect).toBeInViewport();
+    await page.locator('#strategy-select svg').click();
+    await page.getByRole('option', { name: 'SampleStrategy' }).click();
 
-    await strategySelect.selectOption('SampleStrategy');
-    const option = page.locator('option[value="SampleStrategy"]');
+    const option = page.getByRole('combobox', { name: 'SampleStrategy' });
     await expect(option).toBeAttached();
     const analyzeButton = page.locator('[id="bt-analyze-btn"]');
     await expect(analyzeButton).toBeDisabled();
