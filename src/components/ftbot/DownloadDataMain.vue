@@ -151,7 +151,7 @@ async function startDownload() {
               <i-mdi-chevron-up v-else />
             </Button>
             <Transition>
-              <div v-if="isAdvancedOpen">
+              <div v-show="isAdvancedOpen">
                 <Message severity="info" class="mb-2 py-2">
                   Advanced options (Erase data, Download trades, and Custom Exchange settings) will
                   only be applied when this section is expanded.
@@ -172,7 +172,7 @@ async function startDownload() {
                   </BaseCheckbox>
                   <Transition name="fade">
                     <ExchangeSelect
-                      v-if="exchange.customExchange"
+                      v-show="exchange.customExchange"
                       v-model="exchange.selectedExchange"
                     />
                   </Transition>

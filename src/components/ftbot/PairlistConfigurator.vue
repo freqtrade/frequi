@@ -67,7 +67,7 @@ watch(
   <div class="flex px-3 mb-3 gap-3 flex-col lg:flex-row">
     <ul
       ref="availablePairlistsEl"
-      class="divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-y-3 divide-surface-500"
+      class="divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-surface-500"
     >
       <li
         v-for="pairlist in availablePairlists"
@@ -143,8 +143,13 @@ watch(
         v-model="selectedView"
         class="mb-2"
         size="small"
-        :options="['Config', 'Results']"
-        :option-disabled="pairlistStore.whitelist.length === 0 ? 'Results' : ''"
+        option-label="value"
+        option-value="value"
+        :options="[
+          { value: 'Config' },
+          { value: 'Results', disabled: pairlistStore.whitelist.length === 0 },
+        ]"
+        option-disabled="disabled"
       >
         <!-- TODO primevue: Fix selectButton "disabled" state-->
       </SelectButton>
