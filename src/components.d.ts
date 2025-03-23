@@ -140,6 +140,7 @@ declare module 'vue' {
     LoginModal: typeof import('./components/LoginModal.vue')['default']
     LogViewer: typeof import('./components/ftbot/LogViewer.vue')['default']
     MarketChangeChart: typeof import('./components/charts/MarketChangeChart.vue')['default']
+    Menu: typeof import('primevue/menu')['default']
     Message: typeof import('primevue/message')['default']
     MessageBox: typeof import('./components/general/MessageBox.vue')['default']
     NavBar: typeof import('./components/layout/NavBar.vue')['default']

@@ -12,9 +12,8 @@ function clickBacktest() {
     timerange: btStore.timerange,
     enable_protections: btStore.enableProtections,
   };
-  const openTradesInt = parseInt(btStore.maxOpenTrades, 10);
-  if (openTradesInt) {
-    btPayload.max_open_trades = openTradesInt;
+  if (btStore.maxOpenTrades) {
+    btPayload.max_open_trades = btStore.maxOpenTrades;
   }
   if (btStore.stakeAmountUnlimited) {
     btPayload.stake_amount = 'unlimited';
