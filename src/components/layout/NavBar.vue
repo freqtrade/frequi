@@ -200,17 +200,18 @@ const drawerVisible = ref(false);
         <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
       </RouterLink>
       <div class="flex justify-between w-full text-center items-center ms-3">
-        <div class="items-center hidden md:flex">
-          <Button
+        <div class="items-center hidden md:flex gap-5 ms-5">
+          <RouterLink
             v-for="(item, index) in navItems.filter(
               (item) => (item.visible ?? true) && !item.mobileOnly,
             )"
             :key="index"
-            :label="item.label"
-            variant="link"
-            as="router-link"
             :to="item.to"
-          ></Button>
+            class="text-surface-200 flex items-center gap-2"
+            active-class="underline"
+          >
+            {{ item.label }}
+          </RouterLink>
           <ThemeSelect />
         </div>
 
@@ -314,7 +315,7 @@ const drawerVisible = ref(false);
           >
             <template #container>
               <div class="flex flex-row items-center">
-                <h3 class="text-xl font-bold w-full text-center">FreqUI</h3>
+                <h3 class="text-xl font-bold w-full text-center text-surface-200">Freqtrade UI</h3>
                 <Button
                   class="float-right mt-1 me-1"
                   variant="outlined"
@@ -325,18 +326,18 @@ const drawerVisible = ref(false);
                   </template>
                 </Button>
               </div>
-              <div class="flex flex-col gap-1 mt-4">
-                <Button
+              <div class="flex flex-col gap-1 items-center mt-4">
+                <RouterLink
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
-                  :label="item.label"
-                  variant="link"
-                  as="router-link"
                   :to="item.to"
+                  class="text-surface-200 p-2"
+                  active-class="underline"
                 >
-                </Button>
+                  {{ item.label }}
+                </RouterLink>
                 <Divider />
-                <span class="text-(--p-primary-contrast-color) text-center"
+                <span class="text-surface-200 text-center"
                   >Version: {{ settingsStore.uiVersion }}</span
                 >
 

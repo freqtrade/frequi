@@ -48,6 +48,7 @@ const toggleNight = () => {
   <Button
     variant="link"
     title="Toggle Night Mode"
+    class="text-surface-200"
     :label="showText ? 'Toggle Night Mode' : ''"
     @click="toggleNight"
   >
