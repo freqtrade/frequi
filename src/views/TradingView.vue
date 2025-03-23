@@ -92,7 +92,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
           <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
-          <Tabs value="0" scrollable>
+          <Tabs value="0" scrollable lazy>
             <TabList>
               <Tab value="0" severity="secondary">
                 <div title="Pairs combined">
