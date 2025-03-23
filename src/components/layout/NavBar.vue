@@ -155,7 +155,7 @@ const navItems = ref([
   },
 ]);
 
-const menuItems = ref<MenuItem[]>([
+const menuItems = computed<MenuItem[]>(() => [
   {
     label: `V: ${settingsStore.uiVersion}`,
     disabled: true,
