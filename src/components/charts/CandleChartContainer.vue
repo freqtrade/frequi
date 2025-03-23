@@ -176,18 +176,18 @@ onMounted(() => {
           />
           <div class="flex flex-col">
             <div class="flex flex-row flex-wrap">
-              <small v-if="dataset" class="ms-2 text-xs text-nowrap" title="Long entry signals"
+              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long entry signals"
                 >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
               >
-              <small v-if="dataset" class="ms-2 text-xs text-nowrap" title="Long exit signals"
+              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long exit signals"
                 >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
               >
             </div>
             <div class="flex flex-row flex-wrap">
-              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-xs text-nowrap"
+              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-sm text-nowrap"
                 >Short entries: {{ dataset.enter_short_signals }}</small
               >
-              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-xs text-nowrap"
+              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-sm text-nowrap"
                 >Short exits: {{ dataset.exit_short_signals }}</small
               >
             </div>
