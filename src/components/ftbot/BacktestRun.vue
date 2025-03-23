@@ -3,7 +3,6 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BacktestPayload } from '@/types';
 
 import { useBtStore } from '@/stores/btStore';
-import Divider from 'primevue/divider';
 const botStore = useBotStore();
 const btStore = useBtStore();
 

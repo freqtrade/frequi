@@ -2,7 +2,6 @@
 import type { Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
-import DataView from 'primevue/dataview';
 
 const props = defineProps({
   trades: { required: true, type: Array as () => Trade[] },

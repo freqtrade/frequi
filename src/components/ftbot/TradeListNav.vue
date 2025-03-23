@@ -2,7 +2,6 @@
 import type { Trade } from '@/types';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
-import RadioButton from 'primevue/radiobutton';
 
 const props = defineProps({
   trades: { required: true, type: Array as () => Trade[] },
