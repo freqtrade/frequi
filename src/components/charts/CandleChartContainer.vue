@@ -146,11 +146,11 @@ onMounted(() => {
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
       <div class="flex me-0">
-        <div class="ms-1 ms-md-2 flex flex-wrap flex-md-nowrap items-center gap-1">
-          <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+        <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
+          <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
           <Select
             v-model="botStore.activeBot.plotPair"
-            class="ms-md-2"
+            class="md:ms-2"
             :options="availablePairs"
             size="small"
             :clearable="false"
@@ -202,7 +202,7 @@ onMounted(() => {
             <PlotConfigSelect></PlotConfigSelect>
           </div>
 
-          <div class="ms-2 me-0 me-md-1">
+          <div class="ms-2 me-0 md:me-1">
             <Button
               size="small"
               title="Plot configurator"

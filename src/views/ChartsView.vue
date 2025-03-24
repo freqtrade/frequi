@@ -111,7 +111,7 @@ watch(
     <!-- Currently only available in Webserver mode -->
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
-    <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2 px-1">
+    <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
       <Panel header="Settings" toggleable>
         <div
           class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
@@ -130,8 +130,8 @@ watch(
             <ExchangeSelect v-show="exchange.customExchange" v-model="exchange.selectedExchange" />
           </Transition>
         </div>
-        <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 gap-md-2">
-          <div class="text-start me-md-1 col-span-2">
+        <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 md:gap-2">
+          <div class="text-start md:me-1 col-span-2">
             <span>Strategy</span>
             <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
             <BaseCheckbox
@@ -152,7 +152,7 @@ watch(
       </Panel>
     </div>
 
-    <div class="mx-md-2 mt-2 pb-1 h-full">
+    <div class="md:mx-2 mt-2 pb-1 h-full">
       <CandleChartContainer
         :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"

@@ -53,7 +53,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>
-      <div class="col-md-1 text-end">
+      <div class="text-end">
         <Button
           aria-label="Close"
           variant="outlined"
@@ -71,7 +71,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
-          class="col-md-2 overflow-y-auto overflow-x-hidden"
+          class="overflow-y-auto overflow-x-hidden"
           style="max-height: calc(100vh - 200px)"
           :pairlist="backtestResult.pairlist"
           :trades="backtestResult.trades"
