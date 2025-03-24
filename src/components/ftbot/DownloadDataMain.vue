@@ -157,7 +157,7 @@ async function startDownload() {
                   only be applied when this section is expanded.
                 </Message>
                 <div
-                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
+                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
                 >
                   <BaseCheckbox v-model="erase" class="mb-2">Erase existing data</BaseCheckbox>
                   <BaseCheckbox v-model="downloadTrades" class="mb-2">
@@ -165,7 +165,7 @@ async function startDownload() {
                   </BaseCheckbox>
                 </div>
                 <div
-                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
+                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
                 >
                   <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
                     Custom Exchange

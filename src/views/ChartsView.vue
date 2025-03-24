@@ -113,20 +113,16 @@ watch(
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2 px-1">
       <Panel header="Settings" toggleable>
-        <Fieldset
-          v-if="botStore.activeBot.botState.api_version >= 2.42"
-          toggleable
-          collapsed
-          legend="Exchange"
-          class="mb-2 p-2 text-start col-12 col-md-6"
+        <div
+          class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
         >
-          <template #legend="{ toggleCallback }">
-            <BaseCheckbox v-model="exchange.customExchange" @change="toggleCallback">
-              Custom Exchange
-            </BaseCheckbox>
-          </template>
-          <ExchangeSelect v-model="exchange.selectedExchange" />
-        </Fieldset>
+          <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
+            Custom Exchange
+          </BaseCheckbox>
+          <Transition name="fade">
+            <ExchangeSelect v-show="exchange.customExchange" v-model="exchange.selectedExchange" />
+          </Transition>
+        </div>
         <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 gap-md-2">
           <div class="text-start me-md-1 col-span-2">
             <span>Strategy</span>
