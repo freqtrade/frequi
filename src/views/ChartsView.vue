@@ -116,9 +116,16 @@ watch(
         <div
           class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
         >
-          <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
-            Custom Exchange
-          </BaseCheckbox>
+          <div class="flex flex-row gap-5">
+            <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
+              Custom Exchange
+            </BaseCheckbox>
+            <span v-show="!exchange.customExchange">
+              Current Exchange:
+              {{ botStore.activeBot.botState.exchange }}
+              {{ botStore.activeBot.botState.trading_mode }}
+            </span>
+          </div>
           <Transition name="fade">
             <ExchangeSelect v-show="exchange.customExchange" v-model="exchange.selectedExchange" />
           </Transition>
