@@ -216,8 +216,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="h-full w-full flex">
-        <div class="grow">
+      <div class="h-full flex">
+        <div class="min-w-0 w-full shrink">
           <CandleChart
             v-if="hasDataset"
             :dataset="dataset"
@@ -242,7 +242,11 @@ onMounted(() => {
           </div>
         </div>
         <Transition name="fade">
-          <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25">
+          <div
+            v-if="!plotConfigModal"
+            v-show="showPlotConfig"
+            class="grow border rounded-md ps-1 border-surface-300 dark:border-surface-700"
+          >
             <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
           </div>
         </Transition>
