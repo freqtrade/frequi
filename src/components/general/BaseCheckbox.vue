@@ -3,7 +3,7 @@ defineProps({
   disabled: Boolean,
 });
 const id = useId();
-const value = defineModel();
+const value = defineModel<boolean>();
 </script>
 
 <template>

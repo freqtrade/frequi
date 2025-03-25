@@ -3,7 +3,7 @@ import type { IndicatorConfig, PlotConfig } from '@/types';
 
 const props = defineProps({
   columns: { required: true, type: Array as () => string[] },
-  isVisible: { required: true, default: false, type: Boolean },
+  isVisible: { required: false, default: false, type: Boolean },
 });
 
 const plotStore = usePlotConfigStore();
