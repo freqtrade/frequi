@@ -1,15 +1,10 @@
 version: 2
 updates:
 - package-ecosystem: docker
-  directory: "/"
-  schedule:
-    interval: "daily"
-    time: "03:00"
-    timezone: "Etc/UTC"
-  open-pull-requests-limit: 10
-
-- package-ecosystem: docker
-  directory: "/.devcontainer/"
+  directories:
+    - "/"
+    - "/.devcontainer/"
+    - "/docker/"
   schedule:
     interval: "daily"
     time: "03:00"
