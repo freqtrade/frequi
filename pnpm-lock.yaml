@@ -88,8 +88,8 @@ importers:
         specifier: ^1.51.1
         version: 1.51.1
       '@tsconfig/node22':
-        specifier: ^22.0.0
-        version: 22.0.0
+        specifier: ^22.0.1
+        version: 22.0.1
       '@types/node':
         specifier: ^22.13.13
         version: 22.13.13
@@ -720,8 +720,8 @@ packages:
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
 
-  '@tsconfig/node22@22.0.0':
-    resolution: {integrity: sha512-twLQ77zevtxobBOD4ToAtVmuYrpeYUh3qh+TEp+08IWhpsrIflVHqQ1F1CiPxQGL7doCdBIOOCF+1Tm833faNg==}
+  '@tsconfig/node22@22.0.1':
+    resolution: {integrity: sha512-VkgOa3n6jvs1p+r3DiwBqeEwGAwEvnVCg/hIjiANl5IEcqP3G0u5m8cBJspe1t9qjZRlZ7WFgqq5bJrGdgAKMg==}
 
   '@types/element-resize-detector@1.1.6':
     resolution: {integrity: sha512-hj0o+gfpKB3XFdMwPBxyMxKkpUpjxI2CctMeaC7gelAsnRfqluiynlM5BOCxv27HnndVWh+utrXlqo1PLyW2Sg==}
@@ -2785,7 +2785,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@2.3.0': {}
 
-  '@tsconfig/node22@22.0.0': {}
+  '@tsconfig/node22@22.0.1': {}
 
   '@types/element-resize-detector@1.1.6': {}
 
