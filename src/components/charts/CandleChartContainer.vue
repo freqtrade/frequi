@@ -195,7 +195,7 @@ onMounted(() => {
         </div>
         <div class="ms-auto flex items-center">
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
-            <small class="text-nowrap">Heikin Ashi</small>
+            <span class="text-nowrap">Heikin Ashi</span>
           </BaseCheckbox>
 
           <div class="ms-2">
