@@ -71,8 +71,9 @@
   }
 
   .ft-dark-theme {
-      --p-content-background: unset;
+      --p-content-background: var(--p-surface-950);
       --p-menu-background: var(--p-surface-900);
+
       --p-primary-contrast-color: var(--p-text-200);
       --p-button-secondary-background: var(--p-surface-700);
       --p-button-secondary-hover-background: var(--p-surface-600);
