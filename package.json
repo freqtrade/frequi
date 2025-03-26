@@ -21,7 +21,7 @@
     "@vuepic/vue-datepicker": "^11.0.2",
     "@vueuse/core": "^13.0.0",
     "@vueuse/integrations": "^13.0.0",
-    "axios": "^1.8.2",
+    "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.28.2",
     "core-js": "^3.41.0",
