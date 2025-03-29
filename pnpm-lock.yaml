@@ -62,9 +62,6 @@ importers:
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.2)
-      vue-demi:
-        specifier: ^0.14.10
-        version: 0.14.10(vue@3.5.13(typescript@5.8.2))
       vue-echarts:
         specifier: ^7.0.3
         version: 7.0.3(@vue/runtime-core@3.5.13)(echarts@5.6.0)(vue@3.5.13(typescript@5.8.2))
@@ -108,9 +105,6 @@ importers:
       '@vue/eslint-config-typescript':
         specifier: ^14.5.0
         version: 14.5.0(eslint-plugin-vue@10.0.0(eslint@9.23.0(jiti@2.4.2))(vue-eslint-parser@10.1.1(eslint@9.23.0(jiti@2.4.2))))(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2)
-      '@vue/runtime-dom':
-        specifier: ^3.5.13
-        version: 3.5.13
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.6
@@ -129,9 +123,6 @@ importers:
       happy-dom:
         specifier: ^17.4.4
         version: 17.4.4
-      mutationobserver-shim:
-        specifier: ^0.3.7
-        version: 0.3.7
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -1876,9 +1867,6 @@ packages:
   muggle-string@0.4.1:
     resolution: {integrity: sha512-VNTrAak/KhO2i8dqqnqnAHOa3cYBwXEZe9h+D5h/1ZqFSTEFHdM65lR7RoIqq3tBBYavsOXV84NoHXZ0AkPyqQ==}
 
-  mutationobserver-shim@0.3.7:
-    resolution: {integrity: sha512-oRIDTyZQU96nAiz2AQyngwx1e89iApl2hN5AOYwyxLUB47UYsU3Wv9lJWqH5y/QdiYkc5HQLi23ZNB3fELdHcQ==}
-
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -2400,17 +2388,6 @@ packages:
 
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
-    engines: {node: '>=12'}
-    hasBin: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-
-  vue-demi@0.14.10:
-    resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -4151,8 +4128,6 @@ snapshots:
 
   muggle-string@0.4.1: {}
 
-  mutationobserver-shim@0.3.7: {}
-
   nanoid@3.3.11: {}
 
   natural-compare@1.4.0: {}
@@ -4662,10 +4637,6 @@ snapshots:
   vue-component-type-helpers@2.2.8: {}
 
   vue-demi@0.13.11(vue@3.5.13(typescript@5.8.2)):
-    dependencies:
-      vue: 3.5.13(typescript@5.8.2)
-
-  vue-demi@0.14.10(vue@3.5.13(typescript@5.8.2)):
     dependencies:
       vue: 3.5.13(typescript@5.8.2)
 
