@@ -62,7 +62,6 @@
     "happy-dom": "^17.4.4",
     "mutationobserver-shim": "^0.3.7",
     "prettier": "^3.5.3",
-    "sass": "^1.86.0",
     "tailwindcss": "^4.0.17",
     "tailwindcss-primeui": "^0.6.1",
     "typescript": "~5.8.2",
