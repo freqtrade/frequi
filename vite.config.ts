@@ -54,13 +54,6 @@ export default defineConfig({
     chunkSizeWarningLimit: 700, // Default is 500
     sourcemap: true,
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // additionalData: '@import "@/styles/_variables.scss";',
-      },
-    },
-  },
   server: {
     proxy: {
       '/api': {
