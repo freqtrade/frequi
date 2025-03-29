@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { ExitReasonResults, PairResult } from '@/types';
 
+type ResultsType = PairResult | ExitReasonResults;
+type ResultsTypeWithKey = ResultsType & { key?: string | string[] };
 const props = withDefaults(
   defineProps<{
     title: string;
-    results: (PairResult | ExitReasonResults)[];
+    results: ResultsType[];
     stakeCurrency: string;
     stakeCurrencyDecimals: number;
     keyHeader?: string;
@@ -16,7 +18,7 @@ const props = withDefaults(
   },
 );
 
-const tableItems = computed(() =>
+const tableItems = computed<ResultsTypeWithKey[]>(() =>
   props.results.map((v) => {
     if (props.keyHeaders.length > 0) {
       return {
@@ -33,7 +35,7 @@ const perTagReason = computed(() => {
   const firstFields: {
     key: string;
     label: string;
-    formatter: (value: string, item: any) => string;
+    formatter: (value: string, item: ResultsTypeWithKey) => string;
   }[] = [];
   if (props.keyHeaders.length > 0) {
     // Keys could be an array
