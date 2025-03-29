@@ -211,7 +211,7 @@ watch(
             {{ data.trade_id }}
             {{
               botStore.activeBot.botApiVersion > 2.0 && data.trading_mode !== 'spot'
-                ? '| ' + (data.is_short ? 'Short' : 'Long')
+                ? (data.trade_id ? '| ' : '') + (data.is_short ? 'Short' : 'Long')
                 : ''
             }}
           </template>
