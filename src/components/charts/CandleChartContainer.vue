@@ -265,7 +265,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.2s;

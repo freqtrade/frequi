@@ -28,7 +28,7 @@ const { state: marketChangeData } = useAsyncState(
     />
   </div>
 </template>
-<style scoped lang="scss">
+<style scoped lang="css">
 .chart-equal-height {
   min-height: 300px !important;
 }

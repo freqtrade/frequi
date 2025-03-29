@@ -113,10 +113,10 @@ function refreshOHLCV(pair: string, columns: string[]) {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .candle-chart-container {
-  // TODO: Rough estimate - still to fix correctly
-  // Applies to all "calc" usages in this file.
+  /* TODO: Rough estimate - still to fix correctly
+   Applies to all "calc" usages in this file. */
   height: calc(100vh - 250px) !important;
 }
 

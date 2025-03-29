@@ -13,7 +13,7 @@ const isProfitable = computed(() => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .triangle-up {
   width: 0;
   height: 0;

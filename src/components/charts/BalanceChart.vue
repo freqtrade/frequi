@@ -95,7 +95,7 @@ const balanceChartOptions = computed((): EChartsOption => {
   />
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .echarts {
   min-height: 20px;
 }

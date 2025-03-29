@@ -47,7 +47,7 @@ const profitString = computed((): string => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .profit-pill {
   border: 2px solid var(--color-loss);
   border-radius: 6px;

@@ -668,7 +668,7 @@ watch(
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .echarts {
   width: 100%;
   min-height: 200px;

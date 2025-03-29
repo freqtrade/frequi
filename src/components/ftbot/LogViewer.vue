@@ -67,11 +67,10 @@ function scrollToBottom() {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 textarea {
   width: 100%;
   min-height: 6em;
   resize: none;
-  // font-size: $fontsize-small;
 }
 </style>

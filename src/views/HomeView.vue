@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .logo-svg {
   -webkit-mask: url(../assets/freqtrade-logo-mask.png) no-repeat center;
   -webkit-mask-size: 240px 240px;

@@ -33,13 +33,11 @@ defineProps({
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .card-body {
   padding: 0 0.2em;
 }
-.table-sm {
-  // font-size: $fontsize-small;
-}
+
 .btn-xs {
   padding: 0.1rem 0.25rem;
   font-size: 0.75rem;

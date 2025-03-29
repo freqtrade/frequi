@@ -212,7 +212,7 @@ watch(
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .bt-running-label {
   position: absolute;
   right: 2em;

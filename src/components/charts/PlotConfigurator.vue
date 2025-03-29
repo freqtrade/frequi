@@ -388,7 +388,7 @@ const fromPlotTemplateVisible = ref(false);
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .form-group {
   margin-bottom: 0.5rem;
 }

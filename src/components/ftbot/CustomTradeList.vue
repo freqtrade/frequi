@@ -63,10 +63,3 @@ const tradeClick = (trade) => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.my-05 {
-  margin-top: 0.125rem;
-  margin-bottom: 0.125rem;
-}
-</style>

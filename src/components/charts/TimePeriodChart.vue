@@ -243,7 +243,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
   />
 </template>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .echarts {
   min-height: 240px;
   height: 100%;

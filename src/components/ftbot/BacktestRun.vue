@@ -185,7 +185,7 @@ function clickBacktest() {
     </Button>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 label {
   @apply text-right;
 }
