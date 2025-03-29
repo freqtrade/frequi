@@ -170,23 +170,22 @@ watch(
   </div>
 </template>
 
-<style lang="scss" scoped>
-.pairlist {
-  &.dragging {
-    @apply border-white border bg-white dark:bg-black;
-    // border: 1px solid white;
-    // border-radius: 0;
-  }
+<style lang="css" scoped>
+@reference '../../styles/tailwind.css';
+
+.pairlist.dragging {
+  @apply border-white border bg-white dark:bg-black;
+  /* border: 1px solid white; */
+  /* border-radius: 0; */
 }
-.empty {
-  &:after {
-    content: 'Drag pairlist here';
-    position: absolute;
-    align-self: center;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    line-height: 0;
-    top: 50%;
-  }
+
+.empty:after {
+  content: 'Drag pairlist here';
+  position: absolute;
+  align-self: center;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  line-height: 0;
+  top: 50%;
 }
 </style>
