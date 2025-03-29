@@ -24,14 +24,18 @@ const tableItems = computed(() =>
 );
 
 const perTagReason = computed(() => {
-  const firstFields: any[] = [];
+  const firstFields: {
+    key: string;
+    label: string;
+    formatter: (value: string, item: any) => string;
+  }[] = [];
   if (props.keyHeaders.length > 0) {
     // Keys could be an array
     for (let i = 0; i < props.keyHeaders.length; i += 1) {
       firstFields.push({
         key: `key[${i}]`,
         label: props.keyHeaders[i],
-        formatter: (value, _, item) =>
+        formatter: (value, item) =>
           Array.isArray(value) ? value[i] : value || item['exit_reason'] || 'OTHER',
       });
     }
@@ -39,7 +43,7 @@ const perTagReason = computed(() => {
     firstFields.push({
       key: 'key',
       label: props.keyHeader,
-      formatter: (value, _, item) => (value || item['exit_reason'] || 'OTHER') as string,
+      formatter: (value, item) => (value || item['exit_reason'] || 'OTHER') as string,
     });
   }
   return firstFields;
@@ -48,12 +52,11 @@ const perTagReason = computed(() => {
 <template>
   <DraggableContainer :header="title">
     <DataTable size="small" hover stacked="sm" :value="tableItems">
-      <Column
-        v-for="col in perTagReason"
-        :key="col.key"
-        :field="col.key"
-        :header="col.label"
-      ></Column>
+      <Column v-for="col in perTagReason" :key="col.key" :field="col.key" :header="col.label">
+        <template #body="{ data }">
+          {{ col.formatter(data['key'], data) }}
+        </template>
+      </Column>
       <Column field="trades" header="Trades"></Column>
       <Column field="profit_mean" header="Avg Profit %">
         <template #body="{ data, field }">
