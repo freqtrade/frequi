@@ -117,6 +117,7 @@ const orderTypeOptions = [
         <SelectButton
           v-model="ordertype"
           :options="orderTypeOptions"
+          :allow-empty="false"
           option-label="text"
           option-value="value"
           size="small"

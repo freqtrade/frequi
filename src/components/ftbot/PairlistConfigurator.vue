@@ -143,6 +143,7 @@ watch(
         v-model="selectedView"
         class="mb-2"
         size="small"
+        :allow-empty="false"
         option-label="value"
         option-value="value"
         :options="[

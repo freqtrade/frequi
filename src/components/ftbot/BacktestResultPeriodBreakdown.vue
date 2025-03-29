@@ -26,6 +26,7 @@ const periodicBreakdownPeriod = ref<string>('month');
     v-model="periodicBreakdownPeriod"
     :options="periodicBreakdownSelections"
     size="small"
+    :allow-empty="false"
     class="m-2"
     option-label="text"
     option-value="value"

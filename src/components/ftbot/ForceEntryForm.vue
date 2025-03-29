@@ -99,6 +99,7 @@ const handleEntry = () => {
         <SelectButton
           v-model="orderSide"
           :options="orderSideOptions"
+          :allow-empty="false"
           option-label="text"
           option-value="value"
           size="small"

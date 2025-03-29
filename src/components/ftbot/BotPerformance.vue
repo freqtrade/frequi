@@ -114,6 +114,7 @@ onMounted(() => {
       id="order-direction"
       v-model="selectedOption"
       :options="options"
+      :allow-empty="false"
       option-label="text"
       option-value="value"
       size="small"
