@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import type { ExitReasonResults, PairResult } from '@/types';
 
-const props = defineProps({
-  title: { type: String, required: true },
-  results: { type: Array as PropType<(PairResult | ExitReasonResults)[]>, required: true },
-  stakeCurrency: { type: String, required: true },
-  stakeCurrencyDecimals: { type: Number, required: true },
-  keyHeader: { type: String, default: '' },
-  keyHeaders: { type: Array as PropType<string[]>, default: () => [] },
-});
+const props = withDefaults(
+  defineProps<{
+    title: string;
+    results: (PairResult | ExitReasonResults)[];
+    stakeCurrency: string;
+    stakeCurrencyDecimals: number;
+    keyHeader?: string;
+    keyHeaders?: string[];
+  }>(),
+  {
+    keyHeader: '',
+    keyHeaders: () => [],
+  },
+);
 
 const tableItems = computed(() =>
   props.results.map((v) => {
