@@ -54,5 +54,3 @@ const backtestResultFields = computed(() => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

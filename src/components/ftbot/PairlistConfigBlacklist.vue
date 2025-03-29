@@ -36,4 +36,3 @@ const configNames = computed(() =>
     <Button size="small" @click="pairlistStore.addToBlacklist()">Add</Button>
   </Panel>
 </template>
-<style lang="scss" scoped></style>

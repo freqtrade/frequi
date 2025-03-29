@@ -9,5 +9,3 @@ defineProps({
     <i-mdi-information-outline />
   </div>
 </template>
-
-<style lang="scss" scoped></style>
