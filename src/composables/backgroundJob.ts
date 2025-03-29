@@ -1,9 +1,10 @@
 import type { BackgroundTaskStatus } from '@/types';
+import type { ShowAlertType } from '@/utils/alerts';
 import type { AxiosInstance } from 'axios';
 
 const jobs = ref<Record<string, { jobType: string; taskStatus?: BackgroundTaskStatus }>>({});
 
-function startBgJob(api: AxiosInstance, showAlert: any, jobId: string, jobType: string) {
+function startBgJob(api: AxiosInstance, showAlert: ShowAlertType, jobId: string, jobType: string) {
   async function getBackgroundJobStatus(jobId: string) {
     try {
       const { data } = await api.get<BackgroundTaskStatus>(`/background/${jobId}`);
@@ -45,7 +46,7 @@ function startBgJob(api: AxiosInstance, showAlert: any, jobId: string, jobType: 
   };
 }
 
-async function recoverBgJobs(api: AxiosInstance, showAlert: any) {
+async function recoverBgJobs(api: AxiosInstance, showAlert: ShowAlertType) {
   try {
     const { data } = await api.get<BackgroundTaskStatus[]>('/background');
 

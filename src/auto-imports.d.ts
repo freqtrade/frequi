@@ -394,6 +394,9 @@ declare global {
   export type { OpenTradeVizOptions } from './stores/settings'
   import('./stores/settings')
   // @ts-ignore
+  export type { ShowAlertType } from './utils/alerts'
+  import('./utils/alerts')
+  // @ts-ignore
   export type { SupportedSeriesTypes } from './utils/charts/candleChartSeries'
   import('./utils/charts/candleChartSeries')
 }

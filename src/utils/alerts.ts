@@ -18,3 +18,5 @@ export function useAlertForBot(botName: string) {
     },
   };
 }
+
+export type ShowAlertType = typeof showAlert;
