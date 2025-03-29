@@ -7,6 +7,7 @@ defineProps<{
 }>();
 
 // TODO: type should really be PairlistParamValue
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramValue = defineModel<any>();
 </script>
 
