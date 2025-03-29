@@ -45,56 +45,66 @@ const showIndicatorMapping = ref(false);
 
 <template>
   <div v-if="visible" class="pt-1">
-    <BFormGroup v-if="!showIndicatorMapping" label="Select Templates" label-for="selectTemplate">
-      <BFormSelect
+    <div v-if="!showIndicatorMapping" class="w-full">
+      <label for="selectTemplate">Select Template</label>
+      <ListBox
         id="selectTemplate"
         v-model="selTemplateName"
         :options="plotTemplateNames"
         :select-size="4"
       >
-      </BFormSelect>
-    </BFormGroup>
+      </ListBox>
+    </div>
     <div v-else>
-      <h5 class="mt-1 text-center">Re-map indicators</h5>
-      <div v-for="indicator in Object.keys(indicatorMap)" :key="indicator">
-        <div class="d-flex gap-2 align-items-center">
-          <span class="flex-grow-1 w-100">{{ indicator }}</span>
-          <BFormSelect
-            :id="`indicator-${indicator}`"
-            v-model="indicatorMap[indicator]"
-            class="flex-grow-1 w-100"
-            :options="columns"
-          >
-          </BFormSelect>
-        </div>
+      <h5 class="mt-1 text-center text-md mb-1">Re-map indicators</h5>
+      <div
+        v-for="indicator in Object.keys(indicatorMap)"
+        :key="indicator"
+        class="flex gap-2 align-center"
+      >
+        <label :for="`indicator-${indicator}`" class="grow w-full">{{ indicator }}</label>
+        <Select
+          :id="`indicator-${indicator}`"
+          v-model="indicatorMap[indicator]"
+          class="grow w-full"
+          size="small"
+          :options="columns"
+        >
+        </Select>
       </div>
     </div>
-    <div class="mt-2 d-flex gap-1 justify-content-end">
-      <BButton size="sm" title="Abort" variant="secondary" @click="visible = false">
+    <div class="mt-2 flex gap-1 justify-end">
+      <Button size="small" title="Abort" severity="secondary" @click="visible = false">
         <i-mdi-close />
-      </BButton>
-      <BButton
+      </Button>
+      <Button
         v-if="!showIndicatorMapping"
         :disabled="!selTemplateName"
-        size="sm"
+        size="small"
         style="width: 33%"
         title="Use template"
-        variant="primary"
+        label=" Use Template"
+        severity="primary"
         @click="clickStartUseTemplate"
       >
-        <i-mdi-check class="me-1" />Use Template
-      </BButton>
-      <BButton
+        <template #icon>
+          <i-mdi-check class="me-1" />
+        </template>
+      </Button>
+      <Button
         v-if="showIndicatorMapping"
         :disabled="!selTemplateName"
-        size="sm"
+        size="small"
         style="width: 33%"
         title="Apply template"
-        variant="primary"
+        severity="primary"
         @click="fromTemplateApply"
       >
-        <i-mdi-check class="me-1" />Apply Template
-      </BButton>
+        <template #icon>
+          <i-mdi-check class="me-1" />
+        </template>
+        Apply Template
+      </Button>
     </div>
   </div>
 </template>

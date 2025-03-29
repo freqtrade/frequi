@@ -146,97 +146,99 @@ const reset = () => {
 };
 
 defineExpose({
-  handleSubmit,
   reset,
+});
+
+onMounted(() => {
+  reset();
 });
 </script>
 
 <template>
-  <div>
-    <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
-      <BFormGroup label="Bot Name" label-for="name-input">
-        <BFormInput
-          id="name-input"
-          v-model="auth.botName"
-          placeholder="Bot Name"
-          @keydown.enter="handleOk"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        :state="urlState"
-        label="API Url"
-        label-for="url-input"
-        invalid-feedback="API Url required"
-      >
-        <BFormInput
-          id="url-input"
-          v-model="auth.url"
-          required
-          trim
-          :state="urlState"
-          @keydown.enter="handleOk"
-        ></BFormInput>
-        <BAlert
-          v-if="urlDuplicate"
-          class="mt-2 p-1 alert-wrap"
-          :model-value="true"
-          variant="warning"
-        >
-          This URL is already in use by another bot.
-        </BAlert>
-      </BFormGroup>
-      <BFormGroup
-        :state="nameState"
-        label="Username"
-        label-for="username-input"
-        invalid-feedback="Name and Password are required."
-      >
-        <BFormInput
-          id="username-input"
-          v-model="auth.username"
-          required
-          placeholder="Freqtrader"
-          :state="nameState"
-          @keydown.enter="handleOk"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        label="Password"
-        label-for="password-input"
-        invalid-feedback="Invalid Password"
-        :state="pwdState"
-      >
-        <BFormInput
-          id="password-input"
-          v-model="auth.password"
-          required
-          type="password"
-          :state="pwdState"
-          @keydown.enter="handleOk"
-        ></BFormInput>
-      </BFormGroup>
-      <div>
-        <BAlert v-if="errorMessage" class="alert-wrap" :model-value="true" variant="warning">
-          {{ errorMessage }}
-          <br />
-          <span v-if="errorMessageCORS"
-            >Please also check your bot's CORS configuration:
-            <a href="https://www.freqtrade.io/en/latest/rest-api/#cors"
-              >Freqtrade CORS documentation</a
-            ></span
+  <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
+    <div class="mb-4">
+      <label for="name-input" class="block text-sm font-medium">Bot Name</label>
+      <InputText
+        id="name-input"
+        v-model="auth.botName"
+        placeholder="Bot Name"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="url-input" class="block text-sm font-medium">API Url</label>
+      <InputText
+        id="url-input"
+        v-model="auth.url"
+        required
+        trim
+        :invalid="urlState === false"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+      <span v-if="urlState === false" class="mt-2 text-sm text-red-500">API URL required</span>
+      <Message v-if="urlDuplicate" class="mt-2 text-sm" severity="warn">
+        This URL is already in use by another bot.
+      </Message>
+    </div>
+    <div class="mb-4">
+      <label for="username-input" class="block text-sm font-medium">Username</label>
+      <InputText
+        id="username-input"
+        v-model="auth.username"
+        required
+        placeholder="Freqtrader"
+        :invalid="nameState === false"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+      <span v-if="nameState === false" class="mt-2 text-sm text-red-500">
+        Name and Password are required.
+      </span>
+    </div>
+    name: {{ nameState }} pwd:{{ pwdState }} url: {{ urlState }}
+    <div class="mb-4">
+      <label for="password-input" class="block text-sm font-medium">Password</label>
+      <InputText
+        id="password-input"
+        v-model="auth.password"
+        required
+        type="password"
+        :invalid="pwdState === false"
+        class="mt-1 block w-full"
+        @keydown.enter="handleOk"
+      />
+      <span v-if="pwdState === false" class="mt-2 text-sm text-red-500"> Invalid Password </span>
+    </div>
+    <div>
+      <Message v-if="errorMessage" class="mt-2 text-sm whitespace-pre-line" severity="warn">
+        {{ errorMessage }}
+        <br />
+        <span v-if="errorMessageCORS">
+          Please also check your bot's CORS configuration:
+          <a
+            href="https://www.freqtrade.io/en/latest/rest-api/#cors"
+            class="text-blue-500 underline"
+            >Freqtrade CORS documentation</a
           >
-        </BAlert>
-      </div>
-      <div v-if="inModal === false" class="float-end">
-        <BButton class="me-2" type="reset" variant="danger">Reset</BButton>
-        <BButton type="submit" variant="primary">Submit</BButton>
-      </div>
-    </form>
-  </div>
+        </span>
+      </Message>
+    </div>
+    <div class="flex justify-end gap-2 mt-4">
+      <Button label="Reset" severity="danger" type="reset" />
+      <Button
+        v-if="inModal"
+        label="Cancel"
+        severity="secondary"
+        type="button"
+        @click="emitLoginResult(true)"
+      />
+      <Button label="Submit" severity="primary" type="submit">
+        <template #icon>
+          <i-mdi-login />
+        </template>
+      </Button>
+    </div>
+  </form>
 </template>
-
-<style scoped lang="scss">
-.alert-wrap {
-  white-space: pre-wrap;
-}
-</style>

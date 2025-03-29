@@ -16,7 +16,7 @@ const loginModal = ref<typeof LoginModal>();
 const sortContainer = ref<HTMLElement | null>(null);
 const botListComp = computed<BotDescriptor[]>(() => {
   //Convert to array
-  return Object.values(botStore.availableBots).sort((a, b) => (a.sortId ?? 0) - (b.sortId ?? 0));
+  return botStore.availableBotsSorted;
 });
 
 useSortable(sortContainer, botListComp, {
@@ -54,9 +54,12 @@ const stopEditBot = (botId: string) => {
 
 <template>
   <div v-if="botStore.botCount > 0">
-    <h3 v-if="!small">Available bots</h3>
-    <BListGroup ref="sortContainer">
-      <BListGroupItem
+    <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
+    <ul
+      ref="sortContainer"
+      class="flex flex-col divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-surface-500"
+    >
+      <li
         v-for="bot in botListComp"
         :key="bot.botId"
         :active="bot.botId === botStore.selectedBot"
@@ -64,10 +67,13 @@ const stopEditBot = (botId: string) => {
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
           botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
         }`"
-        class="d-flex align-items-center"
+        class="flex items-center p-2"
+        :class="{
+          'bg-primary-100 dark:bg-primary-800': bot.botId === botStore.selectedBot,
+        }"
         @click="botStore.selectBot(bot.botId)"
       >
-        <i-mdi-reorder-horizontal v-if="!small" class="handle me-2 fs-4" />
+        <i-mdi-reorder-horizontal v-if="!small" class="handle cursor-pointer me-2 fs-4" />
         <BotRename
           v-if="editingBots.includes(bot.botId)"
           :bot="bot"
@@ -82,8 +88,8 @@ const stopEditBot = (botId: string) => {
           @edit="editBot(bot.botId)"
           @edit-login="editBotLogin(bot.botId)"
         />
-      </BListGroupItem>
-    </BListGroup>
+      </li>
+    </ul>
     <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
   </div>
 </template>

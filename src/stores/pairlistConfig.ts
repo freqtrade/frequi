@@ -154,13 +154,13 @@ export const usePairlistConfigStore = defineStore(
             if (wl.status === 'success') {
               whitelist.value = wl.result.whitelist;
             } else if (wl.error) {
-              showAlert(wl.error, 'danger');
+              showAlert(wl.error, 'error');
               evaluating.value = false;
             }
           }
         }, 1000);
       } catch (error) {
-        showAlert('Evaluation failed', 'danger');
+        showAlert('Evaluation failed', 'error');
         evaluating.value = false;
       }
     }

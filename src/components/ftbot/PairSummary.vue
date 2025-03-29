@@ -99,23 +99,34 @@ const combinedPairList = computed(() => {
 
 <template>
   <div>
-    <BFormGroup
+    <div
       label-for="trade-filter"
-      class="mb-2 ms-2"
+      class="mb-2"
       :class="{
         'me-4': backtestMode,
         'me-2': !backtestMode,
       }"
     >
-      <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
-    </BFormGroup>
-    <BListGroup>
-      <BListGroupItem
+      <InputText
+        id="trade-filter"
+        v-model="filterText"
+        type="text"
+        placeholder="Filter"
+        class="w-full"
+      />
+    </div>
+    <ul
+      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded-sm border-surface-300 dark:border-surface-700"
+    >
+      <li
         v-for="comb in combinedPairList"
         :key="comb.pair"
         button
-        class="d-flex justify-content-between align-items-center py-1"
-        :active="comb.pair === botStore.activeBot.selectedPair"
+        class="flex cursor-pointer last:rounded-b justify-between items-center px-1 py-1.5"
+        :class="{
+          'bg-primary dark:border-primary text-primary-contrast':
+            comb.pair === botStore.activeBot.selectedPair,
+        }"
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"
         @click="botStore.activeBot.selectedPair = comb.pair"
       >
@@ -130,8 +141,8 @@ const combinedPairList = computed(() => {
           :profit-ratio="comb.profit"
           :stake-currency="botStore.activeBot.stakeCurrency"
         />
-      </BListGroupItem>
-    </BListGroup>
+      </li>
+    </ul>
   </div>
 </template>
 

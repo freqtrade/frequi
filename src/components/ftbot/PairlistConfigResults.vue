@@ -23,14 +23,14 @@ watch(
 
 <template>
   <div>
-    <div v-if="whitelist.length > 0" class="d-flex flex-column flex-lg-row px-2">
+    <div v-if="whitelist.length > 0" class="flex flex-col flex-lg-row px-2">
       <!-- TODO: look into flexbox solution to have overflow scroll? -->
-      <BListGroup class="col-12 col-md-2 overflow-auto" style="height: calc(100vh - 135px)">
+      <BListGroup class="overflow-auto" style="height: calc(100vh - 135px)">
         <BListGroupItem
           v-for="(pair, i) in whitelist"
           :key="pair.pair"
           button
-          class="d-flex py-2"
+          class="flex py-2"
           :active="pair.pair === botStore.activeBot.selectedPair"
           :title="pair.pair"
           @click="botStore.activeBot.selectedPair = pair.pair"
@@ -42,7 +42,7 @@ watch(
       <div class="flex-fill">
         <ChartView />
       </div>
-      <div class="col-12 col-md-2">
+      <div>
         <CopyableTextfield
           style="height: calc(100vh - 135px)"
           class="overflow-auto"

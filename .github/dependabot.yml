@@ -45,6 +45,14 @@ updates:
     bootstrap:
       patterns:
         - "bootstrap*"
+    primevue:
+      patterns:
+        - "primevue*"
+        - "@prime*"
+    tailwindcss:
+      patterns:
+        - "tailwind*"
+        - "@tailwind*"
     unplugin:
       patterns:
         - "unplugin*"

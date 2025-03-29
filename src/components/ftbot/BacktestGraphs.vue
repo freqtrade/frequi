@@ -13,7 +13,7 @@ const { state: marketChangeData } = useAsyncState(
 );
 </script>
 <template>
-  <div class="text-center flex-fill d-flex flex-column h-100 gap-1">
+  <div class="text-center flex-fill flex flex-col h-full gap-1">
     <TradesLogChart :trades="trades" class="flex-grow-1 chart-equal-height" />
     <CumProfitChart :trades="trades" class="flex-grow-1 chart-equal-height" :show-title="true" />
     <MarketChangeChart

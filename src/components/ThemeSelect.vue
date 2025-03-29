@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useSettingsStore } from '@/stores/settings';
-import { useColorMode } from 'bootstrap-vue-next';
-
-const mode = useColorMode();
 
 const activeTheme = ref('');
 const settingsStore = useSettingsStore();
+
+withDefaults(defineProps<{ showText?: boolean }>(), { showText: false });
 
 const setTheme = (themeName: string) => {
   // If theme is already active, do nothing.
@@ -21,7 +20,15 @@ const setTheme = (themeName: string) => {
         document.body.classList.remove('ft-theme-transition');
       }, 1000);
     }
-    mode.value = themeName.toLowerCase() === 'bootstrap' ? 'light' : 'dark';
+    const element = document.querySelector('html');
+    if (element) {
+      if (themeName.toLowerCase() === 'bootstrap') {
+        element.classList.remove('dark', 'ft-dark-theme');
+      } else {
+        // Add the dark theme
+        element.classList.add('dark', 'ft-dark-theme');
+      }
+    }
   }
   // Save the theme as localstorage
   settingsStore.currentTheme = themeName;
@@ -38,7 +45,15 @@ const toggleNight = () => {
 </script>
 
 <template>
-  <BNavItem @click="toggleNight">
-    <i-mdi-brightness-6 />
-  </BNavItem>
+  <Button
+    variant="link"
+    title="Toggle Night Mode"
+    class="text-surface-200"
+    :label="showText ? 'Toggle Night Mode' : ''"
+    @click="toggleNight"
+  >
+    <template #icon>
+      <i-mdi-brightness-6 />
+    </template>
+  </Button>
 </template>

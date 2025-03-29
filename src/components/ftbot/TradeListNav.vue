@@ -42,29 +42,39 @@ watch(
 
 <template>
   <div>
-    <div class="d-flex justify-content-center">
+    <div class="flex justify-center">
       <span class="me-2">Sort by:</span>
-      <BFormRadioGroup v-model="sortMethod" :options="sortMethodOptions" name="radio-options" />
+      <RadioButtonGroup v-model="sortMethod" :options="sortMethodOptions" name="radio-options">
+        <div v-for="opt in sortMethodOptions" :key="opt.value" class="flex items-center">
+          <RadioButton :id="`id-${opt.value}`" :value="opt.value" />
+          <label :for="`id-${opt.value}`">{{ opt.text }}</label>
+        </div>
+      </RadioButtonGroup>
     </div>
-    <BListGroup>
-      <BListGroupItem
-        button
-        class="d-flex flex-wrap justify-content-center align-items-center"
+    <ul
+      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded-sm border-surface-300 dark:border-surface-700"
+    >
+      <Button
+        severity="secondary"
+        variant="text"
+        class="w-full flex flex-wrap justify-center items-center"
         :title="'Trade Navigation'"
         @click="sortDescendingOrder = !sortDescendingOrder"
         >Trade Navigation {{ sortDescendingOrder ? '&#8595;' : '&#8593;' }}
-      </BListGroupItem>
-      <BListGroupItem
+      </Button>
+      <li
         v-for="(trade, i) in sortedTrades"
         :key="trade.open_timestamp"
-        button
-        class="d-flex flex-column py-1 pe-1 align-items-stretch"
+        class="flex flex-col py-1 px-1 items-stretch"
         :title="`${trade.pair}`"
-        :active="trade.open_timestamp === selectedTrade.open_timestamp"
+        :class="{
+          'bg-primary-100 dark:bg-primary-800 text-primary-contrast':
+            trade.open_timestamp === selectedTrade.open_timestamp,
+        }"
         @click="onTradeSelect(trade)"
       >
-        <div class="d-flex">
-          <div class="d-flex flex-column">
+        <div class="flex">
+          <div class="flex flex-col">
             <div>
               <span v-if="botStore.activeBot.botState.trading_mode !== 'spot'">{{
                 trade.is_short ? 'S-' : 'L-'
@@ -78,28 +88,31 @@ watch(
               :stake-currency="botStore.activeBot.stakeCurrency"
             />
           </div>
-          <BButton
-            size="sm"
+          <Button
+            size="small"
             class="ms-auto mt-auto"
-            variant="outline-secondary"
+            variant="outlined"
+            severity="secondary"
             @click="ordersVisible[i] = !ordersVisible[i]"
             ><i-mdi-chevron-right v-if="!ordersVisible[i]" width="24" height="24" />
             <i-mdi-chevron-down v-if="ordersVisible[i]" width="24" height="24" />
-          </BButton>
+          </Button>
         </div>
-        <BCollapse v-model="ordersVisible[i]">
-          <ul class="px-3 m-0">
-            <li
-              v-for="order in trade.orders?.filter((o) => o.order_filled_timestamp !== null)"
-              :key="order.order_timestamp"
-            >
-              {{ order.ft_order_side }} {{ order.amount }} at {{ order.safe_price }}
-            </li>
-          </ul>
-        </BCollapse>
-      </BListGroupItem>
-      <BListGroupItem v-if="trades.length === 0">No trades to show...</BListGroupItem>
-    </BListGroup>
+        <Transition>
+          <div v-if="ordersVisible[i]">
+            <ul class="px-3 m-0 list-disc list-inside">
+              <li
+                v-for="order in trade.orders?.filter((o) => o.order_filled_timestamp !== null)"
+                :key="order.order_timestamp"
+              >
+                {{ order.ft_order_side }} {{ order.amount }} at {{ order.safe_price }}
+              </li>
+            </ul>
+          </div>
+        </Transition>
+      </li>
+      <div v-if="trades.length === 0">No trades to show...</div>
+    </ul>
   </div>
 </template>
 

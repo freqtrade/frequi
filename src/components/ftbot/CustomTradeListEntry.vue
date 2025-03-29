@@ -19,19 +19,17 @@ defineProps({
 </script>
 
 <template>
-  <div class="d-flex">
-    <div
-      class="px-1 d-flex flex-row flex-fill text-start justify-content-between align-items-center"
-    >
+  <div class="flex">
+    <div class="px-1 flex w-full flex-row text-start justify-between items-center">
       <span>
-        <span class="me-1 fw-bold">{{ trade.pair }}</span>
-        <small class="text-secondary">(#{{ trade.trade_id }})</small>
+        <span class="me-1 font-bold">{{ trade.pair }}</span>
+        <small class="text-surface-500">(#{{ trade.trade_id }})</small>
       </span>
       <small>
         <DateTimeTZ :date="trade.open_timestamp" :date-only="true" />
       </small>
     </div>
-    <TradeProfit class="col-5" :trade="trade" />
+    <TradeProfit class="w-5/12" :trade="trade" />
   </div>
 </template>
 
@@ -40,7 +38,7 @@ defineProps({
   padding: 0 0.2em;
 }
 .table-sm {
-  font-size: $fontsize-small;
+  // font-size: $fontsize-small;
 }
 .btn-xs {
   padding: 0.1rem 0.25rem;

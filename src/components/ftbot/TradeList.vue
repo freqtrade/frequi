@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
-import type { TableField, TableItem } from 'bootstrap-vue-next';
 
 enum ModalReasons {
   removeTrade,
@@ -39,64 +37,38 @@ const increasePosition = ref({ visible: false, trade: {} as Trade });
 function formatPriceWithDecimals(price) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
-const rows = computed(() => {
-  return props.trades.length;
-});
 
-// This using "TableField[]" below causes
-// Error: Debug Failure. No error for last overload signature
-const tableFields = ref<any[]>([]);
+const tableFields = ref([
+  { field: 'trade_id', header: 'ID' },
+  { field: 'pair', header: 'Pair' },
+  { field: 'amount', header: 'Amount' },
+  props.activeTrades
+    ? { field: 'stake_amount', header: 'Stake amount' }
+    : { field: 'max_stake_amount', header: 'Total stake amount' },
+  {
+    field: 'open_rate',
+    header: 'Open rate',
+  },
+  {
+    field: props.activeTrades ? 'current_rate' : 'close_rate',
+    header: props.activeTrades ? 'Current rate' : 'Close rate',
+  },
+  {
+    field: 'profit',
+    header: props.activeTrades ? 'Current profit %' : 'Profit %',
+  },
+  { field: 'open_timestamp', header: 'Open date' },
+  ...(props.activeTrades
+    ? [{ field: 'actions', header: '' }]
+    : [
+        { field: 'close_timestamp', header: 'Close date' },
+        { field: 'exit_reason', header: 'Close Reason' },
+      ]),
+]);
 
-onMounted(() => {
-  const openFields: TableField[] = [{ key: 'actions' }];
-  const closedFields: TableField[] = [
-    { key: 'close_timestamp', label: 'Close date' },
-    { key: 'exit_reason', label: 'Close Reason' },
-  ];
-  const stakeAmountCol: TableField = props.activeTrades
-    ? {
-        key: 'stake_amount',
-        label: 'Stake amount',
-      }
-    : {
-        key: 'max_stake_amount',
-        label: 'Total stake amount',
-      };
-
-  tableFields.value = [
-    { key: 'trade_id', label: 'ID' },
-    { key: 'pair', label: 'Pair' },
-    { key: 'amount', label: 'Amount' },
-    stakeAmountCol,
-    {
-      key: 'open_rate',
-      label: 'Open rate',
-      formatter: (value: unknown) => formatPrice(value as number),
-    },
-    {
-      key: props.activeTrades ? 'current_rate' : 'close_rate',
-      label: props.activeTrades ? 'Current rate' : 'Close rate',
-      formatter: (value: unknown) => formatPrice(value as number),
-    },
-    {
-      key: 'profit',
-      label: props.activeTrades ? 'Current profit %' : 'Profit %',
-      formatter: (value: unknown, key?: string, item?: unknown) => {
-        if (!item) {
-          return '';
-        }
-        const typedItem = item as Trade;
-        const percent = formatPercent(typedItem.profit_ratio, 2);
-        return `${percent} ${`(${formatPriceWithDecimals(typedItem.profit_abs)})`}`;
-      },
-    },
-    { key: 'open_timestamp', label: 'Open date' },
-    ...(props.activeTrades ? openFields : closedFields),
-  ];
-  if (props.multiBotView) {
-    tableFields.value.unshift({ key: 'botName', label: 'Bot' });
-  }
-});
+if (props.multiBotView) {
+  tableFields.value.unshift({ field: 'botName', header: 'Bot' });
+}
 
 const feOrderType = ref<string | undefined>(undefined);
 function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
@@ -172,42 +144,20 @@ function handleForceEntry(item: Trade) {
   increasePosition.value.visible = true;
 }
 
-function handleContextMenuEvent(item, index, event) {
-  // stop browser context menu from appearing
-  if (!props.activeTrades) {
-    return;
-  }
-  event.preventDefault();
-  // log the selected item to the console
-  console.log(item);
-}
-
-const onRowClicked = (item) => {
+const onRowClicked = ({ data: item, index }) => {
   if (props.multiBotView && botStore.selectedBot !== item.botId) {
     // Multibotview - on click switch to the bot trade view
     botStore.selectBot(item.botId);
   }
   if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
     botStore.activeBot.setDetailTrade(item);
+    selectedItemIndex.value = index;
     if (props.multiBotView) {
       router.push({ name: 'Freqtrade Trading' });
     }
   } else {
     botStore.activeBot.setDetailTrade(null);
-  }
-};
-
-const onRowSelected = () => {
-  if (botStore.activeBot.detailTradeId) {
-    const itemIndex = props.trades.findIndex(
-      (v) => v.trade_id === botStore.activeBot.detailTradeId,
-    );
-    if (itemIndex >= 0) {
-      tradesTable.value?.selectRow(itemIndex);
-    } else {
-      console.log(`Unsetting item for tradeid ${selectedItemIndex.value}`);
-      selectedItemIndex.value = undefined;
-    }
+    selectedItemIndex.value = undefined;
   }
 };
 
@@ -217,93 +167,102 @@ watch(
     const index = props.trades.findIndex((v) => v.trade_id === val);
     // Unselect when another tradeTable is selected!
     if (index < 0) {
-      tradesTable.value?.clearSelected();
+      selectedItemIndex.value = undefined;
     }
   },
 );
 </script>
 
 <template>
-  <div class="h-100 overflow-auto w-100">
-    <BTable
+  <div class="h-full overflow-auto w-full">
+    <DataTable
       ref="tradesTable"
-      small
-      hover
-      stacked="md"
-      :items="
+      v-model:selection="selectedItemIndex"
+      :value="
         trades.filter(
           (t) =>
             t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
             t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
             t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
-        ) as unknown as TableItem[]
+        )
       "
-      :fields="tableFields"
-      show-empty
-      :empty-text="emptyText"
-      :per-page="perPage"
-      :current-page="currentPage"
-      primary-key="botTradeId"
-      selectable
-      :select-head="false"
-      select-mode="single"
-      @row-contextmenu="handleContextMenuEvent"
-      @row-clicked="onRowClicked"
-      @row-selected="onRowSelected"
+      :rows="perPage"
+      :paginator="!activeTrades"
+      :first="(currentPage - 1) * perPage"
+      selection-mode="single"
+      data-key="botTradeId"
+      class="text-center"
+      size="small"
+      :scrollable="true"
+      scroll-height="flex"
+      @row-click="onRowClicked"
     >
-      <template #cell(actions)="{ index, item }">
-        <TradeActionsPopover
-          :id="index"
-          :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
-          :trade="item as unknown as Trade"
-          :bot-api-version="botStore.activeBot.botApiVersion"
-          @delete-trade="removeTradeHandler(item as unknown as Trade)"
-          @force-exit="forceExitHandler"
-          @force-exit-partial="forceExitPartialHandler"
-          @cancel-open-order="cancelOpenOrderHandler"
-          @reload-trade="reloadTradeHandler"
-          @force-entry="handleForceEntry"
-        />
+      <template #empty>
+        {{ emptyText }}
       </template>
-      <template #cell(pair)="row">
-        <span>
-          {{ `${row.item.pair}${row.item.open_order_id || row.item.has_open_orders ? '*' : ''}` }}
-        </span>
+      <Column
+        v-for="column in tableFields"
+        :key="column.field"
+        :field="column.field"
+        :header="column.header"
+      >
+        <template #body="{ data, field, index }">
+          <template v-if="field === 'trade_id'">
+            {{ data.trade_id }}
+            {{
+              botStore.activeBot.botApiVersion > 2.0 && data.trading_mode !== 'spot'
+                ? '| ' + (data.is_short ? 'Short' : 'Long')
+                : ''
+            }}
+          </template>
+          <template v-else-if="field === 'pair'">
+            {{ `${data.pair}${data.open_order_id || data.has_open_orders ? '*' : ''}` }}
+          </template>
+          <template v-else-if="field === 'actions'">
+            <TradeActionsPopover
+              :id="index"
+              :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
+              :trade="data as Trade"
+              :bot-api-version="botStore.activeBot.botApiVersion"
+              @delete-trade="removeTradeHandler(data as Trade)"
+              @force-exit="forceExitHandler"
+              @force-exit-partial="forceExitPartialHandler"
+              @cancel-open-order="cancelOpenOrderHandler"
+              @reload-trade="reloadTradeHandler"
+              @force-entry="handleForceEntry"
+            />
+          </template>
+          <template v-else-if="field === 'stake_amount'">
+            {{ formatPriceWithDecimals(data.stake_amount) }}
+            {{ data.trading_mode !== 'spot' ? `(${data.leverage}x)` : '' }}
+          </template>
+          <template
+            v-else-if="field === 'open_rate' || field === 'current_rate' || field === 'close_rate'"
+          >
+            {{ formatPrice(data[field]) }}
+          </template>
+          <template v-else-if="field === 'profit'">
+            <TradeProfit :trade="data" />
+          </template>
+          <template v-else-if="field === 'open_timestamp'">
+            <DateTimeTZ :date="data.open_timestamp" />
+          </template>
+          <template v-else-if="field === 'close_timestamp'">
+            <DateTimeTZ :date="data.close_timestamp ?? 0" />
+          </template>
+          <template v-else>
+            {{ data[field] }}
+          </template>
+        </template>
+      </Column>
+
+      <template v-if="showFilter" #header>
+        <div class="flex justify-end gap-2 p-2">
+          <InputText v-model="filterText" placeholder="Filter" class="w-64" size="small" />
+        </div>
       </template>
-      <template #cell(trade_id)="row">
-        {{ row.item.trade_id }}
-        {{
-          botStore.activeBot.botApiVersion > 2.0 && row.item.trading_mode !== 'spot'
-            ? '| ' + (row.item.is_short ? 'Short' : 'Long')
-            : ''
-        }}
-      </template>
-      <template #cell(stake_amount)="row">
-        {{ formatPriceWithDecimals(row.item.stake_amount) }}
-        {{ row.item.trading_mode !== 'spot' ? `(${row.item.leverage}x)` : '' }}
-      </template>
-      <template #cell(profit)="row">
-        <TradeProfit :trade="row.item as unknown as Trade" />
-      </template>
-      <template #cell(open_timestamp)="row">
-        <DateTimeTZ :date="(row.item as unknown as Trade).open_timestamp" />
-      </template>
-      <template #cell(close_timestamp)="row">
-        <DateTimeTZ :date="(row.item as unknown as Trade).close_timestamp ?? 0" />
-      </template>
-    </BTable>
-    <div class="w-100 d-flex justify-content-between">
-      <BPagination
-        v-if="!activeTrades"
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
-      ></BPagination>
-      <BFormGroup v-if="showFilter" label-for="trade-filter">
-        <BFormInput id="trade-filter" v-model="filterText" type="text" placeholder="Filter" />
-      </BFormGroup>
-    </div>
+    </DataTable>
+
     <ForceExitForm
       v-if="activeTrades"
       v-model="forceExitVisible"
@@ -316,21 +275,12 @@ watch(
       position-increase
     />
 
-    <BModal v-model="removeTradeVisible" title="Exit trade" @ok="forceExitExecuter">
-      {{ confirmExitText }}
-    </BModal>
+    <Dialog v-model:visible="removeTradeVisible" :modal="true" header="Exit trade">
+      <p>{{ confirmExitText }}</p>
+      <template #footer>
+        <Button label="Cancel" @click="removeTradeVisible = false" />
+        <Button label="Confirm" severity="danger" @click="forceExitExecuter" />
+      </template>
+    </Dialog>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.card-body {
-  padding: 0 0.2em;
-}
-.table-sm {
-  font-size: $fontsize-small;
-}
-.btn-xs {
-  padding: 0.1rem 0.25rem;
-  font-size: 0.75rem;
-}
-</style>

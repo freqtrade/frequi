@@ -3,7 +3,6 @@ import { usePlotConfigStore } from '@/stores/plotConfig';
 import { useSettingsStore } from '@/stores/settings';
 import type { ChartSliderPosition, PairHistory, Trade } from '@/types';
 import { LoadingStatus } from '@/types';
-import VSelect from 'vue-select';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 
@@ -144,69 +143,81 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="d-flex h-100">
-    <div class="flex-fill w-100 flex-column align-items-stretch d-flex h-100">
-      <div class="d-flex me-0">
-        <div class="ms-1 ms-md-2 d-flex flex-wrap flex-md-nowrap align-items-center w-auto">
-          <span class="ms-md-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-          <VSelect
+  <div class="flex h-full">
+    <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
+      <div class="flex me-0">
+        <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
+          <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+          <Select
             v-model="botStore.activeBot.plotPair"
-            class="ms-md-2"
+            class="md:ms-2"
             :options="availablePairs"
-            style="min-width: 7em"
-            size="sm"
+            size="small"
             :clearable="false"
             @input="refresh"
           >
-          </VSelect>
+          </Select>
 
-          <BButton
+          <Button
             title="Refresh chart"
-            class="ms-2"
+            severity="secondary"
             :disabled="!!!botStore.activeBot.plotPair || isLoadingDataset"
-            size="sm"
+            size="small"
             @click="refresh"
           >
             <i-mdi-refresh />
-          </BButton>
-          <BSpinner v-if="isLoadingDataset" small class="ms-2" label="Spinning" />
-          <div class="d-flex flex-column">
-            <div class="d-flex flex-row flex-wrap">
-              <small v-if="dataset" class="ms-2 text-nowrap" title="Long entry signals"
+          </Button>
+          <ProgressSpinner
+            v-if="isLoadingDataset"
+            class="w-8 h-8"
+            stroke-width="8"
+            small
+            label="Spinning"
+          />
+          <div class="flex flex-col">
+            <div class="flex flex-row flex-wrap">
+              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long entry signals"
                 >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
               >
-              <small v-if="dataset" class="ms-2 text-nowrap" title="Long exit signals"
+              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long exit signals"
                 >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
               >
             </div>
-            <div class="d-flex flex-row flex-wrap">
-              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-nowrap"
+            <div class="flex flex-row flex-wrap">
+              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-sm text-nowrap"
                 >Short entries: {{ dataset.enter_short_signals }}</small
               >
-              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-nowrap"
+              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-sm text-nowrap"
                 >Short exits: {{ dataset.exit_short_signals }}</small
               >
             </div>
           </div>
         </div>
-        <div class="ms-auto d-flex align-items-center w-auto">
-          <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles">
-            <small class="text-nowrap">Heikin Ashi</small>
-          </BFormCheckbox>
+        <div class="ms-auto flex items-center">
+          <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
+            <span class="text-nowrap">Heikin Ashi</span>
+          </BaseCheckbox>
 
           <div class="ms-2">
             <PlotConfigSelect></PlotConfigSelect>
           </div>
 
-          <div class="ms-2 me-0 me-md-1">
-            <BButton size="sm" title="Plot configurator" @click="showConfigurator">
-              <i-mdi-cog width="12" height="12" />
-            </BButton>
+          <div class="ms-2 me-0 md:me-1">
+            <Button
+              size="small"
+              title="Plot configurator"
+              severity="secondary"
+              @click="showConfigurator"
+            >
+              <template #icon>
+                <i-mdi-cog width="12" height="12" />
+              </template>
+            </Button>
           </div>
         </div>
       </div>
-      <div class="h-100 w-100 d-flex">
-        <div class="flex-grow-1">
+      <div class="h-full flex">
+        <div class="min-w-0 w-full shrink">
           <CandleChart
             v-if="hasDataset"
             :dataset="dataset"
@@ -221,8 +232,8 @@ onMounted(() => {
             :label-side="settingsStore.chartLabelSide"
           />
           <div v-else class="m-auto">
-            <BSpinner v-if="isLoadingDataset" label="Spinning" />
-            <div v-else style="font-size: 1.5rem">
+            <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" label="Spinning" />
+            <div v-else class="text-lg">
               {{ noDatasetText }}
             </div>
             <p v-if="botStore.activeBot.historyTakesLonger">
@@ -231,22 +242,26 @@ onMounted(() => {
           </div>
         </div>
         <Transition name="fade">
-          <div v-if="!plotConfigModal" v-show="showPlotConfig" class="w-25">
+          <div
+            v-if="!plotConfigModal"
+            v-show="showPlotConfig"
+            class="grow border rounded-md ps-1 border-surface-300 dark:border-surface-700"
+          >
             <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
           </div>
         </Transition>
       </div>
     </div>
-    <BModal
+    <Dialog
       v-if="plotConfigModal"
       id="plotConfiguratorModal"
-      v-model="showPlotConfigModal"
-      title="Plot Configurator"
+      v-model:visible="showPlotConfigModal"
+      header="Plot Configurator"
       ok-only
       hide-backdrop
     >
       <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
-    </BModal>
+    </Dialog>
   </div>
 </template>
 

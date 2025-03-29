@@ -82,62 +82,72 @@ function saveNewName() {
 </script>
 
 <template>
-  <form class="d-flex flex-row" @submit.prevent="saveNewName">
-    <div class="flex-grow-1">
+  <form class="flex flex-row" @submit.prevent="saveNewName">
+    <div class="grow">
       <slot v-if="mode === EditState.None"> </slot>
-      <BFormInput v-else v-model="localName" size="sm"> </BFormInput>
+      <InputText v-else v-model="localName" size="small" fluid> </InputText>
     </div>
-    <div
-      class="flex-grow-2 mt-auto d-flex gap-1 ms-1"
-      :class="alignVertical ? 'flex-column' : 'flex-row'"
-    >
+    <div class="mt-auto flex gap-1 ms-1" :class="alignVertical ? 'flex-col' : 'flex-row'">
       <template v-if="allowEdit && mode === EditState.None">
-        <BButton
-          size="sm"
-          variant="secondary"
+        <Button
+          size="small"
+          severity="secondary"
           :title="`Edit this ${editableName}.`"
           @click="mode = EditState.Editing"
         >
-          <i-mdi-pencil />
-        </BButton>
-        <BButton
+          <template #icon>
+            <i-mdi-pencil />
+          </template>
+        </Button>
+        <Button
           v-if="allowDuplicate"
-          size="sm"
-          variant="secondary"
+          size="small"
+          severity="secondary"
           :title="`Duplicate ${editableName}.`"
           @click="duplicate"
         >
-          <i-mdi-content-copy />
-        </BButton>
-        <BButton
-          size="sm"
-          variant="secondary"
+          <template #icon>
+            <i-mdi-content-copy />
+          </template>
+        </Button>
+        <Button
+          size="small"
+          severity="secondary"
           :title="`Delete this ${editableName}.`"
           @click="$emit('delete', modelValue)"
         >
-          <i-mdi-delete />
-        </BButton>
+          <template #icon>
+            <i-mdi-delete />
+          </template>
+        </Button>
       </template>
-      <BButton
+      <Button
         v-if="allowAdd && mode === EditState.None"
-        size="sm"
+        size="small"
         :title="`Add new ${editableName}.`"
-        variant="primary"
+        severity="primary"
         @click="addNewClick"
-        ><i-mdi-plus-box-outline />
-      </BButton>
+      >
+        <template #icon>
+          <i-mdi-plus-box-outline />
+        </template>
+      </Button>
       <template v-if="mode !== EditState.None">
-        <BButton
-          size="sm"
+        <Button
+          size="small"
           :title="`Add new ${editableName}`"
-          variant="primary"
+          severity="primary"
           @click="saveNewName"
         >
-          <i-mdi-check />
-        </BButton>
-        <BButton size="sm" title="Abort" variant="secondary" @click="abort">
-          <i-mdi-close />
-        </BButton>
+          <template #icon>
+            <i-mdi-check />
+          </template>
+        </Button>
+        <Button size="small" title="Abort" severity="secondary" @click="abort">
+          <template #icon>
+            <i-mdi-close />
+          </template>
+        </Button>
       </template>
     </div>
   </form>

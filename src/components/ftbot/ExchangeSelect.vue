@@ -60,24 +60,41 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-100 d-flex">
-    <BFormSelect
+  <div class="w-full flex">
+    <Select
       id="exchange-select"
       v-model="exchangeModel.exchange"
-      size="sm"
+      size="small"
+      class="min-w-52"
+      filter
+      option-group-label="label"
+      option-group-children="options"
+      option-label="text"
+      option-value="value"
       :options="exchangeList"
     >
-    </BFormSelect>
-    <BFormSelect
+    </Select>
+    <Select
       id="tradeMode-select"
       v-model="exchangeModel.trade_mode"
-      size="sm"
+      size="small"
+      class="min-w-44"
       :options="tradeModes"
+      option-label="text"
+      option-value="value"
       :disabled="tradeModes.length < 2"
     >
-    </BFormSelect>
-    <BButton class="ms-2 no-min-w" size="sm" @click="botStore.activeBot.getExchangeList">
-      <i-mdi-refresh />
-    </BButton>
+    </Select>
+    <Button
+      severity="secondary"
+      variant="outlined"
+      class="ms-2 no-min-w"
+      size="small"
+      @click="botStore.activeBot.getExchangeList"
+    >
+      <template #icon>
+        <i-mdi-refresh />
+      </template>
+    </Button>
   </div>
 </template>

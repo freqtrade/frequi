@@ -83,141 +83,112 @@ const handleEntry = () => {
   // Trigger submit handler
   handleSubmit();
 };
-const inputSelect = (bvModalEvt) => {
-  bvModalEvt.srcElement?.select();
-};
 </script>
 
 <template>
-  <BModal
-    id="forceentry-modal"
-    ref="modal"
-    v-model="model"
-    :title="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
+  <Dialog
+    v-model:visible="model"
+    :header="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
+    modal
     @show="resetForm"
-    @hidden="resetForm"
-    @ok="handleEntry"
+    @hide="resetForm"
   >
-    <form ref="form" @submit.stop.prevent="handleSubmit">
-      <BFormGroup
-        v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed"
-        label="Order direction (Long or Short)"
-        label-for="order-direction"
-        invalid-feedback="Order direction must be set"
-        :state="orderSide !== undefined"
-        label-class="mb-1"
-        class="mb-2"
-      >
-        <BFormRadioGroup
-          id="order-direction"
+    <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
+      <div v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed">
+        <label class="block font-medium mb-1">Order direction (Long or Short)</label>
+        <SelectButton
           v-model="orderSide"
           :options="orderSideOptions"
-          name="radios-btn-default"
-          size="sm"
-          buttons
-          style="min-width: 10em"
-          button-variant="outline-primary"
-        ></BFormRadioGroup>
-      </BFormGroup>
-      <BFormGroup
-        label="Pair"
-        label-for="pair-input"
-        invalid-feedback="Pair is required"
-        :state="selectedPair !== undefined"
-        label-class="mb-1"
-        class="mb-2"
-      >
-        <BFormInput
+          option-label="text"
+          option-value="value"
+          size="small"
+          class="w-full"
+        />
+      </div>
+
+      <div>
+        <label for="pair-input" class="block font-medium mb-1">Pair</label>
+        <InputText
           id="pair-input"
           v-model="selectedPair"
-          required
           :disabled="positionIncrease"
+          required
+          class="w-full"
           @keydown.enter="handleEntry"
-          @focus="inputSelect"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        label="*Price [optional]"
-        label-for="price-input"
-        invalid-feedback="Price must be empty or a positive number"
-        :state="!price || price > 0"
-        label-class="mb-1"
-        class="mb-2"
-      >
-        <BFormInput
+          @focus="($event.target as HTMLInputElement).select()"
+        />
+      </div>
+
+      <div>
+        <label for="price-input" class="block font-medium mb-1">Price [optional]</label>
+        <InputNumber
           id="price-input"
           v-model="price"
-          type="number"
-          step="0.00000001"
+          show-buttons
+          :min="0"
+          :max-fraction-digits="8"
+          :step="0.1"
+          class="w-full"
           @keydown.enter="handleEntry"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        :label="`*Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
-        label-for="stake-input"
-        invalid-feedback="Stake-amount must be empty or a positive number"
-        :state="!stakeAmount || stakeAmount > 0"
-        label-class="mb-1"
-        class="mb-2"
-      >
-        <BFormInput
+        />
+      </div>
+
+      <div>
+        <label for="stake-input" class="block font-medium mb-1"
+          >* Stake-amount in {{ botStore.activeBot.stakeCurrency }} [optional]</label
+        >
+        <InputNumber
           id="stake-input"
           v-model="stakeAmount"
-          type="number"
-          step="0.000001"
-          @keydown.enter="handleEntry"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        v-if="botStore.activeBot.botApiVersion > 2.16 && botStore.activeBot.shortAllowed"
-        :label="`*Leverage to apply [optional]`"
-        label-for="leverage-input"
-        invalid-feedback="Leverage must be empty or a positive number"
-        :state="!leverage || leverage > 0"
-        label-class="mb-0"
-        class="mb-2"
-      >
-        <BFormInput
+          show-buttons
+          :min="0"
+          :step="botStore.activeBot.stakeCurrency === 'USDT' ? 10 : 1"
+          :max-fraction-digits="5"
+          fluid
+        />
+      </div>
+
+      <div v-if="botStore.activeBot.botApiVersion > 2.16 && botStore.activeBot.shortAllowed">
+        <label for="leverage-input" class="block font-medium mb-1"
+          >Leverage to apply [optional]</label
+        >
+        <InputNumber
           id="leverage-input"
           v-model="leverage"
-          type="number"
-          step="0.01"
+          show-buttons
+          :min="0"
+          :step="1"
+          :max-fraction-digits="1"
+          class="w-full"
           @keydown.enter="handleEntry"
-        ></BFormInput>
-      </BFormGroup>
-      <BFormGroup
-        label="OrderType"
-        label-for="ordertype-input"
-        invalid-feedback="OrderType"
-        :state="true"
-        label-class="mb-1"
-        class="mb-2"
-      >
-        <BFormRadioGroup
-          id="ordertype-input"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">OrderType</label>
+        <SelectButton
           v-model="ordertype"
           :options="orderTypeOptions"
-          name="radios-btn-orderType"
-          buttons
-          button-variant="outline-primary"
-          style="min-width: 10em"
-          size="sm"
-        ></BFormRadioGroup>
-      </BFormGroup>
-      <BFormGroup
-        v-if="botStore.activeBot.botApiVersion > 1.16"
-        label="*Custom entry tag Optional]"
-        label-for="enterTag-input"
-        label-class="mb-1"
-        class="mb-2"
-      >
-        <BFormInput
-          id="enterTag-input"
-          v-model="enterTag"
-          type="text"
-          name="radios-btn-orderType"
-        ></BFormInput>
-      </BFormGroup>
+          option-label="text"
+          option-value="value"
+          size="small"
+          class="w-full"
+        />
+      </div>
+
+      <div v-if="botStore.activeBot.botApiVersion > 1.16">
+        <label for="enterTag-input" class="block text-sm font-medium mb-1"
+          >* Custom entry tag [optional]</label
+        >
+        <InputText id="enterTag-input" v-model="enterTag" class="w-full" />
+      </div>
     </form>
-  </BModal>
+
+    <template #footer>
+      <div class="flex justify-end gap-2">
+        <Button severity="secondary" size="small" @click="model = false"> Cancel </Button>
+        <Button severity="primary" size="small" @click="handleEntry"> Enter Position </Button>
+      </div>
+    </template>
+  </Dialog>
 </template>

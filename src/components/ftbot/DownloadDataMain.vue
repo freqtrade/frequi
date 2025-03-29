@@ -68,37 +68,37 @@ async function startDownload() {
 </script>
 
 <template>
-  <div class="container-md px-1">
+  <div class="px-1 mx-auto w-full max-w-4xl lg:max-w-7xl">
     <BackgroundJobTracking class="mb-4" />
-    <BCard header="Downloading Data" class="px-0 mx-1">
-      <div class="d-flex mb-3 gap-3 flex-column">
-        <div class="d-flex flex-column gap-3">
-          <div class="d-flex flex-column flex-lg-row gap-3">
+    <DraggableContainer header="Downloading Data" class="mx-1 p-4">
+      <div class="flex mb-3 gap-3 flex-col">
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-col lg:flex-row gap-3">
             <!-- Pairs section - keeping template buttons next to input -->
             <div class="flex-fill">
-              <div class="d-flex flex-column gap-2">
-                <div class="d-flex justify-content-between">
-                  <h4 class="text-start">Select Pairs</h4>
-                  <h5 class="text-start">Pairs from template</h5>
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-between">
+                  <h4 class="text-start font-bold text-lg">Select Pairs</h4>
+                  <h5 class="text-start font-bold text-lg">Pairs from template</h5>
                 </div>
-                <div class="d-flex gap-2">
+                <div class="flex gap-2">
                   <BaseStringList
                     v-model="pairs"
                     placeholder="Pair"
-                    size="md"
+                    size="small"
                     class="flex-grow-1"
                   />
-                  <div class="d-flex flex-column gap-1">
-                    <div class="d-flex flex-column gap-1">
-                      <BButton
+                  <div class="flex flex-col gap-1">
+                    <div class="flex flex-col gap-1">
+                      <Button
                         v-for="pt in pairTemplates"
                         :key="pt.idx"
-                        variant="secondary"
-                        :title="pt.pairs"
+                        severity="secondary"
+                        :title="pt.pairs.reduce((acc, p) => `${acc}${p}\n`, '')"
                         @click="addPairs(pt.pairs)"
                       >
                         {{ pt.description }}
-                      </BButton>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -107,81 +107,85 @@ async function startDownload() {
 
             <!-- Timeframes section -->
             <div class="flex-fill px-3">
-              <div class="d-flex flex-column gap-2">
-                <h4 class="text-start">Select timeframes</h4>
-                <BaseStringList v-model="timeframes" placeholder="Timeframe" size="md" />
+              <div class="flex flex-col gap-2">
+                <h4 class="text-start font-bold text-lg">Select timeframes</h4>
+                <BaseStringList v-model="timeframes" placeholder="Timeframe" />
               </div>
             </div>
           </div>
 
           <!-- Time selection section -->
-          <div class="px-3 border border p-2 rounded-1">
-            <div class="d-flex flex-column gap-2">
-              <div class="d-flex justify-content-between align-items-center">
-                <h4 class="text-start mb-0">Time Selection</h4>
-                <BFormCheckbox v-model="timeSelection.useCustomTimerange" class="mb-0" switch>
+          <div class="px-3 border dark:border-surface-700 border-surface-300 p-2 rounded-sm">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between items-center">
+                <h4 class="text-start mb-0 font-bold text-lg">Time Selection</h4>
+                <BaseCheckbox v-model="timeSelection.useCustomTimerange" class="mb-0" switch>
                   Use custom timerange
-                </BFormCheckbox>
+                </BaseCheckbox>
               </div>
 
               <div v-if="timeSelection.useCustomTimerange">
                 <TimeRangeSelect v-model="timeSelection.timerange" />
               </div>
-              <div v-else class="d-flex align-items-center gap-2">
+              <div v-else class="flex items-center gap-2">
                 <label>Days to download:</label>
-                <BFormInput
+                <InputNumber
                   v-model="timeSelection.days"
                   type="number"
                   aria-label="Days to download"
-                  min="1"
-                  style="width: 100px"
+                  :min="1"
+                  :step="1"
+                  size="small"
                 />
               </div>
             </div>
           </div>
 
           <!-- Advanced options section -->
-          <div class="mb-2 border rounded-1 p-2 text-start">
-            <BButton
-              v-b-toggle.advanced-options
-              class="mb-2"
-              @click="isAdvancedOpen = !isAdvancedOpen"
-            >
+          <div
+            class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
+          >
+            <Button class="mb-2" severity="secondary" @click="isAdvancedOpen = !isAdvancedOpen">
               Advanced Options
               <i-mdi-chevron-down v-if="!isAdvancedOpen" />
               <i-mdi-chevron-up v-else />
-            </BButton>
-            <BCollapse id="advanced-options">
-              <BAlert variant="info" :model-value="true" class="mb-2">
-                Advanced options (Erase data, Download trades, and Custom Exchange settings) will
-                only be applied when this section is expanded.
-              </BAlert>
-              <div class="mb-2 border rounded-1 p-2 text-start">
-                <BFormCheckbox v-model="erase" class="mb-2">Erase existing data</BFormCheckbox>
-                <BFormCheckbox v-model="downloadTrades" class="mb-2">
-                  Download Trades instead of OHLCV data
-                </BFormCheckbox>
-              </div>
-              <div class="mb-2 border rounded-1 p-2 text-start">
-                <BFormCheckbox
-                  v-model="exchange.customExchange"
-                  v-b-toggle.custom-exchange
-                  class="mb-2"
+            </Button>
+            <Transition>
+              <div v-show="isAdvancedOpen">
+                <Message severity="info" class="mb-2 py-2">
+                  Advanced options (Erase data, Download trades, and Custom Exchange settings) will
+                  only be applied when this section is expanded.
+                </Message>
+                <div
+                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
                 >
-                  Custom Exchange
-                </BFormCheckbox>
-                <BCollapse id="custom-exchange">
-                  <ExchangeSelect v-model="exchange.selectedExchange" />
-                </BCollapse>
+                  <BaseCheckbox v-model="erase" class="mb-2">Erase existing data</BaseCheckbox>
+                  <BaseCheckbox v-model="downloadTrades" class="mb-2">
+                    Download Trades instead of OHLCV data
+                  </BaseCheckbox>
+                </div>
+                <div
+                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
+                >
+                  <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
+                    Custom Exchange
+                  </BaseCheckbox>
+                  <Transition name="fade">
+                    <ExchangeSelect
+                      v-show="exchange.customExchange"
+                      v-model="exchange.selectedExchange"
+                    />
+                  </Transition>
+                </div>
               </div>
-            </BCollapse>
+            </Transition>
           </div>
 
           <div class="px-3">
-            <BButton variant="primary" @click="startDownload">Start Download</BButton>
+            <Button severity="primary" @click="startDownload">Start Download</Button>
           </div>
         </div>
       </div>
-    </BCard>
+    </DraggableContainer>
   </div>
 </template>

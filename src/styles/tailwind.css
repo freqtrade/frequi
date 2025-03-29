@@ -1,0 +1,138 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-primeui';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+
+
+
+@layer frequi {
+  /* Customization for freqUI components */
+  :root {
+
+      --p-primary-50: #DBFAFF;
+      --p-primary-100: #B8F4FF;
+      --p-primary-200: #75EAFF;
+      --p-primary-300: #2EE0FF;
+      --p-primary-400: #00C3E6;
+      --p-primary-500: #0089A1;
+      --p-primary-600: #006C80;
+      --p-primary-700: #005261;
+      --p-primary-800: #003842;
+      --p-primary-900: #001A1F;
+      --p-primary-950: #000D0F;
+
+      --p-primary-color: var(--p-primary-600);
+
+
+      /* Secondary Button */
+      --p-button-secondary-background: var(--p-surface-200);
+      --p-button-secondary-hover-background: var(--p-surface-300);
+
+    /* default profit loss colors, could be overwritten by custom style */
+    --color-profit: #12bb7b;
+    --color-loss: #ef5350;
+
+    --p-tabs-tabpanel-padding: unset;
+
+    --p-togglebutton-content-checked-background: var(--p-primary-500);
+    --p-togglebutton-sm-padding: 0;
+
+
+    --p-selectbutton-border-radius: var(--radius-sm);
+    /* --p-button-link-color: var(--p-surface-200); */
+    /* --p-togglebutton-content-border-radius: var(--radius-sm); */
+    /* --p-button-sm-padding-y: 0.1rem;
+    --p-button-sm-padding-x: 0.4rem; */
+
+    /* --p-datatable-row-selected-background: var(--p-highlight-background); */
+    /* --p-datatable-row-selected-color: var(--p-primary-contrast); */
+
+      /* --p-primary-color: var(--p-primary-500); */
+  }
+
+  .ft-dark-theme {
+      --p-content-background: var(--p-surface-950);
+      --p-menu-background: var(--p-surface-900);
+
+      --p-primary-contrast-color: var(--p-text-200);
+      --p-button-secondary-background: var(--p-surface-700);
+      --p-button-secondary-hover-background: var(--p-surface-600);
+  }
+
+  .p-button-icon-only.p-button-sm {
+    --p-button-sm-icon-only-height: 2.25rem;
+    /* height: var(--p-button-sm-icon-only-width); */
+    padding : 0.1rem 0.4rem 0.1rem 0.4rem;
+    /* padding: unset; */
+  }
+  .p-button-icon-only {
+    /* padding : 0.1rem 0.4rem 0.1rem 0.4rem; */
+    padding: unset;
+    aspect-ratio: 1 / 1;
+  }
+
+  .p-selectbutton {
+    border-color: var(--p-primary-500);
+    border: 1px solid var(--p-primary-500);
+    &>.p-togglebutton {
+      border: none;
+
+    }
+  }
+
+}
+
+
+@layer primevue {
+    /* Base component style overrides */
+    :root {
+
+        --p-datatable-row-background: unset;
+    }
+}
+
+
+
+body.ft-theme-transition,
+body.ft-theme-transition *,
+body.ft-theme-transition *:before,
+body.ft-theme-transition *:after {
+    transition:
+        background 750ms ease-in-out,
+        border-color 750ms ease-in-out,
+        background-color 750ms ease-in-out,
+    ;
+    transition-delay: 0 !important;
+}
+
+
+html {
+    /*  Set the default font size to 14px */
+    font-size: 14px;
+}
+
+.vue-grid-item {
+    /*  Fix white corners in vue-grid-item. */
+    background-color: unset !important;
+}
+

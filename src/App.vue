@@ -17,10 +17,10 @@ watch(
 </script>
 
 <template>
-  <div id="app" class="d-flex flex-column dvh-100" :style="colorStore.cssVars">
+  <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
     <NavBar />
-    <BaseAlert></BaseAlert>
-    <BodyLayout class="flex-fill overflow-auto" />
+    <Toast />
+    <BodyLayout class="grow overflow-auto" />
     <NavFooter />
   </div>
 </template>

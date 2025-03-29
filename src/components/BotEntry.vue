@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BotDescriptor } from '@/types';
-import type { CheckboxValue } from 'bootstrap-vue-next';
+import type MessageBox from './general/MessageBox.vue';
+const msgBox = ref<typeof MessageBox>();
 
 const props = defineProps({
   bot: { required: true, type: Object as () => BotDescriptor },
@@ -10,93 +11,75 @@ const props = defineProps({
 defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
 
-const changeEvent = (v: CheckboxValue) => {
-  botStore.botStores[props.bot.botId].setAutoRefresh(v as boolean);
-};
-const botRemoveModalVisible = ref(false);
-
-const confirmRemoveBot = () => {
-  botRemoveModalVisible.value = false;
+function confirmRemoveBot() {
   botStore.removeBot(props.bot.botId);
-  console.log('removing bot.');
-};
+}
+
+function removeBotQuestion() {
+  msgBox.value?.show({
+    title: 'Logout confirmation',
+    message: `Really remove (logout) from ${props.bot.botName} (${props.bot.botId})?`,
+    accept: () => {
+      confirmRemoveBot();
+    },
+  });
+}
+
 const autoRefreshLoc = computed({
   get() {
     return botStore.botStores[props.bot.botId].autoRefresh;
   },
-  set() {
-    // pass
+  set(newValue) {
+    botStore.botStores[props.bot.botId].setAutoRefresh(newValue);
   },
 });
 </script>
 
 <template>
-  <div v-if="bot" class="d-flex align-items-center justify-content-between w-100">
+  <div v-if="bot" class="flex items-center justify-between w-full">
     <span class="me-2">{{ bot.botName || bot.botId }}</span>
 
-    <div class="d-flex align-items-center">
-      <BFormCheckbox
-        v-model="autoRefreshLoc"
-        input-class="ms-auto my-auto"
-        title="AutoRefresh"
-        variant="secondary"
-        switch
-        @update:model-value="changeEvent"
-      >
+    <div class="flex items-center gap-2">
+      <div class="flex items-center">
+        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" />
         <div
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
           :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
         >
           <i-mdi-circle
-            class="ms-2 me-1 align-middle"
-            :class="botStore.botStores[bot.botId].isBotOnline ? 'online' : 'offline'"
+            class="mx-1"
+            :class="botStore.botStores[bot.botId].isBotOnline ? 'text-green-500' : 'text-red-500'"
           />
         </div>
         <div v-else title="Login info expired, please login again.">
-          <i-mdi-cancel class="offline" />
+          <i-mdi-cancel class="text-red-500" />
         </div>
-      </BFormCheckbox>
+      </div>
 
-      <div v-if="!noButtons" class="float-end d-flex flex-align-center">
-        <BButton
+      <div v-if="!noButtons" class="flex items-center gap-1">
+        <Button
           v-if="botStore.botStores[bot.botId].isBotLoggedIn"
-          class="ms-1"
-          size="sm"
+          size="small"
+          severity="secondary"
           title="Edit bot"
           @click="$emit('edit')"
         >
           <i-mdi-pencil />
-        </BButton>
-        <BButton v-else class="ms-1" size="sm" title="Login again" @click="$emit('editLogin')">
+        </Button>
+        <Button
+          v-else
+          size="small"
+          severity="secondary"
+          title="Login again"
+          @click="$emit('editLogin')"
+        >
           <i-mdi-login />
-        </BButton>
-        <BButton class="ms-1" size="sm" title="Delete bot" @click="botRemoveModalVisible = true">
+        </Button>
+        <Button size="small" severity="secondary" title="Delete bot" @click="removeBotQuestion">
           <i-mdi-delete />
-        </BButton>
+        </Button>
       </div>
     </div>
-    <BModal
-      v-if="!noButtons"
-      id="removeBotModal"
-      v-model="botRemoveModalVisible"
-      title="Logout confirmation"
-      @ok="confirmRemoveBot"
-    >
-      Really remove (logout) from {{ bot.botName }} ({{ bot.botId }})?
-    </BModal>
+    <MessageBox ref="msgBox" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.form-switch {
-  padding-left: 0;
-  display: flex;
-  flex-wrap: nowrap;
-}
-.online {
-  color: #1aa903;
-}
-.offline {
-  color: #e01515;
-}
-</style>

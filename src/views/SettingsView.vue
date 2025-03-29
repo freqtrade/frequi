@@ -27,100 +27,137 @@ const resetDynamicLayout = () => {
 </script>
 
 <template>
-  <div class="container mt-3">
-    <BCard header="FreqUI Settings">
-      <div class="text-start d-flex flex-column gap-2">
-        <p>UI Version: {{ settingsStore.uiVersion }}</p>
-        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
-          <h4>UI settings</h4>
-          <BFormGroup
-            description="Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at the top."
-          >
-            <BFormCheckbox v-model="layoutStore.layoutLocked">Lock layout</BFormCheckbox>
-          </BFormGroup>
-          <BFormGroup description="Reset dynamic layouts to how they were.">
-            <BButton size="sm" class="me-1" @click="resetDynamicLayout">Reset layout</BButton>
-          </BFormGroup>
-          <BFormGroup
-            label="Show open trades in header"
-            description="Decide if open trades should be visualized"
-          >
-            <BFormSelect
+  <Card class="mx-auto mt-3 p-4 max-w-4xl">
+    <template #title>FreqUI Settings</template>
+    <template #content>
+      <div class="flex flex-col gap-4 text-start dark:text-surface-300">
+        <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
+
+        <div class="border border-surface-400 rounded-sm p-4 space-y-4">
+          <h4 class="text-xl font-semibold">UI settings</h4>
+
+          <BaseCheckbox v-model="layoutStore.layoutLocked" class="space-y-1">
+            Lock dynamic layouts
+            <template #hint>
+              Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at
+              the top.
+            </template>
+          </BaseCheckbox>
+
+          <div class="flex flex-row gap-2 space-y-2">
+            <Button severity="secondary" size="small" @click="resetDynamicLayout"
+              >Reset layout</Button
+            >
+            <small class="block text-surface-600 dark:text-surface-400"
+              >Reset dynamic layouts to how they were.</small
+            >
+          </div>
+
+          <Divider />
+
+          <div class="space-y-1">
+            <label class="block text-sm">Show open trades in header</label>
+            <Select
               v-model="settingsStore.openTradesInTitle"
               :options="openTradesOptions"
-            ></BFormSelect>
-          </BFormGroup>
-          <BFormGroup
-            label="UTC Timezone"
-            description="Select timezone (we recommend UTC is recommended as exchanges usually work in UTC)"
-          >
-            <BFormSelect v-model="settingsStore.timezone" :options="timezoneOptions"></BFormSelect>
-          </BFormGroup>
-          <BFormGroup description="Keep background sync running while other bots are selected.">
-            <BFormCheckbox v-model="settingsStore.backgroundSync">Background sync</BFormCheckbox>
-          </BFormGroup>
-          <BFormGroup description="Use confirmation dialogs when force-exiting a trade.">
-            <BFormCheckbox v-model="settingsStore.confirmDialog"
-              >Show Confirm Dialog for Trade Exits</BFormCheckbox
+              option-label="text"
+              option-value="value"
+              size="small"
+              class="w-full"
+            />
+            <small class="text-surface-600 dark:text-surface-400"
+              >Decide if open trades should be visualized</small
             >
-          </BFormGroup>
-          <BFormGroup
-            description="Show text on multi pane buttons. If disabled, only shows images."
-          >
-            <BFormCheckbox v-model="settingsStore.multiPaneButtonsShowText"
-              >Show Text on Multi Pane Buttons</BFormCheckbox
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-sm">UTC Timezone</label>
+            <Select
+              v-model="settingsStore.timezone"
+              :options="timezoneOptions"
+              class="w-full"
+              size="small"
+            />
+            <small class="text-surface-600 dark:text-surface-400"
+              >Select timezone (UTC is recommended as exchanges usually work in UTC)</small
             >
-          </BFormGroup>
+          </div>
+
+          <BaseCheckbox v-model="settingsStore.backgroundSync" class="space-y-1">
+            Background sync
+            <template #hint> Keep background sync running while other bots are selected. </template>
+          </BaseCheckbox>
+
+          <BaseCheckbox v-model="settingsStore.confirmDialog" class="space-y-1">
+            Show Confirm Dialog for Trade Exits
+            <template #hint>Use confirmation dialogs when force-exiting a trade.</template>
+          </BaseCheckbox>
+
+          <BaseCheckbox v-model="settingsStore.multiPaneButtonsShowText" class="space-y-1">
+            Show Text on Multi Pane Buttons
+            <template #hint
+              >Show text on multi pane buttons. If disabled, only shows images.</template
+            >
+          </BaseCheckbox>
         </div>
 
-        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
-          <h4>Chart settings</h4>
-          <BFormGroup
-            description="Chart scale Side (Should the scale be displayed on the right or left?)"
-          >
-            <BFormRadioGroup
-              v-model="settingsStore.chartLabelSide"
-              name="chart-preference-options"
-              :options="[
-                { value: 'left', text: 'Left' },
-                { value: 'right', text: 'Right' },
-              ]"
-            ></BFormRadioGroup>
-          </BFormGroup>
+        <div class="border border-surface-400 rounded-sm p-4 space-y-4">
+          <h4 class="text-lg font-semibold">Chart settings</h4>
 
-          <BFormGroup description="Use Heikin Ashi candles in your charts">
-            <BFormCheckbox v-model="settingsStore.useHeikinAshiCandles"
-              >Use Heikin Ashi candles.</BFormCheckbox
+          <div class="space-y-1">
+            <label class="block text-sm">Chart scale Side</label>
+            <div class="flex gap-4">
+              <div class="flex items-center">
+                <RadioButton v-model="settingsStore.chartLabelSide" value="left" size="small" />
+                <label class="ml-2">Left</label>
+              </div>
+              <div class="flex items-center">
+                <RadioButton v-model="settingsStore.chartLabelSide" value="right" size="small" />
+                <label class="ml-2">Right</label>
+              </div>
+            </div>
+            <small class="text-surface-600 dark:text-surface-400"
+              >Should the scale be displayed on the right or left?</small
             >
-          </BFormGroup>
-          <BFormGroup
-            description="Can reduce the transfer size for large dataframes. May require additional calls if the plot config changes."
-          >
-            <BFormCheckbox v-model="settingsStore.useReducedPairCalls"
-              >Only request necessary columns (recommended to be checked).</BFormCheckbox
+          </div>
+
+          <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles" class="space-y-1">
+            Use Heikin Ashi candles
+            <template #hint>Use Heikin Ashi candles in your charts</template>
+          </BaseCheckbox>
+
+          <BaseCheckbox v-model="settingsStore.useReducedPairCalls" class="space-y-1">
+            Only request necessary columns
+            <template #hint
+              >Can reduce the transfer size for large dataframes. May require additional calls if
+              the plot config changes.</template
             >
-          </BFormGroup>
-          <BFormGroup description="Candle Color Preference">
-            <BFormRadioGroup
-              id="settings-color-preference-radio-group"
-              v-model="colorStore.colorPreference"
-              name="color-preference-options"
-              @change="colorStore.updateProfitLossColor"
-            >
-              <BFormRadio
+          </BaseCheckbox>
+
+          <div class="space-y-1">
+            <label class="block text-sm">Candle Color Preference</label>
+            <div class="flex flex-row gap-5 items-center">
+              <div
                 v-for="option in colorPreferenceOptions"
                 :key="option.value"
-                :value="option.value"
+                class="flex items-center"
               >
-                <div class="d-flex">
-                  <span class="me-2">{{ option.text }}</span>
+                <RadioButton
+                  v-model="colorStore.colorPreference"
+                  :value="option.value"
+                  :input-id="`input-id${option.value}`"
+                  size="small"
+                  @change="colorStore.updateProfitLossColor"
+                />
+                <label :for="`input-id${option.value}`" class="ml-2 flex items-center">
+                  <span class="mr-2">{{ option.text }}</span>
                   <i-mdi-arrow-up-thin
                     :color="
                       option.value === ColorPreferences.GREEN_UP
                         ? colorStore.colorProfit
                         : colorStore.colorLoss
                     "
-                    class="color-candle-arrows"
+                    class="-ml-2"
                   />
                   <i-mdi-arrow-down-thin
                     :color="
@@ -128,38 +165,32 @@ const resetDynamicLayout = () => {
                         ? colorStore.colorLoss
                         : colorStore.colorProfit
                     "
-                    class="color-candle-arrows"
+                    class="-ml-2"
                   />
-                </div>
-              </BFormRadio>
-            </BFormRadioGroup>
-          </BFormGroup>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="d-flex flex-column border rounded p-2 mb-2 gap-2">
-          <BFormGroup description="Notifications">
-            <h4>Notification Settings</h4>
-            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]"
-              >Entry notifications</BFormCheckbox
-            >
-            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]"
-              >Exit notifications</BFormCheckbox
-            >
-            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]"
-              >Entry Cancel notifications</BFormCheckbox
-            >
-            <BFormCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]"
-              >Exit Cancel notifications</BFormCheckbox
-            >
-          </BFormGroup>
+
+        <div class="border rounded-sm p-4 space-y-4">
+          <h4 class="text-lg font-semibold">Notification Settings</h4>
+          <div class="space-y-2">
+            <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]">
+              Entry notifications
+            </BaseCheckbox>
+            <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]">
+              Exit notifications
+            </BaseCheckbox>
+            <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]">
+              Entry Cancel notifications
+            </BaseCheckbox>
+            <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]">
+              Exit Cancel notifications
+            </BaseCheckbox>
+          </div>
         </div>
       </div>
-    </BCard>
-  </div>
+    </template>
+  </Card>
 </template>
-
-<style lang="scss" scoped>
-.color-candle-arrows {
-  margin-left: -0.5rem;
-  margin-top: 2px;
-}
-</style>

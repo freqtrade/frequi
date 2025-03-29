@@ -1,13 +1,15 @@
 import { defineConfig } from 'vitest/config';
 
 import createVuePlugin from '@vitejs/plugin-vue';
-import { BootstrapVueNextResolver } from 'bootstrap-vue-next';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
 import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolve from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
+import tailwindcss from '@tailwindcss/vite';
+
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 
 let commitHash: string = 'unknown';
 try {
@@ -28,7 +30,7 @@ export default defineConfig({
       },
     }),
     Components({
-      resolvers: [IconsResolve(), BootstrapVueNextResolver()],
+      resolvers: [IconsResolve(), PrimeVueResolver()],
       dts: 'src/components.d.ts',
     }),
     Icons({
@@ -40,6 +42,7 @@ export default defineConfig({
       dirs: ['src/composables', 'src/stores', 'src/utils/**'],
       vueTemplate: true,
     }),
+    tailwindcss(),
   ],
   resolve: {
     dedupe: ['vue'],
@@ -54,7 +57,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/styles/_variables.scss";',
+        // additionalData: '@import "@/styles/_variables.scss";',
       },
     },
   },

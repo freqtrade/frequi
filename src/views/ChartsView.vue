@@ -106,52 +106,53 @@ watch(
 </script>
 
 <template>
-  <div class="d-flex flex-column h-100">
+  <div class="flex flex-col h-full">
     <!-- <div v-if="isWebserverMode" class="me-auto ms-3"> -->
     <!-- Currently only available in Webserver mode -->
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
-    <div v-if="botStore.activeBot.isWebserverMode" class="mx-md-3 mt-2">
-      <div class="d-flex flex-column flex-md-row-reverse border rounded-1 p-1">
-        <BButton v-b-toggle.ws-settings class="ms-auto align-self-start col-12 col-md-2"
-          >Show/hide setup</BButton
+    <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
+      <Panel header="Settings" toggleable>
+        <div
+          class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
         >
-        <BCollapse id="ws-settings" visible class="w-100">
-          <div
-            v-if="botStore.activeBot.botState.api_version >= 2.42"
-            class="mb-2 border rounded-1 p-2 text-start col-12 col-md-6"
-          >
-            <BFormCheckbox v-model="exchange.customExchange" v-b-toggle.custom-exchange>
+          <div class="flex flex-row gap-5">
+            <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
               Custom Exchange
-            </BFormCheckbox>
-            <BCollapse id="custom-exchange">
-              <ExchangeSelect v-model="exchange.selectedExchange" />
-            </BCollapse>
+            </BaseCheckbox>
+            <span v-show="!exchange.customExchange">
+              Current Exchange:
+              {{ botStore.activeBot.botState.exchange }}
+              {{ botStore.activeBot.botState.trading_mode }}
+            </span>
           </div>
-          <div class="d-flex flex-wrap mx-1 gap-1 gap-md-2">
-            <div class="col-12 col-md-3 text-start me-md-1">
-              <span>Strategy</span>
-              <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
-              <BFormCheckbox
-                v-if="botStore.activeBot.botState.api_version >= 2.42"
-                v-model="useLiveData"
-                class="align-self-center"
-                title="Use live data from the exchange. Only use if you don't have data downloaded locally."
-              >
-                Use Live Data
-              </BFormCheckbox>
-            </div>
-            <div class="col-12 col-md-3 text-start">
-              <span>Timeframe</span>
-              <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
-            </div>
-            <TimeRangeSelect v-model="timerange"></TimeRangeSelect>
+          <Transition name="fade">
+            <ExchangeSelect v-show="exchange.customExchange" v-model="exchange.selectedExchange" />
+          </Transition>
+        </div>
+        <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 md:gap-2">
+          <div class="text-start md:me-1 col-span-2">
+            <span>Strategy</span>
+            <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
+            <BaseCheckbox
+              v-if="botStore.activeBot.botState.api_version >= 2.42"
+              v-model="useLiveData"
+              class="align-self-center"
+              title="Use live data from the exchange. Only use if you don't have data downloaded locally."
+            >
+              Use Live Data
+            </BaseCheckbox>
           </div>
-        </BCollapse>
-      </div>
+          <div class="flex flex-col text-start">
+            <span>Timeframe</span>
+            <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+          </div>
+          <TimeRangeSelect v-model="timerange" class="col-span-3 md:col-span-2"></TimeRangeSelect>
+        </div>
+      </Panel>
     </div>
 
-    <div class="mx-md-2 mt-2 pb-1 h-100">
+    <div class="md:mx-2 mt-2 pb-1 h-full">
       <CandleChartContainer
         :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"

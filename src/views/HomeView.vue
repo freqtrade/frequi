@@ -1,21 +1,24 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="home">
-    <div class="d-flex justify-content-center">
+  <div class="mt-5">
+    <div class="flex justify-center">
       <BotList />
     </div>
-    <hr />
+    <Divider />
     <!-- <img alt="Freqtrade logo" src="../assets/freqtrade-logo.png" width="450px" class="my-5" /> -->
-    <div title="Freqtrade logo" class="logo-svg my-5 mx-auto" />
-    <div>
-      <h1>Welcome to the Freqtrade UI</h1>
-    </div>
+    <div title="Freqtrade logo" class="logo-svg my-5 mx-auto dark:bg-white bg-black" />
+    <h1 class="font-bold text-4xl mb-4">Welcome to the Freqtrade UI</h1>
     <div>This page allows you to control your trading bot.</div>
-    <br />
-    <p>
+    <Divider />
+    <p class="mb-2">
       If you need any help, please refer to the
-      <a href="https://www.freqtrade.io/en/latest/">Freqtrade Documentation</a>.
+      <a
+        class="text-primary underline cursor-pointer"
+        href="https://www.freqtrade.io/en/latest/"
+        target="_blank"
+        >Freqtrade Documentation</a
+      >.
     </p>
 
     <p>Have fun - <i>wishes you the Freqtrade team</i></p>
@@ -23,9 +26,6 @@
 </template>
 
 <style lang="scss" scoped>
-.home {
-  margin-top: 1.5em;
-}
 .logo-svg {
   -webkit-mask: url(../assets/freqtrade-logo-mask.png) no-repeat center;
   -webkit-mask-size: 240px 240px;

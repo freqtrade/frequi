@@ -29,24 +29,28 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="w-100 d-flex">
-      <BFormSelect
+    <div class="w-full flex">
+      <Select
         id="strategy-select"
         v-model="locStrategy"
+        filter
+        fluid
         :options="botStore.activeBot.strategyList"
       >
-      </BFormSelect>
+      </Select>
       <div class="ms-1">
-        <BButton @click="botStore.activeBot.getStrategyList">
-          <i-mdi-refresh />
-        </BButton>
+        <Button severity="secondary" variant="outlined" @click="botStore.activeBot.getStrategyList">
+          <template #icon>
+            <i-mdi-refresh />
+          </template>
+        </Button>
       </div>
     </div>
 
     <textarea
       v-if="showDetails && botStore.activeBot.strategy"
       v-model="strategyCode"
-      class="w-100 h-100"
+      class="w-full h-full"
     ></textarea>
   </div>
 </template>

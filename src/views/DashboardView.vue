@@ -75,7 +75,7 @@ onMounted(async () => {
 
 <template>
   <GridLayout
-    class="h-100 w-100"
+    class="h-full w-full"
     style="padding: 1px"
     :row-height="50"
     :layout="gridLayoutData"
@@ -135,7 +135,7 @@ onMounted(async () => {
       >
         <DraggableContainer>
           <template #header>
-            <div class="d-flex justify-content-center">
+            <div class="flex justify-content-center">
               Open Trades
               <InfoBox
                 class="ms-2"
@@ -178,7 +178,7 @@ onMounted(async () => {
       >
         <DraggableContainer>
           <template #header>
-            <div class="d-flex justify-content-center">
+            <div class="flex justify-content-center">
               Closed Trades
               <InfoBox
                 class="ms-2"

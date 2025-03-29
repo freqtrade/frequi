@@ -1,43 +1,49 @@
 <script setup lang="ts">
-import type { BaseSize } from 'bootstrap-vue-next';
-
 const values = defineModel<string[]>({ required: true });
 withDefaults(
   defineProps<{
     placeholder?: string;
-    size?: keyof BaseSize;
+    size?: 'small' | 'large';
   }>(),
   {
     placeholder: '',
-    size: 'sm',
+    size: 'small',
   },
 );
 </script>
 
 <template>
-  <div class="d-flex flex-row gap-2">
-    <div class="d-flex gap-1 flex-column w-100">
-      <div v-for="(val, idx) in values" :key="idx" class="d-flex flex-row gap-1">
-        <BFormInput v-model="values[idx]" size="sm" :placeholder="placeholder"></BFormInput>
-        <BButton
-          :size="size"
-          variant="outline-secondary"
+  <div class="flex flex-row gap-2">
+    <div class="flex gap-1 flex-col w-full">
+      <div v-for="(val, idx) in values" :key="idx" class="flex flex-row gap-1">
+        <InputText
+          v-model="values[idx]"
+          size="small"
+          class="w-full"
+          :placeholder="placeholder"
+        ></InputText>
+        <Button
+          severity="secondary"
+          variant="outlined"
           title="Delete this value."
-          class="d-flex align-items-center justify-content-center"
+          class="flex align-items-center justify-content-center"
           @click="values.splice(idx, 1)"
         >
-          <i-mdi-delete />
-        </BButton>
+          <template #icon>
+            <i-mdi-delete />
+          </template>
+        </Button>
       </div>
     </div>
-    <BButton
-      :size="size"
+    <Button
       :title="`Add new value`"
-      variant="secondary"
-      class="mt-auto d-flex align-items-center justify-content-center"
+      severity="secondary"
+      class="mt-auto flex align-items-center justify-content-center"
       @click="values.push('')"
     >
-      <i-mdi-plus-box-outline />
-    </BButton>
+      <template #icon>
+        <i-mdi-plus-box-outline />
+      </template>
+    </Button>
   </div>
 </template>

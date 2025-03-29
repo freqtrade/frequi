@@ -663,7 +663,7 @@ watch(
 </script>
 
 <template>
-  <div class="h-100 w-100">
+  <div class="h-full w-full">
     <ECharts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>

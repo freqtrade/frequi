@@ -33,48 +33,59 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
 </script>
 
 <template>
-  <div class="container d-flex flex-column align-items-stretch">
-    <h3>Available results:</h3>
-    <BListGroup class="ms-2">
-      <BListGroupItem
+  <div class="flex flex-col items-stretch">
+    <h3 class="font-bold text-2xl">Available results:</h3>
+    <ul
+      class="ms-2 divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-surface-500"
+    >
+      <li
         v-for="[key, result] in Object.entries(backtestHistory)"
         :key="key"
         button
-        :active="key === selectedBacktestResultKey"
-        class="d-flex justify-content-between align-items-center py-1 pe-1"
+        :class="{
+          'bg-primary dark:border-primary text-primary-contrast': key === selectedBacktestResultKey,
+        }"
+        class="flex justify-between items-center py-1 px-1"
         @click="setBacktestResult(key)"
       >
         <template v-if="!result.metadata.editing">
           <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
-          <div class="d-flex">
-            <BButton
+          <div class="flex">
+            <Button
               v-if="canUseModify"
               class="flex-nowrap"
-              size="sm"
+              size="small"
+              severity="secondary"
               title="Modify result notes."
               @click.stop="result.metadata.editing = !result.metadata.editing"
             >
-              <i-mdi-pencil />
-            </BButton>
-            <BButton
-              size="sm"
+              <template #icon>
+                <i-mdi-pencil />
+              </template>
+            </Button>
+            <Button
+              size="small"
               class="flex-nowrap"
+              severity="secondary"
               title="Delete this Result from UI."
               @click.stop="emit('removeResult', key)"
             >
-              <i-mdi-delete />
-            </BButton>
+              <template #icon>
+                <i-mdi-delete />
+              </template>
+            </Button>
           </div>
         </template>
         <template v-if="result.metadata.editing">
-          <BFormTextarea v-model="result.metadata.notes" placeholder="notes" size="sm">
-          </BFormTextarea>
+          <Textarea v-model="result.metadata.notes" placeholder="notes" size="small"> </Textarea>
 
-          <BButton size="sm" title="Confirm" @click.stop="confirmInput(key, result)">
-            <i-mdi-check />
-          </BButton>
+          <Button size="small" title="Confirm" @click.stop="confirmInput(key, result)">
+            <template #icon>
+              <i-mdi-check />
+            </template>
+          </Button>
         </template>
-      </BListGroupItem>
-    </BListGroup>
+      </li>
+    </ul>
   </div>
 </template>

@@ -35,41 +35,43 @@ function refreshOHLCV(pair: string, columns: string[]) {
 
 <template>
   <div>
-    <div class="d-flex flex-row mb-1 align-items-center">
+    <div class="flex flex-row mb-1 items-center">
       <div class="me-2">
-        <BButton
+        <Button
           aria-label="Close"
           title="Pair Navigation"
-          variant="outline-secondary"
-          size="sm"
+          severity="secondary"
+          variant="outlined"
+          size="small"
           @click="isBarVisible.left = !isBarVisible.left"
         >
           <i-mdi-chevron-right v-if="!isBarVisible.left" width="24" height="24" />
           <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
-        </BButton>
+        </Button>
       </div>
-      <span class="flex-fill">
+      <span class="grow">
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>
-      <div class="col-md-1 text-end">
-        <BButton
+      <div class="text-end">
+        <Button
           aria-label="Close"
-          variant="outline-secondary"
+          variant="outlined"
           title="Trade Navigation"
-          size="sm"
+          size="small"
+          severity="secondary"
           @click="isBarVisible.right = !isBarVisible.right"
         >
           <i-mdi-chevron-right v-if="isBarVisible.right" width="24" height="24" />
           <i-mdi-chevron-left v-if="!isBarVisible.right" width="24" height="24" />
-        </BButton>
+        </Button>
       </div>
     </div>
-    <div class="text-center d-flex flex-row h-100 align-items-stretch">
+    <div class="text-center flex flex-row h-full items-stretch">
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
-          class="col-md-2 overflow-y-auto overflow-x-hidden"
+          class="overflow-y-auto overflow-x-hidden"
           style="max-height: calc(100vh - 200px)"
           :pairlist="backtestResult.pairlist"
           :trades="backtestResult.trades"
@@ -85,7 +87,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :timerange="timerange"
         :strategy="strategy"
         :trades="backtestResult.trades"
-        class="flex-shrink-1 candle-chart-container w-100 px-0 h-100 align-self-stretch"
+        class="flex-shrink-1 candle-chart-container w-full px-0 h-full align-self-stretch"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
         @refresh-data="refreshOHLCV"
@@ -94,20 +96,20 @@ function refreshOHLCV(pair: string, columns: string[]) {
       <Transition name="fade">
         <TradeListNav
           v-if="isBarVisible.right"
-          class="overflow-y-auto col-md-2 overflow-x-visible"
+          class="overflow-y-auto overflow-x-visible min-w-56"
           style="max-height: calc(100vh - 200px)"
           :trades="backtestResult.trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
           @trade-select="navigateChartToTrade"
         />
       </Transition>
     </div>
-    <BCard header="Single trades" class="row mt-2 w-100">
+    <DraggableContainer header="Single trades" class="row mt-2 w-full">
       <TradeList
-        class="row trade-history mt-2 w-100"
+        class="row trade-history mt-2 w-full"
         :trades="backtestResult.trades"
         :show-filter="true"
       />
-    </BCard>
+    </DraggableContainer>
   </div>
 </template>
 

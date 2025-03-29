@@ -30,28 +30,28 @@ const tradeClick = (trade) => {
 </script>
 
 <template>
-  <div class="h-100 overflow-auto p-1">
-    <BListGroup id="tradeList">
-      <BListGroupItem
+  <div class="h-full overflow-auto p-1">
+    <div id="tradeList">
+      <div
         v-for="trade in filteredTrades"
         :key="trade.trade_id"
-        class="border border-secondary rounded my-05 px-1"
+        class="border border-surface-500 rounded-sm my-0.5 px-1 py-2"
         @click="tradeClick(trade)"
       >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
-      </BListGroupItem>
-    </BListGroup>
+      </div>
+    </div>
 
     <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
 
-    <div class="w-100 d-flex justify-content-between mt-1">
-      <BPagination
+    <div class="w-full flex justify-content-between mt-1">
+      <Paginator
         v-if="!activeTrades"
         v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
+        :total-records="rows"
+        :rows="perPage"
         aria-controls="tradeList"
-      ></BPagination>
+      ></Paginator>
       <BFormInput
         v-if="showFilter"
         v-model="filterText"

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import VSelect from 'vue-select';
-
 const props = defineProps({
   modelValue: { required: false, default: '', type: String },
   columns: { required: true, type: Array as () => string[] },
@@ -26,6 +24,10 @@ onMounted(() => {
   selAvailableIndicator.value = props.modelValue;
 });
 
+watch(selAvailableIndicator, () => {
+  emitIndicator();
+});
+
 watch(
   () => props.modelValue,
   (newValue) => {
@@ -35,19 +37,16 @@ watch(
 </script>
 
 <template>
-  <div class="d-flex flex-row">
-    <BFormGroup class="flex-grow-1" :label="label" label-for="indicatorSelector">
-      <VSelect
-        v-model="selAvailableIndicator"
-        :options="columns"
-        size="sm"
-        :clearable="false"
-        @option:selected="emitIndicator"
-      >
-      </VSelect>
-    </BFormGroup>
-    <BButton size="sm" title="Abort" class="ms-1 mt-auto" variant="secondary" @click="abort">
-      <i-mdi-close />
-    </BButton>
+  <div class="flex flex-row">
+    <div class="flex flex-col grow">
+      <label for="selAvailableIndicator" class="form-label">{{ label }}</label>
+      <Select v-model="selAvailableIndicator" :options="columns" size="small" :clearable="false">
+      </Select>
+    </div>
+    <Button size="small" title="Abort" class="ms-1 mt-auto" severity="secondary" @click="abort">
+      <template #icon>
+        <i-mdi-close />
+      </template>
+    </Button>
   </div>
 </template>

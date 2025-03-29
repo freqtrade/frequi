@@ -24,118 +24,111 @@ function deleteBacktestResult(result: BacktestHistoryEntry) {
   };
   msgBox.value?.show(msg);
 }
+
+const filteredList = computed(() =>
+  botStore.activeBot.backtestHistoryList.filter(
+    (r) =>
+      r.filename.toLowerCase().includes(filterTextDebounced.value.toLowerCase()) ||
+      r.strategy.toLowerCase().includes(filterTextDebounced.value.toLowerCase()),
+  ),
+);
+function rowClick(row) {
+  botStore.activeBot.getBacktestHistoryResult(row.data);
+}
 </script>
 
 <template>
   <div>
-    <button
-      class="btn btn-secondary float-end"
+    <Button
+      class="float-end"
       title="Refresh"
       aria-label="Refresh"
+      variant="outlined"
+      severity="secondary"
       @click="botStore.activeBot.getBacktestHistory"
     >
       <i-mdi-refresh />
-    </button>
+    </Button>
     <p>
       Load Historic results from disk. You can click on multiple results to load all of them into
       freqUI.
     </p>
-    <div class="d-flex align-items-center">
-      <BFormGroup
-        v-if="botStore.activeBot.backtestHistoryList.length > 0"
-        class="my-2"
-        label-for="trade-filter"
-      >
-        <BFormInput
-          id="trade-filter"
-          v-model="filterText"
-          type="text"
-          placeholder="Filter Strategies"
-          tilte="Filter Strategies"
-        />
-      </BFormGroup>
+    <div v-if="botStore.activeBot.backtestHistoryList.length > 0" class="flex align-center">
+      <InputText
+        id="trade-filter"
+        v-model="filterText"
+        type="text"
+        size="small"
+        placeholder="Filter Strategies"
+        title="Filter Strategies"
+      />
     </div>
-    <BTableSimple
+    <DataTable
       v-if="botStore.activeBot.backtestHistoryList.length > 0"
+      class="mt-2"
       responsive
-      small
-      class="rounded-1 table-rounded-corners"
+      size="small"
+      scrollable
+      scroll-height="50rem"
+      :virtual-scroller-options="{ itemSize: 46 }"
+      show-gridlines
+      :value="filteredList"
+      @row-click="rowClick"
     >
-      <BThead>
-        <BTr>
-          <BTh>Strategy</BTh>
-          <BTh>Details</BTh>
-          <BTh>Backtest Time</BTh>
-          <BTh>Filename</BTh>
-          <BTh>Actions</BTh>
-        </BTr>
-      </BThead>
-      <BTbody>
-        <BTr
-          v-for="res in botStore.activeBot.backtestHistoryList.filter(
-            (r) =>
-              r.filename.toLowerCase().includes(filterTextDebounced.toLowerCase()) ||
-              r.strategy.toLowerCase().includes(filterTextDebounced.toLowerCase()),
-          )"
-          :key="res.filename + res.strategy"
-          role="button"
-          @click="botStore.activeBot.getBacktestHistoryResult(res)"
-        >
-          <BTd>{{ res.strategy }}</BTd>
-          <BTd>
-            <strong>{{ res.timeframe }}</strong>
-            <span v-if="res.backtest_start_ts && res.backtest_end_ts" class="ms-1">
-              {{ timestampToTimeRangeString(res.backtest_start_ts * 1000) }}-{{
-                timestampToTimeRangeString(res.backtest_end_ts * 1000)
-              }}</span
-            >
-          </BTd>
-          <BTd
-            ><small>{{ timestampms(res.backtest_start_time * 1000) }}</small></BTd
+      <Column field="strategy" header="Strategy2"></Column>
+      <Column field="timeframe" header="Details">
+        <template #body="{ data }">
+          <strong>{{ data.timeframe }}</strong>
+          <span v-if="data.backtest_start_ts && data.backtest_end_ts" class="ms-1">
+            {{ timestampToTimeRangeString(data.backtest_start_ts * 1000) }}-{{
+              timestampToTimeRangeString(data.backtest_end_ts * 1000)
+            }}</span
           >
-          <BTd>
-            <small>{{ res.filename }}</small>
-          </BTd>
-          <BTd>
-            <div class="d-flex align-items-center">
-              <InfoBox
-                v-if="botStore.activeBot.botApiVersion >= 2.32"
-                :class="res.notes ? 'opacity-100' : 'opacity-0'"
-                :hint="res.notes ?? ''"
-              ></InfoBox>
-              <BButton
-                v-if="botStore.activeBot.botApiVersion >= 2.31"
-                class="ms-1"
-                size="sm"
-                title="Load this Result."
-                :disabled="res.run_id in botStore.activeBot.backtestHistory"
-                @click.stop="botStore.activeBot.getBacktestHistoryResult(res)"
-              >
+        </template>
+      </Column>
+      <Column field="backtest_start_time" header="Backtest Time">
+        <template #body="{ data }">
+          <DateTimeTZ :date="data.backtest_start_time * 1000" />
+        </template>
+      </Column>
+      <Column field="filename" header="Filename"></Column>
+      <Column field="actions" header="Actions">
+        <template #body="{ data }">
+          <div class="flex items-center">
+            <InfoBox
+              v-if="botStore.activeBot.botApiVersion >= 2.32"
+              :class="data.notes ? 'opacity-100' : 'opacity-0'"
+              :hint="data.notes ?? ''"
+            ></InfoBox>
+            <Button
+              v-if="botStore.activeBot.botApiVersion >= 2.31"
+              class="ms-1"
+              size="small"
+              title="Load this Result."
+              :disabled="data.run_id in botStore.activeBot.backtestHistory"
+              @click.stop="botStore.activeBot.getBacktestHistoryResult(data)"
+            >
+              <template #icon>
                 <i-mdi-arrow-right />
-              </BButton>
-              <BButton
-                v-if="botStore.activeBot.botApiVersion >= 2.31"
-                class="ms-1"
-                size="sm"
-                title="Delete this Result."
-                :disabled="res.run_id in botStore.activeBot.backtestHistory"
-                @click.stop="deleteBacktestResult(res)"
-              >
+              </template>
+            </Button>
+            <Button
+              v-if="botStore.activeBot.botApiVersion >= 2.31"
+              class="ms-1"
+              size="small"
+              severity="secondary"
+              title="Delete this Result."
+              :disabled="data.run_id in botStore.activeBot.backtestHistory"
+              @click.stop="deleteBacktestResult(data)"
+            >
+              <template #icon>
                 <i-mdi-delete />
-              </BButton>
-            </div>
-          </BTd>
-        </BTr>
-      </BTbody>
-    </BTableSimple>
+              </template>
+            </Button>
+          </div>
+        </template>
+      </Column>
+    </DataTable>
   </div>
   <MessageBox ref="msgBox" />
 </template>
-
-<style lang="scss" scoped>
-.table-rounded-corners {
-  box-shadow: 0 0 0 1px var(--bs-border-color);
-  overflow: hidden;
-  vertical-align: middle;
-}
-</style>

@@ -13,17 +13,25 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="w-100 d-flex">
-      <BFormSelect
-        id="freqaiModel-select"
+    <div class="w-full flex">
+      <Select
         v-model="locFreqaiModel"
         :options="botStore.activeBot.freqaiModelList"
+        fluid
+        size="small"
       >
-      </BFormSelect>
+      </Select>
       <div class="ms-2">
-        <BButton @click="botStore.activeBot.getFreqAIModelList">
-          <i-mdi-refresh />
-        </BButton>
+        <Button
+          severity="secondary"
+          variant="outlined"
+          size="small"
+          @click="botStore.activeBot.getFreqAIModelList"
+        >
+          <template #icon>
+            <i-mdi-refresh />
+          </template>
+        </Button>
       </div>
     </div>
   </div>

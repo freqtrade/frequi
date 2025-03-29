@@ -27,7 +27,7 @@ test.describe('Dashboard', () => {
     await expect(page.locator('.drag-header', { hasText: 'Cumulative Profit' })).toBeVisible();
     await expect(page.locator('.drag-header', { hasText: 'Cumulative Profit' })).toBeInViewport();
 
-    await expect(page.locator('span', { hasText: 'TestBot' })).toBeVisible();
+    await expect(page.locator('span').filter({ hasText: /^TestBot$/ })).toBeVisible();
     await expect(page.locator('span', { hasText: 'Summary' })).toBeVisible();
     // Scroll to bottom
     await page.locator('.drag-header', { hasText: 'Trades Log' }).scrollIntoViewIfNeeded();

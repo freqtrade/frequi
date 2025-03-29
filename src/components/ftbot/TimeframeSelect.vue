@@ -1,7 +1,14 @@
 <script setup lang="ts">
-const props = defineProps({
-  value: { default: '', type: String },
-  belowTimeframe: { required: false, default: '', type: String },
+interface Props {
+  value?: string;
+  belowTimeframe?: string;
+  size?: undefined | 'small' | 'large';
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: '',
+  belowTimeframe: '',
+  size: undefined,
 });
 const emit = defineEmits<{ input: [value: string] }>();
 
@@ -44,10 +51,11 @@ const emitSelectedTimeframe = () => {
 </script>
 
 <template>
-  <BFormSelect
+  <Select
     v-model="selectedTimeframe"
     placeholder="Use strategy default"
+    :size="size"
     :options="availableTimeframes"
     @change="emitSelectedTimeframe"
-  ></BFormSelect>
+  ></Select>
 </template>

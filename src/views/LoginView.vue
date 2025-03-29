@@ -1,15 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="container">
-    <BCard header="Freqtrade bot Login">
+  <div class="border max-w-xl mx-auto p-4">
+    <DraggableContainer header="Freqtrade bot Login">
       <BotLogin ref="loginForm" />
-    </BCard>
+    </DraggableContainer>
   </div>
 </template>
-
-<style scoped>
-.container {
-  max-width: 520px;
-}
-</style>

@@ -74,35 +74,34 @@ watchDebounced(
 
 <template>
   <div>
-    <div class="d-flex flex-col flex-xl-row justify-content-between mt-1">
-      <BFormGroup class="col flex-grow-1" label="Type" label-for="plotTypeSelector">
-        <BFormSelect
+    <div class="flex flex-col lg:flex-row justify-between mt-1">
+      <div class="flex flex-col w-full">
+        <label for="plotTypeSelector" class="form-label">Type</label>
+        <Select
           id="plotTypeSelector"
           v-model="graphType"
-          size="sm"
+          class="text-left"
+          size="small"
           :options="availableGraphTypes"
         >
-        </BFormSelect>
-      </BFormGroup>
-      <BFormGroup label="Color" label-for="colsel" size="sm" class="ms-xl-1 col">
-        <BInputGroup>
-          <template #prepend>
-            <BFormInput
-              v-model="selColor"
-              type="color"
-              size="sm"
-              class="p-0"
-              style="max-width: 29px"
-            ></BFormInput>
-          </template>
-          <BFormInput id="colsel" v-model="selColor" size="sm" class="flex-grow-1"> </BFormInput>
-          <template #append>
-            <BButton variant="primary" size="sm" @click="newColor">
-              <i-mdi-dice-multiple />
-            </BButton>
-          </template>
-        </BInputGroup>
-      </BFormGroup>
+        </Select>
+      </div>
+      <div class="flex flex-col w-full">
+        <label for="selAvailableIndicator" class="colsel">Color</label>
+        <InputGroup>
+          <InputGroupAddon class="p-0!">
+            <ColorPicker v-model="selColor" type="color" class="m-auto"></ColorPicker>
+          </InputGroupAddon>
+          <InputText id="colsel" v-model="selColor" size="small" class="grow"> </InputText>
+          <InputGroupAddon>
+            <Button severity="primary" size="small" @click="newColor">
+              <template #icon>
+                <i-mdi-dice-multiple />
+              </template>
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
     </div>
     <PlotIndicatorSelect
       v-if="graphType === ChartType.line"
@@ -111,12 +110,17 @@ watchDebounced(
       class="mt-1"
       label="Area chart - Fill to (leave empty for line chart)"
     />
-    <BFormGroup
-      v-if="graphType === ChartType.scatter"
-      label="Scatter symbol size"
-      label-class="mt-1"
-    >
-      <BFormSpinbutton v-model="scatterSymbolSize" />
-    </BFormGroup>
+    <div v-if="graphType === ChartType.scatter" class="flex flex-col mt-2 gap-1 items-center">
+      <label for="scatterSymbolSize" class="text-nowrap">Scatter symbol size</label>
+      <InputNumber
+        id="scatterSymbolSize"
+        v-model="scatterSymbolSize"
+        :min="0"
+        show-buttons
+        size="small"
+        button-layout="horizontal"
+        class="text-center w-full"
+      />
+    </div>
   </div>
 </template>

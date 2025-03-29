@@ -22,6 +22,16 @@ test.describe('Download Data View', () => {
       });
     });
 
+    page.route('**/api/v1/exchanges', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          exchanges: [],
+        }),
+      });
+    });
+
     page.route(`**/api/v1/background/${jobID}`, (route) => {
       route.fulfill({
         status: 200,
@@ -51,8 +61,13 @@ test.describe('Download Data View', () => {
     await Promise.all([downloadData.click(), page.waitForResponse('**/exchanges')]);
 
     await page.getByRole('button', { name: 'All USDT Pairs' }).click();
-    const daysInput = page.getByLabel('Days to download');
-    await daysInput.fill('3');
+
+    await page.getByRole('spinbutton', { name: 'Days to download' }).click();
+
+    const daysInput = page.getByRole('spinbutton', { name: 'Days to download' });
+    await daysInput.clear();
+    await page.keyboard.type('3');
+    await page.keyboard.press('Tab');
     const startDownloadBtn = page.getByRole('button', { name: 'Start Download' });
 
     await Promise.all([
@@ -67,7 +82,7 @@ test.describe('Download Data View', () => {
     expect(postData).toMatchObject({
       pairs: expect.any(Array),
       timeframes: expect.any(Array),
-      days: '3',
+      days: 3,
     });
 
     expect(postData.pairs).toContain('BTC/USDT');
@@ -85,7 +100,10 @@ test.describe('Download Data View', () => {
 
     await page.getByRole('button', { name: 'All USDT Pairs' }).click();
     const daysInput = page.getByLabel('Days to download');
-    await daysInput.fill('3');
+    await daysInput.clear();
+    await page.keyboard.type('3');
+    await page.keyboard.press('Tab');
+
     await page.getByRole('button', { name: 'Advanced Options' }).click();
     await page.getByText('Erase existing data').click();
     const startDownloadBtn = page.getByRole('button', { name: 'Start Download' });
@@ -102,7 +120,7 @@ test.describe('Download Data View', () => {
     expect(postData).toMatchObject({
       pairs: expect.any(Array),
       timeframes: expect.any(Array),
-      days: '3',
+      days: 3,
       erase: true,
     });
 

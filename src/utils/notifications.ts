@@ -20,11 +20,11 @@ export function showNotification(msg: FTWsMessage, botname: string) {
         break;
       case FtWsMessageTypes.exitCancel:
         console.log('exitCancel', msg);
-        showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning', botname);
+        showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warn', botname);
         break;
       case FtWsMessageTypes.entryCancel:
         console.log('entryCancel', msg);
-        showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning', botname);
+        showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warn', botname);
         break;
     }
   } else {

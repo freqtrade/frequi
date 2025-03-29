@@ -1,6 +1,6 @@
 import type { AlertSeverity } from '@/types/alertTypes';
 
-export function showAlert(message: string, severity: AlertSeverity = 'warning', bot: string = '') {
+export function showAlert(message: string, severity: AlertSeverity = 'warn', bot: string = '') {
   const alertStore = useAlertsStore();
 
   alertStore.addAlert({
@@ -13,7 +13,7 @@ export function showAlert(message: string, severity: AlertSeverity = 'warning', 
 
 export function useAlertForBot(botName: string) {
   return {
-    showAlert: (message: string, severity: AlertSeverity = 'warning') => {
+    showAlert: (message: string, severity: AlertSeverity = 'warn') => {
       showAlert(message, severity, botName);
     },
   };

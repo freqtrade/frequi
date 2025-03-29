@@ -14,12 +14,16 @@ test.describe('Chart', () => {
     ]);
 
     // await page.waitForResponse('**/pair_candles');
-    await page.locator('input[title="AutoRefresh"]').click();
+
+    await page.getByRole('button', { name: 'Refresh chart' }).click();
     // await page.click('input[title="AutoRefresh"]');
 
     await page.waitForSelector('span:has-text("NoActionStrategyFut | 1m")');
-
-    await page.click('.form-check:has-text("Heikin Ashi")');
+    const heikinAshiCheck = page
+      .locator('div')
+      .filter({ hasText: /^Heikin Ashi$/ })
+      .nth(1);
+    await heikinAshiCheck.click();
 
     // Reload triggers a new request
     await Promise.all([
@@ -28,14 +32,10 @@ test.describe('Chart', () => {
       page.waitForResponse('**/pair_candles?*'),
     ]);
     // Disable Heikin Ashi
-    await page.locator('.form-check:has-text("Heikin Ashi")').click();
+    await heikinAshiCheck.click();
     // Default plotconfig exists
-    await expect(
-      page
-        .locator('div')
-        .filter({ hasText: /^Heikin Ashidefault$/ })
-        .locator('#plotConfigSelect'),
-    ).toHaveValue('default');
+
+    await expect(page.locator('form').locator('#plotConfigSelect').nth(0)).toHaveText('default');
   });
 
   test('Plot configurator', async ({ page }) => {
@@ -51,15 +51,19 @@ test.describe('Chart', () => {
     await page.getByRole('button', { name: 'Plot configurator' }).click();
     await page.getByRole('button', { name: 'Indicator from template' }).click();
     // Apply bollinger bands
-    await page.getByLabel('Select Templates').selectOption('BollingerBands');
+
+    await page.getByRole('option', { name: 'BollingerBands' }).click();
+
+    // await page.getByLabel('Select Templates').selectOption('BollingerBands');
     // Select template - Try to use
     await page.getByRole('button', { name: 'Use Template' }).click();
     // Accept remapping and close
     await page.getByRole('button', { name: 'Apply Template' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
 
-    const indicatorPanel = await page.getByLabel('Indicators in this plot');
-    const options = await indicatorPanel.locator('option').allTextContents();
+    const indicatorPanel = page.locator('ul#selectedIndicators_list');
+
+    const options = await indicatorPanel.locator('li').allTextContents();
     await expect(options).toContain('bb_lowerband');
     await expect(options).toStrictEqual(['bb_upperband', 'bb_lowerband']);
 

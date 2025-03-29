@@ -16,8 +16,7 @@ test.describe('Login', () => {
     await page.locator('#name-input').isVisible();
     await page.locator('#username-input').isVisible();
     await page.locator('#password-input').isVisible();
-    // Modal popup will use "OK" instead of "submit"
-    await expect(page.locator('button[type=submit]')).not.toBeVisible();
+    await expect(page.locator('button[type=submit]')).toBeVisible();
   });
 
   test('Explicit login page', async ({ page }) => {
@@ -38,7 +37,7 @@ test.describe('Login', () => {
   test('Redirect when not logged in', async ({ page }) => {
     await page.goto('/trade');
     // await expect(page.locator('button', { hasText: 'Login' })).toBeInViewport();
-    await expect(page.locator('li', { hasText: 'No bot selected' }).first()).toBeInViewport();
+    await expect(page.getByText('No bot selected')).toBeInViewport();
     await expect(page).toHaveURL(/.*\/login\?redirect=\/trade/);
   });
   test('Test Login', async ({ page }) => {
@@ -61,12 +60,12 @@ test.describe('Login', () => {
     await expect(loginButton).toContainText('Submit');
     await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
 
-    await expect(page.locator('span', { hasText: 'TestBot' })).toBeVisible();
+    await expect(page.getByText('TestBot', { exact: true })).toBeVisible();
     await expect(page.locator('button', { hasText: 'Add new Bot' })).toBeVisible();
     await expect(page.locator('button', { hasText: 'Login' })).not.toBeVisible();
     // Test logout
-    await page.locator('#avatar-drop').click();
-    await page.locator('button', { hasText: 'Sign Out' }).click();
+    await page.getByRole('button', { name: 'FT' }).click();
+    await page.getByRole('menuitem', { name: 'Logout' }).click();
     // Assert we're logged out again
     await expect(page.locator('button', { hasText: 'Login' })).toBeVisible();
   });
