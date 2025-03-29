@@ -82,12 +82,3 @@ const botStore = useBotStore();
     </div>
   </footer>
 </template>
-
-<style lang="scss" scoped>
-[data-theme='dark'] {
-  .router-link-active,
-  .nav-link:active {
-    color: white !important;
-  }
-}
-</style>
