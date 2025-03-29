@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@noction/vue-draggable-grid": "1.9.16",
-    "@popperjs/core": "^2.11.8",
     "@primeuix/themes": "^1.0.0",
     "@vuepic/vue-datepicker": "^11.0.2",
     "@vueuse/core": "^13.0.0",
@@ -62,7 +61,6 @@
     "globals": "^16.0.0",
     "happy-dom": "^17.4.4",
     "mutationobserver-shim": "^0.3.7",
-    "portal-vue": "^3.0.0",
     "prettier": "^3.5.3",
     "sass": "^1.86.0",
     "tailwindcss": "^4.0.17",

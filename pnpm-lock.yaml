@@ -11,9 +11,6 @@ importers:
       '@noction/vue-draggable-grid':
         specifier: 1.9.16
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
-      '@popperjs/core':
-        specifier: ^2.11.8
-        version: 2.11.8
       '@primeuix/themes':
         specifier: ^1.0.0
         version: 1.0.0
@@ -141,9 +138,6 @@ importers:
       mutationobserver-shim:
         specifier: ^0.3.7
         version: 0.3.7
-      portal-vue:
-        specifier: ^3.0.0
-        version: 3.0.0(vue@3.5.13(typescript@5.8.2))
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -621,9 +615,6 @@ packages:
     resolution: {integrity: sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q==}
     engines: {node: '>=18'}
     hasBin: true
-
-  '@popperjs/core@2.11.8':
-    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
   '@primeuix/styled@0.5.0':
     resolution: {integrity: sha512-k5CTQ+10cXIXxZTep7sktmYe8lJkjmUaFVDAc1OCsWTJR+bhBy/s6zWIatGljVtuf3RmTSxtlrHQeFLjPmdUNQ==}
@@ -2029,15 +2020,6 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  portal-vue@3.0.0:
-    resolution: {integrity: sha512-9eprMxNURLx6ijbcgkWjYNcTWJYu/H8QF8nyAeBzOmk9lKCea01BW1hYBeLkgz+AestmPOvznAEOFmNuO4Adjw==}
-    engines: {node: '>=14.19'}
-    peerDependencies:
-      vue: ^3.0.4
-    peerDependenciesMeta:
-      vue:
-        optional: true
-
   postcss-selector-parser@6.1.2:
     resolution: {integrity: sha512-Q8qQfPiZ+THO/3ZrOrO0cJJKfpYCagtMUkXbnEfmgUjwXg6z/WBeOyS9APBBPCTSiDV+s4SwQGu8yFsiMRIudg==}
     engines: {node: '>=4'}
@@ -2946,8 +2928,6 @@ snapshots:
   '@playwright/test@1.51.1':
     dependencies:
       playwright: 1.51.1
-
-  '@popperjs/core@2.11.8': {}
 
   '@primeuix/styled@0.5.0':
     dependencies:
@@ -4299,10 +4279,6 @@ snapshots:
       playwright-core: 1.51.1
     optionalDependencies:
       fsevents: 2.3.2
-
-  portal-vue@3.0.0(vue@3.5.13(typescript@5.8.2)):
-    optionalDependencies:
-      vue: 3.5.13(typescript@5.8.2)
 
   postcss-selector-parser@6.1.2:
     dependencies:
