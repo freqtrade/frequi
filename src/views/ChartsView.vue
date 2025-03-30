@@ -43,31 +43,29 @@ onMounted(() => {
 });
 
 function refreshOHLCV(pair: string, columns: string[]) {
-  console.log('Refreshing OHLCV for pair:', pair, 'with columns:', columns);
-  if (finalTimeframe.value) {
-    if (botStore.activeBot.isWebserverMode) {
-      const payload: PairHistoryPayload = {
-        pair: pair,
-        timeframe: finalTimeframe.value,
-        timerange: timerange.value,
-        strategy: strategy.value,
-        // freqaimodel: freqaiModel.value,
-        columns: columns,
-        live_mode: useLiveData.value,
-      };
-      if (exchange.value.customExchange) {
-        payload.exchange = exchange.value.selectedExchange.exchange;
-        payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
-        payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
-      }
-      botStore.activeBot.getPairHistory(payload);
-    } else {
-      botStore.activeBot.getPairCandles({
-        pair: pair,
-        timeframe: finalTimeframe.value,
-        columns: columns,
-      });
+  console.log('Refreshing OHLCV for pair:', pair, finalTimeframe.value, 'with columns:', columns);
+  if (botStore.activeBot.isWebserverMode && finalTimeframe.value) {
+    const payload: PairHistoryPayload = {
+      pair: pair,
+      timeframe: finalTimeframe.value,
+      timerange: timerange.value,
+      strategy: strategy.value,
+      // freqaimodel: freqaiModel.value,
+      columns: columns,
+      live_mode: useLiveData.value,
+    };
+    if (exchange.value.customExchange) {
+      payload.exchange = exchange.value.selectedExchange.exchange;
+      payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
+      payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
     }
+    botStore.activeBot.getPairHistory(payload);
+  } else {
+    botStore.activeBot.getPairCandles({
+      pair: pair,
+      timeframe: finalTimeframe.value,
+      columns: columns,
+    });
   }
 }
 const exchange = ref<{
