@@ -1,7 +1,7 @@
 {
     "version": "2022.8",
     "strategy_version": "1.1.5",
-    "api_version": 2.17,
+    "api_version": 2.42,
     "dry_run": true,
     "trading_mode": "spot",
     "short_allowed": false,

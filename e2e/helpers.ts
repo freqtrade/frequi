@@ -45,7 +45,7 @@ export async function defaultMocks(page: Page) {
   const mapping: MockArray[] = [
     { name: '@Ping', url: '**/api/v1/ping', fixture: 'ping.json' },
     { name: '@ShowConfig', url: '**/api/v1/show_config', fixture: 'show_config.json' },
-    { name: '@PairCandles', url: '**/api/v1/pair_candles?*', fixture: 'pair_candles_btc_1m.json' },
+    { name: '@PairCandles', url: '**/api/v1/pair_candles', fixture: 'pair_candles_btc_1m.json' },
     { name: '@Whitelist', url: '**/api/v1/whitelist', fixture: 'whitelist.json' },
     { name: '@Blacklist', url: '**/api/v1/blacklist', fixture: 'blacklist.json' },
   ];

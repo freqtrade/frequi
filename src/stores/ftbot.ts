@@ -102,7 +102,7 @@ export function createBotSubStore(botId: string, botName: string) {
         plotPair: '',
         // TODO: type me
         candleData: {},
-        candleDataStatus: LoadingStatus.loading,
+        candleDataStatus: LoadingStatus.not_loaded,
         // TODO: type me
         history: {},
         historyStatus: LoadingStatus.not_loaded,
@@ -418,13 +418,11 @@ export function createBotSubStore(botId: string, botName: string) {
               result = data;
             }
             clearTimeout(loadingTimer);
-            this.history = {
-              [`${payload.pair}__${payload.timeframe}`]: {
-                pair: payload.pair,
-                timeframe: payload.timeframe,
-                timerange: payload.timerange,
-                data: result,
-              },
+            this.history[`${payload.pair}__${payload.timeframe}`] = {
+              pair: payload.pair,
+              timeframe: payload.timeframe,
+              timerange: payload.timerange,
+              data: result,
             };
             this.historyStatus = LoadingStatus.success;
           } catch (err) {

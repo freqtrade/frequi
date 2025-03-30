@@ -88,6 +88,12 @@ function refresh() {
   emit('refreshData', botStore.activeBot.plotPair, plotStore.usedColumns);
 }
 
+function refreshIfNecessary() {
+  if (!hasDataset.value) {
+    refresh();
+  }
+}
+
 watch(
   () => props.availablePairs,
   () => {
@@ -128,6 +134,13 @@ watch(
   },
 );
 
+watch(
+  () => props.timeframe,
+  () => {
+    refreshIfNecessary();
+  },
+);
+
 onMounted(() => {
   showPlotConfig.value = props.plotConfigModal;
   if (botStore.activeBot.selectedPair) {
@@ -136,9 +149,7 @@ onMounted(() => {
     [botStore.activeBot.plotPair] = props.availablePairs;
   }
   plotStore.plotConfigChanged();
-  if (!hasDataset.value) {
-    refresh();
-  }
+  refreshIfNecessary();
 });
 </script>
 

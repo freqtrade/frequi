@@ -11,7 +11,7 @@ test.describe('Chart', () => {
       page.goto('/graph'),
       page.waitForResponse('**/whitelist'),
       page.waitForResponse('**/blacklist'),
-      page.waitForResponse('**/pair_candles?*'),
+      page.waitForResponse('**/pair_candles'),
     ]);
 
     // await page.waitForResponse('**/pair_candles');
@@ -30,7 +30,7 @@ test.describe('Chart', () => {
     await Promise.all([
       page.getByRole('button', { name: 'Refresh chart' }).click(),
 
-      page.waitForResponse('**/pair_candles?*'),
+      page.waitForResponse('**/pair_candles'),
     ]);
     // Disable Heikin Ashi
     await heikinAshiCheck.click();
@@ -44,7 +44,7 @@ test.describe('Chart', () => {
       page.goto('/graph'),
       page.waitForResponse('**/whitelist'),
       page.waitForResponse('**/blacklist'),
-      page.waitForResponse('**/pair_candles?*'),
+      page.waitForResponse('**/pair_candles'),
     ]);
 
     // Wait for the chart to load
