@@ -11,6 +11,7 @@ test.describe('Chart', () => {
       page.goto('/graph'),
       page.waitForResponse('**/whitelist'),
       page.waitForResponse('**/blacklist'),
+      page.waitForResponse('**/pair_candles?*'),
     ]);
 
     // await page.waitForResponse('**/pair_candles');
@@ -43,6 +44,7 @@ test.describe('Chart', () => {
       page.goto('/graph'),
       page.waitForResponse('**/whitelist'),
       page.waitForResponse('**/blacklist'),
+      page.waitForResponse('**/pair_candles?*'),
     ]);
 
     // Wait for the chart to load
