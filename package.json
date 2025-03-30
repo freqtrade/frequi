@@ -13,7 +13,8 @@
     "lint-ci": "eslint --no-fix src tests e2e",
     "test:e2e": "playwright test",
     "test:e2e-chromium": "playwright test --project=chromium",
-    "test:e2e-msedge": "playwright test --project=msedge"
+    "test:e2e-msedge": "playwright test --project=msedge",
+    "test:e2e-firefox": "playwright test --project=firefox"
   },
   "dependencies": {
     "@noction/vue-draggable-grid": "1.9.16",
