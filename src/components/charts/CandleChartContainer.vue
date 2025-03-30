@@ -136,6 +136,7 @@ onMounted(() => {
     [botStore.activeBot.plotPair] = props.availablePairs;
   }
   plotStore.plotConfigChanged();
+  console.log('CandleChartContainer mounted', hasDataset.value, dataset.value);
   if (!hasDataset.value) {
     refresh();
   }

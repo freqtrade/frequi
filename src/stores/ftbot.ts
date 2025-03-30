@@ -102,7 +102,7 @@ export function createBotSubStore(botId: string, botName: string) {
         plotPair: '',
         // TODO: type me
         candleData: {},
-        candleDataStatus: LoadingStatus.loading,
+        candleDataStatus: LoadingStatus.not_loaded,
         // TODO: type me
         history: {},
         historyStatus: LoadingStatus.not_loaded,

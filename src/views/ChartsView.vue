@@ -43,6 +43,7 @@ onMounted(() => {
 });
 
 function refreshOHLCV(pair: string, columns: string[]) {
+  console.log('Refreshing OHLCV for pair:', pair, 'with columns:', columns);
   if (finalTimeframe.value) {
     if (botStore.activeBot.isWebserverMode) {
       const payload: PairHistoryPayload = {
