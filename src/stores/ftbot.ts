@@ -418,14 +418,11 @@ export function createBotSubStore(botId: string, botName: string) {
               result = data;
             }
             clearTimeout(loadingTimer);
-            this.history = {
-              ...this.history,
-              [`${payload.pair}__${payload.timeframe}`]: {
-                pair: payload.pair,
-                timeframe: payload.timeframe,
-                timerange: payload.timerange,
-                data: result,
-              },
+            this.history[`${payload.pair}__${payload.timeframe}`] = {
+              pair: payload.pair,
+              timeframe: payload.timeframe,
+              timerange: payload.timerange,
+              data: result,
             };
             this.historyStatus = LoadingStatus.success;
           } catch (err) {
