@@ -54,6 +54,8 @@ const emitSelectedTimeframe = () => {
   <Select
     v-model="selectedTimeframe"
     placeholder="Use strategy default"
+    :option-label="(option) => option.text || option"
+    :option-value="(option) => option.value ?? option"
     :size="size"
     :options="availableTimeframes"
     @change="emitSelectedTimeframe"
