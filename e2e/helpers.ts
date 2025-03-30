@@ -19,14 +19,14 @@ export async function setLoginInfo(page: Page) {
   });
 }
 
-interface mockArray {
+interface MockArray {
   name: string;
   url: string;
   fixture: string;
   method?: string;
 }
 
-function mockRequests(page: Page, mocks: mockArray[]) {
+function mockRequests(page: Page, mocks: MockArray[]) {
   mocks.forEach((item) => {
     page.route(item.url, (route) => {
       return route.fulfill({ path: `./e2e/testData/${item.fixture}` });
@@ -42,10 +42,10 @@ export async function defaultMocks(page: Page) {
     });
   });
 
-  const mapping: mockArray[] = [
+  const mapping: MockArray[] = [
     { name: '@Ping', url: '**/api/v1/ping', fixture: 'ping.json' },
-    { name: '@Ping', url: '**/api/v1/show_config', fixture: 'show_config.json' },
-    { name: '@Ping', url: '**/api/v1/pair_candles?*', fixture: 'pair_candles_btc_1m.json' },
+    { name: '@ShowConfig', url: '**/api/v1/show_config', fixture: 'show_config.json' },
+    { name: '@PairCandles', url: '**/api/v1/pair_candles?*', fixture: 'pair_candles_btc_1m.json' },
     { name: '@Whitelist', url: '**/api/v1/whitelist', fixture: 'whitelist.json' },
     { name: '@Blacklist', url: '**/api/v1/blacklist', fixture: 'blacklist.json' },
   ];
@@ -54,7 +54,7 @@ export async function defaultMocks(page: Page) {
 }
 
 export function tradeMocks(page: Page) {
-  const mapping: mockArray[] = [
+  const mapping: MockArray[] = [
     { name: '@Status', url: '**/api/v1/status', fixture: 'status_empty.json' },
     { name: '@Profit', url: '**/api/v1/profit', fixture: 'profit.json' },
     { name: '@Trades', url: '**/api/v1/trades*', fixture: 'trades.json' },
