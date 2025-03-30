@@ -419,6 +419,7 @@ export function createBotSubStore(botId: string, botName: string) {
             }
             clearTimeout(loadingTimer);
             this.history = {
+              ...this.history,
               [`${payload.pair}__${payload.timeframe}`]: {
                 pair: payload.pair,
                 timeframe: payload.timeframe,
