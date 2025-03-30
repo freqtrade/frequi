@@ -43,7 +43,7 @@ onMounted(() => {
 });
 
 function refreshOHLCV(pair: string, columns: string[]) {
-  if (botStore.activeBot.plotPair && finalTimeframe.value) {
+  if (finalTimeframe.value) {
     if (botStore.activeBot.isWebserverMode) {
       const payload: PairHistoryPayload = {
         pair: pair,
