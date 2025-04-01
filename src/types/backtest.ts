@@ -33,6 +33,16 @@ export interface PairResult {
   trades: number;
   wins: number;
   winrate?: number;
+  cagr?: number;
+  calmar?: number;
+  expectancy?: number;
+  expectancy_ratio?: number;
+  max_drawdown?: number;
+  max_drawdown_account?: number;
+  profit_factor?: number;
+  sharpe?: number;
+  sortino?: number;
+  sqn?: number;
 }
 
 // TODO: ExitReasonResult was replaced with PairResult on 2024-03-30.
@@ -80,7 +90,7 @@ export interface StrategyBacktestResult {
   results_per_pair: PairResult[];
   sell_reason_summary?: ExitReasonResults[];
   exit_reason_summary?: ExitReasonResults[] | PairResult[];
-  mix_tag_stats?: ExitReasonResults[];
+  mix_tag_stats?: PairResult[];
   results_per_enter_tag: PairResult[];
   periodic_breakdown?: PeriodicBreakdown;
   left_open_trades: Trade[];
