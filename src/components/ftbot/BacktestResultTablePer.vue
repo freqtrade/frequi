@@ -56,6 +56,17 @@ const perTagReason = computed(() => {
   }
   return firstFields;
 });
+
+const metrics = ref([
+  { field: 'sqn', header: 'SQN' },
+  { field: 'cagr', header: 'Cagr' },
+  { field: 'calmar', header: 'Calmar' },
+  { field: 'expectancy', header: 'Expectancy' },
+  { field: 'profit_factor', header: 'Profit Factor' },
+  { field: 'sharpe', header: 'Sharpe' },
+  { field: 'sortino', header: 'Sortino' },
+  { field: 'max_drawdown_account', header: 'Max Drawdown', is_ratio: true },
+]);
 </script>
 <template>
   <DraggableContainer :header="title">
@@ -84,6 +95,12 @@ const perTagReason = computed(() => {
       <Column field="wins" header="Wins"></Column>
       <Column field="draws" header="Draws"></Column>
       <Column field="losses" header="Losses"></Column>
+
+      <Column v-for="col in metrics" :key="col.field" :field="col.field" :header="col.header">
+        <template #body="{ data, field }">
+          {{ col.is_ratio ? formatPercent(data[field], 2) : formatPrice(data[field], 2) }}
+        </template>
+      </Column>
     </DataTable>
   </DraggableContainer>
 </template>
