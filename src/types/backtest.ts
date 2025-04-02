@@ -37,7 +37,7 @@ export interface PairResult {
   calmar?: number;
   expectancy?: number;
   expectancy_ratio?: number;
-  max_drawdown?: number;
+  max_drawdown_abs?: number;
   max_drawdown_account?: number;
   profit_factor?: number;
   sharpe?: number;
