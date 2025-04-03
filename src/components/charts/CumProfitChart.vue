@@ -68,15 +68,27 @@ const openProfit = computed<number>(() => {
 });
 
 const cumulativeData = computed<CumProfitChartData[]>(() => {
-  const res: CumProfitData[] = [];
+  // const res: CumProfitData[] = [];
   const resD: CumProfitDataPerDate = {};
   const closedTrades = props.trades
     .slice()
     .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
   let profit = 0.0;
+  let first = true;
 
   for (let i = 0, len = closedTrades.length; i < len; i += 1) {
     const trade = closedTrades[i];
+    if (first) {
+      // Start with chart with a 0 entry
+      first = false;
+      if (!resD[trade.open_timestamp]) {
+        // New timestamp
+        resD[trade.open_timestamp] = { profit, [trade.botId]: profit };
+      } else {
+        // Add to existing profit
+        resD[trade.open_timestamp][trade.botId] = profit;
+      }
+    }
 
     if (trade.close_timestamp && trade[props.profitColumn]) {
       profit += trade[props.profitColumn];
@@ -92,7 +104,7 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
           resD[trade.close_timestamp][trade.botId] = profit;
         }
       }
-      res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
+      // res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
     }
   }
 
