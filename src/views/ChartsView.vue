@@ -4,19 +4,17 @@ import { MarginMode, TradingMode } from '@/types';
 import type { ExchangeSelection, Markets, MarketsPayload, PairHistoryPayload } from '@/types';
 
 const botStore = useBotStore();
-const strategy = ref('');
-const timerange = ref('');
-const selectedTimeframe = ref('1h');
+const chartStore = useChartConfigStore();
 
 const finalTimeframe = computed<string>(() => {
   return botStore.activeBot.isWebserverMode
-    ? selectedTimeframe.value || botStore.activeBot.strategy.timeframe || ''
+    ? chartStore.selectedTimeframe || botStore.activeBot.strategy.timeframe || ''
     : botStore.activeBot.timeframe;
 });
 
 const availablePairs = computed<string[]>(() => {
   if (botStore.activeBot.isWebserverMode) {
-    if (useLiveData.value) {
+    if (chartStore.useLiveData) {
       return Object.keys(markets.value?.markets || {}).sort() || [];
     }
     if (finalTimeframe.value && finalTimeframe.value !== '') {
@@ -48,11 +46,11 @@ function refreshOHLCV(pair: string, columns: string[]) {
     const payload: PairHistoryPayload = {
       pair: pair,
       timeframe: finalTimeframe.value,
-      timerange: timerange.value,
-      strategy: strategy.value,
+      timerange: chartStore.timerange,
+      strategy: chartStore.strategy,
       // freqaimodel: freqaiModel.value,
       columns: columns,
-      live_mode: useLiveData.value,
+      live_mode: chartStore.useLiveData,
     };
     if (exchange.value.customExchange) {
       payload.exchange = exchange.value.selectedExchange.exchange;
@@ -82,12 +80,11 @@ const exchange = ref<{
   },
 });
 
-const useLiveData = ref(true);
 const markets = ref<Markets | null>(null);
 watch(
-  useLiveData,
+  () => chartStore.useLiveData,
   async () => {
-    if (botStore.activeBot.isWebserverMode && useLiveData.value) {
+    if (botStore.activeBot.isWebserverMode && chartStore.useLiveData) {
       const payload: MarketsPayload = {};
       if (exchange.value.customExchange) {
         payload.exchange = exchange.value.selectedExchange.exchange;
@@ -132,10 +129,10 @@ watch(
         <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 md:gap-2">
           <div class="text-start md:me-1 col-span-2">
             <span>Strategy</span>
-            <StrategySelect v-model="strategy" class="mt-1 mb-1"></StrategySelect>
+            <StrategySelect v-model="chartStore.strategy" class="mt-1 mb-1"></StrategySelect>
             <BaseCheckbox
               v-if="botStore.activeBot.botState.api_version >= 2.42"
-              v-model="useLiveData"
+              v-model="chartStore.useLiveData"
               class="align-self-center"
               title="Use live data from the exchange. Only use if you don't have data downloaded locally."
             >
@@ -144,9 +141,12 @@ watch(
           </div>
           <div class="flex flex-col text-start">
             <span>Timeframe</span>
-            <TimeframeSelect v-model="selectedTimeframe" class="mt-1" />
+            <TimeframeSelect v-model="chartStore.selectedTimeframe" class="mt-1" />
           </div>
-          <TimeRangeSelect v-model="timerange" class="col-span-3 md:col-span-2"></TimeRangeSelect>
+          <TimeRangeSelect
+            v-model="chartStore.timerange"
+            class="col-span-3 md:col-span-2"
+          ></TimeRangeSelect>
         </div>
       </Panel>
     </div>
@@ -157,8 +157,8 @@ watch(
         :historic-view="botStore.activeBot.isWebserverMode"
         :timeframe="finalTimeframe"
         :trades="botStore.activeBot.trades"
-        :timerange="botStore.activeBot.isWebserverMode ? timerange : undefined"
-        :strategy="botStore.activeBot.isWebserverMode ? strategy : undefined"
+        :timerange="botStore.activeBot.isWebserverMode ? chartStore.timerange : undefined"
+        :strategy="botStore.activeBot.isWebserverMode ? chartStore.strategy : undefined"
         :plot-config-modal="false"
         @refresh-data="refreshOHLCV"
       >
