@@ -41,12 +41,19 @@ use([
 // Define Column labels here to avoid typos
 const CHART_PROFIT = 'Profit';
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => ClosedTrade[] },
-  openTrades: { required: false, type: Array as () => Trade[], default: () => [] },
-  showTitle: { default: true, type: Boolean },
-  profitColumn: { default: 'profit_abs', type: String },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: ClosedTrade[];
+    openTrades?: Trade[];
+    showTitle?: boolean;
+    profitColumn?: string;
+  }>(),
+  {
+    openTrades: () => [],
+    showTitle: true,
+    profitColumn: 'profit_abs',
+  },
+);
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 // const botList = ref<string[]>([]);
