@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { StrategyBacktestResult } from '@/types';
 
-import DraggableContainer from '../layout/DraggableContainer.vue';
-
 const props = defineProps({
   backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
 });
