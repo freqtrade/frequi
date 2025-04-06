@@ -67,7 +67,23 @@ const metrics = computed(() =>
 );
 </script>
 <template>
-  <DraggableContainer :header="title">
+  <DraggableContainer>
+    <template #header>
+      <div class="flex flex-row w-full justify-between items-center">
+        {{ title }}
+        <div>
+          Shown metrics:
+          <MultiSelect
+            id="backtestMetrics"
+            v-model="settingsStore.backtestAdditionalMetrics"
+            :options="availableBacktestMetrics"
+            option-label="header"
+            option-value="field"
+            size="small"
+          />
+        </div>
+      </div>
+    </template>
     <DataTable size="small" hover stacked="sm" :value="tableItems">
       <Column v-for="col in perTagReason" :key="col.key" :field="col.key" :header="col.label">
         <template #body="{ data }">
