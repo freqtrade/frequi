@@ -59,8 +59,8 @@ function rowClick(row) {
         v-model="filterText"
         type="text"
         size="small"
-        placeholder="Filter Strategies"
-        title="Filter Strategies"
+        placeholder="Filter results"
+        title="Filter results"
       />
     </div>
     <DataTable
