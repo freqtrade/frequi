@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { StrategyBacktestResult } from '@/types';
 
-const props = defineProps({
-  backtestResult: { required: true, type: Object as () => StrategyBacktestResult },
-});
+const props = defineProps<{
+  backtestResult: StrategyBacktestResult;
+}>();
 
 const backtestResultStats = computed(() => {
   const tmp = generateBacktestMetricRows(props.backtestResult);
