@@ -259,3 +259,17 @@ export function generateBacktestSettingRows(result: StrategyBacktestResult) {
     },
   ];
 }
+
+/** Selectable options for backtest charts.
+ * selection happens through the settings page
+ */
+export const availableBacktestMetrics = ref([
+  { field: 'sqn', header: 'SQN' },
+  { field: 'cagr', header: 'Cagr' },
+  { field: 'calmar', header: 'Calmar' },
+  { field: 'expectancy', header: 'Expectancy' },
+  { field: 'profit_factor', header: 'Profit Factor' },
+  { field: 'sharpe', header: 'Sharpe' },
+  { field: 'sortino', header: 'Sortino' },
+  { field: 'max_drawdown_account', header: 'Max Drawdown', is_ratio: true },
+]);

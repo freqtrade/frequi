@@ -35,6 +35,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       timeProfitPeriod: TimeSummaryOptions.daily,
       timeProfitPreference: TimeSummaryCols.abs_profit,
       multiPaneButtonsShowText: false,
+      backtestAdditionalMetrics: ['profit_factor', 'expectancy'] as string[],
     };
   },
   getters: {

@@ -190,6 +190,26 @@ const resetDynamicLayout = () => {
             </BaseCheckbox>
           </div>
         </div>
+
+        <div class="border rounded-sm p-4 space-y-4">
+          <h4 class="text-lg font-semibold">Backtesting settings</h4>
+          <div>
+            <label for="backtestMetrics" class="block text-sm">Backtesting metrics</label>
+            <MultiSelect
+              id="backtestMetrics"
+              v-model="settingsStore.backtestAdditionalMetrics"
+              :options="availableBacktestMetrics"
+              option-label="header"
+              option-value="field"
+              class="w-full"
+              size="small"
+              display="chip"
+            />
+            <small class="text-surface-600 dark:text-surface-400"
+              >Select which metrics should be shown on a per pair / tag basis.</small
+            >
+          </div>
+        </div>
       </div>
     </template>
   </Card>
