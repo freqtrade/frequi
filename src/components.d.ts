@@ -143,6 +143,7 @@ declare module 'vue' {
     Menu: typeof import('primevue/menu')['default']
     Message: typeof import('primevue/message')['default']
     MessageBox: typeof import('./components/general/MessageBox.vue')['default']
+    MultiSelect: typeof import('primevue/multiselect')['default']
     NavBar: typeof import('./components/layout/NavBar.vue')['default']
     NavFooter: typeof import('./components/layout/NavFooter.vue')['default']
     Paginator: typeof import('primevue/paginator')['default']

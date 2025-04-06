@@ -17,6 +17,7 @@ declare global {
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const availableBacktestMetrics: typeof import('./utils/backtestMetrics')['availableBacktestMetrics']
   const availableBots: typeof import('./composables/loginInfo')['availableBots']
   const binData: typeof import('./utils/charts/binCount')['binData']
   const calculateDiff: typeof import('./utils/charts/areaPlotDataset')['calculateDiff']
@@ -418,6 +419,7 @@ declare module 'vue' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly availableBacktestMetrics: UnwrapRef<typeof import('./utils/backtestMetrics')['availableBacktestMetrics']>
     readonly availableBots: UnwrapRef<typeof import('./composables/loginInfo')['availableBots']>
     readonly binData: UnwrapRef<typeof import('./utils/charts/binCount')['binData']>
     readonly calculateDiff: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['calculateDiff']>
