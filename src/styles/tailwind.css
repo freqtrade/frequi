@@ -43,6 +43,8 @@
 
     --p-primary-color: var(--p-primary-600);
 
+    /* Reduce size of listboxes*/
+    --p-listbox-option-padding: 0.15rem 0.75rem;
 
     /* Secondary Button */
     --p-button-secondary-background: var(--p-surface-200);

@@ -243,7 +243,7 @@ const fromPlotTemplateVisible = ref(false);
         size="small"
         :pt="{
           list: {
-            class: 'h-36',
+            class: 'h-30',
           },
         }"
       >
@@ -261,6 +261,11 @@ const fromPlotTemplateVisible = ref(false);
         option-value="value"
         :disabled="addNewIndicator"
         :options="usedColumns"
+        :pt="{
+          list: {
+            class: 'h-30',
+          },
+        }"
       >
       </ListBox>
     </div>
