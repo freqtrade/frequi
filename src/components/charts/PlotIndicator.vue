@@ -9,7 +9,20 @@ const props = defineProps({
 
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 
-const selColor = ref(randomColor());
+const selColor_ = ref(randomColor());
+const selColor = computed({
+  get: () => selColor_.value,
+  set: (val) => {
+    if (
+      !val.startsWith('#') &&
+      (val.length === 3 || val.length === 6) &&
+      /^[0-9a-fA-F]+$/.test(val)
+    ) {
+      val = `#${val}`;
+    }
+    selColor_.value = val;
+  },
+});
 const graphType = ref<ChartTypeString>(ChartType.line);
 const availableGraphTypes = ref<ChartTypeString[]>(Object.keys(ChartType) as ChartTypeString[]);
 const selAvailableIndicator = ref('');
