@@ -9,7 +9,20 @@ const props = defineProps({
 
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 
-const selColor = ref(randomColor());
+const selColor_ = ref(randomColor());
+const selColor = computed({
+  get: () => selColor_.value,
+  set: (val) => {
+    if (
+      !val.startsWith('#') &&
+      (val.length === 3 || val.length === 6) &&
+      /^[0-9a-fA-F]+$/.test(val)
+    ) {
+      val = `#${val}`;
+    }
+    selColor_.value = val;
+  },
+});
 const graphType = ref<ChartTypeString>(ChartType.line);
 const availableGraphTypes = ref<ChartTypeString[]>(Object.keys(ChartType) as ChartTypeString[]);
 const selAvailableIndicator = ref('');
@@ -51,11 +64,6 @@ watch(
     cancelled.value = false;
     if (selAvailableIndicator.value && props.modelValue) {
       const xx = props.modelValue[selAvailableIndicator.value];
-      if (!xx.color.startsWith('#') &&
-        (xx.color.length === 3 || xx.color.length === 6) &&
-        /^[0-9a-fA-F]+$/.test(xx.color)) {
-        xx.color = `#${xx.color}`;
-      }
       selColor.value = xx.color || randomColor();
       graphType.value = xx.type || ChartType.line;
       fillTo.value = xx.fill_to || '';
