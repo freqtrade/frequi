@@ -29,24 +29,24 @@
   /* Customization for freqUI components */
   :root {
 
-      --p-primary-50: #DBFAFF;
-      --p-primary-100: #B8F4FF;
-      --p-primary-200: #75EAFF;
-      --p-primary-300: #2EE0FF;
-      --p-primary-400: #00C3E6;
-      --p-primary-500: #0089A1;
-      --p-primary-600: #006C80;
-      --p-primary-700: #005261;
-      --p-primary-800: #003842;
-      --p-primary-900: #001A1F;
-      --p-primary-950: #000D0F;
+    --p-primary-50: #DBFAFF;
+    --p-primary-100: #B8F4FF;
+    --p-primary-200: #75EAFF;
+    --p-primary-300: #2EE0FF;
+    --p-primary-400: #00C3E6;
+    --p-primary-500: #0089A1;
+    --p-primary-600: #006C80;
+    --p-primary-700: #005261;
+    --p-primary-800: #003842;
+    --p-primary-900: #001A1F;
+    --p-primary-950: #000D0F;
 
-      --p-primary-color: var(--p-primary-600);
+    --p-primary-color: var(--p-primary-600);
 
 
-      /* Secondary Button */
-      --p-button-secondary-background: var(--p-surface-200);
-      --p-button-secondary-hover-background: var(--p-surface-300);
+    /* Secondary Button */
+    --p-button-secondary-background: var(--p-surface-200);
+    --p-button-secondary-hover-background: var(--p-surface-300);
 
     /* default profit loss colors, could be overwritten by custom style */
     --color-profit: #12bb7b;
