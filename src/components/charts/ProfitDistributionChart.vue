@@ -56,6 +56,7 @@ const chartOptions = computed((): EChartsOption => {
   const chartOptionsLoc: EChartsOption = {
     title: {
       text: 'Profit distribution',
+      left: 'center',
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
