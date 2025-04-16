@@ -12,8 +12,8 @@ importers:
         specifier: 1.9.16
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
       '@primeuix/themes':
-        specifier: ^1.0.1
-        version: 1.0.1
+        specifier: ^1.0.3
+        version: 1.0.3
       '@vuepic/vue-datepicker':
         specifier: ^11.0.2
         version: 11.0.2(vue@3.5.13(typescript@5.8.3))
@@ -610,8 +610,8 @@ packages:
   '@primeuix/styles@1.0.0':
     resolution: {integrity: sha512-j/TlbqihLNMP37zFNjxac5dTRaQEf5Ldrv0P7NwKigCCc/+MI5j4MddxDw1LnxkGhWCJ1Gjbt9uwyQteWtSv7A==}
 
-  '@primeuix/themes@1.0.1':
-    resolution: {integrity: sha512-RllttI3oGTZa66UQDCIA2lPnJvO/xqtNpy+0eNql6fIxdS2AUg5n7L81jTZrHNZ+31T5OBzL/SGFCDycmHTz2g==}
+  '@primeuix/themes@1.0.3':
+    resolution: {integrity: sha512-f/1qadrv5TFMHfvtVv4Y9zjrkeDP2BO/cuzbHBO9DYxKL6YBIPT9BjKec2K4Kg8PcfGm6CAvxAvICadJSWejRw==}
 
   '@primeuix/utils@0.5.1':
     resolution: {integrity: sha512-/bYirtF3gJOGrRQfQ5tUyQOLEria7wg/UCqvpIydTAxLmj/UWgWwh2kAjYVp49eldm1+2sk4+TDkbAz8XcPpew==}
@@ -2916,7 +2916,7 @@ snapshots:
     dependencies:
       '@primeuix/styled': 0.5.0
 
-  '@primeuix/themes@1.0.1':
+  '@primeuix/themes@1.0.3':
     dependencies:
       '@primeuix/styled': 0.5.1
 
