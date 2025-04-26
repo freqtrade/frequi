@@ -12,6 +12,7 @@ import type {
   BacktestResultInMemory,
   BacktestResultUpdate,
   BacktestStatus,
+  BacktestWalletsSummary,
   BalanceInterface,
   BgTaskStarted,
   BlacklistPayload,
@@ -1112,6 +1113,24 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
+      async getBacktestWalletChange() {
+        if (this.botApiVersion < 2.43) {
+          return Promise.reject('Backtest wallet change not available');
+        }
+        if (!this.selectedBacktestMetadata.filename) {
+          return Promise.reject('No backtest selected');
+        }
+        try {
+          const { data } = await api.get<BacktestWalletsSummary>(
+            `/backtest/history/${this.selectedBacktestMetadata.filename}/${this.selectedBacktestMetadata.strategyName}/wallet`,
+          );
+          return data;
+        } catch (err) {
+          console.error(err);
+          return Promise.reject(err);
+        }
+      },
+
       async saveBacktestResultMetadata(payload: BacktestResultUpdate) {
         try {
           const { data } = await api.patch<
