@@ -32,6 +32,7 @@ use([
   VisualMapComponent,
 ]);
 
+const colorStore = useColorStore();
 // Define Column labels here to avoid typos
 const CHART_MARKET_CHANGE = 'Wallet change';
 
@@ -55,6 +56,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   }
   const colDate = props.walletData.columns.findIndex((el) => el === '__date_ts');
   const colTotal = props.walletData.columns.findIndex((el) => el === 'total');
+  const startingValue: number = props.walletData.data[0][colTotal] as number;
   return {
     title: {
       text: 'Wallet Change',
@@ -80,6 +82,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     legend: {
       data: [CHART_MARKET_CHANGE],
       right: '5%',
+      selectedMode: false,
     },
     xAxis: [
       {
@@ -122,6 +125,26 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
         start: 0,
         end: 100,
         ...dataZoomPartial,
+      },
+    ],
+    visualMap: [
+      {
+        show: false,
+        pieces: [
+          {
+            gte: startingValue,
+            color: colorStore.colorProfit,
+          },
+          {
+            gt: startingValue - 0.01,
+            lt: startingValue + 0.01,
+            color: colorStore.colorProfit,
+          },
+          {
+            lt: startingValue - 0.01,
+            color: colorStore.colorLoss,
+          },
+        ],
       },
     ],
     series: [
