@@ -35,16 +35,15 @@ use([
 // Define Column labels here to avoid typos
 const CHART_MARKET_CHANGE = 'Market change %';
 
-const props = defineProps({
-  marketChangeData: {
-    type: Object as () => BacktestMarketChange | null,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    marketChangeData: BacktestMarketChange | null;
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
   },
-  showTitle: {
-    type: Boolean,
-    default: true,
-  },
-});
+);
 
 const settingsStore = useSettingsStore();
 
