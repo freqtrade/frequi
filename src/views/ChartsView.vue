@@ -131,7 +131,7 @@ watch(
             <span>Strategy</span>
             <StrategySelect v-model="chartStore.strategy" class="mt-1 mb-1"></StrategySelect>
             <BaseCheckbox
-              v-if="botStore.activeBot.botState.api_version >= 2.42"
+              v-if="botStore.activeBot.botApiVersion >= 2.42"
               v-model="chartStore.useLiveData"
               class="align-self-center"
               title="Use live data from the exchange. Only use if you don't have data downloaded locally."
