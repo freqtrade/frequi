@@ -55,6 +55,7 @@ import type {
   TimeSummaryReturnValue,
   Trade,
   TradeResponse,
+  WalletsSummary,
   WhitelistResponse,
 } from '@/types';
 import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
@@ -101,6 +102,7 @@ export function createBotSubStore(botId: string, botName: string) {
         dailyStats: {} as TimeSummaryReturnValue,
         weeklyStats: {} as TimeSummaryReturnValue,
         monthlyStats: {} as TimeSummaryReturnValue,
+        balanceHistory: {} as WalletsSummary,
         pairlistMethods: [] as string[],
         detailTradeId: null as number | null,
         selectedPair: '',
@@ -683,6 +685,19 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
+      async getWalletChange() {
+        if (this.botApiVersion < 2.43) {
+          return Promise.reject('Wallet change not available');
+        }
+        try {
+          const { data } = await api.get<WalletsSummary>('/historic_balance');
+          this.balanceHistory = data;
+          return data;
+        } catch (err) {
+          console.error(err);
+          return Promise.reject(err);
+        }
+      },
       async getState() {
         try {
           const { data } = await api.get<BotState>('/show_config');
@@ -1130,7 +1145,6 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
-
       async saveBacktestResultMetadata(payload: BacktestResultUpdate) {
         try {
           const { data } = await api.patch<

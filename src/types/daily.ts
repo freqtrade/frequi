@@ -30,3 +30,9 @@ export interface TimeSummaryReturnValue {
   fiat_display_currency: string;
   stake_currency: string;
 }
+
+export interface WalletsSummary {
+  columns: string[];
+  length: number;
+  data: (number | string)[][];
+}
