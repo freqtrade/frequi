@@ -10,15 +10,26 @@ enum ModalReasons {
   cancelOpenOrder,
 }
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => Array<Trade> },
-  title: { default: 'Trades', type: String },
-  stakeCurrency: { required: false, default: '', type: String },
-  activeTrades: { default: false, type: Boolean },
-  showFilter: { default: false, type: Boolean },
-  multiBotView: { default: false, type: Boolean },
-  emptyText: { default: 'No Trades to show.', type: String },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: Trade[];
+    title?: string;
+    stakeCurrency?: string;
+    activeTrades?: boolean;
+    showFilter?: boolean;
+    multiBotView?: boolean;
+    emptyText?: string;
+  }>(),
+  {
+    title: 'Trades',
+    stakeCurrency: '',
+    activeTrades: false,
+    showFilter: false,
+    multiBotView: false,
+    emptyText: 'No Trades to show.',
+  },
+);
+
 const botStore = useBotStore();
 const router = useRouter();
 const settingsStore = useSettingsStore();
