@@ -232,12 +232,8 @@ watch(
               @force-entry="handleForceEntry"
             />
           </template>
-          <template v-else-if="field === 'stake_amount'">
-            {{ formatPriceWithDecimals(data.stake_amount) }}
-            {{ data.trading_mode !== 'spot' ? `(${data.leverage}x)` : '' }}
-          </template>
-          <template v-else-if="field === 'max_stake_amount'">
-            {{ formatPriceWithDecimals(data.max_stake_amount) }}
+          <template v-else-if="field === 'stake_amount' || field === 'max_stake_amount'">
+            {{ formatPriceWithDecimals(data[field]) }}
             {{ data.trading_mode !== 'spot' ? `(${data.leverage}x)` : '' }}
           </template>
           <template
