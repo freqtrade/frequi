@@ -19,7 +19,7 @@ import {
   TooltipComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
-  // MarkAreaComponent,
+  MarkAreaComponent,
   MarkLineComponent,
   // MarkPointComponent,
   GraphicComponent,
@@ -40,7 +40,7 @@ use([
   TooltipComponent,
   VisualMapComponent,
   VisualMapPiecewiseComponent,
-  // MarkAreaComponent,
+  MarkAreaComponent,
   MarkLineComponent,
   // MarkPointComponent,
 
