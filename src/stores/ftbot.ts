@@ -425,6 +425,7 @@ export function createBotSubStore(botId: string, botName: string) {
               data: result,
             };
             this.historyStatus = LoadingStatus.success;
+            return;
           } catch (err) {
             console.error(err);
             this.historyStatus = LoadingStatus.error;
