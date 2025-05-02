@@ -27,6 +27,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       currentTheme: 'dark',
       _uiVersion: 'dev',
       useHeikinAshiCandles: false,
+      showMarkArea: true,
       useReducedPairCalls: true,
       notifications: notificationDefaults,
       profitDistributionBins: 20,

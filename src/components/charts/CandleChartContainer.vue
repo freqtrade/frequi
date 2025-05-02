@@ -204,16 +204,17 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="ms-auto flex items-center">
+        <div class="ms-auto flex items-center gap-2">
+          <BaseCheckbox v-model="settingsStore.showMarkArea">
+            <span class="text-nowrap">Show Chart Areas</span>
+          </BaseCheckbox>
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
             <span class="text-nowrap">Heikin Ashi</span>
           </BaseCheckbox>
 
-          <div class="ms-2">
-            <PlotConfigSelect></PlotConfigSelect>
-          </div>
+          <PlotConfigSelect></PlotConfigSelect>
 
-          <div class="ms-2 me-0 md:me-1">
+          <div class="me-0 md:me-1">
             <Button
               size="small"
               title="Plot configurator"
@@ -235,6 +236,7 @@ onMounted(() => {
             :trades="trades"
             :plot-config="plotStore.plotConfig"
             :heikin-ashi="settingsStore.useHeikinAshiCandles"
+            :show-mark-area="settingsStore.showMarkArea"
             :use-u-t-c="settingsStore.timezone === 'UTC'"
             :theme="settingsStore.chartTheme"
             :slider-position="sliderPosition"

@@ -56,6 +56,7 @@ const props = defineProps<{
   trades: Trade[];
   dataset: PairHistory;
   heikinAshi: boolean;
+  showMarkArea: boolean;
   useUTC: boolean;
   plotConfig: PlotConfig;
   theme: 'dark' | 'light';
@@ -219,7 +220,7 @@ function updateChart(initial = false) {
           // open, close, low, high
           y: [colOpen, colClose, colLow, colHigh],
         },
-        ...generateMarkArea(props.dataset),
+        ...generateMarkArea(props.dataset, props.showMarkArea),
       },
       {
         name: 'Volume',
@@ -654,7 +655,7 @@ watch([() => props.useUTC, () => props.theme, () => props.plotConfig], () =>
   initializeChartOptions(),
 );
 
-watch([() => props.dataset, () => props.heikinAshi], () => updateChart());
+watch([() => props.dataset, () => props.heikinAshi, () => props.showMarkArea], () => updateChart());
 
 watch(
   () => props.sliderPosition,

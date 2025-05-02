@@ -226,8 +226,11 @@ export function generateTradeSeries(
   return tradesSeries;
 }
 
-export function generateMarkArea(dataset: PairHistory): { markArea?: MarkAreaComponentOption } {
-  if (!dataset.annotations) return {};
+export function generateMarkArea(
+  dataset: PairHistory,
+  enabled: boolean,
+): { markArea?: MarkAreaComponentOption } {
+  if (!dataset.annotations || !enabled) return {};
 
   const markArea: MarkAreaComponentOption = {
     label: {
