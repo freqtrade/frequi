@@ -2,8 +2,6 @@ import axios from 'axios';
 import { TimeSummaryCols, TimeSummaryOptions, type UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
-const STORE_UI_SETTINGS = 'ftUISettings';
-
 export enum OpenTradeVizOptions {
   showPill = 'showPill',
   asTitle = 'asTitle',
@@ -68,7 +66,7 @@ export const useSettingsStore = defineStore('uiSettings', {
     },
   },
   persist: {
-    key: STORE_UI_SETTINGS,
+    key: 'ftUISettings',
   },
 });
 
