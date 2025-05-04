@@ -199,7 +199,6 @@ watch(
       :paginator="!activeTrades"
       :first="(currentPage - 1) * perPage"
       selection-mode="single"
-      data-key="botTradeId"
       class="text-center"
       size="small"
       :scrollable="true"
