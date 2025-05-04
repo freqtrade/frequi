@@ -40,11 +40,7 @@ export const useSettingsStore = defineStore('uiSettings', {
   },
   getters: {
     isDarkTheme(state) {
-      const theme = getTheme(state.currentTheme);
-      if (theme) {
-        return theme.dark;
-      }
-      return true;
+      return ['dark', 'bootstrap_dark'].includes(state.currentTheme);
     },
     chartTheme(): 'dark' | 'light' {
       return this.isDarkTheme ? 'dark' : 'light';
