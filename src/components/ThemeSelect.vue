@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useSettingsStore } from '@/stores/settings';
+import type { ThemeName } from '@/types';
 
 const activeTheme = ref('');
 const settingsStore = useSettingsStore();
 
 withDefaults(defineProps<{ showText?: boolean }>(), { showText: false });
 
-const setTheme = (themeName: string) => {
+const setTheme = (themeName: ThemeName) => {
   // If theme is already active, do nothing.
   if (activeTheme.value === themeName) {
     return;

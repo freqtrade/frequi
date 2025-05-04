@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { TimeSummaryCols, TimeSummaryOptions, type UiVersion } from '@/types';
+import { TimeSummaryCols, TimeSummaryOptions } from '@/types';
+import type { ThemeName, UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 export enum OpenTradeVizOptions {
@@ -22,7 +23,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       openTradesInTitle: OpenTradeVizOptions.showPill as string,
       timezone: 'UTC',
       backgroundSync: true,
-      currentTheme: 'bootstrap_dark',
+      currentTheme: 'bootstrap_dark' as ThemeName,
       _uiVersion: 'dev',
       useHeikinAshiCandles: false,
       showMarkArea: true,
