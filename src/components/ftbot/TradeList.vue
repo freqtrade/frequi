@@ -34,7 +34,7 @@ const botStore = useBotStore();
 const router = useRouter();
 const settingsStore = useSettingsStore();
 const currentPage = ref(1);
-const selectedItemIndex = ref();
+const selectedItem = ref();
 const filterText = ref('');
 const feTrade = ref<Trade>({} as Trade);
 const perPage = props.activeTrades ? 200 : 15;
@@ -155,20 +155,18 @@ function handleForceEntry(item: Trade) {
   increasePosition.value.visible = true;
 }
 
-const onRowClicked = ({ data: item, index }) => {
+const onRowClicked = ({ data: item }) => {
   if (props.multiBotView && botStore.selectedBot !== item.botId) {
     // Multibotview - on click switch to the bot trade view
     botStore.selectBot(item.botId);
   }
   if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
     botStore.activeBot.setDetailTrade(item);
-    selectedItemIndex.value = index;
     if (props.multiBotView) {
       router.push({ name: 'Freqtrade Trading' });
     }
   } else {
     botStore.activeBot.setDetailTrade(null);
-    selectedItemIndex.value = undefined;
   }
 };
 
@@ -178,7 +176,7 @@ watch(
     const index = props.trades.findIndex((v) => v.trade_id === val);
     // Unselect when another tradeTable is selected!
     if (index < 0) {
-      selectedItemIndex.value = undefined;
+      selectedItem.value = undefined;
     }
   },
 );
@@ -188,7 +186,7 @@ watch(
   <div class="h-full overflow-auto w-full">
     <DataTable
       ref="tradesTable"
-      v-model:selection="selectedItemIndex"
+      v-model:selection="selectedItem"
       :value="
         trades.filter(
           (t) =>
