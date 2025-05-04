@@ -7,7 +7,7 @@ const settingsStore = useSettingsStore();
 
 withDefaults(defineProps<{ showText?: boolean }>(), { showText: false });
 
-const setTheme = (themeName: ThemeName) => {
+function setTheme(themeName: ThemeName) {
   // If theme is already active, do nothing.
   if (activeTheme.value === themeName) {
     return;
@@ -31,15 +31,15 @@ const setTheme = (themeName: ThemeName) => {
   // Save the theme as localstorage
   settingsStore.currentTheme = themeName;
   activeTheme.value = themeName;
-};
+}
 
 onMounted(() => {
   if (settingsStore.currentTheme) setTheme(settingsStore.currentTheme);
 });
 
-const toggleNight = () => {
+function toggleNight() {
   setTheme(activeTheme.value === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
-};
+}
 </script>
 
 <template>
