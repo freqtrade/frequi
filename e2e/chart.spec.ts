@@ -73,6 +73,16 @@ test.describe('Chart', () => {
     // Close Plot configurator
     await page.getByRole('button', { name: 'Plot configurator' }).click();
 
+    await expect(page.locator('canvas')).toHaveScreenshot(
+      'Chart-Plot-with_BollingerBands-Dark.png',
+      {
+        threshold: 0.15,
+        maxDiffPixelRatio: 0.15,
+      },
+    );
+
+    await page.getByRole('button', { name: 'Toggle Night Mode' }).click();
+
     await expect(page.locator('canvas')).toHaveScreenshot('Chart-Plot-with_BollingerBands.png', {
       threshold: 0.15,
       maxDiffPixelRatio: 0.15,
