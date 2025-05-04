@@ -1,4 +1,4 @@
-export type ThemeName = 'bootstrap' | 'bootstrap_dark';
+export type ThemeName = 'bootstrap' | 'bootstrap_dark' | 'light' | 'dark';
 
 export enum OrderSides {
   long = 'long',

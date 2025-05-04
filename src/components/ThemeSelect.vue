@@ -12,7 +12,7 @@ function setTheme(themeName: ThemeName) {
   if (activeTheme.value === themeName) {
     return;
   }
-  if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'bootstrap_dark') {
+  if (['bootstrap', 'bootstrap_dark', 'light', 'dark'].includes(themeName.toLowerCase())) {
     // const styles = document.getElementsByTagName('style');
     if (activeTheme.value) {
       // Only transition if simple mode is active
@@ -21,7 +21,7 @@ function setTheme(themeName: ThemeName) {
         document.body.classList.remove('ft-theme-transition');
       }, 1000);
     }
-    if (themeName.toLowerCase() === 'bootstrap') {
+    if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'light') {
       document.documentElement.classList.remove('dark', 'ft-dark-theme');
     } else {
       // Add the dark theme
@@ -38,7 +38,7 @@ onMounted(() => {
 });
 
 function toggleNight() {
-  setTheme(activeTheme.value === 'bootstrap' ? 'bootstrap_dark' : 'bootstrap');
+  setTheme(['light', 'bootstrap'].includes(activeTheme.value) ? 'dark' : 'light');
 }
 </script>
 

@@ -23,7 +23,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       openTradesInTitle: OpenTradeVizOptions.showPill as string,
       timezone: 'UTC',
       backgroundSync: true,
-      currentTheme: 'bootstrap_dark' as ThemeName,
+      currentTheme: 'dark' as ThemeName,
       _uiVersion: 'dev',
       useHeikinAshiCandles: false,
       showMarkArea: true,
