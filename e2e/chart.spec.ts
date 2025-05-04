@@ -47,6 +47,8 @@ test.describe('Chart', () => {
       page.waitForResponse('**/pair_candles'),
     ]);
 
+    await page.getByRole('button', { name: 'Toggle Night Mode' }).click();
+
     // Wait for the chart to load
     await page.waitForSelector('span:has-text("NoActionStrategyFut | 1m")');
 
