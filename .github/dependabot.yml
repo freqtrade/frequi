@@ -42,9 +42,6 @@ updates:
     vueuse:
       patterns:
         - "@vueuse/*"
-    bootstrap:
-      patterns:
-        - "bootstrap*"
     primevue:
       patterns:
         - "primevue*"
