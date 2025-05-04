@@ -45,7 +45,7 @@ const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
 
 const increasePosition = ref({ visible: false, trade: {} as Trade });
-function formatPriceWithDecimals(price) {
+function formatPriceWithDecimals(price: number) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
 
