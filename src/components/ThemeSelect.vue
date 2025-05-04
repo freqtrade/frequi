@@ -20,14 +20,11 @@ const setTheme = (themeName: string) => {
         document.body.classList.remove('ft-theme-transition');
       }, 1000);
     }
-    const element = document.querySelector('html');
-    if (element) {
-      if (themeName.toLowerCase() === 'bootstrap') {
-        element.classList.remove('dark', 'ft-dark-theme');
-      } else {
-        // Add the dark theme
-        element.classList.add('dark', 'ft-dark-theme');
-      }
+    if (themeName.toLowerCase() === 'bootstrap') {
+      document.documentElement.classList.remove('dark', 'ft-dark-theme');
+    } else {
+      // Add the dark theme
+      document.documentElement.classList.add('dark', 'ft-dark-theme');
     }
   }
   // Save the theme as localstorage
