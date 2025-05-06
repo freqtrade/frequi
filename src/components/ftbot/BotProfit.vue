@@ -114,10 +114,15 @@ const profitItems = computed(() => {
 <template>
   <DataTable class="text-start" small borderless :value="profitItems">
     <Column field="metric" header="Metric"></Column>
-    <Column field="value" header="Value"></Column>
-    <!-- <template #cell(value)="row">
-      <DateTimeTZ v-if="row.item.isTs && row.value" :date="row.value as number"></DateTimeTZ>
-      <template v-else>{{ row.value }}</template>
-    </template> -->
+    <Column field="value" header="Value">
+      <template #body="{ data }">
+        <template v-if="data.isTs">
+          <DateTimeTZ v-if="data.value" :date="data.value as number" show-timezone />
+        </template>
+        <template v-else>
+          {{ data.value }}
+        </template>
+      </template>
+    </Column>
   </DataTable>
 </template>
