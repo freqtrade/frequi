@@ -170,6 +170,31 @@ const onRowClicked = ({ data: item }) => {
   }
 };
 
+/**
+ * Calculate the remaining (= not filled) amount of a trade.
+ * Aims at partial fills.
+ * @param orders - array of orders for this trade
+ * @returns {number}
+ */
+const calcRemaining = (orders?: Trade['orders']): number => {
+  if (!Array.isArray(orders)) return 0;
+  return orders.reduce((acc, order) => acc + (order.remaining ?? 0), 0);
+};
+
+/**
+ * Format the amount of a trade.
+ * If there are remaining orders, show the filled / requested amount
+ * @param amount - the actual filled amount
+ * @param orders - array of orders for this trade
+ * @returns {string}
+ */
+const formatAmountWithRemaining = (amount: number, orders?: Trade['orders']): string => {
+  const remaining = calcRemaining(orders);
+  return remaining > 0
+    ? `${formatPriceWithDecimals(amount - remaining)} / ${formatPriceWithDecimals(amount)}`
+    : formatPriceWithDecimals(amount);
+};
+
 watch(
   () => botStore.activeBot.detailTradeId,
   (val) => {
@@ -258,6 +283,11 @@ watch(
           <template v-else-if="field === 'close_timestamp'">
             <DateTimeTZ :date="data.close_timestamp ?? 0" />
           </template>
+
+          <template v-else-if="field === 'amount'">
+            {{ formatAmountWithRemaining(data.amount, data.orders) }}
+          </template>
+
           <template v-else>
             {{ data[field] }}
           </template>
