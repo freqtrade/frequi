@@ -215,6 +215,11 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         nameRotate: 90,
         nameLocation: 'middle',
         nameGap: 35,
+        axisLabel: {
+          formatter: (value) => {
+            return props.profitCol === 'rel_profit' ? `${value}%` : `${value}`;
+          },
+        },
       },
       {
         type: 'value',
