@@ -152,7 +152,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         let relProfit = '';
 
         if (typeof data.rel_profit === 'number') {
-          relProfit = data.rel_profit.toFixed(3) + '%';
+          relProfit = data.rel_profit.toFixed(2) + '%';
         } else {
           relProfit = '-';
         }
