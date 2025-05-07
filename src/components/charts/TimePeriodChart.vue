@@ -143,7 +143,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
       },
       formatter: (params) => {
-        const entry = params[0]; // alle series zeigen auf dieselbe data-Zeile
+        const entry = params[0];
         const data = entry?.data ?? {};
         const date = entry?.axisValue ?? '';
 
