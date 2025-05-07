@@ -45,7 +45,7 @@
     "@tailwindcss/vite": "^4.1.5",
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.15.3",
-    "@typescript-eslint/parser": "^8.31.1",
+    "@typescript-eslint/parser": "^8.32.0",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/compiler-sfc": "3.5.13",
     "@vue/eslint-config-prettier": "^10.2.0",
