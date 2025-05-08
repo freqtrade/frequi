@@ -160,9 +160,11 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         const tradeCount = data.trade_count ?? '-';
 
         return `
-          <strong>${date}</strong><br/>
-          ${params[0].marker} Profit: ${absProfit} (${relProfit})<br/>
-          ${params[1].marker} Trade count: ${tradeCount}
+          ${date}<br/>
+          <div style=">  
+            <div style="display: flex; justify-content: space-between;"><span>${params[0].marker} Profit:</span> <span style="margin-left: 2em"><strong>${absProfit} (${relProfit})</strong></span></div>
+            <div style="display: flex; justify-content: space-between;"><span>${params[1].marker} Trade count:</span> <span style="margin-left: 2em"><strong>${tradeCount}</strong></span></div>
+          </div>
         `;
       },
     },
