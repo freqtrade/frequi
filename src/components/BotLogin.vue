@@ -197,7 +197,6 @@ onMounted(() => {
         Name and Password are required.
       </span>
     </div>
-    name: {{ nameState }} pwd:{{ pwdState }} url: {{ urlState }}
     <div class="mb-4">
       <label for="password-input" class="block text-sm font-medium">Password</label>
       <InputText
