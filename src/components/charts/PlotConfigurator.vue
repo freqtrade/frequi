@@ -216,6 +216,9 @@ watch(
       plotStore.isEditing = false;
     }
   },
+  {
+    immediate: true,
+  },
 );
 const fromPlotTemplateVisible = ref(false);
 </script>
