@@ -381,7 +381,7 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
   export type { ColorPreferences } from './stores/colors'
@@ -473,7 +473,6 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getDiffColumnsFromPlotConfig: UnwrapRef<typeof import('./utils/charts/areaPlotDataset')['getDiffColumnsFromPlotConfig']>
-    readonly getTheme: UnwrapRef<typeof import('./utils/themes')['getTheme']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly heikinAshiDataset: UnwrapRef<typeof import('./utils/charts/heikinAshiDataset')['heikinAshiDataset']>
     readonly humanizeDurationFromSeconds: UnwrapRef<typeof import('./utils/formatters/timeformat')['humanizeDurationFromSeconds']>
