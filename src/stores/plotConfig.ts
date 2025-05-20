@@ -68,7 +68,7 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       if (plotConfigName) {
         this.plotConfigName = plotConfigName;
       }
-      console.log('plotConfigChanged', this.plotConfigName);
+
       if (this.isEditing) {
         this.editablePlotConfig = deepClone(this.customPlotConfigs[this.plotConfigName]);
       }
@@ -83,6 +83,7 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     key: FT_PLOT_CONFIG_KEY,
     pick: ['plotConfigName', 'customPlotConfigs'],
     afterHydrate: (context) => {
+      // Ensure default plot config exists
       if (Object.keys(context.store.customPlotConfigs).length === 0) {
         console.log('Initialized plotconfig');
         context.store.customPlotConfigs = { default: deepClone(EMPTY_PLOTCONFIG) };
