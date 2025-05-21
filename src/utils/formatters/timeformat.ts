@@ -93,8 +93,8 @@ export function timestampHour(ts: number): number {
  *  Get humanized Duration from seconds
  * @param duration Duration in seconds
  */
-export function humanizeDurationFromSeconds(duration: number): string {
-  return humanizeDuration(duration * 1000);
+export function humanizeDurationFromSeconds(duration: number | undefined): string {
+  return duration ? humanizeDuration(duration * 1000) : 'N/A';
 }
 
 export default {

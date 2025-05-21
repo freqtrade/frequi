@@ -125,10 +125,23 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       'Days win/draw/loss': `${result.winning_days} / ${result.draw_days} / ${result.losing_days}`,
     },
     {
+      // TODO: min/max/avg trade duration should be aligned with the terminal output
+      'Min. Duration winners': humanizeDurationFromSeconds(result.winner_holding_min_s),
+    },
+    {
       'Avg. Duration winners': humanizeDurationFromSeconds(result.winner_holding_avg_s),
     },
     {
+      'Max. Duration winners': humanizeDurationFromSeconds(result.winner_holding_max_s),
+    },
+    {
+      'Min. Duration Losers': humanizeDurationFromSeconds(result.loser_holding_min_s),
+    },
+    {
       'Avg. Duration Losers': humanizeDurationFromSeconds(result.loser_holding_avg_s),
+    },
+    {
+      'Max. Duration Losers': humanizeDurationFromSeconds(result.loser_holding_max_s),
     },
     {
       'Max Consecutive Wins / Loss':

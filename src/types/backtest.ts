@@ -161,6 +161,10 @@ export interface StrategyBacktestResult {
   drawdown_end_ts: number;
   drawdown_start: string;
   drawdown_start_ts: number;
+  loser_holding_min?: string;
+  loser_holding_min_s?: number;
+  loser_holding_max?: string;
+  loser_holding_max_s?: number;
   loser_holding_avg: string;
   loser_holding_avg_s: number;
   max_consecutive_wins?: number;
@@ -181,6 +185,11 @@ export interface StrategyBacktestResult {
   sqn?: number;
   expectancy?: number;
   expectancy_ratio?: number;
+
+  winner_holding_min?: string;
+  winner_holding_min_s?: number;
+  winner_holding_max?: string;
+  winner_holding_max_s?: number;
 
   winner_holding_avg: string;
   winner_holding_avg_s: number;
