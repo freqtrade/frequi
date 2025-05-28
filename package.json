@@ -20,7 +20,7 @@
     "@noction/vue-draggable-grid": "1.9.16",
     "@primeuix/themes": "^1.0.3",
     "@vuepic/vue-datepicker": "^11.0.2",
-    "@vueuse/core": "^13.2.0",
+    "@vueuse/core": "^13.3.0",
     "@vueuse/integrations": "^13.2.0",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
