@@ -2,6 +2,8 @@
 import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRouter } from 'vue-router';
+import { ref, h } from 'vue'; // Modified: Added 'h' for rendering custom components
+
 
 enum ModalReasons {
   removeTrade,
@@ -44,41 +46,85 @@ const removeTradeVisible = ref(false);
 const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
 
+// NEW: Menu reference and items for column toggle dropdown
+const menu = ref(null);
+
+
+
+
+// Modified: Add visible property to tableFields and initialize menuItems
+
 const increasePosition = ref({ visible: false, trade: {} as Trade });
 function formatPriceWithDecimals(price: number) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
 
+// Modified: Define tableFields with visible property
 const tableFields = ref([
-  { field: 'trade_id', header: 'ID' },
-  { field: 'pair', header: 'Pair' },
-  { field: 'amount', header: 'Amount' },
+  { field: 'trade_id', header: 'ID', visible: true },
+  { field: 'pair', header: 'Pair', visible: true },
+  { field: 'amount', header: 'Amount', visible: true },
   props.activeTrades
-    ? { field: 'stake_amount', header: 'Stake amount' }
-    : { field: 'max_stake_amount', header: 'Total stake amount' },
+    ? { field: 'stake_amount', header: 'Stake amount', visible: true }
+    : { field: 'max_stake_amount', header: 'Total stake amount', visible: true },
   {
     field: 'open_rate',
     header: 'Open rate',
+    visible: true,
   },
   {
     field: props.activeTrades ? 'current_rate' : 'close_rate',
     header: props.activeTrades ? 'Current rate' : 'Close rate',
+    visible: true,
   },
   {
     field: 'profit',
     header: props.activeTrades ? 'Current profit %' : 'Profit %',
+    visible: true,
   },
-  { field: 'open_timestamp', header: 'Open date' },
+  { field: 'open_timestamp', header: 'Open date', visible: true },
   ...(props.activeTrades
-    ? [{ field: 'actions', header: '' }]
+    ? [{ field: 'actions', header: '', visible: true }]
     : [
-        { field: 'close_timestamp', header: 'Close date' },
-        { field: 'exit_reason', header: 'Close Reason' },
+        { field: 'close_timestamp', header: 'Close date', visible: true },
+        { field: 'exit_reason', header: 'Close Reason', visible: true },
       ]),
 ]);
 
+const menuItems = ref([
+  {
+    label: 'Toggle Columns',
+    items: tableFields.value.map(col => ({
+      label: col.header,
+      command: () => toggleColumn(col.field),
+      item: ({ item }) => h(
+        'div',
+        { class: 'p-menuitem-content flex align-items-center' },
+        [
+          h(BaseCheckbox, {
+            modelValue: col.visible,
+            'onUpdate:modelValue': () => toggleColumn(col.field),
+            class: 'p-checkbox-input',
+            binary: true,
+            title: `Toggle ${col.header} column`,
+          }),
+          h('span', { class: 'ml-2' }, item.label),
+        ]),
+    })),
+  },
+]);
+
+// Modified: Add botName field for multiBotView with visible property
 if (props.multiBotView) {
-  tableFields.value.unshift({ field: 'botName', header: 'Bot' });
+  tableFields.value.unshift({ field: 'botName', header: 'Bot', visible: true });
+}
+
+// NEW: Function to toggle column visibility
+function toggleColumn(field: string) {
+  const column = tableFields.value.find(col => col.field === field);
+  if (column) {
+    column.visible = !column.visible;
+  }
 }
 
 const feOrderType = ref<string | undefined>(undefined);
@@ -208,8 +254,9 @@ watch(
       <template #empty>
         {{ emptyText }}
       </template>
+      <!-- Modified: Filter columns by visible property -->
       <Column
-        v-for="column in tableFields"
+        v-for="column in tableFields.filter(c => c.visible)"
         :key="column.field"
         :field="column.field"
         :header="column.header"
@@ -264,9 +311,20 @@ watch(
         </template>
       </Column>
 
-      <template v-if="showFilter" #header>
+      <template  #header>
         <div class="flex justify-end gap-2 p-2">
-          <InputText v-model="filterText" placeholder="Filter" class="w-64" size="small" />
+          <InputText v-if="showFilter" v-model="filterText" placeholder="Filter" class="w-64" size="small" />
+          <!-- NEW: Three-dot button for column toggle menu -->
+          <Button
+            @click="menu.toggle($event)"
+          >
+            <template #icon>
+              <i-mdi-menu />
+            </template>
+          </Button>
+          
+          <!-- NEW: Menu component for column toggle -->
+          <Menu ref="menu" :model="menuItems" :popup="true" />
         </div>
       </template>
     </DataTable>
@@ -292,3 +350,12 @@ watch(
     </Dialog>
   </div>
 </template>
+<style scoped>
+/* NEW: Style for checkbox spacing in dropdown menu */
+.p-checkbox-input {
+  margin-right: 8px;
+}
+.p-button.p-button-text .pi-ellipsis-v {
+  color: gray; /* Sets the three-dot icon to gray */
+}
+</style>
