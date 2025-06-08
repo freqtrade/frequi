@@ -30,8 +30,14 @@ defineExpose({ show });
   <Dialog id="MsgBoxModal" ref="removeTradeModal" v-model:visible="showRef" modal :header="title">
     {{ message }}
     <template #footer>
-      <Button label="Cancel" variant="outlined" severity="secondary" @click="showRef = false" />
-      <Button label="Ok" severity="primary" autofocus @click="msgBoxOK" />
+      <Button
+        class="min-w-30"
+        label="Cancel"
+        variant="outlined"
+        severity="secondary"
+        @click="showRef = false"
+      />
+      <Button class="min-w-30" label="Ok" severity="primary" autofocus @click="msgBoxOK" />
     </template>
   </Dialog>
 </template>
