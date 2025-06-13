@@ -6,7 +6,6 @@
       <BotList />
     </div>
     <Divider />
-    <!-- <img alt="Freqtrade logo" src="../assets/freqtrade-logo.png" width="450px" class="my-5" /> -->
     <div
       title="Freqtrade logo"
       class="logo-svg my-5 mx-auto dark:bg-white bg-black sm:w-[250px] sm:h-[250px] w-[150px] h-[150px]"
