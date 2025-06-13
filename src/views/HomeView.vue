@@ -21,7 +21,7 @@
       >.
     </p>
 
-    <p>Have fun - <i>wishes you the Freqtrade team</i></p>
+    <p class="mb-5">Have fun - <i>wishes you the Freqtrade team</i></p>
   </div>
 </template>
 
