@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="mt-5">
     <div class="flex justify-center">
@@ -19,8 +17,10 @@
         class="text-primary underline cursor-pointer"
         href="https://www.freqtrade.io/en/latest/"
         target="_blank"
-        >Freqtrade Documentation</a
-      >.
+      >
+        Freqtrade Documentation
+      </a>
+      .
     </p>
 
     <p class="mb-5">Have fun - <i>wishes you the Freqtrade team</i></p>
