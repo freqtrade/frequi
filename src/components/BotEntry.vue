@@ -52,7 +52,7 @@ const autoRefreshLoc = computed({
           />
         </div>
         <div v-else title="Login info expired, please login again.">
-          <i-mdi-cancel class="text-red-500" />
+          <i-mdi-cancel class="text-red-500 mx-1" />
         </div>
       </div>
 
