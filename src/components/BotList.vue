@@ -53,7 +53,7 @@ const stopEditBot = (botId: string) => {
 </script>
 
 <template>
-  <div v-if="botStore.botCount > 0">
+  <div v-if="botStore.botCount > 0" class="w-full mx-2">
     <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
     <ul
       ref="sortContainer"
