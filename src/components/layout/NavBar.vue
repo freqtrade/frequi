@@ -302,7 +302,11 @@ const drawerVisible = ref(false);
 
         <!-- Mobile menu -->
         <div v-if="isMobile" class="ms-auto flex">
-          <Button class="text-surface-300" @click="drawerVisible = !drawerVisible">
+          <Button
+            class="text-surface-300 text-xl"
+            variant="text"
+            @click="drawerVisible = !drawerVisible"
+          >
             <template #icon>
               <i-mdi-menu />
             </template>
