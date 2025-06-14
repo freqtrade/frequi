@@ -69,7 +69,8 @@ const stopEditBot = (botId: string) => {
         }`"
         class="flex items-center p-2"
         :class="{
-          'bg-primary-100 dark:bg-primary-800': bot.botId === botStore.selectedBot,
+          'bg-primary-100 dark:bg-primary-800 underline font-semibold':
+            bot.botId === botStore.selectedBot,
         }"
         @click="botStore.selectBot(bot.botId)"
       >
