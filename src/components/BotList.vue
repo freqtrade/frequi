@@ -5,9 +5,9 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
 
-defineProps({
-  small: { default: false, type: Boolean },
-});
+defineProps<{
+  small?: boolean;
+}>();
 
 const botStore = useBotStore();
 
