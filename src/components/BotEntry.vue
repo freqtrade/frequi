@@ -4,10 +4,10 @@ import type { BotDescriptor } from '@/types';
 import type MessageBox from './general/MessageBox.vue';
 const msgBox = ref<typeof MessageBox>();
 
-const props = defineProps({
-  bot: { required: true, type: Object as () => BotDescriptor },
-  noButtons: { default: false, type: Boolean },
-});
+const props = defineProps<{
+  bot: BotDescriptor;
+  noButtons?: boolean;
+}>();
 defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
 
