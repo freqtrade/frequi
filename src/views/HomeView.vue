@@ -6,9 +6,9 @@
     <Divider />
     <div
       title="Freqtrade logo"
-      class="logo-svg my-5 mx-auto dark:bg-white bg-black sm:w-[250px] sm:h-[250px] w-[150px] h-[150px] transition-all duration-300 ease-in-out"
+      class="logo-svg my-5 mx-auto dark:bg-white bg-black sm:w-[250px] sm:h-[250px] w-[150px] h-[150px] transition-all duration-300"
     />
-    <h1 class="font-bold text-4xl mb-4">Welcome to the Freqtrade UI</h1>
+    <h1 class="font-bold text-2xl sm:text-4xl mb-4 transition-all">Welcome to the Freqtrade UI</h1>
     <div>This page allows you to control your trading bot.</div>
     <Divider />
     <p class="mb-2">
