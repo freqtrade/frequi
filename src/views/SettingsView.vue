@@ -44,8 +44,8 @@ const resetDynamicLayout = () => {
             </template>
           </BaseCheckbox>
 
-          <div class="flex flex-row gap-2 space-y-2">
-            <Button severity="secondary" size="small" @click="resetDynamicLayout"
+          <div class="flex flex-row items-center gap-2 space-y-2">
+            <Button severity="secondary" size="small" class="mb-0" @click="resetDynamicLayout"
               >Reset layout</Button
             >
             <small class="block text-surface-600 dark:text-surface-400"
