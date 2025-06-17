@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
-// import { EChartsOption } from 'echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -16,7 +15,7 @@ import {
   VisualMapComponent,
 } from 'echarts/components';
 
-import type { BacktestMarketChange } from '@/types';
+import type { WalletHistory } from '@/types';
 import type { EChartsOption } from 'echarts';
 
 use([
@@ -34,11 +33,11 @@ use([
 
 const colorStore = useColorStore();
 // Define Column labels here to avoid typos
-const CHART_MARKET_CHANGE = 'Wallet change';
+const CHART_WALLET_CHANGE = 'Wallet change';
 
 const props = withDefaults(
   defineProps<{
-    walletData: BacktestMarketChange | null;
+    walletData: WalletHistory | null;
     showTitle?: boolean;
   }>(),
   {
@@ -48,9 +47,7 @@ const props = withDefaults(
 
 const settingsStore = useSettingsStore();
 
-const marketChangeChart = ref(null);
-
-const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
+const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   if (!props.walletData) {
     return {};
   }
@@ -80,7 +77,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
       ...echartsGridDefault,
     },
     legend: {
-      data: [CHART_MARKET_CHANGE],
+      data: [CHART_WALLET_CHANGE],
       right: '5%',
       selectedMode: false,
     },
@@ -98,7 +95,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     yAxis: [
       {
         type: 'value',
-        name: CHART_MARKET_CHANGE,
+        name: CHART_WALLET_CHANGE,
         splitLine: {
           show: false,
         },
@@ -150,7 +147,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     series: [
       {
         type: 'line',
-        name: CHART_MARKET_CHANGE,
+        name: CHART_WALLET_CHANGE,
         showSymbol: false,
         color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
         encode: {
@@ -167,8 +164,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
 <template>
   <ECharts
     v-if="walletData?.data"
-    ref="marketChangeChart"
-    :option="marketChangeOptions"
+    :option="walletChangeOptions"
     :theme="settingsStore.chartTheme"
     autoresize
   />
