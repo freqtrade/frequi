@@ -283,9 +283,3 @@ export interface BacktestMarketChange {
   length: number;
   data: (number | string)[][];
 }
-
-export interface BacktestWalletsSummary {
-  columns: string[];
-  length: number;
-  data: (number | string)[][];
-}

@@ -31,8 +31,12 @@ export interface TimeSummaryReturnValue {
   stake_currency: string;
 }
 
-export interface WalletsSummary {
+export interface WalletHistory {
   columns: string[];
   length: number;
   data: (number | string)[][];
+  /** start date of the effectively captured data
+   * Only applies to live modes with an older database
+   */
+  capture_start_ts?: number;
 }

@@ -12,7 +12,6 @@ import type {
   BacktestResultInMemory,
   BacktestResultUpdate,
   BacktestStatus,
-  BacktestWalletsSummary,
   BalanceInterface,
   BgTaskStarted,
   BlacklistPayload,
@@ -55,7 +54,7 @@ import type {
   TimeSummaryReturnValue,
   Trade,
   TradeResponse,
-  WalletsSummary,
+  WalletHistory,
   WhitelistResponse,
 } from '@/types';
 import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
@@ -102,7 +101,7 @@ export function createBotSubStore(botId: string, botName: string) {
         dailyStats: {} as TimeSummaryReturnValue,
         weeklyStats: {} as TimeSummaryReturnValue,
         monthlyStats: {} as TimeSummaryReturnValue,
-        balanceHistory: {} as WalletsSummary,
+        balanceHistory: {} as WalletHistory,
         pairlistMethods: [] as string[],
         detailTradeId: null as number | null,
         selectedPair: '',
@@ -690,7 +689,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject('Wallet change not available');
         }
         try {
-          const { data } = await api.get<WalletsSummary>('/historic_balance');
+          const { data } = await api.get<WalletHistory>('/historic_balance');
           this.balanceHistory = data;
           return data;
         } catch (err) {
@@ -1136,7 +1135,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject('No backtest selected');
         }
         try {
-          const { data } = await api.get<BacktestWalletsSummary>(
+          const { data } = await api.get<WalletHistory>(
             `/backtest/history/${this.selectedBacktestMetadata.filename}/${this.selectedBacktestMetadata.strategyName}/wallet`,
           );
           return data;
