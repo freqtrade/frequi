@@ -12,8 +12,8 @@ importers:
         specifier: 1.9.16
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.8.3)(vue@3.5.16(typescript@5.8.3))
       '@primeuix/themes':
-        specifier: ^1.0.3
-        version: 1.1.1
+        specifier: ^1.1.2
+        version: 1.1.2
       '@vuepic/vue-datepicker':
         specifier: ^11.0.2
         version: 11.0.2(vue@3.5.16(typescript@5.8.3))
@@ -618,10 +618,6 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@primeuix/styled@0.6.1':
-    resolution: {integrity: sha512-wmZfJBKR/9Mty2fI1xAXF0MJ8SBqgtT2W2My3/364Omt4PN7DAvMWwgxWmnnKi0O5meIzSmGcnoQIx3tGfVsTw==}
-    engines: {node: '>=12.11.0'}
-
   '@primeuix/styled@0.6.4':
     resolution: {integrity: sha512-7ePLwqazLV0x269YlPMeE4wtQKT0NScY2/gEin0/96krTiGiElmlzKMMbH69bVApm/sfen5DZGuCEEwPiBJJ5g==}
     engines: {node: '>=12.11.0'}
@@ -629,8 +625,8 @@ packages:
   '@primeuix/styles@1.1.1':
     resolution: {integrity: sha512-oguFY2Rs4ZqdcFqEKxBt2d8trTkAjJ5BGTaDV0zbwdqRCRcZp9+di3K3Wv57CW/+tFDA0z1Dg7Dpm7wmkOII9Q==}
 
-  '@primeuix/themes@1.1.1':
-    resolution: {integrity: sha512-fcHPLfw73cOApPovtA+D9wf3N7FBruU/6oTRt+AcTK754mHhnTza9kC2jiFQfq5HnWF0u0J/5Pb943fNsnxVVA==}
+  '@primeuix/themes@1.1.2':
+    resolution: {integrity: sha512-yxnmMqMct6RYWX6m9gS9AIG8QArjnROQzBqQf8UDQggAedX3My1fxr9FKEpvZMoY39WD494kG0pU9zIa1k2XyA==}
 
   '@primeuix/utils@0.5.4':
     resolution: {integrity: sha512-8LggV3Jz59pymHQD10e/u63z/GemQ22RBeu2Gb1eJgBYVwn1iOb82LR+daeAc/LxrXCC5pHnftnCmnZO6vInLA==}
@@ -3007,10 +3003,6 @@ snapshots:
     dependencies:
       playwright: 1.53.0
 
-  '@primeuix/styled@0.6.1':
-    dependencies:
-      '@primeuix/utils': 0.5.4
-
   '@primeuix/styled@0.6.4':
     dependencies:
       '@primeuix/utils': 0.5.4
@@ -3019,9 +3011,9 @@ snapshots:
     dependencies:
       '@primeuix/styled': 0.6.4
 
-  '@primeuix/themes@1.1.1':
+  '@primeuix/themes@1.1.2':
     dependencies:
-      '@primeuix/styled': 0.6.1
+      '@primeuix/styled': 0.6.4
 
   '@primeuix/utils@0.5.4': {}
 
