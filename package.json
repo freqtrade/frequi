@@ -22,7 +22,7 @@
     "@vuepic/vue-datepicker": "^11.0.2",
     "@vueuse/core": "^13.3.0",
     "@vueuse/integrations": "^13.2.0",
-    "axios": "^1.9.0",
+    "axios": "^1.10.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "deepmerge": "^4.3.1",
