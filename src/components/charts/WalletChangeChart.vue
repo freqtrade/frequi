@@ -13,6 +13,7 @@ import {
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
+  MarkLineComponent,
 } from 'echarts/components';
 
 import type { WalletHistory } from '@/types';
@@ -29,6 +30,7 @@ use([
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
+  MarkLineComponent,
 ]);
 
 const colorStore = useColorStore();
@@ -54,7 +56,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   const colDate = props.walletData.columns.findIndex((el) => el === '__date_ts');
   const colTotal = props.walletData.columns.findIndex((el) => el === 'total');
   const startingValue: number = props.walletData.data[0][colTotal] as number;
-  return {
+  const option: EChartsOption = {
     title: {
       text: 'Wallet Change',
       left: 'center',
@@ -89,7 +91,6 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
           label: { show: false },
         },
         // position: 'top',
-        splitNumber: 20,
       },
     ],
     yAxis: [
@@ -155,9 +156,29 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
           // open, close, low, high
           y: colTotal,
         },
+        markLine: {
+          symbol: 'none',
+          data: [
+            {
+              name: 'Starting balance',
+              yAxis: startingValue,
+            },
+            {
+              name: 'Zero',
+              label: {
+                show: false,
+              },
+              lineStyle: {
+                type: 'solid',
+              },
+              yAxis: 0,
+            },
+          ],
+        },
       },
     ],
   };
+  return option;
 });
 </script>
 
