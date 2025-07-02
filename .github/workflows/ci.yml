@@ -81,17 +81,28 @@ jobs:
 
     # End Playwright section
 
+  release:
+    runs-on: "ubuntu-latest"
+    if: github.event_name == 'release'
+    needs: build
+    permissions:
+      contents: write
+    steps:
+    - name: Download digests
+      uses: actions/download-artifact@v4
+      with:
+        path: ./dist/
+        # Use node-22 build.
+        name: freqUI-22
+
     - name: Zip files for release
-      if: github.event_name == 'release' && matrix.node == '22'
       run: |
         cd dist/
         zip -r ../freqUI.zip .
         cd ../
 
-
     - name: Upload release binaries
       uses: alexellis/upload-assets@13926a61cdb2cb35f5fdef1c06b8b591523236d3 # 0.4.1
-      if: github.event_name == 'release' && matrix.node == '22'
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
