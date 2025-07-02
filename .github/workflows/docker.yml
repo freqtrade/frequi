@@ -66,9 +66,10 @@ jobs:
         outputs: type=image,name=freqtradeorg/frequi,push-by-digest=true,name-canonical=true,push=true
 
     - name: Export digest
+      env:
+        digest: ${{ steps.build.outputs.digest }}
       run: |
         mkdir -p /tmp/digests
-        digest="${{ steps.build.outputs.digest }}"
         touch "/tmp/digests/${digest#sha256:}"
 
     - name: Upload digest
@@ -133,5 +134,7 @@ jobs:
           $(printf 'freqtradeorg/frequi@sha256:%s ' *)
 
     - name: Inspect image
+      env:
+        version: ${{ steps.meta.outputs.version }}
       run: |
-        docker buildx imagetools inspect freqtradeorg/frequi:${{ steps.meta.outputs.version }}
+        docker buildx imagetools inspect freqtradeorg/frequi:${version}
