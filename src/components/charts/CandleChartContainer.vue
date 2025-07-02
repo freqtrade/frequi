@@ -8,20 +8,24 @@ import { useBotStore } from '@/stores/ftbotwrapper';
 
 import { useColorStore } from '@/stores/colors';
 
-const props = defineProps({
-  trades: { required: false, default: () => [], type: Array as () => Trade[] },
-  availablePairs: { required: true, type: Array as () => string[] },
-  timeframe: { required: true, type: String },
-  historicView: { required: false, default: false, type: Boolean },
-  plotConfigModal: { required: false, default: true, type: Boolean },
-  /** Only required if historicView is true */
-  strategy: { required: false, default: '', type: String },
-  sliderPosition: {
-    required: false,
-    type: Object as () => ChartSliderPosition,
-    default: () => undefined,
+const props = withDefaults(
+  defineProps<{
+    trades?: Trade[];
+    availablePairs: string[];
+    timeframe: string;
+    historicView?: boolean;
+    plotConfigModal?: boolean;
+    strategy?: string;
+    sliderPosition?: ChartSliderPosition;
+  }>(),
+  {
+    trades: () => [],
+    historicView: false,
+    plotConfigModal: true,
+    strategy: '',
+    sliderPosition: undefined,
   },
-});
+);
 
 const emit = defineEmits<{
   refreshData: [pair: string, columns: string[]];
