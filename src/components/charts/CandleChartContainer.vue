@@ -14,6 +14,8 @@ const props = withDefaults(
     availablePairs: string[];
     timeframe: string;
     historicView?: boolean;
+    /** Reload data on pair switch if in historic view */
+    reloadDataOnSwitch?: boolean;
     plotConfigModal?: boolean;
     strategy?: string;
     sliderPosition?: ChartSliderPosition;
@@ -22,6 +24,7 @@ const props = withDefaults(
     trades: () => [],
     historicView: false,
     plotConfigModal: true,
+    reloadDataOnSwitch: false,
     strategy: '',
     sliderPosition: undefined,
   },
@@ -120,6 +123,8 @@ watch(
   () => {
     if (!props.historicView) {
       refresh();
+    } else if (props.reloadDataOnSwitch) {
+      refreshIfNecessary();
     }
   },
 );
@@ -153,7 +158,9 @@ onMounted(() => {
     [botStore.activeBot.plotPair] = props.availablePairs;
   }
   plotStore.plotConfigChanged();
-  refreshIfNecessary();
+  if (!props.historicView) {
+    refreshIfNecessary();
+  }
 });
 </script>
 

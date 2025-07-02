@@ -82,7 +82,8 @@ function refreshOHLCV(pair: string, columns: string[]) {
       </Transition>
       <CandleChartContainer
         :available-pairs="backtestResult.pairlist"
-        :historic-view="!!true"
+        historic-view
+        reload-data-on-switch
         :timeframe="timeframe"
         :timerange="timerange"
         :strategy="strategy"
