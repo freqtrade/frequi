@@ -26,10 +26,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
 
     - name: Install pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
 
     - uses: actions/setup-node@v4
       with:
@@ -86,7 +88,7 @@ jobs:
 
 
     - name: Upload release binaries
-      uses: alexellis/upload-assets@0.4.1
+      uses: alexellis/upload-assets@13926a61cdb2cb35f5fdef1c06b8b591523236d3 # 0.4.1
       if: github.event_name == 'release' && matrix.node == '22'
       env:
         GITHUB_TOKEN: ${{ github.token }}
