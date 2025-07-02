@@ -15,6 +15,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -99,6 +101,9 @@ jobs:
     needs: build
     if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'release') && github.repository == 'freqtrade/frequi'
     uses: ./.github/workflows/docker.yml
+    permissions:
+      packages: write
+      contents: read
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
