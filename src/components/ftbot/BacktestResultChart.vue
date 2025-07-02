@@ -31,6 +31,11 @@ function refreshOHLCV(pair: string, columns: string[]) {
     columns: columns,
   });
 }
+onMounted(() => {
+  if (!botStore.activeBot.selectedPair && props.backtestResult.pairlist.length > 0) {
+    [botStore.activeBot.selectedPair] = props.backtestResult.pairlist;
+  }
+});
 </script>
 
 <template>
