@@ -301,7 +301,7 @@ function updateChart(initial = false) {
               if (Array.isArray(value)) {
                 // Show both value and tag
                 return value.length > 0 && value[0]
-                  ? `${config.tooltipPrefix} ${value[0]} ${value[1] ? `(${value[1]})` : ''}`
+                  ? `${config.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`
                   : '';
               }
               // Fallback for single value
