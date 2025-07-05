@@ -623,7 +623,6 @@ export function createBotSubStore(botId: string, botName: string) {
           this.profit = data;
           return Promise.resolve(data);
         } catch (error) {
-          console.error(error);
           return Promise.reject(error);
         }
       },
@@ -668,7 +667,6 @@ export function createBotSubStore(botId: string, botName: string) {
           }
           return Promise.resolve(data);
         } catch (error) {
-          console.error(error);
           return Promise.reject(error);
         }
       },
