@@ -221,6 +221,18 @@ watch(
   },
 );
 const fromPlotTemplateVisible = ref(false);
+
+const showTagsInTooltips = computed({
+  get() {
+    return plotStore.editablePlotConfig.options?.showTags ?? true;
+  },
+  set(value: boolean) {
+    if (!plotStore.editablePlotConfig.options) {
+      plotStore.editablePlotConfig.options = {};
+    }
+    plotStore.editablePlotConfig.options.showTags = value;
+  },
+});
 </script>
 
 <template>
@@ -228,6 +240,9 @@ const fromPlotTemplateVisible = ref(false);
     <label for="idPlotConfigName">Plot config name</label>
     <PlotConfigSelect allow-edit></PlotConfigSelect>
     <Divider />
+    <BaseCheckbox v-model="showTagsInTooltips" class="mb-1">Show Tags in Tooltips</BaseCheckbox>
+    <Divider />
+
     <label for="fieldSel" class="mb">Target Plot</label>
     <EditValue
       v-model="selSubPlot"

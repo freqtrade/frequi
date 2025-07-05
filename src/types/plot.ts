@@ -16,6 +16,9 @@ export interface IndicatorConfig {
 export interface PlotConfig {
   main_plot: Record<string, IndicatorConfig>;
   subplots: Record<string, Record<string, IndicatorConfig>>;
+  options?: {
+    showTags?: boolean;
+  };
 }
 
 export interface PlotConfigStorage {

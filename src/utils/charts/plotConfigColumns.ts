@@ -11,6 +11,9 @@ export function plotConfigColumns(plotConfig: Partial<PlotConfig>): string[] {
       cols.push(subkey);
     }
   }
+  if (plotConfig.options?.showTags !== false) {
+    cols.push('enter_tag', 'exit_tag');
+  }
   // Make list unique
   return [...new Set(cols)].sort();
 }
