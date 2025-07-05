@@ -138,6 +138,9 @@ function updateChart(initial = false) {
   const colLow = columns.findIndex((el) => el === 'low');
   const colClose = columns.findIndex((el) => el === 'close');
   const colVolume = columns.findIndex((el) => el === 'volume');
+  const colEnterTag = columns.findIndex((el) => el === 'enter_tag');
+  const colExitTag = columns.findIndex((el) => el === 'exit_tag');
+
   const colEntryData = columns.findIndex(
     (el) => el === '_buy_signal_close' || el === '_enter_long_signal_close',
   );
@@ -248,6 +251,7 @@ function updateChart(initial = false) {
         symbolSize: 10,
         color: buySignalColor,
         tooltipPrefix: 'Long entry',
+        colTooltip: colEnterTag,
       },
       {
         colData: colExitData,
@@ -256,6 +260,7 @@ function updateChart(initial = false) {
         symbolSize: 8,
         color: sellSignalColor,
         tooltipPrefix: 'Long exit',
+        colTooltip: colExitTag,
       },
       {
         colData: colShortEntryData,
@@ -265,6 +270,7 @@ function updateChart(initial = false) {
         symbolRotate: 180,
         color: shortEntrySignalColor,
         tooltipPrefix: 'Short entry',
+        colTooltip: colEnterTag,
       },
       {
         colData: colShortExitData,
@@ -273,6 +279,7 @@ function updateChart(initial = false) {
         symbolSize: 8,
         color: shortexitSignalColor,
         tooltipPrefix: 'Short exit',
+        colTooltip: colExitTag,
       },
     ];
 
@@ -290,11 +297,22 @@ function updateChart(initial = false) {
             color: config.color,
           },
           tooltip: {
-            valueFormatter: (value) => (value ? `${config.tooltipPrefix} ${value}` : ''),
+            valueFormatter: (value) => {
+              if (Array.isArray(value)) {
+                // Show both value and tag
+                return value.length > 0 && value[0]
+                  ? `${config.tooltipPrefix} ${value[0]} ${value[1] ? `(${value[1]})` : ''}`
+                  : '';
+              }
+              // Fallback for single value
+              return value ? `${config.tooltipPrefix} ${value}` : '';
+            },
           },
           encode: {
             x: colDate,
             y: config.colData,
+            tooltip:
+              config.colTooltip >= 0 ? [config.colData, config.colTooltip] : [config.colData],
           },
         });
       }
