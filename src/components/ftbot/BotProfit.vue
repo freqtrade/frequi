@@ -107,6 +107,22 @@ const profitItems = computed(() => {
           : ''
       }`,
     },
+    {
+      metric: 'Current Drawdown',
+      value: `${props.profit.current_drawdown ? formatPercent(props.profit.current_drawdown, 2) : 'N/A'} (${
+        props.profit.current_drawdown_abs
+          ? formatPriceCurrency(
+              props.profit.current_drawdown_abs,
+              props.stakeCurrency,
+              props.stakeCurrencyDecimals,
+            )
+          : 'N/A'
+      }) ${
+        props.profit.current_drawdown_start_timestamp
+          ? 'since ' + timestampms(props.profit.current_drawdown_start_timestamp)
+          : ''
+      }`,
+    },
   ];
 });
 </script>
