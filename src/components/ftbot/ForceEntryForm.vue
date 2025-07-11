@@ -94,7 +94,7 @@ const handleEntry = () => {
     @hide="resetForm"
   >
     <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
-      <div v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed">
+      <div v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed">
         <label class="block font-medium mb-1">Order direction (Long or Short)</label>
         <SelectButton
           v-model="orderSide"

@@ -10,8 +10,13 @@ export interface FeatureConfig {
 export const FEATURES: Record<string, FeatureConfig> = {
   // Core features
   forceExitParams: { minVersion: 1.2, description: 'Force exit with parameters' },
+  botBlacklistModify: { minVersion: 1.12, description: 'Modify bot pairlist' },
+  futures: { minVersion: 2.0, description: 'Futures' }, // TODO: Could be consolidated
   forceEnterShort: { minVersion: 2.13, description: 'Force enter short position' },
+  advancedDailyMetrics: { minVersion: 2.16, description: 'Advanced daily metrics' },
   forceEntryTag: { minVersion: 2.17, description: 'Force enter - set entry tag' },
+  plotConfigFromServer: { minVersion: 2.23, description: 'Load plot configuration from backend' },
+  weeklyMonthlyStats: { minVersion: 2.33, description: 'Weekly/monthly stats' },
 
   reducedPairCalls: { minVersion: 2.35, description: 'Modern pair candles API' },
   hasBotBalance: { minVersion: 2.26, description: 'Provides bot balance' },
@@ -22,6 +27,8 @@ export const FEATURES: Record<string, FeatureConfig> = {
   backtestFreqAI: { minVersion: 2.22, description: 'FreqAI support for backtesting' },
   backtestDelete: { minVersion: 2.31, description: 'Delete backtest endpoints' },
   backtestSetNotes: { minVersion: 2.32, description: 'Set notes for backtest results' },
+  downloadDataView: { minVersion: 2.41, description: 'Download data View' },
+  pairlistConfig: { minVersion: 2.3, description: 'Configure pairlist for bot' },
 } as const;
 
 export type FeatureKey = keyof typeof FEATURES;

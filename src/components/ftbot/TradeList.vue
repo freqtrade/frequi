@@ -218,7 +218,7 @@ watch(
           <template v-if="field === 'trade_id'">
             {{ data.trade_id }}
             {{
-              botStore.activeBot.botApiVersion > 2.0 && data.trading_mode !== 'spot'
+              botStore.activeBot.botFeatures.futures && data.trading_mode !== 'spot'
                 ? (data.trade_id ? '| ' : '') + (data.is_short ? 'Short' : 'Long')
                 : ''
             }}
