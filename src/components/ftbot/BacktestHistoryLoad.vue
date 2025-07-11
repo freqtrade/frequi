@@ -96,12 +96,12 @@ function rowClick(row) {
         <template #body="{ data }">
           <div class="flex items-center">
             <InfoBox
-              v-if="botStore.activeBot.botApiVersion >= 2.32"
+              v-if="botStore.activeBot.botFeatures.backtestSetNotes"
               :class="data.notes ? 'opacity-100' : 'opacity-0'"
               :hint="data.notes ?? ''"
             ></InfoBox>
             <Button
-              v-if="botStore.activeBot.botApiVersion >= 2.31"
+              v-if="botStore.activeBot.botFeatures.backtestDelete"
               class="ms-1"
               size="small"
               title="Load this Result."
@@ -113,7 +113,7 @@ function rowClick(row) {
               </template>
             </Button>
             <Button
-              v-if="botStore.activeBot.botApiVersion >= 2.31"
+              v-if="botStore.activeBot.botFeatures.backtestDelete"
               class="ms-1"
               size="small"
               severity="secondary"

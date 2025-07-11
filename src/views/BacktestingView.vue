@@ -100,7 +100,7 @@ watch(
             v-if="showLeftBar"
             :backtest-history="botStore.activeBot.backtestHistory"
             :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
-            :can-use-modify="botStore.activeBot.botApiVersion >= 2.32"
+            :can-use-modify="botStore.activeBot.botFeatures.backtestSetNotes"
             @selection-change="botStore.activeBot.setBacktestResultKey"
             @remove-result="botStore.activeBot.removeBacktestResultFromMemory"
             @update-result="botStore.activeBot.saveBacktestResultMetadata"
