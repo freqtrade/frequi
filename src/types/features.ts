@@ -19,6 +19,7 @@ export const FEATURES: Record<string, FeatureConfig> = {
     description: 'Force enter - set entry tag, Force Exit partial',
   },
   cancelOpenOrders: { minVersion: 2.24, description: 'Cancel open orders' },
+  reloadTrade: { minVersion: 2.28, description: 'Reload trade' },
   plotConfigFromServer: { minVersion: 2.23, description: 'Load plot configuration from backend' },
   weeklyMonthlyStats: { minVersion: 2.33, description: 'Weekly/monthly stats' },
   websocketConnection: { minVersion: 2.2, description: 'WebSocket connection support' },

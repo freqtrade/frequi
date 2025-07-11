@@ -8,7 +8,6 @@ withDefaults(
     enableForceEntry?: boolean;
   }>(),
   {
-    botApiVersion: 1.0,
     enableForceEntry: false,
   },
 );
@@ -103,7 +102,7 @@ defineEmits<{
       </template>
     </Button>
     <Button
-      v-if="botApiVersion >= 2.28"
+      v-if="botFeatures.reloadTrade"
       class="justify-start!"
       size="small"
       severity="secondary"
