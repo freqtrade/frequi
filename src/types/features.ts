@@ -14,7 +14,11 @@ export const FEATURES: Record<string, FeatureConfig> = {
   futures: { minVersion: 2.0, description: 'Futures' }, // TODO: Could be consolidated
   forceEnterShort: { minVersion: 2.13, description: 'Force enter short position' },
   advancedDailyMetrics: { minVersion: 2.16, description: 'Advanced daily metrics' },
-  forceEntryTag: { minVersion: 2.17, description: 'Force enter - set entry tag' },
+  forceEntryTag: {
+    minVersion: 2.17,
+    description: 'Force enter - set entry tag, Force Exit partial',
+  },
+  cancelOpenOrders: { minVersion: 2.24, description: 'Cancel open orders' },
   plotConfigFromServer: { minVersion: 2.23, description: 'Load plot configuration from backend' },
   weeklyMonthlyStats: { minVersion: 2.33, description: 'Weekly/monthly stats' },
   websocketConnection: { minVersion: 2.2, description: 'WebSocket connection support' },

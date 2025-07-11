@@ -231,7 +231,7 @@ watch(
               :id="index"
               :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
               :trade="data as Trade"
-              :bot-api-version="botStore.activeBot.botApiVersion"
+              :bot-features="botStore.activeBot.botFeatures"
               @delete-trade="removeTradeHandler(data as Trade)"
               @force-exit="forceExitHandler"
               @force-exit-partial="forceExitPartialHandler"
