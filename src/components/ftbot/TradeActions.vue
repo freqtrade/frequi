@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
 
-defineProps({
-  botApiVersion: {
-    type: Number,
-    default: 1.0,
+withDefaults(
+  defineProps<{
+    botApiVersion?: number;
+    trade: Trade;
+    enableForceEntry?: boolean;
+  }>(),
+  {
+    botApiVersion: 1.0,
+    enableForceEntry: false,
   },
-  trade: {
-    type: Object as () => Trade,
-    required: true,
-  },
-  enableForceEntry: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 defineEmits<{
   forceExit: [trade: Trade, type?: 'limit' | 'market'];
   forceExitPartial: [trade: Trade];
