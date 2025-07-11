@@ -118,7 +118,7 @@ watch(
         <Tabs value="run" lazy>
           <TabList>
             <Tab
-              v-if="botStore.activeBot.botApiVersion >= 2.15"
+              v-if="botStore.activeBot.botFeatures.backtestHistory"
               v-model="btFormMode"
               class="flex items-center"
               value="historicResults"

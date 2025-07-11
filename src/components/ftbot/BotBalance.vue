@@ -11,7 +11,7 @@ const smallBalance = computed<number>(() => {
 });
 
 const canUseBotBalance = computed(() => {
-  return botStore.activeBot.botApiVersion >= 2.26;
+  return botStore.activeBot.botFeatures.hasBotBalance;
 });
 
 const balanceCurrencies = computed(() => {
