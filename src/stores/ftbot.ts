@@ -1,65 +1,68 @@
 import type {
-  BotState,
-  Trade,
-  PlotConfig,
-  StrategyResult,
-  BalanceInterface,
-  TimeSummaryReturnValue,
-  LockResponse,
-  ProfitInterface,
-  BacktestResult,
-  LogLine,
-  SysInfoResponse,
-  BacktestHistoryEntry,
-  TimeSummaryPayload,
-  BlacklistResponse,
-  WhitelistResponse,
-  StrategyListResult,
   AvailablePairPayload,
   AvailablePairResult,
-  PairHistoryPayload,
-  PairCandlePayload,
-  StatusResponse,
-  ForceSellPayload,
-  DeleteTradeResponse,
-  BacktestStatus,
-  BacktestPayload,
-  BlacklistPayload,
-  ForceEnterPayload,
-  TradeResponse,
-  ClosedTrade,
-  BotDescriptor,
-  BgTaskStarted,
   BackgroundTaskStatus,
+  BacktestHistoryEntry,
+  BacktestMarketChange,
+  BacktestMetadataPatch,
+  BacktestMetadataWithStrategyName,
+  BacktestPayload,
+  BacktestResult,
+  BacktestResultInMemory,
+  BacktestResultUpdate,
+  BacktestStatus,
+  BalanceInterface,
+  BgTaskStarted,
+  BlacklistPayload,
+  BlacklistResponse,
+  BotDescriptor,
+  BotFeatures,
+  BotState,
+  ClosedTrade,
+  DeleteTradeResponse,
+  DownloadDataPayload,
+  EntryStats,
   Exchange,
   ExchangeListResult,
+  ExitStats,
+  ForceEnterPayload,
+  ForceSellPayload,
   FreqAIModelListResult,
+  HyperoptLossListResponse,
+  HyperoptLossObj,
+  LockResponse,
+  LogLine,
+  Markets,
+  MarketsPayload,
+  MixTagStats,
+  PairCandlePayload,
+  PairHistory,
+  PairHistoryPayload,
+  PairIntervalTuple,
   PairlistEvalResponse,
   PairlistsPayload,
   PairlistsResponse,
-  BacktestResultInMemory,
-  BacktestMetadataWithStrategyName,
-  BacktestMetadataPatch,
-  BacktestResultUpdate,
   PerformanceEntry,
-  MixTagStats,
-  ExitStats,
-  EntryStats,
-  PairIntervalTuple,
-  PairHistory,
-  HyperoptLossListResponse,
-  HyperoptLossObj,
-  DownloadDataPayload,
-  BacktestMarketChange,
-  Markets,
-  MarketsPayload,
+  PlotConfig,
+  ProfitInterface,
+  StatusResponse,
+  StrategyListResult,
+  StrategyResult,
+  SysInfoResponse,
+  TimeSummaryPayload,
+  TimeSummaryReturnValue,
+  Trade,
+  TradeResponse,
+  WhitelistResponse,
 } from '@/types';
 import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
-import { useWebSocket } from '@vueuse/core';
 import type { FTWsMessage } from '@/types/wsMessageTypes';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
+import { useWebSocket } from '@vueuse/core';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
+
+import { evaluateFeatures } from '@/utils/features';
 
 export function createBotSubStore(botId: string, botName: string) {
   const loginInfo = useLoginInfo(botId);
@@ -130,6 +133,9 @@ export function createBotSubStore(botId: string, botName: string) {
     getters: {
       version: (state) => state.botState?.version || state.versionState,
       botApiVersion: (state) => state.botState?.api_version || 1.0,
+      botFeatures(): BotFeatures {
+        return evaluateFeatures(this.botState, this.botApiVersion);
+      },
       stakeCurrency: (state) => state.botState?.stake_currency || '',
       stakeCurrencyDecimals: (state) => state.botState?.stake_currency_decimals || 3,
       canRunBacktest: (state) => state.botState?.runmode === RunModes.WEBSERVER,
@@ -356,7 +362,7 @@ export function createBotSubStore(botId: string, botName: string) {
           try {
             let result: PairHistory | null = null;
             const settingsStore = useSettingsStore();
-            if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
+            if (this.botFeatures.reducedPairCalls && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairCandlePayload, AxiosResponse<PairHistory>>(
                 '/pair_candles',
@@ -402,7 +408,7 @@ export function createBotSubStore(botId: string, botName: string) {
             let result: PairHistory | null = null;
             const loadingTimer = setTimeout(() => (this.historyTakesLonger = true), 10000);
             const timeout = 2 * 60 * 1000; // in MS
-            if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
+            if (this.botFeatures.reducedPairCalls && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairHistoryPayload, AxiosResponse<PairHistory>>(
                 '/pair_history',
@@ -1159,7 +1165,7 @@ export function createBotSubStore(botId: string, botName: string) {
         if (
           this.websocketStarted === true ||
           this.botStatusAvailable === false ||
-          this.botApiVersion < 2.2 ||
+          !this.botFeatures.websocketConnection ||
           this.isWebserverMode === true
         ) {
           return;
@@ -1195,7 +1201,7 @@ export function createBotSubStore(botId: string, botName: string) {
                   FtWsMessageTypes.exitCancel,
                   /*'new_candle' /*'analyzed_df'*/
                 ];
-                if (this.botApiVersion >= 2.21) {
+                if (this.botFeatures.websocketNewCandle) {
                   subscriptions.push(FtWsMessageTypes.newCandle);
                 }
 

@@ -71,8 +71,6 @@ const performanceData = computed(() => {
   return [];
 });
 
-const hasAdvancedStats = computed(() => botStore.activeBot.botApiVersion >= 2.34);
-
 const options = [
   { value: PerformanceOptions.performance, text: 'Performance' },
   { value: PerformanceOptions.entryStats, text: 'Entries' },
@@ -110,7 +108,7 @@ onMounted(() => {
       </Button>
     </div>
     <SelectButton
-      v-if="hasAdvancedStats"
+      v-if="botStore.activeBot.botFeatures.hasAdvancedStats"
       id="order-direction"
       v-model="selectedOption"
       :options="options"

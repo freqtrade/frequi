@@ -52,10 +52,10 @@ const handleSubmit = async () => {
   if (stakeAmount.value) {
     payload.stakeamount = stakeAmount.value;
   }
-  if (botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed) {
+  if (botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed) {
     payload.side = orderSide.value;
   }
-  if (botStore.activeBot.botApiVersion >= 2.16 && enterTag.value) {
+  if (botStore.activeBot.botFeatures.forceEntryTag && enterTag.value) {
     payload.entry_tag = enterTag.value;
   }
 
@@ -94,7 +94,7 @@ const handleEntry = () => {
     @hide="resetForm"
   >
     <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
-      <div v-if="botStore.activeBot.botApiVersion >= 2.13 && botStore.activeBot.shortAllowed">
+      <div v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed">
         <label class="block font-medium mb-1">Order direction (Long or Short)</label>
         <SelectButton
           v-model="orderSide"
@@ -149,7 +149,7 @@ const handleEntry = () => {
         />
       </div>
 
-      <div v-if="botStore.activeBot.botApiVersion > 2.16 && botStore.activeBot.shortAllowed">
+      <div v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed">
         <label for="leverage-input" class="block font-medium mb-1"
           >Leverage to apply [optional]</label
         >
@@ -177,7 +177,7 @@ const handleEntry = () => {
         />
       </div>
 
-      <div v-if="botStore.activeBot.botApiVersion > 1.16">
+      <div v-if="botStore.activeBot.botFeatures.forceEntryTag">
         <label for="enterTag-input" class="block text-sm font-medium mb-1"
           >* Custom entry tag [optional]</label
         >

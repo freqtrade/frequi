@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
+import type { BotFeatures } from '@/types/features';
 import Popover from 'primevue/popover';
 
-defineProps({
-  trade: { type: Object as () => Trade, required: true },
-  id: { type: Number, required: true },
-  botApiVersion: { type: Number, required: true },
-  enableForceEntry: { type: Boolean, default: false },
-});
+withDefaults(
+  defineProps<{
+    trade: Trade;
+    id: number;
+    botFeatures: BotFeatures;
+    enableForceEntry?: boolean;
+  }>(),
+  {
+    enableForceEntry: false,
+  },
+);
 const emit = defineEmits<{
   forceExit: [trade: Trade, type?: string];
   forceExitPartial: [trade: Trade];
@@ -66,7 +72,7 @@ const popover = ref<InstanceType<typeof Popover> | null>(null);
     >
       <TradeActions
         :trade="trade"
-        :bot-api-version="botApiVersion"
+        :bot-features="botFeatures"
         :enable-force-entry="enableForceEntry"
         @force-exit="forceExitHandler"
         @force-exit-partial="forceExitPartialHandler"

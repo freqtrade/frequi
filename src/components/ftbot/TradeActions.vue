@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import type { Trade } from '@/types';
+import type { Trade, BotFeatures } from '@/types';
 
-defineProps({
-  botApiVersion: {
-    type: Number,
-    default: 1.0,
+withDefaults(
+  defineProps<{
+    botFeatures: BotFeatures;
+    trade: Trade;
+    enableForceEntry?: boolean;
+  }>(),
+  {
+    enableForceEntry: false,
   },
-  trade: {
-    type: Object as () => Trade,
-    required: true,
-  },
-  enableForceEntry: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 defineEmits<{
   forceExit: [trade: Trade, type?: 'limit' | 'market'];
   forceExitPartial: [trade: Trade];
@@ -28,7 +24,7 @@ defineEmits<{
 <template>
   <div class="flex flex-col gap-1">
     <Button
-      v-if="botApiVersion <= 1.1"
+      v-if="!botFeatures.forceExitParams"
       class="justify-start!"
       size="small"
       severity="secondary"
@@ -41,7 +37,7 @@ defineEmits<{
       </template>
     </Button>
     <Button
-      v-if="botApiVersion > 1.1"
+      v-if="botFeatures.forceExitParams"
       size="small"
       class="justify-start!"
       severity="secondary"
@@ -54,7 +50,7 @@ defineEmits<{
       </template>
     </Button>
     <Button
-      v-if="botApiVersion > 1.1"
+      v-if="botFeatures.forceExitParams"
       class="justify-start!"
       size="small"
       severity="secondary"
@@ -67,7 +63,7 @@ defineEmits<{
       </template>
     </Button>
     <Button
-      v-if="botApiVersion > 2.16"
+      v-if="botFeatures.forceEntryTag"
       class="justify-start!"
       size="small"
       severity="secondary"
@@ -80,7 +76,7 @@ defineEmits<{
       </template>
     </Button>
     <Button
-      v-if="botApiVersion >= 2.24 && (trade.open_order_id || trade.has_open_orders)"
+      v-if="botFeatures.cancelOpenOrders && (trade.open_order_id || trade.has_open_orders)"
       class="justify-start!"
       size="small"
       severity="secondary"
@@ -106,7 +102,7 @@ defineEmits<{
       </template>
     </Button>
     <Button
-      v-if="botApiVersion >= 2.28"
+      v-if="botFeatures.reloadTrade"
       class="justify-start!"
       size="small"
       severity="secondary"

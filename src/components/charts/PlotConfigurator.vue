@@ -359,7 +359,8 @@ const showTagsInTooltips = computed({
       > -->
       <Button
         :disabled="
-          (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
+          (botStore.activeBot.isWebserverMode &&
+            !botStore.activeBot.botFeatures.plotConfigFromServer) ||
           !botStore.activeBot.isBotOnline ||
           addNewIndicator
         "

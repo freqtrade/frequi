@@ -102,7 +102,7 @@ onMounted(() => {
           <Button
             ref="blacklist-add-btn"
             severity="secondary"
-            :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
+            :class="botStore.activeBot.botFeatures.botBlacklistModify ? 'col-6' : ''"
             size="small"
             @click="showPopover"
           >
@@ -111,7 +111,7 @@ onMounted(() => {
             </template>
           </Button>
           <Button
-            v-if="botStore.activeBot.botApiVersion >= 1.12"
+            v-if="botStore.activeBot.botFeatures.botBlacklistModify"
             size="small"
             severity="secondary"
             title="Select pairs to delete pairs from your blacklist."
