@@ -61,6 +61,9 @@ import { useWebSocket } from '@vueuse/core';
 import type { FTWsMessage } from '@/types/wsMessageTypes';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
+import type { BotFeatures } from '@/types/features';
+import { evaluateFeatures } from '@/utils/features';
+
 export function createBotSubStore(botId: string, botName: string) {
   const loginInfo = useLoginInfo(botId);
   const { api } = useApi(loginInfo, botId);
@@ -130,6 +133,9 @@ export function createBotSubStore(botId: string, botName: string) {
     getters: {
       version: (state) => state.botState?.version || state.versionState,
       botApiVersion: (state) => state.botState?.api_version || 1.0,
+      botFeatures(): BotFeatures {
+        return evaluateFeatures(this.botState, this.botApiVersion);
+      },
       stakeCurrency: (state) => state.botState?.stake_currency || '',
       stakeCurrencyDecimals: (state) => state.botState?.stake_currency_decimals || 3,
       canRunBacktest: (state) => state.botState?.runmode === RunModes.WEBSERVER,
