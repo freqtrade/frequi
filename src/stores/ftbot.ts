@@ -362,7 +362,7 @@ export function createBotSubStore(botId: string, botName: string) {
           try {
             let result: PairHistory | null = null;
             const settingsStore = useSettingsStore();
-            if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
+            if (this.botFeatures.reducedPairCalls && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairCandlePayload, AxiosResponse<PairHistory>>(
                 '/pair_candles',
@@ -408,7 +408,7 @@ export function createBotSubStore(botId: string, botName: string) {
             let result: PairHistory | null = null;
             const loadingTimer = setTimeout(() => (this.historyTakesLonger = true), 10000);
             const timeout = 2 * 60 * 1000; // in MS
-            if (this.botApiVersion >= 2.35 && settingsStore.useReducedPairCalls) {
+            if (this.botFeatures.reducedPairCalls && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
               const { data } = await api.post<PairHistoryPayload, AxiosResponse<PairHistory>>(
                 '/pair_history',
@@ -1165,7 +1165,7 @@ export function createBotSubStore(botId: string, botName: string) {
         if (
           this.websocketStarted === true ||
           this.botStatusAvailable === false ||
-          this.botApiVersion < 2.2 ||
+          !this.botFeatures.websocketConnection ||
           this.isWebserverMode === true
         ) {
           return;
@@ -1201,7 +1201,7 @@ export function createBotSubStore(botId: string, botName: string) {
                   FtWsMessageTypes.exitCancel,
                   /*'new_candle' /*'analyzed_df'*/
                 ];
-                if (this.botApiVersion >= 2.21) {
+                if (this.botFeatures.websocketNewCandle) {
                   subscriptions.push(FtWsMessageTypes.newCandle);
                 }
 
