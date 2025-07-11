@@ -9,6 +9,10 @@ export interface FeatureConfig {
 
 export const FEATURES: Record<string, FeatureConfig> = {
   // Core features
+  forceExitParams: { minVersion: 1.2, description: 'Force exit with parameters' },
+  forceEnterShort: { minVersion: 2.13, description: 'Force enter short position' },
+  forceEntryTag: { minVersion: 2.17, description: 'Force enter - set entry tag' },
+
   reducedPairCalls: { minVersion: 2.35, description: 'Modern pair candles API' },
   hasBotBalance: { minVersion: 2.26, description: 'Provides bot balance' },
   hasAdvancedStats: { minVersion: 2.34, description: 'new entries/exits/mix_tags endpoints' },
