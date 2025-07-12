@@ -29,6 +29,8 @@ function refreshOHLCV(pair: string, columns: string[]) {
     strategy: props.strategy,
     freqaimodel: props.freqaiModel,
     columns: columns,
+    margin_mode: props.backtestResult.margin_mode,
+    trading_mode: props.backtestResult.trading_mode,
   });
 }
 onMounted(() => {
