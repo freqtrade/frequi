@@ -31,7 +31,7 @@ const auth = ref<AuthPayload>({
   password: '',
 });
 const activeTab = ref(0);
-const botJsonRef = ref<HTMLTextAreaElement>();
+const botJsonValue = ref('');
 
 const emitLoginResult = (value: boolean) => {
   emit('loginResult', value);
@@ -66,9 +66,7 @@ const handleReset = (evt) => {
   evt.preventDefault();
   resetLogin();
   // Clear the textarea content
-  if (botJsonRef.value) {
-    botJsonRef.value.value = '';
-  }
+  botJsonValue.value = '';
 };
 const handleSubmit = async (botPayload?: AuthPayload) => {
   // Exit when the form isn't valid (only for manual form, not import)
@@ -181,7 +179,7 @@ const handleImportSubmit = async () => {
   errorMessage.value = '';
   const failedBots: { name: string; error: string }[] = [];
   let bots: any[] = [];
-  const raw = botJsonRef.value?.value || '';
+  const raw = botJsonValue.value;
   if (!raw.trim()) {
     errorMessage.value = 'Please paste bot details JSON.';
     return;
@@ -252,14 +250,12 @@ onMounted(() => {
   reset();
 });
 
-const importPlaceholder = computed(() => {
-  return `JSON array in plain text or base64 encoded. 
+const importPlaceholder = `JSON array in plain text or base64 encoded. 
 Password-based format:
 [{"botName":"Bot Name","url":"${auth.value.url}","username":"Freqtrader","password":""}]
 Token-based format:
 [{"botName":"Bot Name","url":"${auth.value.url}","username":"Freqtrader","accessToken":"your_access_token","refreshToken":"your_refresh_token"}]
 Base64 example: W3siYm90TmFtZSI6IkJvdCBOYW1lIiwidXJsIjoiJHthdXRoLnVybH0iLCJ1c2VybmFtZSI6IkZyZXF0cmFkZXIiLCJwYXNzd29yZCI6IiJ9XQ==`;
-});
 </script>
 
 <template>
@@ -326,12 +322,14 @@ Base64 example: W3siYm90TmFtZSI6IkJvdCBOYW1lIiwidXJsIjoiJHthdXRoLnVybH0iLCJ1c2Vy
       <TabPanel header="Import" value="import">
         <div class="flex flex-col gap-4">
           <label for="bot-json" class="font-semibold">Paste Bot Details JSON:</label>
-          <textarea
+          <Textarea
             id="bot-json"
-            ref="botJsonRef"
-            class="w-full h-64 p-2 border rounded resize-none font-mono text-sm"
+            v-model="botJsonValue"
+            class="w-full h-64 font-mono text-sm"
             :placeholder="importPlaceholder"
-          ></textarea>
+            auto-resize
+            rows="12"
+          />
         </div>
       </TabPanel>
     </TabView>

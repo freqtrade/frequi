@@ -1,14 +1,19 @@
 <script setup lang="ts">
-defineProps({
-  buttonText: { required: false, default: 'Open Text Area', type: String },
-  dialogTitle: { required: false, default: 'Text Area Dialog', type: String },
+interface Props {
+  buttonText?: string;
+  dialogTitle?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  buttonText: 'Open Text Area',
+  dialogTitle: 'Text Area Dialog',
 });
 
 const dialogOpen = ref(false);
 const textContent = ref('');
 const toast = useToast();
 
-const openDialog = () => {
+function openDialog() {
   // Get ftAuthLoginInfo from localStorage and convert to base64
   const authInfo = localStorage.getItem('ftAuthLoginInfo');
   if (authInfo) {
@@ -35,13 +40,13 @@ const openDialog = () => {
     textContent.value = '';
   }
   dialogOpen.value = true;
-};
+}
 
-const closeDialog = () => {
+function closeDialog() {
   dialogOpen.value = false;
-};
+}
 
-const copyToClipboard = async () => {
+async function copyToClipboard() {
   try {
     await navigator.clipboard.writeText(textContent.value);
     toast.add({
@@ -59,12 +64,12 @@ const copyToClipboard = async () => {
       life: 3000,
     });
   }
-};
+}
 
-const selectAll = (event: Event) => {
+function selectAll(event: Event) {
   const target = event.target as HTMLTextAreaElement;
   target.select();
-};
+}
 
 defineExpose({
   openDialog,
@@ -74,11 +79,11 @@ defineExpose({
 <template>
   <div>
     <Button severity="secondary" @click="openDialog">
-      <i-mdi-export-variant class="me-1" />{{ buttonText }}
+      <i-mdi-export-variant class="me-1" />{{ props.buttonText }}
     </Button>
     <Dialog
       v-model:visible="dialogOpen"
-      :header="dialogTitle"
+      :header="props.dialogTitle"
       :dismissable-mask="true"
       class="w-[600px]"
     >
