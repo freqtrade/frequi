@@ -93,6 +93,10 @@ export function useLoginInfo(botId: string) {
     };
   }
 
+  function setLoginInfo(loginInfo: AuthStorage): void {
+    currentInfo.value = loginInfo;
+  }
+
   function updateBot(newValues: Partial<BotDescriptor>): void {
     Object.assign(currentInfo.value, newValues);
   }
@@ -168,6 +172,7 @@ export function useLoginInfo(botId: string) {
   return {
     updateBot,
     getLoginInfo,
+    setLoginInfo,
     autoRefresh,
     accessToken,
     logout,

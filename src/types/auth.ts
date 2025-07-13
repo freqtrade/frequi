@@ -14,6 +14,12 @@ export interface AuthResponse {
   refresh_token?: string;
 }
 
+/** Composite type for token-based imports that combines AuthPayload and AuthResponse */
+export interface AuthPayloadWithTokens extends AuthPayload {
+  accessToken: string;
+  refreshToken: string;
+}
+
 /** Stored Authentication */
 export interface AuthStorage {
   botName: string;
