@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LoginModal from '@/components/LoginModal.vue';
+import ExportModal from '@/components/ExportModal.vue';
 
 import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AuthStorageWithBotId, BotDescriptor } from '@/types';
@@ -91,6 +92,9 @@ const stopEditBot = (botId: string) => {
         />
       </li>
     </ul>
-    <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
+    <div v-if="!small" class="mt-2 flex gap-2 justify-center">
+      <LoginModal ref="loginModal" login-text="Add new bot" />
+      <ExportModal button-text="Export" dialog-title="Export Data" />
+    </div>
   </div>
 </template>

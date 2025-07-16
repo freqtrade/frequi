@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AuthStorageWithBotId } from '@/types';
+import BotImport from './BotImport.vue';
 
 defineProps({
   loginText: { required: false, default: 'Login', type: String },
