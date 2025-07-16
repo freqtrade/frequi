@@ -26,8 +26,6 @@ export interface PairResult {
   losses: number;
   profit_mean: number;
   profit_mean_pct: number;
-  profit_sum: number;
-  profit_sum_pct: number;
   profit_total_abs: number;
   profit_total_pct: number;
   profit_total: number;
@@ -52,8 +50,6 @@ export interface ExitReasonResults {
   losses: number;
   profit_mean: number;
   profit_mean_pct: number;
-  profit_sum: number;
-  profit_sum_pct: number;
   profit_total_abs: number;
   /** Total profit as ratio */
   profit_total: number;
