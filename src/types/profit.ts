@@ -61,3 +61,9 @@ export interface ProfitStats {
   expectancy?: number;
   expectancy_ratio?: number;
 }
+
+export interface AllProfitStats {
+  all: ProfitStats;
+  short?: ProfitStats;
+  long?: ProfitStats;
+}
