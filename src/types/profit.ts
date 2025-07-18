@@ -1,4 +1,4 @@
-export interface ProfitInterface {
+export interface ProfitStats {
   profit_closed_coin: number;
   profit_closed_percent_mean: number;
   profit_closed_ratio_mean: number;

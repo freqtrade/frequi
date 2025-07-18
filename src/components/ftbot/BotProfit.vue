@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ProfitInterface } from '@/types';
+import type { ProfitStats } from '@/types';
 
 const props = defineProps<{
-  profit: ProfitInterface;
+  profit: ProfitStats;
   stakeCurrency: string;
   stakeCurrencyDecimals: number;
 }>();

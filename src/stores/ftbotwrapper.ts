@@ -11,7 +11,7 @@ import type {
   MultiDeletePayload,
   MultiForcesellPayload,
   MultiReloadTradePayload,
-  ProfitInterface,
+  ProfitStats,
   Trade,
 } from '@/types';
 import { TimeSummaryOptions } from '@/types';
@@ -60,8 +60,8 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       }
       return `ftbot.${botCount}`;
     },
-    allProfit: (state): Record<string, ProfitInterface> => {
-      const result: Record<string, ProfitInterface> = {};
+    allProfit: (state): Record<string, ProfitStats> => {
+      const result: Record<string, ProfitStats> = {};
       Object.entries(state.botStores).forEach(([k, botStore]) => {
         result[k] = botStore.profit;
       });

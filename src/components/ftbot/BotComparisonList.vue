@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBotStore } from '@/stores/ftbotwrapper';
-import type { ProfitInterface, ComparisonTableItems } from '@/types';
+import type { ProfitStats, ComparisonTableItems } from '@/types';
 
 const botStore = useBotStore();
 
@@ -27,7 +27,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     losses: 0,
   };
 
-  Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitInterface]) => {
+  Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitStats]) => {
     const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
     const profitOpenRatio =
       botStore.allOpenTrades[k].reduce(
