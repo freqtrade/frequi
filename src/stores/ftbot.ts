@@ -1,4 +1,5 @@
 import type {
+  AllProfitStats,
   AvailablePairPayload,
   AvailablePairResult,
   BackgroundTaskStatus,
@@ -93,7 +94,7 @@ export function createBotSubStore(botId: string, botName: string) {
         mixTagStats: [] as MixTagStats[],
         whitelist: [] as string[],
         blacklist: [] as string[],
-        profit: {} as ProfitStats,
+        profitAll: {} as AllProfitStats,
         botState: {} as BotState,
         balance: {} as BalanceInterface,
         dailyStats: {} as TimeSummaryReturnValue,
@@ -180,6 +181,7 @@ export function createBotSubStore(botId: string, botName: string) {
       botName: (state) => state.botState?.bot_name || 'freqtrade',
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
       activeLocks: (state) => state.currentLocks?.locks || [],
+      profit: (state): ProfitStats => state.profitAll.all,
     },
     actions: {
       botAdded() {
@@ -625,8 +627,14 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getProfit() {
         try {
-          const { data } = await api.get('/profit');
-          this.profit = data;
+          if (this.botFeatures.hasProfitAll) {
+            const { data } = await api.get<AllProfitStats>('/profit_all');
+            this.profitAll = data;
+            return Promise.resolve(data);
+          }
+          // Fallback to old profit endpoint
+          const { data } = await api.get<ProfitStats>('/profit');
+          this.profitAll['all'] = data;
           return Promise.resolve(data);
         } catch (error) {
           return Promise.reject(error);
