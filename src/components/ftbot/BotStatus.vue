@@ -84,7 +84,7 @@ const botStore = useBotStore();
     </p>
     <BotProfit
       class="mx-1"
-      :profit="botStore.activeBot.profit"
+      :profit-all="botStore.activeBot.profitAll"
       :stake-currency="botStore.activeBot.botState.stake_currency ?? 'USDT'"
       :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
     />

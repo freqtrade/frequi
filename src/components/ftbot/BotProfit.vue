@@ -1,124 +1,127 @@
 <script setup lang="ts">
-import type { ProfitStats } from '@/types';
+import type { AllProfitStats } from '@/types';
 
 const props = defineProps<{
-  profit: ProfitStats;
+  profitAll: AllProfitStats;
   stakeCurrency: string;
   stakeCurrencyDecimals: number;
 }>();
+
+const profit = computed(() => props.profitAll.all);
+
 const profitItems = computed(() => {
-  if (!props.profit) return [];
+  if (!profit.value) return [];
   return [
     {
       metric: 'ROI closed trades',
-      value: props.profit.profit_closed_coin
+      value: profit.value.profit_closed_coin
         ? `${formatPriceCurrency(
-            props.profit.profit_closed_coin,
+            profit.value.profit_closed_coin,
             props.stakeCurrency,
             props.stakeCurrencyDecimals,
-          )} (${formatPercent(props.profit.profit_closed_ratio_mean, 2)})`
+          )} (${formatPercent(profit.value.profit_closed_ratio_mean, 2)})`
         : 'N/A',
-      // (&sum; ${formatPercent(props.profit.profit_closed_ratio_sum,  2,)})`
+      // (&sum; ${formatPercent(profit.value.profit_closed_ratio_sum,  2,)})`
     },
     {
       metric: 'ROI all trades',
-      value: props.profit.profit_all_coin
+      value: profit.value.profit_all_coin
         ? `${formatPriceCurrency(
-            props.profit.profit_all_coin,
+            profit.value.profit_all_coin,
             props.stakeCurrency,
             props.stakeCurrencyDecimals,
-          )} (${formatPercent(props.profit.profit_all_ratio_mean, 2)})`
+          )} (${formatPercent(profit.value.profit_all_ratio_mean, 2)})`
         : 'N/A',
-      //  (&sum; ${formatPercent(props.profit.profit_all_ratio_sum,2,)})`
+      //  (&sum; ${formatPercent(profit.value.profit_all_ratio_sum,2,)})`
     },
 
     {
       metric: 'Total Trade count',
-      value: `${props.profit.trade_count ?? 0}`,
+      value: `${profit.value.trade_count ?? 0}`,
     },
     {
       metric: 'Bot started',
-      value: props.profit.bot_start_timestamp,
+      value: profit.value.bot_start_timestamp,
       isTs: true,
     },
     {
       metric: 'First Trade opened',
-      value: props.profit.first_trade_timestamp,
+      value: profit.value.first_trade_timestamp,
       isTs: true,
     },
     {
       metric: 'Latest Trade opened',
-      value: props.profit.latest_trade_timestamp,
+      value: profit.value.latest_trade_timestamp,
       isTs: true,
     },
     {
       metric: 'Win / Loss',
-      value: `${props.profit.winning_trades ?? 0} / ${props.profit.losing_trades ?? 0}`,
+      value: `${profit.value.winning_trades ?? 0} / ${profit.value.losing_trades ?? 0}`,
     },
     {
       metric: 'Winrate',
-      value: `${props.profit.winrate ? formatPercent(props.profit.winrate) : 'N/A'}`,
+      value: `${profit.value.winrate ? formatPercent(profit.value.winrate) : 'N/A'}`,
     },
     {
       metric: 'Expectancy (ratio)',
-      value: `${props.profit.expectancy ? props.profit.expectancy.toFixed(2) : 'N/A'} (${
-        props.profit.expectancy_ratio ? props.profit.expectancy_ratio.toFixed(2) : 'N/A'
+      value: `${profit.value.expectancy ? profit.value.expectancy.toFixed(2) : 'N/A'} (${
+        profit.value.expectancy_ratio ? profit.value.expectancy_ratio.toFixed(2) : 'N/A'
       })`,
     },
     {
       metric: 'Avg. Duration',
-      value: `${props.profit.avg_duration ?? 'N/A'}`,
+      value: `${profit.value.avg_duration ?? 'N/A'}`,
     },
     {
       metric: 'Best performing',
-      value: props.profit.best_pair
-        ? `${props.profit.best_pair}: ${formatPercent(props.profit.best_pair_profit_ratio, 2)}`
+      value: profit.value.best_pair
+        ? `${profit.value.best_pair}: ${formatPercent(profit.value.best_pair_profit_ratio, 2)}`
         : 'N/A',
     },
     {
       metric: 'Trading volume',
       value: `${formatPriceCurrency(
-        props.profit.trading_volume ?? 0,
+        profit.value.trading_volume ?? 0,
         props.stakeCurrency,
         props.stakeCurrencyDecimals,
       )}`,
     },
     {
       metric: 'Profit factor',
-      value: `${props.profit.profit_factor ? props.profit.profit_factor.toFixed(2) : 'N/A'}`,
+      value: `${profit.value.profit_factor ? profit.value.profit_factor.toFixed(2) : 'N/A'}`,
     },
     {
       metric: 'Max Drawdown',
-      value: `${props.profit.max_drawdown ? formatPercent(props.profit.max_drawdown, 2) : 'N/A'} (${
-        props.profit.max_drawdown_abs
+      value: `${profit.value.max_drawdown ? formatPercent(profit.value.max_drawdown, 2) : 'N/A'} (${
+        profit.value.max_drawdown_abs
           ? formatPriceCurrency(
-              props.profit.max_drawdown_abs,
+              profit.value.max_drawdown_abs,
               props.stakeCurrency,
               props.stakeCurrencyDecimals,
             )
           : 'N/A'
       }) ${
-        props.profit.max_drawdown_start_timestamp && props.profit.max_drawdown_end_timestamp
+        profit.value.max_drawdown_start_timestamp && profit.value.max_drawdown_end_timestamp
           ? 'from ' +
-            timestampms(props.profit.max_drawdown_start_timestamp) +
+            timestampms(profit.value.max_drawdown_start_timestamp) +
             ' to ' +
-            timestampms(props.profit.max_drawdown_end_timestamp)
+            timestampms(profit.value.max_drawdown_end_timestamp)
           : ''
       }`,
     },
     {
       metric: 'Current Drawdown',
-      value: `${props.profit.current_drawdown ? formatPercent(props.profit.current_drawdown, 2) : 'N/A'} (${
-        props.profit.current_drawdown_abs
+      value: `${profit.value.current_drawdown ? formatPercent(profit.value.current_drawdown, 2) : 'N/A'} (${
+        profit.value.current_drawdown_abs
           ? formatPriceCurrency(
-              props.profit.current_drawdown_abs,
+              profit.value.current_drawdown_abs,
               props.stakeCurrency,
               props.stakeCurrencyDecimals,
             )
           : 'N/A'
       }) ${
-        props.profit.current_drawdown_start_timestamp
-          ? 'since ' + timestampms(props.profit.current_drawdown_start_timestamp)
+        profit.value.current_drawdown_start_timestamp
+          ? 'since ' + timestampms(profit.value.current_drawdown_start_timestamp)
           : ''
       }`,
     },
