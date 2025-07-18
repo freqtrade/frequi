@@ -82,6 +82,7 @@ const botStore = useBotStore();
         }}
       </span>
     </p>
+    <Divider />
     <BotProfit
       class="mx-1"
       :profit-all="botStore.activeBot.profitAll"

@@ -7,7 +7,12 @@ const props = defineProps<{
   stakeCurrencyDecimals: number;
 }>();
 
-const profit = computed(() => props.profitAll.all);
+const profit = computed(() => {
+  if (!props.profitAll?.short) {
+    return props.profitAll.all;
+  }
+  return props.profitAll[selectedOption.value];
+});
 
 const profitItems = computed(() => {
   if (!profit.value) return [];
@@ -127,18 +132,40 @@ const profitItems = computed(() => {
     },
   ];
 });
+
+const selectedOption = ref('all');
+const options = [
+  { value: 'all', text: 'All' },
+  { value: 'long', text: 'Long' },
+  { value: 'short', text: 'Short' },
+];
 </script>
 
 <template>
-  <DataTable class="text-start" small borderless :value="profitItems">
-    <Column field="metric" header="Metric"></Column>
-    <Column field="value" header="Value">
-      <template #body="{ data }">
-        <DateTimeTZ v-if="data.isTs" :date="data.value" show-timezone />
-        <template v-else>
-          {{ data.value }}
+  <div>
+    <div v-if="profitAll?.long && profitAll?.short" class="flex justify-between items-center">
+      <span>Profits for</span>
+      <SelectButton
+        v-model="selectedOption"
+        :options="options"
+        option-label="text"
+        option-value="value"
+        :allow-empty="false"
+        size="small"
+      ></SelectButton>
+      <span>Trades</span>
+    </div>
+
+    <DataTable class="text-start" small borderless :value="profitItems">
+      <Column field="metric" header="Metric"></Column>
+      <Column field="value" header="Value">
+        <template #body="{ data }">
+          <DateTimeTZ v-if="data.isTs" :date="data.value" show-timezone />
+          <template v-else>
+            {{ data.value }}
+          </template>
         </template>
-      </template>
-    </Column>
-  </DataTable>
+      </Column>
+    </DataTable>
+  </div>
 </template>
