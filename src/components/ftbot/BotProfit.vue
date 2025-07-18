@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { ProfitInterface } from '@/types';
 
-const props = defineProps({
-  profit: { required: true, type: Object as () => ProfitInterface },
-  stakeCurrency: { required: true, type: String },
-  stakeCurrencyDecimals: { required: true, type: Number },
-});
-
+const props = defineProps<{
+  profit: ProfitInterface;
+  stakeCurrency: string;
+  stakeCurrencyDecimals: number;
+}>();
 const profitItems = computed(() => {
   if (!props.profit) return [];
   return [
