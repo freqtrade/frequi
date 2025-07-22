@@ -6,8 +6,34 @@ export interface FeatureConfig {
   condition?: (botState: BotState, apiVersion: number) => boolean;
   description?: string;
 }
+export type FeatureKey =
+  | 'forceExitParams'
+  | 'botBlacklistModify'
+  | 'futures'
+  | 'forceEnterShort'
+  | 'advancedDailyMetrics'
+  | 'forceEntryTag'
+  | 'cancelOpenOrders'
+  | 'reloadTrade'
+  | 'plotConfigFromServer'
+  | 'weeklyMonthlyStats'
+  | 'websocketConnection'
+  | 'websocketNewCandle'
+  | 'reducedPairCalls'
+  | 'hasBotBalance'
+  | 'hasAdvancedStats'
+  | 'chartLiveData'
+  | 'hasProfitAll'
+  | 'backtestHistory'
+  | 'backtestFreqAI'
+  | 'backtestDelete'
+  | 'backtestSetNotes'
+  | 'downloadDataView'
+  | 'pairlistConfig';
 
-export const FEATURES: Record<string, FeatureConfig> = {
+export type BotFeatures = Record<FeatureKey, boolean>;
+
+export const FEATURES: Record<FeatureKey, FeatureConfig> = {
   // Core features
   forceExitParams: { minVersion: 1.2, description: 'Force exit with parameters' },
   botBlacklistModify: { minVersion: 1.12, description: 'Modify bot pairlist' },
@@ -38,7 +64,4 @@ export const FEATURES: Record<string, FeatureConfig> = {
   // Overall Webserver features
   downloadDataView: { minVersion: 2.41, description: 'Download data View' },
   pairlistConfig: { minVersion: 2.3, description: 'Configure pairlist for bot' },
-} as const;
-
-export type FeatureKey = keyof typeof FEATURES;
-export type BotFeatures = Record<FeatureKey, boolean>;
+};
