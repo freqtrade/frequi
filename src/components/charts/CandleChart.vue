@@ -157,7 +157,9 @@ function updateChart(initial = false) {
   if (Array.isArray(chartOptions.value?.dataZoom)) {
     // Only set zoom once ...
     if (initial) {
-      const startingZoom = (1 - 250 / props.dataset.length) * 100;
+      const initialCandleCount = 250;
+      // Add 2 candles to the initial zoom to allow for a "scroll past" effect
+      const startingZoom = (1 - (initialCandleCount + 2) / props.dataset.length) * 100;
       chartOptions.value.dataZoom.forEach((el, i) => {
         if (chartOptions.value && chartOptions.value.dataZoom) {
           chartOptions.value.dataZoom[i].start = startingZoom;
