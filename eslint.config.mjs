@@ -65,6 +65,7 @@ export default [
         },
       ],
       'vue/define-emits-declaration': ['error'],
+      'vue/define-props-declaration': ['error'],
       'vue/enforce-style-attribute': ['error'],
       'vue/block-order': [
         'error',
