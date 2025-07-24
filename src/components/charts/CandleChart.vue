@@ -60,7 +60,7 @@ const props = defineProps<{
   useUTC: boolean;
   plotConfig: PlotConfig;
   theme: 'dark' | 'light';
-  sliderPosition: ChartSliderPosition | undefined;
+  sliderPosition?: ChartSliderPosition;
   colorUp: string;
   colorDown: string;
   labelSide: 'left' | 'right';
