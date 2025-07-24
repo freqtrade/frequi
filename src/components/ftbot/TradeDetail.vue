@@ -3,10 +3,10 @@ import type { Trade } from '@/types';
 
 const colorStore = useColorStore();
 
-defineProps({
-  trade: { required: true, type: Object as () => Trade },
-  stakeCurrency: { required: true, type: String },
-});
+defineProps<{
+  trade: Trade;
+  stakeCurrency: string;
+}>();
 </script>
 
 <template>

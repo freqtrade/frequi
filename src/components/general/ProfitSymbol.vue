@@ -1,7 +1,8 @@
 <script setup lang="ts">
-const props = defineProps({
-  profit: { type: Number, required: true },
-});
+const props = defineProps<{
+  profit: number;
+}>();
+
 const isProfitable = computed(() => {
   return props.profit > 0;
 });

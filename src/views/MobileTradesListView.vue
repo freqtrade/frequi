@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps({
-  history: { default: false, type: Boolean },
-});
+defineProps<{
+  history?: boolean;
+}>();
 const botStore = useBotStore();
 </script>
 

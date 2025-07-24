@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 
-defineProps({
-  content: { type: [String, Array<string>], required: true },
-  isValid: { type: Boolean, default: true },
-});
+withDefaults(
+  defineProps<{
+    content: string | string[];
+    isValid?: boolean;
+  }>(),
+  {
+    isValid: true,
+  },
+);
 
 const { copy, isSupported, copied } = useClipboard();
 </script>
