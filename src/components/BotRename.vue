@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { BotDescriptor } from '@/types';
-const props = defineProps({
-  bot: { type: Object as () => BotDescriptor, required: true },
-});
+const props = defineProps<{
+  bot: BotDescriptor;
+}>();
 const emit = defineEmits<{ cancelled: []; saved: [] }>();
 
 const botStore = useBotStore();

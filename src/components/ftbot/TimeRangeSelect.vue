@@ -10,9 +10,12 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 const dateFrom = ref<string>('');
 const dateTo = ref<string>('');
 
-const props = defineProps({
-  modelValue: { required: true, type: String },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: string;
+  }>(),
+  {},
+);
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const timeRange = computed(() => {

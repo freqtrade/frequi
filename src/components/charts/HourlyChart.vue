@@ -33,10 +33,15 @@ use([
 const CHART_PROFIT = 'Profit %';
 const CHART_TRADE_COUNT = 'Trade Count';
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  showTitle: { default: true, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: Trade[];
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
+  },
+);
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 

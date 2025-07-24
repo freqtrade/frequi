@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import type { AuthStorageWithBotId } from '@/types';
 
-defineProps({
-  loginText: { required: false, default: 'Login', type: String },
-});
+withDefaults(
+  defineProps<{
+    loginText?: string;
+  }>(),
+  {
+    loginText: 'Login',
+  },
+);
 const loginViewOpen = ref(false);
 const loginInfo = ref<AuthStorageWithBotId | undefined>(undefined);
 

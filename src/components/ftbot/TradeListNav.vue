@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  backtestMode: { required: false, default: false, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: Trade[];
+    backtestMode?: boolean;
+  }>(),
+  {
+    backtestMode: false,
+  },
+);
 const emit = defineEmits<{ 'trade-select': [trade: Trade] }>();
 
 const botStore = useBotStore();

@@ -28,10 +28,15 @@ use([
 const balanceChart = ref(null);
 const { width } = useElementSize(balanceChart);
 
-const props = defineProps({
-  currencies: { required: true, type: Array as () => BalanceValues[] },
-  showTitle: { required: false, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    currencies: BalanceValues[];
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
+  },
+);
 const settingsStore = useSettingsStore();
 
 const balanceChartOptions = computed((): EChartsOption => {

@@ -11,18 +11,26 @@ interface CombinedPairList {
   profitAbs: number;
   tradeCount: number;
 }
-const filterText = ref('');
 
-const props = defineProps({
-  // TOOD: Should be string list
-  pairlist: { required: true, type: Array as () => string[] },
-  currentLocks: { required: false, type: Array as () => Lock[], default: () => [] },
-  trades: { required: true, type: Array as () => Trade[] },
-  sortMethod: { default: 'normal', type: String },
-  backtestMode: { required: false, default: false, type: Boolean },
-  startingBalance: { required: false, type: Number, default: 0 },
-});
+const props = withDefaults(
+  defineProps<{
+    pairlist: string[];
+    currentLocks?: Lock[];
+    trades: Trade[];
+    sortMethod?: string;
+    backtestMode?: boolean;
+    startingBalance?: number;
+  }>(),
+  {
+    currentLocks: () => [],
+    sortMethod: 'normal',
+    backtestMode: false,
+    startingBalance: 0,
+  },
+);
 const botStore = useBotStore();
+
+const filterText = ref('');
 const combinedPairList = computed(() => {
   const comb: CombinedPairList[] = [];
 
