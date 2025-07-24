@@ -2,10 +2,16 @@
 import type { ForceEnterPayload } from '@/types';
 import { OrderSides } from '@/types';
 
-const props = defineProps({
-  pair: { type: String, default: '' },
-  positionIncrease: { type: Boolean, default: false },
-});
+const props = withDefaults(
+  defineProps<{
+    pair?: string;
+    positionIncrease?: boolean;
+  }>(),
+  {
+    pair: '',
+    positionIncrease: false,
+  },
+);
 const model = defineModel<boolean>();
 const botStore = useBotStore();
 

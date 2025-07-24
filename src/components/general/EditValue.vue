@@ -1,30 +1,20 @@
 <script setup lang="ts">
-const props = defineProps({
-  modelValue: {
-    type: String,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    modelValue: string;
+    allowEdit?: boolean;
+    allowAdd?: boolean;
+    allowDuplicate?: boolean;
+    editableName: string;
+    alignVertical?: boolean;
+  }>(),
+  {
+    allowEdit: false,
+    allowAdd: false,
+    allowDuplicate: false,
+    alignVertical: false,
   },
-  allowEdit: {
-    type: Boolean,
-    default: false,
-  },
-  allowAdd: {
-    type: Boolean,
-    default: false,
-  },
-  allowDuplicate: {
-    type: Boolean,
-    default: false,
-  },
-  editableName: {
-    type: String,
-    required: true,
-  },
-  alignVertical: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 
 const emit = defineEmits<{
   delete: [value: string];

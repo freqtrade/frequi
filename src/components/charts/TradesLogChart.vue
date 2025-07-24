@@ -36,10 +36,15 @@ use([
 const CHART_PROFIT = 'Profit %';
 const CHART_COLOR = '#9be0a8';
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => ClosedTrade[] },
-  showTitle: { default: true, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: ClosedTrade[];
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
+  },
+);
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 const chartData = computed(() => {

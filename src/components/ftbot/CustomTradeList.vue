@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  title: { default: 'Trades', type: String },
-  stakeCurrency: { required: false, default: '', type: String },
-  activeTrades: { default: false, type: Boolean },
-  showFilter: { default: false, type: Boolean },
-  multiBotView: { default: false, type: Boolean },
-  emptyText: { default: 'No Trades to show.', type: String },
-  stakeCurrencyDecimals: { default: 3, type: Number },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: Trade[];
+    title?: string;
+    stakeCurrency?: string;
+    activeTrades?: boolean;
+    showFilter?: boolean;
+    multiBotView?: boolean;
+    emptyText?: string;
+    stakeCurrencyDecimals?: number;
+  }>(),
+  {
+    title: 'Trades',
+    stakeCurrency: '',
+    activeTrades: false,
+    showFilter: false,
+    multiBotView: false,
+    emptyText: 'No Trades to show.',
+    stakeCurrencyDecimals: 3,
+  },
+);
 const botStore = useBotStore();
 const currentPage = ref(1);
 const filterText = ref('');

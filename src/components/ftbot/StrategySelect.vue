@@ -1,8 +1,13 @@
 <script setup lang="ts">
-const props = defineProps({
-  modelValue: { type: String, required: true },
-  showDetails: { default: false, required: false, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: string;
+    showDetails?: boolean;
+  }>(),
+  {
+    showDetails: false,
+  },
+);
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const botStore = useBotStore();
