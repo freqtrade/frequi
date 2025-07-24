@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { BacktestResultInMemory } from '@/types';
 
-defineProps({
-  backtestResult: {
-    required: true,
-    type: Object as () => BacktestResultInMemory,
+withDefaults(
+  defineProps<{
+    backtestResult: BacktestResultInMemory;
+    selectedBacktestResultKey?: string;
+    canUseModify?: boolean;
+  }>(),
+  {
+    selectedBacktestResultKey: '',
+    canUseModify: false,
   },
-  selectedBacktestResultKey: { required: false, default: '', type: String },
-  canUseModify: { required: false, default: false, type: Boolean },
-});
+);
 </script>
 
 <template>

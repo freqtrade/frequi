@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { BacktestResultInMemory } from '@/types';
 
-const props = defineProps({
-  backtestResults: { required: true, type: Object as () => Record<string, BacktestResultInMemory> },
-});
+const props = withDefaults(
+  defineProps<{
+    backtestResults: Record<string, BacktestResultInMemory>;
+  }>(),
+  {},
+);
 
 const backtestResultStats = computed(() => {
   const values = {};

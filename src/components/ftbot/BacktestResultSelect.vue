@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
 
-defineProps({
-  backtestHistory: {
-    required: true,
-    type: Object as () => Record<string, BacktestResultInMemory>,
+withDefaults(
+  defineProps<{
+    backtestHistory: Record<string, BacktestResultInMemory>;
+    selectedBacktestResultKey?: string;
+    canUseModify?: boolean;
+  }>(),
+  {
+    selectedBacktestResultKey: '',
+    canUseModify: false,
   },
-  selectedBacktestResultKey: { required: false, default: '', type: String },
-  canUseModify: { required: false, default: false, type: Boolean },
-});
+);
+
 const emit = defineEmits<{
   selectionChange: [value: string];
   removeResult: [value: string];

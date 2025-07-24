@@ -2,9 +2,9 @@
 import type { ClosedTrade } from '@/types';
 import TradeDurationChart from '../charts/TradeDurationChart.vue';
 
-defineProps({
-  trades: { required: true, type: Array as () => ClosedTrade[] },
-});
+defineProps<{
+  trades: ClosedTrade[];
+}>();
 
 const botStore = useBotStore();
 
