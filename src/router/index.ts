@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
-import { initBots, useBotStore } from '@/stores/ftbotwrapper';
 
 const routes: Array<RouteRecordRaw> = [
   {

@@ -1,4 +1,3 @@
-import { useSettingsStore } from '@/stores/settings';
 import type { FTWsMessage } from '@/types/wsMessageTypes';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
