@@ -32,6 +32,7 @@ export const useSettingsStore = defineStore('uiSettings', {
       profitDistributionBins: 20,
       confirmDialog: true,
       chartLabelSide: 'right' as 'left' | 'right',
+      chartDefaultCandleCount: 250,
       timeProfitPeriod: TimeSummaryOptions.daily,
       timeProfitPreference: TimeSummaryCols.abs_profit,
       multiPaneButtonsShowText: false,

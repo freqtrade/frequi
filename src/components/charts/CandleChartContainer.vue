@@ -253,6 +253,7 @@ onMounted(() => {
             :slider-position="sliderPosition"
             :color-up="colorStore.colorUp"
             :color-down="colorStore.colorDown"
+            :start-candle-count="settingsStore.chartDefaultCandleCount"
             :label-side="settingsStore.chartLabelSide"
           />
           <div v-else class="m-auto">
