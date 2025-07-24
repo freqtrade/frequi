@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import type { IndicatorConfig, PlotConfig } from '@/types';
 
-const props = defineProps({
-  columns: { required: true, type: Array as () => string[] },
-  isVisible: { required: false, default: false, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    columns: string[];
+    isVisible?: boolean;
+  }>(),
+  {
+    isVisible: false,
+  },
+);
 
 const plotStore = usePlotConfigStore();
 const botStore = useBotStore();

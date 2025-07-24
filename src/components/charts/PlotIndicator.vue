@@ -2,10 +2,13 @@
 import type { ChartTypeString, IndicatorConfig } from '@/types';
 import { ChartType } from '@/types';
 
-const props = defineProps({
-  modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
-  columns: { required: true, type: Array as () => string[] },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: Record<string, IndicatorConfig>;
+    columns: string[];
+  }>(),
+  {},
+);
 
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 

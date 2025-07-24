@@ -2,20 +2,16 @@
 import type { Trade } from '@/types';
 import TradeProfit from './TradeProfit.vue';
 
-defineProps({
-  trade: {
-    type: Object as () => Trade,
-    required: true,
+withDefaults(
+  defineProps<{
+    trade: Trade;
+    stakeCurrencyDecimals: number;
+    showDetails?: boolean;
+  }>(),
+  {
+    showDetails: false,
   },
-  stakeCurrencyDecimals: {
-    type: Number,
-    required: true,
-  },
-  showDetails: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 const classLabel = 'w-6/12 text-surface-500 text-sm';
 </script>
 

@@ -1,9 +1,14 @@
 <script setup lang="ts">
-const props = defineProps({
-  modelValue: { required: false, default: '', type: String },
-  columns: { required: true, type: Array as () => string[] },
-  label: { required: true, type: String },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string;
+    columns: string[];
+    label: string;
+  }>(),
+  {
+    modelValue: '',
+  },
+);
 const emit = defineEmits<{
   'update:modelValue': [value: string];
   indicatorSelected: [value: string];

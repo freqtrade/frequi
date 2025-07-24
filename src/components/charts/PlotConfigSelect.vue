@@ -1,14 +1,14 @@
 <script setup lang="ts">
-defineProps({
-  allowEdit: {
-    type: Boolean,
-    default: false,
+withDefaults(
+  defineProps<{
+    allowEdit?: boolean;
+    editableName?: string;
+  }>(),
+  {
+    allowEdit: false,
+    editableName: 'plot configuration',
   },
-  editableName: {
-    type: String,
-    default: 'plot configuration',
-  },
-});
+);
 const plotStore = usePlotConfigStore();
 </script>
 
