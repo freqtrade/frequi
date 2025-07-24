@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{ disabled: boolean }>();
+withDefaults(defineProps<{ disabled?: boolean }>(), {
+  disabled: false,
+});
 const id = useId();
 const value = defineModel<boolean>();
 </script>
