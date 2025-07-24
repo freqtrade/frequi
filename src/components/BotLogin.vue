@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { AuthPayload, AuthStorageWithBotId } from '@/types';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 

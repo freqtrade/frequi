@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useSettingsStore } from '@/stores/settings';
 import type { ThemeName } from '@/types';
 
 const activeTheme = ref('');

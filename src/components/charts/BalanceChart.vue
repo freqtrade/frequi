@@ -13,9 +13,7 @@ import { use } from 'echarts/core';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { useSettingsStore } from '@/stores/settings';
 import type { BalanceValues } from '@/types';
-import { useElementSize } from '@vueuse/core';
 
 use([
   PieChart,

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useSettingsStore } from './stores/settings';
-import { useColorStore } from './stores/colors';
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 onMounted(() => {

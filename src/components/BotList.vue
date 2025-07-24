@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import LoginModal from '@/components/LoginModal.vue';
-
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
 
