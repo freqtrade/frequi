@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Lock } from '@/types';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
 const botStore = useBotStore();
 
 function removePairLock(item: Lock) {

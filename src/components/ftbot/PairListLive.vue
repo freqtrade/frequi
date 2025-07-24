@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type Popover from 'primevue/popover';
 
 const newblacklistpair = ref('');

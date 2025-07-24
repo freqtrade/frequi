@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import Favico from 'favico.js';
 
-import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
-import { useLayoutStore } from '@/stores/layout';
-import { useBotStore } from '@/stores/ftbotwrapper';
 import { useRoute } from 'vue-router';
 import Menu from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';

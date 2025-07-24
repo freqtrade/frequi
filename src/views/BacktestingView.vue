@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useBtStore } from '@/stores/btStore';
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 enum BtRunModes {
   run = 'run',
   results = 'results',

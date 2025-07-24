@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
 import { MarginMode, TradingMode } from '@/types';
 import type { ExchangeSelection, Markets, MarketsPayload, PairHistoryPayload } from '@/types';
 

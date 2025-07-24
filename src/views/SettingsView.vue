@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { OpenTradeVizOptions, useSettingsStore } from '@/stores/settings';
-import { useLayoutStore } from '@/stores/layout';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
-import { ColorPreferences, useColorStore } from '@/stores/colors';
 
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();

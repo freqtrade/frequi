@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 const props = defineProps({
   trades: { required: true, type: Array as () => Trade[] },
   backtestMode: { required: false, default: false, type: Boolean },

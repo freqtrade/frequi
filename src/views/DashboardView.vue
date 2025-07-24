@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { GridItemData } from '@/types';
 
 const botStore = useBotStore();

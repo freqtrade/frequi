@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Lock, Trade } from '@/types';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 interface CombinedPairList {
   pair: string;
   lockReason: string;

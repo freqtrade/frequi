@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 const pairlistStore = usePairlistConfigStore();
 const copyFromConfig = ref('');
 

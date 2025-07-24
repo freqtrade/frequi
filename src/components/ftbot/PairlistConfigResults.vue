@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import ChartView from '@/views/ChartsView.vue';
 
 const botStore = useBotStore();

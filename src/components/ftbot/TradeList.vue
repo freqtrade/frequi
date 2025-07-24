@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import { useBotStore } from '@/stores/ftbotwrapper';
+
 import { useRouter } from 'vue-router';
 
 enum ModalReasons {
