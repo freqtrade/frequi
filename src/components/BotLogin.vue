@@ -4,10 +4,16 @@ import type { AuthPayload, AuthStorageWithBotId } from '@/types';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
-const props = defineProps({
-  inModal: { default: false, type: Boolean },
-  existingAuth: { default: null, required: false, type: Object as () => AuthStorageWithBotId },
-});
+const props = withDefaults(
+  defineProps<{
+    inModal?: boolean;
+    existingAuth?: AuthStorageWithBotId;
+  }>(),
+  {
+    inModal: false,
+    existingAuth: undefined,
+  },
+);
 const emit = defineEmits<{ loginResult: [value: boolean] }>();
 
 const defaultURL = window.location.origin || 'http://localhost:3000';
@@ -30,24 +36,24 @@ const auth = ref<AuthPayload>({
   password: '',
 });
 
-const emitLoginResult = (value: boolean) => {
+function emitLoginResult(value: boolean) {
   emit('loginResult', value);
-};
+}
 
 const urlDuplicate = computed<boolean>(() => {
   const bots = Object.values(botStore.availableBots).find((bot) => bot.botUrl === auth.value.url);
   return !botEdit.value && bots !== undefined;
 });
 
-const checkFormValidity = () => {
+function checkFormValidity() {
   const valid = formRef.value?.checkValidity();
   nameState.value = valid || auth.value.username !== '';
   pwdState.value = valid || auth.value.password !== '';
   urlState.value = valid || auth.value.url !== '';
   return valid;
-};
+}
 
-const resetLogin = () => {
+function resetLogin() {
   auth.value.botName = '';
   auth.value.url = defaultURL;
   auth.value.username = '';
@@ -57,13 +63,14 @@ const resetLogin = () => {
   urlState.value = undefined;
   errorMessage.value = '';
   botEdit.value = false;
-};
+}
 
-const handleReset = (evt) => {
+function handleReset(evt) {
   evt.preventDefault();
   resetLogin();
-};
-const handleSubmit = async () => {
+}
+
+async function handleSubmit() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -71,7 +78,8 @@ const handleSubmit = async () => {
   errorMessage.value = '';
   // Push the name to submitted names
   try {
-    const botId = botEdit.value ? props.existingAuth.botId : botStore.nextBotId;
+    const botId =
+      botEdit.value && props.existingAuth ? props.existingAuth.botId : botStore.nextBotId;
     const { login } = useLoginInfo(botId);
     await login(auth.value);
     if (botEdit.value) {
@@ -127,13 +135,14 @@ You can verify this by navigating to ${auth.value.url}/api/v1/ping to make sure 
     console.error(errorMessage.value);
     emitLoginResult(false);
   }
-};
+}
 
-const handleOk = (evt) => {
+function handleOk(evt) {
   evt.preventDefault();
   handleSubmit();
-};
-const reset = () => {
+}
+
+function reset() {
   resetLogin();
   console.log('reset ', props.existingAuth);
   if (props.existingAuth) {
@@ -142,7 +151,7 @@ const reset = () => {
     auth.value.url = props.existingAuth.apiUrl;
     auth.value.username = props.existingAuth.username ?? '';
   }
-};
+}
 
 defineExpose({
   reset,
