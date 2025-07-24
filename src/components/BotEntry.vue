@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BotDescriptor } from '@/types';
+import type MessageBox from './general/MessageBox.vue';
 const msgBox = ref<typeof MessageBox>();
 
 const props = defineProps<{

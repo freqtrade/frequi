@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { ProfitStats, ComparisonTableItems } from '@/types';
 
 const botStore = useBotStore();

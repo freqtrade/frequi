@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import { usePlotConfigStore } from '@/stores/plotConfig';
-import { useSettingsStore } from '@/stores/settings';
 import type { ChartSliderPosition, PairHistory, Trade } from '@/types';
 import { LoadingStatus } from '@/types';
-
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-import { useColorStore } from '@/stores/colors';
 
 const props = withDefaults(
   defineProps<{

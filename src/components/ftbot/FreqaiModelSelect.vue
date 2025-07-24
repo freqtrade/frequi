@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 const locFreqaiModel = defineModel<string>();
 const botStore = useBotStore();
 

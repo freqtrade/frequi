@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import EditValue from '../general/EditValue.vue';
 const pairlistStore = usePairlistConfigStore();
 </script>

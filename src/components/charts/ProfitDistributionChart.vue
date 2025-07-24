@@ -14,7 +14,6 @@ import {
 } from 'echarts/components';
 
 import type { ClosedTrade } from '@/types';
-import { useSettingsStore } from '@/stores/settings';
 
 use([
   BarChart,

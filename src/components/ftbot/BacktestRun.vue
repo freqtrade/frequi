@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BacktestPayload } from '@/types';
 
-import { useBtStore } from '@/stores/btStore';
 const botStore = useBotStore();
 const btStore = useBtStore();
 

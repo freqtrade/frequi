@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { ForceSellPayload, Trade } from '@/types';
 import { ref, computed } from 'vue';
 import { refDebounced } from '@vueuse/core';

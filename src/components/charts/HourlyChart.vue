@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
-import { useSettingsStore } from '@/stores/settings';
 
 import type { Trade } from '@/types';
 import type { EChartsOption } from 'echarts';
@@ -16,7 +15,6 @@ import {
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
-import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,

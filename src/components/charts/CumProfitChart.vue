@@ -14,7 +14,6 @@ import {
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { useSettingsStore } from '@/stores/settings';
 import type {
   ClosedTrade,
   CumProfitChartData,

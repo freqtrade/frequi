@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { usePlotConfigStore } from '@/stores/plotConfig';
-
 defineProps({
   allowEdit: {
     type: Boolean,
