@@ -46,7 +46,7 @@
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^24.1.0",
     "@typescript-eslint/parser": "^8.38.0",
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitejs/plugin-vue": "^6.0.1",
     "@vue/compiler-sfc": "3.5.18",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
