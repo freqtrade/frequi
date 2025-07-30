@@ -12,8 +12,8 @@ importers:
         specifier: 1.9.16
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.8.3)(vue@3.5.18(typescript@5.8.3))
       '@primeuix/themes':
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.2.2
+        version: 1.2.2
       '@vuepic/vue-datepicker':
         specifier: ^11.0.2
         version: 11.0.2(vue@3.5.18(typescript@5.8.3))
@@ -623,11 +623,15 @@ packages:
     resolution: {integrity: sha512-xUqMdQb75izeDkNWFK1QlU15aUl5LIU97Fq68IXOhrqqLsKEBnj5ftntFZrENQW70jAHwALdWP4EOGi/poc9Tg==}
     engines: {node: '>=12.11.0'}
 
+  '@primeuix/styled@0.7.1':
+    resolution: {integrity: sha512-4L42Vlse/uL68ND0nLB0T7x0NKQJXeYY9dVLMt/aSv7VU/IFdKEi/1awPZkHKCKgN2jO5cxB/BJfB+1Wxy4T1w==}
+    engines: {node: '>=12.11.0'}
+
   '@primeuix/styles@1.2.1':
     resolution: {integrity: sha512-Tri7pPgZgxrVmhJG8ijZZFolQ6vu27xnkGoAB9EFY8YlaKTM5iqkWzEcqdxy2KmgFWMXi+BrPHwO0RdQ6JCT+g==}
 
-  '@primeuix/themes@1.2.1':
-    resolution: {integrity: sha512-DVCFDncvag47tpag3TdufDTuvUbfKnkgzmlxAQkwuMS0IlPA3wChrf9VlL2wETg/ZpJm/tHobkJBnB9FmkiqnA==}
+  '@primeuix/themes@1.2.2':
+    resolution: {integrity: sha512-2tTtrKechPAiAwDDPgr8DSZoKgT5Zq4Pd2yrxyTUM6Fu/BBUmBYuJ32prU8pbRqhWydThT+iMvc/nZruY58Fqw==}
 
   '@primeuix/utils@0.6.0':
     resolution: {integrity: sha512-ULpB87ImNAiX36OMtyDeRceWB7N/mVlh6gGLqp/lx8UMKZlLIQH/UAFND86hYXHwNpXeNKcWfMGreb0Oc0hcZA==}
@@ -2999,13 +3003,17 @@ snapshots:
     dependencies:
       '@primeuix/utils': 0.6.0
 
+  '@primeuix/styled@0.7.1':
+    dependencies:
+      '@primeuix/utils': 0.6.0
+
   '@primeuix/styles@1.2.1':
     dependencies:
       '@primeuix/styled': 0.7.0
 
-  '@primeuix/themes@1.2.1':
+  '@primeuix/themes@1.2.2':
     dependencies:
-      '@primeuix/styled': 0.7.0
+      '@primeuix/styled': 0.7.1
 
   '@primeuix/utils@0.6.0': {}
 
