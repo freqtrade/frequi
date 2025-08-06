@@ -35,7 +35,7 @@ const showLeftBar = ref(false);
 const btFormMode = ref<BtRunModes>(BtRunModes.run);
 const pollInterval = ref<number | null>(null);
 
-const selectBacktestResult = () => {
+function selectBacktestResult() {
   // Set parameters for this result
   btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
   botStore.activeBot.getStrategy(btStore.strategy);
@@ -44,7 +44,11 @@ const selectBacktestResult = () => {
     botStore.activeBot.selectedBacktestResult.timeframe_detail || '';
   // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
   btStore.timerange = botStore.activeBot.selectedBacktestResult.timerange;
-};
+  btStore.enableProtections = botStore.activeBot.selectedBacktestResult.enable_protections;
+  btStore.freqAI.enabled = botStore.activeBot.selectedBacktestResult.freqaimodel !== undefined;
+  btStore.freqAI.model = botStore.activeBot.selectedBacktestResult.freqaimodel || '';
+  btStore.freqAI.identifier = botStore.activeBot.selectedBacktestResult.freqai_identifier || '';
+}
 
 watch(
   () => botStore.activeBot.selectedBacktestResultKey,
