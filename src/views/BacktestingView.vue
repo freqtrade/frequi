@@ -116,18 +116,16 @@ watch(
         Bot must be in webserver mode to enable Backtesting.
       </p>
       <div class="w-full">
-        <Tabs value="run" lazy>
+        <Tabs v-model:value="btFormMode" lazy>
           <TabList>
             <Tab
               v-if="botStore.activeBot.botFeatures.backtestHistory"
-              v-model="btFormMode"
               class="flex items-center"
               value="historicResults"
               :disabled="!botStore.activeBot.canRunBacktest"
               ><i-mdi-cloud-download class="me-2" />Load Results</Tab
             >
             <Tab
-              v-model="btFormMode"
               class="flex items-center"
               value="run"
               :disabled="!botStore.activeBot.canRunBacktest"
@@ -135,7 +133,6 @@ watch(
             >
             <Tab
               id="bt-analyze-btn"
-              v-model="btFormMode"
               class="flex items-center"
               value="results"
               :disabled="!hasBacktestResult"
@@ -143,24 +140,15 @@ watch(
             >
             <Tab
               v-if="hasMultiBacktestResult"
-              v-model="btFormMode"
               class="flex items-center"
               value="compare-results"
               :disabled="!hasMultiBacktestResult"
               ><i-mdi-compare-horizontal class="me-2" />Compare results</Tab
             >
-            <Tab
-              v-model="btFormMode"
-              class="flex items-center"
-              value="visualize-summary"
-              :disabled="!hasBacktestResult"
+            <Tab class="flex items-center" value="visualize-summary" :disabled="!hasBacktestResult"
               ><i-mdi-chart-bell-curve-cumulative class="me-2" />Visualize summary</Tab
             >
-            <Tab
-              v-model="btFormMode"
-              class="flex items-center"
-              value="visualize"
-              :disabled="!hasBacktestResult"
+            <Tab class="flex items-center" value="visualize" :disabled="!hasBacktestResult"
               ><i-mdi-chart-timeline-variant-shimmer class="me-2" />Visualize result</Tab
             >
           </TabList>
