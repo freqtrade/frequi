@@ -12,12 +12,12 @@ const botStore = useBotStore();
 const isBarVisible = ref({ right: true, left: true });
 const sliderPosition = ref<ChartSliderPosition>();
 
-const navigateChartToTrade = (trade: Trade) => {
+function navigateChartToTrade(trade: Trade) {
   sliderPosition.value = {
     startValue: trade.open_timestamp,
     endValue: trade.close_timestamp,
   };
-};
+}
 
 function refreshOHLCV(pair: string, columns: string[]) {
   botStore.activeBot.getPairHistory({
