@@ -72,7 +72,7 @@ onMounted(() => {
         </Button>
       </div>
     </div>
-    <div class="text-center flex flex-row h-full items-stretch">
+    <div class="text-center flex flex-row h-full items-stretch overflow-x-clip">
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
