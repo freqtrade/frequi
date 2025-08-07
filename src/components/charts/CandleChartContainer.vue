@@ -234,7 +234,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="h-full flex">
-        <div class="min-w-0 w-full shrink">
+        <div class="min-w-0 w-full flex-1">
           <CandleChart
             v-if="hasDataset"
             :dataset="dataset"

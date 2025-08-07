@@ -26,7 +26,7 @@ function toggleVisible() {
       <div class="flex grow items-center">
         <i-mdi-reorder-horizontal
           role="button"
-          class="handle me-2 ms-2 shrink"
+          class="handle me-2 ms-2 flex-auto shrink"
           width="24"
           height="24"
         />
