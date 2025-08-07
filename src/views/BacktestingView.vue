@@ -75,13 +75,13 @@ watch(
   <div class="flex flex-row pt-1 me-1 relative" style="height: calc(100vh - 60px)">
     <div
       v-if="btFormMode !== 'visualize'"
-      class="flex md:flex-row h-full w-16 transition-all duration-200 shrink-0"
+      class="flex md:flex-row h-full w-16 transition-all duration-200 shrink-0 me-1 border-r border-surface-200 dark:border-surface-900"
       :class="{
-        'w-80!': showLeftBar,
+        'w-78!': showLeftBar,
       }"
     >
       <!-- Left bar -->
-      <div class="me-3 flex flex-col fixed">
+      <div class="flex flex-col fixed">
         <Button
           class="self-start"
           aria-label="Close"
