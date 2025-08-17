@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="text-start grid grid-cols-1 lg:grid-cols-2 gap-4 px-2">
+  <div class="text-start grid grid-cols-[repeat(auto-fit,minmax(500px,1fr))] gap-4 px-2">
     <div class="">
       <h5 class="detail-header">General</h5>
       <ValuePair description="Trade Id">{{ trade.trade_id }}</ValuePair>
