@@ -32,7 +32,7 @@ function toggleVisible() {
         />
         <div
           role="button"
-          class="flex grow items-start flex-col user-select-none"
+          class="flex items-start flex-col user-select-none w-full"
           @click="toggleVisible"
         >
           <span class="font-bold">{{ pairlist.name }}</span>
