@@ -10,7 +10,9 @@ const pairlistStore = usePairlistConfigStore();
       severity="primary"
       @click="pairlistStore.saveConfig(pairlistStore.config.name)"
     >
-      <i-mdi-content-save />
+      <template #icon>
+        <i-mdi-content-save />
+      </template>
     </Button>
     <EditValue
       v-model="pairlistStore.config.name"
