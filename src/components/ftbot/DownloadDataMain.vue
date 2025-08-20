@@ -3,6 +3,7 @@ import type { DownloadDataPayload, ExchangeSelection } from '@/types';
 import { MarginMode, TradingMode } from '@/types';
 
 const botStore = useBotStore();
+const pairlistStore = usePairlistConfigStore();
 const pairs = ref<string[]>(['BTC/USDT', 'ETH/USDT', '']);
 const timeframes = ref<string[]>(['5m', '1h']);
 
@@ -36,6 +37,10 @@ const isAdvancedOpen = ref(false);
 
 function addPairs(_pairs: string[]) {
   pairs.value.push(..._pairs);
+}
+
+function replacePairs(_pairs: string[]) {
+  pairs.value = [..._pairs];
 }
 
 async function startDownload() {
@@ -100,6 +105,15 @@ async function startDownload() {
                         {{ pt.description }}
                       </Button>
                     </div>
+                    <Divider />
+                    <Button
+                      :disabled="pairlistStore.whitelist.length === 0"
+                      title="Add all pairs from Pairlist Config - requires the pairlist config to have ran first."
+                      severity="secondary"
+                      @click="replacePairs(pairlistStore.whitelist)"
+                    >
+                      Use Pairs from Pairlist Config
+                    </Button>
                   </div>
                 </div>
               </div>
