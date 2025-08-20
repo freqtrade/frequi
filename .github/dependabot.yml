@@ -6,18 +6,15 @@ updates:
     - "/.devcontainer/"
     - "/docker/"
   schedule:
-    interval: "daily"
-    time: "03:00"
-    timezone: "Etc/UTC"
+    interval: "cron"
+    cronjob: "0 2 * * *"
   open-pull-requests-limit: 10
 
 - package-ecosystem: npm
   directory: "/"
   schedule:
-    interval: "weekly"
-    day: "wednesday"
-    time: "03:00"
-    timezone: "Etc/UTC"
+    interval: "cron"
+    cronjob: "0 2 * * 3"
   open-pull-requests-limit: 20
   target-branch: main
   groups:
