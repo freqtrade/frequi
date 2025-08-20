@@ -61,6 +61,10 @@ watch(
     selectedView.value = 'Results';
   },
 );
+
+if (pairlistStore.whitelist.length > 0) {
+  selectedView.value = 'Results';
+}
 </script>
 
 <template>
