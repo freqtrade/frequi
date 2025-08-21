@@ -14,7 +14,9 @@ interface MutatingObject {
 export function formatObjectForTable(originalobj: MutatingObject, valueKey: string) {
   const result = Object.entries(originalobj).reduce((acc: childObjects[], [key, value]) => {
     value.forEach((item) => {
-      const [metric, val] = Object.entries(item)[0];
+      const entry = Object.entries(item)[0];
+      if (!entry) return;
+      const [metric, val] = entry;
       const existingItem = acc.find((i) => i[valueKey] === metric);
       if (existingItem) {
         existingItem[key] = val;
