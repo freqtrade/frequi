@@ -62,8 +62,8 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   // 5: label
   // 6: tooltip
   const stop_ts_adjusted = dataset.data_stop_ts + dataset.timeframe_ms;
-  for (let i = 0, len = trades.length; i < len; i += 1) {
-    const trade: Trade = trades[i];
+  for (const trade of trades) {
+    // const trade: Trade = trades[i];
     const openTs = trade.open_fill_timestamp ?? trade.open_timestamp;
     if (
       // Trade is open or closed and within timerange
@@ -72,8 +72,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
       (trade.close_timestamp && trade.close_timestamp >= dataset.data_start_ts)
     ) {
       if (trade.orders) {
-        for (let i = 0; i < trade.orders.length; i++) {
-          const order: Order | BTOrder = trade.orders[i];
+        for (const [j, order] of trade.orders.entries()) {
           const orderTs =
             order.order_filled_timestamp ??
             ('order_timestamp' in order ? order.order_timestamp : trade.open_timestamp);
@@ -84,7 +83,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             orderTs > dataset.data_start_ts
           ) {
             // Trade entry
-            if (i === 0) {
+            if (j === 0) {
               tradeData.push([
                 roundTimeframe(dataset.timeframe_ms ?? 0, openTs),
                 order.safe_price,
@@ -96,7 +95,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
                 buildToolTip(trade, order, 'entry', quoteCurrency),
               ]);
               // Trade exit
-            } else if (i === trade.orders.length - 1 && trade.close_timestamp) {
+            } else if (j === trade.orders.length - 1 && trade.close_timestamp) {
               if (
                 roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp) <=
                   stop_ts_adjusted &&

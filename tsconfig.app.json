@@ -14,7 +14,8 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
+    // TODO: the below should be set to true.
+    "noUncheckedIndexedAccess": false,
     "noImplicitAny": false,
     "types": [
       "vite/client",
