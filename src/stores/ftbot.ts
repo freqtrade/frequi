@@ -142,9 +142,9 @@ export function createBotSubStore(botId: string, botName: string) {
       canRunBacktest: (state) => state.botState?.runmode === RunModes.WEBSERVER,
       isWebserverMode: (state) => state.botState?.runmode === RunModes.WEBSERVER,
       selectedBacktestResult: (state) =>
-        state.backtestHistory[state.selectedBacktestResultKey]?.strategy || {},
+        state.backtestHistory[state.selectedBacktestResultKey]?.strategy,
       selectedBacktestMetadata: (state) =>
-        state.backtestHistory[state.selectedBacktestResultKey]?.metadata || {},
+        state.backtestHistory[state.selectedBacktestResultKey]?.metadata,
       shortAllowed: (state) => state.botState?.short_allowed || false,
       openTradeCount: (state) => state.openTrades.length,
       isTrading: (state) =>
@@ -1081,7 +1081,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async getBacktestMarketChange() {
-        if (!this.selectedBacktestMetadata.filename) {
+        if (!this.selectedBacktestMetadata?.filename) {
           return Promise.reject('No backtest selected');
         }
         try {

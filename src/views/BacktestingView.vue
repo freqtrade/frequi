@@ -23,11 +23,7 @@ const hasMultiBacktestResult = computed(() =>
 );
 
 const timeframe = computed((): string => {
-  try {
-    return botStore.activeBot.selectedBacktestResult.timeframe;
-  } catch (err) {
-    return '';
-  }
+  return botStore.activeBot.selectedBacktestResult?.timeframe ?? '';
 });
 
 const showLeftBar = ref(false);
@@ -36,6 +32,9 @@ const btFormMode = ref<BtRunModes>(BtRunModes.run);
 const pollInterval = ref<number | null>(null);
 
 function selectBacktestResult() {
+  if (!botStore.activeBot.selectedBacktestResult) {
+    return;
+  }
   // Set parameters for this result
   btStore.strategy = botStore.activeBot.selectedBacktestResult.strategy_name;
   botStore.activeBot.getStrategy(btStore.strategy);
@@ -158,7 +157,7 @@ watch(
             </TabPanel>
             <TabPanel value="results">
               <BacktestResultAnalysis
-                v-if="hasBacktestResult"
+                v-if="hasBacktestResult && botStore.activeBot.selectedBacktestResult"
                 :backtest-result="botStore.activeBot.selectedBacktestResult"
                 class="flex-fill"
               />
@@ -172,13 +171,14 @@ watch(
             </TabPanel>
             <TabPanel value="visualize-summary">
               <BacktestGraphs
-                v-if="hasBacktestResult"
+                v-if="hasBacktestResult && botStore.activeBot.selectedBacktestResult"
                 :trades="botStore.activeBot.selectedBacktestResult.trades"
                 class="flex-fill"
               />
             </TabPanel>
             <TabPanel value="visualize" l>
               <BacktestResultChart
+                v-if="botStore.activeBot.selectedBacktestResult"
                 :timeframe="timeframe"
                 :strategy="btStore.strategy"
                 :timerange="btStore.timerange"

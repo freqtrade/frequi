@@ -110,11 +110,11 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
     },
 
     {
-      'Win/Draw/Loss': `${pairSummary.wins} / ${pairSummary.draws} / ${pairSummary.losses} ${
-        isNotUndefined(pairSummary.winrate)
+      'Win/Draw/Loss': `${pairSummary?.wins} / ${pairSummary?.draws} / ${pairSummary?.losses} ${
+        isNotUndefined(pairSummary?.winrate)
           ? '(WR: ' +
             formatPercent(
-              result.results_per_pair[result.results_per_pair.length - 1].winrate ?? 0,
+              result.results_per_pair[result.results_per_pair.length - 1]?.winrate ?? 0,
               2,
             ) +
             ')'
