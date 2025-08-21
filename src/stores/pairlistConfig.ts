@@ -61,9 +61,11 @@ export const usePairlistConfigStore = defineStore(
         pairlist.id = Date.now().toString(36) + Math.random().toString(36).substring(2);
       }
       for (const param in pairlist.params) {
-        pairlist.params[param].value = isNotUndefined(pairlist.params[param].default)
-          ? pairlist.params[param].default
-          : '';
+        if (pairlist.params[param]) {
+          pairlist.params[param].value = isNotUndefined(pairlist.params[param].default)
+            ? pairlist.params[param].default
+            : '';
+        }
       }
       config.value.pairlists.splice(index, 0, pairlist);
     }
@@ -104,7 +106,9 @@ export const usePairlistConfigStore = defineStore(
       if (i > -1) {
         savedConfigs.value.splice(i, 1);
         selectOrCreateConfig(
-          savedConfigs.value.length > 0 ? savedConfigs.value[0].name : 'default',
+          savedConfigs.value.length > 0 && savedConfigs.value[0]
+            ? savedConfigs.value[0].name
+            : 'default',
         );
       }
     }
@@ -201,7 +205,7 @@ export const usePairlistConfigStore = defineStore(
         };
         for (const key in config.params) {
           const param = config.params[key];
-          if (param.value) {
+          if (param?.value) {
             pairlist[key] = convertToParamType(param.type, param.value);
           }
         }
