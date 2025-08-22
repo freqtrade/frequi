@@ -222,13 +222,16 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       this.availableBots = { ...this.availableBots };
     },
     updateBot(botId: string, bot: Partial<BotDescriptor>) {
-      if (!Object.keys(this.availableBots).includes(botId)) {
+      const botInstance = this.botStores[botId];
+      if (!botInstance) {
         // TODO: handle error!
         console.error('Bot not found');
         return;
       }
-      this.botStores[botId].updateBot(bot);
-      Object.assign(this.availableBots[botId], bot);
+      botInstance.updateBot(bot);
+      const availableBots = this.availableBots[botId];
+      if (!availableBots) return;
+      Object.assign(availableBots, bot);
     },
     removeBot(botId: string) {
       if (Object.keys(this.availableBots).includes(botId)) {
