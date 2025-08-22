@@ -25,8 +25,8 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     wins: 0,
     losses: 0,
   };
-
   Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitStats]) => {
+    if (!v) return;
     const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
     const profitOpenRatio =
       botStore.allOpenTrades[k].reduce(
