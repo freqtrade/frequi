@@ -67,6 +67,7 @@ watch(
     cancelled.value = false;
     if (selAvailableIndicator.value && props.modelValue) {
       const xx = props.modelValue[selAvailableIndicator.value];
+      if (!xx) return;
       selColor.value = xx.color || randomColor();
       graphType.value = xx.type || ChartType.line;
       fillTo.value = xx.fill_to || '';

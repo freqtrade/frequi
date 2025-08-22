@@ -24,12 +24,16 @@ function removeBotQuestion() {
   });
 }
 
+const selectedBotStore = computed<BotSubStore>(() => {
+  return botStore.botStores[props.bot.botId]!;
+});
+
 const autoRefreshLoc = computed({
   get() {
-    return botStore.botStores[props.bot.botId].autoRefresh;
+    return selectedBotStore.value.autoRefresh;
   },
   set(newValue) {
-    botStore.botStores[props.bot.botId].setAutoRefresh(newValue);
+    selectedBotStore.value.setAutoRefresh(newValue);
   },
 });
 </script>
@@ -42,12 +46,12 @@ const autoRefreshLoc = computed({
       <div class="flex items-center">
         <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" />
         <div
-          v-if="botStore.botStores[bot.botId].isBotLoggedIn"
-          :title="botStore.botStores[bot.botId].isBotOnline ? 'Online' : 'Offline'"
+          v-if="selectedBotStore.isBotLoggedIn"
+          :title="selectedBotStore.isBotOnline ? 'Online' : 'Offline'"
         >
           <i-mdi-circle
             class="mx-1"
-            :class="botStore.botStores[bot.botId].isBotOnline ? 'text-green-500' : 'text-red-500'"
+            :class="selectedBotStore.isBotOnline ? 'text-green-500' : 'text-red-500'"
           />
         </div>
         <div v-else title="Login info expired, please login again.">
@@ -57,7 +61,7 @@ const autoRefreshLoc = computed({
 
       <div v-if="!noButtons" class="flex items-center gap-1">
         <Button
-          v-if="botStore.botStores[bot.botId].isBotLoggedIn"
+          v-if="selectedBotStore.isBotLoggedIn"
           size="small"
           severity="secondary"
           title="Edit bot"
