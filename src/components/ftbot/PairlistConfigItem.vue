@@ -66,7 +66,7 @@ function toggleVisible() {
         <PairlistConfigParameter
           v-for="(parameter, key) in pairlist.params"
           :key="key"
-          v-model="pairlist.params[key].value"
+          v-model="parameter.value"
           :param="parameter"
         />
       </div>

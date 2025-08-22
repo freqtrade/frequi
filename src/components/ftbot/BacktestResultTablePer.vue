@@ -39,10 +39,10 @@ const perTagReason = computed(() => {
   }[] = [];
   if (props.keyHeaders.length > 0) {
     // Keys could be an array
-    for (let i = 0; i < props.keyHeaders.length; i += 1) {
+    for (const [i, header] of props.keyHeaders.entries()) {
       firstFields.push({
         key: `key[${i}]`,
-        label: props.keyHeaders[i],
+        label: header,
         formatter: (value, item) =>
           Array.isArray(value) ? value[i] : value || item['exit_reason'] || 'OTHER',
       });

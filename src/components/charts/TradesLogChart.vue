@@ -54,15 +54,17 @@ const chartData = computed(() => {
     .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
   for (let i = 0, len = sortedTrades.length; i < len; i += 1) {
     const trade = sortedTrades[i];
-    const entry = [
-      i,
-      (trade.profit_ratio * 100).toFixed(2),
-      trade.pair,
-      trade.botName,
-      timestampms(trade.close_timestamp),
-      trade.is_short === undefined || !trade.is_short ? 'Long' : 'Short',
-    ];
-    res.push(entry);
+    if (trade) {
+      const entry = [
+        i,
+        (trade.profit_ratio * 100).toFixed(2),
+        trade.pair,
+        trade.botName,
+        timestampms(trade.close_timestamp),
+        trade.is_short === undefined || !trade.is_short ? 'Long' : 'Short',
+      ];
+      res.push(entry);
+    }
   }
   return res;
 });
