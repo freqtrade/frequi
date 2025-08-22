@@ -42,7 +42,7 @@ export function useLoginInfo(botId: string) {
   console.log('botId', botId);
 
   const currentInfo = computed({
-    get: () => allLoginInfos.value[botId],
+    get: () => allLoginInfos.value[botId]!,
     set: (val) => (allLoginInfos.value[botId] = val),
   });
 
@@ -78,12 +78,9 @@ export function useLoginInfo(botId: string) {
    * Get login info for current bot
    */
   function getLoginInfo(): AuthStorage {
-    if (
-      botId in allLoginInfos.value &&
-      'apiUrl' in allLoginInfos.value[botId] &&
-      'refreshToken' in allLoginInfos.value[botId]
-    ) {
-      return allLoginInfos.value[botId];
+    const allLoginBot = allLoginInfos.value[botId];
+    if (allLoginBot && 'apiUrl' in allLoginBot && 'refreshToken' in allLoginBot) {
+      return allLoginBot;
     }
     return {
       botName: '',

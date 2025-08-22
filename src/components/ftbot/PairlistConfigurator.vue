@@ -33,6 +33,10 @@ useSortable(pairlistConfigsEl, pairlistStore.config.pairlists, {
   },
   onAdd: (e) => {
     const pairlist = availablePairlists.value[e.oldIndex];
+    if (!pairlist) {
+      console.error('Pairlist not found');
+      return;
+    }
     pairlistStore.addToConfig(pairlist, e.newIndex);
     // quick fix from: https://github.com/SortableJS/Sortable/issues/1515
     e.clone.replaceWith(e.item);
@@ -136,7 +140,7 @@ if (pairlistStore.whitelist.length > 0) {
         <PairlistConfigItem
           v-for="(pairlist, i) in pairlistStore.config.pairlists"
           :key="pairlist.id"
-          v-model="pairlistStore.config.pairlists[i]"
+          v-model="pairlistStore.config.pairlists[i]!"
           :index="i"
           @remove="pairlistStore.removeFromConfig"
         />
