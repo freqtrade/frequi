@@ -137,9 +137,10 @@ export const useBotStore = defineStore('ftbot-wrapper', {
             if (!resp[d.date]) {
               resp[d.date] = { ...d };
             } else {
-              resp[d.date].abs_profit += d.abs_profit;
-              resp[d.date].fiat_value += d.fiat_value;
-              resp[d.date].trade_count += d.trade_count;
+              const existing = resp[d.date]!;
+              existing.abs_profit += d.abs_profit;
+              existing.fiat_value += d.fiat_value;
+              existing.trade_count += d.trade_count;
             }
           });
         }
@@ -160,9 +161,11 @@ export const useBotStore = defineStore('ftbot-wrapper', {
             if (resp[d.date]) {
               resp[d.date] = { ...d };
             } else {
-              resp[d.date].abs_profit += d.abs_profit;
-              resp[d.date].fiat_value += d.fiat_value;
-              resp[d.date].trade_count += d.trade_count;
+              const existing = resp[d.date]!;
+
+              existing.abs_profit += d.abs_profit;
+              existing.fiat_value += d.fiat_value;
+              existing.trade_count += d.trade_count;
             }
           });
         }
@@ -182,9 +185,10 @@ export const useBotStore = defineStore('ftbot-wrapper', {
             if (!resp[d.date]) {
               resp[d.date] = { ...d };
             } else {
-              resp[d.date].abs_profit += d.abs_profit;
-              resp[d.date].fiat_value += d.fiat_value;
-              resp[d.date].trade_count += d.trade_count;
+              const existing = resp[d.date]!;
+              existing.abs_profit += d.abs_profit;
+              existing.fiat_value += d.fiat_value;
+              existing.trade_count += d.trade_count;
             }
           });
         }
