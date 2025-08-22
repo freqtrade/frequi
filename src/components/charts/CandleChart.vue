@@ -184,7 +184,7 @@ function updateChart(initial = false) {
     dataset = calculateDiff(columns, dataset, colFrom, colTo);
   });
   // Add new rows to end to allow slight "scroll past"
-  const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2].length : 0);
+  const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2]!.length : 0);
   newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
   dataset.push(newArray);
 
@@ -454,8 +454,12 @@ function updateChart(initial = false) {
   // }
   if (Array.isArray(chartOptions.value.grid)) {
     // Last subplot is bottom
-    chartOptions.value.grid[chartOptions.value.grid.length - 1].bottom = '50px';
-    delete chartOptions.value.grid[chartOptions.value.grid.length - 1].top;
+    const localGrid = chartOptions.value.grid[chartOptions.value.grid.length - 1];
+    if (localGrid) {
+      // Last subplot is bottom
+      localGrid.bottom = '50px';
+      delete localGrid.top;
+    }
   }
 
   const nameTrades = 'Trades';
