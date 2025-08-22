@@ -6,8 +6,8 @@ const botStore = useBotStore();
 const allToggled = computed<boolean>({
   get: () => Object.values(botStore.botStores).every((i) => i.isSelected),
   set: (val) => {
-    for (const botId in botStore.botStores) {
-      botStore.botStores[botId].isSelected = val;
+    for (const bot of Object.values(botStore.botStores)) {
+      bot.isSelected = val;
     }
   },
 });

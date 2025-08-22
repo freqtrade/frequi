@@ -6,18 +6,18 @@ function getSortedTrades(trades: Trade[]): Trade[] {
 }
 
 function getBestPair(trades: Trade[]) {
-  if (trades.length === 0) {
+  const value = trades[trades.length - 1];
+  if (!value) {
     return 'N/A';
   }
-  const value = trades[trades.length - 1];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 }
 
 function getWorstPair(trades: Trade[]) {
-  if (trades.length === 0) {
+  const value = trades[0];
+  if (!value) {
     return 'N/A';
   }
-  const value = trades[0];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 }
 
