@@ -37,7 +37,7 @@ export function usePercentageTool(
       startValues[0] = roundTF(Number(startValues[0]));
       const startnew = chartRef.value?.convertToPixel({ seriesIndex: 0 }, startValues) ?? [0, 0];
 
-      startPos.value = { x: startnew[0], y: startnew[1] };
+      startPos.value = { x: startnew[0]!, y: startnew[1]! };
 
       chartRef.value?.chart?.getZr().on('mousemove', mouseMove);
       drawStart();

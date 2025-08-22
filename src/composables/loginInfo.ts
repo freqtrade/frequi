@@ -23,13 +23,15 @@ export const availableBots = computed<BotDescriptors>(() => {
   const allInfo = allLoginInfos.value;
   const response: BotDescriptors = {};
   Object.keys(allInfo)
-    .sort((a, b) => (allInfo[a].sortId ?? 0) - (allInfo[b].sortId ?? 0))
+    .sort((a, b) => (allInfo[a]?.sortId ?? 0) - (allInfo[b]?.sortId ?? 0))
     .forEach((k, idx) => {
+      const bot = allInfo[k];
+      if (!bot) return;
       response[k] = {
         botId: k,
-        botName: allInfo[k].botName,
-        botUrl: allInfo[k].apiUrl,
-        sortId: allInfo[k].sortId ?? idx,
+        botName: bot.botName,
+        botUrl: bot.apiUrl,
+        sortId: bot.sortId ?? idx,
       };
     });
 

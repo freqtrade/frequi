@@ -25,7 +25,7 @@ function startBgJob(api: AxiosInstance, showAlert: ShowAlertType, jobId: string,
       if (!result.value.running) {
         clearJobFromRunningList();
       }
-      jobs.value[jobId] = { ...jobs.value[jobId], taskStatus: result.value };
+      jobs.value[jobId] = { ...jobs.value[jobId]!, taskStatus: result.value };
     } catch (error) {
       console.error(error);
       showAlert('Failed to get background job status', 'error');
