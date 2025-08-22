@@ -21,34 +21,41 @@ const botListComp = computed<BotDescriptor[]>(() => {
 useSortable(sortContainer, botListComp, {
   handle: '.handle',
   onUpdate: (e) => {
-    const oldBotId = botListComp.value[e.oldIndex].botId;
-    const newBotId = botListComp.value[e.newIndex].botId;
-    botStore.updateBot(oldBotId, { sortId: e.newIndex });
-    botStore.updateBot(newBotId, { sortId: e.oldIndex });
+    const oldBotId = botListComp.value[e.oldIndex]?.botId;
+    const newBotId = botListComp.value[e.newIndex]?.botId;
+    if (oldBotId && newBotId) {
+      botStore.updateBot(oldBotId, { sortId: e.newIndex });
+      botStore.updateBot(newBotId, { sortId: e.oldIndex });
+    }
   },
 });
 
-const editBot = (botId: string) => {
+function editBot(botId: string) {
   if (!editingBots.value.includes(botId)) {
     editingBots.value.push(botId);
   }
-};
+}
 
-const editBotLogin = (botId: string) => {
+function editBotLogin(botId: string) {
+  const bot = botStore.botStores[botId];
+  if (!bot) {
+    console.error('Bot not found');
+    return;
+  }
   const loginInfo: AuthStorageWithBotId = {
-    ...botStore.botStores[botId].getLoginInfo(),
+    ...bot.getLoginInfo(),
     botId,
   };
   loginModal.value?.openLoginModal(loginInfo);
-};
+}
 
-const stopEditBot = (botId: string) => {
+function stopEditBot(botId: string) {
   if (!editingBots.value.includes(botId)) {
     return;
   }
 
   editingBots.value.splice(editingBots.value.indexOf(botId), 1);
-};
+}
 </script>
 
 <template>
@@ -64,7 +71,7 @@ const stopEditBot = (botId: string) => {
         :active="bot.botId === botStore.selectedBot"
         button
         :title="`${bot.botId} - ${bot.botName} - ${bot.botUrl} - ${
-          botStore.botStores[bot.botId].isBotLoggedIn ? '' : 'Login info expired!'
+          botStore.botStores[bot.botId]?.isBotLoggedIn ? '' : 'Login info expired!'
         }`"
         class="flex items-center p-2"
         :class="{
