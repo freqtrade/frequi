@@ -314,7 +314,7 @@ export function createBotSubStore(botId: string, botName: string) {
             Array.isArray(this.openTrades) &&
             Array.isArray(data) &&
             (this.openTrades.length !== data.length ||
-              !this.openTrades.every((val, index) => val.trade_id === data[index].trade_id))
+              !this.openTrades.every((val, index) => val.trade_id === data[index]?.trade_id))
           ) {
             // Open trades changed, so we should refresh now.
             this.refreshRequired = true;
@@ -916,7 +916,7 @@ export function createBotSubStore(botId: string, botName: string) {
               const { errors } = result.data;
               Object.keys(errors).forEach((pair) => {
                 showAlert(
-                  `Error while adding pair ${pair} to Blacklist: ${errors[pair].error_msg}`,
+                  `Error while adding pair ${pair} to Blacklist: ${errors[pair]?.error_msg}`,
                   'error',
                 );
               });
@@ -962,7 +962,7 @@ export function createBotSubStore(botId: string, botName: string) {
               const { errors } = result.data;
               Object.keys(errors).forEach((pair) => {
                 showAlert(
-                  `Error while removing pair ${pair} from Blacklist: ${errors[pair].error_msg}`,
+                  `Error while removing pair ${pair} from Blacklist: ${errors[pair]?.error_msg}`,
                   'error',
                 );
               });
@@ -1040,8 +1040,13 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       updateBacktestResult(backtestResult: BacktestResult) {
         Object.entries(backtestResult.strategy).forEach(([key, strat]) => {
+          const existingMetadata = backtestResult.metadata[key];
+          if (!existingMetadata) {
+            console.warn(`No metadata found for strategy ${key}`);
+            return;
+          }
           const metadata: BacktestMetadataWithStrategyName = {
-            ...(backtestResult.metadata[key] ?? {}),
+            ...existingMetadata,
             strategyName: key,
             notes: backtestResult.metadata[key]?.notes ?? ``,
             editing: false,
@@ -1050,7 +1055,7 @@ export function createBotSubStore(botId: string, botName: string) {
 
           // Never versions will always have run_id
           const stratKey =
-            backtestResult.metadata[key].run_id ??
+            existingMetadata.run_id ??
             `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
           const btResult: BacktestResultInMemory = {
             metadata,
@@ -1102,8 +1107,9 @@ export function createBotSubStore(botId: string, botName: string) {
           >(`/backtest/history/${payload.filename}`, payload);
           console.log(data);
           data.forEach((entry) => {
-            if (entry.run_id in this.backtestHistory) {
-              this.backtestHistory[entry.run_id].metadata.notes = entry.notes;
+            const existingEntry = this.backtestHistory[entry.run_id];
+            if (existingEntry) {
+              existingEntry.metadata.notes = entry.notes;
               console.log('updating ...');
             }
           });
@@ -1122,7 +1128,7 @@ export function createBotSubStore(botId: string, botName: string) {
           const keys = Object.keys(this.backtestHistory);
           const index = keys.findIndex((k) => k !== key);
           if (index !== -1) {
-            this.selectedBacktestResultKey = keys[index];
+            this.selectedBacktestResultKey = keys[index]!;
           }
         }
         delete this.backtestHistory[key];
