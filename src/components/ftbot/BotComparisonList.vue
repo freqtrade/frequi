@@ -45,7 +45,10 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     // TODO: handle one inactive bot ...
     val.push({
       botId: k,
-      botName: thisBotStore.botName || thisBotStore.botId,
+      // botName:
+      //   `${thisBotStore.botName} - ${botStore.availableBots[k].botName}` || thisBotStore.botId,
+
+      botName: thisBotStore.uiBotName || thisBotStore.botId,
       trades: `${botStore.allOpenTradeCount[k]} / ${
         botStore.allBotState[k]?.max_open_trades || 'N/A'
       }`,
