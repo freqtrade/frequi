@@ -95,11 +95,18 @@ function refreshIfNecessary() {
   }
 }
 
+function assignFirstPair() {
+  const [firstPair] = props.availablePairs;
+  if (firstPair) {
+    botStore.activeBot.plotPair = firstPair;
+  }
+}
+
 watch(
   () => props.availablePairs,
   () => {
     if (!props.availablePairs.find((p) => p === botStore.activeBot.plotPair)) {
-      [botStore.activeBot.plotPair] = props.availablePairs;
+      assignFirstPair();
       refresh();
     }
   },
@@ -149,7 +156,7 @@ onMounted(() => {
   if (botStore.activeBot.selectedPair) {
     botStore.activeBot.plotPair = botStore.activeBot.selectedPair;
   } else if (props.availablePairs.length > 0) {
-    [botStore.activeBot.plotPair] = props.availablePairs;
+    assignFirstPair();
   }
   plotStore.plotConfigChanged();
   if (!props.historicView) {
