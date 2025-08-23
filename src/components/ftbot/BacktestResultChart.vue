@@ -33,7 +33,10 @@ function refreshOHLCV(pair: string, columns: string[]) {
 }
 onMounted(() => {
   if (!botStore.activeBot.selectedPair && props.backtestResult.pairlist.length > 0) {
-    [botStore.activeBot.selectedPair] = props.backtestResult.pairlist;
+    const [firstPair] = props.backtestResult.pairlist;
+    if (firstPair) {
+      botStore.activeBot.selectedPair = firstPair;
+    }
   }
 });
 </script>

@@ -45,8 +45,8 @@ const backtestResultFields = computed(() => {
             >
               <template #header>
                 <BacktestResultSelectEntry
-                  v-if="col.key && col.key in backtestResults"
-                  :backtest-result="backtestResults[col.key]"
+                  v-if="col.key && backtestResults[col.key]"
+                  :backtest-result="backtestResults[col.key]!"
                 />
                 <span v-else>{{ col.label }}</span>
               </template>
