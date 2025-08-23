@@ -180,13 +180,20 @@ function updateChart(initial = false) {
     : props.dataset.data.slice();
 
   diffCols.value.forEach(([colFrom, colTo]) => {
-    // Enhance dataset with diff columns for area plots
-    dataset = calculateDiff(columns, dataset, colFrom, colTo);
+    if (colFrom && colTo) {
+      // Enhance dataset with diff columns for area plots
+      dataset = calculateDiff(columns, dataset, colFrom, colTo);
+    }
   });
   // Add new rows to end to allow slight "scroll past"
-  const newArray = Array(dataset.length > 0 ? dataset[dataset.length - 2]!.length : 0);
-  newArray[colDate] = dataset[dataset.length - 1][colDate] + props.dataset.timeframe_ms * 3;
-  dataset.push(newArray);
+  const scrollPastLength = 5;
+  const lastColDate = dataset[dataset.length - 1]?.[colDate];
+  if (lastColDate) {
+    const newArray = Array(scrollPastLength);
+    newArray[colDate] = lastColDate + props.dataset.timeframe_ms * scrollPastLength;
+    console.log('arrayLength', newArray);
+    dataset.push(newArray);
+  }
 
   const options: EChartsOption = {
     dataset: {
@@ -344,7 +351,10 @@ function updateChart(initial = false) {
             };
             const areaSeries = generateAreaCandleSeries(colDate, fillCol, key, fillValue, 0);
 
-            chartOptions.value.series[chartOptions.value.series.length - 1]['stack'] = key;
+            const currentSeries = chartOptions.value.series[chartOptions.value.series.length - 1];
+            if (currentSeries) {
+              currentSeries['stack'] = key;
+            }
             chartOptions.value.series.push(areaSeries);
           }
           chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
@@ -432,8 +442,10 @@ function updateChart(initial = false) {
                 fillValue,
                 plotIndex,
               );
-
-              chartOptions.value.series[chartOptions.value.series.length - 1]['stack'] = sk;
+              const currentSeries = chartOptions.value.series[chartOptions.value.series.length - 1];
+              if (currentSeries) {
+                currentSeries['stack'] = sk;
+              }
               chartOptions.value.series.push(areaSeries);
             }
             chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
@@ -532,7 +544,7 @@ function initializeChartOptions() {
         // and on the left if hovering on the right.
         const obj = { top: 60 };
         const mouseIsLeft = pos[0] < size.viewSize[0] / 2;
-        obj[['left', 'right'][+mouseIsLeft]] = mouseIsLeft ? 5 : 60;
+        obj[['left', 'right'][+mouseIsLeft]!] = mouseIsLeft ? 5 : 60;
         return obj;
       },
     },
