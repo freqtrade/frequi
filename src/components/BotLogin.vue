@@ -84,8 +84,11 @@ async function handleSubmit() {
     await login(auth.value);
     if (botEdit.value) {
       // Bot editing ...
-      botStore.botStores[botId].isBotLoggedIn = true;
-      botStore.botStores[botId].isBotOnline = true;
+      const thisBot = botStore.botStores[botId];
+      if (thisBot) {
+        thisBot.isBotLoggedIn = true;
+        thisBot.isBotOnline = true;
+      }
       // botStore.allRefreshFull();
       emitLoginResult(true);
     } else {

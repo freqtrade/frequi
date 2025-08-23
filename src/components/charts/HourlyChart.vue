@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// TODO: is this component used?!?
 import ECharts from 'vue-echarts';
 
 import type { Trade } from '@/types';
@@ -53,7 +54,7 @@ const hourlyData = computed(() => {
 
   for (let i = 0, len = props.trades.length; i < len; i += 1) {
     const trade = props.trades[i];
-    if (trade.close_timestamp) {
+    if (trade && trade.close_timestamp) {
       const hour = timestampHour(trade.close_timestamp);
 
       res[hour].profit += trade.profit_ratio;

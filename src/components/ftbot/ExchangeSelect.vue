@@ -46,7 +46,7 @@ const tradeModes = computed(() => {
 watch(
   () => exchangeModel.value.exchange,
   () => {
-    if (tradeModesTyped.value.length < 2) {
+    if (tradeModesTyped.value.length < 2 && tradeModesTyped.value[0]) {
       exchangeModel.value.trade_mode = tradeModesTyped.value[0];
     }
   },
