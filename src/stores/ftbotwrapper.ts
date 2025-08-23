@@ -60,8 +60,8 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       }
       return `ftbot.${botCount}`;
     },
-    allProfit: (state): Record<string, ProfitStats> => {
-      const result: Record<string, ProfitStats> = {};
+    allProfit: (state): Record<string, ProfitStats | undefined> => {
+      const result: Record<string, ProfitStats | undefined> = {};
       Object.entries(state.botStores).forEach(([k, botStore]) => {
         result[k] = botStore.profit;
       });

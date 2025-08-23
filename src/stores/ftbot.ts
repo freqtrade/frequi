@@ -179,6 +179,7 @@ export function createBotSubStore(botId: string, botName: string) {
         return false;
       },
       botName: (state) => state.botState?.bot_name || 'freqtrade',
+      botId: () => botId,
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
       activeLocks: (state) => state.currentLocks?.locks || [],
       profit: (state): ProfitStats => state.profitAll.all,
