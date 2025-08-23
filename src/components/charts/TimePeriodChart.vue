@@ -59,14 +59,14 @@ const absoluteMin = computed(
   () =>
     props.dailyStats.data.reduce(
       (min, p) => (p[props.profitCol] < min ? p[props.profitCol] : min),
-      props.dailyStats.data[0]?.[props.profitCol],
+      props.dailyStats.data[0]?.[props.profitCol] ?? 0,
     ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
 const absoluteMax = computed(
   () =>
     props.dailyStats.data.reduce(
       (max, p) => (p[props.profitCol] > max ? p[props.profitCol] : max),
-      props.dailyStats.data[0]?.[props.profitCol],
+      props.dailyStats.data[0]?.[props.profitCol] ?? 0,
     ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
 

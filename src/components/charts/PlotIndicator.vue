@@ -63,7 +63,10 @@ function emitIndicator() {
 watch(
   () => props.modelValue,
   () => {
-    [selAvailableIndicator.value] = Object.keys(props.modelValue);
+    const [firstIndicator] = Object.keys(props.modelValue);
+    if (firstIndicator) {
+      selAvailableIndicator.value = firstIndicator;
+    }
     cancelled.value = false;
     if (selAvailableIndicator.value && props.modelValue) {
       const xx = props.modelValue[selAvailableIndicator.value];
