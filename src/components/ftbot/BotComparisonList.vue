@@ -27,13 +27,15 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
   };
   Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitStats]) => {
     if (!v) return;
-    const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
+    const allOpenTrades = botStore.allOpenTrades[k];
+    if (!allOpenTrades) return;
+    const allStakes = allOpenTrades.reduce((a, b) => a + b.stake_amount, 0);
     const profitOpenRatio =
-      botStore.allOpenTrades[k].reduce(
+      allOpenTrades.reduce(
         (a, b) => a + (b.total_profit_ratio ?? b.profit_ratio) * b.stake_amount,
         0,
       ) / allStakes;
-    const profitOpen = botStore.allOpenTrades[k].reduce(
+    const profitOpen = allOpenTrades.reduce(
       (a, b) => a + (b.total_profit_abs ?? b.profit_abs ?? 0),
       0,
     );
