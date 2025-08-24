@@ -191,7 +191,6 @@ function updateChart(initial = false) {
   if (lastColDate) {
     const newArray = Array(scrollPastLength);
     newArray[colDate] = lastColDate + props.dataset.timeframe_ms * scrollPastLength;
-    console.log('arrayLength', newArray);
     dataset.push(newArray);
   }
 
