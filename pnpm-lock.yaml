@@ -73,8 +73,8 @@ importers:
         specifier: ^1.2.3
         version: 1.2.3
       '@playwright/test':
-        specifier: ^1.54.2
-        version: 1.54.2
+        specifier: ^1.55.0
+        version: 1.55.0
       '@primevue/auto-import-resolver':
         specifier: ^4.3.7
         version: 4.3.7
@@ -609,8 +609,8 @@ packages:
     resolution: {integrity: sha512-vsJDAkYR6qCPu+ioGScGiMYR7LvZYIXh/dlQeviqoTWNCVfKTLYD/LkNWH4Mxsv2a5vpIRc77FN5DnmK1eBggQ==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@playwright/test@1.54.2':
-    resolution: {integrity: sha512-A+znathYxPf+72riFd1r1ovOLqsIIB0jKIoPjyK2kqEIe30/6jF6BC7QNluHuwUmsD2tv1XZVugN8GqfTMOxsA==}
+  '@playwright/test@1.55.0':
+    resolution: {integrity: sha512-04IXzPwHrW69XusN/SIdDdKZBzMfOT9UNT/YiJit/xpy2VuAoB8NHc8Aplb96zsWDddLnbkPL3TsmrS04ZU2xQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2015,13 +2015,13 @@ packages:
   pkg-types@2.2.0:
     resolution: {integrity: sha512-2SM/GZGAEkPp3KWORxQZns4M+WSeXbC2HEvmOIJe3Cmiv6ieAJvdVhDldtHqM5J1Y7MrR1XhkBT/rMlhh9FdqQ==}
 
-  playwright-core@1.54.2:
-    resolution: {integrity: sha512-n5r4HFbMmWsB4twG7tJLDN9gmBUeSPcsBZiWSE4DnYz9mJMAFqr2ID7+eGC9kpEnxExJ1epttwR59LEWCk8mtA==}
+  playwright-core@1.55.0:
+    resolution: {integrity: sha512-GvZs4vU3U5ro2nZpeiwyb0zuFaqb9sUiAJuyrWpcGouD8y9/HLgGbNRjIph7zU9D3hnPaisMl9zG9CgFi/biIg==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.54.2:
-    resolution: {integrity: sha512-Hu/BMoA1NAdRUuulyvQC0pEqZ4vQbGfn8f7wPXcnqQmM+zct9UliKxsIkLNmz/ku7LElUNqmaiv1TG/aL5ACsw==}
+  playwright@1.55.0:
+    resolution: {integrity: sha512-sdCWStblvV1YU909Xqx0DhOjPZE4/5lJsIS84IfN9dAZfcl/CIZ5O8l3o0j7hPMjDvqoTF8ZUcc+i/GL5erstA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2908,9 +2908,9 @@ snapshots:
 
   '@pkgr/core@0.2.0': {}
 
-  '@playwright/test@1.54.2':
+  '@playwright/test@1.55.0':
     dependencies:
-      playwright: 1.54.2
+      playwright: 1.55.0
 
   '@primeuix/styled@0.7.2':
     dependencies:
@@ -4256,11 +4256,11 @@ snapshots:
       exsolve: 1.0.7
       pathe: 2.0.3
 
-  playwright-core@1.54.2: {}
+  playwright-core@1.55.0: {}
 
-  playwright@1.54.2:
+  playwright@1.55.0:
     dependencies:
-      playwright-core: 1.54.2
+      playwright-core: 1.55.0
     optionalDependencies:
       fsevents: 2.3.2
 
