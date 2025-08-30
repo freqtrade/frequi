@@ -244,18 +244,13 @@ export function generateBacktestSettingRows(result: StrategyBacktestResult) {
     { 'Custom Stoploss': result.use_custom_stoploss },
     { ROI: JSON.stringify(result.minimal_roi) },
     {
-      'Use Exit Signal':
-        result.use_exit_signal !== undefined ? result.use_exit_signal : result.use_sell_signal,
+      'Use Exit Signal': result.use_exit_signal ?? result.use_sell_signal,
     },
     {
-      'Exit profit only':
-        result.exit_profit_only !== undefined ? result.exit_profit_only : result.sell_profit_only,
+      'Exit profit only': result.exit_profit_only ?? result.sell_profit_only,
     },
     {
-      'Exit profit offset':
-        result.exit_profit_offset !== undefined
-          ? result.exit_profit_offset
-          : result.sell_profit_offset,
+      'Exit profit offset': result.exit_profit_offset ?? result.sell_profit_offset,
     },
     { 'Enable protections': result.enable_protections },
     {
