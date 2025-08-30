@@ -177,7 +177,10 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       'Max Drawdown ABS': formatPriceStake(result.max_drawdown_abs),
     },
     {
-      'Drawdown high | low': `${formatPriceStake(result.max_drawdown_high)} | ${formatPriceStake(
+      'Drawdown duration': result.drawdown_duration ?? 'N/A',
+    },
+    {
+      'Profit at Drawdown start | end': `${formatPriceStake(result.max_drawdown_high)} | ${formatPriceStake(
         result.max_drawdown_low,
       )}`,
     },

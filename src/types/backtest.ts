@@ -175,6 +175,7 @@ export interface StrategyBacktestResult {
   max_drawdown_abs: number;
   max_drawdown_low: number;
   max_drawdown_high: number;
+  drawdown_duration?: string;
 
   csum_min: number;
   csum_max: number;
