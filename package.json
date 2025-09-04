@@ -33,7 +33,7 @@
     "pinia-plugin-persistedstate": "^4.5.0",
     "primevue": "^4.3.8",
     "sortablejs": "^1.15.6",
-    "vue": "^3.5.20",
+    "vue": "^3.5.21",
     "vue-echarts": "^7.0.3",
     "vue-router": "^4.5.1"
   },
@@ -47,7 +47,7 @@
     "@types/node": "^24.3.0",
     "@typescript-eslint/parser": "^8.42.0",
     "@vitejs/plugin-vue": "^6.0.1",
-    "@vue/compiler-sfc": "3.5.20",
+    "@vue/compiler-sfc": "3.5.21",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
