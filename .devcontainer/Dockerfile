@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:22-bookworm
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:24-bookworm
 
 RUN sudo apt-get update \
     && sudo apt-get install -y vim \
