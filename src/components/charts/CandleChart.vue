@@ -307,10 +307,12 @@ function updateChart(initial = false) {
           tooltip: {
             valueFormatter: (value) => {
               if (Array.isArray(value)) {
-                // Show both value and tag
-                return value.length > 0 && value[0]
-                  ? `${config.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`
-                  : '';
+                if (value.length > 0 && value[0]) {
+                  // Show both value and tag
+                  return `${config.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`;
+                }
+                // fall back to empty output if tag ain't set.
+                return '';
               }
               // Fallback for single value
               return value ? `${config.tooltipPrefix} ${value}` : '';
