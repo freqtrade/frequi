@@ -291,38 +291,38 @@ function updateChart(initial = false) {
       },
     ];
 
-    for (const config of signalConfigs) {
-      if (config.colData >= 0) {
+    for (const signal of signalConfigs) {
+      if (signal.colData >= 0) {
         options.series.push({
-          name: config.name,
+          name: signal.name,
           type: 'scatter',
-          symbol: config.symbol,
-          symbolSize: config.symbolSize,
-          symbolRotate: config.symbolRotate ?? 0,
+          symbol: signal.symbol,
+          symbolSize: signal.symbolSize,
+          symbolRotate: signal.symbolRotate ?? 0,
           xAxisIndex: 0,
           yAxisIndex: 0,
           itemStyle: {
-            color: config.color,
+            color: signal.color,
           },
           tooltip: {
             valueFormatter: (value) => {
               if (Array.isArray(value)) {
                 if (value.length > 0 && value[0]) {
                   // Show both value and tag
-                  return `${config.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`;
+                  return `${signal.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`;
                 }
                 // fall back to empty output if tag ain't set.
                 return '';
               }
               // Fallback for single value
-              return value ? `${config.tooltipPrefix} ${value}` : '';
+              return value ? `${signal.tooltipPrefix} ${value}` : '';
             },
           },
           encode: {
             x: colDate,
-            y: config.colData,
+            y: signal.colData,
             tooltip:
-              config.colTooltip >= 0 ? [config.colData, config.colTooltip] : [config.colData],
+              signal.colTooltip >= 0 ? [signal.colData, signal.colTooltip] : [signal.colData],
           },
         });
       }
