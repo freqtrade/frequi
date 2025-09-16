@@ -108,13 +108,21 @@ onMounted(() => {
       </SelectButton>
     </div>
 
-    <div class="ps-1">
+    <div
+      v-if="
+        props.multiBotView &&
+        (botStore.selectedBotCount <= 1 || settingsStore.timeProfitPreference != 'rel_profit')
+      "
+    >
       <TimePeriodChart
         v-if="selectedStats"
         :daily-stats="selectedStatsSorted"
         :show-title="false"
         :profit-col="settingsStore.timeProfitPreference"
       />
+    </div>
+    <div v-else class="flex items-center justify-center h-full w-full p-2">
+      Time period chart is only available when a single bot is selected and showing absolute profit.
     </div>
     <div v-if="!props.multiBotView">
       <DataTable size="small" :value="selectedStats.data">
