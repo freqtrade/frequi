@@ -9,7 +9,7 @@ const props = defineProps<{
 }>();
 
 const hasWeekly = computed(
-  () => botStore.activeBot.botFeatures.weeklyMonthlyStats || props.multiBotView,
+  () => botStore.activeBot?.botFeatures?.weeklyMonthlyStats || props.multiBotView,
 );
 
 const periodicBreakdownSelections = computed(() => {
