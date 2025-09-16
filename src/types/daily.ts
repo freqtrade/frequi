@@ -20,7 +20,7 @@ export interface TimeSummaryRecord {
   abs_profit: number;
   /** added in  2.16*/
   rel_profit: number;
-  starting_balance_profit: number;
+  starting_balance: number;
   fiat_value: number;
   trade_count: number;
 }
