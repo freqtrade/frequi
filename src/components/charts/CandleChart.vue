@@ -309,7 +309,11 @@ function updateChart(initial = false) {
               if (Array.isArray(value)) {
                 if (value.length > 0 && value[0]) {
                   // Show both value and tag
-                  return `${signal.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`;
+                  //return `${signal.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`;
+                  // Show both value and tag, but limit tag length to prevent layout issues
+                  const tag = value[1]?.toString();
+                  const truncatedTag = tag && tag.length > 50 ? tag.substring(0, 50) + '...' : tag;
+                  return `${signal.tooltipPrefix} ${value[0]}${truncatedTag ? ` (${truncatedTag})` : ''}`;
                 }
                 // fall back to empty output if tag ain't set.
                 return '';
