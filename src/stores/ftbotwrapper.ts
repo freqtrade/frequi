@@ -158,11 +158,10 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       Object.entries(state.botStores).forEach(([, botStore]) => {
         if (botStore.isSelected) {
           botStore.weeklyStats?.data?.forEach((d) => {
-            if (resp[d.date]) {
+            const existing = resp[d.date];
+            if (!existing) {
               resp[d.date] = { ...d };
             } else {
-              const existing = resp[d.date]!;
-
               existing.abs_profit += d.abs_profit;
               existing.fiat_value += d.fiat_value;
               existing.trade_count += d.trade_count;
