@@ -187,6 +187,8 @@ export const useBotStore = defineStore('ftbot-wrapper', {
             } else {
               existing.abs_profit += d.abs_profit;
               existing.fiat_value += d.fiat_value;
+              existing.starting_balance += d.starting_balance;
+              existing.rel_profit += d.rel_profit;
               existing.trade_count += d.trade_count;
             }
           });
