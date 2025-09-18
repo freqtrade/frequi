@@ -12,7 +12,11 @@ const allToggled = computed<boolean>({
   },
 });
 
-function toggleBotsByState(state: 'dry' | 'live') {
+function toggleBotsByState(state: 'dry' | 'live' | 'all') {
+  if (state === 'all') {
+    allToggled.value = true;
+    return;
+  }
   for (const bot of Object.values(botStore.botStores)) {
     if (
       bot.isBotOnline &&
@@ -111,7 +115,19 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
 
 <template>
   <DataTable size="small" :value="tableItems">
-    <Column field="botName" header="Bot">
+    <Column field="botName">
+      <template #header>
+        <div class="flex justify-between flex-row w-full">
+          <b>Bot Name</b
+          ><Badge
+            class="items-center text-slate-200 bg-slate-800 cursor-pointer"
+            severity="contrast"
+            title="Click to select all bots"
+            @click="toggleBotsByState('all')"
+            >All</Badge
+          >
+        </div>
+      </template>
       <template #body="{ data, field }">
         <div class="flex flex-row justify-between items-center">
           <div>
