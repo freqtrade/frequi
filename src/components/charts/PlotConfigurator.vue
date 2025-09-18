@@ -278,7 +278,7 @@ const showTagsInTooltips = computed({
         :options="subplots"
         size="small"
         :pt="{
-          list: {
+          listContainer: {
             class: 'h-30',
           },
         }"
@@ -298,7 +298,7 @@ const showTagsInTooltips = computed({
         :disabled="addNewIndicator"
         :options="usedColumns"
         :pt="{
-          list: {
+          listContainer: {
             class: 'h-30',
           },
         }"
