@@ -271,7 +271,7 @@ onMounted(() => {
           <div
             v-if="!plotConfigModal"
             v-show="showPlotConfig"
-            class="grow border rounded-md ps-1 border-surface-300 dark:border-surface-700"
+            class="grow border rounded-md ps-1 border-surface-300 dark:border-surface-700 max-w-110"
           >
             <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
           </div>
