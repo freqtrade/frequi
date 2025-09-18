@@ -308,8 +308,14 @@ function updateChart(initial = false) {
             valueFormatter: (value) => {
               if (Array.isArray(value)) {
                 if (value.length > 0 && value[0]) {
+                  // If tag column number get's too high, we get the full list as second argument (for no good reason)
+                  const tag = Array.isArray(value[1])
+                    ? value[1][signal.colTooltip]?.toString()
+                    : value[1]?.toString();
+                  const tagShort = tag.substring(0, 100);
+
                   // Show both value and tag
-                  return `${signal.tooltipPrefix} ${value[0]} ${value[1]?.toString().substring(0, 100) ? `(${value[1]})` : ''}`;
+                  return `${signal.tooltipPrefix} ${value[0]} ${tagShort ? `(${tagShort})` : ''}`;
                 }
                 // fall back to empty output if tag ain't set.
                 return '';
@@ -490,7 +496,7 @@ function updateChart(initial = false) {
     chartOptions.value.series.push(tradesSeries);
   }
 
-  // console.log('chartOptions', chartOptions.value);
+  console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
     notMerge: initial,
