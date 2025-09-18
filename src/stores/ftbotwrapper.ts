@@ -47,6 +47,22 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       return Object.values(state.availableBots).sort((a, b) => (a.sortId ?? 0) - (b.sortId ?? 0));
     },
     allBotStores: (state) => Object.values(state.botStores),
+    allSelectedBotsSameStake() {
+      const stakeCurrencies = Object.values(this.selectedBots).map((bot) => bot.stakeCurrency);
+      return (
+        stakeCurrencies.length > 0 &&
+        stakeCurrencies.every((currency) => currency === stakeCurrencies[0])
+      );
+    },
+    /** All selected bots have the same mode (dry or live) */
+    allSelectedBotsSameState() {
+      const modes = Object.values(this.selectedBots).map((bot) => bot.botState.dry_run);
+      return modes.length > 0 && modes.every((mode) => mode === modes[0]);
+    },
+    /** Selected bots for dashboard view */
+    selectedBots: (state) => {
+      return Object.values(state.botStores).filter((store) => store.isSelected);
+    },
     selectedBotCount: (state) =>
       Object.values(state.botStores).filter((store) => store.isSelected).length,
     activeBot: (state) => state.botStores[state.selectedBot] as BotSubStore,

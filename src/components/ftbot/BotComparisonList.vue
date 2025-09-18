@@ -37,6 +37,8 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     stakeCurrency: 'USDT',
     wins: 0,
     losses: 0,
+    balance: 0,
+    balanceAppendix: '',
   };
   Object.entries(botStore.allProfit).forEach(([k, v]) => {
     const thisBotStore = botStore.botStores[k];
@@ -72,10 +74,11 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
       profitOpen,
       wins: v?.winning_trades ?? 0,
       losses: v?.losing_trades ?? 0,
-      balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total,
+      balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total ?? 0,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
       isDryRun: botStore.allBotState[k]?.dry_run,
       isOnline: botStore.botStores[k]?.isBotOnline,
+      balanceAppendix: botStore.allBotState[k]?.dry_run ? '(dry)' : '',
     });
     if (v?.profit_closed_coin !== undefined) {
       if (thisBotStore.isSelected) {
@@ -84,6 +87,16 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
         summary.profitOpen += profitOpen;
         summary.wins += v.winning_trades;
         summary.losses += v.losing_trades;
+        if (botStore.allSelectedBotsSameStake) {
+          summary.balance +=
+            botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total ?? 0;
+          summary.stakeCurrencyDecimals = botStore.allBotState[k]?.stake_currency_decimals || 3;
+          if (botStore.allSelectedBotsSameState) {
+            summary.balanceAppendix = botStore.allBotState[k]?.dry_run ? '(dry)' : '(live)';
+          } else {
+            summary.balanceAppendix = '(mixed dry and live)';
+          }
+        }
         // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
         // This will always take the last bot's stake currency
         // And therefore may result in wrong values.
@@ -176,9 +189,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
               )
             }}
           </span>
-          <span class="text-sm">{{
-            ` ${data.stakeCurrency}${data.isDryRun ? ' (dry)' : ''}`
-          }}</span>
+          <span class="text-sm">{{ ` ${data.stakeCurrency}${data.balanceAppendix}` }}</span>
         </div>
       </template>
     </Column>
