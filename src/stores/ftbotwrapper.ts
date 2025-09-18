@@ -425,6 +425,20 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       });
       await Promise.all(updates);
     },
+    toggleBotsByState(state: 'dry' | 'live' | 'all') {
+      for (const bot of Object.values(this.botStores)) {
+        if (state === 'all') {
+          bot.isSelected = true;
+        } else if (
+          bot.isBotOnline &&
+          ((bot.botState.dry_run && state === 'dry') || (!bot.botState.dry_run && state === 'live'))
+        ) {
+          bot.isSelected = true;
+        } else {
+          bot.isSelected = false;
+        }
+      }
+    },
   },
 });
 

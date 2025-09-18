@@ -12,23 +12,6 @@ const allToggled = computed<boolean>({
   },
 });
 
-function toggleBotsByState(state: 'dry' | 'live' | 'all') {
-  if (state === 'all') {
-    allToggled.value = true;
-    return;
-  }
-  for (const bot of Object.values(botStore.botStores)) {
-    if (
-      bot.isBotOnline &&
-      ((bot.botState.dry_run && state === 'dry') || (!bot.botState.dry_run && state === 'live'))
-    ) {
-      bot.isSelected = true;
-    } else {
-      bot.isSelected = false;
-    }
-  }
-}
-
 const tableItems = computed<ComparisonTableItems[]>(() => {
   const val: ComparisonTableItems[] = [];
   const summary: ComparisonTableItems = {
@@ -123,7 +106,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
             class="items-center text-slate-200 bg-slate-800 cursor-pointer"
             severity="contrast"
             title="Click to select all bots"
-            @click="toggleBotsByState('all')"
+            @click="botStore.toggleBotsByState('all')"
             >All</Badge
           >
         </div>
@@ -153,7 +136,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
             class="items-center bg-green-800 text-slate-200 cursor-pointer"
             severity="success"
             title="Click to select all dry run bots"
-            @click="toggleBotsByState('dry')"
+            @click="botStore.toggleBotsByState('dry')"
             >Dry</Badge
           >
           <Badge
@@ -161,7 +144,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
             class="items-center cursor-pointer"
             severity="warning"
             title="Click to select all live bots"
-            @click="toggleBotsByState('live')"
+            @click="botStore.toggleBotsByState('live')"
             >Live</Badge
           >
           <Badge v-if="data.isOnline === false" class="items-center" severity="secondary"
