@@ -244,6 +244,7 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
       legend: {
         data: [CHART_PROFIT],
         right: '5%',
+        top: 0,
         selectedMode: false,
       },
       useUTC: false,

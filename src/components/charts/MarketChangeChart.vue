@@ -80,6 +80,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     legend: {
       data: [CHART_MARKET_CHANGE],
       right: '5%',
+      top: 0,
       selectedMode: false,
     },
     xAxis: [

@@ -156,6 +156,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
         { name: CHART_TRADE_COUNT },
       ],
+      top: 0,
       right: '5%',
     },
     xAxis: [

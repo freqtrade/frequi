@@ -86,6 +86,7 @@ const hourlyChartOptions = computed((): EChartsOption => {
     legend: {
       data: [CHART_PROFIT, CHART_TRADE_COUNT],
       right: '5%',
+      top: 0,
     },
     xAxis: {
       type: 'category',

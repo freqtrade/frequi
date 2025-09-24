@@ -79,6 +79,7 @@ const chartOptions = computed((): EChartsOption => {
     legend: {
       data: [CHART_PROFIT],
       right: '5%',
+      top: 0,
       selectedMode: false,
     },
     xAxis: {
