@@ -18,6 +18,7 @@ export interface PlotConfig {
   subplots: Record<string, Record<string, IndicatorConfig>>;
   options?: {
     showTags?: boolean;
+    markAreaZIndex?: number;
   };
 }
 

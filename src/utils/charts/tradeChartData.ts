@@ -228,6 +228,7 @@ export function generateTradeSeries(
 export function generateMarkArea(
   dataset: PairHistory,
   enabled: boolean,
+  markAreaZIndex?: number | undefined,
 ): { markArea?: MarkAreaComponentOption } {
   if (!dataset.annotations || !enabled) return {};
 
@@ -235,6 +236,7 @@ export function generateMarkArea(
     label: {
       position: 'insideTop',
     },
+    z: markAreaZIndex ?? 1,
     data: dataset.annotations
       .filter((area) => area.type == 'area')
       .map((area) => {

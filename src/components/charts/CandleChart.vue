@@ -231,7 +231,11 @@ function updateChart(initial = false) {
           // open, close, low, high
           y: [colOpen, colClose, colLow, colHigh],
         },
-        ...generateMarkArea(props.dataset, props.showMarkArea),
+        ...generateMarkArea(
+          props.dataset,
+          props.showMarkArea,
+          props.plotConfig.options?.markAreaZIndex,
+        ),
       },
       {
         name: 'Volume',

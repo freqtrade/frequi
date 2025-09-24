@@ -251,6 +251,17 @@ const showTagsInTooltips = computed({
     plotStore.editablePlotConfig.options.showTags = value;
   },
 });
+const markAreaZIndex = computed({
+  get() {
+    return plotStore.editablePlotConfig.options?.markAreaZIndex ?? 1;
+  },
+  set(value: number) {
+    if (!plotStore.editablePlotConfig.options) {
+      plotStore.editablePlotConfig.options = {};
+    }
+    plotStore.editablePlotConfig.options.markAreaZIndex = value;
+  },
+});
 </script>
 
 <template>
@@ -259,6 +270,10 @@ const showTagsInTooltips = computed({
     <PlotConfigSelect allow-edit></PlotConfigSelect>
     <Divider />
     <BaseCheckbox v-model="showTagsInTooltips" class="mb-1">Show Tags in Tooltips</BaseCheckbox>
+    <div class="grid grid-cols-2 items-center gap-2 w-full">
+      <label>Mark Area Z-Index</label>
+      <InputNumber v-model="markAreaZIndex" class="mb-1" size="small" />
+    </div>
     <Divider />
 
     <label for="fieldSel" class="mb">Target Plot</label>
