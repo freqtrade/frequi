@@ -496,7 +496,7 @@ function updateChart(initial = false) {
     chartOptions.value.series.push(tradesSeries);
   }
 
-  console.log('chartOptions', chartOptions.value);
+  // console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
     notMerge: initial,
