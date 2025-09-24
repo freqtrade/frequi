@@ -271,7 +271,8 @@ const markAreaZIndex = computed({
     <Divider />
     <BaseCheckbox v-model="showTagsInTooltips" class="mb-1">Show Tags in Tooltips</BaseCheckbox>
     <div class="grid grid-cols-2 items-center gap-2 w-full">
-      <label>Mark Area Z-Index</label>
+      <label>Mark Area Z-Index <br /><small>(defaults to 1 - Candlechart is at Z=2)</small></label>
+
       <InputNumber v-model="markAreaZIndex" class="mb-1" size="small" />
     </div>
     <Divider />
