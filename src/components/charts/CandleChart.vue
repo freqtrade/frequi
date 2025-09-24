@@ -521,6 +521,7 @@ function initializeChartOptions() {
       // Initial legend, further entries are pushed to the below list
       data: ['Candles', 'Volume', 'Entry', 'Exit'],
       right: '1%',
+      top: 0,
       type: 'scroll',
       pageTextStyle: {
         color: props.theme === 'dark' ? '#dedede' : '#333',
