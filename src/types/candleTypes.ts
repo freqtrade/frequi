@@ -41,6 +41,7 @@ export interface MarkArea {
   y_end?: number;
   color?: string;
   label?: string;
+  z_index?: number;
 }
 
 export interface PairHistory {

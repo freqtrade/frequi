@@ -242,6 +242,7 @@ export function generateMarkArea(
       .map((area) => {
         return [
           {
+            z2: area.z_index ?? 1,
             xAxis: area.start,
             yAxis: area.y_start,
             itemStyle: {
@@ -252,6 +253,7 @@ export function generateMarkArea(
             },
           },
           {
+            z2: area.z_index ?? 1,
             xAxis: area.end,
             yAxis: area.y_end,
           },
