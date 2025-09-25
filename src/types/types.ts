@@ -137,6 +137,7 @@ export interface BotState {
   dry_run: boolean;
   /** Futures, margin or spot */
   trading_mode?: TradingMode;
+  margin_mode?: MarginMode;
   short_allowed?: boolean;
   state: BotStates;
   runmode: RunModes;

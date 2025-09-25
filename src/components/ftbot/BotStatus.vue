@@ -17,8 +17,15 @@ const botStore = useBotStore();
       </strong>
       on
       <strong>{{ botStore.activeBot.botState.exchange }}</strong> in
-      <strong>{{ botStore.activeBot.botState.trading_mode || 'spot' }}</strong> markets, with
-      Strategy <strong>{{ botStore.activeBot.botState.strategy }}</strong
+      <strong
+        >{{ botStore.activeBot.botState.trading_mode || 'spot' }}
+        {{
+          botStore.activeBot.botState.trading_mode != 'spot'
+            ? (botStore.activeBot.botState.margin_mode ?? '')
+            : ''
+        }}</strong
+      >
+      markets, with Strategy <strong>{{ botStore.activeBot.botState.strategy }}</strong
       >.
     </p>
     <p v-if="'stoploss_on_exchange' in botStore.activeBot.botState" class="mb-4">
