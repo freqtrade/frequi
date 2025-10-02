@@ -33,8 +33,7 @@ export interface PairHistoryPayload extends ExchangeSelectPayload {
   live_mode?: boolean;
 }
 
-export interface MarkArea {
-  type: 'area';
+export interface _MarkArea {
   start?: string;
   end?: string;
   y_start?: number;
@@ -43,6 +42,16 @@ export interface MarkArea {
   label?: string;
   z_index?: number;
 }
+
+export interface MarkArea extends _MarkArea {
+  type: 'area';
+}
+
+export interface MarkLine extends _MarkArea {
+  type: 'line';
+}
+
+export type MarkAnnotation = MarkArea | MarkLine;
 
 export interface PairHistory {
   strategy: string;
@@ -56,7 +65,7 @@ export interface PairHistory {
   all_columns?: string[];
   /** Actual data */
   data: number[][];
-  annotations: MarkArea[];
+  annotations: MarkAnnotation[];
 
   length: number;
   /** Number of buy signals in this response */
