@@ -1,6 +1,10 @@
 import type { Order, PairHistory, Trade, BTOrder } from '@/types';
 
-import type { MarkAreaComponentOption, ScatterSeriesOption } from 'echarts';
+import type {
+  MarkAreaComponentOption,
+  MarkLineComponentOption,
+  ScatterSeriesOption,
+} from 'echarts';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {
   return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
@@ -229,7 +233,7 @@ export function generateMarkArea(
   dataset: PairHistory,
   enabled: boolean,
   markAreaZIndex?: number | undefined,
-): { markArea?: MarkAreaComponentOption } {
+): { markArea?: MarkAreaComponentOption; markLine?: MarkLineComponentOption } {
   if (!dataset.annotations || !enabled) return {};
 
   const markArea: MarkAreaComponentOption = {
@@ -260,7 +264,33 @@ export function generateMarkArea(
         ];
       }),
   };
+  const markLine: MarkLineComponentOption = {
+    label: {
+      position: 'middle',
+    },
+    symbol: ['none', 'none'],
+    data: dataset.annotations
+      .filter((line) => line.type == 'line')
+      .map((line) => {
+        return [
+          {
+            name: line.label,
+            xAxis: line.start,
+            yAxis: line.y_start,
+            lineStyle: {
+              color: line.color,
+              type: 'solid',
+            },
+          },
+          {
+            xAxis: line.end,
+            yAxis: line.y_end,
+          },
+        ];
+      }),
+  };
   return {
     markArea,
+    markLine,
   };
 }
