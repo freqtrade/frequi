@@ -73,6 +73,8 @@ const MARGINLEFT = isLabelLeft.value ? '5.5%' : '1%';
 const MARGINRIGHT = isLabelLeft.value ? '1%' : '5.5%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
+// minimal helpers for debugging
+const showAxisLine = false;
 
 // Candle Colors
 const upColor = props.colorUp;
@@ -397,7 +399,7 @@ function updateChart(initial = false) {
             show: true,
             hideOverlap: true,
           },
-          axisLine: { show: false },
+          axisLine: { show: showAxisLine },
           axisTick: { show: false },
           splitLine: { show: false },
         });
@@ -605,6 +607,7 @@ function initializeChartOptions() {
         min: (value) => {
           return value.min - (value.max - value.min) * 0.04;
         },
+        axisLine: { show: showAxisLine },
         position: props.labelSide,
       },
       {
@@ -616,7 +619,7 @@ function initializeChartOptions() {
         position: props.labelSide,
         nameGap: NAMEGAP,
         axisLabel: { show: false },
-        axisLine: { show: false },
+        axisLine: { show: showAxisLine },
         axisTick: { show: false },
         splitLine: { show: false },
       },
