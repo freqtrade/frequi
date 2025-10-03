@@ -32,9 +32,3 @@ export function formatPrice(value: number | null, decimals = 15): string {
 export function formatPriceCurrency(price: number | null, currency: string, decimals = 3) {
   return `${formatPrice(price, decimals)} ${currency ?? ''}`;
 }
-
-export default {
-  isNotUndefined,
-  formatPrice,
-  formatPercent,
-};
