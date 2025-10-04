@@ -398,6 +398,7 @@ function updateChart(initial = false) {
           axisLabel: {
             show: true,
             hideOverlap: true,
+            overflow: 'truncate',
           },
           axisLine: { show: showAxisLine },
           axisTick: { show: false },
