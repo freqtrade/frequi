@@ -603,12 +603,19 @@ function initializeChartOptions() {
       {
         scale: true,
         max: (value) => {
-          return value.max + (value.max - value.min) * 0.02;
+          return formatDecimal(value.max + (value.max - value.min) * 0.02);
         },
         min: (value) => {
-          return value.min - (value.max - value.min) * 0.04;
+          return formatDecimal(value.min - (value.max - value.min) * 0.04);
         },
+        name: ' ', // Necessary to avoid layout shift
+        nameLocation: 'middle',
+        nameGap: NAMEGAP,
         axisLine: { show: showAxisLine },
+        axisLabel: {
+          hideOverlap: true,
+          overflow: 'truncate',
+        },
         position: props.labelSide,
       },
       {
