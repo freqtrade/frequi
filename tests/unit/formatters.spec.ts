@@ -30,7 +30,7 @@ describe('formatters.ts', () => {
     expect(formatPrice(2.701e-9, 8)).toEqual('0');
     expect(formatPrice(2.701e-9, 11)).toEqual('0.0000000027');
   });
-  it.only('Format decimal correctly', () => {
+  it('Format decimal correctly', () => {
     expect(formatDecimal(1051230.5123512)).toEqual('1051230.51');
     expect(formatDecimal(105123.5123512)).toEqual('105123.51');
     expect(formatDecimal(10512.35123512)).toEqual('10512.35');
