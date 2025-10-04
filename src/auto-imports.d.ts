@@ -58,6 +58,8 @@ declare global {
   const exportForTesting: typeof import('./utils/formatters/timeformat')['exportForTesting']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const findGridLayout: typeof import('./stores/layout')['findGridLayout']
+  const formatDecimal: typeof import('./utils/formatters/numberformat')['formatDecimal']
+  const formatNumber: typeof import('./utils/formatters/numberformat')['formatNumber']
   const formatObjectForTable: typeof import('./utils/objectToTableItems')['formatObjectForTable']
   const formatPercent: typeof import('./utils/formatters/numberformat')['formatPercent']
   const formatPrice: typeof import('./utils/formatters/numberformat')['formatPrice']
@@ -465,6 +467,7 @@ declare module 'vue' {
     readonly exportForTesting: UnwrapRef<typeof import('./utils/formatters/timeformat')['exportForTesting']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly findGridLayout: UnwrapRef<typeof import('./stores/layout')['findGridLayout']>
+    readonly formatDecimal: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatDecimal']>
     readonly formatObjectForTable: UnwrapRef<typeof import('./utils/objectToTableItems')['formatObjectForTable']>
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
