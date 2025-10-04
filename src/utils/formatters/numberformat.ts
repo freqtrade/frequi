@@ -32,3 +32,36 @@ export function formatPrice(value: number | null, decimals = 15): string {
 export function formatPriceCurrency(price: number | null, currency: string, decimals = 3) {
   return `${formatPrice(price, decimals)} ${currency ?? ''}`;
 }
+
+/**
+ * Formats a decimal number to a string with a varying number of decimal places
+ * depending on the size of the number.
+ * @param value Number to format
+ * @returns Formatted string
+ */
+export function formatDecimal(value: number | null): string {
+  if (!isNotUndefined(value)) {
+    return 'N/A';
+  }
+  let decimals = 2;
+  const absValue = Math.abs(value);
+  if (absValue < 0.0000001) {
+    decimals = 15;
+  } else if (absValue < 0.000001) {
+    decimals = 11;
+  } else if (absValue < 0.0001) {
+    decimals = 8;
+  } else if (absValue < 0.01) {
+    decimals = 5;
+  } else if (absValue < 1) {
+    decimals = 5;
+  } else if (absValue < 10) {
+    decimals = 4;
+  } else if (absValue < 100) {
+    decimals = 3;
+  }
+  return value.toLocaleString('fullwide', {
+    useGrouping: false,
+    maximumFractionDigits: decimals,
+  });
+}
