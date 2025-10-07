@@ -49,6 +49,8 @@ export interface MarkArea extends _MarkArea {
 
 export interface MarkLine extends _MarkArea {
   type: 'line';
+  width?: number;
+  line_style?: 'solid' | 'dashed' | 'dotted';
 }
 
 export type MarkAnnotation = MarkArea | MarkLine;

@@ -233,11 +233,6 @@ function updateChart(initial = false) {
           // open, close, low, high
           y: [colOpen, colClose, colLow, colHigh],
         },
-        ...generateMarkArea(
-          props.dataset,
-          props.showMarkArea,
-          props.plotConfig.options?.markAreaZIndex,
-        ),
       },
       {
         name: 'Volume',
@@ -257,6 +252,15 @@ function updateChart(initial = false) {
   };
 
   if (Array.isArray(options.series)) {
+    const areaSeries = generateMarkAreaSeries(
+      props.dataset,
+      props.showMarkArea,
+      props.plotConfig.options?.markAreaZIndex,
+    );
+
+    if (areaSeries) {
+      options.series.push(areaSeries);
+    }
     const signalConfigs = [
       {
         colData: colEntryData,

@@ -269,6 +269,7 @@ export function generateMarkArea(
       position: 'middle',
     },
     symbol: ['none', 'none'],
+    z: markAreaZIndex ?? 1,
     data: dataset.annotations
       .filter((line) => line.type == 'line')
       .map((line) => {
@@ -279,12 +280,15 @@ export function generateMarkArea(
             yAxis: line.y_start,
             lineStyle: {
               color: line.color,
-              type: 'solid',
+              width: line.width ?? 1,
+              type: line.line_style ?? 'solid',
             },
+            z2: line.z_index ?? 1,
           },
           {
             xAxis: line.end,
             yAxis: line.y_end,
+            z2: line.z_index ?? 1,
           },
         ];
       }),
@@ -292,5 +296,24 @@ export function generateMarkArea(
   return {
     markArea,
     markLine,
+  };
+}
+
+export function generateMarkAreaSeries(
+  dataset: PairHistory,
+  enabled: boolean,
+  markAreaZIndex?: number | undefined,
+): ScatterSeriesOption | undefined {
+  if (!dataset.annotations || !enabled) {
+    return undefined;
+  }
+  // Invisible series added to chart to work around marklines bug
+  // TODO: https://github.com/apache/echarts/issues/21300
+  return {
+    // Invisible
+    type: 'scatter',
+    symbol: 'none',
+    xAxisIndex: 0,
+    ...generateMarkArea(dataset, enabled, markAreaZIndex),
   };
 }
