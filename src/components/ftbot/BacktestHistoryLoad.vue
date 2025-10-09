@@ -51,7 +51,7 @@ function rowClick(row) {
     </Button>
     <p>
       Load Historic results from disk. You can click on multiple results to load all of them into
-      freqUI.
+      Mabhirex.
     </p>
     <div v-if="botStore.activeBot.backtestHistoryList.length > 0" class="flex align-center">
       <InputText

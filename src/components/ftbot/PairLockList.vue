@@ -8,7 +8,7 @@ function removePairLock(item: Lock) {
   if (item.id !== undefined) {
     botStore.activeBot.deleteLock(item.id);
   } else {
-    showAlert('This Freqtrade version does not support deleting locks.');
+    showAlert('This version does not support deleting locks.');
   }
 }
 </script>
