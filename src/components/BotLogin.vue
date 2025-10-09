@@ -199,7 +199,7 @@ onMounted(() => {
         id="username-input"
         v-model="auth.username"
         required
-        placeholder="Freqtrader"
+        placeholder="Mabhirex User"
         :invalid="nameState === false"
         class="mt-1 block w-full"
         @keydown.enter="handleOk"
@@ -230,7 +230,7 @@ onMounted(() => {
           <a
             href="https://www.freqtrade.io/en/latest/rest-api/#cors"
             class="text-blue-500 underline"
-            >Freqtrade CORS documentation</a
+            >API CORS documentation</a
           >
         </span>
       </Message>

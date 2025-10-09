@@ -12,32 +12,32 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/trade',
-    name: 'Freqtrade Trading',
+    name: 'Mabhirex Trading',
     component: () => import('@/views/TradingView.vue'),
   },
   {
     path: '/graph',
-    name: 'Freqtrade Graph',
+    name: 'Mabhirex Graph',
     component: () => import('@/views/ChartsView.vue'),
   },
   {
     path: '/logs',
-    name: 'Freqtrade Logs',
+    name: 'Mabhirex Logs',
     component: () => import('@/views/LogView.vue'),
   },
   {
     path: '/backtest',
-    name: 'Freqtrade Backtest',
+    name: 'Mabhirex Backtest',
     component: () => import('@/views/BacktestingView.vue'),
   },
   {
     path: '/dashboard',
-    name: 'Freqtrade Dashboard',
+    name: 'Mabhirex Dashboard',
     component: () => import('@/views/DashboardView.vue'),
   },
   {
     path: '/balance',
-    name: 'Freqtrade Balance',
+    name: 'Mabhirex Balance',
     component: () => import('@/components/ftbot/BotBalance.vue'),
   },
   {
@@ -56,7 +56,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/settings',
-    name: 'Freqtrade Settings',
+    name: 'Mabhirex Settings',
     component: () => import('@/views/SettingsView.vue'),
   },
   {

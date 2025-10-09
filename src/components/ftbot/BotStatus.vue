@@ -5,7 +5,7 @@ const botStore = useBotStore();
 <template>
   <div v-if="botStore.activeBot.botState" class="p-4">
     <p class="mb-4">
-      Running Freqtrade <strong>{{ botStore.activeBot.version }}</strong>
+      Running Mabhirex <strong>{{ botStore.activeBot.version }}</strong>
     </p>
     <p class="mb-4">
       Running with

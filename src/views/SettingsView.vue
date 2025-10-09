@@ -25,7 +25,7 @@ const resetDynamicLayout = () => {
 
 <template>
   <Card class="mx-auto mt-3 p-4 max-w-4xl">
-    <template #title>FreqUI Settings</template>
+    <template #title>Mabhirex Settings</template>
     <template #content>
       <div class="flex flex-col gap-4 text-start dark:text-surface-300">
         <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
