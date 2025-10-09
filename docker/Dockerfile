@@ -1,5 +1,5 @@
 # Special docker file for pre-built images
-FROM nginx:1.29.1-alpine
+FROM nginx:1.29.2-alpine
 
 COPY  dist/ /etc/nginx/html
 COPY  nginx.conf /etc/nginx/nginx.conf
