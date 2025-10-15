@@ -7,11 +7,24 @@ updates:
     - "/docker/"
   cooldown:
     default-days: 4
+    exclude:
+      - "vscode/devcontainers/typescript-node"
   schedule:
     interval: "cron"
     # Daily at 2 AM
     cronjob: "0 2 * * *"
   open-pull-requests-limit: 10
+
+- package-ecosystem: devcontainers
+  directory: "/"
+  cooldown:
+    default-days: 4
+  schedule:
+    interval: "cron"
+    # Daily at 2 AM
+    cronjob: "0 2 * * *"
+  open-pull-requests-limit: 10
+
 
 - package-ecosystem: npm
   directory: "/"
