@@ -1,26 +1,19 @@
-/* cSpell:disable */
 {
   "name": "frequi",
-  "build": {
-    "dockerfile": "Dockerfile"
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
   },
   "forwardPorts": [
     3000
   ],
-  "mounts": [
-    "source=frequi-bashhistory,target=/home/node/commandhistory,type=volume"
-  ],
-  "remoteUser": "node",
   "customizations": {
     "vscode": {
       "settings": {
         // "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": true
-        },
-        "emmet.includeLanguages": {
-          "vue": "html",
-          "vue-html": "html"
+          "source.fixAll.eslint": "explicit"
         },
         "workbench.iconTheme": "vscode-icons"
       },
@@ -32,9 +25,10 @@
         "vitest.explorer",
         "yzhang.markdown-all-in-one",
         "marquesmps.dockerfile-validator",
-        "streetsidesoftware.code-spell-checker",
+        // "streetsidesoftware.code-spell-checker",
         "vscode-icons-team.vscode-icons",
-        "hediet.vscode-drawio"
+        "hediet.vscode-drawio",
+        "YoavBls.pretty-ts-errors"
       ]
     }
   },
