@@ -77,6 +77,7 @@ export interface PeriodicBreakdown {
   week: PeriodicStat[];
   month: PeriodicStat[];
   year?: PeriodicStat[];
+  weekday?: PeriodicStat[];
 }
 
 export interface StrategyBacktestResult {

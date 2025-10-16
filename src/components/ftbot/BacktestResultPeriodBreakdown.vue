@@ -14,6 +14,9 @@ const periodicBreakdownSelections = computed(() => {
   if (props.periodicBreakdown.year) {
     res.push({ value: 'year', text: 'Years' });
   }
+  if (props.periodicBreakdown.weekday) {
+    res.push({ value: 'weekday', text: 'Weekday' });
+  }
 
   return res;
 });
