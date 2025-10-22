@@ -38,7 +38,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.38.0",
     "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "^1.56.1",
     "@primevue/auto-import-resolver": "^4.4.1",
@@ -52,8 +52,8 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
-    "eslint": "^9.37.0",
-    "eslint-plugin-vue": "^10.5.0",
+    "eslint": "^9.38.0",
+    "eslint-plugin-vue": "^10.5.1",
     "globals": "^16.4.0",
     "happy-dom": "^20.0.5",
     "prettier": "^3.6.2",
