@@ -118,8 +118,8 @@ importers:
         specifier: ^16.4.0
         version: 16.4.0
       happy-dom:
-        specifier: ^20.0.2
-        version: 20.0.2
+        specifier: ^20.0.5
+        version: 20.0.5
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -149,7 +149,7 @@ importers:
         version: 7.1.11(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass@1.86.0)(yaml@2.7.0)
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.8.1)(happy-dom@20.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(sass@1.86.0)(yaml@2.7.0)
+        version: 3.2.4(@types/node@24.8.1)(happy-dom@20.0.5)(jiti@2.6.1)(lightningcss@1.30.1)(sass@1.86.0)(yaml@2.7.0)
       vue-tsc:
         specifier: ^3.1.1
         version: 3.1.1(typescript@5.8.3)
@@ -1656,8 +1656,8 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  happy-dom@20.0.2:
-    resolution: {integrity: sha512-pYOyu624+6HDbY+qkjILpQGnpvZOusItCk+rvF5/V+6NkcgTKnbOldpIy22tBnxoaLtlM9nXgoqAcW29/B7CIw==}
+  happy-dom@20.0.5:
+    resolution: {integrity: sha512-AiqA0rfS7WR1kihXt9W9aA5LFLaOKzwiL+QoI7BkOQ0r21C7VHTOf4k8QNlnWYaHLhpI2tZzJPLV1lY1obDTmw==}
     engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
@@ -3959,7 +3959,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@20.0.2:
+  happy-dom@20.0.5:
     dependencies:
       '@types/node': 20.19.23
       '@types/whatwg-mimetype': 3.0.2
@@ -4619,7 +4619,7 @@ snapshots:
       sass: 1.86.0
       yaml: 2.7.0
 
-  vitest@3.2.4(@types/node@24.8.1)(happy-dom@20.0.2)(jiti@2.6.1)(lightningcss@1.30.1)(sass@1.86.0)(yaml@2.7.0):
+  vitest@3.2.4(@types/node@24.8.1)(happy-dom@20.0.5)(jiti@2.6.1)(lightningcss@1.30.1)(sass@1.86.0)(yaml@2.7.0):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
@@ -4646,7 +4646,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.8.1
-      happy-dom: 20.0.2
+      happy-dom: 20.0.5
     transitivePeerDependencies:
       - jiti
       - less
