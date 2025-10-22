@@ -40,7 +40,7 @@
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@iconify-json/mdi": "^1.2.3",
-    "@playwright/test": "^1.56.0",
+    "@playwright/test": "^1.56.1",
     "@primevue/auto-import-resolver": "^4.4.1",
     "@tailwindcss/vite": "^4.1.14",
     "@tsconfig/node22": "^22.0.2",
