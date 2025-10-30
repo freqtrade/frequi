@@ -104,6 +104,7 @@ export function createBotSubStore(botId: string, botName: string) {
         detailTradeId: null as number | null,
         selectedPair: '',
         plotPair: '',
+        plotMultiPairs: [] as string[],
         // TODO: type me
         candleData: {},
         candleDataStatus: LoadingStatus.not_loaded,
