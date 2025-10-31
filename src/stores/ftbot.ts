@@ -111,7 +111,6 @@ export function createBotSubStore(botId: string, botName: string) {
         history: {},
         historyStatus: LoadingStatus.not_loaded,
         historyTakesLonger: false,
-        strategyPlotConfig: undefined as PlotConfig | undefined,
         strategyList: [] as string[],
         freqaiModelList: [] as string[],
         hyperoptLossList: [] as HyperoptLossObj[],
@@ -459,7 +458,7 @@ export function createBotSubStore(botId: string, botName: string) {
           reject(error);
         });
       },
-      async getStrategyPlotConfig() {
+      async getStrategyPlotConfig(): Promise<PlotConfig | undefined> {
         try {
           const payload = {};
           if (this.isWebserverMode) {
@@ -469,16 +468,15 @@ export function createBotSubStore(botId: string, botName: string) {
             payload['strategy'] = this.strategy.strategy;
           }
 
-          const { data: plotConfig } = await api.get<PlotConfig>('/plot_config', {
+          const { data: plotConfig } = await api.get<Partial<PlotConfig>>('/plot_config', {
             params: { ...payload },
           });
-          if (plotConfig.subplots === null) {
-            // Subplots should not be null but an empty object
-            // TODO: Remove this fix when fix in freqtrade is populated further.
-            plotConfig.subplots = {};
-          }
-          this.strategyPlotConfig = plotConfig;
-          return Promise.resolve();
+          const finalPlotConfig: PlotConfig = {
+            subplots: {},
+            main_plot: {},
+            ...plotConfig,
+          };
+          return Promise.resolve(finalPlotConfig);
         } catch (data) {
           console.error(data);
           return Promise.reject(data);

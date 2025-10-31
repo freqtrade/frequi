@@ -181,9 +181,9 @@ async function loadPlotConfigFromStrategy() {
     return;
   }
   try {
-    await botStore.activeBot.getStrategyPlotConfig();
-    if (botStore.activeBot.strategyPlotConfig) {
-      plotStore.editablePlotConfig = botStore.activeBot.strategyPlotConfig;
+    const strategyPlotConfig = await botStore.activeBot.getStrategyPlotConfig();
+    if (strategyPlotConfig) {
+      plotStore.editablePlotConfig = strategyPlotConfig;
     }
   } catch (error) {
     //
