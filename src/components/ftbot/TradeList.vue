@@ -2,7 +2,6 @@
 import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
 
 import { useRouter } from 'vue-router';
-import ProfitDistributionChart from '../charts/ProfitDistributionChart.vue';
 
 enum ModalReasons {
   removeTrade,
@@ -205,7 +204,6 @@ watch(
       :scrollable="true"
       scroll-height="flex"
       @row-click="onRowClicked"
-      removableSort 
     >
       <template #empty>
         {{ emptyText }}

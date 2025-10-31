@@ -8,12 +8,12 @@ const props = withDefaults(
     availablePairs: string[];
     timeframe: string;
     historicView?: boolean;
-    pair:string;
+    pair?: string;
     /** Reload data on pair switch if in historic view */
     reloadDataOnSwitch?: boolean;
     strategy?: string;
     sliderPosition?: ChartSliderPosition;
-    isSinglePairView: boolean;
+    isSinglePairView?: boolean;
   }>(),
   {
     trades: () => [],
@@ -22,7 +22,7 @@ const props = withDefaults(
     strategy: '',
     pair: '',
     sliderPosition: undefined,
-    isSinglePairView: true
+    isSinglePairView: true,
   },
 );
 
@@ -103,17 +103,6 @@ watch(
   },
 );
 
-// watch(
-//   () => botStore.activeBot.plotPair,
-//   () => {
-//     if (!props.historicView) {
-//       refresh();
-//     } else if (props.reloadDataOnSwitch) {
-//       refreshIfNecessary();
-//     }
-//   },
-// );
-
 watch(
   () => plotStore.plotConfig,
   () => {
@@ -143,7 +132,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex" :class="{'h-full': isSinglePairView, 'h-150': !isSinglePairView}">
+  <div class="flex" :class="{ 'h-full': isSinglePairView, 'h-150': !isSinglePairView }">
     <div class="flex-fill w-full flex-col align-items-stretch flex">
       <div class="flex me-0">
         <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
