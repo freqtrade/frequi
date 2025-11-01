@@ -11,25 +11,25 @@
               class="logo"
             />
           </div>
-          
+
           <h2 class="hero-title">
             AI-Powered Trading<br>
             <span class="highlight">Unmatched Performance</span>
           </h2>
-          
+
           <p class="hero-description">
             Leverage our advanced algorithms and machine learning to automate your strategies, and maximize your returns
           </p>
-          
+
           <div class="cta-buttons">
-            <Button 
+            <Button
               class="btn-primary"
               size="large"
               @click="$router.push('/trade')"
             >
               Get Started Now
             </Button>
-            <Button 
+            <Button
               class="btn-secondary"
               variant="outlined"
               size="large"
@@ -37,6 +37,17 @@
             >
               How It Works
             </Button>
+          </div>
+
+          <!-- Bot Management Section -->
+          <div class="bot-management-section">
+            <h3 class="bot-section-title">Manage Your Bots</h3>
+            <div class="bot-management-container">
+              <BotList />
+              <div class="bot-add-section">
+                <LoginModal login-text="Add New Bot" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -199,6 +210,9 @@
 </template>
 
 <script setup lang="ts">
+import BotList from '@/components/BotList.vue';
+import LoginModal from '@/components/LoginModal.vue';
+
 const scrollToHowItWorks = () => {
   document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
 };
@@ -764,22 +778,88 @@ const scrollToHowItWorks = () => {
   }
 }
 
+/* Bot Management Section */
+.bot-management-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.3s ease;
+}
+
+.bot-management-section:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.bot-section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bot-management-container {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bot-management-container :deep(.p-button) {
+  margin-top: 1rem;
+}
+
+.bot-add-section {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.bot-add-section :deep(.p-button) {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+  border: none !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+.bot-add-section :deep(.p-button:hover) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4) !important;
+}
+
 @media (max-width: 480px) {
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .logo {
     width: 80px;
     height: 80px;
   }
-  
+
   .container {
     padding: 0 1rem;
   }
-  
+
   .hero {
     padding: 2rem 0;
+  }
+
+  .bot-management-section {
+    padding: 1rem;
+    margin-top: 2rem;
   }
 }
 </style>
