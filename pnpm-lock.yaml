@@ -118,8 +118,8 @@ importers:
         specifier: ^16.4.0
         version: 16.4.0
       happy-dom:
-        specifier: ^20.0.8
-        version: 20.0.8
+        specifier: ^20.0.10
+        version: 20.0.10
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -149,7 +149,7 @@ importers:
         version: 7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0)
       vitest:
         specifier: ^4.0.6
-        version: 4.0.6(@types/node@24.9.1)(happy-dom@20.0.8)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0)
+        version: 4.0.6(@types/node@24.9.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0)
       vue-tsc:
         specifier: ^3.1.2
         version: 3.1.2(typescript@5.8.3)
@@ -1618,8 +1618,8 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  happy-dom@20.0.8:
-    resolution: {integrity: sha512-TlYaNQNtzsZ97rNMBAm8U+e2cUQXNithgfCizkDgc11lgmN4j9CKMhO3FPGKWQYPwwkFcPpoXYF/CqEPLgzfOg==}
+  happy-dom@20.0.10:
+    resolution: {integrity: sha512-6umCCHcjQrhP5oXhrHQQvLB0bwb1UzHAHdsXy+FjtKoYjUhmNZsQL8NivwM1vDvNEChJabVrUYxUnp/ZdYmy2g==}
     engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
@@ -3835,7 +3835,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@20.0.8:
+  happy-dom@20.0.10:
     dependencies:
       '@types/node': 20.19.24
       '@types/whatwg-mimetype': 3.0.2
@@ -4443,7 +4443,7 @@ snapshots:
       sass: 1.86.0
       yaml: 2.7.0
 
-  vitest@4.0.6(@types/node@24.9.1)(happy-dom@20.0.8)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0):
+  vitest@4.0.6(@types/node@24.9.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0):
     dependencies:
       '@vitest/expect': 4.0.6
       '@vitest/mocker': 4.0.6(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0))
@@ -4467,7 +4467,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.9.1
-      happy-dom: 20.0.8
+      happy-dom: 20.0.10
     transitivePeerDependencies:
       - jiti
       - less
