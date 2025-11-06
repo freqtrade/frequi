@@ -160,7 +160,6 @@ if (pairlistStore.whitelist.length > 0) {
         ]"
         option-disabled="disabled"
       >
-        <!-- TODO primevue: Fix selectButton "disabled" state-->
       </SelectButton>
       <div class="relative overflow-auto">
         <CopyableTextfield
