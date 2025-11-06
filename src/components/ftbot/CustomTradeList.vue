@@ -61,13 +61,12 @@ const tradeClick = (trade) => {
         :rows="perPage"
         aria-controls="tradeList"
       ></Paginator>
-      <BFormInput
+      <InputText
         v-if="showFilter"
         v-model="filterText"
         type="text"
         placeholder="Filter"
         size="sm"
-        style="width: unset"
       />
     </div>
   </div>

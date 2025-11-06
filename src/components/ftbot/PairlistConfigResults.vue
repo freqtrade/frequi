@@ -33,8 +33,7 @@ watch(
           :title="pair.pair"
           @click="botStore.activeBot.selectedPair = pair.pair"
         >
-          <BFormCheckbox v-model="pair.enabled"></BFormCheckbox>
-          {{ pair.pair }}
+          <BaseCheckbox v-model="pair.enabled">{{ pair.pair }}</BaseCheckbox>
         </BListGroupItem>
       </BListGroup>
       <div class="flex-fill">
