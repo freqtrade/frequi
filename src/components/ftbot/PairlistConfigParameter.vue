@@ -26,11 +26,11 @@ const paramValue = defineModel<any>();
         v-model="paramValue"
       ></BaseCheckbox>
 
-      <BFormSelect
+      <Select
         v-if="param.type === PairlistParamType.option"
         v-model="paramValue"
         :options="param.options"
-      ></BFormSelect>
+      ></Select>
       <BaseStringList
         v-if="param.type === PairlistParamType.list"
         v-model="paramValue"
