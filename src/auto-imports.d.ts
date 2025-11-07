@@ -471,6 +471,7 @@ declare module 'vue' {
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly findGridLayout: UnwrapRef<typeof import('./stores/layout')['findGridLayout']>
     readonly formatDecimal: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatDecimal']>
+    readonly formatNumber: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatNumber']>
     readonly formatObjectForTable: UnwrapRef<typeof import('./utils/objectToTableItems')['formatObjectForTable']>
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>

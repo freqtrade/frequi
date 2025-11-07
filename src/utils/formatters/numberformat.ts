@@ -14,7 +14,7 @@ export function formatPercent(value: number, decimals = 3): string {
  * @param decimals number of decimals (Defaults to 15)
  * @returns Formatted string
  */
-export function formatPrice(value: number | null, decimals = 15): string {
+export function formatNumber(value: number | null, decimals = 15): string {
   // const format = new Intl.NumberFormat('', {maximumFractionDigits: decimals}
   return isNotUndefined(value)
     ? value.toLocaleString('fullwide', {
@@ -22,6 +22,18 @@ export function formatPrice(value: number | null, decimals = 15): string {
         maximumFractionDigits: decimals,
       })
     : 'N/A';
+}
+
+/**
+ * Format number to `decimals` without trailing zeros
+ * Compatibility function
+ * // TODO: should be replaced with formatNumber!
+ * @param value Number to format
+ * @param decimals number of decimals (Defaults to 15)
+ * @returns Formatted string
+ */
+export function formatPrice(value: number | null, decimals = 15): string {
+  return formatNumber(value, decimals);
 }
 
 /**

@@ -1,6 +1,6 @@
 import {
   formatPercent,
-  formatPrice,
+  formatNumber,
   formatPriceCurrency,
   formatDecimal,
 } from '@/utils/formatters/numberformat';
@@ -20,15 +20,15 @@ describe('formatters.ts', () => {
   });
 
   it('Format price correctly', () => {
-    expect(formatPrice(5123.5123512)).toEqual('5123.5123512');
-    expect(formatPrice(5123.5123512, 8)).toEqual('5123.5123512');
-    expect(formatPrice(5123.5123512, 3)).toEqual('5123.512');
-    expect(formatPrice(5123.512000000001, 8)).toEqual('5123.512');
-    expect(formatPrice(0.001, 3)).toEqual('0.001');
-    expect(formatPrice(0.0019, 3)).toEqual('0.002');
-    expect(formatPrice(2.701e-9, 3)).toEqual('0');
-    expect(formatPrice(2.701e-9, 8)).toEqual('0');
-    expect(formatPrice(2.701e-9, 11)).toEqual('0.0000000027');
+    expect(formatNumber(5123.5123512)).toEqual('5123.5123512');
+    expect(formatNumber(5123.5123512, 8)).toEqual('5123.5123512');
+    expect(formatNumber(5123.5123512, 3)).toEqual('5123.512');
+    expect(formatNumber(5123.512000000001, 8)).toEqual('5123.512');
+    expect(formatNumber(0.001, 3)).toEqual('0.001');
+    expect(formatNumber(0.0019, 3)).toEqual('0.002');
+    expect(formatNumber(2.701e-9, 3)).toEqual('0');
+    expect(formatNumber(2.701e-9, 8)).toEqual('0');
+    expect(formatNumber(2.701e-9, 11)).toEqual('0.0000000027');
   });
   it('Format decimal correctly', () => {
     expect(formatDecimal(1051230.5123512)).toEqual('1051230.51');
