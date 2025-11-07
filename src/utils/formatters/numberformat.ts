@@ -3,7 +3,9 @@ export function isNotUndefined<T>(val: T | undefined | null): val is T {
 }
 
 export function formatPercent(value: number, decimals = 3): string {
-  return isNotUndefined(value) ? `${(value * 100).toFixed(decimals)}%` : '';
+  return isNotUndefined(value)
+    ? `${(value * 100).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}%`
+    : '';
 }
 
 /**
