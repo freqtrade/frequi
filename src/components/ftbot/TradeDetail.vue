@@ -26,7 +26,7 @@ defineProps<{
         >{{ formatPriceCurrency(trade.max_stake_amount ?? trade.stake_amount, stakeCurrency) }}
         {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
       >
-      <ValuePair description="Amount">{{ trade.amount }}</ValuePair>
+      <ValuePair description="Amount">{{ formatPrice(trade.amount) }}</ValuePair>
       <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
       <ValuePair v-if="trade.is_open && trade.current_rate" description="Current Rate">{{
         formatPrice(trade.current_rate)

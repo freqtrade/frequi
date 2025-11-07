@@ -249,6 +249,9 @@ watch(
           >
             {{ formatPrice(data[field]) }}
           </template>
+          <template v-else-if="field === 'amount'">
+            {{ formatPrice(data[field]) }}
+          </template>
           <template v-else-if="field === 'profit'">
             <TradeProfit :trade="data" />
           </template>
