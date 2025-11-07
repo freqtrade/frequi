@@ -69,8 +69,7 @@ const profitItems = computed(() => {
     },
     {
       metric: 'Expectancy (ratio)',
-      value: `${profit.value.expectancy ? profit.value.expectancy.toFixed(2) : 'N/A'} (${
-        profit.value.expectancy_ratio ? profit.value.expectancy_ratio.toFixed(2) : 'N/A'
+      value: `${formatNumber(profit.value.expectancy, 2)} (${formatNumber(profit.value.expectancy_ratio, 2)})'
       })`,
     },
     {
@@ -93,7 +92,7 @@ const profitItems = computed(() => {
     },
     {
       metric: 'Profit factor',
-      value: `${profit.value.profit_factor ? profit.value.profit_factor.toFixed(2) : 'N/A'}`,
+      value: `${formatNumber(profit.value.profit_factor, 2)}`,
     },
     {
       metric: 'Max Drawdown',
