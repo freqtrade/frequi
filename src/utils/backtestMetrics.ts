@@ -70,16 +70,16 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       CAGR: `${result.cagr ? formatPercent(result.cagr) : 'N/A'}`,
     },
     {
-      Sortino: `${result.sortino ? result.sortino.toFixed(2) : 'N/A'}`,
+      Sortino: formatNumber(result.sortino, 2),
     },
     {
-      Sharpe: `${result.sharpe ? result.sharpe.toFixed(2) : 'N/A'}`,
+      Sharpe: formatNumber(result.sharpe, 2),
     },
     {
-      Calmar: `${result.calmar ? result.calmar.toFixed(2) : 'N/A'}`,
+      Calmar: formatNumber(result.calmar, 2),
     },
     {
-      'System Quality Number (SQN)': `${result.sqn ? result.sqn.toFixed(2) : 'N/A'}`,
+      'System Quality Number (SQN)': formatNumber(result.sqn, 2),
     },
     {
       [`Expectancy ${result.expectancy_ratio ? '(ratio)' : ''}`]: `${
@@ -91,10 +91,10 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       }`,
     },
     {
-      'Profit factor': `${result.profit_factor ? formatPrice(result.profit_factor, 3) : 'N/A'}`,
+      'Profit factor': formatNumber(result.profit_factor, 3),
     },
     {
-      'Total trades / Daily Avg Trades': `${result.total_trades} / ${result.trades_per_day}`,
+      'Total trades / Daily Avg Trades': `${result.total_trades} / ${formatNumber(result.trades_per_day, 2)}`,
     },
     // { 'First trade': result.backtest_fi },
     // { 'First trade Pair': result.backtest_best_day },
@@ -240,9 +240,9 @@ export function generateBacktestSettingRows(result: StrategyBacktestResult) {
     {
       'Trail only when offset is reached': result.trailing_only_offset_is_reached,
     },
-    { 'Trailing Stop positive': result.trailing_stop_positive },
+    { 'Trailing Stop positive': formatNumber(result.trailing_stop_positive) },
     {
-      'Trailing stop positive offset': result.trailing_stop_positive_offset,
+      'Trailing stop positive offset': formatNumber(result.trailing_stop_positive_offset),
     },
     { 'Custom Stoploss': result.use_custom_stoploss },
     { ROI: JSON.stringify(result.minimal_roi) },
