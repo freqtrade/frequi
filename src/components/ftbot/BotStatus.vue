@@ -74,7 +74,7 @@ const botStore = useBotStore();
     <p>
       <span v-if="botStore.activeBot.profit.profit_factor" class="block">
         Profit factor:
-        {{ botStore.activeBot.profit.profit_factor.toFixed(2) }}
+        {{ formatNumber(botStore.activeBot.profit.profit_factor, 2) }}
       </span>
       <span v-if="botStore.activeBot.profit.trading_volume" class="block mb-4">
         Trading volume:
