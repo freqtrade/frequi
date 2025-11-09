@@ -14,7 +14,7 @@ export function formatPercent(value: number, decimals = 3): string {
  * @param decimals number of decimals (Defaults to 15)
  * @returns Formatted string
  */
-export function formatNumber(value: number | null, decimals = 15): string {
+export function formatNumber(value: number | null | undefined, decimals = 15): string {
   // const format = new Intl.NumberFormat('', {maximumFractionDigits: decimals}
   return isNotUndefined(value)
     ? value.toLocaleString('fullwide', {
