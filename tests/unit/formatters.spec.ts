@@ -29,6 +29,8 @@ describe('formatters.ts', () => {
     expect(formatNumber(2.701e-9, 3)).toEqual('0');
     expect(formatNumber(2.701e-9, 8)).toEqual('0');
     expect(formatNumber(2.701e-9, 11)).toEqual('0.0000000027');
+    expect(formatNumber(null)).toEqual('N/A');
+    expect(formatNumber(undefined)).toEqual('N/A');
   });
   it('Format decimal correctly', () => {
     expect(formatDecimal(1051230.5123512)).toEqual('1051230.51');
