@@ -85,8 +85,8 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       [`Expectancy ${result.expectancy_ratio ? '(ratio)' : ''}`]: `${
         result.expectancy
           ? result.expectancy_ratio
-            ? result.expectancy.toFixed(2) + ' (' + result.expectancy_ratio.toFixed(2) + ')'
-            : result.expectancy.toFixed(2)
+            ? `${formatNumber(result.expectancy, 2)} (${formatNumber(result.expectancy_ratio, 2)})`
+            : formatNumber(result.expectancy, 2)
           : 'N/A'
       }`,
     },
@@ -253,7 +253,7 @@ export function generateBacktestSettingRows(result: StrategyBacktestResult) {
       'Exit profit only': result.exit_profit_only ?? result.sell_profit_only,
     },
     {
-      'Exit profit offset': result.exit_profit_offset ?? result.sell_profit_offset,
+      'Exit profit offset': formatNumber(result.exit_profit_offset ?? result.sell_profit_offset),
     },
     { 'Enable protections': result.enable_protections },
     {
