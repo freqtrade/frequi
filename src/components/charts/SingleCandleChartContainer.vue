@@ -132,78 +132,77 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex" :class="{ 'h-full': isSinglePairView, 'h-150': !isSinglePairView }">
-    <div class="flex-fill w-full flex-col align-items-stretch flex">
-      <div class="flex me-0">
-        <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
-          <ProgressSpinner
-            v-if="isLoadingDataset"
-            class="w-8 h-8"
-            stroke-width="8"
-            small
-            label="Spinning"
-          />
-          <div class="flex flex-col">
-            <div class="flex flex-row flex-wrap">
-              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long entry signals"
-                >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
-              >
-              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long exit signals"
-                >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
-              >
-            </div>
-            <div class="flex flex-row flex-wrap">
-              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-sm text-nowrap"
-                >Short entries: {{ dataset.enter_short_signals }}</small
-              >
-              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-sm text-nowrap"
-                >Short exits: {{ dataset.exit_short_signals }}</small
-              >
-            </div>
+  <div
+    class="flex-fill w-full flex-col align-items-stretch flex"
+    :class="{
+      'h-full': isSinglePairView,
+      'h-150': !isSinglePairView,
+      border: !isSinglePairView,
+      'border-r-1': !isSinglePairView,
+      'border-b-1': !isSinglePairView,
+      'border-surface-300': !isSinglePairView,
+      'dark:border-surface-700': !isSinglePairView,
+    }"
+  >
+    <div class="flex me-0 w-full">
+      <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
+        <ProgressSpinner
+          v-if="isLoadingDataset"
+          class="w-8 h-8"
+          stroke-width="8"
+          small
+          label="Spinning"
+        />
+        <div class="flex flex-col">
+          <div class="flex flex-row flex-wrap">
+            <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long entry signals"
+              >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
+            >
+            <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long exit signals"
+              >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
+            >
+          </div>
+          <div class="flex flex-row flex-wrap">
+            <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-sm text-nowrap"
+              >Short entries: {{ dataset.enter_short_signals }}</small
+            >
+            <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-sm text-nowrap"
+              >Short exits: {{ dataset.exit_short_signals }}</small
+            >
           </div>
         </div>
       </div>
-      <div class="h-full flex">
-        <div class="min-w-0 w-full flex-1">
-          <CandleChart
-            v-if="hasDataset"
-            :dataset="dataset"
-            :trades="trades"
-            :plot-config="plotStore.plotConfig"
-            :heikin-ashi="settingsStore.useHeikinAshiCandles"
-            :show-mark-area="settingsStore.showMarkArea"
-            :use-u-t-c="settingsStore.timezone === 'UTC'"
-            :theme="settingsStore.chartTheme"
-            :slider-position="sliderPosition"
-            :color-up="colorStore.colorUp"
-            :color-down="colorStore.colorDown"
-            :start-candle-count="settingsStore.chartDefaultCandleCount"
-            :label-side="settingsStore.chartLabelSide"
-          />
-          <div v-else class="m-auto">
-            <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" label="Spinning" />
-            <div v-else class="text-lg">
-              {{ noDatasetText }}
-            </div>
-            <p v-if="botStore.activeBot.historyTakesLonger">
-              This is taking longer than expected ... Hold on ...
-            </p>
+      <div class="flex-auto self-center">{{ pair || 'Pair' }}</div>
+    </div>
+    <div class="h-full flex">
+      <div class="min-w-0 w-full flex-1">
+        <CandleChart
+          v-if="hasDataset"
+          :dataset="dataset"
+          :trades="trades"
+          :plot-config="plotStore.plotConfig"
+          :heikin-ashi="settingsStore.useHeikinAshiCandles"
+          :show-mark-area="settingsStore.showMarkArea"
+          :use-u-t-c="settingsStore.timezone === 'UTC'"
+          :theme="settingsStore.chartTheme"
+          :slider-position="sliderPosition"
+          :color-up="colorStore.colorUp"
+          :color-down="colorStore.colorDown"
+          :start-candle-count="settingsStore.chartDefaultCandleCount"
+          :label-side="settingsStore.chartLabelSide"
+        />
+        <div v-else class="m-auto">
+          <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" label="Spinning" />
+          <div v-else class="text-lg">
+            {{ noDatasetText }}
           </div>
+          <p v-if="botStore.activeBot.historyTakesLonger">
+            This is taking longer than expected ... Hold on ...
+          </p>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="css">
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s;
-}
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>

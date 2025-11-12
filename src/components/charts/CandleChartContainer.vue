@@ -50,6 +50,8 @@ function showConfigurator() {
   showPlotConfigModal.value = !showPlotConfigModal.value;
 }
 
+const isSinglePairView = computed(() => botStore.activeBot.plotMultiPairs.length === 1);
+
 watch(
   () => botStore.activeBot.selectedPair,
   () => {
@@ -119,90 +121,76 @@ watch(
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
       <div class="flex me-0">
-        <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
-          <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-          <MultiSelect
-            v-model="botStore.activeBot.plotMultiPairs"
-            class="md:ms-2 w-80"
-            :options="availablePairs"
-            optionlabel=""
-            placeholder="Select pairs to plot"
-            size="small"
-            filter
-            @before-hide="refresh"
-          >
-          </MultiSelect>
+        <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+        <MultiSelect
+          v-model="botStore.activeBot.plotMultiPairs"
+          class="md:ms-2 w-80"
+          :options="availablePairs"
+          optionlabel=""
+          placeholder="Select pairs to plot"
+          size="small"
+          filter
+          @before-hide="refresh"
+        >
+        </MultiSelect>
 
-          <Button
-            title="Refresh chart"
-            severity="secondary"
-            :disabled="botStore.activeBot.plotMultiPairs.length == 0"
-            size="small"
-            @click="refresh"
-          >
-            <i-mdi-refresh />
-          </Button>
-          <div class="ms-auto flex items-center gap-2">
-            <BaseCheckbox v-model="settingsStore.showMarkArea">
-              <span class="text-nowrap">Show Chart Areas</span>
-            </BaseCheckbox>
-            <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
-              <span class="text-nowrap">Heikin Ashi</span>
-            </BaseCheckbox>
+        <Button
+          title="Refresh chart"
+          severity="secondary"
+          :disabled="botStore.activeBot.plotMultiPairs.length == 0"
+          size="small"
+          @click="refresh"
+        >
+          <i-mdi-refresh />
+        </Button>
+        <div class="ms-auto flex items-end gap-2">
+          <BaseCheckbox v-model="settingsStore.showMarkArea">
+            <span class="text-nowrap">Show Chart Areas</span>
+          </BaseCheckbox>
+          <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
+            <span class="text-nowrap">Heikin Ashi</span>
+          </BaseCheckbox>
 
-            <PlotConfigSelect></PlotConfigSelect>
+          <PlotConfigSelect></PlotConfigSelect>
 
-            <div class="me-0 md:me-1">
-              <Button
-                size="small"
-                title="Plot configurator"
-                severity="secondary"
-                @click="showConfigurator"
-              >
-                <template #icon>
-                  <i-mdi-cog width="12" height="12" />
-                </template>
-              </Button>
-            </div>
+          <div class="me-0 md:me-1">
+            <Button
+              size="small"
+              title="Plot configurator"
+              severity="secondary"
+              @click="showConfigurator"
+            >
+              <template #icon>
+                <i-mdi-cog width="12" height="12" />
+              </template>
+            </Button>
           </div>
         </div>
       </div>
-      <div v-if="botStore.activeBot.plotMultiPairs.length == 1" class="h-full flex">
-        <div class="min-w-0 w-full flex-1">
-          <SingleCandleChartContainer
-            :available-pairs="availablePairs"
-            :pair="botStore.activeBot.plotMultiPairs[0]"
-            :historic-view="botStore.activeBot.isWebserverMode"
-            :timeframe="timeframe"
-            :trades="props.trades"
-            :strategy="props.strategy"
-            :slider-position="props.sliderPosition"
-            :is-single-pair-view="true"
-            @refresh-data="refresh()"
-          >
-          </SingleCandleChartContainer>
-        </div>
-      </div>
-      <div v-else class="flex flex-wrap gap-4 mt-2">
-        <div
+      <div
+        :class="{
+          'min-w-0': isSinglePairView,
+          'w-full': isSinglePairView,
+          'h-full': isSinglePairView,
+          grid: !isSinglePairView,
+          'grid-cols-2': !isSinglePairView,
+        }"
+        class=""
+      >
+        <SingleCandleChartContainer
           v-for="pair in botStore.activeBot.plotMultiPairs"
           :key="pair"
-          class="flex-[1_1_30%] p-4"
+          :available-pairs="availablePairs"
+          :pair="pair"
+          :historic-view="botStore.activeBot.isWebserverMode"
+          :timeframe="timeframe"
+          :trades="props.trades"
+          :strategy="props.strategy"
+          :slider-position="props.sliderPosition"
+          :is-single-pair-view="isSinglePairView"
+          @refresh-data="refresh()"
         >
-          <div class="font-bold mt-2 mb-1">{{ pair }}</div>
-          <SingleCandleChartContainer
-            :available-pairs="availablePairs"
-            :pair="pair"
-            :historic-view="botStore.activeBot.isWebserverMode"
-            :timeframe="timeframe"
-            :trades="props.trades"
-            :strategy="props.strategy"
-            :slider-position="props.sliderPosition"
-            :is-single-pair-view="false"
-            @refresh-data="refresh()"
-          >
-          </SingleCandleChartContainer>
-        </div>
+        </SingleCandleChartContainer>
       </div>
     </div>
     <Dialog
@@ -216,16 +204,3 @@ watch(
     </Dialog>
   </div>
 </template>
-
-<style scoped lang="css">
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>

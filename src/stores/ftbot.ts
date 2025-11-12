@@ -103,7 +103,6 @@ export function createBotSubStore(botId: string, botName: string) {
         pairlistMethods: [] as string[],
         detailTradeId: null as number | null,
         selectedPair: '',
-        plotPair: '',
         plotMultiPairs: [] as string[],
         // TODO: type me
         candleData: {},
@@ -1162,7 +1161,7 @@ export function createBotSubStore(botId: string, botName: string) {
           case FtWsMessageTypes.newCandle: {
             const [pair, timeframe] = msg.data;
             // TODO: check for active bot ...
-            if (pair === this.plotPair) {
+            if (this.plotMultiPairs.length > 0 && this.plotMultiPairs.includes(pair)) {
               // Reload pair candles
               const plotStore = usePlotConfigStore();
               this.getPairCandles({ pair, timeframe, columns: plotStore.usedColumns });
