@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Datepicker from '@vuepic/vue-datepicker';
+import { VueDatePicker } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const settingsStore = useSettingsStore();
@@ -70,32 +70,32 @@ onMounted(() => {
     <div class="flex justify-content-center">
       <div>
         <label for="dateFrom">Start Date</label>
-        <Datepicker
+        <VueDatePicker
           id="dateFrom"
           v-model="dateFrom"
           :dark="settingsStore.isDarkTheme"
           :max-date="now"
           model-type="yyyy-MM-dd"
-          format="yyyy-MM-dd"
+          :formats="{ input: 'yyyy-MM-dd', preview: 'yyyy-MM-dd' }"
           class="mt-1"
           text-input
           auto-apply
-          :enable-time-picker="false"
-        ></Datepicker>
+          :time-config="{ enableTimePicker: false }"
+        ></VueDatePicker>
       </div>
       <div class="ms-2">
         <label for="dateTo">End Date</label>
-        <Datepicker
+        <VueDatePicker
           v-model="dateTo"
           :dark="settingsStore.isDarkTheme"
           class="mt-1"
           :max-date="tomorrow"
           model-type="yyyy-MM-dd"
-          format="yyyy-MM-dd"
+          :formats="{ input: 'yyyy-MM-dd', preview: 'yyyy-MM-dd' }"
           text-input
           auto-apply
-          :enable-time-picker="false"
-        ></Datepicker>
+          :time-config="{ enableTimePicker: false }"
+        ></VueDatePicker>
       </div>
     </div>
 
