@@ -136,12 +136,8 @@ onMounted(() => {
     class="flex-fill w-full flex-col align-items-stretch flex"
     :class="{
       'h-full': isSinglePairView,
-      'h-150': !isSinglePairView,
-      border: !isSinglePairView,
-      'border-r-1': !isSinglePairView,
-      'border-b-1': !isSinglePairView,
-      'border-surface-300': !isSinglePairView,
-      'dark:border-surface-700': !isSinglePairView,
+      'h-150 border border-r border-b border-surface-300 dark:border-surface-700':
+        !isSinglePairView,
     }"
   >
     <div class="flex me-0 w-full">
@@ -204,5 +200,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-
