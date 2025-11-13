@@ -84,3 +84,7 @@ updates:
     cronjob: "0 2 * * 4"
   open-pull-requests-limit: 10
   target-branch: main
+  groups:
+    docker:
+      patterns:
+        - "docker/*"
