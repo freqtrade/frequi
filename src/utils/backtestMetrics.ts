@@ -166,8 +166,12 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
     ...shortMetrics,
 
     { ___: '___' },
-    { 'Min balance': formatPriceStake(result.csum_min) },
-    { 'Max balance': formatPriceStake(result.csum_max) },
+    {
+      'Min/Max balance realized': `${formatPriceStake(result.csum_min)} / ${formatPriceStake(result.csum_max)}`,
+    },
+    {
+      'Min/Max balance unrealized': `${formatPriceStake(result.wallet_stats?.low_balance)} / ${formatPriceStake(result.wallet_stats?.high_balance)}`,
+    },
     { 'Market change': formatPercent(result.market_change) },
     { '___  ': '___' },
     {

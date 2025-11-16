@@ -186,6 +186,16 @@ export interface StrategyBacktestResult {
   sqn?: number;
   expectancy?: number;
   expectancy_ratio?: number;
+  wallet_stats?: {
+    start_balance: number;
+    end_balance: number;
+    high_balance: number;
+    low_balance: number;
+    low_date: string;
+    low_ts: number;
+    high_date: string;
+    high_ts: number;
+  };
 
   winner_holding_min?: string;
   winner_holding_min_s?: number;
