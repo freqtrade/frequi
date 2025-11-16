@@ -44,7 +44,7 @@ function selectBacktestResult() {
   // TODO: maybe this should not use timerange, but the actual backtest start/end results instead?
   btStore.timerange = botStore.activeBot.selectedBacktestResult.timerange;
   btStore.enableProtections = botStore.activeBot.selectedBacktestResult.enable_protections;
-  btStore.freqAI.enabled = botStore.activeBot.selectedBacktestResult.freqaimodel !== undefined;
+  btStore.freqAI.enabled = !!botStore.activeBot.selectedBacktestResult.freqaimodel;
   btStore.freqAI.model = botStore.activeBot.selectedBacktestResult.freqaimodel || '';
   btStore.freqAI.identifier = botStore.activeBot.selectedBacktestResult.freqai_identifier || '';
 }
