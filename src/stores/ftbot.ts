@@ -1131,7 +1131,7 @@ export function createBotSubStore(botId: string, botName: string) {
         if (this.botApiVersion < 2.43) {
           return Promise.reject('Backtest wallet change not available');
         }
-        if (!this.selectedBacktestMetadata.filename) {
+        if (!this.selectedBacktestMetadata?.filename) {
           return Promise.reject('No backtest selected');
         }
         try {
