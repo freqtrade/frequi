@@ -77,7 +77,7 @@ const units = {
     transform: function (params) {
       const rawData = params.upstream.cloneRawData();
       const { dimension, factor } = params.config; // add default case and error management
-      const data = rawData.map((o) => ({ ...o, [dimension]: (o[dimension] * factor).toFixed(2) }));
+      const data = rawData.map((o) => ({ ...o, [dimension]: o[dimension] * factor }));
       return [
         {
           dimensions: params.upstream.cloneAllDimensionInfo(),
@@ -141,6 +141,31 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         label: {
           backgroundColor: '#6a7985',
         },
+      },
+      formatter: (params) => {
+        const entry = params[0];
+        const data = entry?.data ?? {};
+        const date = entry?.axisValue ?? '';
+
+        const absProfit = typeof data.abs_profit === 'number' ? data.abs_profit.toFixed(2) : '-';
+
+        let relProfit = '';
+
+        if (typeof data.rel_profit === 'number') {
+          relProfit = data.rel_profit.toFixed(2) + '%';
+        } else {
+          relProfit = '-';
+        }
+
+        const tradeCount = data.trade_count ?? '-';
+
+        return `
+          ${date}<br/>
+          <div style=">  
+            <div style="display: flex; justify-content: space-between;"><span>${params[0].marker} Profit:</span> <span style="margin-left: 2em"><strong>${absProfit} (${relProfit})</strong></span></div>
+            <div style="display: flex; justify-content: space-between;"><span>${params[1].marker} Trade count:</span> <span style="margin-left: 2em"><strong>${tradeCount}</strong></span></div>
+          </div>
+        `;
       },
     },
     legend: {
