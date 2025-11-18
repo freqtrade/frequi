@@ -54,7 +54,9 @@ export const useSettingsStore = defineStore('uiSettings', {
     async loadUIVersion() {
       if (import.meta.env.PROD) {
         try {
-          const result = await axios.get<UiVersion>('/ui_version');
+          const result = await axios.get<UiVersion>('/ui_version', {
+            withCredentials: true,
+          });
           const { version } = result.data;
           this._uiVersion = version ?? 'dev';
         } catch (error) {
