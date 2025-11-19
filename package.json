@@ -43,7 +43,7 @@
     "@playwright/test": "^1.56.1",
     "@primevue/auto-import-resolver": "^4.4.1",
     "@tailwindcss/vite": "^4.1.17",
-    "@tsconfig/node22": "^22.0.2",
+    "@tsconfig/node22": "^22.0.3",
     "@types/node": "^24.10.1",
     "@typescript-eslint/parser": "^8.46.3",
     "@vitejs/plugin-vue": "^6.0.1",
