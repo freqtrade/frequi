@@ -112,6 +112,7 @@ export function useLoginInfo(botId: string) {
       {},
       {
         auth: { ...auth },
+        withCredentials: true,
       },
     );
     if (data.access_token && data.refresh_token) {
