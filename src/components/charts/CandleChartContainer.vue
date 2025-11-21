@@ -115,6 +115,29 @@ watch(
     }
   },
 );
+
+watch(
+  () => settingsStore.multiPairSelection,
+  () => {
+    if (
+      !settingsStore.multiPairSelection &&
+      botStore.activeBot.plotMultiPairs.length > 1 &&
+      botStore.activeBot.plotMultiPairs[0]
+    ) {
+      botStore.activeBot.plotMultiPairs = [botStore.activeBot.plotMultiPairs[0]];
+      refresh();
+    }
+  },
+);
+
+const singlePairSelection = computed({
+  get() {
+    return botStore.activeBot.plotMultiPairs[0] || '';
+  },
+  set(value: string) {
+    botStore.activeBot.plotMultiPairs = [value];
+  },
+});
 </script>
 
 <template>
@@ -123,6 +146,7 @@ watch(
       <div class="flex me-0">
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
         <MultiSelect
+          v-if="settingsStore.multiPairSelection"
           v-model="botStore.activeBot.plotMultiPairs"
           class="md:ms-2 w-80"
           :options="availablePairs"
@@ -134,6 +158,17 @@ watch(
         >
         </MultiSelect>
 
+        <Select
+          v-if="!settingsStore.multiPairSelection"
+          v-model="singlePairSelection"
+          class="md:ms-2 w-80"
+          :options="availablePairs"
+          size="small"
+          :clearable="false"
+          @input="refresh"
+        >
+        </Select>
+
         <Button
           title="Refresh chart"
           severity="secondary"
@@ -143,6 +178,9 @@ watch(
         >
           <i-mdi-refresh />
         </Button>
+        <BaseCheckbox v-model="settingsStore.multiPairSelection" class="my-auto gap-2">
+          <span class="text-nowrap">Multi pair</span>
+        </BaseCheckbox>
         <div class="ms-auto flex items-end gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
@@ -175,7 +213,6 @@ watch(
           grid: !isSinglePairView,
           'grid-cols-2': !isSinglePairView,
         }"
-        class=""
       >
         <SingleCandleChartContainer
           v-for="pair in botStore.activeBot.plotMultiPairs"
