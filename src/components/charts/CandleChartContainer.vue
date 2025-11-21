@@ -207,11 +207,8 @@ const singlePairSelection = computed({
       </div>
       <div
         :class="{
-          'min-w-0': isSinglePairView,
-          'w-full': isSinglePairView,
-          'h-full': isSinglePairView,
-          grid: !isSinglePairView,
-          'grid-cols-2': !isSinglePairView,
+          'min-w-0 w-full h-full': isSinglePairView,
+          'grid grid-cols-2': !isSinglePairView,
         }"
       >
         <SingleCandleChartContainer
