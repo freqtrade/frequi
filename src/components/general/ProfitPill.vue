@@ -5,7 +5,10 @@ const props = defineProps<{
   stakeCurrency: string;
   profitDesc?: string;
 }>();
-const isProfitable = computed(() => {
+const isProfitable = computed<boolean | null>(() => {
+  if (!isDefined(props.profitRatio) && !isDefined(props.profitAbs)) {
+    return null;
+  }
   return (
     (isDefined(props.profitRatio) && props.profitRatio > 0) ||
     (props.profitRatio === undefined && props.profitAbs !== undefined && props.profitAbs > 0)
@@ -28,11 +31,15 @@ const profitString = computed((): string => {
 
 <template>
   <div
-    class="flex justify-between items-center profit-pill ps-2 pe-1"
-    :class="{ 'profit-pill-profit': isProfitable }"
+    class="flex justify-between items-center ps-2 pe-1 rounded-sm border-2 border-solid"
+    :class="{
+      'profit-pill-profit': isProfitable === true,
+      'profit-pill': isProfitable === false,
+      'border-surface-500': isProfitable === null,
+    }"
     :title="profitDesc"
   >
-    <ProfitSymbol :profit="(profitRatio || profitAbs) ?? 0" />
+    <ProfitSymbol :profit="profitRatio || profitAbs" />
 
     <div class="flex justify-center items-center grow">
       {{ profitRatio !== undefined ? formatPercent(profitRatio, 2) : '' }}
@@ -49,10 +56,9 @@ const profitString = computed((): string => {
 
 <style scoped lang="css">
 .profit-pill {
-  border: 2px solid var(--color-loss);
-  border-radius: 6px;
+  border-color: var(--color-loss);
 }
 .profit-pill-profit {
-  border: 2px solid var(--color-profit);
+  border-color: var(--color-profit);
 }
 </style>
