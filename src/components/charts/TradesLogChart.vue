@@ -57,7 +57,7 @@ const chartData = computed(() => {
     if (trade) {
       const entry = [
         i,
-        (trade.profit_ratio * 100).toFixed(2),
+        ((trade.profit_ratio ?? 0) * 100).toFixed(2),
         trade.pair,
         trade.botName,
         timestampms(trade.close_timestamp),

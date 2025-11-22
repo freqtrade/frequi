@@ -52,7 +52,7 @@ const allTrades = computed(() => {
 
 const winningTrades = computed(() => {
   return props.trades
-    .filter((trade) => trade.profit_ratio > 0)
+    .filter((trade) => (trade.profit_ratio ?? 0) > 0)
     .map((trade) => {
       return (trade.close_timestamp - trade.open_timestamp) / (60 * 1000);
     });
@@ -60,7 +60,7 @@ const winningTrades = computed(() => {
 
 const losingTrades = computed(() => {
   return props.trades
-    .filter((trade) => trade.profit_ratio <= 0)
+    .filter((trade) => (trade.profit_ratio ?? 0) <= 0)
     .map((trade) => {
       return (trade.close_timestamp - trade.open_timestamp) / (60 * 1000);
     });

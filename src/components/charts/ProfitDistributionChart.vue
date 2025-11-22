@@ -51,7 +51,9 @@ const binOptions = [
   { text: '50', value: 50 },
 ];
 const data = computed(() => {
-  const profits = props.trades.map((trade) => trade.profit_ratio);
+  const profits = props.trades
+    .filter((trade) => isDefined(trade.profit_ratio))
+    .map((trade) => trade.profit_ratio ?? 0);
 
   return binData(profits, settingsStore.profitDistributionBins);
 });
