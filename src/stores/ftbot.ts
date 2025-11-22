@@ -327,7 +327,7 @@ export function createBotSubStore(botId: string, botName: string) {
               botId,
               botName,
               botTradeId: `${botId}__${t.trade_id}`,
-              profit_ratio: t.profit_ratio ?? -1,
+              profit_ratio: t.profit_ratio,
             }));
             // TODO Don't force-patch profit_ratio but handle null values properly
             this.openTrades = openTrades;

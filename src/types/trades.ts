@@ -71,7 +71,7 @@ interface TradeBase {
   fee_close_currency?: string;
 
   /** Current profit as ratio */
-  profit_ratio: number;
+  profit_ratio: number | null;
   /** Current profit in % */
   profit_pct: number | null;
   /** Current absolute profit */
