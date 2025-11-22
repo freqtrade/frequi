@@ -9,6 +9,12 @@ import { describe, it, expect } from 'vitest';
 describe('formatters.ts', () => {
   it('Format percent correctly', () => {
     expect(formatPercent(0.5)).toEqual('50.000%');
+    expect(formatPercent(0.5023, 2)).toEqual('50.23%');
+    expect(formatPercent(0.5023, 3)).toEqual('50.230%');
+    expect(formatPercent(0.5023, 4)).toEqual('50.2300%');
+    expect(formatPercent(0.5023, 1)).toEqual('50.2%');
+    expect(formatPercent(null, 1)).toEqual('N/A%');
+    expect(formatPercent(undefined, 1)).toEqual('N/A%');
   });
 
   it('format price currency as expected', () => {

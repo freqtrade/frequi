@@ -2,10 +2,10 @@ export function isNotUndefined<T>(val: T | undefined | null): val is T {
   return !(val === undefined || val === null);
 }
 
-export function formatPercent(value: number, decimals = 3): string {
+export function formatPercent(value: number | undefined | null, decimals = 3): string {
   return isNotUndefined(value)
     ? `${(value * 100).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}%`
-    : '';
+    : 'N/A%';
 }
 
 /**
