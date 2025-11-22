@@ -58,9 +58,22 @@ describe('ProfitPill.vue', () => {
       },
     });
 
-    expect(wrapper.get('div').classes()).toContain('profit-pill');
+    expect(wrapper.get('div').classes()).toContain('profit-pill-profit');
     expect(wrapper.get('div').text()).not.toContain('%');
     expect(wrapper.get('div').text()).toContain('223');
     expect(wrapper.get('span').element.title).toBe('USDT');
+  });
+  it('Shows a pill without profits.', () => {
+    const wrapper = mount(ProfitPill, {
+      props: {
+        profitRatio: undefined,
+        profitAbs: undefined,
+        profitDesc: '',
+        stakeCurrency: 'USDT',
+      },
+    });
+
+    expect(wrapper.get('div').classes()).toContain('border-surface-500');
+    expect(wrapper.get('div').text()).not.toContain('%');
   });
 });
