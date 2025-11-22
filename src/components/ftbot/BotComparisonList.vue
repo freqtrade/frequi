@@ -36,7 +36,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     const allStakes = allOpenTrades.reduce((a, b) => a + b.stake_amount, 0);
     const profitOpenRatio =
       allOpenTrades.reduce(
-        (a, b) => a + (b.total_profit_ratio ?? b.profit_ratio) * b.stake_amount,
+        (a, b) => a + (b.total_profit_ratio ?? b.profit_ratio ?? 0) * b.stake_amount,
         0,
       ) / allStakes;
     const profitOpen = allOpenTrades.reduce(

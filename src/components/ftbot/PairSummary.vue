@@ -50,7 +50,7 @@ const combinedPairList = computed(() => {
     let profit = 0;
     let profitAbs = 0;
     trades.forEach((trade) => {
-      profit += trade.profit_ratio;
+      profit += trade.profit_ratio ?? 0;
       profitAbs += trade.profit_abs ?? 0;
     });
     if (props.sortMethod == 'profit' && props.startingBalance) {

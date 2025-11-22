@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const props = defineProps<{
-  profitRatio?: number;
+  profitRatio?: number | null;
   profitAbs?: number;
   stakeCurrency: string;
   profitDesc?: string;
 }>();
 const isProfitable = computed(() => {
   return (
-    (props.profitRatio !== undefined && props.profitRatio > 0) ||
+    (isDefined(props.profitRatio) && props.profitRatio > 0) ||
     (props.profitRatio === undefined && props.profitAbs !== undefined && props.profitAbs > 0)
   );
 });

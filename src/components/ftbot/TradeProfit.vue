@@ -19,7 +19,7 @@ const modeDescs: { [key in modes]: string } = {
   realized: 'Realized profit',
 };
 
-const profitRatio = computed<number | undefined>(() => {
+const profitRatio = computed<number | undefined | null>(() => {
   switch (props.mode) {
     case 'default':
       return props.trade.profit_ratio;
