@@ -143,12 +143,12 @@ const singlePairSelection = computed({
 <template>
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
-      <div class="flex me-0">
+      <div class="flex me-0 items-center md:gap-2">
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
         <MultiSelect
           v-if="settingsStore.multiPairSelection"
           v-model="botStore.activeBot.plotMultiPairs"
-          class="md:ms-2 w-80"
+          class="w-80"
           :options="availablePairs"
           optionlabel=""
           placeholder="Select pairs to plot"
@@ -157,11 +157,10 @@ const singlePairSelection = computed({
           @before-hide="refresh"
         >
         </MultiSelect>
-
         <Select
-          v-if="!settingsStore.multiPairSelection"
+          v-else
           v-model="singlePairSelection"
-          class="md:ms-2 w-80"
+          class="w-80"
           :options="availablePairs"
           size="small"
           :clearable="false"
@@ -178,10 +177,10 @@ const singlePairSelection = computed({
         >
           <i-mdi-refresh />
         </Button>
-        <BaseCheckbox v-model="settingsStore.multiPairSelection" class="my-auto gap-2">
+        <BaseCheckbox v-model="settingsStore.multiPairSelection">
           <span class="text-nowrap">Multi pair</span>
         </BaseCheckbox>
-        <div class="ms-auto flex items-end gap-2">
+        <div class="ms-auto flex items-center gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
           </BaseCheckbox>
@@ -208,7 +207,7 @@ const singlePairSelection = computed({
       <div
         :class="{
           'min-w-0 w-full h-full': isSinglePairView,
-          'grid grid-cols-2': !isSinglePairView,
+          'grid grid-cols-1 lg:grid-cols-2': !isSinglePairView,
         }"
       >
         <SingleCandleChartContainer
