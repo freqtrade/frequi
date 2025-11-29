@@ -56,7 +56,6 @@ watch(
   () => botStore.activeBot.selectedPair,
   () => {
     botStore.activeBot.plotMultiPairs = [botStore.activeBot.selectedPair];
-    refresh();
   },
 );
 
@@ -73,8 +72,21 @@ onMounted(() => {
   }
 });
 
+function hasDatasetForPair(pair: string): boolean {
+  const data =
+    props.historicView
+      ? botStore.activeBot.history[`${pair}__${props.timeframe}`]?.data
+      : botStore.activeBot.candleData[`${pair}__${props.timeframe}`]?.data;
+
+  return data && data.data.length > 0;
+}
+
 function refresh() {
   for (const pair of botStore.activeBot.plotMultiPairs) {
+    if (hasDatasetForPair(pair)) {
+      continue;
+    }
+
     emit('refreshData', pair, plotStore.usedColumns);
   }
 }

@@ -124,11 +124,6 @@ watch(
   },
 );
 
-onMounted(() => {
-  if (!props.historicView) {
-    refreshIfNecessary();
-  }
-});
 </script>
 
 <template>
