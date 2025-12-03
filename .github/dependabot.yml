@@ -6,7 +6,7 @@ updates:
     - "/.devcontainer/"
     - "/docker/"
   cooldown:
-    default-days: 4
+    default-days: 7
     exclude:
       - "vscode/devcontainers/typescript-node"
   schedule:
@@ -18,7 +18,7 @@ updates:
 - package-ecosystem: devcontainers
   directory: "/"
   cooldown:
-    default-days: 4
+    default-days: 7
   schedule:
     interval: "cron"
     # Daily at 2 AM
@@ -29,7 +29,7 @@ updates:
 - package-ecosystem: npm
   directory: "/"
   cooldown:
-    default-days: 4
+    default-days: 7
   schedule:
     interval: "cron"
     # Wednesday
@@ -77,7 +77,7 @@ updates:
 - package-ecosystem: "github-actions"
   directory: "/"
   cooldown:
-    default-days: 4
+    default-days: 7
   schedule:
     interval: "cron"
     # Thursday
