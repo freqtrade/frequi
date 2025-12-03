@@ -12,8 +12,8 @@ importers:
         specifier: 1.9.16
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.8.3)(vue@3.5.24(typescript@5.8.3))
       '@primeuix/themes':
-        specifier: ^1.2.5
-        version: 1.2.5
+        specifier: ^2.0.0
+        version: 2.0.0
       '@vuepic/vue-datepicker':
         specifier: ^12.0.5
         version: 12.0.5(vue@3.5.24(typescript@5.8.3))
@@ -621,10 +621,6 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@primeuix/styled@0.7.3':
-    resolution: {integrity: sha512-qAzefzODuYZRaEh2b2uTJCtaT+qUMAt1WPCZhYgkbLUVQ8qt7hFL5BjTsqqCaiBWZCZtDkGmKhP19SRIL6hAlQ==}
-    engines: {node: '>=12.11.0'}
-
   '@primeuix/styled@0.7.4':
     resolution: {integrity: sha512-QSO/NpOQg8e9BONWRBx9y8VGMCMYz0J/uKfNJEya/RGEu7ARx0oYW0ugI1N3/KB1AAvyGxzKBzGImbwg0KUiOQ==}
     engines: {node: '>=12.11.0'}
@@ -632,11 +628,15 @@ packages:
   '@primeuix/styles@1.2.5':
     resolution: {integrity: sha512-nypFRct/oaaBZqP4jinT0puW8ZIfs4u+l/vqUFmJEPU332fl5ePj6DoOpQgTLzo3OfmvSmz5a5/5b4OJJmmi7Q==}
 
-  '@primeuix/themes@1.2.5':
-    resolution: {integrity: sha512-n3YkwJrHQaEESc/D/A/iD815sxp8cKnmzscA6a8Tm8YvMtYU32eCahwLLe6h5rywghVwxASWuG36XBgISYOIjQ==}
+  '@primeuix/themes@2.0.0':
+    resolution: {integrity: sha512-BUsLt2XvWWtH20KI6v0VbYpFD2YPALYzchFxgm+HO1SZKmKHpcT2PKfREiksMAsoXHThuyfUHSR9Vs65qaA/jg==}
 
   '@primeuix/utils@0.6.1':
     resolution: {integrity: sha512-tQL/ZOPgCdD+NTimlUmhyD0ey8J1XmpZE4hDHM+/fnuBicVVmlKOd5HpS748LcOVRUKbWjmEPdHX4hi5XZoC1Q==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/utils@0.6.3':
+    resolution: {integrity: sha512-/SLNQSKQ73WbBIsflKVqbpVjCfFYvQO3Sf1LMheXyxh8JqxO4M63dzP56wwm9OPGuCQ6MYOd2AHgZXz+g7PZcg==}
     engines: {node: '>=12.11.0'}
 
   '@primevue/auto-import-resolver@4.4.1':
@@ -2885,23 +2885,21 @@ snapshots:
     dependencies:
       playwright: 1.56.1
 
-  '@primeuix/styled@0.7.3':
-    dependencies:
-      '@primeuix/utils': 0.6.1
-
   '@primeuix/styled@0.7.4':
     dependencies:
-      '@primeuix/utils': 0.6.1
+      '@primeuix/utils': 0.6.3
 
   '@primeuix/styles@1.2.5':
     dependencies:
       '@primeuix/styled': 0.7.4
 
-  '@primeuix/themes@1.2.5':
+  '@primeuix/themes@2.0.0':
     dependencies:
-      '@primeuix/styled': 0.7.3
+      '@primeuix/styled': 0.7.4
 
   '@primeuix/utils@0.6.1': {}
+
+  '@primeuix/utils@0.6.3': {}
 
   '@primevue/auto-import-resolver@4.4.1':
     dependencies:
