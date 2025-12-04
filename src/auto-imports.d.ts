@@ -64,6 +64,7 @@ declare global {
   const formatPercent: typeof import('./utils/formatters/numberformat')['formatPercent']
   const formatPrice: typeof import('./utils/formatters/numberformat')['formatPrice']
   const formatPriceCurrency: typeof import('./utils/formatters/numberformat')['formatPriceCurrency']
+  const ftEchartsTransforms: typeof import('./utils/charts/ftEchartsTransforms')['ftEchartsTransforms']
   const generateAreaCandleSeries: typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']
   const generateBacktestMetricRows: typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']
   const generateBacktestSettingRows: typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']
@@ -476,6 +477,7 @@ declare module 'vue' {
     readonly formatPercent: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPercent']>
     readonly formatPrice: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPrice']>
     readonly formatPriceCurrency: UnwrapRef<typeof import('./utils/formatters/numberformat')['formatPriceCurrency']>
+    readonly ftEchartsTransforms: UnwrapRef<typeof import('./utils/charts/ftEchartsTransforms')['ftEchartsTransforms']>
     readonly generateAreaCandleSeries: UnwrapRef<typeof import('./utils/charts/candleChartSeries')['generateAreaCandleSeries']>
     readonly generateBacktestMetricRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestMetricRows']>
     readonly generateBacktestSettingRows: UnwrapRef<typeof import('./utils/backtestMetrics')['generateBacktestSettingRows']>

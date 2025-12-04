@@ -70,25 +70,7 @@ const absoluteMax = computed(
     ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
 
-const units = {
-  multiple: {
-    // the tranform code
-    type: 'units:multiple',
-    transform: function (params) {
-      const rawData = params.upstream.cloneRawData();
-      const { dimension, factor } = params.config; // add default case and error management
-      const data = rawData.map((o) => ({ ...o, [dimension]: (o[dimension] * factor).toFixed(2) }));
-      return [
-        {
-          dimensions: params.upstream.cloneAllDimensionInfo(),
-          data,
-        },
-      ];
-    },
-  },
-};
-
-registerTransform(units.multiple);
+registerTransform(ftEchartsTransforms.multiple);
 
 const colorStops: LinearGradientObject = {
   type: 'linear',
@@ -129,7 +111,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
       },
       {
         transform: {
-          type: 'units:multiple',
+          type: 'ft:multiple',
           config: { dimension: props.profitCol, factor: props.profitCol == 'rel_profit' ? 100 : 1 },
         },
       },
