@@ -123,7 +123,6 @@ watch(
     refreshIfNecessary();
   },
 );
-
 </script>
 
 <template>
