@@ -96,12 +96,18 @@ const orderTypeOptions = [
             :min="0"
             :max="trade.amount"
             :use-grouping="false"
-            :step="0.000001"
+            :step="trade.amount_precision ?? 0.000001"
             :max-fraction-digits="8"
             class="w-full"
             show-buttons
           />
-          <Slider v-model="amount" :min="0" :max="trade.amount" :step="0.000001" class="w-full" />
+          <Slider
+            v-model="amount"
+            :min="0"
+            :max="trade.amount"
+            :step="trade.amount_precision ?? 0.000001"
+            class="w-full"
+          />
         </div>
       </div>
 
