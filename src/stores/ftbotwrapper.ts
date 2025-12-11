@@ -9,7 +9,7 @@ import type {
   TimeSummaryReturnValue,
   MultiCancelOpenOrderPayload,
   MultiDeletePayload,
-  MultiForcesellPayload,
+  MultiForceExitPayload,
   MultiReloadTradePayload,
   ProfitStats,
   Trade,
@@ -395,7 +395,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       });
       await Promise.all(updates);
     },
-    async forceSellMulti(forcesellPayload: MultiForcesellPayload) {
+    async forceSellMulti(forcesellPayload: MultiForceExitPayload) {
       const bot = this.botStores[forcesellPayload.botId];
       if (!bot) return;
       return bot.forceexit(forcesellPayload);

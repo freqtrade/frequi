@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
+import type { MultiDeletePayload, MultiForceExitPayload, Trade } from '@/types';
 
 import { useRouter } from 'vue-router';
 
@@ -103,7 +103,7 @@ function forceExitExecuter() {
     botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
   }
   if (confirmExitValue.value === ModalReasons.forceExit) {
-    const payload: MultiForcesellPayload = {
+    const payload: MultiForceExitPayload = {
       tradeid: String(feTrade.value.trade_id),
       botId: feTrade.value.botId,
     };

@@ -3,7 +3,7 @@ forceexit
 import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
 import type MessageBox from '@/components/general/MessageBox.vue';
 
-import type { ForceSellPayload } from '@/types';
+import type { ForceExitPayload } from '@/types';
 
 import ForceEntryForm from './ForceEntryForm.vue';
 
@@ -55,7 +55,7 @@ const handleForceExit = () => {
     title: 'ForceExit all',
     message: 'Really forceexit ALL trades?',
     accept: () => {
-      const payload: ForceSellPayload = {
+      const payload: ForceExitPayload = {
         tradeid: 'all',
         // TODO: support ordertype (?)
       };

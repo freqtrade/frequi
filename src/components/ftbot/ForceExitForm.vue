@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForceSellPayload, Trade } from '@/types';
+import type { ForceExitPayload, Trade } from '@/types';
 import { ref, computed } from 'vue';
 import { refDebounced } from '@vueuse/core';
 
@@ -28,7 +28,7 @@ async function handleSubmit() {
     return;
   }
   // call forceentry
-  const payload: ForceSellPayload = { tradeid: String(props.trade.trade_id) };
+  const payload: ForceExitPayload = { tradeid: String(props.trade.trade_id) };
 
   if (ordertype.value) {
     payload.ordertype = ordertype.value;

@@ -27,7 +27,7 @@ import type {
   ExchangeListResult,
   ExitStats,
   ForceEnterPayload,
-  ForceSellPayload,
+  ForceExitPayload,
   FreqAIModelListResult,
   HyperoptLossListResponse,
   HyperoptLossObj,
@@ -861,9 +861,9 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async forceexit(payload: ForceSellPayload) {
+      async forceexit(payload: ForceExitPayload) {
         try {
-          const res = await api.post<ForceSellPayload, AxiosResponse<StatusResponse>>(
+          const res = await api.post<ForceExitPayload, AxiosResponse<StatusResponse>>(
             '/forcesell',
             payload,
           );
