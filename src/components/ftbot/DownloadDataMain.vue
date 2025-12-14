@@ -184,15 +184,20 @@ async function startDownload() {
                   <BaseCheckbox v-model="downloadTrades" class="mb-2">
                     Download Trades instead of OHLCV data
                   </BaseCheckbox>
-                  <MultiSelect
-                    v-if="botStore.activeBot.botFeatures.downloadDataCandleTypes"
-                    v-model="candleType"
-                    class="w-full"
-                    :options="candleTypes"
-                    option-label="text"
-                    option-value="value"
-                    placeholder="Select Candle Types"
-                  />
+                  <div class="grid grid-cols md:grid-cols-2 items-center gap-2">
+                    <MultiSelect
+                      v-if="botStore.activeBot.botFeatures.downloadDataCandleTypes"
+                      v-model="candleType"
+                      :options="candleTypes"
+                      option-label="text"
+                      option-value="value"
+                      placeholder="Select Candle Types"
+                    />
+                    <small
+                      >When no candle-type is selected, freqtrade will download the necessary candle
+                      types for regular operation automatically.</small
+                    >
+                  </div>
                 </div>
                 <div
                   class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
