@@ -15,23 +15,15 @@ const { state: marketChangeData } = useAsyncState(
 </script>
 <template>
   <div class="text-center flex-fill flex flex-col h-full gap-1">
-    <TradesLogChart :trades="trades" class="flex-grow-1 chart-equal-height" />
-    <TradeDurationChart
-      class="flex-grow-1 chart-equal-height"
-      :trades="trades"
-      :show-title="true"
-    />
-    <CumProfitChart :trades="trades" class="flex-grow-1 chart-equal-height" :show-title="true" />
+    <TradesLogChart :trades="trades" class="grow chart-equal-height" />
+    <TradeDurationChart class="grow chart-equal-height" :trades="trades" :show-title="true" />
+    <CumProfitChart :trades="trades" class="grow chart-equal-height" :show-title="true" />
     <MarketChangeChart
       v-if="marketChangeData"
       :market-change-data="marketChangeData"
-      class="flex-grow-1 chart-equal-height"
+      class="grow chart-equal-height"
     />
-    <ProfitDistributionChart
-      class="flex-grow-1 chart-equal-height"
-      :trades="trades"
-      :show-title="true"
-    />
+    <ProfitDistributionChart class="grow chart-equal-height" :trades="trades" :show-title="true" />
   </div>
 </template>
 <style scoped lang="css">
