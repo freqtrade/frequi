@@ -87,12 +87,7 @@ async function startDownload() {
                   <h5 class="text-start font-bold text-lg">Pairs from template</h5>
                 </div>
                 <div class="flex gap-2">
-                  <BaseStringList
-                    v-model="pairs"
-                    placeholder="Pair"
-                    size="small"
-                    class="flex-grow-1"
-                  />
+                  <BaseStringList v-model="pairs" placeholder="Pair" size="small" class="grow" />
                   <div class="flex flex-col gap-1">
                     <div class="flex flex-col gap-1">
                       <Button
