@@ -29,7 +29,8 @@ export type FeatureKey =
   | 'backtestDelete'
   | 'backtestSetNotes'
   | 'downloadDataView'
-  | 'pairlistConfig';
+  | 'pairlistConfig'
+  | 'downloadDataCandleTypes';
 
 export type BotFeatures = Record<FeatureKey, boolean>;
 
@@ -64,4 +65,8 @@ export const FEATURES: Record<FeatureKey, FeatureConfig> = {
   // Overall Webserver features
   downloadDataView: { minVersion: 2.41, description: 'Download data View' },
   pairlistConfig: { minVersion: 2.3, description: 'Configure pairlist for bot' },
+  downloadDataCandleTypes: {
+    minVersion: 2.44,
+    description: 'Candle type selection for data download',
+  },
 };

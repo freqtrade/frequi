@@ -34,6 +34,15 @@ const downloadTrades = ref(false);
 
 // State to track the collapse status
 const isAdvancedOpen = ref(false);
+const candleType = ref<string[]>([]);
+const candleTypes = [
+  { text: 'Spot', value: 'spot' },
+  { text: 'Futures', value: 'futures' },
+  { text: 'Funding Rate', value: 'funding_rate' },
+  { text: 'Mark', value: 'mark' },
+  { text: 'Index', value: 'index' },
+  { text: 'Premium Index', value: 'premiumIndex' },
+];
 
 function addPairs(_pairs: string[]) {
   pairs.value.push(..._pairs);
@@ -65,6 +74,9 @@ async function startDownload() {
       payload.exchange = exchange.value.selectedExchange.exchange;
       payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
       payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
+    }
+    if (botStore.activeBot.botFeatures.downloadDataCandleTypes && candleType.value.length > 0) {
+      payload.candle_types = candleType.value;
     }
   }
 
@@ -172,6 +184,15 @@ async function startDownload() {
                   <BaseCheckbox v-model="downloadTrades" class="mb-2">
                     Download Trades instead of OHLCV data
                   </BaseCheckbox>
+                  <MultiSelect
+                    v-if="botStore.activeBot.botFeatures.downloadDataCandleTypes"
+                    v-model="candleType"
+                    class="w-full"
+                    :options="candleTypes"
+                    option-label="text"
+                    option-value="value"
+                    placeholder="Select Candle Types"
+                  />
                 </div>
                 <div
                   class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"

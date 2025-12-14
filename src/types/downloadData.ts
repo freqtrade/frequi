@@ -7,4 +7,6 @@ export interface DownloadDataPayload extends ExchangeSelectPayload {
   days?: number;
   erase?: boolean;
   download_trades?: boolean;
+  /** Added in 2.44 */
+  candle_types?: string[];
 }
