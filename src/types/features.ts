@@ -30,7 +30,8 @@ export type FeatureKey =
   | 'backtestSetNotes'
   | 'downloadDataView'
   | 'pairlistConfig'
-  | 'downloadDataCandleTypes';
+  | 'downloadDataCandleTypes'
+  | 'forceExitWithPrice';
 
 export type BotFeatures = Record<FeatureKey, boolean>;
 
@@ -69,4 +70,5 @@ export const FEATURES: Record<FeatureKey, FeatureConfig> = {
     minVersion: 2.44,
     description: 'Candle type selection for data download',
   },
+  forceExitWithPrice: { minVersion: 2.45, description: 'Force exit accepting price parameter' },
 };

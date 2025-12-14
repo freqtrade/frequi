@@ -14,6 +14,7 @@ const botStore = useBotStore();
 
 const form = ref<HTMLFormElement>();
 const amount = ref<number | undefined>(undefined);
+const price = ref<number | undefined>(undefined);
 const ordertype = ref('limit');
 
 const checkFormValidity = () => {
@@ -35,6 +36,9 @@ async function handleSubmit() {
   }
   if (amount.value) {
     payload.amount = amount.value;
+  }
+  if (price.value && botStore.activeBot.botFeatures.forceExitWithPrice) {
+    payload.price = price.value;
   }
   await nextTick();
   botStore.activeBot.forceexit(payload);
@@ -107,6 +111,25 @@ const orderTypeOptions = [
             :max="trade.amount"
             :step="trade.amount_precision ?? 0.000001"
             class="w-full"
+          />
+        </div>
+      </div>
+      <div v-if="botStore.activeBot.botFeatures.forceExitWithPrice">
+        <label for="price-input" class="block font-medium mb-1">
+          Price
+          <span class="text-sm italic ml-1">Only available with limit orders</span>
+        </label>
+        <div class="space-y-2">
+          <InputNumber
+            id="price-input"
+            v-model="price"
+            :disabled="ordertype !== 'limit'"
+            :min="0"
+            :use-grouping="false"
+            :step="trade.price_precision ?? 0.000001"
+            :max-fraction-digits="8"
+            class="w-full"
+            show-buttons
           />
         </div>
       </div>

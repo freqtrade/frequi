@@ -19,6 +19,8 @@ export interface ForceExitPayload {
   tradeid: string | number;
   ordertype?: string;
   amount?: number;
+  /* Available starting with v2.44 */
+  price?: number;
 }
 
 /** Interface only used internally to ensure the right bot is being called in a multibot environment. */
