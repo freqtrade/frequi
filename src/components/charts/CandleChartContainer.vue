@@ -82,10 +82,6 @@ function hasDatasetForPair(pair: string): boolean {
 
 function refresh() {
   for (const pair of botStore.activeBot.plotMultiPairs) {
-    if (hasDatasetForPair(pair)) {
-      continue;
-    }
-
     emit('refreshData', pair, plotStore.usedColumns);
   }
 }
@@ -98,8 +94,12 @@ function assignFirstPair() {
 }
 
 function refreshIfNecessary() {
-  if (!hasDataset.value) {
-    refresh();
+  for (const pair of botStore.activeBot.plotMultiPairs) {
+    if (hasDatasetForPair(pair)) {
+      continue;
+    }
+
+    emit('refreshData', pair, plotStore.usedColumns);
   }
 }
 
@@ -120,7 +120,7 @@ watch(
   () => botStore.activeBot.plotMultiPairs,
   () => {
     if (!props.historicView) {
-      refresh();
+      refreshIfNecessary();
     } else if (props.reloadDataOnSwitch) {
       refreshIfNecessary();
     }
@@ -165,7 +165,7 @@ const singlePairSelection = computed({
           placeholder="Select pairs to plot"
           size="small"
           filter
-          @before-hide="refresh"
+          @before-hide="refreshIfNecessary"
         >
         </MultiSelect>
         <Select
