@@ -42,8 +42,8 @@ importers:
         specifier: ^0.3.10
         version: 0.3.10
       humanize-duration:
-        specifier: ^3.33.1
-        version: 3.33.1
+        specifier: ^3.33.2
+        version: 3.33.2
       pinia:
         specifier: 3.0.4
         version: 3.0.4(typescript@5.8.3)(vue@3.5.25(typescript@5.8.3))
@@ -1671,8 +1671,8 @@ packages:
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
-  humanize-duration@3.33.1:
-    resolution: {integrity: sha512-hwzSCymnRdFx9YdRkQQ0OYequXiVAV6ZGQA2uzocwB0F4309Ke6pO8dg0P8LHhRQJyVjGteRTAA/zNfEcpXn8A==}
+  humanize-duration@3.33.2:
+    resolution: {integrity: sha512-K7Ny/ULO1hDm2nnhvAY+SJV1skxFb61fd073SG1IWJl+D44ULrruCuTyjHKjBVVcSuTlnY99DKtgEG39CM5QOQ==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -3914,7 +3914,7 @@ snapshots:
 
   hookable@5.5.3: {}
 
-  humanize-duration@3.33.1: {}
+  humanize-duration@3.33.2: {}
 
   ignore@5.3.2: {}
 
