@@ -203,8 +203,9 @@ const singlePairSelection = computed({
         </div>
       </div>
       <div
+        v-if="botStore.activeBot.plotMultiPairs?.length > 0"
         :class="{
-          'min-w-0 w-full h-full': isSinglePairView,
+          'min-w-0 w-full h-full ': isSinglePairView,
           'grid grid-cols-1 lg:grid-cols-2': !isSinglePairView,
         }"
       >
@@ -221,6 +222,9 @@ const singlePairSelection = computed({
           @refresh-data="refresh()"
         >
         </SingleCandleChartContainer>
+      </div>
+      <div v-else class="flex flex-col items-center justify-center h-full w-full">
+        <span class="text-2xl font-semibold">No pair selected</span>
       </div>
     </div>
     <Dialog
