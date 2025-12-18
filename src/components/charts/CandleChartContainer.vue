@@ -227,7 +227,6 @@ const singlePairSelection = computed({
           :historic-view="botStore.activeBot.isWebserverMode"
           :timeframe="timeframe"
           :trades="props.trades"
-          :strategy="props.strategy"
           :slider-position="props.sliderPosition"
           :is-single-pair-view="isSinglePairView"
           @refresh-data="refresh()"

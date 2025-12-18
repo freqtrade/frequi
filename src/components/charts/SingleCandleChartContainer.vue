@@ -9,17 +9,12 @@ const props = withDefaults(
     timeframe: string;
     historicView?: boolean;
     pair?: string;
-    /** Reload data on pair switch if in historic view */
-    reloadDataOnSwitch?: boolean;
-    strategy?: string;
     sliderPosition?: ChartSliderPosition;
     isSinglePairView?: boolean;
   }>(),
   {
     trades: () => [],
     historicView: false,
-    reloadDataOnSwitch: false,
-    strategy: '',
     pair: '',
     sliderPosition: undefined,
     isSinglePairView: true,
