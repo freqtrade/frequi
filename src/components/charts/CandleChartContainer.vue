@@ -86,13 +86,6 @@ function refresh() {
   }
 }
 
-function assignFirstPair() {
-  const [firstPair] = props.availablePairs;
-  if (firstPair) {
-    botStore.activeBot.plotMultiPairs = [firstPair];
-  }
-}
-
 function refreshIfNecessary() {
   for (const pair of botStore.activeBot.plotMultiPairs) {
     if (hasDatasetForPair(pair)) {
@@ -100,6 +93,13 @@ function refreshIfNecessary() {
     }
 
     emit('refreshData', pair, plotStore.usedColumns);
+  }
+}
+
+function assignFirstPair() {
+  const [firstPair] = props.availablePairs;
+  if (firstPair) {
+    botStore.activeBot.plotMultiPairs = [firstPair];
   }
 }
 
@@ -118,12 +118,17 @@ watch(
 
 watch(
   () => botStore.activeBot.plotMultiPairs,
-  () => {
+  (v) => {
+    if (v.length === 0) return;
+
     if (!props.historicView) {
       refreshIfNecessary();
     } else if (props.reloadDataOnSwitch) {
       refreshIfNecessary();
     }
+  },
+  {
+    immediate: true,
   },
 );
 
@@ -165,7 +170,6 @@ const singlePairSelection = computed({
           placeholder="Select pairs to plot"
           size="small"
           filter
-          @before-hide="refreshIfNecessary"
         >
         </MultiSelect>
         <Select
