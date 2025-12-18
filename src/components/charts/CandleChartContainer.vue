@@ -29,8 +29,6 @@ const settingsStore = useSettingsStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
-const showPlotConfig = ref<boolean>();
-
 const dataset = computed((): PairHistory => {
   const firstpair = botStore.activeBot.plotMultiPairs[0];
   if (props.historicView) {
@@ -43,9 +41,9 @@ const datasetColumns = computed(() =>
   dataset.value ? (dataset.value.all_columns ?? dataset.value.columns) : [],
 );
 
-const showPlotConfigModal = ref(false);
 const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
 
+const showPlotConfigModal = ref(false);
 function showConfigurator() {
   showPlotConfigModal.value = !showPlotConfigModal.value;
 }
@@ -60,7 +58,6 @@ watch(
 );
 
 onMounted(() => {
-  showPlotConfig.value = true;
   if (botStore.activeBot.selectedPair) {
     botStore.activeBot.plotMultiPairs = [botStore.activeBot.selectedPair];
   } else if (props.availablePairs.length > 0) {
