@@ -64,9 +64,6 @@ onMounted(() => {
     assignFirstPair();
   }
   plotStore.plotConfigChanged();
-  if (!props.historicView) {
-    refreshIfNecessary();
-  }
 });
 
 function hasDatasetForPair(pair: string): boolean {
