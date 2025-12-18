@@ -39,13 +39,13 @@ const dataset = computed((): PairHistory => {
   return botStore.activeBot.candleData[`${firstpair}__${props.timeframe}`]?.data;
 });
 
-const hasDataset = computed(() => dataset.value && dataset.value.data.length > 0);
 const datasetColumns = computed(() =>
   dataset.value ? (dataset.value.all_columns ?? dataset.value.columns) : [],
 );
 
 const showPlotConfigModal = ref(false);
 const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
+
 function showConfigurator() {
   showPlotConfigModal.value = !showPlotConfigModal.value;
 }
@@ -135,8 +135,8 @@ watch(
       botStore.activeBot.plotMultiPairs.length > 1 &&
       botStore.activeBot.plotMultiPairs[0]
     ) {
+      // Select only the first pair if switching to single pair mode
       botStore.activeBot.plotMultiPairs = [botStore.activeBot.plotMultiPairs[0]];
-      refresh();
     }
   },
 );
