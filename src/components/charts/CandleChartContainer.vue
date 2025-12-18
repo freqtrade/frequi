@@ -66,26 +66,17 @@ onMounted(() => {
   plotStore.plotConfigChanged();
 });
 
-function hasDatasetForPair(pair: string): boolean {
-  const data = props.historicView
-    ? botStore.activeBot.history[`${pair}__${props.timeframe}`]?.data
-    : botStore.activeBot.candleData[`${pair}__${props.timeframe}`]?.data;
-
-  return data && data.data.length > 0;
-}
-
 function refresh() {
   for (const pair of botStore.activeBot.plotMultiPairs) {
     emit('refreshData', pair, plotStore.usedColumns);
   }
 }
 
-function refreshIfNecessary() {
-  for (const pair of botStore.activeBot.plotMultiPairs) {
-    if (hasDatasetForPair(pair)) {
+function refreshIfNecessary(newValue: string[], oldValue: string[] | undefined) {
+  for (const pair of newValue) {
+    if (oldValue?.includes(pair)) {
       continue;
     }
-
     emit('refreshData', pair, plotStore.usedColumns);
   }
 }
@@ -112,13 +103,11 @@ watch(
 
 watch(
   () => botStore.activeBot.plotMultiPairs,
-  (v) => {
-    if (v.length === 0) return;
+  (newValue, oldValue) => {
+    if (newValue.length === 0) return;
 
-    if (!props.historicView) {
-      refreshIfNecessary();
-    } else if (props.reloadDataOnSwitch) {
-      refreshIfNecessary();
+    if (!props.historicView || props.reloadDataOnSwitch) {
+      refreshIfNecessary(newValue, oldValue);
     }
   },
   {
