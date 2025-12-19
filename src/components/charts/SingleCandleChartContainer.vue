@@ -129,35 +129,34 @@ watch(
         !isSinglePairView,
     }"
   >
-    <div class="flex me-0 w-full">
+    <div class="flex me-0 w-full items-center justify-between">
       <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
-        <ProgressSpinner
-          v-if="isLoadingDataset"
-          class="w-8 h-8"
-          stroke-width="8"
-          small
-          label="Spinning"
-        />
         <div class="flex flex-col">
-          <div class="flex flex-row flex-wrap">
-            <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long entry signals"
+          <div class="flex flex-row flex-wrap gap-2">
+            <small v-if="dataset" class="text-sm text-nowrap" title="Long entry signals"
               >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
             >
-            <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long exit signals"
+            <small v-if="dataset" class="text-sm text-nowrap" title="Long exit signals"
               >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
             >
           </div>
-          <div class="flex flex-row flex-wrap">
-            <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-sm text-nowrap"
+          <div class="flex flex-row flex-wrap gap-2">
+            <small v-if="dataset && dataset.enter_short_signals" class="text-sm text-nowrap"
               >Short entries: {{ dataset.enter_short_signals }}</small
             >
-            <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-sm text-nowrap"
+            <small v-if="dataset && dataset.exit_short_signals" class="text-sm text-nowrap"
               >Short exits: {{ dataset.exit_short_signals }}</small
             >
           </div>
         </div>
       </div>
-      <div class="flex-auto self-center">{{ pair || 'Pair' }}</div>
+      <div>
+        {{ pair || 'Pair' }}
+      </div>
+      <div v-if="isLoadingDataset">
+        <ProgressSpinner class="w-4 h-4" stroke-width="4" small label="Spinning" />
+      </div>
+      <div v-else class="w-4 h-4"></div>
     </div>
     <div class="h-full flex">
       <div class="min-w-0 w-full flex-1">
