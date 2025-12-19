@@ -131,7 +131,7 @@ watch(
   >
     <div class="flex me-0 w-full items-center justify-between">
       <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
-        <div class="flex flex-col">
+        <div class="flex flex-col md:flex-row md:gap-2">
           <div class="flex flex-row flex-wrap gap-2">
             <small v-if="dataset" class="text-sm text-nowrap" title="Long entry signals"
               >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
