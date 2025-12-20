@@ -158,7 +158,6 @@ watch(
         :trades="botStore.activeBot.allTrades"
         :timerange="botStore.activeBot.isWebserverMode ? chartStore.timerange : undefined"
         :strategy="botStore.activeBot.isWebserverMode ? chartStore.strategy : undefined"
-        :plot-config-modal="false"
         @refresh-data="refreshOHLCV"
       >
       </CandleChartContainer>

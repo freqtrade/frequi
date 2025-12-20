@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ChartSliderPosition, PairHistory, Trade } from '@/types';
-import { LoadingStatus } from '@/types';
 
 const props = withDefaults(
   defineProps<{
@@ -10,14 +9,12 @@ const props = withDefaults(
     historicView?: boolean;
     /** Reload data on pair switch if in historic view */
     reloadDataOnSwitch?: boolean;
-    plotConfigModal?: boolean;
     strategy?: string;
     sliderPosition?: ChartSliderPosition;
   }>(),
   {
     trades: () => [],
     historicView: false,
-    plotConfigModal: true,
     reloadDataOnSwitch: false,
     strategy: '',
     sliderPosition: undefined,
@@ -29,83 +26,75 @@ const emit = defineEmits<{
 }>();
 
 const settingsStore = useSettingsStore();
-const colorStore = useColorStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
-const showPlotConfig = ref<boolean>();
-
 const dataset = computed((): PairHistory => {
+  const firstpair = botStore.activeBot.plotMultiPairs[0];
   if (props.historicView) {
-    return botStore.activeBot.history[`${botStore.activeBot.plotPair}__${props.timeframe}`]?.data;
+    return botStore.activeBot.history[`${firstpair}__${props.timeframe}`]?.data;
   }
-  return botStore.activeBot.candleData[`${botStore.activeBot.plotPair}__${props.timeframe}`]?.data;
+  return botStore.activeBot.candleData[`${firstpair}__${props.timeframe}`]?.data;
 });
-const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
+
 const datasetColumns = computed(() =>
   dataset.value ? (dataset.value.all_columns ?? dataset.value.columns) : [],
 );
-const datasetLoadedColumns = computed(() =>
-  dataset.value ? (dataset.value.columns ?? dataset.value.all_columns) : [],
+
+const strategyName = computed(() => props.strategy || dataset.value?.strategy || '');
+
+const showPlotConfigModal = ref(false);
+function showConfigurator() {
+  showPlotConfigModal.value = !showPlotConfigModal.value;
+}
+
+const isSinglePairView = computed(() => botStore.activeBot.plotMultiPairs.length === 1);
+
+watch(
+  () => botStore.activeBot.selectedPair,
+  () => {
+    botStore.activeBot.plotMultiPairs = [botStore.activeBot.selectedPair];
+  },
 );
 
-const hasDataset = computed(() => dataset.value && dataset.value.data.length > 0);
-const isLoadingDataset = computed((): boolean => {
-  if (props.historicView) {
-    return botStore.activeBot.historyStatus === LoadingStatus.loading;
+onMounted(() => {
+  if (botStore.activeBot.selectedPair) {
+    botStore.activeBot.plotMultiPairs = [botStore.activeBot.selectedPair];
+  } else if (props.availablePairs.length > 0) {
+    assignFirstPair();
   }
-
-  return botStore.activeBot.candleDataStatus === LoadingStatus.loading;
+  plotStore.plotConfigChanged();
 });
-const noDatasetText = computed((): string => {
-  const status = props.historicView
-    ? botStore.activeBot.historyStatus
-    : botStore.activeBot.candleDataStatus;
-
-  switch (status) {
-    case LoadingStatus.not_loaded:
-      return 'Not loaded yet.';
-    case LoadingStatus.loading:
-      return 'Loading...';
-    case LoadingStatus.success:
-      return 'No data available';
-    case LoadingStatus.error:
-      return 'Failed to load data';
-    default:
-      return 'Unknown';
-  }
-});
-const showPlotConfigModal = ref(false);
-
-function showConfigurator() {
-  if (props.plotConfigModal) {
-    showPlotConfigModal.value = !showPlotConfigModal.value;
-  } else {
-    showPlotConfig.value = !showPlotConfig.value;
-  }
-}
 
 function refresh() {
-  emit('refreshData', botStore.activeBot.plotPair, plotStore.usedColumns);
+  for (const pair of botStore.activeBot.plotMultiPairs) {
+    emit('refreshData', pair, plotStore.usedColumns);
+  }
 }
 
-function refreshIfNecessary() {
-  if (!hasDataset.value) {
-    refresh();
+function refreshIfNecessary(newValue: string[], oldValue: string[] | undefined) {
+  for (const pair of newValue) {
+    if (oldValue?.includes(pair)) {
+      continue;
+    }
+    emit('refreshData', pair, plotStore.usedColumns);
   }
 }
 
 function assignFirstPair() {
   const [firstPair] = props.availablePairs;
   if (firstPair) {
-    botStore.activeBot.plotPair = firstPair;
+    botStore.activeBot.plotMultiPairs = [firstPair];
   }
 }
 
 watch(
   () => props.availablePairs,
   () => {
-    if (!props.availablePairs.find((p) => p === botStore.activeBot.plotPair)) {
+    if (
+      botStore.activeBot.plotMultiPairs.length === 0 ||
+      botStore.activeBot.plotMultiPairs.some((p) => !props.availablePairs.includes(p))
+    ) {
       assignFirstPair();
       refresh();
     }
@@ -113,109 +102,82 @@ watch(
 );
 
 watch(
-  () => botStore.activeBot.selectedPair,
-  () => {
-    botStore.activeBot.plotPair = botStore.activeBot.selectedPair;
+  () => botStore.activeBot.plotMultiPairs,
+  (newValue, oldValue) => {
+    if (newValue.length === 0) return;
+
+    if (!props.historicView || props.reloadDataOnSwitch) {
+      refreshIfNecessary(newValue, oldValue);
+    }
+  },
+  {
+    immediate: true,
   },
 );
 
 watch(
-  () => botStore.activeBot.plotPair,
+  () => settingsStore.multiPairSelection,
   () => {
-    if (!props.historicView) {
-      refresh();
-    } else if (props.reloadDataOnSwitch) {
-      refreshIfNecessary();
+    if (
+      !settingsStore.multiPairSelection &&
+      botStore.activeBot.plotMultiPairs.length > 1 &&
+      botStore.activeBot.plotMultiPairs[0]
+    ) {
+      // Select only the first pair if switching to single pair mode
+      botStore.activeBot.plotMultiPairs = [botStore.activeBot.plotMultiPairs[0]];
     }
   },
 );
 
-watch(
-  () => plotStore.plotConfig,
-  () => {
-    // Trigger reload if the used columns are not loaded yet but would be available.
-    const hasAllColumns = plotStore.usedColumns.some(
-      (c) => datasetColumns.value.includes(c) && !datasetLoadedColumns.value.includes(c),
-    );
-
-    if (settingsStore.useReducedPairCalls && hasAllColumns) {
-      refresh();
-    }
+const singlePairSelection = computed({
+  get() {
+    return botStore.activeBot.plotMultiPairs[0] || '';
   },
-);
-
-watch(
-  () => props.timeframe,
-  () => {
-    refreshIfNecessary();
+  set(value: string) {
+    botStore.activeBot.plotMultiPairs = [value];
   },
-);
-
-onMounted(() => {
-  showPlotConfig.value = props.plotConfigModal;
-  if (botStore.activeBot.selectedPair) {
-    botStore.activeBot.plotPair = botStore.activeBot.selectedPair;
-  } else if (props.availablePairs.length > 0) {
-    assignFirstPair();
-  }
-  plotStore.plotConfigChanged();
-  if (!props.historicView) {
-    refreshIfNecessary();
-  }
 });
 </script>
 
 <template>
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
-      <div class="flex me-0">
-        <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
-          <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-          <Select
-            v-model="botStore.activeBot.plotPair"
-            class="md:ms-2"
-            :options="availablePairs"
-            size="small"
-            :clearable="false"
-            @input="refresh"
-          >
-          </Select>
+      <div class="flex me-0 items-center md:gap-2">
+        <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+        <MultiSelect
+          v-if="settingsStore.multiPairSelection"
+          v-model="botStore.activeBot.plotMultiPairs"
+          class="w-80"
+          :options="availablePairs"
+          optionlabel=""
+          placeholder="Select pairs to plot"
+          size="small"
+          filter
+        >
+        </MultiSelect>
+        <Select
+          v-else
+          v-model="singlePairSelection"
+          class="w-80"
+          :options="availablePairs"
+          size="small"
+          :clearable="false"
+          @input="refresh"
+        >
+        </Select>
 
-          <Button
-            title="Refresh chart"
-            severity="secondary"
-            :disabled="!!!botStore.activeBot.plotPair || isLoadingDataset"
-            size="small"
-            @click="refresh"
-          >
-            <i-mdi-refresh />
-          </Button>
-          <ProgressSpinner
-            v-if="isLoadingDataset"
-            class="w-8 h-8"
-            stroke-width="8"
-            small
-            label="Spinning"
-          />
-          <div class="flex flex-col">
-            <div class="flex flex-row flex-wrap">
-              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long entry signals"
-                >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
-              >
-              <small v-if="dataset" class="ms-2 text-sm text-nowrap" title="Long exit signals"
-                >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
-              >
-            </div>
-            <div class="flex flex-row flex-wrap">
-              <small v-if="dataset && dataset.enter_short_signals" class="ms-2 text-sm text-nowrap"
-                >Short entries: {{ dataset.enter_short_signals }}</small
-              >
-              <small v-if="dataset && dataset.exit_short_signals" class="ms-2 text-sm text-nowrap"
-                >Short exits: {{ dataset.exit_short_signals }}</small
-              >
-            </div>
-          </div>
-        </div>
+        <Button
+          title="Refresh chart"
+          severity="secondary"
+          :disabled="botStore.activeBot.plotMultiPairs.length == 0"
+          size="small"
+          @click="refresh"
+        >
+          <i-mdi-refresh />
+        </Button>
+        <BaseCheckbox v-model="settingsStore.multiPairSelection">
+          <span class="text-nowrap">Multi pair</span>
+        </BaseCheckbox>
         <div class="ms-auto flex items-center gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
@@ -240,46 +202,32 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="h-full flex">
-        <div class="min-w-0 w-full flex-1">
-          <CandleChart
-            v-if="hasDataset"
-            :dataset="dataset"
-            :trades="trades"
-            :plot-config="plotStore.plotConfig"
-            :heikin-ashi="settingsStore.useHeikinAshiCandles"
-            :show-mark-area="settingsStore.showMarkArea"
-            :use-u-t-c="settingsStore.timezone === 'UTC'"
-            :theme="settingsStore.chartTheme"
-            :slider-position="sliderPosition"
-            :color-up="colorStore.colorUp"
-            :color-down="colorStore.colorDown"
-            :start-candle-count="settingsStore.chartDefaultCandleCount"
-            :label-side="settingsStore.chartLabelSide"
-          />
-          <div v-else class="m-auto">
-            <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" label="Spinning" />
-            <div v-else class="text-lg">
-              {{ noDatasetText }}
-            </div>
-            <p v-if="botStore.activeBot.historyTakesLonger">
-              This is taking longer than expected ... Hold on ...
-            </p>
-          </div>
-        </div>
-        <Transition name="fade">
-          <div
-            v-if="!plotConfigModal"
-            v-show="showPlotConfig"
-            class="grow border rounded-md ps-1 border-surface-300 dark:border-surface-700 max-w-110"
-          >
-            <PlotConfigurator :columns="datasetColumns" :is-visible="showPlotConfig ?? false" />
-          </div>
-        </Transition>
+      <div
+        v-if="botStore.activeBot.plotMultiPairs?.length > 0"
+        :class="{
+          'min-w-0 w-full h-full ': isSinglePairView,
+          'grid grid-cols-1 lg:grid-cols-2': !isSinglePairView,
+        }"
+      >
+        <SingleCandleChartContainer
+          v-for="pair in botStore.activeBot.plotMultiPairs"
+          :key="pair"
+          :available-pairs="availablePairs"
+          :pair="pair"
+          :historic-view="botStore.activeBot.isWebserverMode"
+          :timeframe="timeframe"
+          :trades="props.trades"
+          :slider-position="props.sliderPosition"
+          :is-single-pair-view="isSinglePairView"
+          @refresh-data="refresh()"
+        >
+        </SingleCandleChartContainer>
+      </div>
+      <div v-else class="flex flex-col items-center justify-center h-full w-full">
+        <span class="text-2xl font-semibold">No pair selected</span>
       </div>
     </div>
     <Dialog
-      v-if="plotConfigModal"
       id="plotConfiguratorModal"
       v-model:visible="showPlotConfigModal"
       header="Plot Configurator"
@@ -290,16 +238,3 @@ onMounted(() => {
     </Dialog>
   </div>
 </template>
-
-<style scoped lang="css">
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>
