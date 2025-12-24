@@ -65,7 +65,7 @@
     "unplugin-icons": "^22.5.0",
     "unplugin-vue-components": "^30.0.0",
     "vite": "^7.2.7",
-    "vitest": "^4.0.15",
+    "vitest": "^4.0.16",
     "vue-tsc": "^3.1.8"
   },
   "packageManager": "pnpm@10.25.0+sha512.5e82639027af37cf832061bcc6d639c219634488e0f2baebe785028a793de7b525ffcd3f7ff574f5e9860654e098fe852ba8ac5dd5cefe1767d23a020a92f501"
