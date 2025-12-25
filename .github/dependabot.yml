@@ -88,3 +88,6 @@ updates:
     docker:
       patterns:
         - "docker/*"
+    actions:
+      patterns:
+        - "actions/*"
