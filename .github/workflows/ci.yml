@@ -56,7 +56,7 @@ jobs:
       run: pnpm run build
 
     - name: Archive artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       # Ideally this would upload the zip file from below - but this action currently does not support this.
       with:
         name: freqUI-${{ matrix.node }}
@@ -72,7 +72,7 @@ jobs:
     - name: Run Playwright tests
       run: pnpm exec playwright test
 
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v6
       if: ${{ !cancelled() }}
       with:
         name: playwright-report-${{ matrix.node }}
