@@ -69,8 +69,7 @@ const profitItems = computed(() => {
     },
     {
       metric: 'Expectancy (ratio)',
-      value: `${formatNumber(profit.value.expectancy, 2)} (${formatNumber(profit.value.expectancy_ratio, 2)})'
-      })`,
+      value: `${formatNumber(profit.value.expectancy, 2)} (${formatNumber(profit.value.expectancy_ratio, 2)})`,
     },
     {
       metric: 'Avg. Duration',
