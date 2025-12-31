@@ -38,17 +38,17 @@ const periodicBreakdownPeriod = ref<string>('month');
     <Column field="date" header="Date"></Column>
     <Column field="trades" header="Trades">
       <template #body="{ data, field }">
-        {{ data[field] ?? 'N/A' }}
+        {{ data[field as string] ?? 'N/A' }}
       </template>
     </Column>
     <Column field="profit_abs" header="Total Profit" :body="formatPrice">
       <template #body="{ data, field }">
-        {{ formatNumber(data[field], 2) }}
+        {{ formatNumber(data[field as string], 2) }}
       </template>
     </Column>
     <Column field="profit_factor" header="Profit Factor">
       <template #body="{ data, field }">
-        {{ formatPrice(data[field], 2) }}
+        {{ formatPrice(data[field as string], 2) }}
       </template>
     </Column>
     <Column field="wins" header="Wins"></Column>

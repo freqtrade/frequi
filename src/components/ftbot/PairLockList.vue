@@ -28,7 +28,7 @@ function removePairLock(item: Lock) {
         <Column field="pair" header="Pair"></Column>
         <Column field="lock_end_timestamp" header="Until">
           <template #body="{ data, field }">
-            {{ timestampms(data[field]) }}
+            {{ timestampms(data[field as string]) }}
           </template>
         </Column>
         <Column field="reason" header="Reason"></Column>

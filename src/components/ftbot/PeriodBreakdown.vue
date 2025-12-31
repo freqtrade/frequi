@@ -129,7 +129,7 @@ onMounted(() => {
         <Column field="date" header="Day"></Column>
         <Column field="abs_profit" header="Profit">
           <template #body="{ data, field }">
-            {{ formatPrice(data[field], botStore.activeBot.stakeCurrencyDecimals) }}
+            {{ formatPrice(data[field as string], botStore.activeBot.stakeCurrencyDecimals) }}
           </template>
         </Column>
         <Column
@@ -137,7 +137,7 @@ onMounted(() => {
           :header="`In ${botStore.activeBot.dailyStats.fiat_display_currency}`"
         >
           <template #body="{ data, field }">
-            {{ formatPrice(data[field], 2) }}
+            {{ formatPrice(data[field as string], 2) }}
           </template>
         </Column>
         <Column field="trade_count" header="Trades"></Column>
@@ -147,7 +147,7 @@ onMounted(() => {
           header="Profit%"
         >
           <template #body="{ data, field }">
-            {{ formatPercent(data[field], 2) }}
+            {{ formatPercent(data[field as string], 2) }}
           </template>
         </Column>
       </DataTable>
