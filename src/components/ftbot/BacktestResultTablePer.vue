@@ -93,17 +93,17 @@ const metrics = computed(() =>
       <Column field="trades" header="Trades"></Column>
       <Column field="profit_mean" header="Avg Profit %">
         <template #body="{ data, field }">
-          {{ formatPercent(data[field], 2) }}
+          {{ formatPercent(data[field as string], 2) }}
         </template>
       </Column>
       <Column field="profit_total_abs" :header="`Tot Profit ${props.stakeCurrency}`">
         <template #body="{ data, field }">
-          {{ formatPrice(data[field], props.stakeCurrencyDecimals) }}
+          {{ formatPrice(data[field as string], props.stakeCurrencyDecimals) }}
         </template>
       </Column>
       <Column field="profit_total" header="Tot Profit %">
         <template #body="{ data, field }">
-          {{ formatPercent(data[field], 2) }}
+          {{ formatPercent(data[field as string], 2) }}
         </template>
       </Column>
       <Column field="wins" header="Wins"></Column>
@@ -112,7 +112,11 @@ const metrics = computed(() =>
 
       <Column v-for="col in metrics" :key="col.field" :field="col.field" :header="col.header">
         <template #body="{ data, field }">
-          {{ col.is_ratio ? formatPercent(data[field], 2) : formatPrice(data[field], 2) }}
+          {{
+            col.is_ratio
+              ? formatPercent(data[field as string], 2)
+              : formatPrice(data[field as string], 2)
+          }}
         </template>
       </Column>
     </DataTable>

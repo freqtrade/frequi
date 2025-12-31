@@ -120,16 +120,16 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
                 botStore.botStores[(data as unknown as ComparisonTableItems).botId!]!.isSelected
               "
               title="Show this bot in Dashboard"
-              >{{ data[field] }}</BaseCheckbox
+              >{{ data[field as string] }}</BaseCheckbox
             >
             <BaseCheckbox
               v-if="!data.botId && botStore.botCount > 1"
               v-model="allToggled"
               title="Toggle all bots"
               class="font-bold"
-              >{{ data[field] }}</BaseCheckbox
+              >{{ data[field as string] }}</BaseCheckbox
             >
-            <span v-if="botStore.botCount <= 1">{{ data[field] }}</span>
+            <span v-if="botStore.botCount <= 1">{{ data[field as string] }}</span>
           </div>
           <Badge
             v-if="data.isOnline && data.isDryRun"

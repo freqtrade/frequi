@@ -262,7 +262,7 @@ watch(
             <DateTimeTZ :date="data.close_timestamp ?? 0" />
           </template>
           <template v-else>
-            {{ data[field] }}
+            {{ data[field as string] }}
           </template>
         </template>
       </Column>
