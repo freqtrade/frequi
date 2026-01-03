@@ -266,8 +266,8 @@ watch(
           </template>
         </template>
       </Column>
-
-      <template v-if="showFilter" #header>
+      <template v-if="showFilter" #paginatorstart> </template>
+      <template v-if="showFilter" #paginatorend>
         <div class="flex justify-end gap-2 p-2">
           <InputText v-model="filterText" placeholder="Filter" class="w-64" size="small" />
         </div>
