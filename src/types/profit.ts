@@ -60,6 +60,11 @@ export interface ProfitStats {
   winrate?: number;
   expectancy?: number;
   expectancy_ratio?: number;
+  cagr?: number;
+  calmar?: number;
+  sharpe?: number;
+  sortino?: number;
+  sqn?: number;
 }
 
 export interface AllProfitStats {

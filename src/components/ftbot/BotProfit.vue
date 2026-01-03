@@ -72,6 +72,26 @@ const profitItems = computed(() => {
       value: `${formatNumber(profit.value.expectancy, 2)} (${formatNumber(profit.value.expectancy_ratio, 2)})`,
     },
     {
+      metric: 'CAGR',
+      value: `${formatPercent(profit.value.cagr, 2)}`,
+    },
+    {
+      metric: 'Calmar',
+      value: `${formatNumber(profit.value.calmar, 2)}`,
+    },
+    {
+      metric: 'Sharpe',
+      value: `${formatNumber(profit.value.sharpe, 2)}`,
+    },
+    {
+      metric: 'Sortino',
+      value: `${formatNumber(profit.value.sortino, 2)}`,
+    },
+    {
+      metric: 'SQN',
+      value: `${formatNumber(profit.value.sqn, 2)}`,
+    },
+    {
       metric: 'Avg. Duration',
       value: `${profit.value.avg_duration ?? 'N/A'}`,
     },
