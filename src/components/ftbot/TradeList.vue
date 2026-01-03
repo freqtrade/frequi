@@ -192,7 +192,10 @@ watch(
           (t) =>
             t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
             t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
-            t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
+            t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()) ||
+            (props.multiBotView
+              ? t.botName?.toLowerCase().includes(filterText.toLowerCase())
+              : false),
         )
       "
       :rows="perPage"
