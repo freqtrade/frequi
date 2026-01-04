@@ -23,13 +23,13 @@ export const ftEchartsTransforms = {
             rawData.map((row) => {
               return row.map((value, index) => (index === dimension ? value * factor : value));
             });
-      console.log('ftEchartsTransforms.multiple', {
-        rawData,
-        data,
-        dimension,
-        us: params.upstream.cloneAllDimensionInfo(),
-        factor,
-      });
+      // console.log('ftEchartsTransforms.multiple', {
+      //   rawData,
+      //   data,
+      //   dimension,
+      //   us: params.upstream.cloneAllDimensionInfo(),
+      //   factor,
+      // });
       return [
         {
           dimensions: params.upstream.cloneAllDimensionInfo(),
