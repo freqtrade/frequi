@@ -685,8 +685,8 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async getWalletChange() {
-        if (this.botApiVersion < 2.43) {
-          return Promise.reject('Wallet change not available');
+        if (!this.botFeatures.walletChange) {
+          return Promise.reject(`Wallet change not available`);
         }
         try {
           const { data } = await api.get<WalletHistory>('/historic_balance');
@@ -1128,7 +1128,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async getBacktestWalletChange() {
-        if (this.botApiVersion < 2.43) {
+        if (!this.botFeatures.walletChange) {
           return Promise.reject('Backtest wallet change not available');
         }
         if (!this.selectedBacktestMetadata?.filename) {
