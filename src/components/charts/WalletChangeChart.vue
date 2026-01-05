@@ -55,7 +55,11 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   }
   const colDate = props.walletData.columns.findIndex((el) => el === '__date_ts');
   const colTotal = props.walletData.columns.findIndex((el) => el === 'total');
-  const startingValue: number = props.walletData.data[0][colTotal] as number;
+  const starting_field = props.walletData.data[0];
+  if (!starting_field) {
+    return {};
+  }
+  const startingValue: number = starting_field[colTotal] as number;
   const option: EChartsOption = {
     title: {
       text: 'Wallet Change',
