@@ -139,6 +139,12 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
           backgroundColor: '#6a7985',
         },
       },
+      formatter: (params) => {
+        const walletChange = params[0].data[colTotal] as number;
+        return `${timestampms(params[0].data[colDate])}<br />${
+          params[0].marker
+        }Wallet change: ${formatPrice(walletChange, 3)}`;
+      },
     },
     grid: {
       ...echartsGridDefault,
