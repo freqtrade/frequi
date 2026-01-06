@@ -69,6 +69,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     {
       name: 'Starting balance',
       yAxis: startingValue,
+      emphasis: { disabled: true },
       label: {
         show: true,
         position: 'insideStartTop',
@@ -81,6 +82,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
       label: {
         show: false,
       },
+      emphasis: { disabled: true },
       lineStyle: {
         type: 'solid',
       },
@@ -91,6 +93,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     markLineData.push({
       name: 'Capture start',
       xAxis: captureStartTs,
+      emphasis: { disabled: true },
       label: {
         show: true,
         position: 'insideEndTop',
@@ -111,9 +114,23 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    dataset: {
-      source: props.walletData.data,
-    },
+    dataset: [
+      { source: props.walletData.data },
+      {
+        transform: {
+          // post capture start
+          type: 'filter',
+          config: { dimension: colDate, gte: captureStartTs - 1 },
+        },
+      },
+      {
+        transform: {
+          // Pre capture start
+          type: 'filter',
+          config: { dimension: colDate, lte: captureStartTs + 1 },
+        },
+      },
+    ],
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -129,6 +146,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     legend: {
       data: [CHART_WALLET_CHANGE],
       right: '5%',
+      show: false,
       selectedMode: false,
     },
     xAxis: [
@@ -200,15 +218,35 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
         name: CHART_WALLET_CHANGE,
         showSymbol: false,
         color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
+        datasetIndex: 1,
         encode: {
           x: colDate,
           // open, close, low, high
           y: colTotal,
         },
+        lineStyle: {
+          type: 'solid',
+        },
         markLine: {
           symbol: 'none',
           animation: false,
           data: markLineData,
+        },
+      },
+      {
+        type: 'line',
+        name: CHART_WALLET_CHANGE,
+        showSymbol: false,
+        lineStyle: {
+          //
+          type: 'dashed',
+        },
+        color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
+        datasetIndex: 2,
+        encode: {
+          x: colDate,
+          // open, close, low, high
+          y: colTotal,
         },
       },
     ],
