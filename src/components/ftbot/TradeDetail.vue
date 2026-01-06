@@ -36,12 +36,7 @@ defineProps<{
       <ValuePair v-if="trade.is_open && trade.current_rate" description="Current Rate">
         {{ formatPrice(trade.current_rate) }}
         <span title="Current Value" class="italic">
-          ({{
-            formatPriceCurrency(
-              (trade.current_rate * trade.amount) / (trade.leverage ?? 1),
-              stakeCurrency,
-            )
-          }})
+          ({{ formatPriceCurrency(trade.stake_amount + (trade.profit_abs ?? 0), stakeCurrency) }})
         </span>
       </ValuePair>
       <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
