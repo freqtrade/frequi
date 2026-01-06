@@ -18,19 +18,32 @@ defineProps<{
 
       <ValuePair description="Open date">{{ timestampms(trade.open_timestamp) }}</ValuePair>
       <ValuePair v-if="trade.enter_tag" description="Entry tag">{{ trade.enter_tag }}</ValuePair>
-      <ValuePair v-if="trade.is_open" description="Stake"
-        >{{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
-        {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
-      >
-      <ValuePair v-if="!trade.is_open" description="Total Stake"
-        >{{ formatPriceCurrency(trade.max_stake_amount ?? trade.stake_amount, stakeCurrency) }}
-        {{ trade.leverage && trade.leverage !== 1 ? `(${trade.leverage}x)` : '' }}</ValuePair
-      >
+      <ValuePair v-if="trade.is_open" description="Stake">
+        {{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
+        <template v-if="trade.trading_mode !== 'spot'">
+          ({{ trade.leverage }}x)
+          <span title="Position value" class="italic">{{
+            formatPriceCurrency(trade.amount * trade.open_rate, stakeCurrency)
+          }}</span>
+        </template>
+      </ValuePair>
+      <ValuePair v-if="!trade.is_open" description="Total Stake">
+        {{ formatPriceCurrency(trade.max_stake_amount ?? trade.stake_amount, stakeCurrency) }}
+        {{ trade.trading_mode !== 'spot' ? `(${trade.leverage}x)` : '' }}
+      </ValuePair>
       <ValuePair description="Amount">{{ formatPrice(trade.amount) }}</ValuePair>
       <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
-      <ValuePair v-if="trade.is_open && trade.current_rate" description="Current Rate">{{
-        formatPrice(trade.current_rate)
-      }}</ValuePair>
+      <ValuePair v-if="trade.is_open && trade.current_rate" description="Current Rate">
+        {{ formatPrice(trade.current_rate) }}
+        <span title="Current Value" class="italic">
+          ({{
+            formatPriceCurrency(
+              (trade.current_rate * trade.amount) / (trade.leverage ?? 1),
+              stakeCurrency,
+            )
+          }})
+        </span>
+      </ValuePair>
       <ValuePair v-if="!trade.is_open && trade.close_rate" description="Close Rate">{{
         formatPrice(trade.close_rate)
       }}</ValuePair>
