@@ -244,6 +244,7 @@ export function createBotSubStore(botId: string, botName: string) {
             updates.push(this.getProfit());
             updates.push(this.getTrades());
             updates.push(this.getBalance());
+            updates.push(this.updateWalletChange());
             //     /* white/blacklist might be refreshed more often as they are not expensive on the backend */
             updates.push(this.getWhitelist());
             updates.push(this.getBlacklist());
@@ -684,17 +685,15 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(error);
         }
       },
-      async getWalletChange() {
+      async updateWalletChange() {
         if (!this.botFeatures.walletChange) {
-          return Promise.reject(`Wallet change not available`);
+          return;
         }
         try {
           const { data } = await api.get<WalletHistory>('/historic_balance');
           this.balanceHistory = data;
-          return data;
         } catch (err) {
           console.error(err);
-          return Promise.reject(err);
         }
       },
       async getState() {
