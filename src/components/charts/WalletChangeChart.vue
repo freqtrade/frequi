@@ -17,7 +17,7 @@ import {
 } from 'echarts/components';
 
 import type { WalletHistory } from '@/types';
-import type { EChartsOption } from 'echarts';
+import type { EChartsOption, MarkLineComponentOption } from 'echarts';
 
 use([
   LineChart,
@@ -60,6 +60,50 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     return {};
   }
   const startingValue: number = starting_field[colTotal] as number;
+  const captureStartTs = props.walletData.capture_start_ts ?? 0;
+  const firstTimestamp = Number(starting_field[colDate]);
+  const shouldShowCaptureLine =
+    captureStartTs > 0 && Number.isFinite(firstTimestamp) && captureStartTs !== firstTimestamp;
+  const captureLineColor = settingsStore.chartTheme === 'dark' ? '#c2c2c2' : '#4b5563';
+  const markLineData: MarkLineComponentOption['data'] = [
+    {
+      name: 'Starting balance',
+      yAxis: startingValue,
+      label: {
+        show: true,
+        position: 'insideStartTop',
+        formatter: 'Starting balance',
+        color: captureLineColor,
+      },
+    },
+    {
+      name: 'Zero',
+      label: {
+        show: false,
+      },
+      lineStyle: {
+        type: 'solid',
+      },
+      yAxis: 0,
+    },
+  ];
+  if (shouldShowCaptureLine) {
+    markLineData.push({
+      name: 'Capture start',
+      xAxis: captureStartTs,
+      label: {
+        show: true,
+        position: 'insideEndTop',
+        formatter: 'Capture start',
+        color: captureLineColor,
+      },
+      lineStyle: {
+        type: 'dotted',
+        color: captureLineColor,
+        width: 1,
+      },
+    });
+  }
   const option: EChartsOption = {
     title: {
       text: 'Wallet Change',
@@ -132,6 +176,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     visualMap: [
       {
         show: false,
+        dimension: 2,
         pieces: [
           {
             gte: startingValue,
@@ -162,26 +207,13 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
         },
         markLine: {
           symbol: 'none',
-          data: [
-            {
-              name: 'Starting balance',
-              yAxis: startingValue,
-            },
-            {
-              name: 'Zero',
-              label: {
-                show: false,
-              },
-              lineStyle: {
-                type: 'solid',
-              },
-              yAxis: 0,
-            },
-          ],
+          animation: false,
+          data: markLineData,
         },
       },
     ],
   };
+  console.log('option', option);
   return option;
 });
 </script>
