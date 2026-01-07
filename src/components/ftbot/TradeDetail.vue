@@ -50,16 +50,16 @@ defineProps<{
         v-if="trade.is_open && trade.realized_profit && !trade.total_profit_abs"
         description="Realized Profit"
       >
-        <TradeProfit class="ms-2" :trade="trade" mode="realized" />
+        <TradeProfit :trade="trade" mode="realized" />
       </ValuePair>
       <ValuePair v-if="trade.is_open && trade.total_profit_abs" description="Total Profit">
-        <TradeProfit class="ms-2" :trade="trade" mode="total" />
+        <TradeProfit :trade="trade" mode="total" />
       </ValuePair>
       <ValuePair
         v-if="trade.profit_ratio && trade.profit_abs"
         :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
       >
-        <TradeProfit class="ms-2" :trade="trade" />
+        <TradeProfit :trade="trade" />
       </ValuePair>
       <details>
         <summary>Details</summary>
