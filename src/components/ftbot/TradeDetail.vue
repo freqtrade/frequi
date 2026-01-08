@@ -35,7 +35,7 @@ defineProps<{
       <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>
       <ValuePair v-if="trade.is_open && trade.current_rate" description="Current Rate">
         {{ formatPrice(trade.current_rate) }}
-        <span title="Current Value" class="italic">
+        <span title="Current Value - In futures mode Collateral + PnL" class="italic">
           ({{ formatPriceCurrency(trade.stake_amount + (trade.profit_abs ?? 0), stakeCurrency) }})
         </span>
       </ValuePair>
