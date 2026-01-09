@@ -21,7 +21,7 @@ import {
   VisualMapPiecewiseComponent,
   MarkAreaComponent,
   MarkLineComponent,
-  // MarkPointComponent,
+  MarkPointComponent,
   GraphicComponent,
 } from 'echarts/components';
 import { use } from 'echarts/core';
@@ -42,7 +42,7 @@ use([
   VisualMapPiecewiseComponent,
   MarkAreaComponent,
   MarkLineComponent,
-  // MarkPointComponent,
+  MarkPointComponent,
 
   CandlestickChart,
   BarChart,

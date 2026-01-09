@@ -3,6 +3,7 @@ import type { Order, PairHistory, Trade, BTOrder } from '@/types';
 import type {
   MarkAreaComponentOption,
   MarkLineComponentOption,
+  MarkPointComponentOption,
   ScatterSeriesOption,
 } from 'echarts';
 
@@ -233,7 +234,11 @@ export function generateMarkArea(
   dataset: PairHistory,
   enabled: boolean,
   markAreaZIndex?: number | undefined,
-): { markArea?: MarkAreaComponentOption; markLine?: MarkLineComponentOption } {
+): {
+  markArea?: MarkAreaComponentOption;
+  markLine?: MarkLineComponentOption;
+  markPoint?: MarkPointComponentOption;
+} {
   if (!dataset.annotations || !enabled) return {};
 
   const markArea: MarkAreaComponentOption = {
@@ -242,7 +247,7 @@ export function generateMarkArea(
     },
     z: markAreaZIndex ?? 1,
     data: dataset.annotations
-      .filter((area) => area.type == 'area')
+      .filter((area) => area.type === 'area')
       .map((area) => {
         return [
           {
@@ -271,7 +276,7 @@ export function generateMarkArea(
     symbol: ['none', 'none'],
     z: markAreaZIndex ?? 1,
     data: dataset.annotations
-      .filter((line) => line.type == 'line')
+      .filter((line) => line.type === 'line')
       .map((line) => {
         return [
           {
@@ -293,9 +298,36 @@ export function generateMarkArea(
         ];
       }),
   };
+
+  const markPoint: MarkPointComponentOption = {
+    label: {
+      position: 'top',
+      show: true,
+    },
+    z: markAreaZIndex ? markAreaZIndex : 5,
+    data: dataset.annotations
+      .filter((point) => point.type === 'point')
+      .map((point) => {
+        return {
+          name: point.label ?? '',
+          xAxis: point.x,
+          yAxis: point.y,
+          itemStyle: {
+            color: point.color,
+          },
+          label: {
+            formatter: '{b}',
+          },
+          symbolSize: point.size ?? 10,
+          symbol: point.shape ?? 'circle',
+          z2: point.z_index ?? 1,
+        };
+      }),
+  };
   return {
     markArea,
     markLine,
+    markPoint,
   };
 }
 

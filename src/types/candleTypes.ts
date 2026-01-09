@@ -53,7 +53,18 @@ export interface MarkLine extends _MarkArea {
   line_style?: 'solid' | 'dashed' | 'dotted';
 }
 
-export type MarkAnnotation = MarkArea | MarkLine;
+export interface MarkPoint {
+  type: 'point';
+  x: string;
+  y: number;
+  size?: number;
+  shape?: 'circle' | 'rect' | 'roundRect' | 'triangle' | 'pin' | 'arrow' | 'none';
+  color?: string;
+  label?: string;
+  z_index?: number;
+}
+
+export type MarkAnnotation = MarkArea | MarkLine | MarkPoint;
 
 export interface PairHistory {
   strategy: string;
