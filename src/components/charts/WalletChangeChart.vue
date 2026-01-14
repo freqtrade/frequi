@@ -54,7 +54,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     return {};
   }
   const colDate = props.walletData.columns.findIndex((el) => el === '__date_ts');
-  const colTotal = props.walletData.columns.findIndex((el) => el === 'total');
+  const colTotal = props.walletData.columns.findIndex((el) => el === 'total_quote');
   const starting_field = props.walletData.data[0];
   if (!starting_field) {
     return {};
