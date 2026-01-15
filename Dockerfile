@@ -1,4 +1,4 @@
-FROM node:24.10.0-alpine AS ui-builder
+FROM node:24.13.0-alpine AS ui-builder
 
 RUN mkdir /app \
     && corepack enable
@@ -15,7 +15,7 @@ COPY . /app
 
 RUN pnpm run build
 
-FROM nginx:1.29.2-alpine
+FROM nginx:1.29.4-alpine
 COPY  --from=ui-builder /app/dist /etc/nginx/html
 COPY  --from=ui-builder /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
