@@ -205,12 +205,6 @@ function generateChart(initial = false) {
   // });
   return chartOptionsLoc;
 }
-function updateChart(initial = false) {
-  const chartOptionsLoc = generateChart(initial);
-  chart.value?.setOption(chartOptionsLoc, {
-    replaceMerge: ['series', 'dataset'],
-  });
-}
 
 const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWithControl(
   () => props.trades,
@@ -300,8 +294,7 @@ onMounted(() => {
 watchThrottled(
   () => props.openTrades,
   () => {
-    // cumProfitChartOptions.trigger();
-    updateChart();
+    cumProfitChartOptions.trigger();
   },
   { throttle: 60 * 1000 },
 );
