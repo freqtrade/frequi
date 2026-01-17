@@ -1,21 +1,17 @@
 import pluginJs from '@eslint/js';
 import prettierConfig from '@vue/eslint-config-prettier';
-import vueEslintConfig from '@vue/eslint-config-typescript';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfigWithVueTs(
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/recommended'],
-  ...vueEslintConfig({
-    extends: [
-      'recommended',
-      // 'strict',
-    ],
-  }),
+  tseslint.configs.recommended,
+  pluginVue.configs['flat/essential'],
+  vueTsConfigs.recommended,
+
   prettierConfig,
   {
     languageOptions: {
@@ -75,4 +71,4 @@ export default [
       ],
     },
   },
-];
+);
