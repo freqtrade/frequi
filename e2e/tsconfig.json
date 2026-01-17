@@ -4,7 +4,7 @@
     "sourceMap": false,
   },
   "include": [
-    "e2e/*.ts",
-    "e2e/*.tsx"
-  ],
+    "*.ts",
+    "*.tsx"
+  ]
 }
