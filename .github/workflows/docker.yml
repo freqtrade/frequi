@@ -8,11 +8,18 @@ on:
       DOCKERHUB_TOKEN:
         required: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
+
 jobs:
   docker:
+    name: Build and push Docker images
     runs-on: ubuntu-latest
     permissions:
-      packages: write
+      packages: write  # Needed to push Docker images to ghcr.
     environment:
       name: Production
     strategy:
@@ -81,13 +88,14 @@ jobs:
         retention-days: 1
 
   docker-merge:
+    name: Merge and push Docker manifest
     runs-on: ubuntu-latest
     needs:
       - docker
     environment:
       name: Production
     permissions:
-      packages: write
+      packages: write  # Needed to push Docker images to ghcr.
 
     steps:
     - name: Download digests
