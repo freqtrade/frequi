@@ -15,11 +15,13 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   build:
+    name: Build and Test FreqUI
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -82,11 +84,12 @@ jobs:
     # End Playwright section
 
   release:
+    name: Upload Release Binaries
     runs-on: "ubuntu-latest"
     if: github.event_name == 'release'
     needs: build
     permissions:
-      contents: write
+      contents: write  # Needed to upload release assets.
     steps:
     - name: Download digests
       uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
@@ -113,7 +116,7 @@ jobs:
     if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'release') && github.repository == 'freqtrade/frequi'
     uses: ./.github/workflows/docker.yml
     permissions:
-      packages: write
+      packages: write  # Needed to push Docker images to ghcr.
       contents: read
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
