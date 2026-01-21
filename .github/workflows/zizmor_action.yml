@@ -8,15 +8,20 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 permissions: {}
 
 jobs:
   zizmor:
+    name: Run zizmor 🌈
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
-      # contents: read # only needed for private repos
-      # actions: read # only needed for private repos
+      security-events: write # Required for upload-sarif (used by zizmor-action) to upload SARIF files.
+      # contents: read         # Only needed for private repos. Needed to clone the repo.
+      # actions: read          # Only needed for private repos. Needed for upload-sarif to read workflow run info.
     steps:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
