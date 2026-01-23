@@ -16,7 +16,7 @@ withDefaults(
 
 <template>
   <div class="flex w-full">
-    <div class="flex justify-between me-2" :class="classLabel">
+    <div class="flex justify-between me-2 items-center" :class="classLabel">
       <label>{{ description }}</label>
       <InfoBox v-if="help" :hint="help" />
     </div>
