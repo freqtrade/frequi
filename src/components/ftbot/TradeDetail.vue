@@ -90,7 +90,7 @@ defineProps<{
         {{ formatPrice(trade.stop_loss_abs) }}
       </ValuePair>
       <ValuePair
-        description="At Risk"
+        description="At risk"
         help="The amount at risk based on the stake amount. This is how much you would lose if the stoploss is hit."
       >
         {{
