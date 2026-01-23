@@ -86,15 +86,16 @@ defineProps<{
     <div class="mt-2 lg:mt-0">
       <h5 class="detail-header">Stoploss</h5>
       <ValuePair description="Stoploss">
-        {{ formatPercent(trade.stop_loss_pct / 100) }} |
+        {{ formatPercent(trade.stop_loss_ratio) }} |
         {{ formatPrice(trade.stop_loss_abs) }}
       </ValuePair>
       <ValuePair
-        v-if="trade.initial_stop_loss_pct && trade.initial_stop_loss_abs"
-        description="Initial Stoploss"
+        description="At Risk"
+        help="The amount at risk based on the stake amount. This is how much you would lose if the stoploss is hit."
       >
-        {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
-        {{ formatPrice(trade.initial_stop_loss_abs) }}
+        {{
+          formatPriceCurrency(trade.stake_amount * Math.abs(trade.stop_loss_ratio), stakeCurrency)
+        }}
       </ValuePair>
       <ValuePair
         v-if="trade.is_open && trade.stoploss_current_dist_ratio && trade.stoploss_current_dist"
@@ -102,6 +103,13 @@ defineProps<{
       >
         {{ formatPercent(trade.stoploss_current_dist_ratio) }} |
         {{ formatPrice(trade.stoploss_current_dist) }}
+      </ValuePair>
+      <ValuePair
+        v-if="trade.initial_stop_loss_pct && trade.initial_stop_loss_abs"
+        description="Initial Stoploss"
+      >
+        {{ formatPercent(trade.initial_stop_loss_pct / 100) }} |
+        {{ formatPrice(trade.initial_stop_loss_abs) }}
       </ValuePair>
       <ValuePair v-if="trade.stoploss_last_update_timestamp" description="Stoploss last updated">
         {{ timestampms(trade.stoploss_last_update_timestamp) }}
