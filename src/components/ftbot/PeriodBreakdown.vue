@@ -110,8 +110,9 @@ onMounted(() => {
 
     <div
       v-if="
-        props.multiBotView &&
-        (botStore.selectedBotCount <= 1 || settingsStore.timeProfitPreference != 'rel_profit')
+        !props.multiBotView ||
+        botStore.selectedBotCount <= 1 ||
+        settingsStore.timeProfitPreference != 'rel_profit'
       "
     >
       <TimePeriodChart
