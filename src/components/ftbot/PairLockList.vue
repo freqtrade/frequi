@@ -24,7 +24,7 @@ function removePairLock(item: Lock) {
       </Button>
     </div>
     <div>
-      <DataTable size="small" :items="botStore.activeBot.activeLocks">
+      <DataTable size="small" :value="botStore.activeBot.activeLocks">
         <Column field="pair" header="Pair"></Column>
         <Column field="lock_end_timestamp" header="Until">
           <template #body="{ data, field }">
