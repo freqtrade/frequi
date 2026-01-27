@@ -136,7 +136,7 @@ const combinedPairList = computed(() => {
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"
         @click="botStore.activeBot.selectedPair = comb.pair"
       >
-        <div>
+        <div class="flex items-center gap-2">
           {{ comb.pair }}
           <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
         </div>
