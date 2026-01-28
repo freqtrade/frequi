@@ -56,7 +56,7 @@
     "eslint-plugin-vue": "^10.6.2",
     "globals": "^17.0.0",
     "happy-dom": "^20.1.0",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "tailwindcss": "^4.1.18",
     "tailwindcss-primeui": "^0.6.1",
     "typescript": "~5.8.3",
