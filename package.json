@@ -61,9 +61,9 @@
     "tailwindcss-primeui": "^0.6.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.53.0",
-    "unplugin-auto-import": "^20.3.0",
-    "unplugin-icons": "^22.5.0",
-    "unplugin-vue-components": "^30.0.0",
+    "unplugin-auto-import": "^21.0.0",
+    "unplugin-icons": "^23.0.1",
+    "unplugin-vue-components": "^31.0.0",
     "vite": "^7.3.1",
     "vitest": "^4.0.17",
     "vue-tsc": "^3.2.2"
