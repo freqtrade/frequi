@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@noction/vue-draggable-grid": "1.9.16",
-    "@primeuix/themes": "^2.0.2",
+    "@primeuix/themes": "^2.0.3",
     "@vuepic/vue-datepicker": "^12.1.0",
     "@vueuse/core": "^14.1.0",
     "@vueuse/integrations": "^14.1.0",
