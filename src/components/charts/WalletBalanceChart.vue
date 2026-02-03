@@ -35,7 +35,7 @@ use([
 
 const colorStore = useColorStore();
 // Define Column labels here to avoid typos
-const CHART_WALLET_CHANGE = 'Wallet change';
+const CHART_WALLET_BALANCE = 'Wallet balance';
 
 const props = withDefaults(
   defineProps<{
@@ -49,7 +49,7 @@ const props = withDefaults(
 
 const settingsStore = useSettingsStore();
 
-const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
+const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
   if (!props.walletData) {
     return {};
   }
@@ -109,7 +109,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   }
   const option: EChartsOption = {
     title: {
-      text: 'Wallet Change',
+      text: 'Wallet Balance',
       left: 'center',
       show: props.showTitle,
     },
@@ -140,17 +140,17 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
         },
       },
       formatter: (params) => {
-        const walletChange = params[0].data[colTotal] as number;
+        const walletBalance = params[0].data[colTotal] as number;
         return `${timestampms(params[0].data[colDate])}<br />${
           params[0].marker
-        }Wallet change: ${formatPrice(walletChange, 3)}`;
+        }Wallet balance: ${formatPrice(walletBalance, 3)}`;
       },
     },
     grid: {
       ...echartsGridDefault,
     },
     legend: {
-      data: [CHART_WALLET_CHANGE],
+      data: [CHART_WALLET_BALANCE],
       right: '5%',
       show: false,
       selectedMode: false,
@@ -168,7 +168,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     yAxis: [
       {
         type: 'value',
-        name: CHART_WALLET_CHANGE,
+        name: CHART_WALLET_BALANCE,
         splitLine: {
           show: false,
         },
@@ -221,7 +221,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     series: [
       {
         type: 'line',
-        name: CHART_WALLET_CHANGE,
+        name: CHART_WALLET_BALANCE,
         showSymbol: false,
         color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
         datasetIndex: 1,
@@ -241,7 +241,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
       },
       {
         type: 'line',
-        name: CHART_WALLET_CHANGE,
+        name: CHART_WALLET_BALANCE,
         showSymbol: false,
         lineStyle: {
           //
@@ -265,7 +265,7 @@ const walletChangeOptions: ComputedRef<EChartsOption> = computed(() => {
 <template>
   <ECharts
     v-if="walletData?.data"
-    :option="walletChangeOptions"
+    :option="walletBalanceOptions"
     :theme="settingsStore.chartTheme"
     autoresize
   />
