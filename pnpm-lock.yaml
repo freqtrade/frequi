@@ -118,8 +118,8 @@ importers:
         specifier: ^17.2.0
         version: 17.2.0
       happy-dom:
-        specifier: ^20.3.4
-        version: 20.3.4
+        specifier: ^20.4.0
+        version: 20.4.0
       prettier:
         specifier: ^3.8.0
         version: 3.8.0
@@ -149,7 +149,7 @@ importers:
         version: 7.3.1(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0)
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@types/node@25.0.9)(happy-dom@20.3.4)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0)
+        version: 4.0.18(@types/node@25.0.9)(happy-dom@20.4.0)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0)
       vue-tsc:
         specifier: ^3.2.2
         version: 3.2.2(typescript@5.8.3)
@@ -1416,8 +1416,8 @@ packages:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
 
-  entities@7.0.0:
-    resolution: {integrity: sha512-FDWG5cmEYf2Z00IkYRhbFrwIwvdFKH07uV8dvNy0omp/Qb1xcyCWp2UDtcwJF4QZZvk0sLudP6/hAu42TaqVhQ==}
+  entities@7.0.1:
+    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
     engines: {node: '>=0.12'}
 
   es-define-property@1.0.1:
@@ -1657,8 +1657,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  happy-dom@20.3.4:
-    resolution: {integrity: sha512-rfbiwB6OKxZFIFQ7SRnCPB2WL9WhyXsFoTfecYgeCeFSOBxvkWLaXsdv5ehzJrfqwXQmDephAKWLRQoFoJwrew==}
+  happy-dom@20.4.0:
+    resolution: {integrity: sha512-RDeQm3dT9n0A5f/TszjUmNCLEuPnMGv3Tv4BmNINebz/h17PA6LMBcxJ5FrcqltNBMh9jA/8ufgDdBYUdBt+eg==}
     engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
@@ -3306,7 +3306,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.28.6
       '@vue/shared': 3.5.27
-      entities: 7.0.0
+      entities: 7.0.1
       estree-walker: 2.0.2
       source-map-js: 1.2.1
 
@@ -3627,7 +3627,7 @@ snapshots:
 
   entities@4.5.0: {}
 
-  entities@7.0.0: {}
+  entities@7.0.1: {}
 
   es-define-property@1.0.1: {}
 
@@ -3895,7 +3895,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  happy-dom@20.3.4:
+  happy-dom@20.4.0:
     dependencies:
       '@types/node': 25.0.9
       '@types/whatwg-mimetype': 3.0.2
@@ -4491,7 +4491,7 @@ snapshots:
       sass: 1.86.0
       yaml: 2.7.0
 
-  vitest@4.0.18(@types/node@25.0.9)(happy-dom@20.3.4)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0):
+  vitest@4.0.18(@types/node@25.0.9)(happy-dom@20.4.0)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0):
     dependencies:
       '@vitest/expect': 4.0.18
       '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.86.0)(yaml@2.7.0))
@@ -4515,7 +4515,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.0.9
-      happy-dom: 20.3.4
+      happy-dom: 20.4.0
     transitivePeerDependencies:
       - jiti
       - less
