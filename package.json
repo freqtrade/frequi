@@ -44,7 +44,7 @@
     "@primevue/auto-import-resolver": "^4.5.4",
     "@tailwindcss/vite": "^4.1.18",
     "@tsconfig/node22": "^22.0.5",
-    "@types/node": "^25.0.9",
+    "@types/node": "^25.0.10",
     "@typescript-eslint/parser": "^8.54.0",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vue/compiler-sfc": "3.5.27",
