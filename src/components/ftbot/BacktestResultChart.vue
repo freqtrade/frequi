@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AVAILABLE_TIMEFRAMES } from '@/shared/timeframes';
 import type { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
 
 const props = defineProps<{
@@ -101,25 +102,7 @@ onMounted(() => {
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
         allow-timeframe-switch
-        :available-timeframes="[
-          '1m',
-          '3m',
-          '5m',
-          '15m',
-          '30m',
-          '1h',
-          '2h',
-          '4h',
-          '6h',
-          '8h',
-          '12h',
-          '1d',
-          '3d',
-          '1w',
-          '2w',
-          '1M',
-          '1y',
-        ]"
+        :available-timeframes="AVAILABLE_TIMEFRAMES"
         @refresh-data="refreshOHLCV"
       >
       </CandleChartContainer>

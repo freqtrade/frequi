@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AVAILABLE_TIMEFRAMES } from '@/shared/timeframes';
 import type { GridItemData } from '@/types';
 
 const botStore = useBotStore();
@@ -256,25 +257,7 @@ function refreshOHLCV(pair: string, columns: string[], timeframe?: string) {
             v-model:timeframe="chartStore.selectedTradingTimeframe"
             :trades="botStore.activeBot.allTrades"
             allow-timeframe-switch
-            :available-timeframes="[
-              '1m',
-              '3m',
-              '5m',
-              '15m',
-              '30m',
-              '1h',
-              '2h',
-              '4h',
-              '6h',
-              '8h',
-              '12h',
-              '1d',
-              '3d',
-              '1w',
-              '2w',
-              '1M',
-              '1y',
-            ]"
+            :available-timeframes="AVAILABLE_TIMEFRAMES"
             @refresh-data="refreshOHLCV"
           >
           </CandleChartContainer>
