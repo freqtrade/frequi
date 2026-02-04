@@ -160,7 +160,25 @@ watch(
         :timerange="botStore.activeBot.isWebserverMode ? chartStore.timerange : undefined"
         :strategy="botStore.activeBot.isWebserverMode ? chartStore.strategy : undefined"
         allow-timeframe-switch
-        :available-timeframes="['5m', '4h', '1d']"
+        :available-timeframes="[
+          '1m',
+          '3m',
+          '5m',
+          '15m',
+          '30m',
+          '1h',
+          '2h',
+          '4h',
+          '6h',
+          '8h',
+          '12h',
+          '1d',
+          '3d',
+          '1w',
+          '2w',
+          '1M',
+          '1y',
+        ]"
         @refresh-data="refreshOHLCV"
         @update:timeframe="chartStore.selectedTimeframe = $event"
       >
