@@ -3,14 +3,17 @@ export const useChartConfigStore = defineStore(
   () => {
     const strategy = ref<string>('');
     const useLiveData = ref<boolean>(false);
-    const selectedTimeframe = ref<string>('1h');
+    const selectedTimeframe = ref<string>('');
     const timerange = ref<string>('');
+    // For TradingView timeframe switching (visualization only)
+    const selectedTradingTimeframe = ref<string>('');
 
     return {
       strategy,
       useLiveData,
       selectedTimeframe,
       timerange,
+      selectedTradingTimeframe,
     };
   },
   {

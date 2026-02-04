@@ -11,6 +11,9 @@ const props = withDefaults(
     reloadDataOnSwitch?: boolean;
     strategy?: string;
     sliderPosition?: ChartSliderPosition;
+    /** Allow timeframe switching */
+    allowTimeframeSwitch?: boolean;
+    availableTimeframes?: string[];
   }>(),
   {
     trades: () => [],
@@ -18,11 +21,14 @@ const props = withDefaults(
     reloadDataOnSwitch: false,
     strategy: '',
     sliderPosition: undefined,
+    allowTimeframeSwitch: true,
+    availableTimeframes: () => [],
   },
 );
 
 const emit = defineEmits<{
   refreshData: [pair: string, columns: string[]];
+  'update:timeframe': [timeframe: string];
 }>();
 
 const settingsStore = useSettingsStore();
@@ -137,13 +143,36 @@ const singlePairSelection = computed({
     botStore.activeBot.plotMultiPairs = [value];
   },
 });
+
+const selectedTimeframe = ref(props.timeframe);
+
+watch(
+  () => props.timeframe,
+  (newTimeframe) => {
+    selectedTimeframe.value = newTimeframe;
+  },
+);
+
+function onTimeframeChange() {
+  emit('update:timeframe', selectedTimeframe.value);
+}
 </script>
 
 <template>
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
       <div class="flex me-0 items-center md:gap-2">
-        <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+        <span class="md:ms-2 text-nowrap">{{ strategyName }} |</span>
+        <Select
+          v-if="allowTimeframeSwitch && availableTimeframes.length > 0"
+          v-model="selectedTimeframe"
+          class="w-24"
+          :options="availableTimeframes"
+          size="small"
+          :clearable="false"
+          @change="onTimeframeChange"
+        />
+        <span v-else class="text-nowrap">{{ timeframe || '' }}</span>
         <MultiSelect
           v-if="settingsStore.multiPairSelection"
           v-model="botStore.activeBot.plotMultiPairs"
@@ -215,7 +244,7 @@ const singlePairSelection = computed({
           :available-pairs="availablePairs"
           :pair="pair"
           :historic-view="botStore.activeBot.isWebserverMode"
-          :timeframe="timeframe"
+          :timeframe="selectedTimeframe"
           :trades="props.trades"
           :slider-position="props.sliderPosition"
           :is-single-pair-view="isSinglePairView"

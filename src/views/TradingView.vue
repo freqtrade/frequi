@@ -4,6 +4,7 @@ import type { GridItemData } from '@/types';
 const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const settingsStore = useSettingsStore();
+const chartStore = useChartConfigStore();
 const currentBreakpoint = ref('');
 
 const breakpointChanged = (newBreakpoint: string) => {
@@ -49,10 +50,10 @@ const responsiveGridLayouts = computed(() => {
   };
 });
 
-function refreshOHLCV(pair: string, columns: string[]) {
+function refreshOHLCV(pair: string, columns: string[], timeframe?: string) {
   botStore.activeBot.getPairCandles({
     pair: pair,
-    timeframe: botStore.activeBot.timeframe,
+    timeframe: timeframe || chartStore.selectedTradingTimeframe || botStore.activeBot.timeframe,
     columns: columns,
   });
 }
@@ -245,11 +246,17 @@ function refreshOHLCV(pair: string, columns: string[]) {
         drag-allow-from=".drag-header"
       >
         <DraggableContainer header="Chart">
+          <div class="flex items-center gap-2 mb-2 px-1">
+            <span class="text-sm text-surface-600 dark:text-surface-400">Timeframe:</span>
+            <TimeframeSelect v-model="chartStore.selectedTradingTimeframe" size="small" />
+          </div>
           <CandleChartContainer
             :available-pairs="botStore.activeBot.whitelist"
             :historic-view="!!false"
-            :timeframe="botStore.activeBot.timeframe"
+            v-model:timeframe="chartStore.selectedTradingTimeframe"
             :trades="botStore.activeBot.allTrades"
+            allow-timeframe-switch
+            :available-timeframes="['5m', '4h', '1d']"
             @refresh-data="refreshOHLCV"
           >
           </CandleChartContainer>

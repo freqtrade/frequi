@@ -40,11 +40,12 @@ onMounted(() => {
 });
 
 function refreshOHLCV(pair: string, columns: string[]) {
-  console.log('Refreshing OHLCV for pair:', pair, finalTimeframe.value, 'with columns:', columns);
-  if (botStore.activeBot.isWebserverMode && finalTimeframe.value) {
+  const tf = chartStore.selectedTimeframe || botStore.activeBot.timeframe;
+  console.log('Refreshing OHLCV for pair:', pair, tf, 'with columns:', columns);
+  if (botStore.activeBot.isWebserverMode && tf) {
     const payload: PairHistoryPayload = {
       pair: pair,
-      timeframe: finalTimeframe.value,
+      timeframe: tf,
       timerange: chartStore.timerange,
       strategy: chartStore.strategy,
       // freqaimodel: freqaiModel.value,
@@ -60,7 +61,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
   } else {
     botStore.activeBot.getPairCandles({
       pair: pair,
-      timeframe: finalTimeframe.value,
+      timeframe: tf,
       columns: columns,
     });
   }
@@ -158,7 +159,10 @@ watch(
         :trades="botStore.activeBot.allTrades"
         :timerange="botStore.activeBot.isWebserverMode ? chartStore.timerange : undefined"
         :strategy="botStore.activeBot.isWebserverMode ? chartStore.strategy : undefined"
+        allow-timeframe-switch
+        :available-timeframes="['5m', '4h', '1d']"
         @refresh-data="refreshOHLCV"
+        @update:timeframe="chartStore.selectedTimeframe = $event"
       >
       </CandleChartContainer>
     </div>

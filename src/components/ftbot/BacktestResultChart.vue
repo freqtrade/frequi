@@ -11,6 +11,7 @@ const props = defineProps<{
 const botStore = useBotStore();
 const isBarVisible = ref({ right: true, left: true });
 const sliderPosition = ref<ChartSliderPosition>();
+const selectedTimeframe = ref(props.timeframe);
 
 function navigateChartToTrade(trade: Trade) {
   sliderPosition.value = {
@@ -22,7 +23,7 @@ function navigateChartToTrade(trade: Trade) {
 function refreshOHLCV(pair: string, columns: string[]) {
   botStore.activeBot.getPairHistory({
     pair: pair,
-    timeframe: props.timeframe,
+    timeframe: selectedTimeframe.value,
     timerange: props.timerange,
     strategy: props.strategy,
     freqaimodel: props.freqaiModel,
@@ -92,13 +93,15 @@ onMounted(() => {
         :available-pairs="backtestResult.pairlist"
         historic-view
         reload-data-on-switch
-        :timeframe="timeframe"
+        v-model:timeframe="selectedTimeframe"
         :timerange="timerange"
         :strategy="strategy"
         :trades="backtestResult.trades"
         class="flex-1 candle-chart-container px-0 h-full align-self-stretch min-w-0 overflow-y-auto"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
+        allow-timeframe-switch
+        :available-timeframes="['5m', '4h', '1d']"
         @refresh-data="refreshOHLCV"
       >
       </CandleChartContainer>
