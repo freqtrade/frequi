@@ -59,6 +59,7 @@ export interface MarkPoint {
   y: number;
   size?: number;
   shape?: 'circle' | 'rect' | 'roundRect' | 'triangle' | 'pin' | 'arrow' | 'none';
+  rotate: number;
   color?: string;
   label?: string;
   z_index?: number;

@@ -320,6 +320,7 @@ export function generateMarkArea(
           },
           symbolSize: point.size ?? 10,
           symbol: point.shape ?? 'circle',
+          symbolRotate: point.rotate,
           z2: point.z_index ?? 1,
         };
       }),
