@@ -31,6 +31,7 @@ const exchange = ref<{
 
 const advancedOptions = ref({
   erase: false,
+  prepend_data: false,
   downloadTrades: false,
   candleTypes: [] as string[],
 });
@@ -82,6 +83,9 @@ async function startDownload() {
       advancedOptions.value.candleTypes.length > 0
     ) {
       payload.candle_types = advancedOptions.value.candleTypes;
+    }
+    if (botStore.activeBot.botFeatures.downloadDataPrepend && advancedOptions.value.prepend_data) {
+      payload.prepend_data = true;
     }
   }
 
@@ -187,6 +191,12 @@ async function startDownload() {
                 >
                   <BaseCheckbox v-model="advancedOptions.erase" class="mb-2"
                     >Erase existing data</BaseCheckbox
+                  >
+                  <BaseCheckbox
+                    v-model="advancedOptions.prepend_data"
+                    class="mb-2"
+                    v-if="botStore.activeBot.botFeatures.downloadDataPrepend"
+                    >Prepend data when downloading</BaseCheckbox
                   >
                   <BaseCheckbox v-model="advancedOptions.downloadTrades" class="mb-2">
                     Download Trades instead of OHLCV data
