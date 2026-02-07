@@ -29,12 +29,14 @@ const exchange = ref<{
   },
 });
 
-const erase = ref(false);
-const downloadTrades = ref(false);
+const advancedOptions = ref({
+  erase: false,
+  downloadTrades: false,
+  candleTypes: [] as string[],
+});
 
 // State to track the collapse status
 const isAdvancedOpen = ref(false);
-const candleType = ref<string[]>([]);
 const candleTypes = [
   { text: 'Spot', value: 'spot' },
   { text: 'Futures', value: 'futures' },
@@ -67,16 +69,19 @@ async function startDownload() {
 
   // Include advanced options only if the section is open
   if (isAdvancedOpen.value) {
-    payload.erase = erase.value;
-    payload.download_trades = downloadTrades.value;
+    payload.erase = advancedOptions.value.erase;
+    payload.download_trades = advancedOptions.value.downloadTrades;
 
     if (exchange.value.customExchange) {
       payload.exchange = exchange.value.selectedExchange.exchange;
       payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
       payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
     }
-    if (botStore.activeBot.botFeatures.downloadDataCandleTypes && candleType.value.length > 0) {
-      payload.candle_types = candleType.value;
+    if (
+      botStore.activeBot.botFeatures.downloadDataCandleTypes &&
+      advancedOptions.value.candleTypes.length > 0
+    ) {
+      payload.candle_types = advancedOptions.value.candleTypes;
     }
   }
 
@@ -180,14 +185,16 @@ async function startDownload() {
                 <div
                   class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
                 >
-                  <BaseCheckbox v-model="erase" class="mb-2">Erase existing data</BaseCheckbox>
-                  <BaseCheckbox v-model="downloadTrades" class="mb-2">
+                  <BaseCheckbox v-model="advancedOptions.erase" class="mb-2"
+                    >Erase existing data</BaseCheckbox
+                  >
+                  <BaseCheckbox v-model="advancedOptions.downloadTrades" class="mb-2">
                     Download Trades instead of OHLCV data
                   </BaseCheckbox>
                   <div class="grid grid-cols md:grid-cols-2 items-center gap-2">
                     <MultiSelect
                       v-if="botStore.activeBot.botFeatures.downloadDataCandleTypes"
-                      v-model="candleType"
+                      v-model="advancedOptions.candleTypes"
                       :options="candleTypes"
                       option-label="text"
                       option-value="value"
