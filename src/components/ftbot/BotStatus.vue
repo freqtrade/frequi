@@ -87,6 +87,14 @@ const botStore = useBotStore();
         }}
       </span>
     </p>
+    <Panel
+      v-if="botStore.activeBot.strategy.params"
+      header="Strategy parameters"
+      toggleable
+      collapsed
+    >
+      <StrategyParameters :strategy="botStore.activeBot.strategy" />
+    </Panel>
     <Divider />
     <BotProfit
       class="mx-1"
@@ -94,7 +102,5 @@ const botStore = useBotStore();
       :stake-currency="botStore.activeBot.botState.stake_currency ?? 'USDT'"
       :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
     />
-    <Divider />
-    <StrategyParameters :strategy="botStore.activeBot.strategy" />
   </div>
 </template>
