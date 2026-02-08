@@ -178,18 +178,6 @@ export interface BotState {
   max_entry_position_adjustment?: number;
 }
 
-export interface StrategyListResult {
-  strategies: string[];
-}
-
-export interface StrategyResult {
-  /** Strategy name */
-  strategy: string;
-  /** Code of the strategy class */
-  code: string;
-  timeframe: string;
-}
-
 export interface FreqAIModelListResult {
   freqaimodels: string[];
 }
