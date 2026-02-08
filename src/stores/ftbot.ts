@@ -507,7 +507,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
       },
       async getCurrentStrategy() {
-        if (this.isTrading && this.botState?.strategy) {
+        if (this.botFeatures.strategyParameters && this.isTrading && this.botState?.strategy) {
           return this.getStrategy(this.botState.strategy);
         }
       },

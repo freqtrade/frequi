@@ -32,7 +32,8 @@ export type FeatureKey =
   | 'pairlistConfig'
   | 'downloadDataCandleTypes'
   | 'forceExitWithPrice'
-  | 'downloadDataPrepend';
+  | 'downloadDataPrepend'
+  | 'strategyParameters';
 
 export type BotFeatures = Record<FeatureKey, boolean>;
 
@@ -73,4 +74,5 @@ export const FEATURES: Record<FeatureKey, FeatureConfig> = {
   },
   forceExitWithPrice: { minVersion: 2.45, description: 'Force exit accepting price parameter' },
   downloadDataPrepend: { minVersion: 2.46, description: 'Prepend data when downloading' },
+  strategyParameters: { minVersion: 2.47, description: 'Strategy parameters' },
 };
