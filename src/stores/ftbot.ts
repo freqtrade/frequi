@@ -245,6 +245,7 @@ export function createBotSubStore(botId: string, botName: string) {
             //     /* white/blacklist might be refreshed more often as they are not expensive on the backend */
             updates.push(this.getWhitelist());
             updates.push(this.getBlacklist());
+            updates.push(this.getCurrentStrategy());
             await Promise.all(updates);
             this.refreshRequired = false;
           } finally {
@@ -503,6 +504,11 @@ export function createBotSubStore(botId: string, botName: string) {
             showAlert(errMsg, 'warn');
           }
           return Promise.reject(error);
+        }
+      },
+      async getCurrentStrategy() {
+        if (this.isTrading && this.botState?.strategy) {
+          return this.getStrategy(this.botState.strategy);
         }
       },
       async getFreqAIModelList() {
