@@ -21,6 +21,9 @@ const botListComp = computed<BotDescriptor[]>(() => {
 useSortable(sortContainer, botListComp, {
   handle: '.handle',
   onUpdate: (e) => {
+    if (e.oldIndex === undefined || e.newIndex === undefined) {
+      return;
+    }
     const oldBotId = botListComp.value[e.oldIndex]?.botId;
     const newBotId = botListComp.value[e.newIndex]?.botId;
     if (oldBotId && newBotId) {

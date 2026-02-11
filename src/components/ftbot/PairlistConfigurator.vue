@@ -29,9 +29,15 @@ useSortable(pairlistConfigsEl, pairlistStore.config.pairlists, {
   handle: '.handle',
   group: 'configurator',
   onUpdate: async (e) => {
+    if (e.oldIndex === undefined || e.newIndex === undefined) {
+      return;
+    }
     moveArrayElement(pairlistStore.config.pairlists, e.oldIndex, e.newIndex);
   },
   onAdd: (e) => {
+    if (e.oldIndex === undefined || e.newIndex === undefined) {
+      return;
+    }
     const pairlist = availablePairlists.value[e.oldIndex];
     if (!pairlist) {
       console.error('Pairlist not found');
