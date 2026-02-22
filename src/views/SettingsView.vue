@@ -87,7 +87,12 @@ const resetDynamicLayout = () => {
 
           <BaseCheckbox v-model="settingsStore.confirmDialog" class="space-y-1">
             Show Confirm Dialog for Trade Exits
-            <template #hint>Use confirmation dialogs when force-exiting a trade.</template>
+            <template #hint
+              >Use confirmation dialogs when force-exiting a trade.<br />
+              This will also show <i-mdi-run-fast class="text-yellow-300 inline" />
+              <i-mdi-alert class="text-yellow-300 inline" />
+              in the title bar.
+            </template>
           </BaseCheckbox>
 
           <BaseCheckbox v-model="settingsStore.multiPaneButtonsShowText" class="space-y-1">
