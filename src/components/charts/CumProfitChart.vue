@@ -122,7 +122,7 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
 
   if (props.openTrades.length > 0) {
     let lastProfit = 0;
-    let lastDate = 0;
+    let lastDate: number;
     const lastPoint = valueArray[valueArray.length - 1];
     if (lastPoint) {
       lastProfit = lastPoint.profit ?? 0;
