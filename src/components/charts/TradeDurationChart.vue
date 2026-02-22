@@ -122,7 +122,7 @@ const chartOptions = computed((): EChartsOption => {
       },
     ],
     tooltip: {
-      formatter: (params: any) => {
+      formatter: (params) => {
         if (params.seriesType === 'boxplot') {
           const statistics = params.data;
           return `
