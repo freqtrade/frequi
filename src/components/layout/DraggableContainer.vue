@@ -14,10 +14,10 @@ withDefaults(
 
 <template>
   <div
-    class="flex flex-col h-full w-full border dark:border-surface-800 border-surface-200 rounded-sm"
+    class="flex flex-col h-full w-full border dark:border-neutral-800 border-neutral-200 rounded-sm"
   >
     <div
-      class="drag-header py-1 px-2 dark:bg-surface-800 bg-surface-100 border-b border-surface-300 dark:border-surface-700"
+      class="drag-header py-1 px-2 dark:bg-neutral-800 bg-neutral-100 border-b border-neutral-300 dark:border-neutral-700"
     >
       <slot name="header">
         {{ header }}

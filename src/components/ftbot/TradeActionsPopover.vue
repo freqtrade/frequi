@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
 import type { BotFeatures } from '@/types/features';
-import Popover from 'primevue/popover';
 
 withDefaults(
   defineProps<{
@@ -48,48 +47,47 @@ function handleForceEntry(item: Trade) {
   popoverOpen.value = false;
   emit('forceEntry', item);
 }
-const popover = ref<InstanceType<typeof Popover> | null>(null);
 </script>
 
 <template>
   <div>
-    <Button
-      :id="`btn-actions-${id}`"
-      class="btn-xs"
-      size="small"
-      severity="secondary"
-      title="Actions"
-      @click="popover?.toggle"
-    >
-      <i-mdi-gesture-tap />
-    </Button>
-    <Popover
-      ref="popover"
+    <UPopover
       :target="`btn-actions-${id}`"
       :title="`Actions for ${trade.pair}`"
+      v-model:open="popoverOpen"
       triggers="manual"
       placement="left"
     >
-      <TradeActions
-        :trade="trade"
-        :bot-features="botFeatures"
-        :enable-force-entry="enableForceEntry"
-        @force-exit="forceExitHandler"
-        @force-exit-partial="forceExitPartialHandler"
-        @delete-trade="handleDeleteTrade(trade)"
-        @cancel-open-order="cancelOpenOrderHandler"
-        @reload-trade="handleReloadTrade"
-        @force-entry="handleForceEntry"
+      <UButton
+        :id="`btn-actions-${id}`"
+        class="btn-xs"
+        size="sm"
+        color="neutral"
+        title="Actions"
+        icon="mdi:gesture-tap"
       />
-      <Button
-        class="mt-1 w-full text-start"
-        size="small"
-        severity="secondary"
-        label="Close Actions menu"
-        @click="popover?.hide"
-      >
-        <template #icon><i-mdi-cancel class="me-1" /></template>
-      </Button>
-    </Popover>
+      <template #content>
+        <TradeActions
+          class="m-4"
+          :trade="trade"
+          :bot-features="botFeatures"
+          :enable-force-entry="enableForceEntry"
+          @force-exit="forceExitHandler"
+          @force-exit-partial="forceExitPartialHandler"
+          @delete-trade="handleDeleteTrade(trade)"
+          @cancel-open-order="cancelOpenOrderHandler"
+          @reload-trade="handleReloadTrade"
+          @force-entry="handleForceEntry"
+        />
+        <UButton
+          class="mt-1 w-full text-start"
+          size="sm"
+          color="neutral"
+          label="Close Actions menu"
+          icon="mdi:cancel"
+          @click="popoverOpen = false"
+        />
+      </template>
+    </UPopover>
   </div>
 </template>
