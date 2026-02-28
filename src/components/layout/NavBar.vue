@@ -193,48 +193,62 @@ const drawerVisible = ref(false);
 </script>
 
 <template>
-  <header>
-    <div class="flex bg-primary-500 border-b border-primary">
-      <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
-        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
+  <header
+    class="sticky top-0 z-50 transition-all duration-300 backdrop-blur-md bg-white/80 dark:bg-surface-950/80 border-b border-surface-200 dark:border-surface-800 shadow-sm"
+  >
+    <div class="flex px-4 py-3 sm:px-6 lg:px-8 max-w-screen-3xl mx-auto">
+      <RouterLink
+        class="flex flex-row items-center pe-4 gap-3 transition-transform hover:-translate-y-0.5 duration-200"
+        exact
+        to="/"
+      >
+        <img
+          class="h-[32px] w-auto align-middle drop-shadow-md"
+          src="@/assets/freqtrade-logo.png"
+          alt="Home Logo"
+        />
+        <span
+          class="text-surface-900 dark:text-surface-50 font-bold text-xl md:hidden lg:inline tracking-tight"
+          >Freqtrade<span class="text-primary-500">UI</span></span
+        >
       </RouterLink>
-      <div class="flex justify-between w-full text-center items-center ms-3">
-        <div class="items-center hidden md:flex gap-5 ms-5">
+
+      <div class="flex flex-1 justify-between w-full items-center ms-4">
+        <div class="items-center hidden md:flex gap-2 lg:gap-4">
           <RouterLink
             v-for="(item, index) in navItems.filter(
               (item) => (item.visible ?? true) && !item.mobileOnly,
             )"
             :key="index"
             :to="item.to"
-            class="text-surface-200 flex items-center gap-2"
-            active-class="underline"
+            class="text-surface-600 dark:text-surface-300 font-medium flex items-center gap-2 px-3 py-2 rounded-lg transition-colors hover:bg-surface-100 dark:hover:bg-surface-800 hover:text-primary-600 dark:hover:text-primary-400"
+            active-class="bg-primary-50 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 font-semibold"
           >
             {{ item.label }}
           </RouterLink>
-          <ThemeSelect />
+          <ThemeSelect class="ms-2" />
         </div>
 
         <!-- Right aligned nav items -->
-        <div v-if="!isMobile" class="flex ms-auto">
+        <div v-if="!isMobile" class="flex items-center gap-3 ms-auto">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div
             v-if="!settingsStore.confirmDialog"
-            class="my-auto me-5 flex text-yellow-300"
+            class="my-auto flex text-amber-500 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 px-2.5 py-1.5 rounded-md transition-colors"
             title="Confirm dialog deactivated, Forced exits will be executed immediately. Be careful."
           >
-            <i-mdi-run-fast />
-            <i-mdi-alert />
+            <i-mdi-run-fast class="text-lg" />
+            <i-mdi-alert class="text-lg ms-1" />
           </div>
-          <div class="flex justify-between">
+          <div class="flex items-center gap-2">
             <Select
               v-if="botStore.botCount > 1"
               :model-value="botStore.selectedBotObj"
               size="small"
-              class="m-1"
+              class="w-48 !rounded-lg border-surface-200 dark:border-surface-700 hover:border-primary-500 transition-colors"
               no-caret
               severity="info"
-              toggle-class="flex align-items-center "
+              toggle-class="flex items-center "
               menu-class="my-0 py-0"
               :options="botStore.availableBotsSorted"
               @update:model-value="botStore.selectBot($event.botId)"
@@ -247,34 +261,53 @@ const drawerVisible = ref(false);
                 <BotEntry :bot="option" :no-buttons="true" />
               </template>
             </Select>
-            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
+            <ReloadControl title="Confirm Dialog deactivated." />
           </div>
           <div
-            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
+            class="hidden lg:flex items-center text-surface-600 dark:text-surface-300 bg-surface-100 dark:bg-surface-800/50 px-3 py-1.5 rounded-lg border border-surface-200 dark:border-surface-700"
           >
-            <span class="text-sm me-2">
+            <span class="text-sm font-medium me-2 truncate max-w-[150px]">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
             </span>
-            <span v-if="botStore.botCount === 1">
-              {{
-                botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
-                  ? 'Online'
-                  : 'Offline'
-              }}
+            <span v-if="botStore.botCount === 1" class="flex items-center gap-1.5">
+              <span
+                class="w-2 h-2 rounded-full"
+                :class="
+                  botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
+                    ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]'
+                    : 'bg-red-500'
+                "
+              ></span>
+              <span class="text-xs font-semibold uppercase tracking-wider relative top-[0.5px]">
+                {{
+                  botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
+                    ? 'Online'
+                    : 'Offline'
+                }}
+              </span>
             </span>
           </div>
-          <div v-if="botStore.hasBots" class="flex items-center">
+          <div v-if="botStore.hasBots" class="flex items-center ms-1">
             <!-- Hide dropdown on xs, instead show below  -->
-            <Button severity="contrast" variant="text" size="small" @click="toggleMenu">
-              <div class="flex items-center">
-                <Avatar shape="circle" severity="contrast">
+            <Button
+              severity="secondary"
+              variant="text"
+              class="!px-2 !py-1 !rounded-xl hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+              @click="toggleMenu"
+            >
+              <div class="flex items-center gap-2">
+                <Avatar
+                  shape="circle"
+                  class="bg-primary-100 text-primary-700 dark:bg-primary-900/50 dark:text-primary-300 font-bold border border-primary-200 dark:border-primary-800"
+                  size="small"
+                >
                   <!-- <Avatar label="FT" shape="circle"></Avatar> -->
                   FT
                 </Avatar>
-                <i-mdi-chevron-down />
+                <i-mdi-chevron-down class="text-surface-500" />
               </div>
             </Button>
             <Menu ref="menu" :model="menuItems" popup class="w-56">
@@ -303,7 +336,7 @@ const drawerVisible = ref(false);
         <!-- Mobile menu -->
         <div v-if="isMobile" class="ms-auto flex">
           <Button
-            class="text-surface-300 text-xl"
+            class="text-surface-700 dark:text-surface-300 text-xl hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors !p-2 !rounded-lg"
             variant="text"
             @click="drawerVisible = !drawerVisible"
           >
@@ -315,47 +348,55 @@ const drawerVisible = ref(false);
             v-model:visible="drawerVisible"
             header="Drawer"
             position="right"
-            class="bg-primary-500"
+            class="bg-surface-50/95 dark:bg-surface-950/95 backdrop-blur-xl border-l border-surface-200 dark:border-surface-800 shadow-2xl"
           >
             <template #container>
-              <div class="flex flex-row items-center">
-                <h3 class="text-xl font-bold w-full text-center text-surface-200">Freqtrade UI</h3>
+              <div
+                class="flex flex-row items-center p-4 border-b border-surface-200 dark:border-surface-800"
+              >
+                <h3
+                  class="text-xl font-extrabold w-full text-center text-surface-900 dark:text-surface-50 tracking-tight"
+                >
+                  Freqtrade<span class="text-primary-500">UI</span>
+                </h3>
                 <Button
-                  class="float-right mt-1 me-1"
-                  variant="outlined"
+                  class="absolute right-3 top-3 !p-2 !rounded-lg text-surface-700 dark:text-surface-300 hover:bg-surface-200 dark:hover:bg-surface-800 transition-colors"
+                  variant="text"
                   @click="drawerVisible = !drawerVisible"
                 >
                   <template #icon>
-                    <i-mdi-close />
+                    <i-mdi-close class="text-xl" />
                   </template>
                 </Button>
               </div>
-              <div class="flex flex-col gap-1 items-center mt-4">
+              <div class="flex flex-col gap-2 relative p-4 mt-2">
                 <RouterLink
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
                   :to="item.to"
-                  class="text-surface-200 p-2"
-                  active-class="underline"
+                  class="text-surface-700 dark:text-surface-300 font-medium px-4 py-3 rounded-xl transition-colors hover:bg-surface-100 dark:hover:bg-surface-800 flex items-center"
+                  active-class="bg-primary-50 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 font-semibold"
                 >
                   {{ item.label }}
                 </RouterLink>
-                <Divider />
-                <span class="text-surface-200 text-center"
+                <Divider class="my-4 opacity-50" />
+                <span class="text-surface-500 dark:text-surface-400 text-center text-sm font-medium"
                   >Version: {{ settingsStore.uiVersion }}</span
                 >
 
-                <div class="flex flex-row items-center justify-center">
+                <div
+                  class="flex flex-row items-center justify-center mt-4 bg-surface-100 dark:bg-surface-800/50 p-2 rounded-xl"
+                >
                   <ThemeSelect show-text />
                 </div>
                 <Select
                   v-if="botStore.botCount > 1"
                   :model-value="botStore.selectedBotObj"
                   size="small"
-                  class="m-1"
+                  class="mt-4 w-full !rounded-xl border-surface-200 dark:border-surface-700"
                   no-caret
                   severity="info"
-                  toggle-class="flex align-items-center "
+                  toggle-class="flex items-center justify-between px-3"
                   menu-class="my-0 py-0"
                   :options="botStore.availableBotsSorted"
                   @update:model-value="botStore.selectBot($event.botId)"
@@ -368,7 +409,10 @@ const drawerVisible = ref(false);
                     <BotEntry :bot="option" :no-buttons="true" />
                   </template>
                 </Select>
-                <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
+                <ReloadControl
+                  class="justify-center w-full mt-4 !rounded-xl"
+                  title="Confirm Dialog deactivated."
+                />
               </div>
             </template>
           </Drawer>

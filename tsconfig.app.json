@@ -18,6 +18,11 @@
     "types": [
       "vite/client",
     ],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "paths": {
       "@/*": [
         "./src/*"

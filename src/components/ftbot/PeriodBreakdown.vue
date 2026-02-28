@@ -81,7 +81,7 @@ onMounted(() => {
         </template>
       </Button>
     </div>
-    <div class="flex align-center justify-between">
+    <div class="flex flex-wrap items-center justify-between gap-2 overflow-hidden w-full">
       <SelectButton
         v-if="hasWeekly"
         id="order-direction"

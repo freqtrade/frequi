@@ -43,14 +43,14 @@ function toggleNight() {
 
 <template>
   <Button
-    variant="link"
+    variant="text"
     title="Toggle Night Mode"
-    class="text-surface-200"
+    class="text-surface-700 dark:text-surface-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium !outline-none !ring-0 !border-none hover:bg-transparent focus:ring-0"
     :label="showText ? 'Toggle Night Mode' : ''"
     @click="toggleNight"
   >
     <template #icon>
-      <i-mdi-brightness-6 />
+      <i-mdi-brightness-6 class="text-xl" />
     </template>
   </Button>
 </template>
