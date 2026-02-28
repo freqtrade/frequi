@@ -44,7 +44,7 @@ const autoRefreshLoc = computed({
 
     <div class="flex items-center gap-2">
       <div class="flex items-center">
-        <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" />
+        <USwitch v-model="autoRefreshLoc" class="mr-2" />
         <div
           v-if="selectedBotStore.isBotLoggedIn"
           :title="selectedBotStore.isBotOnline ? 'Online' : 'Offline'"
@@ -60,27 +60,29 @@ const autoRefreshLoc = computed({
       </div>
 
       <div v-if="!noButtons" class="flex items-center gap-1">
-        <Button
+        <UButton
           v-if="selectedBotStore.isBotLoggedIn"
-          size="small"
-          severity="secondary"
+          color="neutral"
+          variant="soft"
           title="Edit bot"
           @click="$emit('edit')"
-        >
-          <i-mdi-pencil />
-        </Button>
-        <Button
+          icon="mdi:pencil"
+        />
+        <UButton
           v-else
-          size="small"
-          severity="secondary"
+          variant="soft"
+          color="neutral"
           title="Login again"
           @click="$emit('editLogin')"
-        >
-          <i-mdi-login />
-        </Button>
-        <Button size="small" severity="secondary" title="Delete bot" @click="removeBotQuestion">
-          <i-mdi-delete />
-        </Button>
+          icon="mdi:login"
+        />
+        <UButton
+          variant="soft"
+          color="neutral"
+          title="Delete bot"
+          @click="removeBotQuestion"
+          icon="mdi:delete"
+        />
       </div>
     </div>
     <MessageBox ref="msgBox" />
