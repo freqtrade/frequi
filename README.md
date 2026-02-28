@@ -5,10 +5,6 @@
 
 Freqtrade UI build with [Vue.js](https://vuejs.org/) and [primevue](https://primevue.org/).
 
-## WARNING
-
-This project is still in its early stages (consider it alpha), and is not yet stable nor recommended to be used for production usages.
-
 ## Run this project
 
 Using FreqUI, does require [freqtrade](https://github.com/freqtrade/freqtrade) to be setup and running.
