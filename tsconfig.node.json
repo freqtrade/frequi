@@ -14,6 +14,9 @@
 
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "#build/ui": ["./node_modules/.nuxt-ui/ui"]
+    }
   }
 }
