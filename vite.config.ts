@@ -4,10 +4,8 @@ import createVuePlugin from '@vitejs/plugin-vue';
 import ui from '@nuxt/ui/vite';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
-import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolve from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
-import Components from 'unplugin-vue-components/vite';
 
 let commitHash: string = 'unknown';
 try {
@@ -27,19 +25,26 @@ export default defineConfig({
         defineModel: true,
       },
     }),
-    ui(),
-    Components({
-      resolvers: [IconsResolve()],
-      dts: 'src/components.d.ts',
+    ui({
+      ui: {
+        colors: {
+          primary: 'brand',
+          neutral: 'slate',
+        },
+      },
+      autoImport: {
+        imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],
+        dts: 'src/auto-imports.d.ts',
+        dirs: ['src/composables', 'src/stores', 'src/utils/**'],
+        vueTemplate: true,
+      },
+      components: {
+        resolvers: [IconsResolve()],
+        dts: 'src/components.d.ts',
+      },
     }),
     Icons({
       compiler: 'vue3',
-    }),
-    AutoImport({
-      imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],
-      dts: 'src/auto-imports.d.ts',
-      dirs: ['src/composables', 'src/stores', 'src/utils/**'],
-      vueTemplate: true,
     }),
   ],
   resolve: {

@@ -3,6 +3,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme static {
+      --color-brand-50: #DBFAFF;
+      --color-brand-100: #B8F4FF;
+      --color-brand-200: #75EAFF;
+      --color-brand-300: #2EE0FF;
+      --color-brand-400: #00C3E6;
+      --color-brand-500: #0089A1;
+      --color-brand-600: #006C80;
+      --color-brand-700: #005261;
+      --color-brand-800: #003842;
+      --color-brand-900: #001A1F;
+      --color-brand-950: #000D0F;
+
+}
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
