@@ -30,21 +30,16 @@ defineExpose({
 
 <template>
   <div>
-    <Button severity="secondary" @click="openLoginModal()"
-      ><i-mdi-login class="me-1" />{{ loginText }}</Button
-    >
-    <Dialog
+    <UButton color="neutral" @click="openLoginModal()" icon="mdi:login">{{ loginText }}</UButton>
+    <UModal
       id="modal-prevent-closing"
-      v-model:visible="loginViewOpen"
-      header="Login to your bot"
-      :dismissable-mask="true"
+      v-model:open="loginViewOpen"
+      title="Login to your bot"
+      description="Enter your bot credentials to connect"
     >
-      <BotLogin
-        class="w-[1000px] max-w-[500px]"
-        in-modal
-        :existing-auth="loginInfo"
-        @login-result="handleLoginResult"
-      />
-    </Dialog>
+      <template #body>
+        <BotLogin in-modal :existing-auth="loginInfo" @login-result="handleLoginResult" />
+      </template>
+    </UModal>
   </div>
 </template>
