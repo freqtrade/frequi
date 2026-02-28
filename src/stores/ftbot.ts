@@ -511,7 +511,7 @@ export function createBotSubStore(botId: string, botName: string) {
           if (axios.isAxiosError(error)) {
             console.error(error.response);
             const errMsg = error.response?.data?.detail ?? 'Error fetching history';
-            showAlert(errMsg, 'warn');
+            showAlert(errMsg, 'warning');
           }
           return Promise.reject(error);
         }

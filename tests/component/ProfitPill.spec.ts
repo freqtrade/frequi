@@ -73,7 +73,7 @@ describe('ProfitPill.vue', () => {
       },
     });
 
-    expect(wrapper.get('div').classes()).toContain('border-surface-500');
+    expect(wrapper.get('div').classes()).toContain('border-neutral-500');
     expect(wrapper.get('div').text()).not.toContain('%');
   });
 });

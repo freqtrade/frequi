@@ -6,12 +6,12 @@ export const useAlertsStore = defineStore('alerts', () => {
   const toast = useToast();
 
   function addAlert(message: AlertType) {
-    // activeMessages.value.push(message);
+    // TODO: is this store still necessary??
     toast.add({
-      summary: message.title,
-      detail: message.message,
-      severity: message.severity,
-      life: message.timeout,
+      title: message.title,
+      description: message.message,
+      color: message.severity,
+      duration: message.timeout,
     });
   }
 
