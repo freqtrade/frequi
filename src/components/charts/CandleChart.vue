@@ -578,7 +578,10 @@ function initializeChartOptions() {
         type: 'time',
         axisLine: { onZero: false },
         axisTick: { show: true },
-        axisLabel: { show: true },
+        axisLabel: {
+          show: true,
+          hideOverlap: true,
+        },
         axisPointer: {
           label: { show: false },
         },

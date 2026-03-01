@@ -140,14 +140,16 @@ const singlePairSelection = computed({
 </script>
 
 <template>
-  <div class="flex h-full">
-    <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
-      <div class="flex me-0 items-center md:gap-2">
-        <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
+  <div class="flex h-full min-w-0 w-full">
+    <div class="flex-fill w-full min-w-0 flex-col align-items-stretch flex h-full">
+      <div class="flex flex-wrap me-0 items-center gap-2 mb-2 w-full">
+        <span class="md:ms-2 text-nowrap truncate max-w-full"
+          >{{ strategyName }} | {{ timeframe || '' }}</span
+        >
         <MultiSelect
           v-if="settingsStore.multiPairSelection"
           v-model="botStore.activeBot.plotMultiPairs"
-          class="w-80"
+          class="w-full md:w-80 max-w-full"
           :options="availablePairs"
           optionlabel=""
           placeholder="Select pairs to plot"
@@ -158,7 +160,7 @@ const singlePairSelection = computed({
         <Select
           v-else
           v-model="singlePairSelection"
-          class="w-80"
+          class="w-full md:w-80 max-w-full"
           :options="availablePairs"
           size="small"
           :clearable="false"
@@ -178,7 +180,7 @@ const singlePairSelection = computed({
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
           <span class="text-nowrap">Multi pair</span>
         </BaseCheckbox>
-        <div class="ms-auto flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
           </BaseCheckbox>
