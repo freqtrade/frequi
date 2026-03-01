@@ -31,6 +31,11 @@ export default defineConfig({
           primary: 'brand',
           neutral: 'slate',
         },
+        button: {
+          defaultVariants: {
+            variant: 'subtle',
+          },
+        },
       },
       autoImport: {
         imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],

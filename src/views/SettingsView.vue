@@ -44,7 +44,7 @@ const resetDynamicLayout = () => {
           <UButton color="neutral" size="md" class="mb-0" @click="resetDynamicLayout"
             >Reset layout</UButton
           >
-          <small class="block text-neutral-600 dark:text-neutral-400"
+          <small class="text-sm block text-neutral-600 dark:text-neutral-400"
             >Reset dynamic layouts to how they were.</small
           >
         </div>
