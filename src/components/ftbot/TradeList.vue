@@ -54,26 +54,26 @@ const tableFields = ref([
   { field: 'pair', header: 'Pair' },
   { field: 'amount', header: 'Amount' },
   props.activeTrades
-    ? { field: 'stake_amount', header: 'Stake' }
-    : { field: 'max_stake_amount', header: 'Stake' },
+    ? { field: 'stake_amount', header: 'Stake amount' }
+    : { field: 'max_stake_amount', header: 'Total stake amount' },
   {
     field: 'open_rate',
-    header: 'Rate',
+    header: 'Open rate',
   },
   {
     field: props.activeTrades ? 'current_rate' : 'close_rate',
-    header: props.activeTrades ? 'Current' : 'Close',
+    header: props.activeTrades ? 'Current rate' : 'Close rate',
   },
   {
     field: 'profit',
-    header: 'Profit %',
+    header: props.activeTrades ? 'Current profit %' : 'Profit %',
   },
-  { field: 'open_timestamp', header: 'Date' },
+  { field: 'open_timestamp', header: 'Open date' },
   ...(props.activeTrades
     ? [{ field: 'actions', header: '' }]
     : [
-        { field: 'close_timestamp', header: 'Closed' },
-        { field: 'exit_reason', header: 'Reason' },
+        { field: 'close_timestamp', header: 'Close date' },
+        { field: 'exit_reason', header: 'Close Reason' },
       ]),
 ]);
 

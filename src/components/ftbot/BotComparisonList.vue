@@ -101,7 +101,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     <Column field="botName">
       <template #header>
         <div class="flex justify-between flex-row w-full">
-          <b>Bot</b
+          <b>Bot Name</b
           ><Badge
             class="items-center text-slate-200 bg-slate-800 cursor-pointer"
             severity="contrast"
@@ -154,7 +154,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
       </template>
     </Column>
     <Column field="trades" header="Trades"> </Column>
-    <Column header="Open">
+    <Column header="Open Profit">
       <template #body="{ data }">
         <ProfitPill
           v-if="data.profitOpen && data.botId != 'Summary'"
@@ -167,7 +167,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
         />
       </template>
     </Column>
-    <Column header="Closed">
+    <Column header="Closed Profit">
       <template #body="{ data }">
         <ProfitPill
           v-if="data.profitClosed && data.botId != 'Summary'"
@@ -177,7 +177,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
         />
       </template>
     </Column>
-    <Column field="balance" header="Bal">
+    <Column field="balance" header="Balance">
       <template #body="{ data }">
         <div v-if="data.balance">
           <span :title="(data as ComparisonTableItems).stakeCurrency"
