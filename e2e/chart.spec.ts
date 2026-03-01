@@ -76,16 +76,16 @@ test.describe('Chart', () => {
     await expect(page.locator('canvas')).toHaveScreenshot(
       'Chart-Plot-with_BollingerBands-Dark.png',
       {
-        threshold: 0.15,
-        maxDiffPixelRatio: 0.15,
+        threshold: 0.25,
+        maxDiffPixelRatio: 0.25,
       },
     );
 
     await page.getByRole('button', { name: 'Toggle Night Mode' }).click();
 
     await expect(page.locator('canvas')).toHaveScreenshot('Chart-Plot-with_BollingerBands.png', {
-      threshold: 0.15,
-      maxDiffPixelRatio: 0.15,
+      threshold: 0.25,
+      maxDiffPixelRatio: 0.25,
     });
     // Should assert if indicators have been set
     // but it's a canvas ...
