@@ -19,11 +19,11 @@ withDefaults(
     <div class="font-bold">
       {{ backtestResult.metadata.strategyName }} - {{ backtestResult.strategy.timeframe }}
     </div>
-    <div class="text-sm">
+    <div class="text-sm font-normal">
       TradeCount: {{ backtestResult.strategy.total_trades }} - Profit:
       {{ formatPercent(backtestResult.strategy.profit_total) }}
     </div>
-    <div v-if="canUseModify" class="text-sm" style="white-space: pre-wrap">
+    <div v-if="canUseModify" class="text-sm font-normal" style="white-space: pre-wrap">
       {{ backtestResult.metadata.notes }}
     </div>
   </div>

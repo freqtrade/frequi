@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { h, resolveComponent } from 'vue';
 import type { BacktestResultInMemory } from '@/types';
 
 const props = withDefaults(
@@ -26,6 +27,22 @@ const backtestResultFields = computed(() => {
   });
   return res;
 });
+
+const BacktestResultSelectEntry = resolveComponent('BacktestResultSelectEntry');
+
+const tableColumns = computed(() => {
+  return backtestResultFields.value.map((col) => ({
+    accessorKey: col.key,
+    header: () => {
+      if (col.key && props.backtestResults[col.key]) {
+        return h(BacktestResultSelectEntry, {
+          backtestResult: props.backtestResults[col.key],
+        });
+      }
+      return col.label;
+    },
+  }));
+});
 </script>
 
 <template>
@@ -36,22 +53,7 @@ const backtestResultFields = computed(() => {
     <div class="flex flex-col text-start ms-0 me-2 gap-2">
       <div class="flex flex-col flex-xl-row">
         <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 flex-fill">
-          <DataTable bordered :value="backtestResultStats" size="small" show-gridlines>
-            <Column
-              v-for="col in backtestResultFields"
-              :key="col.key"
-              :field="col.key"
-              :label="col.label"
-            >
-              <template #header>
-                <BacktestResultSelectEntry
-                  v-if="col.key && backtestResults[col.key]"
-                  :backtest-result="backtestResults[col.key]!"
-                />
-                <span v-else>{{ col.label }}</span>
-              </template>
-            </Column>
-          </DataTable>
+          <UTable :data="backtestResultStats" :columns="tableColumns" />
         </div>
       </div>
     </div>

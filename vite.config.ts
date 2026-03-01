@@ -36,6 +36,12 @@ export default defineConfig({
             variant: 'subtle',
           },
         },
+        table: {
+          slots: {
+            td: 'px-2 py-2 text-default',
+            // th: 'px-2 py-2',
+          },
+        },
       },
       autoImport: {
         imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],

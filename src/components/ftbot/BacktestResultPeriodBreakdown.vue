@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PeriodicBreakdown } from '@/types';
+import type { TableColumn } from '@nuxt/ui';
 
 const props = defineProps<{
   periodicBreakdown: PeriodicBreakdown;
@@ -7,61 +8,76 @@ const props = defineProps<{
 
 const periodicBreakdownSelections = computed(() => {
   const res = [
-    { value: 'day', text: 'Days' },
-    { value: 'week', text: 'Weeks' },
-    { value: 'month', text: 'Months' },
+    { value: 'day', label: 'Days' },
+    { value: 'week', label: 'Weeks' },
+    { value: 'month', label: 'Months' },
   ];
   if (props.periodicBreakdown.year) {
-    res.push({ value: 'year', text: 'Years' });
+    res.push({ value: 'year', label: 'Years' });
   }
   if (props.periodicBreakdown.weekday) {
-    res.push({ value: 'weekday', text: 'Weekday' });
+    res.push({ value: 'weekday', label: 'Weekday' });
   }
 
   return res;
 });
 
 const periodicBreakdownPeriod = ref<string>('month');
+
+type PeriodRow = {
+  date: string;
+  trades?: number;
+  profit_abs?: number;
+  profit_factor?: number;
+  wins?: number;
+  draws?: number;
+  losses?: number;
+  loses?: number;
+};
+
+const columns: TableColumn<PeriodRow>[] = [
+  { accessorKey: 'date', header: 'Date' },
+  { accessorKey: 'trades', header: 'Trades' },
+  { accessorKey: 'profit_abs', header: 'Total Profit' },
+  { accessorKey: 'profit_factor', header: 'Profit Factor' },
+  { accessorKey: 'wins', header: 'Wins' },
+  { accessorKey: 'draws', header: 'Draws' },
+  { accessorKey: 'losses', header: 'Losses' },
+  { id: 'win_rate', header: 'Win Rate' },
+];
 </script>
 
 <template>
-  <SelectButton
+  <USegmentedControl
     v-model="periodicBreakdownPeriod"
-    :options="periodicBreakdownSelections"
-    size="small"
+    :items="periodicBreakdownSelections"
+    size="sm"
     :allow-empty="false"
     class="m-2"
-    option-label="text"
-    option-value="value"
-  ></SelectButton>
-  <DataTable size="small" stacked="sm" :value="periodicBreakdown[periodicBreakdownPeriod]">
-    <Column field="date" header="Date"></Column>
-    <Column field="trades" header="Trades">
-      <template #body="{ data, field }">
-        {{ data[field as string] ?? 'N/A' }}
-      </template>
-    </Column>
-    <Column field="profit_abs" header="Total Profit" :body="formatPrice">
-      <template #body="{ data, field }">
-        {{ formatNumber(data[field as string], 2) }}
-      </template>
-    </Column>
-    <Column field="profit_factor" header="Profit Factor">
-      <template #body="{ data, field }">
-        {{ formatPrice(data[field as string], 2) }}
-      </template>
-    </Column>
-    <Column field="wins" header="Wins"></Column>
-    <Column field="draws" header="Draws"></Column>
-    <Column field="losses" header="Losses">
-      <template #body="{ data }">
-        {{ data.loses ?? data.losses ?? 'N/A' }}
-      </template>
-    </Column>
-    <Column field="wins" header="Win Rate">
-      <template #body="{ data }">
-        {{ formatPercent(data.wins / (data.wins + data.draws + (data.loses ?? data.losses)), 2) }}
-      </template>
-    </Column>
-  </DataTable>
+  ></USegmentedControl>
+  <UTable :data="periodicBreakdown[periodicBreakdownPeriod]" :columns="columns">
+    <template #trades-cell="{ row }">
+      {{ row.original.trades ?? 'N/A' }}
+    </template>
+    <template #profit_abs-cell="{ row }">
+      {{ formatNumber(row.original.profit_abs, 2) }}
+    </template>
+    <template #profit_factor-cell="{ row }">
+      {{ formatPrice(row.original.profit_factor ?? null, 2) }}
+    </template>
+    <template #losses-cell="{ row }">
+      {{ row.original.loses ?? row.original.losses ?? 'N/A' }}
+    </template>
+    <template #win_rate-cell="{ row }">
+      {{
+        formatPercent(
+          row.original.wins! /
+            (row.original.wins! +
+              row.original.draws! +
+              (row.original.loses ?? row.original.losses ?? 0)),
+          2,
+        )
+      }}
+    </template>
+  </UTable>
 </template>
