@@ -144,37 +144,39 @@ const singlePairSelection = computed({
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
       <div class="flex me-0 items-center md:gap-2">
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-        <MultiSelect
+        <USelectMenu
+          multiple
           v-if="settingsStore.multiPairSelection"
           v-model="botStore.activeBot.plotMultiPairs"
           class="w-80"
-          :options="availablePairs"
+          :items="availablePairs"
           optionlabel=""
+          virtualize
           placeholder="Select pairs to plot"
-          size="small"
+          size="md"
           filter
         >
-        </MultiSelect>
-        <Select
+        </USelectMenu>
+        <USelectMenu
           v-else
           v-model="singlePairSelection"
           class="w-80"
-          :options="availablePairs"
-          size="small"
+          :items="availablePairs"
+          size="md"
           :clearable="false"
+          virtualize
           @input="refresh"
         >
-        </Select>
+        </USelectMenu>
 
-        <Button
+        <UButton
           title="Refresh chart"
-          severity="secondary"
+          color="neutral"
           :disabled="botStore.activeBot.plotMultiPairs.length === 0"
-          size="small"
+          size="sm"
+          icon="mdi:refresh"
           @click="refresh"
-        >
-          <i-mdi-refresh />
-        </Button>
+        />
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
           <span class="text-nowrap">Multi pair</span>
         </BaseCheckbox>
@@ -189,16 +191,12 @@ const singlePairSelection = computed({
           <PlotConfigSelect></PlotConfigSelect>
 
           <div class="me-0 md:me-1">
-            <Button
-              size="small"
+            <UButton
               title="Plot configurator"
-              severity="secondary"
+              color="neutral"
+              icon="mdi:cog"
               @click="showConfigurator"
-            >
-              <template #icon>
-                <i-mdi-cog width="12" height="12" />
-              </template>
-            </Button>
+            />
           </div>
         </div>
       </div>
@@ -227,14 +225,15 @@ const singlePairSelection = computed({
         <span class="text-2xl font-semibold">No pair selected</span>
       </div>
     </div>
-    <Dialog
+    <UModal
       id="plotConfiguratorModal"
-      v-model:visible="showPlotConfigModal"
-      header="Plot Configurator"
-      ok-only
-      hide-backdrop
+      v-model:open="showPlotConfigModal"
+      title="Plot Configurator"
+      description="Configure chart plot indicators and subplots"
     >
-      <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
-    </Dialog>
+      <template #body>
+        <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
+      </template>
+    </UModal>
   </div>
 </template>
