@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DownloadDataPayload, ExchangeSelection } from '@/types';
 import { MarginMode, TradingMode } from '@/types';
+import type { SelectMenuItem } from '@nuxt/ui';
 
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();
@@ -38,13 +39,13 @@ const advancedOptions = ref({
 
 // State to track the collapse status
 const isAdvancedOpen = ref(false);
-const candleTypes = [
-  { text: 'Spot', value: 'spot' },
-  { text: 'Futures', value: 'futures' },
-  { text: 'Funding Rate', value: 'funding_rate' },
-  { text: 'Mark', value: 'mark' },
-  { text: 'Index', value: 'index' },
-  { text: 'Premium Index', value: 'premiumIndex' },
+const candleTypes: SelectMenuItem[] = [
+  { label: 'Spot', value: 'spot' },
+  { label: 'Futures', value: 'futures' },
+  { label: 'Funding Rate', value: 'funding_rate' },
+  { label: 'Mark', value: 'mark' },
+  { label: 'Index', value: 'index' },
+  { label: 'Premium Index', value: 'premiumIndex' },
 ];
 
 function addPairs(_pairs: string[]) {
@@ -108,28 +109,28 @@ async function startDownload() {
                   <h5 class="text-start font-bold text-lg">Pairs from template</h5>
                 </div>
                 <div class="flex gap-2">
-                  <BaseStringList v-model="pairs" placeholder="Pair" size="small" class="grow" />
+                  <BaseStringList v-model="pairs" placeholder="Pair" size="sm" class="grow" />
                   <div class="flex flex-col gap-1">
                     <div class="flex flex-col gap-1">
-                      <Button
+                      <UButton
                         v-for="pt in pairTemplates"
                         :key="pt.idx"
-                        severity="secondary"
+                        color="neutral"
                         :title="pt.pairs.reduce((acc, p) => `${acc}${p}\n`, '')"
                         @click="addPairs(pt.pairs)"
                       >
                         {{ pt.description }}
-                      </Button>
+                      </UButton>
                     </div>
-                    <Divider />
-                    <Button
+                    <USeparator />
+                    <UButton
                       :disabled="pairlistStore.whitelist.length === 0"
                       title="Add all pairs from Pairlist Config - requires the pairlist config to have ran first."
-                      severity="secondary"
+                      color="neutral"
                       @click="replacePairs(pairlistStore.whitelist)"
                     >
                       Use Pairs from Pairlist Config
-                    </Button>
+                    </UButton>
                   </div>
                 </div>
               </div>
@@ -145,7 +146,7 @@ async function startDownload() {
           </div>
 
           <!-- Time selection section -->
-          <div class="px-3 border dark:border-surface-700 border-surface-300 p-2 rounded-sm">
+          <div class="px-3 border dark:border-neutral-700 border-neutral-300 p-2 rounded-sm">
             <div class="flex flex-col gap-2">
               <div class="flex justify-between items-center">
                 <h4 class="text-start mb-0 font-bold text-lg">Time Selection</h4>
@@ -159,82 +160,77 @@ async function startDownload() {
               </div>
               <div v-else class="flex items-center gap-2">
                 <label>Days to download:</label>
-                <InputNumber
+                <UInputNumber
                   v-model="timeSelection.days"
-                  type="number"
                   aria-label="Days to download"
                   :min="1"
                   :step="1"
-                  size="small"
                 />
               </div>
             </div>
           </div>
 
           <!-- Advanced options section -->
-          <div
-            class="mb-2 border dark:border-surface-700 border-surface-300 rounded-sm p-2 text-start"
+          <BaseCollapsible
+            title="Advanced options"
+            class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-sm p-2 text-start"
           >
-            <Button class="mb-2" severity="secondary" @click="isAdvancedOpen = !isAdvancedOpen">
-              Advanced Options
-              <i-mdi-chevron-down v-if="!isAdvancedOpen" />
-              <i-mdi-chevron-up v-else />
-            </Button>
-            <Transition>
-              <div v-show="isAdvancedOpen">
-                <Message severity="info" class="mb-2 py-2">
-                  Advanced options (Erase data, Download trades, and Custom Exchange settings) will
-                  only be applied when this section is expanded.
-                </Message>
-                <div
-                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
+            <UAlert
+              color="info"
+              class="my-2 py-2"
+              description="Advanced options (Erase data, Download trades, and Custom Exchange settings) will only
+              be applied when this section is expanded."
+            />
+            <div
+              class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-2 text-start"
+            >
+              <BaseCheckbox v-model="advancedOptions.erase" class="mb-2"
+                >Erase existing data</BaseCheckbox
+              >
+              <BaseCheckbox
+                v-model="advancedOptions.prepend_data"
+                class="mb-2"
+                v-if="botStore.activeBot.botFeatures.downloadDataPrepend"
+                >Prepend data when downloading</BaseCheckbox
+              >
+              <BaseCheckbox v-model="advancedOptions.downloadTrades" class="mb-2">
+                Download Trades instead of OHLCV data
+              </BaseCheckbox>
+              <div class="grid grid-cols md:grid-cols-2 items-center gap-2">
+                <USelectMenu
+                  multiple
+                  v-if="botStore.activeBot.botFeatures.downloadDataCandleTypes"
+                  v-model="advancedOptions.candleTypes"
+                  :items="candleTypes"
+                  placeholder="Select Candle Types"
+                />
+                <small
+                  >When no candle-type is selected, freqtrade will download the necessary candle
+                  types for regular operation automatically.</small
                 >
-                  <BaseCheckbox v-model="advancedOptions.erase" class="mb-2"
-                    >Erase existing data</BaseCheckbox
-                  >
-                  <BaseCheckbox
-                    v-model="advancedOptions.prepend_data"
-                    class="mb-2"
-                    v-if="botStore.activeBot.botFeatures.downloadDataPrepend"
-                    >Prepend data when downloading</BaseCheckbox
-                  >
-                  <BaseCheckbox v-model="advancedOptions.downloadTrades" class="mb-2">
-                    Download Trades instead of OHLCV data
-                  </BaseCheckbox>
-                  <div class="grid grid-cols md:grid-cols-2 items-center gap-2">
-                    <MultiSelect
-                      v-if="botStore.activeBot.botFeatures.downloadDataCandleTypes"
-                      v-model="advancedOptions.candleTypes"
-                      :options="candleTypes"
-                      option-label="text"
-                      option-value="value"
-                      placeholder="Select Candle Types"
-                    />
-                    <small
-                      >When no candle-type is selected, freqtrade will download the necessary candle
-                      types for regular operation automatically.</small
-                    >
-                  </div>
-                </div>
-                <div
-                  class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
-                >
-                  <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
-                    Custom Exchange
-                  </BaseCheckbox>
-                  <Transition name="fade">
-                    <ExchangeSelect
-                      v-show="exchange.customExchange"
-                      v-model="exchange.selectedExchange"
-                    />
-                  </Transition>
-                </div>
               </div>
-            </Transition>
-          </div>
+            </div>
+            <div
+              class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-2 text-start"
+            >
+              <UCollapsible v-model:open="exchange.customExchange">
+                <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
+                  Custom Exchange
+                </BaseCheckbox>
+                <template #content>
+                  <ExchangeSelect
+                    v-show="exchange.customExchange"
+                    v-model="exchange.selectedExchange"
+                  />
+                </template>
+              </UCollapsible>
+            </div>
+          </BaseCollapsible>
 
           <div class="px-3">
-            <Button severity="primary" @click="startDownload">Start Download</Button>
+            <UButton variant="solid" icon="mdi:download" @click="startDownload"
+              >Start Download</UButton
+            >
           </div>
         </div>
       </div>

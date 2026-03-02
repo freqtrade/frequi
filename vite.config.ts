@@ -31,6 +31,11 @@ export default defineConfig({
           primary: 'brand',
           neutral: 'slate',
         },
+        alert: {
+          defaultVariants: {
+            variant: 'subtle',
+          },
+        },
         button: {
           defaultVariants: {
             variant: 'subtle',
