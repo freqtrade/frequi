@@ -2,8 +2,7 @@
 import Favico from 'favico.js';
 
 import { useRoute } from 'vue-router';
-import Menu from 'primevue/menu';
-import type { MenuItem } from 'primevue/menuitem';
+import type { DropdownMenuItem } from '@nuxt/ui';
 import { breakpointsTailwind } from '@vueuse/core';
 
 const botStore = useBotStore();
@@ -155,40 +154,44 @@ const navItems = ref([
   },
 ]);
 
-const menuItems = computed<MenuItem[]>(() => [
-  {
-    label: `V: ${settingsStore.uiVersion}`,
-    disabled: true,
-  },
-  {
-    label: 'Settings',
-    icon: 'i-mdi-cog',
-    command: () => router.push('/settings'),
-  },
-  {
-    label: 'Lock dynamic Layout',
-    checkbox: true,
-    checked: layoutStore.layoutLocked,
-    command: () => {
-      layoutStore.layoutLocked = !layoutStore.layoutLocked;
+const menuItems = computed<DropdownMenuItem[][]>(() => [
+  [
+    {
+      label: `V: ${settingsStore.uiVersion}`,
+      disabled: true,
     },
-  },
-  {
-    label: 'Reset Layout',
-    icon: 'i-mdi-lock-reset',
-    command: resetDynamicLayout,
-  },
-  {
-    label: 'Logout',
-    icon: 'i-mdi-logout',
-    command: clickLogout,
-    visible: botStore.hasBots && botStore.botCount === 1,
-  },
+  ],
+  [
+    {
+      label: 'Settings',
+      icon: 'i-mdi-cog',
+      onSelect: () => router.push('/settings'),
+    },
+    {
+      label: layoutStore.layoutLocked ? 'Unlock Layout' : 'Lock Layout',
+      icon: layoutStore.layoutLocked ? 'i-mdi-lock' : 'i-mdi-lock-open',
+      onSelect: () => {
+        layoutStore.layoutLocked = !layoutStore.layoutLocked;
+      },
+    },
+    {
+      label: 'Reset Layout',
+      icon: 'i-mdi-lock-reset',
+      onSelect: resetDynamicLayout,
+    },
+  ],
+  ...(botStore.hasBots && botStore.botCount === 1
+    ? [
+        [
+          {
+            label: 'Logout',
+            icon: 'i-mdi-logout',
+            onSelect: clickLogout,
+          },
+        ],
+      ]
+    : []),
 ]);
-const menu = ref<InstanceType<typeof Menu> | null>();
-function toggleMenu(event) {
-  menu.value?.toggle(event);
-}
 const drawerVisible = ref(false);
 </script>
 
@@ -207,7 +210,7 @@ const drawerVisible = ref(false);
             )"
             :key="index"
             :to="item.to"
-            class="text-surface-200 flex items-center gap-2"
+            class="text-neutral-200 flex items-center gap-2"
             active-class="underline"
           >
             {{ item.label }}
@@ -227,30 +230,20 @@ const drawerVisible = ref(false);
             <i-mdi-alert />
           </div>
           <div class="flex justify-between">
-            <Select
+            <USelectMenu
               v-if="botStore.botCount > 1"
-              :model-value="botStore.selectedBotObj"
-              size="small"
-              class="m-1"
-              no-caret
-              severity="info"
-              toggle-class="flex align-items-center "
-              menu-class="my-0 py-0"
-              :options="botStore.availableBotsSorted"
-              @update:model-value="botStore.selectBot($event.botId)"
-            >
-              <template #value="{ value }">
-                <BotEntry :bot="value" :no-buttons="true" />
-              </template>
-
-              <template #option="{ option }">
-                <BotEntry :bot="option" :no-buttons="true" />
-              </template>
-            </Select>
+              :model-value="botStore.selectedBot"
+              label-key="botName"
+              value-key="botId"
+              size="sm"
+              class="m-1 min-w-36"
+              :items="botStore.availableBotsSorted"
+              @update:model-value="botStore.selectBot($event)"
+            />
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <div
-            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
+            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-neutral-300 me-2"
           >
             <span class="text-sm me-2">
               {{
@@ -268,31 +261,13 @@ const drawerVisible = ref(false);
           </div>
           <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
-            <Button severity="contrast" variant="text" size="small" @click="toggleMenu">
-              <div class="flex items-center">
-                <Avatar shape="circle" severity="contrast">
-                  <!-- <Avatar label="FT" shape="circle"></Avatar> -->
-                  FT
-                </Avatar>
-                <i-mdi-chevron-down />
-              </div>
-            </Button>
-            <Menu ref="menu" :model="menuItems" popup class="w-56">
-              <template #item="{ item }">
-                <div
-                  class="flex flex-row items-center gap-2 p-1"
-                  :class="{
-                    'cursor-pointer': !item.disabled,
-                  }"
-                >
-                  <i-mdi-cog v-if="item.icon === 'i-mdi-cog'" />
-                  <i-mdi-logout v-if="item.icon === 'i-mdi-logout'" />
-                  <i-mdi-lock-reset v-if="item.icon === 'i-mdi-lock-reset'" />
-                  <BaseCheckbox v-if="item.checkbox" v-model="item.checked" />
-                  <span>{{ item.label }}</span>
+            <UDropdownMenu :items="menuItems">
+              <UButton color="neutral" variant="ghost" size="sm" trailing-icon="mdi:chevron-down">
+                <div class="flex items-center">
+                  <UAvatar size="sm"> FT </UAvatar>
                 </div>
-              </template>
-            </Menu>
+              </UButton>
+            </UDropdownMenu>
           </div>
           <div v-else>
             <!-- should open Modal window! -->
@@ -302,76 +277,53 @@ const drawerVisible = ref(false);
 
         <!-- Mobile menu -->
         <div v-if="isMobile" class="ms-auto flex">
-          <Button
-            class="text-surface-300 text-xl"
-            variant="text"
-            @click="drawerVisible = !drawerVisible"
-          >
-            <template #icon>
-              <i-mdi-menu />
-            </template>
-          </Button>
-          <Drawer
-            v-model:visible="drawerVisible"
-            header="Drawer"
-            position="right"
-            class="bg-primary-500"
-          >
-            <template #container>
-              <div class="flex flex-row items-center">
-                <h3 class="text-xl font-bold w-full text-center text-surface-200">Freqtrade UI</h3>
-                <Button
-                  class="float-right mt-1 me-1"
-                  variant="outlined"
-                  @click="drawerVisible = !drawerVisible"
-                >
-                  <template #icon>
-                    <i-mdi-close />
-                  </template>
-                </Button>
-              </div>
-              <div class="flex flex-col gap-1 items-center mt-4">
+          <UDrawer v-model:open="drawerVisible" direction="right" :handle="false">
+            <UButton class="text-neutral-300 text-xl" variant="ghost" icon="mdi:menu" />
+            <template #content>
+              <div class="flex flex-col gap-1 items-center p-4 bg-primary-500 h-full">
+                <div class="flex flex-row items-center w-full mb-2">
+                  <h3 class="text-xl font-bold w-full text-center text-neutral-200">
+                    Freqtrade UI
+                  </h3>
+                  <UButton
+                    class="float-right"
+                    variant="outline"
+                    icon="mdi:close"
+                    @click="drawerVisible = false"
+                  />
+                </div>
                 <RouterLink
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
                   :to="item.to"
-                  class="text-surface-200 p-2"
+                  class="text-neutral-200 p-2"
                   active-class="underline"
+                  @click="drawerVisible = false"
                 >
                   {{ item.label }}
                 </RouterLink>
-                <Divider />
-                <span class="text-surface-200 text-center"
+                <USeparator class="my-2" />
+                <span class="text-neutral-200 text-center"
                   >Version: {{ settingsStore.uiVersion }}</span
                 >
 
                 <div class="flex flex-row items-center justify-center">
                   <ThemeSelect show-text />
                 </div>
-                <Select
+                <USelectMenu
                   v-if="botStore.botCount > 1"
-                  :model-value="botStore.selectedBotObj"
-                  size="small"
-                  class="m-1"
-                  no-caret
-                  severity="info"
-                  toggle-class="flex align-items-center "
-                  menu-class="my-0 py-0"
-                  :options="botStore.availableBotsSorted"
-                  @update:model-value="botStore.selectBot($event.botId)"
-                >
-                  <template #value="{ value }">
-                    <BotEntry :bot="value" :no-buttons="true" />
-                  </template>
-
-                  <template #option="{ option }">
-                    <BotEntry :bot="option" :no-buttons="true" />
-                  </template>
-                </Select>
+                  :model-value="botStore.selectedBot"
+                  label-key="botName"
+                  value-key="botId"
+                  size="sm"
+                  class="m-1 min-w-36"
+                  :items="botStore.availableBotsSorted"
+                  @update:model-value="botStore.selectBot($event)"
+                />
                 <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
               </div>
             </template>
-          </Drawer>
+          </UDrawer>
         </div>
       </div>
     </div>
