@@ -45,16 +45,25 @@ const showIndicatorMapping = ref(false);
 
 <template>
   <div v-if="visible" class="pt-1">
-    <div v-if="!showIndicatorMapping" class="w-full">
-      <label for="selectTemplate">Select Template</label>
-      <ListBox
+    <UFormField v-if="!showIndicatorMapping" label="Select Template" class="text-md">
+      <UCommandPalette
         id="selectTemplate"
+        class="rounded ring ring-accented"
+        :input="false"
         v-model="selTemplateName"
-        :options="plotTemplateNames"
-        :select-size="4"
+        value-key="value"
+        :groups="[
+          {
+            id: 'templates',
+            items: plotTemplateNames.map((name) => ({
+              value: name,
+              label: name,
+            })),
+          },
+        ]"
       >
-      </ListBox>
-    </div>
+      </UCommandPalette>
+    </UFormField>
     <div v-else>
       <h5 class="mt-1 text-center text-md mb-1">Re-map indicators</h5>
       <div
@@ -63,48 +72,37 @@ const showIndicatorMapping = ref(false);
         class="flex gap-2 align-center"
       >
         <label :for="`indicator-${indicator}`" class="grow w-full">{{ indicator }}</label>
-        <Select
+        <USelectMenu
           :id="`indicator-${indicator}`"
           v-model="indicatorMap[indicator]"
           class="grow w-full"
-          size="small"
-          :options="columns"
+          :items="columns"
         >
-        </Select>
+        </USelectMenu>
       </div>
     </div>
     <div class="mt-2 flex gap-1 justify-end">
-      <Button size="small" title="Abort" severity="secondary" @click="visible = false">
-        <i-mdi-close />
-      </Button>
-      <Button
+      <UButton size="sm" title="Abort" color="neutral" icon="mdi:close" @click="visible = false" />
+      <UButton
         v-if="!showIndicatorMapping"
         :disabled="!selTemplateName"
-        size="small"
+        size="sm"
         style="width: 33%"
         title="Use template"
         label=" Use Template"
-        severity="primary"
+        icon="mdi:check"
         @click="clickStartUseTemplate"
-      >
-        <template #icon>
-          <i-mdi-check class="me-1" />
-        </template>
-      </Button>
-      <Button
+      />
+      <UButton
         v-if="showIndicatorMapping"
         :disabled="!selTemplateName"
-        size="small"
+        size="sm"
         style="width: 33%"
         title="Apply template"
-        severity="primary"
+        icon="mdi:check"
         @click="fromTemplateApply"
-      >
-        <template #icon>
-          <i-mdi-check class="me-1" />
-        </template>
-        Apply Template
-      </Button>
+        label="Apply Template"
+      />
     </div>
   </div>
 </template>

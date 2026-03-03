@@ -43,22 +43,17 @@ watch(
 
 <template>
   <div class="flex flex-row">
-    <div class="flex flex-col grow">
-      <label for="selAvailableIndicator" class="form-label">{{ label }}</label>
-      <Select
+    <UFormField :label class="grow">
+      <USelectMenu
         v-model="selAvailableIndicator"
-        :options="columns"
-        size="small"
+        :items="columns"
         :clearable="false"
         filter
+        class="w-full"
         auto-filter-focus
       >
-      </Select>
-    </div>
-    <Button size="small" title="Abort" class="ms-1 mt-auto" severity="secondary" @click="abort">
-      <template #icon>
-        <i-mdi-close />
-      </template>
-    </Button>
+      </USelectMenu>
+    </UFormField>
+    <UButton title="Abort" class="ms-1 mt-auto" color="neutral" icon="mdi:close" @click="abort" />
   </div>
 </template>
