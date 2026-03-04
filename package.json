@@ -33,9 +33,9 @@
     "pinia-plugin-persistedstate": "^4.7.1",
     "primevue": "^4.5.4",
     "sortablejs": "^1.15.7",
-    "vue": "^3.5.28",
+    "vue": "^3.5.29",
     "vue-echarts": "^8.0.1",
-    "vue-router": "^5.0.2"
+    "vue-router": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -48,7 +48,7 @@
     "@types/sortablejs": "^1.15.9",
     "@typescript-eslint/parser": "^8.56.0",
     "@vitejs/plugin-vue": "^6.0.4",
-    "@vue/compiler-sfc": "3.5.28",
+    "@vue/compiler-sfc": "3.5.29",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
     "@vue/test-utils": "^2.4.6",
@@ -67,7 +67,7 @@
     "unplugin-vue-components": "^31.0.0",
     "vite": "^7.3.1",
     "vitest": "^4.0.18",
-    "vue-tsc": "^3.2.4"
+    "vue-tsc": "^3.2.5"
   },
   "packageManager": "pnpm@10.30.2+sha512.36cdc707e7b7940a988c9c1ecf88d084f8514b5c3f085f53a2e244c2921d3b2545bc20dd4ebe1fc245feec463bb298aecea7a63ed1f7680b877dc6379d8d0cb4"
 }
