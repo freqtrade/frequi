@@ -43,8 +43,8 @@ export default defineConfig({
         },
         table: {
           slots: {
-            td: 'px-2 py-2 text-default',
-            // th: 'px-2 py-2',
+            td: 'px-2 py-2 text-default text-md text-left',
+            th: 'px-2 py-2 text-default text-md',
           },
         },
       },
