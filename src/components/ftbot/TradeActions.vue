@@ -26,7 +26,6 @@ defineEmits<{
     <UButton
       v-if="!botFeatures.forceExitParams"
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Forceexit"
       label="Forceexit"
@@ -35,7 +34,6 @@ defineEmits<{
     />
     <UButton
       v-if="botFeatures.forceExitParams"
-      size="sm"
       class="justify-start!"
       color="neutral"
       title="Forceexit limit"
@@ -46,7 +44,6 @@ defineEmits<{
     <UButton
       v-if="botFeatures.forceExitParams"
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Forceexit market"
       label="Forceexit market"
@@ -56,7 +53,6 @@ defineEmits<{
     <UButton
       v-if="botFeatures.forceEntryTag"
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Forceexit partial"
       label="Forceexit partial"
@@ -66,7 +62,6 @@ defineEmits<{
     <UButton
       v-if="botFeatures.cancelOpenOrders && (trade.open_order_id || trade.has_open_orders)"
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Cancel open orders"
       label="Cancel open orders"
@@ -76,7 +71,6 @@ defineEmits<{
     <UButton
       v-if="enableForceEntry"
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Increase position"
       label="Increase position"
@@ -86,7 +80,6 @@ defineEmits<{
     <UButton
       v-if="botFeatures.reloadTrade"
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Reload"
       label="Reload"
@@ -95,7 +88,6 @@ defineEmits<{
     />
     <UButton
       class="justify-start!"
-      size="sm"
       color="neutral"
       title="Delete trade"
       label="Delete trade"

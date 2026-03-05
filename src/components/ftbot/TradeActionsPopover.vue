@@ -67,26 +67,27 @@ function handleForceEntry(item: Trade) {
         icon="mdi:gesture-tap"
       />
       <template #content>
-        <TradeActions
-          class="m-4"
-          :trade="trade"
-          :bot-features="botFeatures"
-          :enable-force-entry="enableForceEntry"
-          @force-exit="forceExitHandler"
-          @force-exit-partial="forceExitPartialHandler"
-          @delete-trade="handleDeleteTrade(trade)"
-          @cancel-open-order="cancelOpenOrderHandler"
-          @reload-trade="handleReloadTrade"
-          @force-entry="handleForceEntry"
-        />
-        <UButton
-          class="mt-1 w-full text-start"
-          size="sm"
-          color="neutral"
-          label="Close Actions menu"
-          icon="mdi:cancel"
-          @click="popoverOpen = false"
-        />
+        <div class="p-2">
+          <TradeActions
+            :trade="trade"
+            :bot-features="botFeatures"
+            :enable-force-entry="enableForceEntry"
+            @force-exit="forceExitHandler"
+            @force-exit-partial="forceExitPartialHandler"
+            @delete-trade="handleDeleteTrade(trade)"
+            @cancel-open-order="cancelOpenOrderHandler"
+            @reload-trade="handleReloadTrade"
+            @force-entry="handleForceEntry"
+          />
+          <UButton
+            class="mt-1 w-full text-start"
+            size="sm"
+            color="neutral"
+            label="Close Actions menu"
+            icon="mdi:cancel"
+            @click="popoverOpen = false"
+          />
+        </div>
       </template>
     </UPopover>
   </div>
