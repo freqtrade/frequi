@@ -12,7 +12,7 @@ withDefaults(
     showDetails: false,
   },
 );
-const classLabel = 'w-6/12 text-surface-500 text-sm';
+const classLabel = 'w-6/12 text-neutral-500 text-sm';
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const classLabel = 'w-6/12 text-surface-500 text-sm';
     <div class="px-1 flex w-7/12 flex-col text-start justify-between">
       <span>
         <span class="me-1 font-bold">{{ trade.pair }}</span>
-        <small class="text-surface-500">(#{{ trade.trade_id }})</small>
+        <small class="text-neutral-500">(#{{ trade.trade_id }})</small>
       </span>
       <ValuePair description="Amount" :class-label="classLabel">
         {{ trade.amount }}
@@ -45,14 +45,3 @@ const classLabel = 'w-6/12 text-surface-500 text-sm';
     <TradeProfit class="w-5/12" :trade="trade" />
   </div>
 </template>
-
-<style lang="css" scoped>
-.card-body {
-  padding: 0 0.2em;
-}
-
-.btn-xs {
-  padding: 0.1rem 0.25rem;
-  font-size: 0.75rem;
-}
-</style>
