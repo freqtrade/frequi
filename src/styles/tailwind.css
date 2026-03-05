@@ -13,6 +13,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -20,12 +21,39 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  html,
+  body {
+    @apply font-sans antialiased bg-surface-50 text-surface-900;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  .dark body {
+    @apply bg-surface-950 text-surface-50;
+  }
 }
 
+/* Modern Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-300 rounded-full hover:bg-surface-400 transition-colors;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-surface-700 hover:bg-surface-600;
+}
 
 @layer frequi {
+
   /* Customization for freqUI components */
   :root {
 
@@ -70,24 +98,25 @@
     /* --p-datatable-row-selected-background: var(--p-highlight-background); */
     /* --p-datatable-row-selected-color: var(--p-primary-contrast); */
 
-      /* --p-primary-color: var(--p-primary-500); */
+    /* --p-primary-color: var(--p-primary-500); */
   }
 
   .ft-dark-theme {
-      --p-content-background: var(--p-surface-950);
-      --p-menu-background: var(--p-surface-900);
+    --p-content-background: var(--p-surface-950);
+    --p-menu-background: var(--p-surface-900);
 
-      --p-primary-contrast-color: var(--p-text-200);
-      --p-button-secondary-background: var(--p-surface-700);
-      --p-button-secondary-hover-background: var(--p-surface-600);
+    --p-primary-contrast-color: var(--p-text-200);
+    --p-button-secondary-background: var(--p-surface-700);
+    --p-button-secondary-hover-background: var(--p-surface-600);
   }
 
   .p-button-icon-only.p-button-sm {
     --p-button-sm-icon-only-height: 2.25rem;
     /* height: var(--p-button-sm-icon-only-width); */
-    padding : 0.1rem 0.4rem 0.1rem 0.4rem;
+    padding: 0.1rem 0.4rem 0.1rem 0.4rem;
     /* padding: unset; */
   }
+
   .p-button-icon-only {
     /* padding : 0.1rem 0.4rem 0.1rem 0.4rem; */
     padding: unset;
@@ -97,6 +126,7 @@
   .p-selectbutton {
     border-color: var(--p-primary-500);
     border: 1px solid var(--p-primary-500);
+
     &>.p-togglebutton {
       border: none;
 
@@ -107,11 +137,57 @@
 
 
 @layer primevue {
-    /* Base component style overrides */
-    :root {
 
-        --p-datatable-row-background: unset;
-    }
+  /* Base component style overrides */
+  :root {
+    --p-datatable-row-background: unset;
+
+    /* Modern aesthetic overrides for PrimeVue base */
+    --p-card-background: var(--p-surface-0);
+    --p-card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --p-card-border-radius: 1rem;
+
+    --p-button-border-radius: 0.5rem;
+    --p-inputtext-border-radius: 0.5rem;
+  }
+
+  .dark {
+    --p-card-background: var(--p-surface-900);
+    --p-card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  /* Make all PrimeVue datatables scroll horizontally on small screens */
+  .p-datatable-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent text crushing on mobile, forcing horizontal scroll to kick in */
+  .p-datatable-table {
+    white-space: nowrap;
+  }
+
+  /* High Contrast overrides for DataTable Readability */
+  .p-datatable .p-datatable-thead>tr>th {
+    color: var(--p-surface-900) !important;
+    font-weight: 700 !important;
+    background-color: var(--p-surface-100) !important;
+  }
+
+  .p-datatable .p-datatable-tbody>tr>td {
+    color: var(--p-surface-800) !important;
+  }
+
+  .dark .p-datatable .p-datatable-thead>tr>th {
+    color: var(--p-surface-0) !important;
+    background-color: var(--p-surface-900) !important;
+    border-bottom-color: var(--p-surface-700) !important;
+  }
+
+  .dark .p-datatable .p-datatable-tbody>tr>td {
+    color: var(--p-surface-50) !important;
+    border-bottom-color: var(--p-surface-800) !important;
+  }
 }
 
 
@@ -120,22 +196,21 @@ body.ft-theme-transition,
 body.ft-theme-transition *,
 body.ft-theme-transition *:before,
 body.ft-theme-transition *:after {
-    transition:
-        background 750ms ease-in-out,
-        border-color 750ms ease-in-out,
-        background-color 750ms ease-in-out,
-    ;
-    transition-delay: 0 !important;
+  transition:
+    background 750ms ease-in-out,
+    border-color 750ms ease-in-out,
+    background-color 750ms ease-in-out,
+  ;
+  transition-delay: 0 !important;
 }
 
 
 html {
-    /*  Set the default font size to 14px */
-    font-size: 14px;
+  /*  Set the default font size to 14px */
+  font-size: 14px;
 }
 
 .vue-grid-item {
-    /*  Fix white corners in vue-grid-item. */
-    background-color: unset !important;
+  /*  Fix white corners in vue-grid-item. */
+  background-color: unset !important;
 }
-
