@@ -136,7 +136,6 @@ const backtestTabs = computed(() => {
         <UButton
           class="self-start"
           aria-label="Close"
-          size="sm"
           color="neutral"
           variant="outline"
           :icon="showLeftBar ? 'mdi:chevron-left' : 'mdi:chevron-right'"
