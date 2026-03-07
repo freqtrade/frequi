@@ -22,7 +22,7 @@ test.describe('Settings', () => {
     await expect(page.url()).toBe('http://localhost:3000/settings');
 
     // Switch option in the settings.
-    await page.getByRole('combobox', { name: 'Show pill in icon' }).click();
+    await page.getByRole('combobox').filter({ hasText: 'Show pill in icon' }).click();
     await page.getByRole('option', { name: 'Show in title' }).click();
 
     const settings = await page.evaluate(() =>

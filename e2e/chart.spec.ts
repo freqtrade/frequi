@@ -63,9 +63,9 @@ test.describe('Chart', () => {
     await page.getByRole('button', { name: 'Apply Template' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
 
-    const indicatorPanel = page.locator('ul#selectedIndicators_list');
+    const indicatorPanel = page.getByText('Indicators in this plotb');
 
-    const options = await indicatorPanel.locator('li').allTextContents();
+    const options = await indicatorPanel.getByRole('listbox').allTextContents();
     await expect(options).toContain('bb_lowerband');
     await expect(options).toStrictEqual(['bb_upperband', 'bb_lowerband']);
 
