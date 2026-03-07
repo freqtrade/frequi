@@ -63,14 +63,15 @@ onMounted(() => {
       id="exchange-select"
       v-model="exchangeModel.exchange"
       class="min-w-52"
-      :items="exchangeList as any"
+      value-key="value"
+      :items="exchangeList"
     >
     </USelectMenu>
     <USelectMenu
       id="tradeMode-select"
       v-model="exchangeModel.trade_mode as any"
       class="min-w-44"
-      :items="tradeModes as any"
+      :items="tradeModes"
       :disabled="tradeModes.length < 2"
     >
     </USelectMenu>

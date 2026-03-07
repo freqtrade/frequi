@@ -161,7 +161,7 @@ const backtestTabs = computed(() => {
         Bot must be in webserver mode to enable Backtesting.
       </p>
       <div class="w-full">
-        <UTabs v-model="btFormMode as string" :items="backtestTabs">
+        <UTabs v-model="btFormMode" :items="backtestTabs">
           <template #historic-results>
             <BacktestHistoryLoad />
           </template>

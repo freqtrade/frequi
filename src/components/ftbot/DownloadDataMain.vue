@@ -173,6 +173,7 @@ async function startDownload() {
           <!-- Advanced options section -->
           <BaseCollapsible
             title="Advanced options"
+            v-model:open="isAdvancedOpen"
             class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-sm p-2 text-start"
           >
             <UAlert
