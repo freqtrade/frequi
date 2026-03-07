@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { GridItemData } from '@/types';
+import type { TabsItem } from '@nuxt/ui';
 
 const botStore = useBotStore();
 const layoutStore = useLayoutStore();
@@ -57,7 +58,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
   });
 }
 
-const tradingTabItems = computed(() => {
+const tradingTabItems = computed<TabsItem[]>(() => {
   const showText = settingsStore.multiPaneButtonsShowText;
   return [
     {
