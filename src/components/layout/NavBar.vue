@@ -235,11 +235,11 @@ const drawerVisible = ref(false);
               :model-value="botStore.selectedBot"
               label-key="botName"
               value-key="botId"
-              size="sm"
               class="m-1 min-w-36"
               :items="botStore.availableBotsSorted"
               @update:model-value="botStore.selectBot($event)"
             />
+
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <div
@@ -251,13 +251,18 @@ const drawerVisible = ref(false);
                 'No bot selected'
               }}
             </span>
-            <span v-if="botStore.botCount === 1">
-              {{
-                botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
-                  ? 'Online'
-                  : 'Offline'
-              }}
+            <span
+              v-if="
+                botStore.botCount === 1 &&
+                botStore.activeBotorUndefined &&
+                botStore.activeBotorUndefined.isBotOnline
+              "
+              class="text-sm flex items-center"
+            >
+              <UIcon name="mdi:circle" class="text-green-500 me-1" />
+              Online
             </span>
+            <span v-else-if="botStore.botCount === 1" class="text-sm">Offline</span>
           </div>
           <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
