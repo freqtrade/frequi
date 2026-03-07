@@ -156,7 +156,6 @@ if (pairlistStore.whitelist.length > 0) {
       <USegmentedControl
         v-model="selectedView"
         class="mb-2"
-        size="sm"
         :allow-empty="false"
         label-key="value"
         value-key="value"
@@ -170,13 +169,13 @@ if (pairlistStore.whitelist.length > 0) {
       <div class="relative overflow-auto">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
-          class="lg:a22bsolute w-full"
+          class="w-full"
           :content="pairlistStore.configJSON"
           :is-valid="pairlistStore.pairlistValid"
         />
         <CopyableTextfield
           v-if="selectedView === 'Results'"
-          class="lg:abs22olute w-full"
+          class="w-full"
           :content="pairlistStore.whitelist"
         />
       </div>

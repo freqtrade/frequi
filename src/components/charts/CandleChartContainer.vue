@@ -173,7 +173,6 @@ const singlePairSelection = computed({
           title="Refresh chart"
           color="neutral"
           :disabled="botStore.activeBot.plotMultiPairs.length === 0"
-          size="sm"
           icon="mdi:refresh"
           @click="refresh"
         />
