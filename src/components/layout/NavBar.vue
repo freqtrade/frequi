@@ -229,19 +229,6 @@ const drawerVisible = ref(false);
             <i-mdi-run-fast />
             <i-mdi-alert />
           </div>
-          <div class="flex justify-between">
-            <USelectMenu
-              v-if="botStore.botCount > 1"
-              :model-value="botStore.selectedBot"
-              label-key="botName"
-              value-key="botId"
-              class="m-1 min-w-36"
-              :items="botStore.availableBotsSorted"
-              @update:model-value="botStore.selectBot($event)"
-            />
-
-            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
-          </div>
           <div
             class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-neutral-300 me-2"
           >
@@ -262,7 +249,23 @@ const drawerVisible = ref(false);
               <UIcon name="mdi:circle" class="text-green-500 me-1" />
               Online
             </span>
-            <span v-else-if="botStore.botCount === 1" class="text-sm">Offline</span>
+            <span v-else-if="botStore.botCount === 1" class="text-sm flex items-center">
+              <UIcon name="mdi:circle" class="text-red-500 me-1" />
+              Offline
+            </span>
+          </div>
+          <div class="flex justify-between">
+            <USelectMenu
+              v-if="botStore.botCount > 1"
+              :model-value="botStore.selectedBot"
+              label-key="botName"
+              value-key="botId"
+              class="m-1 min-w-36"
+              :items="botStore.availableBotsSorted"
+              @update:model-value="botStore.selectBot($event)"
+            />
+
+            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
