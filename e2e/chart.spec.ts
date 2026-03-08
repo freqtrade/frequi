@@ -65,13 +65,13 @@ test.describe('Chart', () => {
 
     const indicatorPanel = page.getByText('Indicators in this plotb');
 
-    const options = await indicatorPanel.getByRole('listbox').allTextContents();
+    const options = await indicatorPanel.getByRole('option').allTextContents();
     await expect(options).toContain('bb_lowerband');
     await expect(options).toStrictEqual(['bb_upperband', 'bb_lowerband']);
 
     // indicatorPanel.selectOption('bb_lowerband');
     // Close Plot configurator
-    await page.getByRole('button', { name: 'Plot configurator' }).click();
+    await page.getByRole('button', { name: 'Close' }).click();
 
     await expect(page.locator('canvas')).toHaveScreenshot(
       'Chart-Plot-with_BollingerBands-Dark.png',
