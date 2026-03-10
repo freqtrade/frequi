@@ -16,9 +16,11 @@ const autoRefreshLoc = computed({
     <UButton
       class="m-1"
       color="neutral"
-      variant="outline"
-      size="sm"
+      variant="ghost"
       title="Auto Refresh all bots now"
+      :ui="{
+        base: 'ring-white/25 ring',
+      }"
       icon="mdi:refresh"
       @click="botStore.allRefreshFull"
     />
