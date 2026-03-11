@@ -34,6 +34,12 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  /* Cursor pointer for Buttons - workaround for Tailwind v4 change */
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
 }
 
 :root {
