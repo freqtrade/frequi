@@ -84,12 +84,12 @@ test.describe('Pairlists', () => {
 
     const evaluateButton = page.locator('button >> text="Evaluate"');
 
-    await Promise.all([
-      evaluateButton.click(),
-      page.waitForResponse('**/evaluate'),
-      page.waitForResponse('**/background/*'),
-      page.waitForResponse('**/pairlists/evaluate/*'),
-    ]);
+    const evaluatePromise = page.waitForResponse('**/evaluate');
+    const backgroundPromise = page.waitForResponse('**/background/*');
+    const evaluateDetailPromise = page.waitForResponse('**/pairlists/evaluate/*');
+    await evaluateButton.click();
+
+    await Promise.all([evaluatePromise, backgroundPromise, evaluateDetailPromise]);
 
     await expect(resultsButton).toBeEnabled();
     // TODO primevue: Fix selectButton "checked" state
