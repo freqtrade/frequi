@@ -34,13 +34,13 @@ const orderSideOptions = [
   { value: 'short', text: 'Short' },
 ];
 
-const checkFormValidity = () => {
+function checkFormValidity() {
   const valid = form.value?.checkValidity();
 
   return valid;
-};
+}
 
-const handleSubmit = async () => {
+async function handleSubmit() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -70,8 +70,8 @@ const handleSubmit = async () => {
   botStore.activeBot.forceentry(payload);
   await nextTick();
   model.value = false;
-};
-const resetForm = () => {
+}
+function resetForm() {
   selectedPair.value = props.pair;
   price.value = undefined;
   stakeAmount.value = undefined;
@@ -81,22 +81,26 @@ const resetForm = () => {
     botStore.activeBot.botState?.order_types?.buy ||
     botStore.activeBot.botState?.order_types?.entry ||
     'limit';
-};
+}
 
-const handleEntry = () => {
+watch(
+  () => model.value,
+  (open) => {
+    if (open) {
+      resetForm();
+    }
+  },
+);
+
+function handleEntry() {
   // Trigger submit handler
   handleSubmit();
-};
+}
 </script>
 
 <template>
   <UModal
     v-model:open="model"
-    @update:open="
-      (v) => {
-        if (!v) resetForm();
-      }
-    "
     :title="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
     :description="positionIncrease ? 'Increase an existing position' : 'Manually enter a new trade'"
   >
