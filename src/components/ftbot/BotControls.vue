@@ -15,7 +15,7 @@ const isRunning = computed((): boolean => {
   return botStore.activeBot.botState?.state === 'running';
 });
 
-const handleStopBot = () => {
+function handleStopBot() {
   const msg: MsgBoxObject = {
     title: 'Stop Bot',
     message: 'Stop the bot loop from running?',
@@ -24,9 +24,9 @@ const handleStopBot = () => {
     },
   };
   msgBox.value?.show(msg);
-};
+}
 
-const handleStopBuy = () => {
+function handleStopBuy() {
   const msg: MsgBoxObject = {
     title: 'Pause - Stop Entering',
     message:
@@ -36,9 +36,9 @@ const handleStopBuy = () => {
     },
   };
   msgBox.value?.show(msg);
-};
+}
 
-const handleReloadConfig = () => {
+function handleReloadConfig() {
   const msg: MsgBoxObject = {
     title: 'Reload',
     message: 'Reload configuration (including strategy)?',
@@ -48,9 +48,9 @@ const handleReloadConfig = () => {
     },
   };
   msgBox.value?.show(msg);
-};
+}
 
-const handleForceExit = () => {
+function handleForceExit() {
   const msg: MsgBoxObject = {
     title: 'ForceExit all',
     message: 'Really forceexit ALL trades?',
@@ -63,7 +63,7 @@ const handleForceExit = () => {
     },
   };
   msgBox.value?.show(msg);
-};
+}
 </script>
 
 <template>
