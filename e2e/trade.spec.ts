@@ -96,7 +96,8 @@ test.describe('Trade', () => {
     await expect(modalOkButton).toBeVisible();
     await modalOkButton.click();
 
-    const configReloadToast = page.getByText('Config reloaded successfully.');
+    const configReloadToast = page.getByText('Config reloaded successfully.', { exact: true });
+    await expect(configReloadToast).toBeInViewport();
     await expect(configReloadToast).toBeVisible();
   });
   test('Trade page - drag and drop', async ({ page }) => {
