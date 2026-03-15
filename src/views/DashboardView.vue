@@ -136,16 +136,10 @@ onMounted(async () => {
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer>
-          <template #header>
-            <div class="flex items-center">
-              Open Trades
-              <InfoBox
-                class="ms-2"
-                hint="Open trades of all selected bots. Click on a trade to go to the trade page for that trade/bot."
-              />
-            </div>
-          </template>
+        <DraggableContainer
+          header="Open Trades"
+          info-text="Open trades of all selected bots. Click on a trade to go to the trade page for that trade/bot."
+        >
           <TradeList active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
         </DraggableContainer>
       </GridItem>
@@ -194,16 +188,10 @@ onMounted(async () => {
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer>
-          <template #header>
-            <div class="flex items-center">
-              Closed Trades
-              <InfoBox
-                class="ms-2"
-                hint="Closed trades for all selected bots. Click on a trade to go to the trade page for that trade/bot."
-              />
-            </div>
-          </template>
+        <DraggableContainer
+          header="Closed Trades"
+          info-text="Closed trades for all selected bots. Click on a trade to go to the trade page for that trade/bot."
+        >
           <TradeList
             :active-trades="false"
             show-filter
