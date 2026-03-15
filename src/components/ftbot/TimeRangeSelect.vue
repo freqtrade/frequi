@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { VueDatePicker } from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-
-const settingsStore = useSettingsStore();
+import { CalendarDate } from '@internationalized/date';
 
 const now = new Date();
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
-const dateFrom = ref<string>('');
-const dateTo = ref<string>('');
+const maxDateNow = new CalendarDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
+const maxDateTomorrow = new CalendarDate(
+  tomorrow.getFullYear(),
+  tomorrow.getMonth() + 1,
+  tomorrow.getDate(),
+);
 
 const props = withDefaults(
   defineProps<{
@@ -18,30 +19,73 @@ const props = withDefaults(
 );
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
+const dateFromText = ref('');
+const dateToText = ref('');
+const popoverFromOpen = ref(false);
+const popoverToOpen = ref(false);
+
+function calendarDateToTimeRangeString(d: CalendarDate | null): string {
+  if (!d) return '';
+  return `${d.year}${String(d.month).padStart(2, '0')}${String(d.day).padStart(2, '0')}`;
+}
+
+function calendarDateToInputString(d: CalendarDate | null): string {
+  if (!d) return '';
+  return `${d.year}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`;
+}
+
+function parseInputText(text: string): CalendarDate | null {
+  const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) {
+    return new CalendarDate(parseInt(match[1]!), parseInt(match[2]!), parseInt(match[3]!));
+  }
+  return null;
+}
+
+const dateFrom = computed(() => parseInputText(dateFromText.value));
+const dateTo = computed(() => parseInputText(dateToText.value));
+
 const timeRange = computed(() => {
-  if (dateFrom.value !== '' || dateTo.value !== '') {
-    return `${dateStringToTimeRange(dateFrom.value)}-${dateStringToTimeRange(dateTo.value)}`;
+  if (dateFrom.value || dateTo.value) {
+    return `${calendarDateToTimeRangeString(dateFrom.value)}-${calendarDateToTimeRangeString(dateTo.value)}`;
   }
   return '';
 });
 
+function jsDateToInputString(d: Date): string {
+  return calendarDateToInputString(
+    new CalendarDate(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()),
+  );
+}
+
+function onFromCalendarSelect(v: unknown) {
+  const d = v as CalendarDate;
+  dateFromText.value = calendarDateToInputString(d);
+  popoverFromOpen.value = false;
+}
+
+function onToCalendarSelect(v: unknown) {
+  const d = v as CalendarDate;
+  dateToText.value = calendarDateToInputString(d);
+  popoverToOpen.value = false;
+}
+
 function updateInput() {
   const tr = props.modelValue.split('-');
   if (tr[0]) {
-    dateFrom.value = timestampToDateString(
-      tr[0].length === 8 ? dateFromString(tr[0], 'yyyyMMdd') : parseInt(tr[0]) * 1000,
-    );
+    const d =
+      tr[0].length === 8 ? dateFromString(tr[0], 'yyyyMMdd') : new Date(parseInt(tr[0]) * 1000);
+    dateFromText.value = jsDateToInputString(d);
   } else {
-    dateFrom.value = '';
+    dateFromText.value = '';
   }
   if (tr.length > 1 && tr[1]) {
-    dateTo.value = timestampToDateString(
-      tr[1].length === 8 ? dateFromString(tr[1], 'yyyyMMdd') : parseInt(tr[1]) * 1000,
-    );
+    const d =
+      tr[1].length === 8 ? dateFromString(tr[1], 'yyyyMMdd') : new Date(parseInt(tr[1]) * 1000);
+    dateToText.value = jsDateToInputString(d);
   } else {
-    dateTo.value = '';
+    dateToText.value = '';
   }
-  emit('update:modelValue', timeRange.value);
 }
 
 watch(
@@ -50,14 +94,19 @@ watch(
 );
 watch(
   () => props.modelValue,
-  () => {
-    updateInput();
+  (newValue) => {
+    if (newValue !== timeRange.value) {
+      updateInput();
+    }
   },
 );
 
 onMounted(() => {
   if (!props.modelValue) {
-    dateFrom.value = timestampToDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+    const d = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    dateFromText.value = calendarDateToInputString(
+      new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate()),
+    );
   } else {
     updateInput();
   }
@@ -67,40 +116,61 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="flex justify-content-center">
-      <div>
-        <label for="dateFrom">Start Date</label>
-        <VueDatePicker
-          id="dateFrom"
-          v-model="dateFrom"
-          :dark="settingsStore.isDarkTheme"
-          :max-date="now"
-          model-type="yyyy-MM-dd"
-          :formats="{ input: 'yyyy-MM-dd', preview: 'yyyy-MM-dd' }"
-          class="mt-1"
-          text-input
-          auto-apply
-          :time-config="{ enableTimePicker: false }"
-        ></VueDatePicker>
-      </div>
-      <div class="ms-2">
-        <label for="dateTo">End Date</label>
-        <VueDatePicker
-          v-model="dateTo"
-          :dark="settingsStore.isDarkTheme"
-          class="mt-1"
-          :max-date="tomorrow"
-          model-type="yyyy-MM-dd"
-          :formats="{ input: 'yyyy-MM-dd', preview: 'yyyy-MM-dd' }"
-          text-input
-          auto-apply
-          :time-config="{ enableTimePicker: false }"
-        ></VueDatePicker>
-      </div>
+    <div class="flex gap-2">
+      <UFormField label="Start Date">
+        <UInput id="dateFrom" v-model="dateFromText" placeholder="yyyy-mm-dd" class="flex-1">
+          <template #trailing>
+            <UButton
+              v-if="dateFromText"
+              icon="mdi:close"
+              color="neutral"
+              variant="ghost"
+              size="xs"
+              title="Clear start date"
+              @click="dateFromText = ''"
+            />
+            <UPopover v-model:open="popoverFromOpen">
+              <UButton icon="mdi:calendar-blank" color="neutral" variant="ghost" size="sm" />
+              <template #content>
+                <UCalendar
+                  :model-value="dateFrom"
+                  :max-value="maxDateNow"
+                  @update:model-value="onFromCalendarSelect"
+                />
+              </template>
+            </UPopover>
+          </template>
+        </UInput>
+      </UFormField>
+      <UFormField label="End Date">
+        <UInput id="dateTo" v-model="dateToText" placeholder="yyyy-mm-dd" class="flex-1">
+          <template #trailing>
+            <UButton
+              v-if="dateToText"
+              icon="mdi:close"
+              color="neutral"
+              variant="ghost"
+              size="xs"
+              title="Clear end date"
+              @click="dateToText = ''"
+            />
+            <UPopover v-model:open="popoverToOpen">
+              <UButton icon="mdi:calendar-blank" color="neutral" variant="ghost" size="sm" />
+              <template #content>
+                <UCalendar
+                  :model-value="dateTo"
+                  :max-value="maxDateTomorrow"
+                  @update:model-value="onToCalendarSelect"
+                />
+              </template>
+            </UPopover>
+          </template>
+        </UInput>
+      </UFormField>
     </div>
 
-    <label class="mt-1 text-start">
+    <div class="mt-1 text-start">
       Timerange: <b>{{ timeRange }}</b>
-    </label>
+    </div>
   </div>
 </template>
