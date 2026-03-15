@@ -12,7 +12,7 @@ withDefaults(
     showDetails: false,
   },
 );
-const classLabel = 'w-6/12 text-neutral-500 text-sm';
+const classLabel = 'w-6/12 text-neutral-700 dark:text-neutral-400 text-sm';
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const classLabel = 'w-6/12 text-neutral-500 text-sm';
     <div class="px-1 flex w-7/12 flex-col text-start justify-between">
       <span>
         <span class="me-1 font-bold">{{ trade.pair }}</span>
-        <small class="text-neutral-500">(#{{ trade.trade_id }})</small>
+        <small class="text-neutral-700 dark:text-neutral-400">(#{{ trade.trade_id }})</small>
       </span>
       <ValuePair description="Amount" :class-label="classLabel">
         {{ trade.amount }}
