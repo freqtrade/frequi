@@ -20,7 +20,7 @@ export const useSettingsStore = defineStore('uiSettings', {
   // other options...
   state: () => {
     return {
-      openTradesInTitle: OpenTradeVizOptions.showPill as string,
+      openTradesInTitle: OpenTradeVizOptions.showPill as OpenTradeVizOptions,
       timezone: 'UTC',
       backgroundSync: true,
       currentTheme: 'dark' as ThemeName,
