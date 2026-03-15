@@ -152,7 +152,6 @@ if (pairlistStore.whitelist.length > 0) {
       </div>
     </div>
     <div class="flex flex-col w-full min-w-72">
-      <!-- TODO: nuxtui disabled doesn't work that way-->
       <USegmentedControl
         v-model="selectedView"
         class="mb-2"

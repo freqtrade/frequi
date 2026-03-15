@@ -9,6 +9,7 @@ const props = withDefaults(
     labelKey?: string;
     valueKey?: string;
     allowEmpty?: boolean;
+    disabledKey?: string;
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   }>(),
   {
@@ -39,6 +40,15 @@ function isSelected(item: T): boolean {
   return modelValue.value === getValue(item);
 }
 
+function isDisabled(item: T): boolean {
+  if (props.disabledKey) {
+    if (typeof item === 'object' && item !== null) {
+      return !!item[props.disabledKey];
+    }
+  }
+  return false;
+}
+
 function select(item: T) {
   const val = getValue(item);
   if (!props.allowEmpty && isSelected(item)) {
@@ -57,6 +67,7 @@ function select(item: T) {
       :variant="isSelected(item) ? 'solid' : 'subtle'"
       :color="isSelected(item) ? 'primary' : 'neutral'"
       :aria-pressed="isSelected(item)"
+      :disabled="isDisabled(item)"
       @click="select(item)"
     >
       {{ getLabel(item) }}
