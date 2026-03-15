@@ -142,44 +142,46 @@ const singlePairSelection = computed({
 <template>
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
-      <div class="flex me-0 items-center md:gap-2">
+      <div class="flex me-0 items-center md:gap-2 gap-1 flex-wrap mx-1 md:mx-0">
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-        <USelectMenu
-          multiple
-          v-if="settingsStore.multiPairSelection"
-          v-model="botStore.activeBot.plotMultiPairs"
-          class="w-80"
-          :items="availablePairs"
-          optionlabel=""
-          virtualize
-          placeholder="Select pairs to plot"
-          size="md"
-          filter
-        >
-        </USelectMenu>
-        <USelectMenu
-          v-else
-          v-model="singlePairSelection"
-          class="w-80"
-          :items="availablePairs"
-          size="md"
-          :clearable="false"
-          virtualize
-          @input="refresh"
-        >
-        </USelectMenu>
 
-        <UButton
-          title="Refresh chart"
-          color="neutral"
-          :disabled="botStore.activeBot.plotMultiPairs.length === 0"
-          icon="mdi:refresh"
-          @click="refresh"
-        />
+        <div class="flex gap-1 md:gap-2 w-full md:w-auto">
+          <USelectMenu
+            multiple
+            v-if="settingsStore.multiPairSelection"
+            v-model="botStore.activeBot.plotMultiPairs"
+            class="md:w-80 w-full"
+            :items="availablePairs"
+            optionlabel=""
+            virtualize
+            placeholder="Select pairs to plot"
+            size="md"
+            filter
+          >
+          </USelectMenu>
+          <USelectMenu
+            v-else
+            v-model="singlePairSelection"
+            class="md:w-80 w-full"
+            :items="availablePairs"
+            size="md"
+            :clearable="false"
+            virtualize
+            @input="refresh"
+          >
+          </USelectMenu>
+          <UButton
+            title="Refresh chart"
+            color="neutral"
+            :disabled="botStore.activeBot.plotMultiPairs.length === 0"
+            icon="mdi:refresh"
+            @click="refresh"
+          />
+        </div>
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
           <span class="text-nowrap">Multi pair</span>
         </BaseCheckbox>
-        <div class="ms-auto flex items-center gap-2">
+        <div class="ms-auto flex flex-wrap items-center gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
           </BaseCheckbox>
@@ -187,9 +189,9 @@ const singlePairSelection = computed({
             <span class="text-nowrap">Heikin Ashi</span>
           </BaseCheckbox>
 
-          <PlotConfigSelect></PlotConfigSelect>
+          <div class="me-0 md:me-1 flex grow">
+            <PlotConfigSelect class="grow min-w-40"></PlotConfigSelect>
 
-          <div class="me-0 md:me-1">
             <UButton
               title="Plot configurator"
               color="neutral"
