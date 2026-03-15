@@ -77,14 +77,6 @@ export function timestampToTimeRangeString(ts: number | Date): string {
   return formatDate(toDate(ts), 'yyyyMMdd');
 }
 
-/**
- * Converts a String of the format yyyy-MM-dd to YYYYMMDD. To be used as timerange.
- * @param datestring Input string (in the format yyyy-MM-dd)
- */
-export function dateStringToTimeRange(datestring: string): string {
-  return isNotUndefined(datestring) ? datestring.replace(/-/g, '') : '';
-}
-
 export function timestampHour(ts: number): number {
   return Number(formatDate(toDate(ts), 'HH'));
 }
@@ -101,7 +93,6 @@ export default {
   timestampms,
   timestampmsWithTimezone,
   timestampToDateString,
-  dateStringToTimeRange,
   setTimezone,
 };
 
