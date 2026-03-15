@@ -85,7 +85,6 @@ const tableColumns = computed(() => {
   }
   return cols;
 });
-// TODO: nuxtui -> table should not cause horizontal scrollbar.
 </script>
 
 <template>
@@ -139,7 +138,13 @@ const tableColumns = computed(() => {
       Time period chart is only available when a single bot is selected and showing absolute profit.
     </div>
     <div v-if="!props.multiBotView">
-      <UTable :data="selectedStats.data" :columns="tableColumns">
+      <UTable
+        :data="selectedStats.data"
+        :columns="tableColumns"
+        :ui="{
+          td: 'whitespace-normal',
+        }"
+      >
         <template #abs_profit-cell="{ row }">
           {{ formatPrice(row.original.abs_profit, botStore.activeBot.stakeCurrencyDecimals) }}
         </template>

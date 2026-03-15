@@ -19,7 +19,6 @@ function removePairLock(item: Lock) {
     showAlert('This Freqtrade version does not support deleting locks.');
   }
 }
-// TODO: nuxtui -> columns should resize instead of showing a horizontal scrollbar when the content.
 </script>
 
 <template>
@@ -33,7 +32,13 @@ function removePairLock(item: Lock) {
         @click="botStore.activeBot.getLocks"
       />
     </div>
-    <UTable :data="botStore.activeBot.activeLocks" :columns="columns">
+    <UTable
+      :data="botStore.activeBot.activeLocks"
+      :columns="columns"
+      :ui="{
+        td: 'whitespace-normal',
+      }"
+    >
       <template #lock_end_timestamp-cell="{ row }">
         {{ timestampms(row.original.lock_end_timestamp) }}
       </template>
