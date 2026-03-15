@@ -4,7 +4,6 @@ import MessageBox from '@/components/general/MessageBox.vue';
 
 import type { BacktestHistoryEntry } from '@/types';
 import type { TableColumn } from '@nuxt/ui';
-import InfoBox from '../general/InfoBox.vue';
 
 const botStore = useBotStore();
 const msgBox = ref<typeof MessageBox>();
@@ -40,7 +39,6 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
   { accessorKey: 'filename', header: 'Filename' },
   { id: 'actions', header: 'Actions' },
 ];
-// TODO nuxtui: virtualize needs proper settings!
 </script>
 
 <template>
@@ -69,7 +67,7 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
     </div>
     <UTable
       v-if="botStore.activeBot.backtestHistoryList.length > 0"
-      class="mt-2"
+      class="mt-2 h-[80dvh]"
       :data="filteredList"
       :columns="columns"
       virtualize
