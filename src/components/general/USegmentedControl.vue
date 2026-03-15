@@ -56,6 +56,7 @@ function select(item: T) {
       :size="size"
       :variant="isSelected(item) ? 'solid' : 'subtle'"
       :color="isSelected(item) ? 'primary' : 'neutral'"
+      :aria-pressed="isSelected(item)"
       @click="select(item)"
     >
       {{ getLabel(item) }}
