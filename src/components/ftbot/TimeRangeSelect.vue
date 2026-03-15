@@ -2,14 +2,8 @@
 import { CalendarDate } from '@internationalized/date';
 
 const now = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
 const maxDateNow = new CalendarDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
-const maxDateTomorrow = new CalendarDate(
-  tomorrow.getFullYear(),
-  tomorrow.getMonth() + 1,
-  tomorrow.getDate(),
-);
+const maxDateTomorrow = maxDateNow.add({ days: 1 });
 
 const props = withDefaults(
   defineProps<{
