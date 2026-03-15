@@ -139,7 +139,6 @@ const orderTypeOptions = [
           <USegmentedControl
             v-model="ordertype"
             :items="orderTypeOptions"
-            :allow-empty="false"
             label-key="text"
             value-key="value"
             class="w-full"

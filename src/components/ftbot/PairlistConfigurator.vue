@@ -155,7 +155,6 @@ if (pairlistStore.whitelist.length > 0) {
       <USegmentedControl
         v-model="selectedView"
         class="mb-2"
-        :allow-empty="false"
         label-key="value"
         value-key="value"
         :items="[

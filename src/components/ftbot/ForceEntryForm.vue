@@ -113,7 +113,6 @@ function handleEntry() {
           <USegmentedControl
             v-model="orderSide"
             :items="orderSideOptions"
-            :allow-empty="false"
             label-key="text"
             value-key="value"
             size="sm"

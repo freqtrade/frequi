@@ -168,7 +168,6 @@ const options = [
         :items="options"
         label-key="text"
         value-key="value"
-        :allow-empty="false"
       ></USegmentedControl>
       <span>Trades</span>
     </div>

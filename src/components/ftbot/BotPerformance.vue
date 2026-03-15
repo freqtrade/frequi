@@ -115,7 +115,6 @@ const tableColumns = computed(() => {
       id="order-direction"
       v-model="selectedOption"
       :items="options"
-      :allow-empty="false"
       label-key="text"
       value-key="value"
       size="sm"

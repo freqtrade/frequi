@@ -15,7 +15,7 @@ const props = withDefaults(
   {
     labelKey: 'label',
     valueKey: 'value',
-    allowEmpty: true,
+    allowEmpty: false,
     size: 'sm',
   },
 );

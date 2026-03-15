@@ -85,6 +85,13 @@ const tableColumns = computed(() => {
   }
   return cols;
 });
+
+watch(
+  () => settingsStore.timeProfitPeriod,
+  () => {
+    refreshSummary();
+  },
+);
 </script>
 
 <template>
@@ -99,23 +106,17 @@ const tableColumns = computed(() => {
         id="order-direction"
         v-model="settingsStore.timeProfitPeriod"
         :items="periodicBreakdownSelections"
-        name="radios-btn-default"
         size="sm"
-        :allow-empty="false"
         label-key="text"
         value-key="value"
-        @change="refreshSummary"
       ></USegmentedControl>
       <USegmentedControl
         v-model="settingsStore.timeProfitPreference"
         name="radios-btn-select"
         size="sm"
-        :allow-empty="false"
         label-key="text"
         value-key="value"
         :items="absRelSelections"
-        buttons
-        button-variant="outline-primary"
       >
       </USegmentedControl>
     </div>
