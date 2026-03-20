@@ -45,7 +45,7 @@ function toggleNight() {
   <UButton
     variant="link"
     title="Toggle Night Mode"
-    class="text-neutral-200"
+    color="neutral"
     :label="showText ? 'Toggle Night Mode' : ''"
     @click="toggleNight"
     icon="mdi:brightness-6"

@@ -215,7 +215,7 @@ const drawerVisible = ref(false);
           >
             {{ item.label }}
           </RouterLink>
-          <ThemeSelect />
+          <ThemeSelect class="text-neutral-200" />
         </div>
 
         <!-- Right aligned nav items -->
@@ -285,35 +285,33 @@ const drawerVisible = ref(false);
 
         <!-- Mobile menu -->
         <div v-if="isMobile" class="ms-auto flex">
-          <UDrawer v-model:open="drawerVisible" direction="right" :handle="false">
+          <USlideover
+            v-model:open="drawerVisible"
+            direction="right"
+            :close="{
+              color: 'primary',
+              variant: 'outline',
+              class: 'rounded-full',
+            }"
+          >
             <UButton class="text-neutral-300 text-xl" variant="ghost" icon="mdi:menu" />
-            <template #content>
-              <div class="flex flex-col gap-1 items-center p-4 bg-primary-500 h-full">
-                <div class="flex flex-row items-center w-full mb-2">
-                  <h3 class="text-xl font-bold w-full text-center text-neutral-200">
-                    Freqtrade UI
-                  </h3>
-                  <UButton
-                    class="float-right"
-                    variant="outline"
-                    icon="mdi:close"
-                    @click="drawerVisible = false"
-                  />
-                </div>
+            <template #title>
+              <h3 class="text-xl font-bold w-full text-center">Freqtrade UI</h3>
+            </template>
+            <template #body>
+              <div class="flex flex-col gap-1 items-center p-4 h-full">
                 <RouterLink
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
                   :to="item.to"
-                  class="text-neutral-200 p-2"
+                  class="p-2"
                   active-class="underline"
                   @click="drawerVisible = false"
                 >
                   {{ item.label }}
                 </RouterLink>
                 <USeparator class="my-2" />
-                <span class="text-neutral-200 text-center"
-                  >Version: {{ settingsStore.uiVersion }}</span
-                >
+                <span>Version: {{ settingsStore.uiVersion }}</span>
 
                 <div class="flex flex-row items-center justify-center">
                   <ThemeSelect show-text />
@@ -331,7 +329,7 @@ const drawerVisible = ref(false);
                 <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
               </div>
             </template>
-          </UDrawer>
+          </USlideover>
         </div>
       </div>
     </div>
