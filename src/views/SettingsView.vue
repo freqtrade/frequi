@@ -45,7 +45,7 @@ const resetDynamicLayout = () => {
             <Button severity="secondary" size="small" class="mb-0" @click="resetDynamicLayout"
               >Reset layout</Button
             >
-            <small class="block text-surface-600 dark:text-surface-400"
+            <small class="block text-surface-700 dark:text-surface-300"
               >Reset dynamic layouts to how they were.</small
             >
           </div>
@@ -62,7 +62,7 @@ const resetDynamicLayout = () => {
               size="small"
               class="w-full"
             />
-            <small class="text-surface-600 dark:text-surface-400"
+            <small class="text-surface-700 dark:text-surface-300"
               >Decide if open trades should be visualized</small
             >
           </div>
@@ -75,7 +75,7 @@ const resetDynamicLayout = () => {
               class="w-full"
               size="small"
             />
-            <small class="text-surface-600 dark:text-surface-400"
+            <small class="text-surface-700 dark:text-surface-300"
               >Select timezone (UTC is recommended as exchanges usually work in UTC)</small
             >
           </div>
@@ -118,7 +118,7 @@ const resetDynamicLayout = () => {
                 <label class="ml-2">Right</label>
               </div>
             </div>
-            <small class="text-surface-600 dark:text-surface-400">
+            <small class="text-surface-700 dark:text-surface-300">
               Should the scale be displayed on the right or left?
             </small>
           </div>
@@ -227,7 +227,7 @@ const resetDynamicLayout = () => {
               size="small"
               display="chip"
             />
-            <small class="text-surface-600 dark:text-surface-400"
+            <small class="text-surface-700 dark:text-surface-300"
               >Select which metrics should be shown on a per pair / tag basis.</small
             >
           </div>
