@@ -9,7 +9,6 @@ import {
   DatasetComponent,
   GridComponent,
   LegendComponent,
-  CalendarComponent,
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
@@ -21,7 +20,6 @@ import type { EChartsOption, MarkLineComponentOption } from 'echarts';
 
 use([
   LineChart,
-  CalendarComponent,
   CanvasRenderer,
   GridComponent,
   DatasetComponent,
@@ -257,7 +255,6 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
       },
     ],
   };
-  console.log('option', option);
   return option;
 });
 </script>
