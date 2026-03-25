@@ -47,7 +47,7 @@
     "@types/node": "^25.4.0",
     "@types/sortablejs": "^1.15.9",
     "@typescript-eslint/parser": "^8.57.0",
-    "@vitejs/plugin-vue": "^6.0.4",
+    "@vitejs/plugin-vue": "^6.0.5",
     "@vue/compiler-sfc": "3.5.30",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
