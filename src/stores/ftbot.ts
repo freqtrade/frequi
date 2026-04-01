@@ -405,10 +405,11 @@ export function createBotSubStore(botId: string, botName: string) {
         if (payload.pair && payload.timeframe) {
           this.historyStatus = LoadingStatus.loading;
           this.historyTakesLonger = false;
+          let loadingTimer: ReturnType<typeof setTimeout> | null = null;
           try {
             const settingsStore = useSettingsStore();
             let result: PairHistory | null = null;
-            const loadingTimer = setTimeout(() => (this.historyTakesLonger = true), 10000);
+            loadingTimer = setTimeout(() => (this.historyTakesLonger = true), 10000);
             const timeout = 2 * 60 * 1000; // in MS
             if (this.botFeatures.reducedPairCalls && settingsStore.useReducedPairCalls) {
               // Modern approach, allowing filtering of columns
@@ -425,7 +426,6 @@ export function createBotSubStore(botId: string, botName: string) {
               });
               result = data;
             }
-            clearTimeout(loadingTimer);
             this.history[`${payload.pair}__${payload.timeframe}`] = {
               pair: payload.pair,
               timeframe: payload.timeframe,
@@ -435,11 +435,14 @@ export function createBotSubStore(botId: string, botName: string) {
             this.historyStatus = LoadingStatus.success;
             return;
           } catch (err) {
-            console.error(err);
+            console.error('axios', err);
             this.historyStatus = LoadingStatus.error;
             if (axios.isAxiosError(err)) {
               console.error(err.response);
-              const errMsg = err.response?.data?.detail ?? 'Error fetching history';
+              const isTimeout = err.code === 'ECONNABORTED' || err.message?.includes('timeout');
+              const errMsg = isTimeout
+                ? 'Timeout exceeded'
+                : (err.response?.data?.detail ?? 'Error fetching history');
               showAlert(errMsg, 'error');
             }
 
@@ -447,6 +450,9 @@ export function createBotSubStore(botId: string, botName: string) {
               reject(err);
             });
           } finally {
+            if (loadingTimer) {
+              clearTimeout(loadingTimer);
+            }
             this.historyTakesLonger = false;
           }
         }
