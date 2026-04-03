@@ -94,7 +94,7 @@ export function createBotSubStore(botId: string, botName: string) {
         mixTagStats: [] as MixTagStats[],
         whitelist: [] as string[],
         blacklist: [] as string[],
-        profitAll: {} as AllProfitStats,
+        profitAll: undefined as AllProfitStats | undefined,
         botState: {} as BotState,
         balance: {} as BalanceInterface,
         dailyStats: {} as TimeSummaryReturnValue,
@@ -182,7 +182,7 @@ export function createBotSubStore(botId: string, botName: string) {
       botId: () => botId,
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
       activeLocks: (state) => state.currentLocks?.locks || [],
-      profit: (state): ProfitStats => state.profitAll.all,
+      profit: (state): ProfitStats | undefined => state.profitAll?.all,
     },
     actions: {
       botAdded() {
@@ -644,6 +644,9 @@ export function createBotSubStore(botId: string, botName: string) {
           }
           // Fallback to old profit endpoint
           const { data } = await api.get<ProfitStats>('/profit');
+          if (!this.profitAll) {
+            this.profitAll = {} as AllProfitStats;
+          }
           this.profitAll['all'] = data;
           return Promise.resolve(data);
         } catch (error) {
