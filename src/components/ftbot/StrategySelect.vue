@@ -12,7 +12,7 @@ const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const botStore = useBotStore();
 
-const strategyCode = computed((): string => botStore.activeBot.strategy?.code);
+const strategyCode = computed((): string => botStore.activeBot.strategy?.code ?? '');
 const locStrategy = computed({
   get() {
     return props.modelValue;

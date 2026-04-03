@@ -7,7 +7,7 @@ const chartStore = useChartConfigStore();
 
 const finalTimeframe = computed<string>(() => {
   return botStore.activeBot.isWebserverMode
-    ? chartStore.selectedTimeframe || botStore.activeBot.strategy.timeframe || ''
+    ? chartStore.selectedTimeframe || botStore.activeBot.strategy?.timeframe || ''
     : botStore.activeBot.timeframe;
 });
 

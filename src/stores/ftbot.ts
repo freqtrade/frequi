@@ -115,7 +115,7 @@ export function createBotSubStore(botId: string, botName: string) {
         freqaiModelList: [] as string[],
         hyperoptLossList: [] as HyperoptLossObj[],
         exchangeList: [] as Exchange[],
-        strategy: {} as StrategyResult,
+        strategy: {} as StrategyResult | undefined,
         pairlist: [] as string[],
         pairlistWithTimeframe: [] as PairIntervalTuple[],
         currentLocks: undefined as LockResponse | undefined,
@@ -467,7 +467,7 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const payload = {};
           if (this.isWebserverMode) {
-            if (!this.strategy.strategy) {
+            if (!this.strategy?.strategy) {
               return Promise.reject({ data: 'No strategy selected' });
             }
             payload['strategy'] = this.strategy.strategy;

@@ -176,7 +176,7 @@ function loadConfigFromString() {
 // }
 
 async function loadPlotConfigFromStrategy() {
-  if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy.strategy) {
+  if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy?.strategy) {
     showAlert(`No strategy selected, can't load plot config.`);
     return;
   }
