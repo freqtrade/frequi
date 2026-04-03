@@ -89,18 +89,18 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
   // Init bots here...
   initBots();
   const botStore = useBotStore();
   if (!to.meta?.allowAnonymous && !botStore.hasBots) {
     // Forward to login if login is required
-    next({
+    return {
       path: '/login',
       query: { redirect: to.fullPath },
-    });
+    };
   } else {
-    next();
+    return true;
   }
 });
 
