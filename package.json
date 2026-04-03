@@ -56,7 +56,7 @@
     "eslint": "^10.1.0",
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.4.0",
-    "happy-dom": "^20.8.8",
+    "happy-dom": "^20.8.9",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "tailwindcss-primeui": "^0.6.1",
@@ -70,6 +70,7 @@
     "vue-tsc": "^3.2.6"
   },
   "resolutions": {
+    "chokidar@4": "4.0.1",
     "brace-expansion@2": "^2.0.3",
     "minimatch@9": "^9.0.9"
   },
