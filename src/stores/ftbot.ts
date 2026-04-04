@@ -55,6 +55,7 @@ import type {
   Trade,
   TradeResponse,
   WalletHistory,
+  WalletHistoryPerBot,
   WhitelistResponse,
 } from '@/types';
 import { BacktestSteps, LoadingStatus, RunModes, TimeSummaryOptions } from '@/types';
@@ -1127,7 +1128,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.reject(err);
         }
       },
-      async getBacktestWalletChange() {
+      async getBacktestWalletChange(): Promise<WalletHistoryPerBot> {
         if (!this.botFeatures.walletChange) {
           return Promise.reject('Backtest wallet change not available');
         }
@@ -1138,7 +1139,10 @@ export function createBotSubStore(botId: string, botName: string) {
           const { data } = await api.get<WalletHistory>(
             `/backtest/history/${this.selectedBacktestMetadata.filename}/${this.selectedBacktestMetadata.strategyName}/wallet`,
           );
-          return data;
+          data['botName'] = `${this.selectedBacktestMetadata.strategyName} (Backtest)`;
+          return {
+            [data['botName']]: data,
+          };
         } catch (err) {
           console.error(err);
           return Promise.reject(err);

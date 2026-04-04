@@ -23,7 +23,7 @@ const { state: walletData } = useAsyncState(
     <TradesLogChart :trades="trades" class="grow chart-equal-height" />
     <TradeDurationChart class="grow chart-equal-height" :trades="trades" :show-title="true" />
     <CumProfitChart :trades="trades" class="grow chart-equal-height" :show-title="true" />
-    <WalletChangeChart
+    <WalletBalanceChart
       v-if="walletData"
       :wallet-data="walletData"
       class="grow chart-equal-height"
