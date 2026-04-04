@@ -42,3 +42,7 @@ export interface WalletHistory {
   /** assigned in frontend */
   botName?: string;
 }
+
+export interface WalletHistoryPerBot {
+  [botId: string]: WalletHistory;
+}

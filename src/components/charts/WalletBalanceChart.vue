@@ -15,7 +15,7 @@ import {
   MarkLineComponent,
 } from 'echarts/components';
 
-import type { WalletHistory } from '@/types';
+import type { WalletHistoryPerBot } from '@/types';
 import type { EChartsOption, MarkLineComponentOption } from 'echarts';
 
 use([
@@ -38,7 +38,7 @@ const SERIES_COLORS = ['#d931e5', '#1d4ed8', '#059669', '#b45309', '#be123c', '#
 
 const props = withDefaults(
   defineProps<{
-    walletData: Record<string, WalletHistory>;
+    walletData: WalletHistoryPerBot;
     showTitle?: boolean;
   }>(),
   {

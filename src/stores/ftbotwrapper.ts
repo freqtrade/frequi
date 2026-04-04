@@ -13,7 +13,7 @@ import type {
   MultiReloadTradePayload,
   ProfitStats,
   Trade,
-  WalletHistory,
+  WalletHistoryPerBot,
 } from '@/types';
 import { TimeSummaryOptions } from '@/types';
 import { createBotSubStore } from './ftbot';
@@ -147,8 +147,8 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       });
       return result;
     },
-    allBalanceHistory: (state): Record<string, WalletHistory> => {
-      const result: Record<string, WalletHistory> = {};
+    allBalanceHistory: (state): WalletHistoryPerBot => {
+      const result: WalletHistoryPerBot = {};
       Object.entries(state.botStores).forEach(([k, botStore]) => {
         if (botStore.balanceHistory) {
           result[k] = botStore.balanceHistory;
