@@ -692,6 +692,7 @@ export function createBotSubStore(botId: string, botName: string) {
         try {
           const { data } = await api.get<WalletHistory>('/historic_balance');
           this.balanceHistory = data;
+          this.balanceHistory['botName'] = this.botName;
         } catch (err) {
           console.error(err);
         }

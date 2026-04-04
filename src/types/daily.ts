@@ -39,4 +39,6 @@ export interface WalletHistory {
    * Only applies to live modes with an older database
    */
   capture_start_ts?: number;
+  /** assigned in frontend */
+  botName?: string;
 }

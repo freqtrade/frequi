@@ -34,10 +34,11 @@ use([
 const colorStore = useColorStore();
 // Define Column labels here to avoid typos
 const CHART_WALLET_BALANCE = 'Wallet balance';
+const SERIES_COLORS = ['#d931e5', '#1d4ed8', '#059669', '#b45309', '#be123c', '#7c3aed', '#0f766e'];
 
 const props = withDefaults(
   defineProps<{
-    walletData: WalletHistory | null;
+    walletData: Record<string, WalletHistory>;
     showTitle?: boolean;
   }>(),
   {
@@ -46,75 +47,63 @@ const props = withDefaults(
 );
 
 const settingsStore = useSettingsStore();
+const legendSelection = ref<Record<string, boolean>>({});
+
+const handleLegendSelectChanged = (params: { selected: Record<string, boolean> }) => {
+  legendSelection.value = params.selected;
+};
+
+const hasWalletData = computed(() =>
+  Object.values(props.walletData).some(
+    (history) => Array.isArray(history.data) && history.data.length > 0,
+  ),
+);
 
 const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
-  if (!props.walletData) {
+  const walletEntries = Object.entries(props.walletData).filter(
+    ([, history]) => Array.isArray(history?.data) && history.data.length > 0,
+  );
+
+  if (walletEntries.length === 0) {
     return {};
   }
-  const colDate = props.walletData.columns.findIndex((el) => el === '__date_ts');
-  const colTotal = props.walletData.columns.findIndex((el) => el === 'total_quote');
-  const starting_field = props.walletData.data[0];
-  if (!starting_field) {
-    return {};
-  }
-  const startingValue: number = starting_field[colTotal] as number;
-  const captureStartTs = props.walletData.capture_start_ts ?? 0;
-  const firstTimestamp = Number(starting_field[colDate]);
-  const shouldShowCaptureLine =
-    captureStartTs > 0 && Number.isFinite(firstTimestamp) && captureStartTs !== firstTimestamp;
+
+  const dataset: EChartsOption['dataset'] = [];
+  const series: EChartsOption['series'] = [];
+  const visualMap: EChartsOption['visualMap'] = [];
+  const legendData: string[] = [];
+  const selectedBotNames = walletEntries
+    .map(([botName]) => botName)
+    .filter((botName) => legendSelection.value[botName] ?? true);
+  const useProfitLossVisualMap = selectedBotNames.length === 1;
+  const selectedBotName = selectedBotNames[0];
   const captureLineColor = settingsStore.chartTheme === 'dark' ? '#c2c2c2' : '#4b5563';
-  const markLineData: MarkLineComponentOption['data'] = [
-    {
-      name: 'Starting balance',
-      yAxis: startingValue,
-      emphasis: { disabled: true },
-      label: {
-        show: true,
-        position: 'insideStartTop',
-        formatter: 'Starting balance',
-        color: captureLineColor,
-      },
-    },
-    {
-      name: 'Zero',
-      label: {
-        show: false,
-      },
-      emphasis: { disabled: true },
-      lineStyle: {
-        type: 'solid',
-      },
-      yAxis: 0,
-    },
-  ];
-  if (shouldShowCaptureLine) {
-    markLineData.push({
-      name: 'Capture start',
-      xAxis: captureStartTs,
-      emphasis: { disabled: true },
-      label: {
-        show: true,
-        position: 'insideEndTop',
-        formatter: 'Capture start',
-        color: captureLineColor,
-      },
-      lineStyle: {
-        type: 'dotted',
-        color: captureLineColor,
-        width: 1,
-      },
-    });
-  }
-  const option: EChartsOption = {
-    title: {
-      text: 'Wallet Balance',
-      left: 'center',
-      show: props.showTitle,
-    },
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    dataset: [
-      { source: props.walletData.data },
+
+  walletEntries.forEach(([botId, history], botIndex) => {
+    const botName = history.botName ?? botId;
+    const colDate = history.columns.findIndex((el) => el === '__date_ts');
+    const colTotal = history.columns.findIndex((el) => el === 'total_quote');
+    const startingField = history.data[0];
+    if (!startingField || colDate < 0 || colTotal < 0) {
+      return;
+    }
+
+    const startingValue = startingField[colTotal] as number;
+    const captureStartTs = history.capture_start_ts ?? 0;
+    const firstTimestamp = Number(startingField[colDate]);
+    const shouldShowCaptureLine =
+      captureStartTs > 0 && Number.isFinite(firstTimestamp) && captureStartTs !== firstTimestamp;
+
+    const sourceDatasetIndex = dataset.length;
+    const postCaptureDatasetIndex = sourceDatasetIndex + 1;
+    const preCaptureDatasetIndex = sourceDatasetIndex + 2;
+    const seriesStartIndex = series.length;
+    const seriesColor = SERIES_COLORS[botIndex % SERIES_COLORS.length];
+
+    dataset.push(
+      { source: history.data },
       {
+        fromDatasetIndex: sourceDatasetIndex,
         transform: {
           // post capture start
           type: 'filter',
@@ -122,13 +111,133 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
         },
       },
       {
+        fromDatasetIndex: sourceDatasetIndex,
         transform: {
-          // Pre capture start
+          // pre capture start
           type: 'filter',
           config: { dimension: colDate, lte: captureStartTs + 1 },
         },
       },
-    ],
+    );
+
+    const markLineData: MarkLineComponentOption['data'] = [
+      {
+        name: 'Starting balance',
+        yAxis: startingValue,
+        emphasis: { disabled: true },
+        label: {
+          show: true,
+          position: 'insideStartTop',
+          formatter: 'Starting balance',
+          color: captureLineColor,
+        },
+      },
+      {
+        name: 'Zero',
+        label: {
+          show: false,
+        },
+        emphasis: { disabled: true },
+        lineStyle: {
+          type: 'solid',
+        },
+        yAxis: 0,
+      },
+    ];
+
+    if (shouldShowCaptureLine) {
+      markLineData.push({
+        name: 'Capture start',
+        xAxis: captureStartTs,
+        emphasis: { disabled: true },
+        label: {
+          show: true,
+          position: 'insideEndTop',
+          formatter: `Capture start ${botName}`,
+          color: captureLineColor,
+        },
+        lineStyle: {
+          type: 'dotted',
+          color: captureLineColor,
+          width: 1,
+        },
+      });
+    }
+
+    legendData.push(botName);
+
+    if (useProfitLossVisualMap && selectedBotName === botName) {
+      visualMap.push({
+        show: false,
+        seriesIndex: [seriesStartIndex, seriesStartIndex + 1],
+        dimension: colTotal,
+        pieces: [
+          {
+            gte: startingValue,
+            color: colorStore.colorProfit,
+          },
+          {
+            gt: startingValue - 0.01,
+            lt: startingValue + 0.01,
+            color: colorStore.colorProfit,
+          },
+          {
+            lt: startingValue - 0.01,
+            color: colorStore.colorLoss,
+          },
+        ],
+      });
+    }
+
+    series.push(
+      {
+        type: 'line',
+        name: botName,
+        showSymbol: false,
+        color: seriesColor,
+        datasetIndex: postCaptureDatasetIndex,
+        encode: {
+          x: colDate,
+          y: colTotal,
+        },
+        lineStyle: {
+          type: 'solid',
+        },
+        markLine: {
+          symbol: 'none',
+          animation: false,
+          data: markLineData,
+        },
+      },
+      {
+        type: 'line',
+        name: botName,
+        showSymbol: false,
+        lineStyle: {
+          type: 'dashed',
+        },
+        color: seriesColor,
+        datasetIndex: preCaptureDatasetIndex,
+        encode: {
+          x: colDate,
+          y: colTotal,
+        },
+      },
+    );
+  });
+
+  if (series.length === 0) {
+    return {};
+  }
+
+  const option: EChartsOption = {
+    title: {
+      text: 'Wallet Balance',
+      left: 'center',
+      show: props.showTitle,
+    },
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    dataset,
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -138,20 +247,39 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
         },
       },
       formatter: (params) => {
-        const walletBalance = params[0].data[colTotal] as number;
-        return `${timestampms(params[0].data[colDate])}<br />${
-          params[0].marker
-        }Wallet balance: ${formatPrice(walletBalance, 3)}`;
+        const seriesParams = Array.isArray(params) ? params : [params];
+        if (seriesParams.length === 0) {
+          return '';
+        }
+
+        const firstPoint = seriesParams[0] as { data: unknown[]; encode?: { x?: number[] } };
+        const xIdx = firstPoint.encode?.x?.[0] ?? 0;
+        const label = `${timestampms(Number(firstPoint.data[xIdx]))}`;
+        const lines = seriesParams.map((seriesPoint) => {
+          const typedPoint = seriesPoint as {
+            marker: string;
+            seriesName: string;
+            data: unknown[];
+            encode?: { y?: number[] };
+          };
+          const yIdx = typedPoint.encode?.y?.[0] ?? 0;
+          const walletBalance = Number(typedPoint.data[yIdx]);
+          return `${typedPoint.marker}${typedPoint.seriesName}: ${formatPrice(walletBalance, 3)}`;
+        });
+
+        return `${label}<br />${lines.join('<br />')}`;
       },
     },
     grid: {
       ...echartsGridDefault,
     },
     legend: {
-      data: [CHART_WALLET_BALANCE],
+      data: legendData,
       right: '5%',
-      show: false,
-      selectedMode: false,
+      top: 0,
+      show: true,
+      selectedMode: true,
+      selected: legendSelection.value,
     },
     xAxis: [
       {
@@ -195,65 +323,8 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
         ...dataZoomPartial,
       },
     ],
-    visualMap: [
-      {
-        show: false,
-        dimension: 2,
-        pieces: [
-          {
-            gte: startingValue,
-            color: colorStore.colorProfit,
-          },
-          {
-            gt: startingValue - 0.01,
-            lt: startingValue + 0.01,
-            color: colorStore.colorProfit,
-          },
-          {
-            lt: startingValue - 0.01,
-            color: colorStore.colorLoss,
-          },
-        ],
-      },
-    ],
-    series: [
-      {
-        type: 'line',
-        name: CHART_WALLET_BALANCE,
-        showSymbol: false,
-        color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
-        datasetIndex: 1,
-        encode: {
-          x: colDate,
-          // open, close, low, high
-          y: colTotal,
-        },
-        lineStyle: {
-          type: 'solid',
-        },
-        markLine: {
-          symbol: 'none',
-          animation: false,
-          data: markLineData,
-        },
-      },
-      {
-        type: 'line',
-        name: CHART_WALLET_BALANCE,
-        showSymbol: false,
-        lineStyle: {
-          //
-          type: 'dashed',
-        },
-        color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
-        datasetIndex: 2,
-        encode: {
-          x: colDate,
-          // open, close, low, high
-          y: colTotal,
-        },
-      },
-    ],
+    visualMap,
+    series,
   };
   return option;
 });
@@ -261,9 +332,10 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
 
 <template>
   <ECharts
-    v-if="walletData?.data"
+    v-if="hasWalletData"
     :option="walletBalanceOptions"
     :theme="settingsStore.chartTheme"
+    @legendselectchanged="handleLegendSelectChanged"
     autoresize
   />
 </template>
