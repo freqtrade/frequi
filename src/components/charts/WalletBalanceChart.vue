@@ -34,7 +34,7 @@ use([
 const colorStore = useColorStore();
 // Define Column labels here to avoid typos
 const CHART_WALLET_BALANCE = 'Wallet balance';
-const SERIES_COLORS = ['#d931e5', '#1d4ed8', '#059669', '#b45309', '#be123c', '#7c3aed', '#0f766e'];
+const SERIES_COLORS = ['#1d4ed8', '#d931e5', '#059669', '#b45309', '#be123c', '#7c3aed', '#0f766e'];
 
 const props = withDefaults(
   defineProps<{
@@ -128,7 +128,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
         label: {
           show: true,
           position: 'insideStartTop',
-          formatter: 'Starting balance',
+          formatter: `Starting balance ${botName}`,
           color: captureLineColor,
         },
       },
