@@ -277,7 +277,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
       data: legendData,
       right: '5%',
       top: 0,
-      show: true,
+      show: walletEntries.length > 1,
       selectedMode: true,
       selected: legendSelection.value,
     },
