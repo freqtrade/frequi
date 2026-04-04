@@ -101,7 +101,7 @@ export function createBotSubStore(botId: string, botName: string) {
         dailyStats: {} as TimeSummaryReturnValue,
         weeklyStats: {} as TimeSummaryReturnValue,
         monthlyStats: {} as TimeSummaryReturnValue,
-        balanceHistory: {} as WalletHistory,
+        balanceHistory: undefined as WalletHistory | undefined,
         pairlistMethods: [] as string[],
         detailTradeId: null as number | null,
         selectedPair: '',
