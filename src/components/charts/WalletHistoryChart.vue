@@ -35,7 +35,7 @@ use([
 
 const colorStore = useColorStore();
 // Define Column labels here to avoid typos
-const CHART_WALLET_BALANCE = 'Wallet balance';
+const CHART_WALLET_HISTORY = 'Wallet history';
 const SERIES_COLORS = ['#1d4ed8', '#d931e5', '#059669', '#b45309', '#be123c', '#7c3aed', '#0f766e'];
 
 const props = withDefaults(
@@ -61,7 +61,7 @@ const hasWalletData = computed(() =>
   ),
 );
 
-const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
+const walletHistoryOptions: ComputedRef<EChartsOption> = computed(() => {
   const walletEntries = Object.entries(props.walletData).filter(
     ([, history]) => Array.isArray(history?.data) && history.data.length > 0,
   );
@@ -268,8 +268,8 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
             encode?: { y?: number[] };
           };
           const yIdx = typedPoint.encode?.y?.[0] ?? 0;
-          const walletBalance = Number(typedPoint.data[yIdx]);
-          return `${typedPoint.marker}${typedPoint.seriesName}: ${formatPrice(walletBalance, 3)}`;
+          const walletHistory = Number(typedPoint.data[yIdx]);
+          return `${typedPoint.marker}${typedPoint.seriesName}: ${formatPrice(walletHistory, 3)}`;
         });
 
         return `${label}<br />${lines.join('<br />')}`;
@@ -299,7 +299,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
     yAxis: [
       {
         type: 'value',
-        name: CHART_WALLET_BALANCE,
+        name: CHART_WALLET_HISTORY,
         splitLine: {
           show: false,
         },
@@ -339,7 +339,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
 <template>
   <ECharts
     v-if="hasWalletData"
-    :option="walletBalanceOptions"
+    :option="walletHistoryOptions"
     :theme="settingsStore.chartTheme"
     @legendselectchanged="handleLegendSelectChanged"
     autoresize

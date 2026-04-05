@@ -51,8 +51,8 @@ const gridLayoutCumChart = computed((): GridItemData => {
   return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
 });
 
-const gridLayoutWalletBalance = computed((): GridItemData => {
-  return findGridLayout(gridLayoutData.value, DashboardLayout.walletBalanceChart);
+const gridLayoutWalletHistory = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.walletHistoryChart);
 });
 
 const gridLayoutProfitDistribution = computed((): GridItemData => {
@@ -170,17 +170,17 @@ onMounted(async () => {
       </GridItem>
       <GridItem
         v-bind="gridItemProps"
-        :i="gridLayoutWalletBalance.i"
-        :x="gridLayoutWalletBalance.x"
-        :y="gridLayoutWalletBalance.y"
-        :w="gridLayoutWalletBalance.w"
-        :h="gridLayoutWalletBalance.h"
+        :i="gridLayoutWalletHistory.i"
+        :x="gridLayoutWalletHistory.x"
+        :y="gridLayoutWalletHistory.y"
+        :w="gridLayoutWalletHistory.w"
+        :h="gridLayoutWalletHistory.h"
         :min-w="3"
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Wallet Balance">
-          <WalletBalanceChart :wallet-data="botStore.allBalanceHistory" :show-title="false" />
+        <DraggableContainer header="Wallet History">
+          <WalletHistoryChart :wallet-data="botStore.allBalanceHistory" :show-title="false" />
         </DraggableContainer>
       </GridItem>
       <GridItem
