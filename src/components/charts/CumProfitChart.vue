@@ -57,8 +57,6 @@ const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 // const botList = ref<string[]>([]);
 
-const chart = ref<InstanceType<typeof ECharts>>();
-
 const openProfit = computed<number>(() => {
   return props.openTrades.reduce(
     (a, v) => a + (v['total_profit_abs'] ?? v[props.profitColumn] ?? 0),
@@ -265,7 +263,6 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
           type: 'inside',
           // xAxisIndex: [0],
           start: 0,
-
           end: 100,
         },
         {
@@ -309,7 +306,6 @@ watch(
 <template>
   <ECharts
     v-if="trades"
-    ref="chart"
     :option="cumProfitChartOptions"
     :theme="settingsStore.chartTheme"
     autoresize
