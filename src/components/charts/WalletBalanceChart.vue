@@ -13,6 +13,7 @@ import {
   TooltipComponent,
   VisualMapComponent,
   MarkLineComponent,
+  TransformComponent,
 } from 'echarts/components';
 
 import type { WalletHistoryPerBot } from '@/types';
@@ -21,14 +22,15 @@ import type { EChartsOption, MarkLineComponentOption } from 'echarts';
 use([
   LineChart,
   CanvasRenderer,
-  GridComponent,
   DatasetComponent,
   DataZoomComponent,
+  GridComponent,
   LegendComponent,
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
   MarkLineComponent,
+  TransformComponent,
 ]);
 
 const colorStore = useColorStore();
@@ -190,6 +192,9 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
     }
 
     series.push(
+      { type: 'line', data: [] },
+      // Empty, hidden series to stabilize data zoom
+      // https://github.com/apache/echarts/issues/21245
       {
         type: 'line',
         name: botName,
@@ -348,7 +353,8 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
 
 <style lang="css" scoped>
 .echarts {
-  min-height: 240px;
+  min-height: 150px;
   height: 100%;
+  width: 100%;
 }
 </style>
