@@ -74,11 +74,11 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
   const series: EChartsOption['series'] = [];
   const visualMap: EChartsOption['visualMap'] = [];
   const legendData: string[] = [];
-  const selectedBotNames = walletEntries
-    .map(([botName]) => botName)
-    .filter((botName) => legendSelection.value[botName] ?? true);
-  const useProfitLossVisualMap = selectedBotNames.length === 1;
-  const selectedBotName = selectedBotNames[0];
+  const selectedBotIds = walletEntries
+    .map(([botId]) => botId)
+    .filter((botId) => legendSelection.value[botId] ?? true);
+  const useProfitLossVisualMap = selectedBotIds.length === 1;
+  const selectedBotId = selectedBotIds[0];
   const captureLineColor = settingsStore.chartTheme === 'dark' ? '#c2c2c2' : '#4b5563';
 
   walletEntries.forEach(([botId, history], botIndex) => {
@@ -99,7 +99,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
     const sourceDatasetIndex = dataset.length;
     const postCaptureDatasetIndex = sourceDatasetIndex + 1;
     const preCaptureDatasetIndex = sourceDatasetIndex + 2;
-    const seriesStartIndex = series.length;
+    const seriesStartIndex = series.length + 1; // +1 to account for the dummy series inserted below
     const seriesColor = SERIES_COLORS[botIndex % SERIES_COLORS.length];
 
     dataset.push(
@@ -168,7 +168,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
 
     legendData.push(botName);
 
-    if (useProfitLossVisualMap && selectedBotName === botName) {
+    if (useProfitLossVisualMap && selectedBotId === botId) {
       visualMap.push({
         show: false,
         seriesIndex: [seriesStartIndex, seriesStartIndex + 1],
@@ -331,6 +331,7 @@ const walletBalanceOptions: ComputedRef<EChartsOption> = computed(() => {
     visualMap,
     series,
   };
+  console.log('Wallet balance chart options', option);
   return option;
 });
 </script>
