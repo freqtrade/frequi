@@ -66,7 +66,7 @@ onMounted(() => {
         <li
           v-for="(method, key) in botStore.activeBot.pairlistMethods"
           :key="key"
-          class="pair bg-white text-black align-middle border border-secondary"
+          class="pair bg-surface-50 dark:bg-surface-800 text-surface-900 dark:text-white align-middle border border-surface-300 dark:border-surface-700 shadow-sm"
         >
           {{ method }}
         </li>
@@ -80,7 +80,7 @@ onMounted(() => {
       <li
         v-for="(pair, key) in botStore.activeBot.whitelist"
         :key="key"
-        class="pair bg-white text-black align-middle border border-secondary"
+        class="pair bg-surface-50 dark:bg-surface-800 text-surface-900 dark:text-white align-middle border border-surface-300 dark:border-surface-700 shadow-sm"
       >
         {{ pair }}
       </li>
@@ -101,7 +101,10 @@ onMounted(() => {
           <Button
             ref="blacklist-add-btn"
             severity="secondary"
-            :class="botStore.activeBot.botFeatures.botBlacklistModify ? 'col-6' : ''"
+            :class="[
+              botStore.activeBot.botFeatures.botBlacklistModify ? 'col-6' : '',
+              '!text-surface-800 dark:!text-surface-200',
+            ]"
             size="small"
             @click="showPopover"
           >
@@ -113,6 +116,7 @@ onMounted(() => {
             v-if="botStore.activeBot.botFeatures.botBlacklistModify"
             size="small"
             severity="secondary"
+            class="!text-surface-800 dark:!text-surface-200"
             title="Select pairs to delete pairs from your blacklist."
             :disabled="blacklistSelect.length === 0"
             @click="deletePairs"
@@ -148,12 +152,20 @@ onMounted(() => {
       <li
         v-for="(pair, key) in botStore.activeBot.blacklist"
         :key="key"
-        class="pair bg-black text-white text-ellipsis overflow-hidden"
+        class="pair flex items-center justify-between gap-2 bg-surface-800 dark:bg-black text-white hover:bg-surface-200 hover:text-surface-900 dark:hover:bg-surface-800 dark:hover:text-white transition-all duration-200 max-w-full"
         :title="pair"
-        :class="blacklistSelect.indexOf(key) > -1 ? 'active' : ''"
+        :class="
+          blacklistSelect.indexOf(key) > -1
+            ? 'active !border-primary-500 shadow-sm shadow-primary-500/20 px-4 scale-[1.02]'
+            : ''
+        "
         @click="blacklistSelectClick(key)"
       >
-        <span class="check"><i-mdi-check-circle /></span>{{ pair }}
+        <span class="truncate font-medium">{{ pair }}</span>
+        <i-mdi-check-circle
+          v-if="blacklistSelect.indexOf(key) > -1"
+          class="text-primary-700 dark:text-primary-400 text-lg flex-shrink-0"
+        />
       </li>
     </ul>
     <p v-else>BlackList Unavailable. Please Login and make sure server is running.</p>
@@ -163,35 +175,25 @@ onMounted(() => {
 <style scoped>
 @reference '../../styles/tailwind.css';
 
-.check {
-  /* Hidden checkbox on blacklist selection */
-  color: #41b883;
-  opacity: 0;
-  /* border-radius: 50%; */
-  z-index: 5;
-  width: 1.3em;
-  height: 1.3em;
-  top: -0.3em;
-  left: -0.3em;
-  position: absolute;
-  transition: opacity 0.2s;
-}
-
-.pair.active .check {
-  opacity: 1;
-}
-
 .list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  grid-gap: 0.5rem;
-  padding-bottom: 1rem;
-}
-.wide {
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  @apply flex flex-wrap gap-2 pb-4;
 }
 
 .pair {
-  @apply p-2 border rounded cursor-pointer relative border-surface-500;
+  @apply px-3 py-1.5 border rounded-lg cursor-pointer relative border-surface-500 text-sm transition-colors;
+  max-width: 100%;
+}
+.pair.active {
+  @apply border-primary-500 bg-primary-100 dark:bg-primary-900/30 text-primary-900 dark:text-primary-100;
+  border-width: 2px !important;
+  background-color: var(--p-primary-100) !important;
+  color: var(--p-primary-900) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pair.active {
+    background-color: rgb(from var(--p-primary-900) r g b / 0.3) !important;
+    color: var(--p-primary-100) !important;
+  }
 }
 </style>

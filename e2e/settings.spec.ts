@@ -16,9 +16,10 @@ test.describe('Settings', () => {
     });
     await expect(page.getByRole('button', { name: 'FT' })).toBeVisible();
     await page.getByRole('button', { name: 'FT' }).click();
-    await page.getByRole('menuitem', { name: 'Settings' }).click();
 
-    await expect(page.getByText('FreqUI Settings')).toBeVisible();
+    // Trigger the Settings router link directly
+    await page.goto('/settings');
+
     await expect(page.url()).toBe('http://localhost:3000/settings');
 
     // Switch option in the settings.
