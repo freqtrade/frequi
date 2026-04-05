@@ -45,7 +45,7 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: DashboardLayout.allClosedTrades, x: 0, y: 12, w: 8, h: 6 },
   { i: DashboardLayout.walletBalanceChart, x: 8, y: 12, w: 4, h: 6 },
   { i: DashboardLayout.tradesLogChart, x: 0, y: 18, w: 8, h: 6 },
-  { i: DashboardLayout.profitDistributionChart, x: 8, y: 12, w: 4, h: 6 },
+  { i: DashboardLayout.profitDistributionChart, x: 8, y: 18, w: 4, h: 6 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT_SM: GridItemData[] = [
