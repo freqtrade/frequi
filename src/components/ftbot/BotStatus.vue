@@ -47,7 +47,7 @@ const botStore = useBotStore();
     <p>
       <strong>{{ botStore.activeBot.botState.dry_run ? 'Dry-Run' : 'Live' }}</strong>
     </p>
-    <Divider />
+    <USeparator class="my-2" />
     <p class="mb-4" v-if="botStore.activeBot.profit">
       Avg Profit {{ formatPercent(botStore.activeBot.profit.profit_all_ratio_mean) }} (&sum;
       {{ formatPercent(botStore.activeBot.profit.profit_all_ratio_sum) }}) in
@@ -91,15 +91,31 @@ const botStore = useBotStore();
         }}
       </span>
     </p>
-    <Panel
+    <UCollapsible
       v-if="botStore.activeBot.strategy?.params"
-      header="Strategy parameters"
+      title="Strategy parameters"
       toggleable
       collapsed
     >
-      <StrategyParameters :strategy="botStore.activeBot.strategy" />
-    </Panel>
-    <Divider />
+      <UButton
+        block
+        size="lg"
+        color="neutral"
+        variant="subtle"
+        class="group"
+        trailing-icon="mdi:chevron-down"
+        :ui="{
+          trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200',
+        }"
+        >Strategy parameters</UButton
+      >
+      <template #content>
+        <div class="border border-neutral-500 rounded-sm p-3">
+          <StrategyParameters :strategy="botStore.activeBot.strategy" />
+        </div>
+      </template>
+    </UCollapsible>
+    <USeparator class="my-5" />
     <BotProfit
       class="mx-1"
       v-if="botStore.activeBot.profitAll"

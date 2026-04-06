@@ -68,85 +68,64 @@ const handleForceExit = () => {
 
 <template>
   <div class="flex flex-row gap-1">
-    <Button
-      size="large"
-      severity="secondary"
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || isRunning"
       title="Start Trading"
+      icon="mdi:play"
       @click="botStore.activeBot.startBot()"
-    >
-      <template #icon>
-        <i-mdi-play />
-      </template>
-    </Button>
-    <Button
-      size="large"
-      severity="secondary"
+    />
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Stop Trading - Also stops handling open trades."
+      icon="mdi:stop"
       @click="handleStopBot()"
-    >
-      <template #icon>
-        <i-mdi-stop />
-      </template>
-    </Button>
-    <Button
-      size="large"
-      severity="secondary"
+    />
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Pause (StopBuy) - Freqtrade will continue to handle open trades, but will not enter new trades or increase position sizes."
+      icon="mdi:pause"
       @click="handleStopBuy()"
-    >
-      <template #icon>
-        <i-mdi-pause />
-      </template>
-    </Button>
-    <Button
-      size="large"
-      severity="secondary"
+    />
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading"
       title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
+      icon="mdi:reload"
       @click="handleReloadConfig()"
-    >
-      <template #icon>
-        <i-mdi-reload />
-      </template>
-    </Button>
-    <Button
-      severity="secondary"
-      size="large"
+    />
+    <UButton
+      color="neutral"
+      size="xl"
       :disabled="!botStore.activeBot.isTrading"
       title="Force exit all"
+      icon="mdi:close-box-multiple"
       @click="handleForceExit()"
-    >
-      <template #icon>
-        <i-mdi-close-box-multiple />
-      </template>
-    </Button>
-    <Button
+    />
+    <UButton
       v-if="botStore.activeBot.botState && botStore.activeBot.botState.force_entry_enable"
-      size="large"
-      severity="secondary"
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
+      icon="mdi:plus-box-multiple-outline"
       @click="forceEnter = true"
-    >
-      <template #icon>
-        <i-mdi-plus-box-multiple-outline />
-      </template>
-    </Button>
-    <Button
+    />
+    <UButton
       v-if="botStore.activeBot.isWebserverMode && false"
-      size="large"
-      severity="secondary"
+      size="xl"
+      color="neutral"
       :disabled="botStore.activeBot.isTrading"
       title="Start Trading mode"
+      icon="mdi:play"
       @click="botStore.activeBot.startTrade()"
-    >
-      <template #icon>
-        <i-mdi-play />
-      </template>
-    </Button>
+    />
     <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
     <MessageBox ref="msgBox" />
   </div>

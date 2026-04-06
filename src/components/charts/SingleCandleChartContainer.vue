@@ -154,7 +154,7 @@ watch(
         {{ pair || 'Pair' }}
       </div>
       <div class="w-4 h-4">
-        <UProgress v-if="true || isLoadingDataset" stroke-width="4" small label="Spinning" />
+        <UProgress v-if="isLoadingDataset" stroke-width="4" small label="Spinning" />
       </div>
     </div>
     <div class="h-full flex">
