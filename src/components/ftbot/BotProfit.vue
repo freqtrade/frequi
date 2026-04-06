@@ -163,27 +163,33 @@ const options = [
   <div>
     <div v-if="profitAll?.long && profitAll?.short" class="flex justify-between items-center">
       <span>Profits for</span>
-      <SelectButton
+      <USegmentedControl
         v-model="selectedOption"
-        :options="options"
-        option-label="text"
-        option-value="value"
+        :items="options"
+        label-key="text"
+        value-key="value"
         :allow-empty="false"
-        size="small"
-      ></SelectButton>
+      ></USegmentedControl>
       <span>Trades</span>
     </div>
 
-    <DataTable class="text-start" small borderless :value="profitItems">
-      <Column field="metric" header="Metric"></Column>
-      <Column field="value" header="Value">
-        <template #body="{ data }">
-          <DateTimeTZ v-if="data.isTs" :date="data.value" show-timezone />
-          <template v-else>
-            {{ data.value }}
-          </template>
+    <UTable
+      class="text-start"
+      :data="profitItems"
+      :columns="[
+        { accessorKey: 'metric', header: 'Metric' },
+        { accessorKey: 'value', header: 'Value' },
+      ]"
+      :ui="{
+        td: 'whitespace-normal',
+      }"
+    >
+      <template #value-cell="{ row }">
+        <DateTimeTZ v-if="row.original.isTs" :date="row.original.value" show-timezone />
+        <template v-else>
+          {{ row.original.value }}
         </template>
-      </Column>
-    </DataTable>
+      </template>
+    </UTable>
   </div>
 </template>

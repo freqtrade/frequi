@@ -91,12 +91,7 @@ const botStore = useBotStore();
         }}
       </span>
     </p>
-    <UCollapsible
-      v-if="botStore.activeBot.strategy?.params"
-      title="Strategy parameters"
-      toggleable
-      collapsed
-    >
+    <UCollapsible v-if="botStore.activeBot.strategy?.params" title="Strategy parameters">
       <UButton
         block
         size="lg"
