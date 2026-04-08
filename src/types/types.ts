@@ -150,6 +150,7 @@ export interface BotState {
   unfilledtimeout: UnfilledTimeout;
   order_types: OrderTypes;
   exchange: string;
+  demo_trading?: boolean;
   force_entry_enable?: boolean;
   max_open_trades: number;
   minimal_roi: object;

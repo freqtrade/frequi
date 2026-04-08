@@ -16,7 +16,11 @@ const botStore = useBotStore();
         {{ botStore.activeBot.botState.stake_currency }}
       </strong>
       on
-      <strong>{{ botStore.activeBot.botState.exchange }}</strong> in
+      <strong class="text-nowrap"
+        >{{ botStore.activeBot.botState.exchange }}
+        {{ botStore.activeBot.botState.demo_trading ? '(Demo)' : '' }}</strong
+      >
+      in
       <strong
         >{{ botStore.activeBot.botState.trading_mode || 'spot' }}
         {{
