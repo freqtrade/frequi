@@ -71,6 +71,7 @@
   },
   "resolutions": {
     "chokidar@4": "4.0.1",
+    "defu@6": "^6.1.6",
     "brace-expansion@2": "^2.0.3",
     "minimatch@9": "^9.0.9"
   },

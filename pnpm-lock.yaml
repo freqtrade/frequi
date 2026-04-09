@@ -6,6 +6,7 @@ settings:
 
 overrides:
   chokidar@4: 4.0.1
+  defu@6: ^6.1.6
   brace-expansion@2: ^2.0.3
   minimatch@9: ^9.0.9
 
@@ -1399,8 +1400,8 @@ packages:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
 
-  defu@6.1.4:
-    resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
+  defu@6.1.6:
+    resolution: {integrity: sha512-f8mefEW4WIVg4LckePx3mALjQSPQgFlg9U8yaPdlsbdYcHQyj9n2zL2LJEA52smeYxOvmd/nB7TpMtHGMTHcug==}
 
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
@@ -3624,7 +3625,7 @@ snapshots:
 
   deepmerge@4.3.1: {}
 
-  defu@6.1.4: {}
+  defu@6.1.6: {}
 
   delayed-stream@1.0.0: {}
 
@@ -4191,7 +4192,7 @@ snapshots:
 
   pinia-plugin-persistedstate@4.7.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.31(typescript@5.9.3))):
     dependencies:
-      defu: 6.1.4
+      defu: 6.1.6
     optionalDependencies:
       pinia: 3.0.4(typescript@5.9.3)(vue@3.5.31(typescript@5.9.3))
 
