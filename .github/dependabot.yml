@@ -5,10 +5,12 @@ updates:
     - "/"
     - "/.devcontainer/"
     - "/docker/"
-  cooldown:
-    default-days: 7
-    exclude:
-      - "vscode/devcontainers/typescript-node"
+  # Docker does not support cooldown at the moment.
+  # https://github.com/dependabot/dependabot-core/issues/14044
+  # cooldown:
+  #   default-days: 7
+  #   exclude:
+  #     - "vscode/devcontainers/typescript-node"
   schedule:
     interval: "cron"
     # Daily at 2 AM
