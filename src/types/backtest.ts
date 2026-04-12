@@ -195,6 +195,22 @@ export interface StrategyBacktestResult {
     low_ts: number;
     high_date: string;
     high_ts: number;
+
+    // Added later on
+    sharpe?: number;
+    sortino?: number;
+    calmar?: number;
+    max_drawdown_account?: number;
+    max_relative_drawdown?: number;
+    max_drawdown_abs?: number;
+    drawdown_start?: string;
+    drawdown_start_ts?: number;
+    drawdown_end?: string;
+    drawdown_end_ts?: number;
+    drawdown_duration?: string;
+    drawdown_duration_s?: number;
+    max_drawdown_low?: number;
+    max_drawdown_high?: number;
   };
 
   winner_holding_min?: string;
