@@ -17,7 +17,7 @@
     "test:e2e-firefox": "playwright test --project=firefox"
   },
   "dependencies": {
-    "@noction/vue-draggable-grid": "1.9.16",
+    "@noction/vue-draggable-grid": "1.11.0",
     "@primeuix/themes": "^2.0.3",
     "@vuepic/vue-datepicker": "^12.1.0",
     "@vueuse/core": "^14.2.1",
