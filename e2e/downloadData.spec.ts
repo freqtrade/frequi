@@ -58,7 +58,9 @@ test.describe('Download Data View', () => {
     page.goto('/');
 
     const downloadData = page.locator('a', { hasText: 'Download Data' });
-    await Promise.all([downloadData.click(), page.waitForResponse('**/exchanges')]);
+    const exchangesPromise = page.waitForResponse('**/exchanges');
+    await downloadData.click();
+    await exchangesPromise;
 
     await page.getByRole('button', { name: 'All USDT Pairs' }).click();
 
@@ -70,11 +72,10 @@ test.describe('Download Data View', () => {
     await page.keyboard.press('Tab');
     const startDownloadBtn = page.getByRole('button', { name: 'Start Download' });
 
-    await Promise.all([
-      startDownloadBtn.click(),
-      page.waitForResponse('**/download_data'),
-      page.waitForResponse('**/background/*'),
-    ]);
+    const downloadResponsePromise = page.waitForResponse('**/download_data');
+    const backgroundResponsePromise = page.waitForResponse('**/background/*');
+    await startDownloadBtn.click();
+    await Promise.all([downloadResponsePromise, backgroundResponsePromise]);
 
     const downloadDataRequest = await downloadDataPromise;
     const postData = downloadDataRequest.postDataJSON();
@@ -96,7 +97,9 @@ test.describe('Download Data View', () => {
     page.goto('/');
 
     const downloadData = page.locator('a', { hasText: 'Download Data' });
-    await Promise.all([downloadData.click(), page.waitForResponse('**/exchanges')]);
+    const exchangesPromiseSettings = page.waitForResponse('**/exchanges');
+    await downloadData.click();
+    await exchangesPromiseSettings;
 
     await page.getByRole('button', { name: 'All USDT Pairs' }).click();
     const daysInput = page.getByLabel('Days to download');
@@ -108,11 +111,10 @@ test.describe('Download Data View', () => {
     await page.getByText('Erase existing data').click();
     const startDownloadBtn = page.getByRole('button', { name: 'Start Download' });
 
-    await Promise.all([
-      startDownloadBtn.click(),
-      page.waitForResponse('**/download_data'),
-      page.waitForResponse('**/background/*'),
-    ]);
+    const downloadAdvResponsePromise = page.waitForResponse('**/download_data');
+    const backgroundAdvResponsePromise = page.waitForResponse('**/background/*');
+    await startDownloadBtn.click();
+    await Promise.all([downloadAdvResponsePromise, backgroundAdvResponsePromise]);
 
     const downloadDataRequest = await downloadDataPromise;
     const postData = downloadDataRequest.postDataJSON();
