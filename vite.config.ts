@@ -29,7 +29,8 @@ export default defineConfig({
       ui: {
         colors: {
           primary: 'brand',
-          neutral: 'slate',
+          // slate, gray or mist
+          neutral: 'mist',
         },
         alert: {
           defaultVariants: {
