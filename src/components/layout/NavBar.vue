@@ -269,7 +269,7 @@ const drawerVisible = ref(false);
           </div>
           <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
-            <UDropdownMenu :items="menuItems">
+            <UDropdownMenu :items="menuItems" size="lg">
               <UButton color="neutral" variant="ghost" size="sm" trailing-icon="mdi:chevron-down">
                 <div class="flex items-center">
                   <UAvatar size="sm"> FT </UAvatar>
@@ -294,9 +294,12 @@ const drawerVisible = ref(false);
               class: 'rounded-full',
             }"
           >
-            <UButton class="text-neutral-300 text-xl" variant="ghost" icon="mdi:menu" />
+            <UButton class="text-neutral-300 text-xl" size="xl" variant="ghost" icon="mdi:menu" />
             <template #title>
-              <h3 class="text-xl font-bold w-full text-center">Freqtrade UI</h3>
+              <div class="flex flex-row items-center gap-2">
+                <img class="h-8 align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
+                <h3 class="text-xl font-bold w-full text-center">Freqtrade UI</h3>
+              </div>
             </template>
             <template #body>
               <div class="flex flex-col gap-1 items-center p-4 h-full">
