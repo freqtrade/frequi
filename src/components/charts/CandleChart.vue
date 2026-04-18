@@ -368,9 +368,7 @@ function updateChart(initial = false) {
     Object.entries(props.plotConfig.main_plot).forEach(([key, value]) => {
       const col = columns.findIndex((el) => el === key);
       if (col > 0) {
-        if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          addLegend(key);
-        }
+        addLegend(key);
         if (Array.isArray(chartOptions.value?.series)) {
           chartOptions.value?.series.push(generateCandleSeries(colDate, col, key, value));
 
@@ -456,9 +454,7 @@ function updateChart(initial = false) {
         // entries per subplot
         const col = columns.findIndex((el) => el === sk);
         if (col > 0) {
-          if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-            addLegend(sk);
-          }
+          addLegend(sk);
           if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
             chartOptions.value.series.push(generateCandleSeries(colDate, col, sk, sv, plotIndex));
             if (sv.fill_to) {
@@ -509,10 +505,8 @@ function updateChart(initial = false) {
   }
 
   const nameTrades = 'Trades';
-  if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-    // Insert trades into legend, after the default columns
-    addLegend(nameTrades, 4);
-  }
+  // Insert trades into legend, after the default columns
+  addLegend(nameTrades, 4);
   const tradesSeries: ScatterSeriesOption = generateTradeSeries(
     nameTrades,
     props.theme,
