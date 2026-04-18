@@ -25,7 +25,7 @@ const resetDynamicLayout = () => {
 
 <template>
   <UCard class="mx-auto mt-3 p-4 max-w-4xl">
-    <template #header>FreqUI Settings</template>
+    <template #header><span class="text-2xl font-bold">FreqUI Settings</span></template>
     <div class="flex flex-col gap-4 text-start dark:text-neutral-300">
       <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
 
