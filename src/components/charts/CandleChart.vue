@@ -125,6 +125,22 @@ usePercentageTool(
   toRef(() => props.dataset.timeframe_ms),
 );
 
+function addLegend(name: string, position: number | undefined = undefined) {
+  if (
+    !chartOptions.value.legend ||
+    Array.isArray(chartOptions.value.legend) ||
+    !Array.isArray(chartOptions.value.legend.data)
+  )
+    return;
+  if (!chartOptions.value.legend.data.includes(name)) {
+    if (position !== undefined) {
+      chartOptions.value.legend.data.splice(position, 0, name);
+    } else {
+      chartOptions.value.legend.data.push(name);
+    }
+  }
+}
+
 function updateChart(initial = false) {
   if (!hasData.value) {
     return;
@@ -353,7 +369,7 @@ function updateChart(initial = false) {
       const col = columns.findIndex((el) => el === key);
       if (col > 0) {
         if (!Array.isArray(chartOptions.value?.legend) && chartOptions.value?.legend?.data) {
-          chartOptions.value.legend.data.push(key);
+          addLegend(key);
         }
         if (Array.isArray(chartOptions.value?.series)) {
           chartOptions.value?.series.push(generateCandleSeries(colDate, col, key, value));
@@ -441,7 +457,7 @@ function updateChart(initial = false) {
         const col = columns.findIndex((el) => el === sk);
         if (col > 0) {
           if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
-            chartOptions.value.legend.data.push(sk);
+            addLegend(sk);
           }
           if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
             chartOptions.value.series.push(generateCandleSeries(colDate, col, sk, sv, plotIndex));
@@ -495,7 +511,7 @@ function updateChart(initial = false) {
   const nameTrades = 'Trades';
   if (!Array.isArray(chartOptions.value.legend) && chartOptions.value.legend?.data) {
     // Insert trades into legend, after the default columns
-    chartOptions.value.legend.data.splice(4, 0, nameTrades);
+    addLegend(nameTrades, 4);
   }
   const tradesSeries: ScatterSeriesOption = generateTradeSeries(
     nameTrades,
