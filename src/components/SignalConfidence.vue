@@ -13,10 +13,10 @@ const CONFIDENCE_THRESHOLD = 0.55;
 
 const MOCK_SIGNALS: SignalRow[] = [
   { pair: 'BTC/USDT', signal: 0.82, confidence: 0.91, regimeGate: 'Bull' },
-  { pair: 'ETH/USDT', signal: 0.61, confidence: 0.74, regimeGate: 'Bull' },
-  { pair: 'SOL/USDT', signal: -0.34, confidence: 0.48, regimeGate: 'Bear' },
-  { pair: 'BNB/USDT', signal: 0.15, confidence: 0.57, regimeGate: 'Any' },
-  { pair: 'XRP/USDT', signal: -0.72, confidence: 0.38, regimeGate: 'Bear' },
+  { pair: 'ETH/USDT', signal: 0.61, confidence: 0.74, regimeGate: 'Accumulation' },
+  { pair: 'SOL/USDT', signal: -0.34, confidence: 0.48, regimeGate: 'Distribution' },
+  { pair: 'BNB/USDT', signal: 0.15, confidence: 0.57, regimeGate: 'Bear' },
+  { pair: 'XRP/USDT', signal: -0.72, confidence: 0.38, regimeGate: 'Panic' },
 ];
 
 const signals = ref<SignalRow[]>(MOCK_SIGNALS);
@@ -65,9 +65,15 @@ function confidencePct(confidence: number): string {
         </span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg">
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-72 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
-            Each pair gets a score from <strong class="text-red-400">−1</strong> (strong sell) to <strong class="text-green-400">+1</strong> (strong buy). <strong>Confidence</strong> measures how certain the model is. Pairs below the <strong>{{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}% threshold</strong> are <strong class="text-red-400">BLOCKED</strong> — no trade is sent regardless of signal direction.
+            Each pair gets a blended score from <strong class="text-red-400">−1</strong> (strong sell) to <strong class="text-green-400">+1</strong> (strong buy), combining a trend model with a mean-reversion signal weighted by the current regime. <strong>Confidence</strong> measures how certain the blend is. The <strong>Regime Gate</strong> further scales position size:<br /><br />
+            <span class="text-green-400 font-semibold">Bull / Strong Bull</span> — full size<br />
+            <span class="text-sky-400 font-semibold">Accumulation</span> — 75% size<br />
+            <span class="text-orange-400 font-semibold">Distribution</span> — 25% size<br />
+            <span class="text-red-400 font-semibold">Bear</span> — 50% size<br />
+            <span class="text-rose-300 font-semibold">Panic</span> — 10% size<br /><br />
+            Pairs below the <strong>{{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}% confidence threshold</strong> are <strong class="text-red-400">BLOCKED</strong> entirely.
           </div>
         </div>
       </div>
@@ -163,7 +169,7 @@ function confidencePct(confidence: number): string {
 
     <!-- Footer note -->
     <div class="text-xs text-surface-500 text-center">
-      Mock data &mdash; Phase 3 wires ML signal + regime gate backend
+      Mock data · trend + MR blend · Phase 3 wires live signal backend
     </div>
   </div>
 </template>
