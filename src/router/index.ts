@@ -78,6 +78,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/DownloadDataView.vue'),
   },
   {
+    path: '/regime',
+    name: 'Regime Detector',
+    component: () => import('@/components/RegimeDetector.vue'),
+  },
+  {
+    path: '/signals',
+    name: 'Signal Confidence',
+    component: () => import('@/components/SignalConfidence.vue'),
+  },
+  {
     path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404View.vue'),

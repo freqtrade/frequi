@@ -153,6 +153,18 @@ const navItems = ref([
         botStore.activeBot.botFeatures.pairlistConfig,
     ),
   },
+  {
+    label: 'Regime',
+    to: '/regime',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-chart-bell-curve',
+  },
+  {
+    label: 'Signals',
+    to: '/signals',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-brain',
+  },
 ]);
 
 const menuItems = computed<MenuItem[]>(() => [
