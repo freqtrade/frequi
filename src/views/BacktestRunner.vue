@@ -9,10 +9,18 @@ interface BacktestResult {
   winRate: number;
 }
 
+function toDateInput(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+const today = new Date();
+const twoYearsAgo = new Date(today);
+twoYearsAgo.setFullYear(today.getFullYear() - 2);
+
 const status = ref<Status>('idle');
 const selectedPair = ref('BTC/USDT');
-const startDate = ref('2022-01-01');
-const endDate = ref('2024-01-01');
+const startDate = ref(toDateInput(twoYearsAgo));
+const endDate = ref(toDateInput(today));
 const selectedStrategy = ref('Full System');
 const result = ref<BacktestResult | null>(null);
 
