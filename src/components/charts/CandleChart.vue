@@ -89,7 +89,7 @@ const sellSignalColor = '#faba25';
 const shortexitSignalColor = '#faba25';
 
 const candleChart = ref<InstanceType<typeof ECharts>>();
-const chartOptions = ref<EChartsOption>({});
+const chartOptions = shallowRef<EChartsOption>({});
 
 const strategy = computed(() => {
   return props.dataset ? props.dataset.strategy : '';
