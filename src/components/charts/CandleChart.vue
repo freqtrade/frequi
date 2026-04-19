@@ -265,6 +265,69 @@ function updateChart(initial = false) {
         },
       },
     ],
+    xAxis: [
+      {
+        type: 'time',
+        axisLine: { onZero: false },
+        axisTick: { show: true },
+        axisLabel: { show: true },
+        axisPointer: {
+          label: { show: false },
+        },
+        position: 'top',
+        splitLine: { show: false },
+        splitNumber: 20,
+        min: 'dataMin',
+        max: 'dataMax',
+      },
+      {
+        type: 'time',
+        gridIndex: 1,
+        axisLine: { onZero: false },
+        axisTick: { show: false },
+        axisLabel: { show: false },
+        axisPointer: {
+          label: { show: false },
+        },
+        splitLine: { show: false },
+        splitNumber: 20,
+        min: 'dataMin',
+        max: 'dataMax',
+      },
+    ],
+    yAxis: [
+      {
+        scale: true,
+        max: (value) => {
+          return formatDecimal(value.max + (value.max - value.min) * 0.02);
+        },
+        min: (value) => {
+          return formatDecimal(value.min - (value.max - value.min) * 0.04);
+        },
+        name: ' ', // Necessary to avoid layout shift
+        nameLocation: 'middle',
+        nameGap: NAMEGAP,
+        axisLine: { show: showAxisLine },
+        axisLabel: {
+          hideOverlap: true,
+          overflow: 'truncate',
+        },
+        position: props.labelSide,
+      },
+      {
+        scale: true,
+        gridIndex: 1,
+        splitNumber: 2,
+        name: 'volume',
+        nameLocation: 'middle',
+        position: props.labelSide,
+        nameGap: NAMEGAP,
+        axisLabel: { show: false },
+        axisLine: { show: showAxisLine },
+        axisTick: { show: false },
+        splitLine: { show: false },
+      },
+    ],
   };
 
   if (Array.isArray(options.series)) {
@@ -361,16 +424,13 @@ function updateChart(initial = false) {
     }
   }
 
-  // Merge this into original data
-  Object.assign(chartOptions.value, options);
-
   if ('main_plot' in props.plotConfig) {
     Object.entries(props.plotConfig.main_plot).forEach(([key, value]) => {
       const col = columns.findIndex((el) => el === key);
       if (col > 0) {
         addLegend(key);
-        if (Array.isArray(chartOptions.value?.series)) {
-          chartOptions.value?.series.push(generateCandleSeries(colDate, col, key, value));
+        if (Array.isArray(options.series)) {
+          options.series.push(generateCandleSeries(colDate, col, key, value));
 
           if (value.fill_to) {
             // Assign
@@ -382,13 +442,13 @@ function updateChart(initial = false) {
             };
             const areaSeries = generateAreaCandleSeries(colDate, fillCol, key, fillValue, 0);
 
-            const currentSeries = chartOptions.value.series[chartOptions.value.series.length - 1];
+            const currentSeries = options.series[options.series.length - 1];
             if (currentSeries) {
               currentSeries['stack'] = key;
             }
-            chartOptions.value.series.push(areaSeries);
+            options.series.push(areaSeries);
           }
-          chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
+          options.series.splice(options.series.length - 1, 0);
         }
       } else {
         console.log(`element ${key} for main plot not found in columns.`);
@@ -405,8 +465,8 @@ function updateChart(initial = false) {
       // Subplots are added from bottom to top - only the "bottom-most" plot stays at the bottom.
       // const currGridIdx = totalSubplots - plotIndex > 1 ? totalSubplots - plotIndex : plotIndex;
       const currGridIdx = plotIndex;
-      if (Array.isArray(chartOptions.value.yAxis) && chartOptions.value.yAxis.length <= plotIndex) {
-        chartOptions.value.yAxis.push({
+      if (Array.isArray(options.yAxis) && options.yAxis.length <= plotIndex) {
+        options.yAxis.push({
           scale: true,
           gridIndex: currGridIdx,
           name: key,
@@ -423,8 +483,8 @@ function updateChart(initial = false) {
           splitLine: { show: false },
         });
       }
-      if (Array.isArray(chartOptions.value.xAxis) && chartOptions.value.xAxis.length <= plotIndex) {
-        chartOptions.value.xAxis.push({
+      if (Array.isArray(options.xAxis) && options.xAxis.length <= plotIndex) {
+        options.xAxis.push({
           type: 'time',
           gridIndex: currGridIdx,
           axisLine: { onZero: false },
@@ -437,13 +497,13 @@ function updateChart(initial = false) {
           splitNumber: 20,
         });
       }
-      if (Array.isArray(chartOptions.value.dataZoom)) {
-        chartOptions.value.dataZoom.forEach((el) =>
+      if (Array.isArray(options.dataZoom)) {
+        options.dataZoom.forEach((el) =>
           el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
         );
       }
-      if (chartOptions.value.grid && Array.isArray(chartOptions.value.grid)) {
-        chartOptions.value.grid.push({
+      if (options.grid && Array.isArray(options.grid)) {
+        options.grid.push({
           left: MARGINLEFT,
           right: MARGINRIGHT,
           bottom: `${(subplotCount - plotIndex + 1) * SUBPLOTHEIGHT}%`,
@@ -455,8 +515,8 @@ function updateChart(initial = false) {
         const col = columns.findIndex((el) => el === sk);
         if (col > 0) {
           addLegend(sk);
-          if (chartOptions.value.series && Array.isArray(chartOptions.value.series)) {
-            chartOptions.value.series.push(generateCandleSeries(colDate, col, sk, sv, plotIndex));
+          if (options.series && Array.isArray(options.series)) {
+            options.series.push(generateCandleSeries(colDate, col, sk, sv, plotIndex));
             if (sv.fill_to) {
               // Assign
               const fillColKey = `${sk}-${sv.fill_to}`;
@@ -472,13 +532,13 @@ function updateChart(initial = false) {
                 fillValue,
                 plotIndex,
               );
-              const currentSeries = chartOptions.value.series[chartOptions.value.series.length - 1];
+              const currentSeries = options.series[options.series.length - 1];
               if (currentSeries) {
                 currentSeries['stack'] = sk;
               }
-              chartOptions.value.series.push(areaSeries);
+              options.series.push(areaSeries);
             }
-            chartOptions.value?.series.splice(chartOptions.value?.series.length - 1, 0);
+            options.series.splice(options.series.length - 1, 0);
           }
         } else {
           console.log(`element ${sk} was not found in the columns.`);
@@ -494,9 +554,9 @@ function updateChart(initial = false) {
   //   options.xAxis[options.xAxis.length - 1].axisLabel.show = true;
   //   options.xAxis[options.xAxis.length - 1].axisTick.show = true;
   // }
-  if (Array.isArray(chartOptions.value.grid)) {
+  if (Array.isArray(options.grid)) {
     // Last subplot is bottom
-    const localGrid = chartOptions.value.grid[chartOptions.value.grid.length - 1];
+    const localGrid = options.grid[options.grid.length - 1];
     if (localGrid) {
       // Last subplot is bottom
       localGrid.bottom = '50px';
@@ -513,10 +573,12 @@ function updateChart(initial = false) {
     props.dataset,
     filteredTrades.value,
   );
-  if (Array.isArray(chartOptions.value.series)) {
-    chartOptions.value.series.push(tradesSeries);
+  if (Array.isArray(options.series)) {
+    options.series.push(tradesSeries);
   }
 
+  // Merge this into original data
+  Object.assign(chartOptions.value, options);
   // console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
@@ -583,69 +645,7 @@ function initializeChartOptions() {
         backgroundColor: '#777',
       },
     },
-    xAxis: [
-      {
-        type: 'time',
-        axisLine: { onZero: false },
-        axisTick: { show: true },
-        axisLabel: { show: true },
-        axisPointer: {
-          label: { show: false },
-        },
-        position: 'top',
-        splitLine: { show: false },
-        splitNumber: 20,
-        min: 'dataMin',
-        max: 'dataMax',
-      },
-      {
-        type: 'time',
-        gridIndex: 1,
-        axisLine: { onZero: false },
-        axisTick: { show: false },
-        axisLabel: { show: false },
-        axisPointer: {
-          label: { show: false },
-        },
-        splitLine: { show: false },
-        splitNumber: 20,
-        min: 'dataMin',
-        max: 'dataMax',
-      },
-    ],
-    yAxis: [
-      {
-        scale: true,
-        max: (value) => {
-          return formatDecimal(value.max + (value.max - value.min) * 0.02);
-        },
-        min: (value) => {
-          return formatDecimal(value.min - (value.max - value.min) * 0.04);
-        },
-        name: ' ', // Necessary to avoid layout shift
-        nameLocation: 'middle',
-        nameGap: NAMEGAP,
-        axisLine: { show: showAxisLine },
-        axisLabel: {
-          hideOverlap: true,
-          overflow: 'truncate',
-        },
-        position: props.labelSide,
-      },
-      {
-        scale: true,
-        gridIndex: 1,
-        splitNumber: 2,
-        name: 'volume',
-        nameLocation: 'middle',
-        position: props.labelSide,
-        nameGap: NAMEGAP,
-        axisLabel: { show: false },
-        axisLine: { show: showAxisLine },
-        axisTick: { show: false },
-        splitLine: { show: false },
-      },
-    ],
+
     dataZoom: [
       // Start values are recalculated once the data is known
       {
