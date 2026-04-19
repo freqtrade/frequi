@@ -98,6 +98,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/PredictionMarkets.vue'),
   },
   {
+    path: '/backtest-runner',
+    name: 'Backtest Runner',
+    component: () => import('@/views/BacktestRunner.vue'),
+  },
+  {
+    path: '/learning',
+    name: 'Learning Loop',
+    component: () => import('@/views/LearningLoop.vue'),
+  },
+  {
     path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404View.vue'),

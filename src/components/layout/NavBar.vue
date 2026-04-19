@@ -143,6 +143,18 @@ const navItems = ref([
     icon: 'i-mdi-chart-timeline-variant',
   },
   {
+    label: 'Backtest',
+    to: '/backtest-runner',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-play-circle',
+  },
+  {
+    label: 'Learning',
+    to: '/learning',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-brain',
+  },
+  {
     label: 'Logs',
     to: '/logs',
     icon: 'i-mdi-format-list-bulleted',
