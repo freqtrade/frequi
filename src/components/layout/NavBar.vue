@@ -131,6 +131,12 @@ const navItems = ref([
     icon: 'i-mdi-brain',
   },
   {
+    label: 'Risk',
+    to: '/risk',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-shield-alert',
+  },
+  {
     label: 'Logs',
     to: '/logs',
     icon: 'i-mdi-format-list-bulleted',
