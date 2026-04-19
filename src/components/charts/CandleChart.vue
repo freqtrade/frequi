@@ -88,7 +88,7 @@ const shortEntrySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
 const shortexitSignalColor = '#faba25';
 
-const candleChart = ref<InstanceType<typeof ECharts>>();
+const candleChart = useTemplateRef<InstanceType<typeof ECharts>>('candleChart');
 const chartOptions = shallowRef<EChartsOption>({});
 
 const strategy = computed(() => {
