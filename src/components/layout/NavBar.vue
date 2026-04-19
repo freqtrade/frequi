@@ -102,21 +102,33 @@ watch(
 // Navigation items array
 const navItems = ref([
   {
-    label: 'Trade',
-    to: '/trade',
-    visible: computed(() => !botStore.canRunBacktest),
-    icon: 'i-mdi-currency-usd',
-  },
-  {
     label: 'Dashboard',
     to: '/dashboard',
     visible: computed(() => !botStore.canRunBacktest),
     icon: 'i-mdi-view-dashboard',
   },
   {
+    label: 'Trade',
+    to: '/trade',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-currency-usd',
+  },
+  {
     label: 'Chart',
     to: '/graph',
     icon: 'i-mdi-chart-line',
+  },
+  {
+    label: 'Regime',
+    to: '/regime',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-chart-bell-curve',
+  },
+  {
+    label: 'Signals',
+    to: '/signals',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-brain',
   },
   {
     label: 'Logs',
@@ -152,18 +164,6 @@ const navItems = ref([
         (botStore.activeBot?.isWebserverMode ?? false) &&
         botStore.activeBot.botFeatures.pairlistConfig,
     ),
-  },
-  {
-    label: 'Regime',
-    to: '/regime',
-    visible: computed(() => !botStore.canRunBacktest),
-    icon: 'i-mdi-chart-bell-curve',
-  },
-  {
-    label: 'Signals',
-    to: '/signals',
-    visible: computed(() => !botStore.canRunBacktest),
-    icon: 'i-mdi-brain',
   },
 ]);
 

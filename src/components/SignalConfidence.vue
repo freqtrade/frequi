@@ -59,9 +59,18 @@ function confidencePct(confidence: number): string {
   <div class="flex flex-col gap-3 p-4 rounded-lg border bg-surface-800 border-surface-600">
     <!-- Header -->
     <div class="flex items-center justify-between">
-      <span class="text-sm font-semibold uppercase tracking-widest text-surface-300">
-        Signal Confidence
-      </span>
+      <div class="flex items-center gap-1.5">
+        <span class="text-sm font-semibold uppercase tracking-widest text-surface-300">
+          Signal Confidence
+        </span>
+        <div class="group relative flex items-center">
+          <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg">
+            <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
+            Each pair gets a score from <strong class="text-red-400">−1</strong> (strong sell) to <strong class="text-green-400">+1</strong> (strong buy). <strong>Confidence</strong> measures how certain the model is. Pairs below the <strong>{{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}% threshold</strong> are <strong class="text-red-400">BLOCKED</strong> — no trade is sent regardless of signal direction.
+          </div>
+        </div>
+      </div>
       <span class="text-xs text-surface-500">threshold {{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}%</span>
     </div>
 

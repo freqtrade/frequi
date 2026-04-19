@@ -97,7 +97,16 @@ onBeforeUnmount(() => {
   <div class="flex flex-col gap-3 p-4 rounded-lg border bg-surface-800 border-surface-600 min-w-[260px]">
     <!-- Header -->
     <div class="flex items-center justify-between">
-      <span class="text-sm font-semibold uppercase tracking-widest text-surface-300">Regime</span>
+      <div class="flex items-center gap-1.5">
+        <span class="text-sm font-semibold uppercase tracking-widest text-surface-300">Regime</span>
+        <div class="group relative flex items-center">
+          <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg">
+            <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
+            A <strong>Hidden Markov Model</strong> (3-state GaussianHMM) classifies the current market into <strong class="text-green-400">Bull</strong>, <strong class="text-yellow-400">Sideways</strong>, or <strong class="text-red-400">Bear</strong> based on log returns and rolling volatility. Probability bars show model confidence. In Bear regime, position sizes are halved; uncertain states block new trades.
+          </div>
+        </div>
+      </div>
       <span class="text-xs text-surface-400">{{ formattedTime }}</span>
     </div>
 
