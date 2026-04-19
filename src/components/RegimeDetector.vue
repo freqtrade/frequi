@@ -80,14 +80,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3 p-4 rounded-lg border bg-surface-800 border-surface-600 min-w-[260px]">
+  <div class="flex flex-col gap-3 p-4 rounded-lg border bg-surface-800 border-surface-600 w-full sm:min-w-[260px]">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-1.5">
         <span class="text-sm font-semibold uppercase tracking-widest text-surface-300">Regime</span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-72 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             A <strong>6-state Hidden Markov Model</strong> classifies the market using 7 features: log returns, volatility, volume spikes, VWAP deviation, vol ratio, and momentum. Each state carries a specific risk posture:<br /><br />
             <span class="text-emerald-300 font-semibold">Strong Bull</span> / <span class="text-green-400 font-semibold">Bull</span> — full position size<br />
@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
       class="flex items-center justify-center gap-2 rounded-md border px-4 py-3"
       :class="regimeBg"
     >
-      <span class="text-2xl font-bold" :class="regimeColor">{{ regimeData.regime }}</span>
+      <span class="text-xl sm:text-2xl font-bold" :class="regimeColor">{{ regimeData.regime }}</span>
       <span class="text-sm font-medium text-surface-300">
         {{ (regimeData.dominant_prob * 100).toFixed(0) }}%
       </span>

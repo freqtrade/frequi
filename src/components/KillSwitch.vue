@@ -75,7 +75,7 @@ const statusColor = (s: CallStatus) =>
       <span class="text-sm font-semibold uppercase tracking-widest text-red-400">Kill Switch</span>
       <div class="group relative flex items-center">
         <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-        <div class="pointer-events-none absolute left-4 top-full mt-2 w-72 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+        <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
           <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
           Immediately halts all new buy orders on <strong>Freqtrade</strong> (stopbuy) and sends a stop signal to <strong>Hummingbot</strong>. Open positions are <strong>not</strong> force-closed — they remain until manually managed. Use when drawdown exceeds tolerance or an anomaly is detected.
         </div>
@@ -132,7 +132,7 @@ const statusColor = (s: CallStatus) =>
         </span>
       </div>
       <button
-        class="w-full rounded-md border border-surface-500 hover:border-surface-300 text-surface-400 text-xs py-1.5 transition-colors mt-1"
+        class="w-full rounded-md border border-surface-500 hover:border-surface-300 text-surface-400 text-xs py-2 transition-colors mt-1"
         @click="reset"
       >
         Reset

@@ -65,7 +65,7 @@ function confidencePct(confidence: number): string {
         </span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-72 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             Each pair gets a blended score from <strong class="text-red-400">−1</strong> (strong sell) to <strong class="text-green-400">+1</strong> (strong buy), combining a trend model with a mean-reversion signal weighted by the current regime. <strong>Confidence</strong> measures how certain the blend is. The <strong>Regime Gate</strong> further scales position size:<br /><br />
             <span class="text-green-400 font-semibold">Bull / Strong Bull</span> — full size<br />
@@ -86,9 +86,9 @@ function confidencePct(confidence: number): string {
         <thead>
           <tr class="text-left text-xs text-surface-400 border-b border-surface-600">
             <th class="pb-2 pr-4 font-medium">Pair</th>
-            <th class="pb-2 pr-4 font-medium">Signal</th>
+            <th class="pb-2 pr-4 font-medium hidden sm:table-cell">Signal</th>
             <th class="pb-2 pr-4 font-medium">Confidence</th>
-            <th class="pb-2 pr-4 font-medium">Regime Gate</th>
+            <th class="pb-2 pr-4 font-medium hidden sm:table-cell">Regime Gate</th>
             <th class="pb-2 font-medium">Status</th>
           </tr>
         </thead>
@@ -104,7 +104,7 @@ function confidencePct(confidence: number): string {
             </td>
 
             <!-- Signal bar -->
-            <td class="py-2 pr-4">
+            <td class="py-2 pr-4 hidden sm:table-cell">
               <div class="flex items-center gap-2">
                 <div class="relative h-3 w-24 rounded-full bg-surface-700 overflow-hidden flex-shrink-0">
                   <!-- centre marker -->
@@ -145,7 +145,7 @@ function confidencePct(confidence: number): string {
             </td>
 
             <!-- Regime Gate -->
-            <td class="py-2 pr-4">
+            <td class="py-2 pr-4 hidden sm:table-cell">
               <span class="text-xs text-surface-300">{{ row.regimeGate }}</span>
             </td>
 

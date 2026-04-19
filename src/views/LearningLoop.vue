@@ -39,15 +39,15 @@ async function runNow() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-6 min-h-screen bg-surface-900">
+  <div class="flex flex-col gap-4 p-4 md:p-6 min-h-screen bg-surface-900">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2">
         <i-mdi-brain class="text-2xl text-primary-400" />
         <h1 class="text-xl font-bold uppercase tracking-widest text-surface-200">Learning Loop</h1>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-6 top-full mt-2 w-80 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute left-6 top-full mt-2 w-64 md:w-80 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             Each night at 02:00 UTC, <strong>learning_loop.py</strong> reads yesterday's trade log from SQLite, sends it to <strong>Claude claude-opus-4-7</strong>, and appends the failure analysis + actionable improvements to <code>learning/failure_log.md</code>. The lessons shown here are parsed from that file.
           </div>
@@ -55,7 +55,7 @@ async function runNow() {
       </div>
       <button
         :disabled="runStatus === 'triggered'"
-        class="flex items-center gap-2 px-3 py-1.5 rounded border text-sm font-semibold transition-colors"
+        class="flex items-center gap-2 px-3 py-2 rounded border text-sm font-semibold transition-colors"
         :class="runStatus === 'triggered'
           ? 'bg-green-500/20 text-green-400 border-green-500/40 cursor-not-allowed'
           : 'bg-surface-700 hover:bg-surface-600 text-surface-300 border-surface-500'"

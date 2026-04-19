@@ -87,7 +87,7 @@ onBeforeUnmount(() => {
         <h1 class="text-lg font-bold text-surface-100 uppercase tracking-widest">Prediction Markets</h1>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-80 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 md:w-80 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             Scans <strong>Polymarket</strong> and <strong>Kalshi</strong> for active markets. A <strong>5-model LLM ensemble</strong> (Claude 30%, GPT-4o 20%, Grok 20%, Gemini 15%, DeepSeek 15%) estimates the true YES probability. When ensemble probability exceeds the market price by ≥5%, a <strong>quarter-Kelly position</strong> is sized — capped at <strong>$500 total exposure</strong> in paper mode.
           </div>
@@ -121,10 +121,10 @@ onBeforeUnmount(() => {
             <th class="px-4 py-3 font-medium">Source</th>
             <th class="px-4 py-3 font-medium">Market</th>
             <th class="px-4 py-3 font-medium text-right">YES Price</th>
-            <th class="px-4 py-3 font-medium text-right">Volume</th>
+            <th class="px-4 py-3 font-medium text-right hidden sm:table-cell">Volume</th>
             <th class="px-4 py-3 font-medium text-right">Ensemble</th>
             <th class="px-4 py-3 font-medium text-right">Edge</th>
-            <th class="px-4 py-3 font-medium text-right">Kelly $</th>
+            <th class="px-4 py-3 font-medium text-right hidden md:table-cell">Kelly $</th>
             <th class="px-4 py-3 font-medium text-center">Paper</th>
           </tr>
         </thead>
@@ -144,7 +144,7 @@ onBeforeUnmount(() => {
             </td>
             <td class="px-4 py-3 text-surface-100 max-w-xs">{{ m.title }}</td>
             <td class="px-4 py-3 text-right font-mono text-surface-300">{{ (m.yesPrice * 100).toFixed(0) }}¢</td>
-            <td class="px-4 py-3 text-right text-surface-400 text-xs">
+            <td class="px-4 py-3 text-right text-surface-400 text-xs hidden sm:table-cell">
               ${{ (m.volumeUsd / 1_000_000).toFixed(1) }}M
             </td>
             <td class="px-4 py-3 text-right font-mono font-semibold text-sky-400">
@@ -153,13 +153,13 @@ onBeforeUnmount(() => {
             <td class="px-4 py-3 text-right font-mono font-semibold" :class="edgeColor(m)">
               {{ edge(m) >= 0 ? '+' : '' }}{{ (edge(m) * 100).toFixed(1) }}%
             </td>
-            <td class="px-4 py-3 text-right font-mono" :class="m.kellyUsd > 0 ? 'text-green-400' : 'text-surface-500'">
+            <td class="px-4 py-3 text-right font-mono hidden md:table-cell" :class="m.kellyUsd > 0 ? 'text-green-400' : 'text-surface-500'">
               {{ m.kellyUsd > 0 ? `$${m.kellyUsd.toFixed(2)}` : '—' }}
             </td>
             <td class="px-4 py-3 text-center">
               <button
                 v-if="m.kellyUsd > 0"
-                class="rounded px-2 py-0.5 text-xs font-semibold border transition-colors"
+                class="rounded px-2 py-1 text-xs font-semibold border transition-colors"
                 :class="paperTrades.has(m.id)
                   ? 'bg-green-500/20 text-green-400 border-green-500/40 hover:bg-green-500/30'
                   : 'bg-surface-700 text-surface-300 border-surface-500 hover:border-surface-300'"

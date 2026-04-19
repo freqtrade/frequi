@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
           <span class="text-sm font-semibold text-surface-300 uppercase tracking-widest">Portfolio Drawdown</span>
           <div class="group relative flex items-center">
             <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-            <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+            <div class="pointer-events-none absolute left-4 top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
               <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
               Peak-to-trough drawdown from the portfolio high-water mark. <strong class="text-orange-400">Orange</strong> at 5% — reduce size. <strong class="text-red-400">Red + flashing</strong> at 7% — circuit breaker imminent. Auto-halt fires at <strong>8%</strong>.
             </div>
@@ -145,12 +145,12 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- Kelly sizes per pair -->
-    <div class="flex flex-col gap-2 p-4 rounded-lg border bg-surface-800 border-surface-600">
+    <div class="flex flex-col gap-2 p-4 rounded-lg border bg-surface-800 border-surface-600 overflow-x-auto">
       <div class="flex items-center gap-1.5 mb-1">
         <span class="text-sm font-semibold text-surface-300 uppercase tracking-widest">Kelly Sizes</span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             Recommended position size as a fraction of account, using <strong>quarter-Kelly</strong> formula calibrated from live trade history. Larger = higher historical edge on that pair.
           </div>
@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
         <span class="text-sm font-semibold text-surface-300 uppercase tracking-widest">95% VaR (1-day)</span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute left-4 top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             The worst expected 1-day loss at 95% confidence, estimated from the 5th percentile of historical returns. On 95 out of 100 days, losses should not exceed this figure.
           </div>

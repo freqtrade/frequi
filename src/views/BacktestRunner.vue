@@ -37,7 +37,7 @@ async function runBacktest() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-6 min-h-screen bg-surface-900">
+  <div class="flex flex-col gap-4 p-4 md:p-6 min-h-screen bg-surface-900">
     <!-- Header -->
     <div class="flex items-center gap-2">
       <i-mdi-play-circle class="text-2xl text-primary-400" />
@@ -51,21 +51,21 @@ async function runBacktest() {
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="flex flex-col gap-1">
           <label class="text-xs text-surface-400">Pair</label>
-          <select v-model="selectedPair" class="bg-surface-700 border border-surface-500 rounded px-2 py-1.5 text-sm text-surface-200">
+          <select v-model="selectedPair" class="bg-surface-700 border border-surface-500 rounded px-2 py-2 text-sm text-surface-200">
             <option v-for="p in pairs" :key="p" :value="p">{{ p }}</option>
           </select>
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-xs text-surface-400">Start Date</label>
-          <input v-model="startDate" type="date" class="bg-surface-700 border border-surface-500 rounded px-2 py-1.5 text-sm text-surface-200" />
+          <input v-model="startDate" type="date" class="bg-surface-700 border border-surface-500 rounded px-2 py-2 text-sm text-surface-200" />
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-xs text-surface-400">End Date</label>
-          <input v-model="endDate" type="date" class="bg-surface-700 border border-surface-500 rounded px-2 py-1.5 text-sm text-surface-200" />
+          <input v-model="endDate" type="date" class="bg-surface-700 border border-surface-500 rounded px-2 py-2 text-sm text-surface-200" />
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-xs text-surface-400">Strategy</label>
-          <select v-model="selectedStrategy" class="bg-surface-700 border border-surface-500 rounded px-2 py-1.5 text-sm text-surface-200">
+          <select v-model="selectedStrategy" class="bg-surface-700 border border-surface-500 rounded px-2 py-2 text-sm text-surface-200">
             <option v-for="s in strategies" :key="s" :value="s">{{ s }}</option>
           </select>
         </div>
@@ -96,7 +96,7 @@ async function runBacktest() {
     <!-- Results Panel -->
     <div v-if="result" class="rounded-lg border bg-surface-800 border-surface-600 p-4 flex flex-col gap-4">
       <h2 class="text-sm font-semibold uppercase tracking-wider text-surface-300">Results — {{ selectedPair }} · {{ selectedStrategy }}</h2>
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
         <div class="flex flex-col items-center gap-1 p-3 rounded bg-surface-700">
           <span class="text-xs text-surface-400">Total Return</span>
           <span class="text-xl font-bold text-green-400">+{{ result.totalReturn }}%</span>
