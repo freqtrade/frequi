@@ -24,7 +24,7 @@ const botStore = useBotStore();
       <strong
         >{{ botStore.activeBot.botState.trading_mode || 'spot' }}
         {{
-          botStore.activeBot.botState.trading_mode != 'spot'
+          botStore.activeBot.botState.trading_mode !== 'spot'
             ? (botStore.activeBot.botState.margin_mode ?? '')
             : ''
         }}</strong

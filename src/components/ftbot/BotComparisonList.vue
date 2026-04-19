@@ -157,7 +157,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     <Column header="Open Profit">
       <template #body="{ data }">
         <ProfitPill
-          v-if="data.profitOpen && data.botId != 'Summary'"
+          v-if="data.profitOpen && data.botId !== 'Summary'"
           :profit-ratio="(data as unknown as ComparisonTableItems).profitOpenRatio"
           :profit-abs="(data as unknown as ComparisonTableItems).profitOpen"
           :profit-desc="`Total Profit (Open and realized) ${formatPercent(
@@ -170,7 +170,7 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     <Column header="Closed Profit">
       <template #body="{ data }">
         <ProfitPill
-          v-if="data.profitClosed && data.botId != 'Summary'"
+          v-if="data.profitClosed && data.botId !== 'Summary'"
           :profit-ratio="(data as ComparisonTableItems).profitClosedRatio"
           :profit-abs="(data as ComparisonTableItems).profitClosed"
           :stake-currency="(data as unknown as ComparisonTableItems).stakeCurrency"

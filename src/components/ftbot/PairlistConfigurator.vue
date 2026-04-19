@@ -88,7 +88,7 @@ if (pairlistStore.whitelist.length > 0) {
         :key="pairlist.name"
         :class="{
           'no-drag text-gray-500 hover:cursor-default':
-            pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator,
+            pairlistStore.config.pairlists.length === 0 && !pairlist.is_pairlist_generator,
         }"
         class="pairlist flex text-start items-center py-2 px-3 hover:cursor-grab"
       >
@@ -100,7 +100,7 @@ if (pairlistStore.whitelist.length > 0) {
           severity="secondary"
           class="dark:text-white"
           variant="text"
-          :disabled="pairlistStore.config.pairlists.length == 0 && !pairlist.is_pairlist_generator"
+          :disabled="pairlistStore.config.pairlists.length === 0 && !pairlist.is_pairlist_generator"
           @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
         >
           <template #icon>

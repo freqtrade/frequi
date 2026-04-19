@@ -169,7 +169,7 @@ const singlePairSelection = computed({
         <Button
           title="Refresh chart"
           severity="secondary"
-          :disabled="botStore.activeBot.plotMultiPairs.length == 0"
+          :disabled="botStore.activeBot.plotMultiPairs.length === 0"
           size="small"
           @click="refresh"
         >
