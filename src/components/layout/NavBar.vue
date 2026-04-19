@@ -137,6 +137,12 @@ const navItems = ref([
     icon: 'i-mdi-shield-alert',
   },
   {
+    label: 'Markets',
+    to: '/markets',
+    visible: computed(() => !botStore.canRunBacktest),
+    icon: 'i-mdi-chart-timeline-variant',
+  },
+  {
     label: 'Logs',
     to: '/logs',
     icon: 'i-mdi-format-list-bulleted',

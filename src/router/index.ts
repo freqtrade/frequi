@@ -93,6 +93,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/RiskDashboard.vue'),
   },
   {
+    path: '/markets',
+    name: 'Prediction Markets',
+    component: () => import('@/views/PredictionMarkets.vue'),
+  },
+  {
     path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404View.vue'),
