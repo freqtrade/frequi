@@ -30,12 +30,39 @@ const MOCK_LESSONS: Lesson[] = [
 
 const lessons = ref<Lesson[]>(MOCK_LESSONS);
 const runStatus = ref<'idle' | 'triggered'>('idle');
+const isLive = ref(false);
+
+async function fetchLessons() {
+  try {
+    const res = await fetch('http://localhost:5000/api/v1/learning/lessons')
+    if (!res.ok) throw new Error()
+    const data = await res.json()
+    if (data.lessons && data.lessons.length > 0) {
+      lessons.value = data.lessons
+      isLive.value = true
+    } else {
+      lessons.value = MOCK_LESSONS
+      isLive.value = false
+    }
+  } catch {
+    lessons.value = MOCK_LESSONS
+    isLive.value = false
+  }
+}
 
 async function runNow() {
-  runStatus.value = 'triggered';
-  await new Promise(r => setTimeout(r, 2000));
-  runStatus.value = 'idle';
+  runStatus.value = 'triggered'
+  try {
+    await fetch('http://localhost:5000/api/v1/learning/run', { method: 'POST' })
+  } catch { /* API offline, still show triggered state */ }
+  await new Promise(r => setTimeout(r, 2000))
+  await fetchLessons()
+  runStatus.value = 'idle'
 }
+
+onMounted(() => {
+  fetchLessons()
+})
 </script>
 
 <template>
@@ -45,6 +72,10 @@ async function runNow() {
       <div class="flex items-center gap-2">
         <i-mdi-brain class="text-2xl text-primary-400" />
         <h1 class="text-xl font-bold uppercase tracking-widest text-surface-200">Learning Loop</h1>
+        <span class="text-xs px-1.5 py-0.5 rounded font-semibold"
+          :class="isLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'">
+          {{ isLive ? 'LIVE' : 'DEMO' }}
+        </span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
           <div class="pointer-events-none absolute left-6 top-full mt-2 w-64 md:w-80 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
@@ -86,7 +117,7 @@ async function runNow() {
 
     <!-- Footer -->
     <div class="text-xs text-surface-500 text-center mt-auto">
-      Mock data · Next scheduled run: Tonight at 02:00 UTC · failure_log.md
+      {{ isLive ? 'Live data from learning_loop.py' : 'Demo data · API unreachable' }} · Next scheduled run: Tonight at 02:00 UTC · failure_log.md
     </div>
   </div>
 </template>

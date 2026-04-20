@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// SignalConfidence.vue — Phase 2 mock component
-// Phase 3 will wire this to the real ML signal endpoint.
+// SignalConfidence.vue — Phase 3: wired to live ML signal endpoint.
 
 interface SignalRow {
   pair: string;
@@ -20,6 +19,8 @@ const MOCK_SIGNALS: SignalRow[] = [
 ];
 
 const signals = ref<SignalRow[]>(MOCK_SIGNALS);
+const isLive = ref(false);
+const lastUpdated = ref(new Date());
 
 // --- helpers ------------------------------------------------------------------
 
@@ -53,6 +54,25 @@ function signalLabel(signal: number): string {
 function confidencePct(confidence: number): string {
   return `${(confidence * 100).toFixed(0)}%`;
 }
+
+async function fetchSignals() {
+  try {
+    const res = await fetch('http://localhost:5000/api/v1/signals')
+    if (!res.ok) throw new Error()
+    const data = await res.json()
+    signals.value = data.signals
+    isLive.value = true
+    lastUpdated.value = new Date()
+  } catch {
+    signals.value = MOCK_SIGNALS
+    isLive.value = false
+  }
+}
+
+onMounted(() => {
+  fetchSignals()
+  setInterval(fetchSignals, 30000)
+})
 </script>
 
 <template>
@@ -77,7 +97,13 @@ function confidencePct(confidence: number): string {
           </div>
         </div>
       </div>
-      <span class="text-xs text-surface-500">threshold {{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}%</span>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs px-1.5 py-0.5 rounded font-semibold"
+          :class="isLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'">
+          {{ isLive ? 'LIVE' : 'DEMO' }}
+        </span>
+        <span class="text-xs text-surface-500">threshold {{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}%</span>
+      </div>
     </div>
 
     <!-- Table -->
@@ -169,7 +195,7 @@ function confidencePct(confidence: number): string {
 
     <!-- Footer note -->
     <div class="text-xs text-surface-500 text-center">
-      Mock data · trend + MR blend · Phase 3 wires live signal backend
+      {{ isLive ? 'Live signal backend · trend + MR blend' : 'Demo data · API unreachable · trend + MR blend' }}
     </div>
   </div>
 </template>

@@ -28,6 +28,7 @@ const MOCK_DATA: RiskData = {
 
 const riskData = ref<RiskData>(MOCK_DATA);
 const lastUpdated = ref<Date>(new Date());
+const isLive = ref(false);
 const pollInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
 const drawdownPct = computed(() => {
@@ -69,9 +70,33 @@ const formattedTime = computed(() =>
 );
 
 async function fetchRisk() {
-  // TODO Phase 3: replace with real API calls to risk_engine + Freqtrade balance
-  riskData.value = MOCK_DATA;
-  lastUpdated.value = new Date();
+  try {
+    const res = await fetch('http://localhost:5000/api/v1/risk')
+    if (!res.ok) throw new Error('API error')
+    const data = await res.json()
+    // Map API response to RiskData shape
+    riskData.value = {
+      portfolioValue: data.portfolioValue,
+      // API does not provide peakValue/dayStartValue; derive from drawdownPct
+      peakValue: data.drawdownPct < 0
+        ? data.portfolioValue / (1 + data.drawdownPct / 100)
+        : data.portfolioValue,
+      dayStartValue: data.portfolioValue, // API daily loss is via haltDailyLoss flag
+      var95: data.var95,
+      kellySizes: (data.kellyPairs ?? []).map((k: { pair: string; kelly: number }) => ({
+        pair: k.pair,
+        size: k.kelly,
+        winRate: 0.5, // not provided by API
+      })),
+    }
+    isLive.value = data.source === 'live'
+    lastUpdated.value = new Date()
+  } catch {
+    // fall back to mock silently
+    riskData.value = MOCK_DATA
+    isLive.value = false
+    lastUpdated.value = new Date()
+  }
 }
 
 onMounted(() => {
@@ -89,7 +114,13 @@ onBeforeUnmount(() => {
     <!-- Page header -->
     <div class="flex items-center justify-between">
       <h1 class="text-lg font-bold text-surface-100 uppercase tracking-widest">Risk Dashboard</h1>
-      <span class="text-xs text-surface-400">{{ formattedTime }}</span>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs px-1.5 py-0.5 rounded font-semibold"
+          :class="isLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'">
+          {{ isLive ? 'LIVE' : 'DEMO' }}
+        </span>
+        <span class="text-xs text-surface-400">{{ formattedTime }}</span>
+      </div>
     </div>
 
     <!-- Drawdown meter -->
@@ -191,7 +222,7 @@ onBeforeUnmount(() => {
 
     <!-- Footer -->
     <div class="text-xs text-surface-500 text-center">
-      Mock data · Phase 3 wires live risk_engine.py + portfolio API
+      {{ isLive ? 'Live risk_engine.py + portfolio API' : 'Demo data · API unreachable' }}
     </div>
   </div>
 </template>

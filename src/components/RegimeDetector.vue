@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// RegimeDetector.vue — Phase 2 mock component
-// Phase 3 will wire this to the real regime_engine.py REST endpoint.
+// RegimeDetector.vue — Phase 3: wired to live regime_engine.py REST endpoint.
 
 interface RegimeData {
   regime: 'Bull' | 'Strong Bull' | 'Accumulation' | 'Distribution' | 'Bear' | 'Panic';
@@ -16,6 +15,7 @@ const MOCK_DATA: RegimeData = {
 
 const regimeData = ref<RegimeData>(MOCK_DATA);
 const lastUpdated = ref<Date>(new Date());
+const isLive = ref(false);
 const pollInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
 // --- helpers ------------------------------------------------------------------
@@ -60,11 +60,23 @@ const formattedTime = computed(() =>
 // --- polling ------------------------------------------------------------------
 
 async function fetchRegime() {
-  // TODO (Phase 3): replace with real API call to /api/v1/regime
-  // const res = await fetch('/api/v1/regime');
-  // regimeData.value = await res.json();
-  regimeData.value = MOCK_DATA;
-  lastUpdated.value = new Date();
+  try {
+    const res = await fetch('http://localhost:5000/api/v1/regime')
+    if (!res.ok) throw new Error('API error')
+    const data = await res.json()
+    regimeData.value = {
+      regime: data.regime,
+      probs: data.probs,
+      dominant_prob: data.dominant_prob,
+    }
+    isLive.value = data.source === 'live'
+    lastUpdated.value = new Date()
+  } catch {
+    // fall back to mock silently
+    regimeData.value = MOCK_DATA
+    isLive.value = false
+    lastUpdated.value = new Date()
+  }
 }
 
 onMounted(() => {
@@ -98,7 +110,13 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
-      <span class="text-xs text-surface-400">{{ formattedTime }}</span>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs px-1.5 py-0.5 rounded font-semibold"
+          :class="isLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'">
+          {{ isLive ? 'LIVE' : 'DEMO' }}
+        </span>
+        <span class="text-xs text-surface-400">{{ formattedTime }}</span>
+      </div>
     </div>
 
     <!-- Current regime badge -->
@@ -130,7 +148,7 @@ onBeforeUnmount(() => {
 
     <!-- Footer note -->
     <div class="text-xs text-surface-500 text-center">
-      Polls every 5s &mdash; mock data · Phase 3 wires live regime_engine.py
+      Polls every 5s &mdash; {{ isLive ? 'live regime_engine.py' : 'demo data (API unreachable)' }}
     </div>
   </div>
 </template>
