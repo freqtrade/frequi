@@ -4,16 +4,12 @@ const pairlistStore = usePairlistConfigStore();
 </script>
 <template>
   <div class="flex flex-col sm:flex-row mb-2 gap-2">
-    <Button
+    <UButton
       title="Save configuration"
-      size="small"
-      severity="primary"
+      variant="solid"
+      icon="mdi:content-save"
       @click="pairlistStore.saveConfig(pairlistStore.config.name)"
-    >
-      <template #icon>
-        <i-mdi-content-save />
-      </template>
-    </Button>
+    />
     <EditValue
       v-model="pairlistStore.config.name"
       editable-name="config"
@@ -26,24 +22,22 @@ const pairlistStore = usePairlistConfigStore();
       @new="(name: string) => pairlistStore.newConfig(name)"
       @rename="(oldName: string, newName: string) => pairlistStore.saveConfig(newName)"
     >
-      <Select
+      <USelect
         v-model="pairlistStore.configName"
-        size="small"
         class="w-full text-start"
-        :options="pairlistStore.savedConfigs.map((c) => c.name)"
+        :items="pairlistStore.savedConfigs.map((c) => c.name)"
         @update:model-value="(config) => pairlistStore.selectOrCreateConfig(config as string)"
       />
     </EditValue>
-    <Button
+    <UButton
       title="Evaluate pairlist"
       :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
-      severity="primary"
       class="px-5"
-      size="small"
+      variant="solid"
       @click="pairlistStore.startPairlistEvaluation()"
     >
-      <ProgressSpinner v-if="pairlistStore.evaluating" class="h-5 w-5"></ProgressSpinner>
+      <UProgress v-if="pairlistStore.evaluating" class="h-5 w-5"></UProgress>
       <span v-else>Evaluate</span>
-    </Button>
+    </UButton>
   </div>
 </template>

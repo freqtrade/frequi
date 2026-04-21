@@ -19,9 +19,9 @@ function toggleVisible() {
 </script>
 
 <template>
-  <div class="shadow-sm rounded-sm border border-surface-300 dark:border-surface-700">
+  <div class="shadow-sm rounded-sm border border-neutral-300 dark:border-neutral-700">
     <div
-      class="flex w-full text-start items-center bg-surface-200 dark:bg-surface-700 p-2 border-b border-surface-300 dark:border-surface-600"
+      class="flex w-full text-start items-center bg-neutral-200 dark:bg-neutral-700 p-2 border-b border-neutral-300 dark:border-neutral-600"
     >
       <div class="flex grow items-center">
         <i-mdi-reorder-horizontal
@@ -62,7 +62,7 @@ function toggleVisible() {
       />
     </div>
     <Transition>
-      <div v-if="pairlist.showParameters" class="p-2">
+      <div v-if="pairlist.showParameters" class="p-2 space-y-1">
         <PairlistConfigParameter
           v-for="(parameter, key) in pairlist.params"
           :key="key"
