@@ -4,7 +4,7 @@ import type ECharts from 'vue-echarts';
 import type { Ref } from 'vue';
 
 export function usePercentageTool(
-  chartRef: Ref<InstanceType<typeof ECharts> | undefined>,
+  chartRef: Ref<InstanceType<typeof ECharts> | null>,
   theme: Ref<string>,
   timeframe_ms: Ref<number>,
 ) {
