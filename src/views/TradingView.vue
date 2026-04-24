@@ -7,15 +7,17 @@ const settingsStore = useSettingsStore();
 const currentBreakpoint = ref('');
 
 const breakpointChanged = (newBreakpoint: string) => {
-  // console.log('breakpoint:', newBreakpoint);
   currentBreakpoint.value = newBreakpoint;
 };
+
 const isResizableLayout = computed(() =>
   ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
 );
+
 const isLayoutLocked = computed(() => {
   return layoutStore.layoutLocked || !isResizableLayout.value;
 });
+
 const gridLayoutData = computed((): GridItemData[] => {
   if (isResizableLayout.value) {
     return layoutStore.tradingLayout;
@@ -89,57 +91,74 @@ function refreshOHLCV(pair: string, columns: string[]) {
           <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
+
           <Tabs value="0" scrollable lazy>
             <TabList>
               <Tab value="0" severity="secondary">
                 <div title="Pairs combined">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Pairs combined</span
-                  >
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
+                    Pairs combined
+                  </span>
                   <i-mdi-view-list v-else />
                 </div>
               </Tab>
+
               <Tab value="1" severity="secondary">
                 <div title="General">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
                   <i-mdi-information v-else />
                 </div>
               </Tab>
+
               <Tab value="2" severity="secondary">
                 <div title="Performance">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Performance</span
-                  >
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
+                    Performance
+                  </span>
                   <i-mdi-chart-line v-else />
                 </div>
               </Tab>
+
               <Tab value="3" severity="secondary">
                 <div title="Balance">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
                   <i-mdi-bank v-else />
                 </div>
               </Tab>
+
               <Tab value="4" severity="secondary">
                 <div title="Time Breakdown">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Time Breakdown</span
-                  >
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
+                    Time Breakdown
+                  </span>
                   <i-mdi-folder-clock v-else />
                 </div>
               </Tab>
+
               <Tab value="5" severity="secondary">
                 <div title="Pairlist">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
                   <i-mdi-format-list-group v-else />
                 </div>
               </Tab>
+
               <Tab value="6" severity="secondary">
                 <div title="Pair Locks">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
+                    Pair Locks
+                  </span>
                   <i-mdi-lock-alert v-else />
                 </div>
               </Tab>
+
+              <Tab value="7" severity="secondary">
+                <div title="Setups">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Setups</span>
+                  <i-mdi-radar v-else />
+                </div>
+              </Tab>
             </TabList>
+
             <TabPanels>
               <TabPanel value="0">
                 <PairSummary
@@ -148,15 +167,19 @@ function refreshOHLCV(pair: string, columns: string[]) {
                   :trades="botStore.activeBot.openTrades"
                 />
               </TabPanel>
+
               <TabPanel value="1">
                 <BotStatus />
               </TabPanel>
+
               <TabPanel value="2" lazy>
                 <BotPerformance />
               </TabPanel>
+
               <TabPanel value="3" lazy>
                 <BotBalance />
               </TabPanel>
+
               <TabPanel value="4" lazy>
                 <PeriodBreakdown />
               </TabPanel>
@@ -164,13 +187,19 @@ function refreshOHLCV(pair: string, columns: string[]) {
               <TabPanel value="5" lazy>
                 <PairListLive />
               </TabPanel>
+
               <TabPanel value="6" lazy>
                 <PairLockList />
+              </TabPanel>
+
+              <TabPanel value="7" lazy>
+                <TradeReadinessPanel :pairlist="botStore.activeBot.whitelist" />
               </TabPanel>
             </TabPanels>
           </Tabs>
         </DraggableContainer>
       </GridItem>
+
       <GridItem
         v-if="gridLayoutOpenTrades.h != 0"
         v-bind="gridItemProps"
@@ -191,6 +220,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
           />
         </DraggableContainer>
       </GridItem>
+
       <GridItem
         v-if="gridLayoutTradeHistory.h != 0"
         v-bind="gridItemProps"
@@ -211,6 +241,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
           />
         </DraggableContainer>
       </GridItem>
+
       <GridItem
         v-if="
           botStore.activeBot.detailTradeId &&
@@ -233,6 +264,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
           />
         </DraggableContainer>
       </GridItem>
+
       <GridItem
         v-if="gridLayoutTradeDetail.h != 0"
         v-bind="gridItemProps"
@@ -251,8 +283,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
             :timeframe="botStore.activeBot.timeframe"
             :trades="botStore.activeBot.allTrades"
             @refresh-data="refreshOHLCV"
-          >
-          </CandleChartContainer>
+          />
         </DraggableContainer>
       </GridItem>
     </template>

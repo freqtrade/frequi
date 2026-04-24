@@ -55,6 +55,37 @@ const SHORT_COLOR = '#AD00FF';
 const LONG_COLOR = '#0066FF';
 //const LONG_ADJUST_COLOR = '#00A9FF';
 
+function toTimestampMs(value: unknown): number | undefined {
+  if (value == null) return undefined;
+
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    // normalize seconds -> ms if needed
+    return value < 1e12 ? value * 1000 : value;
+  }
+
+  if (typeof value === 'string') {
+    const parsed = Date.parse(value);
+    return Number.isNaN(parsed) ? undefined : parsed;
+  }
+
+  return undefined;
+}
+
+function getTradeOpenTimestamp(trade: Trade): number | undefined {
+  return toTimestampMs(
+    trade.open_fill_timestamp ??
+      trade.open_timestamp ??
+      (trade as any).open_date_utc ??
+      (trade as any).open_date,
+  );
+}
+
+function getTradeCloseTimestamp(trade: Trade): number | undefined {
+  return toTimestampMs(
+    trade.close_timestamp ?? (trade as any).close_date_utc ?? (trade as any).close_date,
+  );
+}
+
 /** Return trade entries for charting */
 function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   const tradeData: (number | string)[][] = [];
@@ -66,81 +97,161 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   // 4: color
   // 5: label
   // 6: tooltip
+
   const stop_ts_adjusted = dataset.data_stop_ts + dataset.timeframe_ms;
+
   for (const trade of trades) {
-    // const trade: Trade = trades[i];
-    const openTs = trade.open_fill_timestamp ?? trade.open_timestamp;
-    if (
-      // Trade is open or closed and within timerange
-      roundTimeframe(dataset.timeframe_ms ?? 0, trade.open_timestamp) <= stop_ts_adjusted ||
-      !trade.close_timestamp ||
-      (trade.close_timestamp && trade.close_timestamp >= dataset.data_start_ts)
-    ) {
-      if (trade.orders) {
-        for (const [j, order] of trade.orders.entries()) {
-          const orderTs =
-            order.order_filled_timestamp ??
-            ('order_timestamp' in order ? order.order_timestamp : trade.open_timestamp);
-          const { quoteCurrency } = splitTradePair(trade.quote_currency ?? trade.pair ?? '');
+    const openTs = getTradeOpenTimestamp(trade);
+    const closeTs = getTradeCloseTimestamp(trade);
+    const { quoteCurrency } = splitTradePair(trade.quote_currency ?? trade.pair ?? '');
+
+    console.log('--- tradeChartData trade check ---');
+    console.log('trade pair:', trade.pair);
+    console.log('trade object:', trade);
+    console.log('resolved openTs:', openTs);
+    console.log('resolved closeTs:', closeTs);
+    console.log('open_rate:', trade.open_rate);
+    console.log('close_rate:', trade.close_rate);
+    console.log('is_open:', trade.is_open);
+    console.log('orders:', trade.orders);
+
+    const tradeTouchesVisibleRange =
+      (openTs !== undefined &&
+        roundTimeframe(dataset.timeframe_ms ?? 0, openTs) <= stop_ts_adjusted) ||
+      closeTs === undefined ||
+      (closeTs !== undefined && closeTs >= dataset.data_start_ts);
+
+    if (!tradeTouchesVisibleRange) {
+      continue;
+    }
+
+    const hasOrders = Array.isArray(trade.orders) && trade.orders.length > 0;
+
+    // ---------------------------------------------------------------------
+    // Preferred path: use detailed orders if available
+    // ---------------------------------------------------------------------
+    if (hasOrders) {
+      const orders = trade.orders!;
+
+      for (const [j, order] of orders.entries()) {
+        const orderTs = toTimestampMs(
+          order.order_filled_timestamp ??
+            ('order_timestamp' in order ? order.order_timestamp : undefined) ??
+            openTs,
+        );
+
+        if (orderTs === undefined) {
+          continue;
+        }
+
+        if (
+          roundTimeframe(dataset.timeframe_ms ?? 0, orderTs) > stop_ts_adjusted ||
+          orderTs <= dataset.data_start_ts
+        ) {
+          continue;
+        }
+
+        // Trade entry
+        if (j === 0) {
+          tradeData.push([
+            roundTimeframe(dataset.timeframe_ms ?? 0, orderTs),
+            order.safe_price ?? trade.open_rate,
+            OPEN_CLOSE_SYMBOL,
+            order.ft_order_side == 'sell' ? 180 : 0,
+            trade.is_short ? SHORT_COLOR : LONG_COLOR,
+            (trade.is_short ? 'Short' : 'Long') + (!order.order_filled_timestamp ? ' (open)' : ''),
+            buildToolTip(trade, order, 'entry', quoteCurrency),
+          ]);
+        }
+        // Trade exit
+        else if (j === orders.length - 1 && closeTs !== undefined && trade.is_open === false) {
           if (
-            orderTs &&
-            roundTimeframe(dataset.timeframe_ms ?? 0, orderTs) <= stop_ts_adjusted &&
-            orderTs > dataset.data_start_ts
+            roundTimeframe(dataset.timeframe_ms ?? 0, closeTs) <= stop_ts_adjusted &&
+            closeTs > dataset.data_start_ts
           ) {
-            // Trade entry
-            if (j === 0) {
-              tradeData.push([
-                roundTimeframe(dataset.timeframe_ms ?? 0, openTs),
-                order.safe_price,
-                OPEN_CLOSE_SYMBOL,
-                order.ft_order_side == 'sell' ? 180 : 0,
-                trade.is_short ? SHORT_COLOR : LONG_COLOR,
-                (trade.is_short ? 'Short' : 'Long') +
-                  (!order.order_filled_timestamp ? ' (open)' : ''),
-                buildToolTip(trade, order, 'entry', quoteCurrency),
-              ]);
-              // Trade exit
-            } else if (j === trade.orders.length - 1 && trade.close_timestamp) {
-              if (
-                roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp) <=
-                  stop_ts_adjusted &&
-                trade.close_timestamp > dataset.data_start_ts &&
-                trade.is_open === false
-              ) {
-                tradeData.push([
-                  roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp),
-                  order.safe_price,
-                  OPEN_CLOSE_SYMBOL,
-                  trade.is_short ? 0 : 180,
-                  trade.is_short ? SHORT_COLOR : LONG_COLOR,
-                  formatPercent(trade.profit_ratio, 2),
-                  buildToolTip(trade, order, 'exit', quoteCurrency),
-                ]);
-              }
-            }
-            // Position adjustment
-            else {
-              if (
-                order.ft_order_side !== 'stoploss' ||
-                ('filled' in order && (order.filled ?? 0) > 0)
-              ) {
-                // Don't show stoploss orders that haven't been filled
-                tradeData.push([
-                  roundTimeframe(dataset.timeframe_ms ?? 0, orderTs),
-                  order.safe_price,
-                  ADJUSTMENT_SYMBOL,
-                  order.ft_order_side == 'sell' ? 180 : 0,
-                  trade.is_short ? SHORT_COLOR : LONG_COLOR,
-                  '',
-                  buildAdjustmentToolTip(trade, order, quoteCurrency),
-                ]);
-              }
-            }
+            tradeData.push([
+              roundTimeframe(dataset.timeframe_ms ?? 0, closeTs),
+              order.safe_price ?? trade.close_rate ?? trade.open_rate,
+              OPEN_CLOSE_SYMBOL,
+              trade.is_short ? 0 : 180,
+              trade.is_short ? SHORT_COLOR : LONG_COLOR,
+              formatPercent(trade.profit_ratio, 2),
+              buildToolTip(trade, order, 'exit', quoteCurrency),
+            ]);
+          }
+        }
+        // Position adjustment
+        else {
+          if (
+            order.ft_order_side !== 'stoploss' ||
+            ('filled' in order && (order.filled ?? 0) > 0)
+          ) {
+            tradeData.push([
+              roundTimeframe(dataset.timeframe_ms ?? 0, orderTs),
+              order.safe_price,
+              ADJUSTMENT_SYMBOL,
+              order.ft_order_side == 'sell' ? 180 : 0,
+              trade.is_short ? SHORT_COLOR : LONG_COLOR,
+              '',
+              buildAdjustmentToolTip(trade, order, quoteCurrency),
+            ]);
           }
         }
       }
+
+      continue;
+    }
+
+    // ---------------------------------------------------------------------
+    // Fallback path: plot from trade-level fields when orders are unavailable
+    // ---------------------------------------------------------------------
+
+    if (
+      openTs !== undefined &&
+      roundTimeframe(dataset.timeframe_ms ?? 0, openTs) <= stop_ts_adjusted &&
+      openTs > dataset.data_start_ts
+    ) {
+      tradeData.push([
+        roundTimeframe(dataset.timeframe_ms ?? 0, openTs),
+        trade.open_rate,
+        OPEN_CLOSE_SYMBOL,
+        trade.is_short ? 180 : 0,
+        trade.is_short ? SHORT_COLOR : LONG_COLOR,
+        `${trade.is_short ? 'Short' : 'Long'}${trade.is_open ? ' (open)' : ''}`,
+        `${trade.is_short ? 'Short' : 'Long'} entry
+${formatPercent(trade.profit_ratio)}
+${trade.profit_abs ? '(' + formatPriceCurrency(trade.profit_abs, quoteCurrency) + ')' : ''}
+Enter-tag: ${trade.enter_tag ?? ''}
+Order Price: ${formatPriceCurrency(trade.open_rate, quoteCurrency)}`,
+      ]);
+    }
+
+    if (
+      trade.is_open === false &&
+      closeTs !== undefined &&
+      trade.close_rate &&
+      roundTimeframe(dataset.timeframe_ms ?? 0, closeTs) <= stop_ts_adjusted &&
+      closeTs > dataset.data_start_ts
+    ) {
+      tradeData.push([
+        roundTimeframe(dataset.timeframe_ms ?? 0, closeTs),
+        trade.close_rate,
+        OPEN_CLOSE_SYMBOL,
+        trade.is_short ? 0 : 180,
+        trade.is_short ? SHORT_COLOR : LONG_COLOR,
+        formatPercent(trade.profit_ratio, 2),
+        `${trade.is_short ? 'Short' : 'Long'} exit
+${formatPercent(trade.profit_ratio)}
+${trade.profit_abs ? '(' + formatPriceCurrency(trade.profit_abs, quoteCurrency) + ')' : ''}
+Enter-tag: ${trade.enter_tag ?? ''}
+Exit-Tag: ${trade.exit_reason ?? ''}
+Order Price: ${formatPriceCurrency(trade.close_rate, quoteCurrency)}`,
+      ]);
     }
   }
+
+  console.log('FINAL tradeData built for chart:', tradeData);
+
   return { tradeData };
 }
 

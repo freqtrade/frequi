@@ -4,92 +4,324 @@ interface Lesson {
   content: string;
 }
 
+interface LearningStateSummary {
+  total_closed_trades: number;
+  win_rate: number;
+  average_result_pct: number | null;
+}
+
+interface LearningStateAdjustments {
+  disable_fallback_entry: boolean;
+  min_score_for_fallback: number;
+  max_rsi_for_fallback: number;
+  require_liquidity_confirmation: boolean;
+  require_behavior_confirmation: boolean;
+}
+
+interface LearningState {
+  generated_at: string | null;
+  source: string;
+  summary: LearningStateSummary;
+  active_adjustments: LearningStateAdjustments;
+  reasons: string[];
+  recommendations: string[];
+  updated_at?: string;
+}
+
+const API_BASE = 'http://localhost:5001';
+
 const MOCK_LESSONS: Lesson[] = [
   {
     date: '2026-04-18',
-    content: `- BTC/USDT long entered during Distribution regime — regime gate should have blocked this; threshold needs tightening to 0.65
+    content: `### What went wrong
+- BTC/USDT long entered during Distribution regime — regime gate should have blocked this; threshold needs tightening to 0.65
 - 3 exits via stop_loss in Bear state within 2-hour window — consider pause on new longs when consecutive stops > 2
 - SOL/USDT signal confidence 0.51 slipped through — confidence floor needs hard enforcement at 0.55
-- Improvement: add consecutive-loss circuit breaker (3 losses → 30-min cooldown)`,
+
+### What to change tomorrow
+- Add consecutive-loss circuit breaker (3 losses → 30-min cooldown)`,
   },
   {
     date: '2026-04-17',
-    content: `- Mean reversion signal overrode trend in Bull regime — weight rebalance needed (current 0.70/0.30 trend/MR for Bull is correct, check aggregator)
+    content: `### What went wrong
+- Mean reversion signal overrode trend in Bull regime — weight rebalance needed (current 0.70/0.30 trend/MR for Bull is correct, check aggregator)
 - ETH/USDT VWAP deviation fade triggered 4x within 6 hours — possible whipsaw in ranging market; add minimum time between MR signals (15 min)
 - Funding rate z-score hit 2.3 but signal was only bearish -0.34 — investigate scaling
-- Improvement: add VWAP MR cooldown timer per pair`,
+
+### What to change tomorrow
+- Add VWAP MR cooldown timer per pair`,
   },
   {
     date: '2026-04-16',
-    content: `- Regime transition from Bull → Distribution mid-position not handled — position was held at full size
+    content: `### What went wrong
+- Regime transition from Bull → Distribution mid-position not handled — position was held at full size
 - Kelly sizer returned 0.0 on 3 pairs due to drawdown guard — this is correct behavior, log as INFO not WARNING
 - XRP/USDT panic regime correctly blocked all entries — regime gate working as intended
-- Improvement: on regime downgrade (Bull→Distribution), reduce position size by 50% within next 5-min candle`,
+
+### What to change tomorrow
+- On regime downgrade (Bull→Distribution), reduce position size by 50% within next 5-min candle`,
   },
 ];
 
+const DEFAULT_STATE: LearningState = {
+  generated_at: null,
+  source: 'learning_loop',
+  summary: {
+    total_closed_trades: 0,
+    win_rate: 0,
+    average_result_pct: null,
+  },
+  active_adjustments: {
+    disable_fallback_entry: false,
+    min_score_for_fallback: 3,
+    max_rsi_for_fallback: 70,
+    require_liquidity_confirmation: false,
+    require_behavior_confirmation: false,
+  },
+  reasons: [],
+  recommendations: [],
+};
+
 const lessons = ref<Lesson[]>(MOCK_LESSONS);
+const learningState = ref<LearningState>(DEFAULT_STATE);
 const runStatus = ref<'idle' | 'triggered'>('idle');
 const isLive = ref(false);
+const stateLive = ref(false);
+let learningPollTimer: number | undefined;
+
+const stateCards = computed(() => [
+  {
+    label: 'Closed trades',
+    value: learningState.value.summary.total_closed_trades,
+  },
+  {
+    label: 'Win rate',
+    value: `${learningState.value.summary.win_rate}%`,
+  },
+  {
+    label: 'Average result',
+    value:
+      learningState.value.summary.average_result_pct === null
+        ? 'n/a'
+        : `${learningState.value.summary.average_result_pct}%`,
+  },
+]);
+
+function parseLesson(content: string): Record<string, string[]> {
+  const sections: Record<string, string[]> = {};
+  let currentSection = 'General';
+  sections[currentSection] = [];
+
+  content.split('\n').forEach((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      return;
+    }
+
+    if (trimmed.startsWith('###')) {
+      currentSection = trimmed.replace(/^###\s*/, '').trim() || 'General';
+      if (!sections[currentSection]) {
+        sections[currentSection] = [];
+      }
+      return;
+    }
+
+    if (!sections[currentSection]) {
+      sections[currentSection] = [];
+    }
+
+    sections[currentSection].push(trimmed);
+  });
+
+  return sections;
+}
+
+function formatSectionLine(line: string): string {
+  return line.replace(/^-\s*/, '').trim();
+}
+
+const riskBanner = computed(() => {
+  const summary = learningState.value.summary;
+  const adjustments = learningState.value.active_adjustments;
+  const reasons = new Set(learningState.value.reasons);
+
+  const totalClosed = summary.total_closed_trades ?? 0;
+  const winRate = summary.win_rate ?? 0;
+  const avgResult = summary.average_result_pct;
+
+  let marketCondition: 'BAD' | 'NEUTRAL' | 'GOOD' = 'NEUTRAL';
+  let confidence: 'LOW' | 'MEDIUM' | 'HIGH' = 'MEDIUM';
+  let suggestedRisk = 0.5;
+  let reason = 'Mixed evidence. Stay controlled while more trades are collected.';
+
+  const severeReasons = [
+    'fallback_entry_no_edge',
+    'no_liquidity_confirmation',
+    'no_behavior_confirmation',
+    'structure_failed_after_entry',
+    'breakout_failed_after_entry',
+  ];
+  const severeReasonCount = severeReasons.filter((r) => reasons.has(r)).length;
+
+  if (
+    totalClosed >= 3 &&
+    (winRate < 35 ||
+      (avgResult !== null && avgResult < 0) ||
+      adjustments.disable_fallback_entry ||
+      severeReasonCount >= 2)
+  ) {
+    marketCondition = 'BAD';
+    confidence = 'LOW';
+    suggestedRisk = 0.25;
+    reason = 'Recent closed trades show weak edge. Keep risk defensive until quality improves.';
+  } else if (
+    totalClosed >= 5 &&
+    winRate >= 55 &&
+    (avgResult === null || avgResult > 0) &&
+    !adjustments.disable_fallback_entry &&
+    !adjustments.require_liquidity_confirmation &&
+    !adjustments.require_behavior_confirmation
+  ) {
+    marketCondition = 'GOOD';
+    confidence = 'HIGH';
+    suggestedRisk = 1.0;
+    reason = 'Recent performance is healthy and no major learning penalties are active.';
+  } else {
+    marketCondition = 'NEUTRAL';
+    confidence = totalClosed >= 3 ? 'MEDIUM' : 'LOW';
+    suggestedRisk = 0.5;
+    reason = 'Conditions are not strong enough for full risk, but not weak enough for max defense.';
+  }
+
+  return {
+    marketCondition,
+    confidence,
+    suggestedRiskLabel: `${suggestedRisk.toFixed(2).replace(/\.00$/, '')}x`,
+    suggestedRisk,
+    reason,
+  };
+});
 
 async function fetchLessons() {
   try {
-    const res = await fetch('http://localhost:5000/api/v1/learning/lessons')
-    if (!res.ok) throw new Error()
-    const data = await res.json()
+    const res = await fetch(`${API_BASE}/api/v1/learning/lessons`);
+    if (!res.ok) {
+      throw new Error('Failed to fetch lessons');
+    }
+
+    const data = await res.json();
+
     if (data.lessons && data.lessons.length > 0) {
-      lessons.value = data.lessons
-      isLive.value = true
+      lessons.value = data.lessons;
+      isLive.value = true;
     } else {
-      lessons.value = MOCK_LESSONS
-      isLive.value = false
+      lessons.value = MOCK_LESSONS;
+      isLive.value = false;
     }
   } catch {
-    lessons.value = MOCK_LESSONS
-    isLive.value = false
+    lessons.value = MOCK_LESSONS;
+    isLive.value = false;
   }
 }
 
-async function runNow() {
-  runStatus.value = 'triggered'
+async function fetchLearningState() {
   try {
-    await fetch('http://localhost:5000/api/v1/learning/run', { method: 'POST' })
-  } catch { /* API offline, still show triggered state */ }
-  await new Promise(r => setTimeout(r, 2000))
-  await fetchLessons()
-  runStatus.value = 'idle'
+    const res = await fetch(`${API_BASE}/api/v1/learning/state`);
+    if (!res.ok) {
+      throw new Error('Failed to fetch learning state');
+    }
+
+    const data = await res.json();
+    learningState.value = {
+      ...DEFAULT_STATE,
+      ...data,
+      summary: {
+        ...DEFAULT_STATE.summary,
+        ...(data.summary ?? {}),
+      },
+      active_adjustments: {
+        ...DEFAULT_STATE.active_adjustments,
+        ...(data.active_adjustments ?? {}),
+      },
+      reasons: Array.isArray(data.reasons) ? data.reasons : [],
+      recommendations: Array.isArray(data.recommendations) ? data.recommendations : [],
+    };
+    stateLive.value = true;
+  } catch {
+    learningState.value = DEFAULT_STATE;
+    stateLive.value = false;
+  }
+}
+
+async function fetchAllLearningData() {
+  await Promise.all([fetchLessons(), fetchLearningState()]);
+}
+
+async function runNow() {
+  runStatus.value = 'triggered';
+  try {
+    await fetch(`${API_BASE}/api/v1/learning/run`, { method: 'POST' });
+  } catch {
+    // Keep UI responsive even if API call fails.
+  }
+  await new Promise((r) => setTimeout(r, 2000));
+  await fetchAllLearningData();
+  runStatus.value = 'idle';
 }
 
 onMounted(() => {
-  fetchLessons()
-})
+  fetchAllLearningData();
+
+  learningPollTimer = window.setInterval(() => {
+    fetchAllLearningData();
+  }, 30000);
+});
+
+onUnmounted(() => {
+  if (learningPollTimer) {
+    clearInterval(learningPollTimer);
+  }
+});
 </script>
 
 <template>
   <div class="flex flex-col gap-4 p-4 md:p-6 min-h-screen bg-surface-900">
-    <!-- Header -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2">
         <i-mdi-brain class="text-2xl text-primary-400" />
         <h1 class="text-xl font-bold uppercase tracking-widest text-surface-200">Learning Loop</h1>
-        <span class="text-xs px-1.5 py-0.5 rounded font-semibold"
-          :class="isLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'">
+        <span
+          class="text-xs px-1.5 py-0.5 rounded font-semibold"
+          :class="isLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'"
+        >
           {{ isLive ? 'LIVE' : 'DEMO' }}
         </span>
         <div class="group relative flex items-center">
-          <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-6 top-full mt-2 w-64 md:w-80 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
-            <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
-            Each night at 02:00 UTC, <strong>learning_loop.py</strong> reads yesterday's trade log from SQLite, sends it to <strong>Claude claude-opus-4-7</strong>, and appends the failure analysis + actionable improvements to <code>learning/failure_log.md</code>. The lessons shown here are parsed from that file.
+          <i-mdi-information-outline
+            class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors"
+          />
+          <div
+            class="pointer-events-none absolute left-6 top-full mt-2 w-64 md:w-80 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5"
+          >
+            <div
+              class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500"
+            />
+            Reviews recent trades to learn from wins and losses, highlights what went wrong, and
+            suggests how to improve the next trades. Runs automatically as new results come in, or
+            manually anytime with Run Now.
           </div>
         </div>
       </div>
+
       <button
         :disabled="runStatus === 'triggered'"
         class="flex items-center gap-2 px-3 py-2 rounded border text-sm font-semibold transition-colors"
-        :class="runStatus === 'triggered'
-          ? 'bg-green-500/20 text-green-400 border-green-500/40 cursor-not-allowed'
-          : 'bg-surface-700 hover:bg-surface-600 text-surface-300 border-surface-500'"
+        :class="
+          runStatus === 'triggered'
+            ? 'bg-green-500/20 text-green-400 border-green-500/40 cursor-not-allowed'
+            : 'bg-surface-700 hover:bg-surface-600 text-surface-300 border-surface-500'
+        "
         @click="runNow"
       >
         <i-mdi-play v-if="runStatus === 'idle'" />
@@ -98,26 +330,188 @@ onMounted(() => {
       </button>
     </div>
 
-    <!-- Lesson Cards -->
-    <div class="flex flex-col gap-3">
-      <div
-        v-for="lesson in lessons"
-        :key="lesson.date"
-        class="rounded-lg border bg-surface-800 border-surface-600 p-4 flex flex-col gap-2"
-      >
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-primary-600/30 text-primary-300 border border-primary-500/40">
-            {{ lesson.date }}
-          </span>
-          <span class="text-xs text-surface-500">Claude Analysis</span>
+    <div
+      class="rounded-lg border border-surface-600 p-4 flex flex-col gap-3"
+      :class="{
+        'bg-red-500/10': riskBanner.marketCondition === 'BAD',
+        'bg-yellow-500/10': riskBanner.marketCondition === 'NEUTRAL',
+        'bg-green-500/10': riskBanner.marketCondition === 'GOOD',
+      }"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
+          <div class="text-xs uppercase tracking-wide text-surface-500">Market Condition</div>
+          <div
+            class="text-lg font-semibold mt-1"
+            :class="{
+              'text-red-400': riskBanner.marketCondition === 'BAD',
+              'text-yellow-300': riskBanner.marketCondition === 'NEUTRAL',
+              'text-green-400': riskBanner.marketCondition === 'GOOD',
+            }"
+          >
+            {{ riskBanner.marketCondition }}
+          </div>
         </div>
-        <pre class="text-xs text-surface-300 whitespace-pre-wrap leading-5 font-sans">{{ lesson.content }}</pre>
+
+        <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
+          <div class="text-xs uppercase tracking-wide text-surface-500">Confidence</div>
+          <div class="text-lg font-semibold text-surface-200 mt-1">
+            {{ riskBanner.confidence }}
+          </div>
+        </div>
+
+        <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
+          <div class="text-xs uppercase tracking-wide text-surface-500">Suggested Risk</div>
+          <div class="text-lg font-semibold text-primary-300 mt-1">
+            {{ riskBanner.suggestedRiskLabel }}
+          </div>
+        </div>
+      </div>
+
+      <div class="text-sm text-surface-300 text-left">
+        {{ riskBanner.reason }}
       </div>
     </div>
 
-    <!-- Footer -->
+    <div class="rounded-lg border bg-surface-800 border-surface-600 p-4 flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-2">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-surface-200">
+            Active Learning State
+          </h2>
+          <span
+            class="text-xs px-1.5 py-0.5 rounded font-semibold"
+            :class="
+              stateLive ? 'bg-green-500/20 text-green-400' : 'bg-surface-600 text-surface-500'
+            "
+          >
+            {{ stateLive ? 'LIVE STATE' : 'DEFAULT STATE' }}
+          </span>
+        </div>
+        <div class="text-xs text-surface-500">
+          Updated:
+          {{ learningState.updated_at || learningState.generated_at || 'n/a' }}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div
+          v-for="card in stateCards"
+          :key="card.label"
+          class="rounded-md border border-surface-600 bg-surface-900/50 p-3"
+        >
+          <div class="text-xs uppercase tracking-wide text-surface-500">{{ card.label }}</div>
+          <div class="text-lg font-semibold text-surface-200 mt-1">{{ card.value }}</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
+          <div class="text-xs uppercase tracking-wide text-surface-500 mb-2">
+            Active adjustments
+          </div>
+          <ul class="text-sm text-surface-300 space-y-2">
+            <li class="flex justify-between gap-3">
+              <span>Disable fallback entry</span>
+              <span class="font-semibold">
+                {{ learningState.active_adjustments.disable_fallback_entry }}
+              </span>
+            </li>
+            <li class="flex justify-between gap-3">
+              <span>Min score for fallback</span>
+              <span class="font-semibold">
+                {{ learningState.active_adjustments.min_score_for_fallback }}
+              </span>
+            </li>
+            <li class="flex justify-between gap-3">
+              <span>Max RSI for fallback</span>
+              <span class="font-semibold">
+                {{ learningState.active_adjustments.max_rsi_for_fallback }}
+              </span>
+            </li>
+            <li class="flex justify-between gap-3">
+              <span>Require liquidity confirmation</span>
+              <span class="font-semibold">
+                {{ learningState.active_adjustments.require_liquidity_confirmation }}
+              </span>
+            </li>
+            <li class="flex justify-between gap-3">
+              <span>Require behavior confirmation</span>
+              <span class="font-semibold">
+                {{ learningState.active_adjustments.require_behavior_confirmation }}
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
+          <div class="text-xs uppercase tracking-wide text-surface-500 mb-2">
+            Why these rules are active
+          </div>
+          <ul v-if="learningState.reasons.length > 0" class="text-sm text-surface-300 space-y-1">
+            <li v-for="reason in learningState.reasons" :key="reason">- {{ reason }}</li>
+          </ul>
+          <div v-else class="text-sm text-surface-500">No learning reasons available yet.</div>
+        </div>
+      </div>
+
+      <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
+        <div class="text-xs uppercase tracking-wide text-surface-500 mb-2">
+          What to change tomorrow
+        </div>
+        <ul
+          v-if="learningState.recommendations.length > 0"
+          class="text-sm text-surface-300 space-y-1"
+        >
+          <li v-for="recommendation in learningState.recommendations" :key="recommendation">
+            - {{ recommendation }}
+          </li>
+        </ul>
+        <div v-else class="text-sm text-surface-500">No recommendations available yet.</div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <div
+        v-for="lesson in lessons"
+        :key="`${lesson.date}-${lesson.content}`"
+        class="rounded-lg border bg-surface-800 border-surface-600 p-4 flex flex-col gap-4"
+      >
+        <div class="flex items-center gap-2">
+          <span
+            class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-primary-600/30 text-primary-300 border border-primary-500/40"
+          >
+            {{ lesson.date }}
+          </span>
+          <span class="text-xs text-surface-500">Learning Report</span>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div
+            v-for="(lines, section) in parseLesson(lesson.content)"
+            :key="section"
+            class="rounded-md border border-surface-600 bg-surface-900/50 p-3"
+          >
+            <div class="text-xs font-semibold uppercase tracking-wide text-primary-400 mb-2">
+              {{ section }}
+            </div>
+
+            <ul v-if="lines.length > 0" class="text-sm text-surface-300 space-y-1 text-left">
+              <li v-for="line in lines" :key="line" class="leading-5">
+                - {{ line.replace(/^-\s*/, '').trim() }}
+              </li>
+            </ul>
+
+            <div v-else class="text-sm text-surface-500">No entries in this section.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="text-xs text-surface-500 text-center mt-auto">
-      {{ isLive ? 'Live data from learning_loop.py' : 'Demo data · API unreachable' }} · Next scheduled run: Tonight at 02:00 UTC · failure_log.md
+      {{ isLive ? 'Live data from learning_loop.py' : 'Demo data · API unreachable' }}
+      · API: {{ API_BASE }}
+      · lessons + learning_state
     </div>
   </div>
 </template>

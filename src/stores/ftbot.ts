@@ -324,7 +324,7 @@ export function createBotSubStore(botId: string, botName: string) {
           ) {
             // Open trades changed, so we should refresh now.
             this.refreshRequired = true;
-            this.refreshSlow(false);
+            await this.getTrades();
           }
           if (Array.isArray(data)) {
             const openTrades = data.map((t) => ({

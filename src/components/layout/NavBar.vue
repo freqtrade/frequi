@@ -104,13 +104,13 @@ const navItems = ref([
   {
     label: 'Dashboard',
     to: '/dashboard',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-view-dashboard',
   },
   {
     label: 'Trade',
     to: '/trade',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-currency-usd',
   },
   {
@@ -121,37 +121,37 @@ const navItems = ref([
   {
     label: 'Regime',
     to: '/regime',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-chart-bell-curve',
   },
   {
     label: 'Signals',
     to: '/signals',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-brain',
   },
   {
     label: 'Risk',
     to: '/risk',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-shield-alert',
   },
   {
     label: 'Markets',
     to: '/markets',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-chart-timeline-variant',
   },
   {
     label: 'Backtest',
     to: '/backtest-runner',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-play-circle',
   },
   {
     label: 'Learning',
     to: '/learning',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: true,
     icon: 'i-mdi-brain',
   },
   {

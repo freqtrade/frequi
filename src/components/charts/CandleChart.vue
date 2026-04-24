@@ -57,6 +57,7 @@ const props = defineProps<{
   dataset: PairHistory;
   heikinAshi: boolean;
   showMarkArea: boolean;
+  showZones?: boolean;
   useUTC: boolean;
   plotConfig: PlotConfig;
   theme: 'dark' | 'light';
@@ -111,6 +112,17 @@ const filteredTrades = computed(() => {
   return props.trades.filter((item: Trade) => item.pair === pair.value);
 });
 
+watch(
+  () => props.trades,
+  () => {
+    console.log('--- CandleChart trades check ---');
+    console.log('chart dataset pair:', pair.value);
+    console.log('all trades in CandleChart:', props.trades);
+    console.log('filteredTrades:', filteredTrades.value);
+  },
+  { deep: true, immediate: true },
+);
+
 const chartTitle = computed(() => {
   return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
 });
@@ -124,6 +136,231 @@ usePercentageTool(
   toRef(() => props.theme),
   toRef(() => props.dataset.timeframe_ms),
 );
+
+function buildZoneOverlay(zones: any, levels: any) {
+  const overlays: any[] = [];
+
+  // Breakout lines
+  if (levels?.breakout_above) {
+    overlays.push({
+      type: 'line',
+      data: [],
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      z: 1,
+      showSymbol: false,
+      silent: true,
+      name: '',
+      markLine: {
+        symbol: ['none', 'none'],
+        silent: true,
+        label: {
+          show: false,
+        },
+        lineStyle: {
+          color: 'rgba(255, 165, 0, 0.38)',
+          width: 1.5,
+          type: 'solid',
+        },
+        data: [{ yAxis: levels.breakout_above }],
+      },
+    });
+  }
+
+  if (levels?.breakout_below) {
+    overlays.push({
+      type: 'line',
+      data: [],
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      z: 1,
+      showSymbol: false,
+      silent: true,
+      name: '',
+      markLine: {
+        symbol: ['none', 'none'],
+        silent: true,
+        label: {
+          show: false,
+        },
+        lineStyle: {
+          color: 'rgba(255, 165, 0, 0.38)',
+          width: 1.5,
+          type: 'solid',
+        },
+        data: [{ yAxis: levels.breakout_below }],
+      },
+    });
+  }
+
+  // Support zones
+  zones?.support?.forEach((z: any) => {
+    overlays.push({
+      type: 'line',
+      data: [],
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      z: 1,
+      showSymbol: false,
+      silent: true,
+      name: '',
+      markArea: {
+        itemStyle: {
+          color: 'rgba(0, 255, 0, 0.12)',
+        },
+        data: [[{ yAxis: z.low }, { yAxis: z.high }]],
+      },
+    });
+  });
+
+  // Resistance zones
+  zones?.resistance?.forEach((z: any) => {
+    overlays.push({
+      type: 'line',
+      data: [],
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      z: 1,
+      showSymbol: false,
+      silent: true,
+      name: '',
+      markArea: {
+        itemStyle: {
+          color: 'rgba(255, 0, 0, 0.12)',
+        },
+        data: [[{ yAxis: z.low }, { yAxis: z.high }]],
+      },
+    });
+  });
+
+  return overlays;
+}
+
+function buildSessionOverlay(dataset: any, theme: 'dark' | 'light') {
+  if (!dataset?.data?.length || !dataset?.columns?.length) {
+    return null;
+  }
+
+  const dateIndex = dataset.columns.findIndex((c: string) => c === '__date_ts');
+  if (dateIndex < 0) {
+    return null;
+  }
+
+  const rows = dataset.data;
+
+  function getSessionName(
+    ts: number,
+  ): 'Asia builds range' | 'London manipulates' | 'New York confirms' {
+    const hour = new Date(ts).getUTCHours();
+
+    if (hour >= 0 && hour < 8) {
+      return 'Asia builds range';
+    }
+    if (hour >= 8 && hour < 16) {
+      return 'London manipulates';
+    }
+    return 'New York confirms';
+  }
+
+  const sessionBlocks: Array<{
+    start: number;
+    end: number;
+    session: 'Asia builds range' | 'London manipulates' | 'New York confirms';
+  }> = [];
+
+  let currentSession: 'Asia builds range' | 'London manipulates' | 'New York confirms' | null =
+    null;
+  let sessionStart: number | null = null;
+
+  for (let i = 0; i < rows.length; i += 1) {
+    const ts = Number(rows[i]?.[dateIndex]);
+    if (Number.isNaN(ts)) {
+      continue;
+    }
+
+    const session = getSessionName(ts);
+
+    if (currentSession === null) {
+      currentSession = session;
+      sessionStart = ts;
+      continue;
+    }
+
+    if (session !== currentSession) {
+      if (sessionStart !== null) {
+        sessionBlocks.push({
+          start: sessionStart,
+          end: ts,
+          session: currentSession,
+        });
+      }
+      currentSession = session;
+      sessionStart = ts;
+    }
+  }
+
+  const lastTs = Number(rows[rows.length - 1]?.[dateIndex]);
+  if (sessionStart !== null && !Number.isNaN(lastTs) && dataset.timeframe_ms && currentSession) {
+    sessionBlocks.push({
+      start: sessionStart,
+      end: lastTs + dataset.timeframe_ms,
+      session: currentSession,
+    });
+  }
+
+  return {
+    type: 'line',
+    data: [],
+    xAxisIndex: 0,
+    yAxisIndex: 0,
+    z: 0,
+    showSymbol: false,
+    silent: true,
+    name: 'Sessions',
+    markArea: {
+      silent: true,
+      data: sessionBlocks.map((block, index) => {
+        const areaColor =
+          theme === 'dark'
+            ? index % 2 === 0
+              ? 'rgba(255, 255, 255, 0.05)'
+              : 'rgba(255, 255, 255, 0.10)'
+            : index % 2 === 0
+              ? 'rgba(60, 60, 60, 0.05)'
+              : 'rgba(60, 60, 60, 0.10)';
+
+        return [
+          {
+            xAxis: block.start,
+            itemStyle: {
+              color: areaColor,
+            },
+            label: {
+              show: true,
+              formatter:
+                block.session === 'Asia builds range'
+                  ? 'Asia\nbuilds range'
+                  : block.session === 'London manipulates'
+                    ? 'London\nmanipulates'
+                    : 'New York\nconfirms',
+              position: 'insideTop',
+              align: 'center',
+              verticalAlign: 'top',
+              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(40, 40, 40, 0.30)',
+              fontSize: 12,
+              fontWeight: 500,
+              lineHeight: 14,
+              padding: [6, 0, 0, 0],
+            },
+          },
+          {
+            xAxis: block.end,
+          },
+        ];
+      }),
+    },
+  };
+}
 
 function updateChart(initial = false) {
   if (!hasData.value) {
@@ -181,6 +418,34 @@ function updateChart(initial = false) {
     ? heikinAshiDataset(columns, props.dataset.data)
     : props.dataset.data.slice();
 
+  const latestRow = dataset[dataset.length - 1];
+  const latestClose =
+    colClose >= 0 && latestRow && latestRow[colClose] != null ? Number(latestRow[colClose]) : null;
+
+  const latestOpen =
+    colOpen >= 0 && latestRow && latestRow[colOpen] != null ? Number(latestRow[colOpen]) : null;
+
+  const isBullishCurrentPrice =
+    latestOpen !== null && latestClose !== null ? latestClose >= latestOpen : true;
+
+  const currentPriceLineColor =
+    props.theme === 'dark'
+      ? isBullishCurrentPrice
+        ? 'rgba(34, 197, 94, 0.85)' // green
+        : 'rgba(239, 68, 68, 0.85)' // red
+      : isBullishCurrentPrice
+        ? 'rgba(22, 163, 74, 0.75)' // green
+        : 'rgba(220, 38, 38, 0.75)'; // red
+
+  const currentPriceLabelTextColor =
+    props.theme === 'dark'
+      ? isBullishCurrentPrice
+        ? '#4ade80'
+        : '#f87171'
+      : isBullishCurrentPrice
+        ? '#15803d'
+        : '#b91c1c';
+
   diffCols.value.forEach(([colFrom, colTo]) => {
     if (colFrom && colTo) {
       // Enhance dataset with diff columns for area plots
@@ -230,7 +495,6 @@ function updateChart(initial = false) {
         },
         encode: {
           x: colDate,
-          // open, close, low, high
           y: [colOpen, colClose, colLow, colHigh],
         },
       },
@@ -248,6 +512,47 @@ function updateChart(initial = false) {
           y: colVolume,
         },
       },
+      {
+        name: 'Current Price',
+        type: 'line',
+        data: [],
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        silent: true,
+        showSymbol: false,
+        tooltip: { show: false },
+        lineStyle: {
+          opacity: 0,
+        },
+        markLine:
+          latestClose !== null
+            ? {
+                symbol: ['none', 'none'],
+                silent: true,
+                animation: false,
+                label: {
+                  show: true,
+                  formatter: () => formatDecimal(latestClose),
+                  position: 'end',
+                  distance: 6,
+                  color: currentPriceLabelTextColor,
+                  backgroundColor:
+                    props.theme === 'dark' ? 'rgba(30, 30, 30, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                  borderColor:
+                    props.theme === 'dark' ? 'rgba(120, 120, 120, 0.35)' : 'rgba(0, 0, 0, 0.15)',
+                  borderWidth: 1,
+                  padding: [2, 6],
+                  borderRadius: 4,
+                },
+                lineStyle: {
+                  type: 'dashed',
+                  width: 2,
+                  color: currentPriceLineColor,
+                },
+                data: [{ yAxis: latestClose }],
+              }
+            : undefined,
+      },
     ],
   };
 
@@ -261,6 +566,12 @@ function updateChart(initial = false) {
     if (areaSeries) {
       options.series.push(areaSeries);
     }
+
+    const sessionOverlay = buildSessionOverlay(props.dataset, props.theme) as any;
+    if (sessionOverlay) {
+      options.series.push(sessionOverlay);
+    }
+
     const signalConfigs = [
       {
         colData: colEntryData,
@@ -342,6 +653,17 @@ function updateChart(initial = false) {
           },
         });
       }
+    }
+
+    const zones = (props.dataset as any)?.zones;
+    const levels = (props.dataset as any)?.levels;
+
+    console.log('zones from dataset:', zones);
+    console.log('levels from dataset:', levels);
+
+    if (props.showZones !== false) {
+      const zoneSeries = buildZoneOverlay(zones, levels);
+      options.series.push(...zoneSeries);
     }
   }
 
@@ -718,7 +1040,17 @@ watch([() => props.useUTC, () => props.theme, () => props.plotConfig], () =>
   initializeChartOptions(),
 );
 
-watch([() => props.dataset, () => props.heikinAshi, () => props.showMarkArea], () => updateChart());
+watch(
+  [
+    () => props.dataset,
+    () => props.trades,
+    () => props.heikinAshi,
+    () => props.showMarkArea,
+    () => props.showZones,
+  ],
+  () => updateChart(),
+  { deep: true },
+);
 
 watch(
   () => props.sliderPosition,

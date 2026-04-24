@@ -328,6 +328,7 @@ declare global {
   const useSessionStorage: typeof import('@vueuse/core').useSessionStorage
   const useSettingsStore: typeof import('./stores/settings').useSettingsStore
   const useShare: typeof import('@vueuse/core').useShare
+  const useSignalsStore: typeof import('./stores/signalsStore').useSignalsStore
   const useSlots: typeof import('vue').useSlots
   const useSorted: typeof import('@vueuse/core').useSorted
   const useSpeechRecognition: typeof import('@vueuse/core').useSpeechRecognition
@@ -736,6 +737,7 @@ declare module 'vue' {
     readonly useSessionStorage: UnwrapRef<typeof import('@vueuse/core')['useSessionStorage']>
     readonly useSettingsStore: UnwrapRef<typeof import('./stores/settings')['useSettingsStore']>
     readonly useShare: UnwrapRef<typeof import('@vueuse/core')['useShare']>
+    readonly useSignalsStore: UnwrapRef<typeof import('./stores/signalsStore')['useSignalsStore']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useSorted: UnwrapRef<typeof import('@vueuse/core')['useSorted']>
     readonly useSpeechRecognition: UnwrapRef<typeof import('@vueuse/core')['useSpeechRecognition']>

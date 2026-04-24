@@ -1,5 +1,39 @@
 <script setup lang="ts">
 import type { Lock, Trade } from '@/types';
+import { useSignalsStore } from '@/stores/signalsStore';
+
+const signalsStore = useSignalsStore();
+
+let signalPollInterval: number | undefined;
+
+onMounted(() => {
+  fetchSignals();
+  signalPollInterval = window.setInterval(fetchSignals, 3000);
+});
+
+onBeforeUnmount(() => {
+  if (signalPollInterval) {
+    window.clearInterval(signalPollInterval);
+  }
+});
+
+async function fetchSignals() {
+  try {
+    const res = await fetch('http://localhost:5001/api/v1/ui-signals');
+    const data = await res.json();
+
+    const signals = Array.isArray(data?.signals) ? data.signals : [];
+
+    signals.forEach((item: any) => {
+      signalsStore.updateSignal(item.pair, {
+        actionable: item.actionable ?? item.isActionable ?? false,
+        score: item.score,
+      });
+    });
+  } catch (e) {
+    console.error('Signal fetch failed', e);
+  }
+}
 
 interface CombinedPairList {
   pair: string;
@@ -28,9 +62,10 @@ const props = withDefaults(
     startingBalance: 0,
   },
 );
-const botStore = useBotStore();
 
+const botStore = useBotStore();
 const filterText = ref('');
+
 const combinedPairList = computed(() => {
   const comb: CombinedPairList[] = [];
 
@@ -40,30 +75,36 @@ const combinedPairList = computed(() => {
     let lockReason = '';
     let locks;
 
-    // Sort to have longer timeframe in front
     allLocks.sort((a, b) => (a.lock_end_timestamp > b.lock_end_timestamp ? -1 : 1));
     if (allLocks.length > 0) {
       [locks] = allLocks;
       lockReason = `${timestampms(locks.lock_end_timestamp)} - ${locks.side} - ${locks.reason}`;
     }
+
     let profitString = '';
     let profit = 0;
     let profitAbs = 0;
+
     trades.forEach((trade) => {
       profit += trade.profit_ratio ?? 0;
       profitAbs += trade.profit_abs ?? 0;
     });
+
     if (props.sortMethod == 'profit' && props.startingBalance) {
       profit = profitAbs / props.startingBalance;
     }
+
     const tradeCount = trades.length;
     const trade = tradeCount ? trades[0] : undefined;
+
     if (trades.length > 0) {
       profitString = `Current profit: ${formatPercent(profit)}`;
     }
+
     if (trade) {
       profitString += `\nOpen since: ${timestampms(trade.open_timestamp)}`;
     }
+
     if (
       filterText.value === '' ||
       pair.toLocaleLowerCase().includes(filterText.value.toLocaleLowerCase())
@@ -80,25 +121,23 @@ const combinedPairList = computed(() => {
       return 1;
     });
   } else {
-    // sort Pairs: "with open trade" -> available -> locked
     comb.sort((a, b) => {
       if (a.trade && !b.trade) {
         return -1;
       }
       if (a.trade && b.trade) {
-        // 2 open trade pairs
         return a.trade.trade_id > b.trade.trade_id ? 1 : -1;
       }
       if (!a.locks && b.locks) {
         return -1;
       }
       if (a.locks && b.locks) {
-        // Both have locks
         return a.locks.lock_end_timestamp > b.locks.lock_end_timestamp ? 1 : -1;
       }
       return 1;
     });
   }
+
   return comb;
 });
 </script>
@@ -121,6 +160,7 @@ const combinedPairList = computed(() => {
         class="w-full"
       />
     </div>
+
     <ul
       class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded-sm border-surface-300 dark:border-surface-700"
     >
@@ -138,7 +178,18 @@ const combinedPairList = computed(() => {
       >
         <div class="flex items-center gap-2">
           {{ comb.pair }}
-          <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
+
+          <span
+            v-if="signalsStore.isActionable(comb.pair)"
+            title="Actionable signal"
+            class="text-red-500"
+          >
+            <i-mdi-alert-circle />
+          </span>
+
+          <span v-if="comb.locks" :title="comb.lockReason">
+            <i-mdi-lock />
+          </span>
         </div>
 
         <TradeProfit v-if="comb.trade && !backtestMode" :trade="comb.trade" />
