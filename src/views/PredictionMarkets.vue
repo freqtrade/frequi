@@ -198,7 +198,7 @@ onBeforeUnmount(() => {
                 >
                   {{ statusBadge(m).label }}
                 </span>
-                <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-2 py-1 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-4 whitespace-normal">
+                <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-96 max-w-[98vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5 whitespace-normal">
                   <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-3 border-r-3 border-t-3 border-l-transparent border-r-transparent border-t-surface-500" />
                   {{ statusBadge(m).reason }}
                 </div>

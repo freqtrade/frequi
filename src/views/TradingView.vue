@@ -201,7 +201,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
       </GridItem>
 
       <GridItem
-        v-if="gridLayoutOpenTrades.h != 0"
+        v-if="gridLayoutOpenTrades.h != 0 && botStore.activeBot.openTrades.length > 0"
         v-bind="gridItemProps"
         :i="gridLayoutOpenTrades.i"
         :x="gridLayoutOpenTrades.x"
@@ -222,7 +222,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
       </GridItem>
 
       <GridItem
-        v-if="gridLayoutTradeHistory.h != 0"
+        v-if="gridLayoutTradeHistory.h != 0 && botStore.activeBot.closedTrades.length > 0"
         v-bind="gridItemProps"
         :i="gridLayoutTradeHistory.i"
         :x="gridLayoutTradeHistory.x"
