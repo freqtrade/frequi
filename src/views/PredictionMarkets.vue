@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+
 // PredictionMarkets.vue — Phase 4 mock view
 // Phase 4 wires to engine/scanner/scanner.py + ensemble.py via REST endpoint.
 
@@ -53,6 +55,40 @@ function sourceColor(source: string): string {
   return source === 'Polymarket'
     ? 'bg-blue-500/20 text-blue-400 border-blue-500/40'
     : 'bg-purple-500/20 text-purple-400 border-purple-500/40';
+}
+
+function statusBadge(m: Market): { label: string; color: string; reason: string } {
+  const e = edge(m);
+
+  if (e >= 0.08) {
+    return {
+      label: 'BUY NOW',
+      color: 'bg-green-500/20 text-green-400 border-green-500/40',
+      reason: `Edge ${(e * 100).toFixed(1)}% — strong signal`
+    };
+  }
+
+  if (e >= 0.03) {
+    return {
+      label: 'CONSIDER',
+      color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
+      reason: `Edge ${(e * 100).toFixed(1)}% — weak edge`
+    };
+  }
+
+  if (e < 0) {
+    return {
+      label: 'IGNORE',
+      color: 'bg-red-500/20 text-red-400 border-red-500/40',
+      reason: 'Negative edge — skip'
+    };
+  }
+
+  return {
+    label: 'IGNORE',
+    color: 'bg-red-500/20 text-red-400 border-red-500/40',
+    reason: 'Edge < 3% — skip'
+  };
 }
 
 function togglePaper(id: string) {
@@ -124,6 +160,7 @@ onBeforeUnmount(() => {
             <th class="px-4 py-3 font-medium text-right hidden sm:table-cell">Volume</th>
             <th class="px-4 py-3 font-medium text-right">Ensemble</th>
             <th class="px-4 py-3 font-medium text-right">Edge</th>
+            <th class="px-4 py-3 font-medium text-center">Status</th>
             <th class="px-4 py-3 font-medium text-right hidden md:table-cell">Kelly $</th>
             <th class="px-4 py-3 font-medium text-center">Paper</th>
           </tr>
@@ -152,6 +189,20 @@ onBeforeUnmount(() => {
             </td>
             <td class="px-4 py-3 text-right font-mono font-semibold" :class="edgeColor(m)">
               {{ edge(m) >= 0 ? '+' : '' }}{{ (edge(m) * 100).toFixed(1) }}%
+            </td>
+            <td class="px-4 py-3 text-center">
+              <div class="group relative inline-block">
+                <span
+                  class="inline-block rounded px-2 py-0.5 text-xs font-semibold border"
+                  :class="statusBadge(m).color"
+                >
+                  {{ statusBadge(m).label }}
+                </span>
+                <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 max-w-[90vw] rounded-md bg-surface-700 border border-surface-500 px-2 py-1 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-4 whitespace-normal">
+                  <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-3 border-r-3 border-t-3 border-l-transparent border-r-transparent border-t-surface-500" />
+                  {{ statusBadge(m).reason }}
+                </div>
+              </div>
             </td>
             <td class="px-4 py-3 text-right font-mono hidden md:table-cell" :class="m.kellyUsd > 0 ? 'text-green-400' : 'text-surface-500'">
               {{ m.kellyUsd > 0 ? `$${m.kellyUsd.toFixed(2)}` : '—' }}

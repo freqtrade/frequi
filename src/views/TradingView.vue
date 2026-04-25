@@ -111,6 +111,13 @@ function refreshOHLCV(pair: string, columns: string[]) {
               </Tab>
 
               <Tab value="2" severity="secondary">
+                <div title="Setups">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Setups</span>
+                  <i-mdi-radar v-else />
+                </div>
+              </Tab>
+
+              <Tab value="3" severity="secondary">
                 <div title="Performance">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
                     Performance
@@ -119,14 +126,14 @@ function refreshOHLCV(pair: string, columns: string[]) {
                 </div>
               </Tab>
 
-              <Tab value="3" severity="secondary">
+              <Tab value="4" severity="secondary">
                 <div title="Balance">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
                   <i-mdi-bank v-else />
                 </div>
               </Tab>
 
-              <Tab value="4" severity="secondary">
+              <Tab value="5" severity="secondary">
                 <div title="Time Breakdown">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
                     Time Breakdown
@@ -135,26 +142,19 @@ function refreshOHLCV(pair: string, columns: string[]) {
                 </div>
               </Tab>
 
-              <Tab value="5" severity="secondary">
+              <Tab value="6" severity="secondary">
                 <div title="Pairlist">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
                   <i-mdi-format-list-group v-else />
                 </div>
               </Tab>
 
-              <Tab value="6" severity="secondary">
+              <Tab value="7" severity="secondary">
                 <div title="Pair Locks">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
                     Pair Locks
                   </span>
                   <i-mdi-lock-alert v-else />
-                </div>
-              </Tab>
-
-              <Tab value="7" severity="secondary">
-                <div title="Setups">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Setups</span>
-                  <i-mdi-radar v-else />
                 </div>
               </Tab>
             </TabList>
@@ -173,27 +173,27 @@ function refreshOHLCV(pair: string, columns: string[]) {
               </TabPanel>
 
               <TabPanel value="2" lazy>
-                <BotPerformance />
+                <TradeReadinessPanel :pairlist="botStore.activeBot.whitelist" />
               </TabPanel>
 
               <TabPanel value="3" lazy>
-                <BotBalance />
+                <BotPerformance />
               </TabPanel>
 
               <TabPanel value="4" lazy>
-                <PeriodBreakdown />
+                <BotBalance />
               </TabPanel>
 
               <TabPanel value="5" lazy>
-                <PairListLive />
+                <PeriodBreakdown />
               </TabPanel>
 
               <TabPanel value="6" lazy>
-                <PairLockList />
+                <PairListLive />
               </TabPanel>
 
               <TabPanel value="7" lazy>
-                <TradeReadinessPanel :pairlist="botStore.activeBot.whitelist" />
+                <PairLockList />
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -266,7 +266,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
       </GridItem>
 
       <GridItem
-        v-if="gridLayoutTradeDetail.h != 0"
+        v-if="gridLayoutChartView.h != 0"
         v-bind="gridItemProps"
         :i="gridLayoutChartView.i"
         :x="gridLayoutChartView.x"
