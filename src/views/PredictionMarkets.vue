@@ -64,7 +64,7 @@ function statusBadge(m: Market): { label: string; color: string; reason: string 
     return {
       label: 'BUY NOW',
       color: 'bg-green-500/20 text-green-400 border-green-500/40',
-      reason: `Edge ${(e * 100).toFixed(1)}% — strong signal`
+      reason: `Edge ${(e * 100).toFixed(1)}% — strong signal. Best time: 9-11 AM UTC or US market open (8:30 AM - 4 PM EST)`
     };
   }
 
@@ -72,7 +72,7 @@ function statusBadge(m: Market): { label: string; color: string; reason: string 
     return {
       label: 'CONSIDER',
       color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
-      reason: `Edge ${(e * 100).toFixed(1)}% — weak edge`
+      reason: `Edge ${(e * 100).toFixed(1)}% — weak edge. Best time: 9-11 AM UTC or during US market hours (8:30 AM - 4 PM EST)`
     };
   }
 
@@ -80,14 +80,14 @@ function statusBadge(m: Market): { label: string; color: string; reason: string 
     return {
       label: 'IGNORE',
       color: 'bg-red-500/20 text-red-400 border-red-500/40',
-      reason: 'Negative edge — skip'
+      reason: 'Negative edge — skip all hours'
     };
   }
 
   return {
     label: 'IGNORE',
     color: 'bg-red-500/20 text-red-400 border-red-500/40',
-    reason: 'Edge < 3% — skip'
+    reason: 'Edge < 3% — skip all hours'
   };
 }
 
