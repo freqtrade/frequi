@@ -111,18 +111,18 @@ function refreshOHLCV(pair: string, columns: string[]) {
               </Tab>
 
               <Tab value="2" severity="secondary">
-                <div title="Setups">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Setups</span>
-                  <i-mdi-radar v-else />
-                </div>
-              </Tab>
-
-              <Tab value="3" severity="secondary">
                 <div title="Performance">
                   <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">
                     Performance
                   </span>
                   <i-mdi-chart-line v-else />
+                </div>
+              </Tab>
+
+              <Tab value="3" severity="secondary">
+                <div title="Setups">
+                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Setups</span>
+                  <i-mdi-radar v-else />
                 </div>
               </Tab>
 
@@ -173,11 +173,11 @@ function refreshOHLCV(pair: string, columns: string[]) {
               </TabPanel>
 
               <TabPanel value="2" lazy>
-                <TradeReadinessPanel :pairlist="botStore.activeBot.whitelist" />
+                <BotPerformance />
               </TabPanel>
 
               <TabPanel value="3" lazy>
-                <BotPerformance />
+                <TradeReadinessPanel :pairlist="botStore.activeBot.whitelist" />
               </TabPanel>
 
               <TabPanel value="4" lazy>
