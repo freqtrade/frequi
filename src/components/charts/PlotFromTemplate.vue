@@ -19,7 +19,7 @@ function fromTemplateApply() {
 function clickStartUseTemplate() {
   showIndicatorMapping.value = !showIndicatorMapping.value;
 
-  indicatorMap.value = plotConfigColumns(getTemplateContent(selTemplateName.value)).reduce(
+  indicatorMap.value = plotConfigColumns(getTemplateContent(selTemplateName.value), true).reduce(
     (acc, indicator) => {
       acc[indicator] = indicator;
       return acc;

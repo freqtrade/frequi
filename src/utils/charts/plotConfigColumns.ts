@@ -1,7 +1,7 @@
 import type { PlotConfig } from '@/types';
 
 /** Function to extract required indicator names from a plot configuration */
-export function plotConfigColumns(plotConfig: Partial<PlotConfig>): string[] {
+export function plotConfigColumns(plotConfig: Partial<PlotConfig>, skipTags: boolean = false): string[] {
   const cols: string[] = [];
   for (const key in plotConfig.main_plot) {
     cols.push(key);
@@ -11,7 +11,7 @@ export function plotConfigColumns(plotConfig: Partial<PlotConfig>): string[] {
       cols.push(subkey);
     }
   }
-  if (plotConfig.options?.showTags !== false) {
+  if (!skipTags && plotConfig.options?.showTags !== false) {
     cols.push('enter_tag', 'exit_tag');
   }
   // Make list unique
