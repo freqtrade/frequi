@@ -11,10 +11,10 @@ const accept = ref<() => void>(() => {
   console.warn('Accepted not set.');
 });
 
-const msgBoxOK = () => {
+function msgBoxOK() {
   accept.value();
   showRef.value = false;
-};
+}
 
 function show(msg: MsgBoxObject) {
   title.value = msg.title;
@@ -33,7 +33,6 @@ defineExpose({ show });
     v-model:open="showRef"
     :title="title"
     description="Confirmation"
-    sho
   >
     <template #body>
       {{ message }}
@@ -47,7 +46,7 @@ defineExpose({ show });
         icon="mdi:close"
         @click="showRef = false"
       />
-      <UButton class="min-w-30" label="Ok" icon="mdi:check" autofocus @click="msgBoxOK" />
+      <UButton class="min-w-30" label="Ok" icon="mdi:check" autofocus @click="msgBoxOK"/>
     </template>
   </UModal>
 </template>
