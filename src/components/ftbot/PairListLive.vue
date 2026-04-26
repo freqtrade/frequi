@@ -69,7 +69,7 @@ onMounted(() => {
       <li
         v-for="(pair, key) in botStore.activeBot.whitelist"
         :key="key"
-        class="pair bg-white text-black align-middle border border-secondary"
+        class="pair bg-white text-black border-secondary "
       >
         {{ pair }}
       </li>
@@ -116,7 +116,7 @@ onMounted(() => {
       <li
         v-for="(pair, key) in botStore.activeBot.blacklist"
         :key="key"
-        class="pair bg-black text-white text-ellipsis overflow-hidden"
+        class="pair bg-black text-white"
         :title="pair"
         :class="blacklistSelect.indexOf(key) > -1 ? 'active' : ''"
         @click="blacklistSelectClick(key)"
@@ -124,7 +124,10 @@ onMounted(() => {
         <span class="check"><i-mdi-check-circle /></span>{{ pair }}
       </li>
     </ul>
-    <p v-else>BlackList Unavailable. Please Login and make sure server is running.</p>
+    <p v-else>
+      No Blacklist Available. <br />
+      If you expect to have pairs in your blacklist, please login and make sure the server is running.
+  </p>
   </div>
 </template>
 
@@ -160,6 +163,6 @@ onMounted(() => {
 }
 
 .pair {
-  @apply p-2 border rounded cursor-pointer relative border-neutral-500;
+  @apply p-2 border rounded cursor-pointer relative border-neutral-500 text-ellipsis overflow-hidden;
 }
 </style>
