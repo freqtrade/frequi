@@ -35,6 +35,7 @@ export default defineConfigWithVueTs(
     },
   },
   {
+    files: ['src/**/*.vue'],
     rules: {
       // Custom vue rules
       'vue/component-api-style': ['error'],
