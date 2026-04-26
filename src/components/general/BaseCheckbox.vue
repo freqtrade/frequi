@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  // TODO: This component is currently just a wrapper around UCheckbox and could be removed.
 withDefaults(defineProps<{ disabled?: boolean }>(), {
   disabled: false,
 });
