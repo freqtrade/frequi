@@ -204,6 +204,7 @@ async function startDownload() {
                   v-model="advancedOptions.candleTypes"
                   :items="candleTypes"
                   placeholder="Select Candle Types"
+                  value-key="value"
                 />
                 <small
                   >When no candle-type is selected, freqtrade will download the necessary candle

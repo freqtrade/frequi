@@ -128,7 +128,6 @@ if (pairlistStore.whitelist.length > 0) {
       <PairlistConfigBlacklist />
       <UAlert
         v-if="
-          true ||
           (pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator)
         "
         class="my-2"
@@ -157,6 +156,7 @@ if (pairlistStore.whitelist.length > 0) {
         class="mb-2"
         label-key="value"
         value-key="value"
+        size="md"
         :items="[
           { value: 'Config' },
           { value: 'Results', disabled: pairlistStore.whitelist.length === 0 },

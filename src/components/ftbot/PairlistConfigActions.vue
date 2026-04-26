@@ -32,12 +32,11 @@ const pairlistStore = usePairlistConfigStore();
     <UButton
       title="Evaluate pairlist"
       :disabled="pairlistStore.evaluating || !pairlistStore.pairlistValid"
-      class="px-5"
       variant="solid"
       @click="pairlistStore.startPairlistEvaluation()"
-    >
-      <UProgress v-if="pairlistStore.evaluating" class="h-5 w-5"></UProgress>
-      <span v-else>Evaluate</span>
-    </UButton>
+      :loading="pairlistStore.evaluating"
+      label="Evaluate"
+      icon="mdi:play-box-outline"
+    />
   </div>
 </template>

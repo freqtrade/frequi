@@ -79,7 +79,6 @@ onMounted(() => {
       color="neutral"
       variant="outline"
       class="ms-2 no-min-w"
-      size="sm"
       icon="mdi:refresh"
       @click="botStore.activeBot.getExchangeList()"
     />
