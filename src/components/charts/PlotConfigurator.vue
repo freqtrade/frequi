@@ -328,31 +328,29 @@ const markAreaZIndex = computed({
       <UButton
         color="neutral"
         title="Remove indicator to plot"
-        size="sm"
         :disabled="!selIndicatorName"
         class="col"
         @click="removeIndicator"
-      >
-        Remove indicator
-      </UButton>
+        label="Remove indicator"
+        icon="mdi:minus-box-outline"
+      />
+
       <UButton
         color="neutral"
         title="Load indicator config from template"
-        size="sm"
         @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
-        label="Indicator from template"
+        label="From template"
+        icon="mdi:folder-arrow-down-outline"
       />
 
       <UButton
         title="Add indicator to plot"
-        size="sm"
         icon="mdi:plus-box-outline"
         class="col"
         :disabled="addNewIndicator"
         @click="clickAddNewIndicator"
-      >
-        Add new indicator
-      </UButton>
+        label="Add indicator"
+      />
     </div>
 
     <PlotIndicatorSelect
@@ -380,6 +378,7 @@ const markAreaZIndex = computed({
         title="Reset to last saved configuration"
         @click="loadPlotConfig"
         label="Reset"
+        icon="mdi:restore"
       />
 
       <!--
@@ -401,6 +400,7 @@ const markAreaZIndex = computed({
         "
         color="neutral"
         label="From strategy"
+        icon="mdi:download"
         @click="loadPlotConfigFromStrategy"
       />
 
@@ -410,6 +410,7 @@ const markAreaZIndex = computed({
         :disabled="addNewIndicator"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
+        :icon="showConfig ? 'mdi:eye-off' : 'mdi:eye'"
         :label="showConfig ? 'Hide' : 'Show'"
       />
 
@@ -419,16 +420,19 @@ const markAreaZIndex = computed({
         title="Save configuration"
         @click="savePlotConfig"
         label="Save"
+        variant="solid"
         icon="mdi:content-save"
       />
     </div>
     <UButton
       v-if="showConfig"
-      class="ms-1 mt-1"
+      class="mt-1"
       color="neutral"
+      size="sm"
       title="Load configuration from text box below"
       @click="loadConfigFromString"
-      >Load from String</UButton
+      icon="mdi:upload"
+      >Load from string below</UButton
     >
     <div v-if="showConfig" class="w-full ms-1 mt-2">
       <UTextarea

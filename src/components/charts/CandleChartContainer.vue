@@ -230,7 +230,11 @@ const singlePairSelection = computed({
       id="plotConfiguratorModal"
       v-model:open="showPlotConfigModal"
       title="Plot Configurator"
+      class="max-w-xl"
       description="Configure chart plot indicators and subplots"
+      :overlay="false"
+      :modal="false"
+      :dismissible="false"
     >
       <template #body>
         <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />

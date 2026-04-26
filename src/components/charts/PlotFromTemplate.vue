@@ -82,23 +82,23 @@ const showIndicatorMapping = ref(false);
       </div>
     </div>
     <div class="mt-2 flex gap-1 justify-end">
-      <UButton size="sm" title="Abort" color="neutral" icon="mdi:close" @click="visible = false" />
+      <UButton title="Abort" color="neutral" icon="mdi:close" @click="visible = false" />
       <UButton
         v-if="!showIndicatorMapping"
         :disabled="!selTemplateName"
-        size="sm"
-        style="width: 33%"
         title="Use template"
         label=" Use Template"
+        class="w-40"
+        variant="solid"
         icon="mdi:check"
         @click="clickStartUseTemplate"
       />
       <UButton
         v-if="showIndicatorMapping"
         :disabled="!selTemplateName"
-        size="sm"
-        style="width: 33%"
         title="Apply template"
+        class="w-40"
+        variant="solid"
         icon="mdi:check"
         @click="fromTemplateApply"
         label="Apply Template"
