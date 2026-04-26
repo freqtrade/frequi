@@ -103,6 +103,10 @@ const tableColumns = computed(() => {
       field.formatter ? field.formatter(row.original[field.key]) : row.original[field.key],
   }));
 });
+
+watch(selectedOption, () => {
+  refreshSummary();
+});
 </script>
 <template>
   <div>
@@ -118,7 +122,6 @@ const tableColumns = computed(() => {
       label-key="text"
       value-key="value"
       size="sm"
-      @change="refreshSummary"
     ></USegmentedControl>
     <UTable class="text-center" :data="performanceData" :columns="tableColumns" />
   </div>
