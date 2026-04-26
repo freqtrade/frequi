@@ -3,22 +3,15 @@ import prettierConfig from '@vue/eslint-config-prettier';
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 
 export default defineConfigWithVueTs(
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
-  tseslint.configs.recommended,
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
 
   prettierConfig,
   {
-    languageOptions: {
-      parserOptions: {
-        parser: '@typescript-eslint/parser',
-      },
-    },
     rules: {
       // // disable eslint no-shadow as it's causing false positives on typescript enums
       // 'no-shadow': 'off',
