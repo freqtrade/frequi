@@ -65,7 +65,7 @@
     "unplugin-vue-components": "^32.0.0",
     "vite": "^8.0.9",
     "vitest": "^4.1.4",
-    "vue-tsc": "^3.2.6"
+    "vue-tsc": "^3.2.7"
   },
   "resolutions": {
     "chokidar@4": "4.0.1",
