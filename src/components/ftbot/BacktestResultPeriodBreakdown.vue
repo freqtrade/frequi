@@ -51,7 +51,7 @@ const columns: TableColumn<PeriodRow>[] = [
   <USegmentedControl
     v-model="periodicBreakdownPeriod"
     :items="periodicBreakdownSelections"
-    size="sm"
+    size="md"
     class="m-2"
   ></USegmentedControl>
   <UTable :data="periodicBreakdown[periodicBreakdownPeriod]" :columns="columns">
