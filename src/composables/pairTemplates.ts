@@ -1,7 +1,7 @@
 const pairTemplates = ref([
   {
-    description: 'All USDT Pairs',
-    pairs: ['.*/USDT'],
+    description: 'BTC/ETH v15 Futures',
+    pairs: ['BTC/USDT:USDT', 'ETH/USDT:USDT'],
   },
   {
     description: 'All USDT Futures Pairs',

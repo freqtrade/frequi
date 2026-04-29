@@ -108,6 +108,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/LearningLoop.vue'),
   },
   {
+    path: '/tqi-metrics',
+    name: 'TQI & Regime Metrics',
+    component: () => import('@/components/TQIRegimeMetrics.vue'),
+  },
+  {
     path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404View.vue'),

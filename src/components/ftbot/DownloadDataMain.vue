@@ -4,8 +4,8 @@ import { MarginMode, TradingMode } from '@/types';
 
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();
-const pairs = ref<string[]>(['BTC/USDT', 'ETH/USDT', '']);
-const timeframes = ref<string[]>(['5m', '1h']);
+const pairs = ref<string[]>(['BTC/USDT:USDT', 'ETH/USDT:USDT']);
+const timeframes = ref<string[]>(['1m']);
 
 const timeSelection = ref({
   useCustomTimerange: false,
@@ -23,8 +23,8 @@ const exchange = ref<{
   selectedExchange: {
     exchange: 'binance',
     trade_mode: {
-      margin_mode: MarginMode.NONE,
-      trading_mode: TradingMode.SPOT,
+      margin_mode: MarginMode.ISOLATED,
+      trading_mode: TradingMode.FUTURES,
     },
   },
 });

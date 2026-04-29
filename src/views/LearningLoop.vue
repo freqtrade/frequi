@@ -18,11 +18,20 @@ interface LearningStateAdjustments {
   require_behavior_confirmation: boolean;
 }
 
+interface LearningStateControls {
+  risk_multiplier: number;
+  cooldown_pairs: string[];
+  disabled_entry_tags: string[];
+  max_new_entries_per_hour: number | null;
+  consecutive_loss_mode: boolean;
+}
+
 interface LearningState {
   generated_at: string | null;
   source: string;
   summary: LearningStateSummary;
   active_adjustments: LearningStateAdjustments;
+  active_controls: LearningStateControls;
   reasons: string[];
   recommendations: string[];
   updated_at?: string;
@@ -34,49 +43,54 @@ const MOCK_LESSONS: Lesson[] = [
   {
     date: '2026-04-18',
     content: `### What went wrong
-- BTC/USDT long entered during Distribution regime — regime gate should have blocked this; threshold needs tightening to 0.65
-- 3 exits via stop_loss in Bear state within 2-hour window — consider pause on new longs when consecutive stops > 2
-- SOL/USDT signal confidence 0.51 slipped through — confidence floor needs hard enforcement at 0.55
+- v15 stale exits reached review threshold on ETH/USDT:USDT
+- Three consecutive losses triggered the mandatory 30-minute paper pause
+- BTC/USDT:USDT short sweep had volume expansion but candle range was weak
 
 ### What to change tomorrow
-- Add consecutive-loss circuit breaker (3 losses → 30-min cooldown)`,
+- Keep v15 parameters locked and wait for guardrail reset before new paper entries`,
   },
   {
     date: '2026-04-17',
     content: `### What went wrong
-- Mean reversion signal overrode trend in Bull regime — weight rebalance needed (current 0.70/0.30 trend/MR for Bull is correct, check aggregator)
-- ETH/USDT VWAP deviation fade triggered 4x within 6 hours — possible whipsaw in ranging market; add minimum time between MR signals (15 min)
-- Funding rate z-score hit 2.3 but signal was only bearish -0.34 — investigate scaling
+- ETH/USDT:USDT underperformed in chop, matching the v15 bad-regime warning
+- Rolling PF dipped near the 1.15 paper stop threshold
 
 ### What to change tomorrow
-- Add VWAP MR cooldown timer per pair`,
+- Continue paper-only validation until 100 clean trades are collected`,
   },
   {
     date: '2026-04-16',
     content: `### What went wrong
-- Regime transition from Bull → Distribution mid-position not handled — position was held at full size
-- Kelly sizer returned 0.0 on 3 pairs due to drawdown guard — this is correct behavior, log as INFO not WARNING
-- XRP/USDT panic regime correctly blocked all entries — regime gate working as intended
+- BTC/USDT:USDT produced fewer trades during low-volume chop
+- No live eligibility yet because paper sample is below 100 trades
 
 ### What to change tomorrow
-- On regime downgrade (Bull→Distribution), reduce position size by 50% within next 5-min candle`,
+- Keep dry-run futures mode and monitor PF, WR, stale rate, and duration`,
   },
 ];
 
 const DEFAULT_STATE: LearningState = {
   generated_at: null,
-  source: 'learning_loop',
+  source: 'v15_locked_config',
   summary: {
     total_closed_trades: 0,
     win_rate: 0,
     average_result_pct: null,
   },
   active_adjustments: {
-    disable_fallback_entry: false,
+    disable_fallback_entry: true,
     min_score_for_fallback: 3,
     max_rsi_for_fallback: 70,
     require_liquidity_confirmation: false,
     require_behavior_confirmation: false,
+  },
+  active_controls: {
+    risk_multiplier: 1,
+    cooldown_pairs: [],
+    disabled_entry_tags: [],
+    max_new_entries_per_hour: null,
+    consecutive_loss_mode: false,
   },
   reasons: [],
   recommendations: [],
@@ -137,69 +151,59 @@ function parseLesson(content: string): Record<string, string[]> {
   return sections;
 }
 
-function formatSectionLine(line: string): string {
-  return line.replace(/^-\s*/, '').trim();
-}
-
 const riskBanner = computed(() => {
   const summary = learningState.value.summary;
-  const adjustments = learningState.value.active_adjustments;
   const reasons = new Set(learningState.value.reasons);
 
   const totalClosed = summary.total_closed_trades ?? 0;
   const winRate = summary.win_rate ?? 0;
   const avgResult = summary.average_result_pct;
 
-  let marketCondition: 'BAD' | 'NEUTRAL' | 'GOOD' = 'NEUTRAL';
-  let confidence: 'LOW' | 'MEDIUM' | 'HIGH' = 'MEDIUM';
-  let suggestedRisk = 0.5;
-  let reason = 'Mixed evidence. Stay controlled while more trades are collected.';
-
   const severeReasons = [
-    'fallback_entry_no_edge',
-    'no_liquidity_confirmation',
-    'no_behavior_confirmation',
-    'structure_failed_after_entry',
-    'breakout_failed_after_entry',
+    'v15_stale_exit',
+    'v15_entry_gate_missing',
+    'v15_atr_expansion_missing',
+    'v15_volume_expansion_missing',
+    'v15_range_too_small',
   ];
   const severeReasonCount = severeReasons.filter((r) => reasons.has(r)).length;
 
   if (
     totalClosed >= 3 &&
-    (winRate < 35 ||
+    (winRate < 42 ||
       (avgResult !== null && avgResult < 0) ||
-      adjustments.disable_fallback_entry ||
+      learningState.value.active_controls.consecutive_loss_mode ||
       severeReasonCount >= 2)
   ) {
-    marketCondition = 'BAD';
-    confidence = 'LOW';
-    suggestedRisk = 0.25;
-    reason = 'Recent closed trades show weak edge. Keep risk defensive until quality improves.';
+    return {
+      marketCondition: 'BAD',
+      confidence: 'LOW',
+      suggestedRiskLabel: '0x',
+      suggestedRisk: 0,
+      reason: 'A v15 paper guardrail is active. Stop new entries until the review condition clears.',
+    };
   } else if (
-    totalClosed >= 5 &&
-    winRate >= 55 &&
+    totalClosed >= 100 &&
+    winRate >= 48 &&
     (avgResult === null || avgResult > 0) &&
-    !adjustments.disable_fallback_entry &&
-    !adjustments.require_liquidity_confirmation &&
-    !adjustments.require_behavior_confirmation
+    severeReasonCount === 0
   ) {
-    marketCondition = 'GOOD';
-    confidence = 'HIGH';
-    suggestedRisk = 1.0;
-    reason = 'Recent performance is healthy and no major learning penalties are active.';
-  } else {
-    marketCondition = 'NEUTRAL';
-    confidence = totalClosed >= 3 ? 'MEDIUM' : 'LOW';
-    suggestedRisk = 0.5;
-    reason = 'Conditions are not strong enough for full risk, but not weak enough for max defense.';
+    return {
+      marketCondition: 'GOOD',
+      confidence: 'HIGH',
+      suggestedRiskLabel: '1x',
+      suggestedRisk: 1.0,
+      reason:
+        'Paper sample meets the v15 eligibility floor. Validate PF, stale rate, and duration before live consideration.',
+    };
   }
 
   return {
-    marketCondition,
-    confidence,
-    suggestedRiskLabel: `${suggestedRisk.toFixed(2).replace(/\.00$/, '')}x`,
-    suggestedRisk,
-    reason,
+    marketCondition: 'NEUTRAL',
+    confidence: totalClosed >= 3 ? 'MEDIUM' : 'LOW',
+    suggestedRiskLabel: '1x',
+    suggestedRisk: 1.0,
+    reason: 'Paper validation is still collecting evidence. v15 requires 100 clean trades before live eligibility.',
   };
 });
 
@@ -243,6 +247,10 @@ async function fetchLearningState() {
       active_adjustments: {
         ...DEFAULT_STATE.active_adjustments,
         ...(data.active_adjustments ?? {}),
+      },
+      active_controls: {
+        ...DEFAULT_STATE.active_controls,
+        ...(data.active_controls ?? {}),
       },
       reasons: Array.isArray(data.reasons) ? data.reasons : [],
       recommendations: Array.isArray(data.recommendations) ? data.recommendations : [],
@@ -408,37 +416,35 @@ onUnmounted(() => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="rounded-md border border-surface-600 bg-surface-900/50 p-3">
           <div class="text-xs uppercase tracking-wide text-surface-500 mb-2">
-            Active adjustments
+            Locked v15 state
           </div>
           <ul class="text-sm text-surface-300 space-y-2">
             <li class="flex justify-between gap-3">
-              <span>Disable fallback entry</span>
+              <span>Fallback disabled</span>
               <span class="font-semibold">
                 {{ learningState.active_adjustments.disable_fallback_entry }}
               </span>
             </li>
             <li class="flex justify-between gap-3">
-              <span>Min score for fallback</span>
+              <span>Risk multiplier</span>
+              <span class="font-semibold">{{ learningState.active_controls.risk_multiplier }}x</span>
+            </li>
+            <li class="flex justify-between gap-3">
+              <span>Consecutive-loss pause</span>
               <span class="font-semibold">
-                {{ learningState.active_adjustments.min_score_for_fallback }}
+                {{ learningState.active_controls.consecutive_loss_mode }}
               </span>
             </li>
             <li class="flex justify-between gap-3">
-              <span>Max RSI for fallback</span>
+              <span>Max new entries / hour</span>
               <span class="font-semibold">
-                {{ learningState.active_adjustments.max_rsi_for_fallback }}
+                {{ learningState.active_controls.max_new_entries_per_hour ?? 'unlimited' }}
               </span>
             </li>
             <li class="flex justify-between gap-3">
-              <span>Require liquidity confirmation</span>
+              <span>Disabled tags</span>
               <span class="font-semibold">
-                {{ learningState.active_adjustments.require_liquidity_confirmation }}
-              </span>
-            </li>
-            <li class="flex justify-between gap-3">
-              <span>Require behavior confirmation</span>
-              <span class="font-semibold">
-                {{ learningState.active_adjustments.require_behavior_confirmation }}
+                {{ learningState.active_controls.disabled_entry_tags.length }}
               </span>
             </li>
           </ul>

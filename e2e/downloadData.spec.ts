@@ -43,8 +43,8 @@ test.describe('Download Data View', () => {
           running: false,
           progress: null,
           progress_tasks: {
-            0: { progress: 2, total: 2, description: 'Timeframe 5m' },
-            1: { progress: 2, total: 2, description: 'Downloading BTC/USDT' },
+            0: { progress: 2, total: 2, description: 'Timeframe 1m' },
+            1: { progress: 2, total: 2, description: 'Downloading BTC/USDT:USDT' },
           },
         }),
       });
@@ -60,7 +60,7 @@ test.describe('Download Data View', () => {
     const downloadData = page.locator('a', { hasText: 'Download Data' });
     await Promise.all([downloadData.click(), page.waitForResponse('**/exchanges')]);
 
-    await page.getByRole('button', { name: 'All USDT Pairs' }).click();
+    await page.getByRole('button', { name: 'BTC/ETH v15 Futures' }).click();
 
     await page.getByRole('spinbutton', { name: 'Days to download' }).click();
 
@@ -85,10 +85,10 @@ test.describe('Download Data View', () => {
       days: 3,
     });
 
-    expect(postData.pairs).toContain('BTC/USDT');
-    expect(postData.timeframes).toContain('5m');
+    expect(postData.pairs).toContain('BTC/USDT:USDT');
+    expect(postData.timeframes).toContain('1m');
     await expect(page.getByText('Downloading BTC/USDT')).toBeVisible();
-    await expect(page.getByText('Timeframe 5m')).toBeVisible();
+    await expect(page.getByText('Timeframe 1m')).toBeVisible();
   });
   test('Download Data page with advanced settings', async ({ page }) => {
     const downloadDataPromise = page.waitForRequest('**/api/v1/download_data');
@@ -98,7 +98,7 @@ test.describe('Download Data View', () => {
     const downloadData = page.locator('a', { hasText: 'Download Data' });
     await Promise.all([downloadData.click(), page.waitForResponse('**/exchanges')]);
 
-    await page.getByRole('button', { name: 'All USDT Pairs' }).click();
+    await page.getByRole('button', { name: 'BTC/ETH v15 Futures' }).click();
     const daysInput = page.getByLabel('Days to download');
     await daysInput.clear();
     await page.keyboard.type('3');
@@ -124,7 +124,7 @@ test.describe('Download Data View', () => {
       erase: true,
     });
 
-    expect(postData.pairs).toContain('BTC/USDT');
-    expect(postData.timeframes).toContain('5m');
+    expect(postData.pairs).toContain('BTC/USDT:USDT');
+    expect(postData.timeframes).toContain('1m');
   });
 });

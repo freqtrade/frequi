@@ -29,6 +29,9 @@ function statusClass(status: string): string {
   if (status === 'Entered') {
     return 'text-green-600';
   }
+  if (status.includes('ATR') || status.includes('Volume') || status.includes('Range')) {
+    return 'text-yellow-600';
+  }
   return 'text-surface-900 dark:text-surface-100';
 }
 
@@ -111,7 +114,7 @@ onBeforeUnmount(() => {
       <div
         class="px-3 py-2 border-b border-surface-300 dark:border-surface-700 flex items-center justify-between"
       >
-        <div class="font-semibold">Trade Readiness</div>
+        <div class="font-semibold">v15 Long/Short Readiness</div>
         <div class="text-xs text-surface-500 dark:text-surface-400">Click a row to expand</div>
       </div>
 
@@ -175,27 +178,52 @@ onBeforeUnmount(() => {
 
                   <div class="space-y-1" v-if="row.signal">
                     <div>
-                      <span class="font-semibold">Score:</span> {{ row.signal.score ?? 'n/a' }}
+                      <span class="font-semibold">Entry Gate:</span>
+                      {{ row.signal.entry_gate ? 'Open' : 'Waiting' }}
                     </div>
                     <div>
-                      <span class="font-semibold">Actionable:</span>
-                      {{ row.signal.actionable ? 'Yes' : 'No' }}
+                      <span class="font-semibold">ATR:</span>
+                      {{ row.signal.atr_ok ? 'OK' : 'No' }}
+                    </div>
+                    <div>
+                      <span class="font-semibold">Volume:</span>
+                      {{ row.signal.vol_ok ? 'OK' : 'No' }}
+                    </div>
+                    <div>
+                      <span class="font-semibold">Range:</span>
+                      {{ row.signal.range_ok ? 'OK' : 'No' }}
                     </div>
                     <div>
                       <span class="font-semibold">Sweep:</span>
-                      {{ row.signal.sweep ? 'Yes' : 'No' }}
+                      {{
+                        row.signal.sweep_low
+                          ? 'Low'
+                          : row.signal.sweep_high
+                            ? 'High'
+                            : row.signal.sweep
+                              ? 'Yes'
+                              : 'No'
+                      }}
                     </div>
                     <div>
-                      <span class="font-semibold">Break / Retest:</span>
-                      {{ row.signal.break_retest ? 'Yes' : 'No' }}
+                      <span class="font-semibold">VWAP:</span>
+                      {{ row.signal.vwap ?? 'n/a' }}
                     </div>
                     <div>
                       <span class="font-semibold">Enter Tag:</span>
                       {{ row.signal.enter_tag ?? 'n/a' }}
                     </div>
                     <div>
-                      <span class="font-semibold">Event Type:</span>
-                      {{ row.signal.event_type ?? 'n/a' }}
+                      <span class="font-semibold">Stop / Target:</span>
+                      {{ row.signal.expected_stop ?? 'n/a' }} / {{ row.signal.expected_target ?? 'n/a' }}
+                    </div>
+                    <div>
+                      <span class="font-semibold">R/R:</span>
+                      {{ row.signal.expected_rr ?? 'n/a' }}
+                    </div>
+                    <div>
+                      <span class="font-semibold">Risk Halt:</span>
+                      {{ row.signal.risk_halt_reason ?? 'none' }}
                     </div>
                   </div>
 

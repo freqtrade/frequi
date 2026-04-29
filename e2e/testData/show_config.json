@@ -3,13 +3,13 @@
     "strategy_version": "1.1.5",
     "api_version": 2.42,
     "dry_run": true,
-    "trading_mode": "spot",
-    "short_allowed": false,
+    "trading_mode": "futures",
+    "short_allowed": true,
     "stake_currency": "USDT",
     "stake_amount": "50",
     "available_capital": 1000.0,
     "stake_currency_decimals": 3,
-    "max_open_trades": 3,
+    "max_open_trades": 10,
     "minimal_roi": {
         "0": 0.05
     },
@@ -39,7 +39,7 @@
     "timeframe_ms": 60000,
     "timeframe_min": 1,
     "exchange": "binance",
-    "strategy": "NoActionStrategy",
+    "strategy": "DryRunStrategy",
     "force_entry_enable": true,
     "exit_pricing": {
         "price_side": "other",
