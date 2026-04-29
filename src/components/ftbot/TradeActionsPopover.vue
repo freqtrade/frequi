@@ -81,7 +81,6 @@ function handleForceEntry(item: Trade) {
           />
           <UButton
             class="mt-1 w-full text-start"
-            size="sm"
             color="neutral"
             label="Close Actions menu"
             icon="mdi:cancel"

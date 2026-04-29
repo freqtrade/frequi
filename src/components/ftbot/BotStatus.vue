@@ -91,25 +91,9 @@ const botStore = useBotStore();
         }}
       </span>
     </p>
-    <UCollapsible v-if="botStore.activeBot.strategy?.params" title="Strategy parameters">
-      <UButton
-        block
-        size="lg"
-        color="neutral"
-        variant="subtle"
-        class="group"
-        trailing-icon="mdi:chevron-down"
-        :ui="{
-          trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200',
-        }"
-        >Strategy parameters</UButton
-      >
-      <template #content>
-        <div class="border border-neutral-500 rounded-sm p-3">
-          <StrategyParameters :strategy="botStore.activeBot.strategy" />
-        </div>
-      </template>
-    </UCollapsible>
+    <BaseCollapsible v-if="botStore.activeBot.strategy?.params" title="Strategy parameters">
+      <StrategyParameters :strategy="botStore.activeBot.strategy" class="m-3" />
+    </BaseCollapsible>
     <USeparator class="my-5" />
     <BotProfit
       class="mx-1"

@@ -138,7 +138,7 @@ const tradingTabItems = computed<TabsItem[]>(() => {
           <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
-          <UTabs color="neutral" :items="tradingTabItems" default-value="pairs">
+          <UTabs color="neutral" :items="tradingTabItems" variant="link" default-value="pairs">
             <template #pairs>
               <PairSummary
                 :pairlist="botStore.activeBot.whitelist"

@@ -140,7 +140,7 @@ const chartOptions = computed((): EChartsOption => {
     >
       <USelect
         v-model="settingsStore.profitDistributionBins"
-        size="sm"
+        class="min-w-20"
         :items="binOptions"
       ></USelect>
     </UFormField>

@@ -48,6 +48,15 @@ export default defineConfig({
             th: 'px-2 py-2 text-default text-md',
           },
         },
+        tabs: {
+          variants: {
+            variant: {
+              link: {
+                trigger: 'grow focus:outline-none',
+              },
+            },
+          },
+        },
       },
       autoImport: {
         imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],
