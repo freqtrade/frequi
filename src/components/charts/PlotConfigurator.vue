@@ -289,40 +289,23 @@ const markAreaZIndex = computed({
         @delete="deleteSubplot"
         @rename="renameSubplot"
       >
-        <UCommandPalette
+        <UListbox
           id="fieldSel"
-          class="rounded ring ring-accented"
           v-model="selSubPlot"
-          :input="false"
           value-key="value"
-          :groups="[
-            {
-              id: 'plots',
-              items: subplots.map((plot) => ({
-                value: plot,
-                label: plot,
-              })),
-            },
-          ]"
+          :items="
+            subplots.map((plot) => ({
+              value: plot,
+              label: plot,
+            }))
+          "
         >
-        </UCommandPalette>
+        </UListbox>
       </EditValue>
     </UFormField>
     <USeparator class="my-2" />
     <UFormField label="Indicators in this plot" class="text-md">
-      <UCommandPalette
-        class="rounded ring ring-accented"
-        v-model="selIndicatorName"
-        value-key="value"
-        :input="false"
-        :groups="[
-          {
-            id: 'indicators',
-            items: usedColumns,
-          },
-        ]"
-      >
-      </UCommandPalette>
+      <UListbox v-model="selIndicatorName" value-key="value" :items="usedColumns"> </UListbox>
     </UFormField>
     <div class="flex flex-row mt-1 gap-1">
       <UButton

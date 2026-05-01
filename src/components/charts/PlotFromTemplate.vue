@@ -46,23 +46,19 @@ const showIndicatorMapping = ref(false);
 <template>
   <div v-if="visible" class="pt-1">
     <UFormField v-if="!showIndicatorMapping" label="Select Template" class="text-md">
-      <UCommandPalette
+      <UListbox
         id="selectTemplate"
         class="rounded ring ring-accented"
-        :input="false"
         v-model="selTemplateName"
         value-key="value"
-        :groups="[
-          {
-            id: 'templates',
-            items: plotTemplateNames.map((name) => ({
-              value: name,
-              label: name,
-            })),
-          },
-        ]"
+        :items="
+          plotTemplateNames.map((name) => ({
+            value: name,
+            label: name,
+          }))
+        "
       >
-      </UCommandPalette>
+      </UListbox>
     </UFormField>
     <div v-else>
       <h5 class="mt-1 text-center text-md mb-1">Re-map indicators</h5>
