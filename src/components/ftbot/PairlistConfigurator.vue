@@ -83,6 +83,7 @@ if (pairlistStore.whitelist.length > 0) {
       ref="availablePairlistsEl"
       class="divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500 min-w-72"
     >
+      <!-- Available pairlists-->
       <li
         v-for="pairlist in availablePairlists"
         :key="pairlist.name"
@@ -90,7 +91,7 @@ if (pairlistStore.whitelist.length > 0) {
           'no-drag text-gray-500 hover:cursor-default':
             pairlistStore.config.pairlists.length === 0 && !pairlist.is_pairlist_generator,
         }"
-        class="pairlist flex text-start items-center py-2 px-3 hover:cursor-grab"
+        class="flex text-start items-center py-2 px-3 hover:cursor-grab [.dragging]:bg-neutral-100 dark:[.dragging]:bg-neutral-900 [.dragging]:border [.dragging]:border-neutral-500"
       >
         <div class="flex grow items-start flex-col">
           <span class="font-bold">{{ pairlist.name }}</span>
@@ -127,9 +128,7 @@ if (pairlistStore.whitelist.length > 0) {
       </div>
       <PairlistConfigBlacklist />
       <UAlert
-        v-if="
-          (pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator)
-        "
+        v-if="pairlistStore.config.pairlists.length > 0 && !pairlistStore.firstPairlistIsGenerator"
         class="my-2"
         color="warning"
         title="Invalid configuration"
@@ -181,15 +180,7 @@ if (pairlistStore.whitelist.length > 0) {
   </div>
 </template>
 
-<style lang="css" scoped>
-@reference '../../styles/tailwind.css';
-
-.pairlist.dragging {
-  @apply border-white border bg-white dark:bg-black;
-  /* border: 1px solid white; */
-  /* border-radius: 0; */
-}
-
+<style lang="scss" scoped>
 .empty:after {
   content: 'Drag pairlist here';
   position: absolute;

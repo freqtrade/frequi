@@ -2,13 +2,20 @@
 import type { PairlistParameter } from '@/types';
 import { PairlistParamType } from '@/types';
 
-defineProps<{
+const props = defineProps<{
   param: PairlistParameter;
 }>();
 
 // TODO: type should really be PairlistParamValue
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramValue = defineModel<any>();
+
+const options = computed(() => {
+  if (props.param.type === PairlistParamType.option) {
+    return props.param.options.map((option) => (option === '' ? undefined : option)) ?? [];
+  }
+  return [];
+});
 </script>
 
 <template>
@@ -31,7 +38,7 @@ const paramValue = defineModel<any>();
         <USelect
           v-if="param.type === PairlistParamType.option"
           v-model="paramValue"
-          :items="param.options"
+          :items="options"
           class="w-full"
         ></USelect>
         <BaseStringList
