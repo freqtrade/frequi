@@ -497,8 +497,9 @@ function updateChart(initial = false) {
           splitNumber: 20,
         });
       }
-      if (Array.isArray(options.dataZoom)) {
-        options.dataZoom.forEach((el) =>
+      if (Array.isArray(chartOptions.value.dataZoom)) {
+        // Must be set on the chartOptions object - options doesn't have dataZoom at this point
+        chartOptions.value.dataZoom.forEach((el) =>
           el.xAxisIndex && Array.isArray(el.xAxisIndex) ? el.xAxisIndex.push(plotIndex) : null,
         );
       }
