@@ -1,18 +1,27 @@
 <script setup lang="ts">
 interface Props {
+  modelValue?: string;
   value?: string;
   belowTimeframe?: string;
+  includeSeconds?: boolean;
+  maxTimeframe?: string;
   size?: undefined | 'small' | 'large';
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
   value: '',
   belowTimeframe: '',
+  includeSeconds: false,
+  maxTimeframe: '',
   size: undefined,
 });
-const emit = defineEmits<{ input: [value: string] }>();
+const emit = defineEmits<{
+  input: [value: string];
+  'update:modelValue': [value: string];
+}>();
 
-const selectedTimeframe = ref('');
+const selectedTimeframe = ref(props.modelValue ?? props.value ?? '');
 // The below list must always remain sorted correctly!
 const availableTimeframesBase = [
   // Placeholder value
@@ -35,19 +44,41 @@ const availableTimeframesBase = [
   '1M',
   '1y',
 ];
+const availableSecondsTimeframes = ['1s', '5s', '10s', '15s', '30s', '45s'];
 
 const availableTimeframes = computed(() => {
-  if (!props.belowTimeframe) {
-    return availableTimeframesBase;
-  }
-  const idx = availableTimeframesBase.findIndex((v) => v === props.belowTimeframe);
+  let options = props.includeSeconds
+    ? [availableTimeframesBase[0], ...availableSecondsTimeframes, ...availableTimeframesBase.slice(1)]
+    : availableTimeframesBase;
 
-  return [...availableTimeframesBase].splice(0, idx);
+  if (props.maxTimeframe) {
+    const maxIdx = options.findIndex((v) => v === props.maxTimeframe);
+    if (maxIdx >= 0) {
+      options = options.slice(0, maxIdx + 1);
+    }
+  }
+
+  if (props.belowTimeframe) {
+    const idx = options.findIndex((v) => v === props.belowTimeframe);
+    if (idx >= 0) {
+      return options.slice(0, idx);
+    }
+  }
+
+  return options;
 });
 
 const emitSelectedTimeframe = () => {
   emit('input', selectedTimeframe.value);
+  emit('update:modelValue', selectedTimeframe.value);
 };
+
+watch(
+  () => props.modelValue ?? props.value ?? '',
+  (value) => {
+    selectedTimeframe.value = value;
+  },
+);
 </script>
 
 <template>

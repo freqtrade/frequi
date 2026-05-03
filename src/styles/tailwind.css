@@ -132,6 +132,28 @@ body.ft-theme-transition *:after {
 html {
     /*  Set the default font size to 14px */
     font-size: 14px;
+    background: #05070d;
+}
+
+body {
+    min-width: 0;
+    margin: 0;
+    background:
+        radial-gradient(circle at 18% -10%, rgba(0, 137, 161, 0.14), transparent 28rem),
+        linear-gradient(180deg, #07101a 0%, #05070d 36rem, #05070d 100%);
+    color: var(--p-surface-100, #f1f5f9);
+    overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+* {
+    min-width: 0;
 }
 
 .vue-grid-item {
@@ -139,3 +161,101 @@ html {
     background-color: unset !important;
 }
 
+@layer frequi {
+  #app {
+    isolation: isolate;
+  }
+
+  main {
+    scrollbar-gutter: stable;
+  }
+
+  .drag-header {
+    text-align: left;
+  }
+
+  .p-button {
+    border-radius: 0.45rem;
+    font-weight: 600;
+  }
+
+  .p-button.p-button-sm {
+    min-height: 2rem;
+  }
+
+  .p-select,
+  .p-inputtext,
+  .p-multiselect,
+  .p-datepicker input {
+    border-radius: 0.45rem;
+  }
+
+  .p-datatable {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: transparent;
+    text-align: left;
+  }
+
+  .p-datatable .p-datatable-thead > tr > th {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    vertical-align: middle;
+  }
+
+  .p-drawer.ft-nav-drawer,
+  .ft-nav-drawer {
+    background: #0b111a;
+    color: var(--p-surface-100, #f1f5f9);
+    border-left: 1px solid rgba(71, 85, 105, 0.6);
+  }
+
+  .ft-nav-drawer .p-drawer-content,
+  .ft-nav-drawer .p-drawer-header {
+    background: #0b111a;
+    color: var(--p-surface-100, #f1f5f9);
+  }
+
+  .p-menu {
+    border-radius: 0.6rem;
+    border-color: rgba(71, 85, 105, 0.7);
+    overflow: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.7);
+    border: 2px solid rgba(15, 23, 42, 0.65);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.85);
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    overflow: hidden;
+  }
+
+  .p-dialog,
+  .p-popover,
+  .p-overlaypanel,
+  .p-menu {
+    max-width: calc(100vw - 1rem);
+  }
+}

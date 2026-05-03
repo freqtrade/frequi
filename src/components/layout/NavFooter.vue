@@ -3,10 +3,9 @@ const botStore = useBotStore();
 </script>
 
 <template>
-  <footer class="md:hidden">
+  <footer class="md:hidden border-t border-surface-200 bg-white/95 dark:border-surface-800 dark:bg-[#0b111a]/95">
     <!-- Only visible on xs (phone) viewport! -->
-    <hr class="my-0" />
-    <div class="flex gap-2 justify-between px-2">
+    <div class="flex gap-1 justify-between px-2 py-1">
       <Button
         v-if="!botStore.canRunBacktest"
         icon-pos="top"

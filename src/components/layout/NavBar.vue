@@ -17,7 +17,7 @@ const pingInterval = ref<number>();
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 
-const isMobile = breakpoints.smallerOrEqual('md');
+const isCompactNav = breakpoints.smaller('xl');
 
 async function clickLogout() {
   botStore.removeBot(botStore.selectedBot);
@@ -114,27 +114,10 @@ const navItems = ref([
     icon: 'i-mdi-currency-usd',
   },
   {
-    label: 'Chart',
-    to: '/graph',
-    icon: 'i-mdi-chart-line',
-  },
-  {
-    label: 'Regime',
-    to: '/regime',
+    label: 'Intelligence',
+    to: '/intelligence',
     visible: true,
     icon: 'i-mdi-chart-bell-curve',
-  },
-  {
-    label: 'Signals',
-    to: '/signals',
-    visible: true,
-    icon: 'i-mdi-brain',
-  },
-  {
-    label: 'Risk',
-    to: '/risk',
-    visible: true,
-    icon: 'i-mdi-shield-alert',
   },
   {
     label: 'Markets',
@@ -143,53 +126,30 @@ const navItems = ref([
     icon: 'i-mdi-chart-timeline-variant',
   },
   {
-    label: 'Backtest',
-    to: '/backtest-runner',
+    label: 'Risk',
+    to: '/risk',
     visible: true,
-    icon: 'i-mdi-play-circle',
-  },
-  {
-    label: 'Learning',
-    to: '/learning',
-    visible: true,
-    icon: 'i-mdi-brain',
-  },
-  {
-    label: 'Logs',
-    to: '/logs',
-    icon: 'i-mdi-format-list-bulleted',
-  },
-  {
-    label: 'Settings',
-    to: '/settings',
-    mobileOnly: true,
-    icon: 'i-mdi-cog',
+    icon: 'i-mdi-shield-alert',
   },
   {
     label: 'Backtest',
     to: '/backtest',
-    visible: computed(() => botStore.canRunBacktest),
-    icon: 'i-mdi-currency-usd',
+    visible: true,
+    icon: 'i-mdi-play-circle',
   },
   {
-    label: 'Download Data',
-    to: '/download_data',
-    visible: computed(
-      () => botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,
-    ),
-    icon: 'i-mdi-download',
-  },
-  {
-    label: 'Pairlist Config',
-    to: '/pairlist_config',
-    icon: 'i-mdi-format-list-numbered-rtl',
-    visible: computed(
-      () =>
-        (botStore.activeBot?.isWebserverMode ?? false) &&
-        botStore.activeBot.botFeatures.pairlistConfig,
-    ),
+    label: 'More',
+    to: '/more',
+    icon: 'i-mdi-dots-horizontal',
   },
 ]);
+
+const activePageTitle = computed(() => {
+  const currentPath = route?.path;
+  const navItem = navItems.value.find((item) => item.to === currentPath);
+  if (navItem?.label) return navItem.label;
+  return typeof route.name === 'string' ? route.name.replace(/^Freqtrade\s+/, '') : 'Freqtrade UI';
+});
 
 const menuItems = computed<MenuItem[]>(() => [
   {
@@ -199,7 +159,7 @@ const menuItems = computed<MenuItem[]>(() => [
   {
     label: 'Settings',
     icon: 'i-mdi-cog',
-    command: () => router.push('/settings'),
+    command: () => router.push({ path: '/more', query: { tab: 'settings' } }),
   },
   {
     label: 'Lock dynamic Layout',
@@ -229,30 +189,40 @@ const drawerVisible = ref(false);
 </script>
 
 <template>
-  <header>
-    <div class="flex bg-primary-500 border-b border-primary">
-      <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
-        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
+  <header class="z-30 shrink-0 border-b border-surface-800/90 bg-[#0b111a]/95 text-surface-100 shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur">
+    <div class="flex min-h-13 items-center px-2 sm:px-3">
+      <RouterLink class="flex min-w-0 flex-row items-center pe-2 gap-2" exact to="/">
+        <img class="h-8 w-8 shrink-0 align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
+        <span class="hidden xl:inline text-nowrap text-base font-semibold tracking-wide text-surface-100">Freqtrade UI</span>
       </RouterLink>
-      <div class="flex justify-between w-full text-center items-center ms-3">
-        <div class="items-center hidden md:flex gap-5 ms-5">
+      <div
+        v-if="isCompactNav"
+        class="min-w-0 flex-1 text-left text-sm sm:text-base text-surface-100 font-semibold tracking-wide truncate"
+        aria-live="polite"
+      >
+        {{ activePageTitle }}
+      </div>
+      <div
+        class="flex min-w-0 justify-between items-center"
+        :class="isCompactNav ? 'w-auto' : 'w-full ms-3'"
+      >
+        <nav class="items-center hidden xl:flex gap-1 ms-3 min-w-0" aria-label="Primary navigation">
           <RouterLink
             v-for="(item, index) in navItems.filter(
               (item) => (item.visible ?? true) && !item.mobileOnly,
             )"
             :key="index"
             :to="item.to"
-            class="text-surface-200 flex items-center gap-2"
-            active-class="underline"
+            class="rounded-md px-2.5 py-1.5 text-sm font-medium text-surface-300 transition-colors hover:bg-surface-800 hover:text-surface-50"
+            active-class="bg-surface-800 text-primary-200"
           >
             {{ item.label }}
           </RouterLink>
           <ThemeSelect />
-        </div>
+        </nav>
 
         <!-- Right aligned nav items -->
-        <div v-if="!isMobile" class="flex ms-auto">
+        <div v-if="!isCompactNav" class="flex ms-auto items-center">
           <!-- TODO This should show outside of the dropdown in XS mode -->
           <div
             v-if="!settingsStore.confirmDialog"
@@ -286,7 +256,7 @@ const drawerVisible = ref(false);
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <div
-            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
+            class="hidden xl:flex items-center nav-item text-surface-300 me-2"
           >
             <span class="text-sm me-2">
               {{
@@ -337,9 +307,41 @@ const drawerVisible = ref(false);
         </div>
 
         <!-- Mobile menu -->
-        <div v-if="isMobile" class="ms-auto flex">
+        <div v-if="isCompactNav" class="ms-auto flex items-center gap-1">
+          <div class="flex items-center gap-1">
+            <ReloadControl class="me-1" title="Confirm Dialog deactivated." />
+            <Button
+              v-if="botStore.hasBots"
+              severity="contrast"
+              variant="text"
+              size="small"
+              @click="toggleMenu"
+            >
+              <div class="flex items-center">
+                <Avatar shape="circle" severity="contrast"> FT </Avatar>
+                <i-mdi-chevron-down />
+              </div>
+            </Button>
+            <Menu ref="menu" :model="menuItems" popup class="w-56">
+              <template #item="{ item }">
+                <div
+                  class="flex flex-row items-center gap-2 p-1"
+                  :class="{
+                    'cursor-pointer': !item.disabled,
+                  }"
+                >
+                  <i-mdi-cog v-if="item.icon === 'i-mdi-cog'" />
+                  <i-mdi-logout v-if="item.icon === 'i-mdi-logout'" />
+                  <i-mdi-lock-reset v-if="item.icon === 'i-mdi-lock-reset'" />
+                  <BaseCheckbox v-if="item.checkbox" v-model="item.checked" />
+                  <span>{{ item.label }}</span>
+                </div>
+              </template>
+            </Menu>
+            <LoginModal v-if="!botStore.hasBots && route?.path !== '/login'" />
+          </div>
           <Button
-            class="text-surface-300 text-xl"
+            class="text-surface-200 text-xl"
             variant="text"
             @click="drawerVisible = !drawerVisible"
           >
@@ -349,16 +351,16 @@ const drawerVisible = ref(false);
           </Button>
           <Drawer
             v-model:visible="drawerVisible"
-            header="Drawer"
+            header="Navigation"
             position="right"
-            class="bg-primary-500"
+            class="ft-nav-drawer"
           >
             <template #container>
-              <div class="flex flex-row items-center">
-                <h3 class="text-xl font-bold w-full text-center text-surface-200">Freqtrade UI</h3>
+              <div class="flex flex-row items-center border-b border-surface-800 px-4 py-3">
+                <h3 class="text-base font-semibold w-full text-left text-surface-100">Freqtrade UI</h3>
                 <Button
-                  class="float-right mt-1 me-1"
-                  variant="outlined"
+                  class="shrink-0"
+                  variant="text"
                   @click="drawerVisible = !drawerVisible"
                 >
                   <template #icon>
@@ -366,22 +368,23 @@ const drawerVisible = ref(false);
                   </template>
                 </Button>
               </div>
-              <div class="flex flex-col gap-1 items-center mt-4">
+              <div class="flex flex-col gap-1 px-3 py-4">
                 <RouterLink
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
                   :to="item.to"
-                  class="text-surface-200 p-2"
-                  active-class="underline"
+                  class="rounded-md px-3 py-2 text-sm font-medium text-surface-300 transition-colors hover:bg-surface-800 hover:text-surface-50"
+                  active-class="bg-surface-800 text-primary-200"
+                  @click="drawerVisible = false"
                 >
                   {{ item.label }}
                 </RouterLink>
-                <Divider />
-                <span class="text-surface-200 text-center"
+                <Divider class="my-2" />
+                <span class="px-3 text-xs uppercase tracking-[0.18em] text-surface-500"
                   >Version: {{ settingsStore.uiVersion }}</span
                 >
 
-                <div class="flex flex-row items-center justify-center">
+                <div class="flex flex-row items-center px-3 py-2">
                   <ThemeSelect show-text />
                 </div>
                 <Select

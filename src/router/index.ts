@@ -18,17 +18,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/graph',
     name: 'Freqtrade Graph',
-    component: () => import('@/views/ChartsView.vue'),
+    redirect: '/trade',
   },
   {
     path: '/logs',
     name: 'Freqtrade Logs',
-    component: () => import('@/views/LogView.vue'),
+    redirect: { path: '/more', query: { tab: 'logs' } },
   },
   {
     path: '/backtest',
     name: 'Freqtrade Backtest',
-    component: () => import('@/views/BacktestingView.vue'),
+    component: () => import('@/views/BacktestWorkspace.vue'),
   },
   {
     path: '/dashboard',
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/settings',
     name: 'Freqtrade Settings',
-    component: () => import('@/views/SettingsView.vue'),
+    redirect: { path: '/more', query: { tab: 'settings' } },
   },
   {
     path: '/login',
@@ -70,22 +70,37 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/pairlist_config',
     name: 'Pairlist Configuration',
-    component: () => import('@/views/PairlistConfigView.vue'),
+    redirect: { path: '/more', query: { tab: 'pairlist-config' } },
   },
   {
     path: '/download_data',
     name: 'Download Data',
-    component: () => import('@/views/DownloadDataView.vue'),
+    redirect: { path: '/more', query: { tab: 'download-data' } },
+  },
+  {
+    path: '/intelligence',
+    name: 'Signal Intelligence',
+    component: () => import('@/views/IntelligenceWorkspace.vue'),
+  },
+  {
+    path: '/markets',
+    name: 'Prediction Markets',
+    component: () => import('@/views/MarketsWorkspace.vue'),
+  },
+  {
+    path: '/more',
+    name: 'Operations',
+    component: () => import('@/views/MoreWorkspace.vue'),
   },
   {
     path: '/regime',
     name: 'Regime Detector',
-    component: () => import('@/components/RegimeDetector.vue'),
+    redirect: { path: '/intelligence', query: { tab: 'regime-signals' } },
   },
   {
     path: '/signals',
     name: 'Signal Confidence',
-    component: () => import('@/components/SignalConfidence.vue'),
+    redirect: { path: '/intelligence', query: { tab: 'regime-signals' } },
   },
   {
     path: '/risk',
@@ -93,24 +108,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/RiskDashboard.vue'),
   },
   {
-    path: '/markets',
-    name: 'Prediction Markets',
-    component: () => import('@/views/PredictionMarkets.vue'),
-  },
-  {
     path: '/backtest-runner',
     name: 'Backtest Runner',
-    component: () => import('@/views/BacktestRunner.vue'),
+    redirect: { path: '/backtest', query: { tab: 'runner' } },
   },
   {
     path: '/learning',
     name: 'Learning Loop',
-    component: () => import('@/views/LearningLoop.vue'),
+    redirect: { path: '/intelligence', query: { tab: 'learning' } },
   },
   {
     path: '/tqi-metrics',
     name: 'TQI & Regime Metrics',
-    component: () => import('@/components/TQIRegimeMetrics.vue'),
+    redirect: { path: '/intelligence', query: { tab: 'trend-quality' } },
   },
   {
     path: '/(.*)*',

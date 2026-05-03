@@ -70,12 +70,12 @@ const props = defineProps<{
 
 const isLabelLeft = computed(() => props.labelSide === 'left');
 // Chart default options
-const MARGINLEFT = isLabelLeft.value ? '5.5%' : '1%';
-const MARGINRIGHT = isLabelLeft.value ? '1%' : '5.5%';
+const MARGINLEFT = isLabelLeft.value ? '5.5%' : '1.25%';
+const MARGINRIGHT = isLabelLeft.value ? '1.25%' : '7.25%';
 const NAMEGAP = 55;
 const SUBPLOTHEIGHT = 8; // Value in %
-// minimal helpers for debugging
-const showAxisLine = false;
+const MAIN_GRID_TOP = 30;
+const showAxisLine = true;
 
 // Candle Colors
 const upColor = props.colorUp;
@@ -88,6 +88,11 @@ const buySignalColor = '#00ff26';
 const shortEntrySignalColor = '#00ff26';
 const sellSignalColor = '#faba25';
 const shortexitSignalColor = '#faba25';
+const axisLabelColor = computed(() => (props.theme === 'dark' ? '#b8c1d1' : '#334155'));
+const axisLineColor = computed(() => (props.theme === 'dark' ? '#3d4658' : '#cbd5e1'));
+const splitLineColor = computed(() => (props.theme === 'dark' ? '#202838' : '#e5e7eb'));
+const chartBackgroundColor = computed(() => (props.theme === 'dark' ? '#05070d' : '#ffffff'));
+const chartPanelColor = computed(() => (props.theme === 'dark' ? '#080d16' : '#ffffff'));
 
 const candleChart = ref<InstanceType<typeof ECharts>>();
 const chartOptions = ref<EChartsOption>({});
@@ -111,17 +116,6 @@ const hasData = computed(() => {
 const filteredTrades = computed(() => {
   return props.trades.filter((item: Trade) => item.pair === pair.value);
 });
-
-watch(
-  () => props.trades,
-  () => {
-    console.log('--- CandleChart trades check ---');
-    console.log('chart dataset pair:', pair.value);
-    console.log('all trades in CandleChart:', props.trades);
-    console.log('filteredTrades:', filteredTrades.value);
-  },
-  { deep: true, immediate: true },
-);
 
 const chartTitle = computed(() => {
   return `${strategy.value} - ${pair.value} - ${timeframe.value}`;
@@ -400,14 +394,15 @@ function updateChart(initial = false) {
       // Add 2 candles to the initial zoom to allow for a "scroll past" effect
       const startingZoom = (1 - (props.startCandleCount + 2) / props.dataset.length) * 100;
       chartOptions.value.dataZoom.forEach((el, i) => {
-        if (chartOptions.value && chartOptions.value.dataZoom) {
+        if (chartOptions.value && chartOptions.value.dataZoom && 'xAxisIndex' in el) {
           chartOptions.value.dataZoom[i].start = startingZoom;
+          chartOptions.value.dataZoom[i].end = 100;
         }
       });
     } else {
       // Remove start/end settings after chart initialization to avoid chart resetting
       chartOptions.value.dataZoom.forEach((el, i) => {
-        if (chartOptions.value && chartOptions.value.dataZoom) {
+        if (chartOptions.value && chartOptions.value.dataZoom && 'xAxisIndex' in el) {
           delete chartOptions.value.dataZoom[i].start;
           delete chartOptions.value.dataZoom[i].end;
         }
@@ -469,6 +464,11 @@ function updateChart(initial = false) {
       {
         left: MARGINLEFT,
         right: MARGINRIGHT,
+        top: MAIN_GRID_TOP,
+        backgroundColor: chartPanelColor.value,
+        borderColor: axisLineColor.value,
+        borderWidth: 1,
+        show: true,
         // Grid Layout from bottom to top
         bottom: `${subplotCount * SUBPLOTHEIGHT + 2}%`,
       },
@@ -476,6 +476,10 @@ function updateChart(initial = false) {
         // Volume
         left: MARGINLEFT,
         right: MARGINRIGHT,
+        backgroundColor: chartPanelColor.value,
+        borderColor: axisLineColor.value,
+        borderWidth: 1,
+        show: true,
         // Grid Layout from bottom to top
         bottom: `${subplotCount * SUBPLOTHEIGHT}%`,
         height: `${SUBPLOTHEIGHT}%`,
@@ -575,7 +579,7 @@ function updateChart(initial = false) {
     const signalConfigs = [
       {
         colData: colEntryData,
-        name: 'Entry',
+        name: 'Long Signal',
         symbol: 'triangle',
         symbolSize: 10,
         color: buySignalColor,
@@ -584,7 +588,7 @@ function updateChart(initial = false) {
       },
       {
         colData: colExitData,
-        name: 'Exit',
+        name: 'Long Exit Signal',
         symbol: 'diamond',
         symbolSize: 8,
         color: sellSignalColor,
@@ -593,7 +597,7 @@ function updateChart(initial = false) {
       },
       {
         colData: colShortEntryData,
-        name: 'Entry',
+        name: 'Short Signal',
         symbol: 'triangle',
         symbolSize: 10,
         symbolRotate: 180,
@@ -603,7 +607,7 @@ function updateChart(initial = false) {
       },
       {
         colData: colShortExitData,
-        name: 'Exit',
+        name: 'Short Exit Signal',
         symbol: 'pin',
         symbolSize: 8,
         color: shortexitSignalColor,
@@ -725,19 +729,20 @@ function updateChart(initial = false) {
             show: true,
             hideOverlap: true,
             overflow: 'truncate',
+            color: axisLabelColor.value,
           },
-          axisLine: { show: showAxisLine },
-          axisTick: { show: false },
-          splitLine: { show: false },
+          axisLine: { show: showAxisLine, lineStyle: { color: axisLineColor.value } },
+          axisTick: { show: true, lineStyle: { color: axisLineColor.value } },
+          splitLine: { show: true, lineStyle: { color: splitLineColor.value, width: 1 } },
         });
       }
       if (Array.isArray(chartOptions.value.xAxis) && chartOptions.value.xAxis.length <= plotIndex) {
         chartOptions.value.xAxis.push({
           type: 'time',
           gridIndex: currGridIdx,
-          axisLine: { onZero: false },
+          axisLine: { onZero: false, lineStyle: { color: axisLineColor.value } },
           axisTick: { show: false },
-          axisLabel: { show: false },
+          axisLabel: { show: false, color: axisLabelColor.value },
           axisPointer: {
             label: { show: false },
           },
@@ -809,7 +814,7 @@ function updateChart(initial = false) {
     const localGrid = chartOptions.value.grid[chartOptions.value.grid.length - 1];
     if (localGrid) {
       // Last subplot is bottom
-      localGrid.bottom = '50px';
+      localGrid.bottom = '48px';
       delete localGrid.top;
     }
   }
@@ -847,15 +852,23 @@ function initializeChartOptions() {
         show: false,
       },
     ],
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundColor: chartBackgroundColor.value,
     useUTC: props.useUTC,
     animation: false,
     legend: {
       // Initial legend, further entries are pushed to the below list
-      data: ['Candles', 'Volume', 'Entry', 'Exit'],
-      right: '1%',
-      top: 0,
+      data: ['Candles', 'Volume', 'Long Signal', 'Long Exit Signal', 'Short Signal', 'Short Exit Signal'],
+      left: 12,
+      right: 34,
+      top: 4,
       type: 'scroll',
+      itemWidth: 24,
+      itemHeight: 12,
+      itemGap: 12,
+      textStyle: {
+        color: axisLabelColor.value,
+        fontSize: 12,
+      },
       pageTextStyle: {
         color: props.theme === 'dark' ? '#dedede' : '#333',
       },
@@ -866,17 +879,20 @@ function initializeChartOptions() {
       show: true,
       trigger: 'axis',
       renderMode: 'richText',
-      backgroundColor: 'rgba(80,80,80,0.7)',
-      borderWidth: 0,
+      backgroundColor:
+        props.theme === 'dark' ? 'rgba(10, 15, 25, 0.94)' : 'rgba(255, 255, 255, 0.96)',
+      borderColor: axisLineColor.value,
+      borderWidth: 1,
       textStyle: {
-        color: '#fff',
+        color: props.theme === 'dark' ? '#f8fafc' : '#0f172a',
       },
       axisPointer: {
         type: 'cross',
         lineStyle: {
-          color: '#cccccc',
+          color: props.theme === 'dark' ? '#75839a' : '#64748b',
           width: 1,
           opacity: 1,
+          type: 'dashed',
         },
       },
       // positioning copied from https://echarts.apache.org/en/option.html#tooltip.position
@@ -892,20 +908,22 @@ function initializeChartOptions() {
     axisPointer: {
       link: [{ xAxisIndex: 'all' }],
       label: {
-        backgroundColor: '#777',
+        backgroundColor: props.theme === 'dark' ? '#1f2937' : '#334155',
+        color: '#fff',
+        borderRadius: 3,
       },
     },
     xAxis: [
       {
         type: 'time',
-        axisLine: { onZero: false },
-        axisTick: { show: true },
-        axisLabel: { show: true },
+        axisLine: { onZero: false, lineStyle: { color: axisLineColor.value } },
+        axisTick: { show: true, lineStyle: { color: axisLineColor.value } },
+        axisLabel: { show: false, color: axisLabelColor.value, hideOverlap: true },
         axisPointer: {
-          label: { show: false },
+          label: { show: true },
         },
-        position: 'top',
-        splitLine: { show: false },
+        position: 'bottom',
+        splitLine: { show: true, lineStyle: { color: splitLineColor.value, width: 1 } },
         splitNumber: 20,
         min: 'dataMin',
         max: 'dataMax',
@@ -913,12 +931,13 @@ function initializeChartOptions() {
       {
         type: 'time',
         gridIndex: 1,
-        axisLine: { onZero: false },
-        axisTick: { show: false },
-        axisLabel: { show: false },
+        axisLine: { onZero: false, lineStyle: { color: axisLineColor.value } },
+        axisTick: { show: true, lineStyle: { color: axisLineColor.value } },
+        axisLabel: { show: true, color: axisLabelColor.value, hideOverlap: true },
         axisPointer: {
-          label: { show: false },
+          label: { show: true },
         },
+        position: 'bottom',
         splitLine: { show: false },
         splitNumber: 20,
         min: 'dataMin',
@@ -929,20 +948,23 @@ function initializeChartOptions() {
       {
         scale: true,
         max: (value) => {
-          return formatDecimal(value.max + (value.max - value.min) * 0.02);
+          return formatDecimal(value.max + (value.max - value.min) * 0.08);
         },
         min: (value) => {
-          return formatDecimal(value.min - (value.max - value.min) * 0.04);
+          return formatDecimal(value.min - (value.max - value.min) * 0.08);
         },
         name: ' ', // Necessary to avoid layout shift
         nameLocation: 'middle',
         nameGap: NAMEGAP,
-        axisLine: { show: showAxisLine },
+        axisLine: { show: showAxisLine, lineStyle: { color: axisLineColor.value } },
+        axisTick: { show: true, lineStyle: { color: axisLineColor.value } },
         axisLabel: {
           hideOverlap: true,
           overflow: 'truncate',
+          color: axisLabelColor.value,
         },
         position: props.labelSide,
+        splitLine: { show: true, lineStyle: { color: splitLineColor.value, width: 1 } },
       },
       {
         scale: true,
@@ -952,9 +974,9 @@ function initializeChartOptions() {
         nameLocation: 'middle',
         position: props.labelSide,
         nameGap: NAMEGAP,
-        axisLabel: { show: false },
-        axisLine: { show: showAxisLine },
-        axisTick: { show: false },
+        axisLabel: { show: true, color: axisLabelColor.value, hideOverlap: true },
+        axisLine: { show: showAxisLine, lineStyle: { color: axisLineColor.value } },
+        axisTick: { show: true, lineStyle: { color: axisLineColor.value } },
         splitLine: { show: false },
       },
     ],
@@ -963,15 +985,66 @@ function initializeChartOptions() {
       {
         type: 'inside',
         xAxisIndex: [0, 1],
+        filterMode: 'filter',
+        zoomOnMouseWheel: true,
+        moveOnMouseMove: true,
+        moveOnMouseWheel: false,
         start: 80,
         end: 100,
       },
       {
         xAxisIndex: [0, 1],
-        bottom: 10,
+        bottom: 2,
+        height: 16,
+        filterMode: 'filter',
         start: 80,
         end: 100,
         ...dataZoomPartial,
+      },
+      {
+        type: 'inside',
+        yAxisIndex: [0],
+        filterMode: 'none',
+        zoomOnMouseWheel: false,
+        moveOnMouseMove: false,
+        moveOnMouseWheel: false,
+        start: 0,
+        end: 100,
+        minSpan: 100,
+        maxSpan: 100,
+        zoomLock: true,
+      },
+      {
+        show: true,
+        type: 'slider',
+        yAxisIndex: [0],
+        orient: 'vertical',
+        filterMode: 'none',
+        right: 8,
+        top: MAIN_GRID_TOP,
+        bottom: '12%',
+        width: 18,
+        start: 0,
+        end: 100,
+        minSpan: 100,
+        maxSpan: 100,
+        zoomLock: true,
+        handleIcon: dataZoomPartial.handleIcon,
+        handleSize: '75%',
+        borderColor: axisLineColor.value,
+        fillerColor:
+          props.theme === 'dark' ? 'rgba(99, 102, 241, 0.18)' : 'rgba(59, 130, 246, 0.14)',
+        dataBackground: {
+          lineStyle: { color: props.theme === 'dark' ? '#334155' : '#94a3b8' },
+          areaStyle: { color: props.theme === 'dark' ? '#111827' : '#e2e8f0' },
+        },
+        selectedDataBackground: {
+          lineStyle: { color: props.theme === 'dark' ? '#818cf8' : '#2563eb' },
+          areaStyle: { color: props.theme === 'dark' ? '#1e293b' : '#bfdbfe' },
+        },
+        textStyle: {
+          color: axisLabelColor.value,
+        },
       },
     ],
     // visualMap: {
@@ -1059,7 +1132,7 @@ watch(
 </script>
 
 <template>
-  <div class="h-full w-full">
+  <div class="tradingview-chart-shell h-full w-full">
     <ECharts v-if="hasData" ref="candleChart" :theme="theme" autoresize manual-update />
   </div>
 </template>
@@ -1071,5 +1144,11 @@ watch(
   /* TODO: height calculation is not working correctly - uses min-height for now */
   /* height: 600px; */
   height: 100%;
+}
+
+.tradingview-chart-shell {
+  background: v-bind('chartBackgroundColor');
+  border: 1px solid v-bind('axisLineColor');
+  overflow: hidden;
 }
 </style>

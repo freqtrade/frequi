@@ -6,9 +6,11 @@ const botStore = useBotStore();
 const chartStore = useChartConfigStore();
 
 const finalTimeframe = computed<string>(() => {
+  const strategyTimeframe =
+    botStore.activeBot.strategy?.timeframe || botStore.activeBot.timeframe || '1m';
   return botStore.activeBot.isWebserverMode
-    ? chartStore.selectedTimeframe || botStore.activeBot.strategy?.timeframe || ''
-    : botStore.activeBot.timeframe;
+    ? chartStore.selectedTimeframe || strategyTimeframe
+    : botStore.activeBot.timeframe || '1m';
 });
 
 const availablePairs = computed<string[]>(() => {
@@ -73,13 +75,57 @@ const exchange = ref<{
   selectedExchange: {
     exchange: botStore.activeBot.botState.exchange,
     trade_mode: {
-      margin_mode: MarginMode.NONE,
-      trading_mode: TradingMode.SPOT,
+      margin_mode: MarginMode.ISOLATED,
+      trading_mode: TradingMode.FUTURES,
     },
   },
 });
 
 const markets = ref<Markets | null>(null);
+const chartHeightStorageKey = 'ftGraphChartHeight';
+const chartHeight = ref(760);
+const chartResizeStart = ref<{ y: number; height: number } | null>(null);
+
+function clampChartHeight(height: number) {
+  return Math.min(1400, Math.max(360, Math.round(height)));
+}
+
+function saveChartHeight() {
+  localStorage.setItem(chartHeightStorageKey, String(chartHeight.value));
+}
+
+function startChartResize(event: PointerEvent) {
+  chartResizeStart.value = {
+    y: event.clientY,
+    height: chartHeight.value,
+  };
+  window.addEventListener('pointermove', resizeChart);
+  window.addEventListener('pointerup', stopChartResize, { once: true });
+}
+
+function resizeChart(event: PointerEvent) {
+  if (!chartResizeStart.value) return;
+
+  chartHeight.value = clampChartHeight(
+    chartResizeStart.value.height + event.clientY - chartResizeStart.value.y,
+  );
+}
+
+function stopChartResize() {
+  if (!chartResizeStart.value) return;
+
+  chartResizeStart.value = null;
+  window.removeEventListener('pointermove', resizeChart);
+  saveChartHeight();
+}
+
+onMounted(() => {
+  const storedChartHeight = Number(localStorage.getItem(chartHeightStorageKey));
+  if (Number.isFinite(storedChartHeight) && storedChartHeight > 0) {
+    chartHeight.value = clampChartHeight(storedChartHeight);
+  }
+});
+
 watch(
   () => chartStore.useLiveData,
   async () => {
@@ -140,7 +186,12 @@ watch(
           </div>
           <div class="flex flex-col text-start">
             <span>Timeframe</span>
-            <TimeframeSelect v-model="chartStore.selectedTimeframe" class="mt-1" />
+            <TimeframeSelect
+              v-model="chartStore.selectedTimeframe"
+              include-seconds
+              max-timeframe="1h"
+              class="mt-1"
+            />
           </div>
           <TimeRangeSelect
             v-model="chartStore.timerange"
@@ -150,7 +201,10 @@ watch(
       </Panel>
     </div>
 
-    <div class="md:mx-2 mt-2 pb-1 h-full">
+    <div
+      class="chart-page-resizable md:mx-2 mt-2 pb-1"
+      :style="{ height: `${chartHeight}px` }"
+    >
       <CandleChartContainer
         :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"
@@ -161,6 +215,57 @@ watch(
         @refresh-data="refreshOHLCV"
       >
       </CandleChartContainer>
+      <button
+        class="chart-height-handle"
+        type="button"
+        title="Drag to resize chart height"
+        @pointerdown.prevent="startChartResize"
+      >
+        <span></span>
+      </button>
     </div>
   </div>
 </template>
+
+<style scoped>
+.chart-page-resizable {
+  position: relative;
+  min-height: 360px;
+  max-height: 1400px;
+}
+
+.chart-height-handle {
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 14px;
+  border: 1px solid var(--p-surface-700);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--p-surface-900) 92%, transparent);
+  cursor: ns-resize;
+  transform: translateX(-50%);
+}
+
+.chart-height-handle span,
+.chart-height-handle span::before,
+.chart-height-handle span::after {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--p-surface-400);
+  content: '';
+}
+
+.chart-height-handle span::before {
+  transform: translateY(-4px);
+}
+
+.chart-height-handle span::after {
+  transform: translateY(3px);
+}
+</style>

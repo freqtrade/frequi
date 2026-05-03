@@ -11,7 +11,7 @@ function breakpointChanged(newBreakpoint: string) {
   currentBreakpoint.value = newBreakpoint;
 }
 const isResizableLayout = computed(() =>
-  ['', 'sm', 'md', 'lg', 'xl'].includes(currentBreakpoint.value),
+  ['md', 'lg', 'xl'].includes(currentBreakpoint.value),
 );
 const isLayoutLocked = computed(() => {
   return layoutStore.layoutLocked || !isResizableLayout.value;

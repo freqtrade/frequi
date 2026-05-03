@@ -9,7 +9,7 @@ interface RiskData {
   peakValue: number;
   dayStartValue: number;
   var95: number;
-  kellySizes: { pair: string; size: number; winRate: number }[];
+  kellySizes: { pair: string; size: number; winRate: number; sampleSize?: number }[];
 }
 
 const MOCK_DATA: RiskData = {
@@ -29,6 +29,7 @@ const MOCK_DATA: RiskData = {
 const riskData = ref<RiskData>(MOCK_DATA);
 const lastUpdated = ref<Date>(new Date());
 const isLive = ref(false);
+const errorMessage = ref('');
 const pollInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
 const drawdownPct = computed(() => {
@@ -71,30 +72,28 @@ const formattedTime = computed(() =>
 
 async function fetchRisk() {
   try {
-    const res = await fetch('http://localhost:5000/api/v1/risk')
+    const res = await fetch('http://localhost:5001/api/v1/risk')
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
-    // Map API response to RiskData shape
     riskData.value = {
       portfolioValue: data.portfolioValue,
-      // API does not provide peakValue/dayStartValue; derive from drawdownPct
-      peakValue: data.drawdownPct < 0
-        ? data.portfolioValue / (1 + data.drawdownPct / 100)
-        : data.portfolioValue,
-      dayStartValue: data.portfolioValue, // API daily loss is via haltDailyLoss flag
+      peakValue: data.peakValue ?? data.portfolioValue,
+      dayStartValue: data.dayStartValue ?? data.portfolioValue,
       var95: data.var95,
       kellySizes: (data.kellyPairs ?? []).map((k: { pair: string; kelly: number }) => ({
         pair: k.pair,
         size: k.kelly,
-        winRate: 0.5, // not provided by API
+        winRate: 'winRate' in k ? k.winRate : 0,
+        sampleSize: 'sampleSize' in k ? k.sampleSize : 0,
       })),
     }
-    isLive.value = data.source === 'live'
+    isLive.value = data.source === 'freqtrade'
+    errorMessage.value = ''
     lastUpdated.value = new Date()
-  } catch {
-    // fall back to mock silently
+  } catch (error) {
     riskData.value = MOCK_DATA
     isLive.value = false
+    errorMessage.value = error instanceof Error ? error.message : 'Risk API unreachable'
     lastUpdated.value = new Date()
   }
 }
@@ -124,13 +123,17 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- Drawdown meter -->
+    <div v-if="errorMessage" class="rounded border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-xs text-yellow-200">
+      {{ errorMessage }}
+    </div>
+
     <div class="flex flex-col gap-2 p-4 rounded-lg border bg-surface-800 border-surface-600">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-1.5">
           <span class="text-sm font-semibold text-surface-300 uppercase tracking-widest">Portfolio Drawdown</span>
           <div class="group relative flex items-center">
             <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-            <div class="pointer-events-none absolute left-4 top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+            <div class="pointer-events-none absolute right-0 sm:left-4 sm:right-auto top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
               <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
               Peak-to-trough drawdown from the portfolio high-water mark. <strong class="text-orange-400">Orange</strong> at 5% — reduce size. <strong class="text-red-400">Red + flashing</strong> at 7% — circuit breaker imminent. Auto-halt fires at <strong>8%</strong>.
             </div>
@@ -181,7 +184,7 @@ onBeforeUnmount(() => {
         <span class="text-sm font-semibold text-surface-300 uppercase tracking-widest">Kelly Sizes</span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute right-0 sm:left-4 sm:right-auto top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             Recommended position size as a fraction of account, using <strong>quarter-Kelly</strong> formula calibrated from live trade history. Larger = higher historical edge on that pair.
           </div>
@@ -196,7 +199,10 @@ onBeforeUnmount(() => {
           />
         </div>
         <span class="text-xs text-surface-300 w-12 text-right">{{ (row.size * 100).toFixed(2) }}%</span>
-        <span class="text-xs text-surface-500 w-14 text-right">wr {{ (row.winRate * 100).toFixed(0) }}%</span>
+        <span class="text-xs text-surface-500 w-20 text-right">
+          wr {{ (row.winRate * 100).toFixed(0) }}%
+          <span v-if="row.sampleSize !== undefined">({{ row.sampleSize }})</span>
+        </span>
       </div>
     </div>
 
@@ -206,7 +212,7 @@ onBeforeUnmount(() => {
         <span class="text-sm font-semibold text-surface-300 uppercase tracking-widest">95% VaR (1-day)</span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute right-0 sm:left-4 sm:right-auto top-full mt-2 w-56 md:w-64 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             The worst expected 1-day loss at 95% confidence, estimated from the 5th percentile of historical returns. On 95 out of 100 days, losses should not exceed this figure.
           </div>

@@ -381,6 +381,17 @@ export function createBotSubStore(botId: string, botName: string) {
               });
               result = data;
             }
+            if (!result?.data?.length) {
+              const { data } = await axios.get<PairHistory>('http://localhost:5001/api/v1/chart-candles', {
+                params: {
+                  pair: payload.pair,
+                  timeframe: payload.timeframe,
+                },
+              });
+              if (data?.data?.length) {
+                result = data;
+              }
+            }
             if (result) {
               this.candleData = {
                 ...this.candleData,

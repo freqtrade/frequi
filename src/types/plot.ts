@@ -30,4 +30,12 @@ export interface PlotConfigTemplate {
   [key: string]: Partial<PlotConfig>;
 }
 
-export const EMPTY_PLOTCONFIG: PlotConfig = { main_plot: {}, subplots: {} };
+export const EMPTY_PLOTCONFIG: PlotConfig = {
+  main_plot: {},
+  subplots: {
+    Trend: {
+      trend_slope_20: { color: '#f59e0b', type: ChartType.line },
+      trend_zero: { color: '#64748b', type: ChartType.line },
+    },
+  },
+};

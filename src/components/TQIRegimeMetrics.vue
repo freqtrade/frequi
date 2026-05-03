@@ -1,10 +1,44 @@
 <!-- eslint-disable vue/block-order, vue/block-lang -->
 <template>
   <div class="tqi-regime-metrics">
+    <div class="page-header">
+      <div class="page-title-group">
+        <p class="eyebrow">Live Metrics</p>
+        <h2>Trend Quality</h2>
+        <p class="page-subtitle">
+          Per-pair trend quality and regime edge tracking from the live backend.
+        </p>
+      </div>
+
+      <div class="page-actions">
+        <div class="status-strip" aria-label="Data source status">
+          <span class="status-badge" :class="tqiError ? 'status-error' : 'status-live'">
+            TQI {{ tqiError ? 'ERROR' : 'LIVE' }}
+          </span>
+          <span class="status-badge" :class="regimeError ? 'status-error' : 'status-live'">
+            Regime {{ regimeError ? 'ERROR' : 'LIVE' }}
+          </span>
+        </div>
+        <button class="refresh-button" type="button" :disabled="isRefreshing" @click="refreshAll">
+          {{ isRefreshing ? 'Refreshing' : 'Refresh' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="page-status">
+      <span>Backend <strong>localhost:5001</strong></span>
+      <span v-if="lastUpdated">Updated {{ new Date(lastUpdated).toLocaleTimeString() }}</span>
+    </div>
+
     <div class="metrics-container">
       <!-- TQI Breakdown Section -->
       <div class="section tqi-section">
-        <h3>Trend Quality Index (TQI) — Real-time Per-Pair</h3>
+        <div class="section-header">
+          <div>
+            <h3>Trend Quality Index</h3>
+            <p>Real-time per-pair trend quality, volume, structure, and momentum.</p>
+          </div>
+        </div>
         <div v-if="tqiLoading" class="loading">Computing TQI...</div>
         <div v-else-if="tqiError" class="error">{{ tqiError }}</div>
         <div v-else class="tqi-grid">
@@ -46,7 +80,12 @@
 
       <!-- Regime Edge Tracking Section -->
       <div class="section regime-section">
-        <h3>Per-Regime Performance Grid (9 Cells: ER × Vol)</h3>
+        <div class="section-header">
+          <div>
+            <h3>Regime Performance Grid</h3>
+            <p>Nine-cell ER and volatility grid for edge tracking.</p>
+          </div>
+        </div>
         <div v-if="regimeLoading" class="loading">Loading regime metrics...</div>
         <div v-else-if="regimeError" class="error">{{ regimeError }}</div>
         <div v-else class="regime-container">
@@ -90,7 +129,7 @@
               </div>
 
               <div class="recommendation-badge" :class="`rec-${metric.recommendation}`">
-                {{ metric.recommendation === 'high_edge' ? '🟢 High Edge' : metric.recommendation === 'low_edge' ? '🔴 Low Edge' : '🟡 Uncertain' }}
+                {{ metric.recommendation === 'high_edge' ? 'High Edge' : metric.recommendation === 'low_edge' ? 'Low Edge' : 'Uncertain' }}
               </div>
 
               <div v-if="!metric.confidence" class="insufficient-data">
@@ -108,6 +147,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
+const API_BASE = 'http://localhost:5001'
+
 const tqiLoading = ref(false)
 const tqiError = ref(null)
 const tqiBreakdown = ref({})
@@ -120,6 +161,8 @@ const regimeSummary = ref({
   profitable_regimes: 0,
   avg_win_rate: 0,
 })
+const lastUpdated = ref(null)
+const isRefreshing = ref(false)
 
 let refreshInterval = null
 
@@ -127,12 +170,14 @@ const fetchTQIBreakdown = async () => {
   tqiLoading.value = true
   tqiError.value = null
   try {
-    const response = await fetch('/api/v1/metrics/tqi-breakdown')
+    const response = await fetch(`${API_BASE}/api/v1/metrics/tqi-breakdown`)
+    if (!response.ok) throw new Error(`TQI API returned ${response.status}`)
     const data = await response.json()
     if (data.error) {
       tqiError.value = data.error
     } else {
       tqiBreakdown.value = data.tqi_breakdown || {}
+      lastUpdated.value = data.updated_at || new Date().toISOString()
     }
   } catch (e) {
     tqiError.value = e.message
@@ -145,13 +190,15 @@ const fetchRegimeMetrics = async () => {
   regimeLoading.value = true
   regimeError.value = null
   try {
-    const response = await fetch('/api/v1/metrics/regime-edge')
+    const response = await fetch(`${API_BASE}/api/v1/metrics/regime-edge`)
+    if (!response.ok) throw new Error(`Regime edge API returned ${response.status}`)
     const data = await response.json()
     if (data.error) {
       regimeError.value = data.error
     } else {
       regimeMetrics.value = data.regime_metrics || []
       regimeSummary.value = data.summary || {}
+      lastUpdated.value = data.updated_at || new Date().toISOString()
     }
   } catch (e) {
     regimeError.value = e.message
@@ -191,12 +238,20 @@ const winRateStyle = (wr) => ({ color: getWRColor(wr) })
 const avgRStyle = (avgR) => ({ color: avgR > 0 ? '#00E676' : '#FF5252' })
 
 const startRefresh = () => {
-  fetchTQIBreakdown()
-  fetchRegimeMetrics()
+  refreshAll()
   refreshInterval = setInterval(() => {
-    fetchTQIBreakdown()
-    fetchRegimeMetrics()
+    refreshAll()
   }, 30000) // Refresh every 30 seconds
+}
+
+const refreshAll = async () => {
+  if (isRefreshing.value) return
+  isRefreshing.value = true
+  try {
+    await Promise.all([fetchTQIBreakdown(), fetchRegimeMetrics()])
+  } finally {
+    isRefreshing.value = false
+  }
 }
 
 onMounted(() => {
@@ -210,76 +265,227 @@ onUnmounted(() => {
 
 <style scoped>
 .tqi-regime-metrics {
-  padding: 1rem;
-  background: #1e1e1e;
-  color: #e0e0e0;
-  font-family: 'Courier New', monospace;
-  border-radius: 4px;
+  width: 100%;
+  min-width: 0;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  background: #080b10;
+  color: #e5e7eb;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+.page-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(180deg, rgba(31, 41, 55, 0.92), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+}
+
+.page-title-group {
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  color: #38bdf8;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.page-subtitle {
+  max-width: 48rem;
+  margin: 0.35rem 0 0;
+  color: #aeb8c8;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.refresh-button {
+  min-height: 2rem;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 6px;
+  background: rgba(14, 165, 233, 0.12);
+  color: #dff6ff;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.38rem 0.75rem;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: rgba(14, 165, 233, 0.22);
+  border-color: rgba(125, 211, 252, 0.7);
+}
+
+.refresh-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
 }
 
 .metrics-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
+  min-width: 0;
 }
 
 .section {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 1.5rem;
+  min-width: 0;
+  background: #10151f;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  padding: clamp(0.85rem, 2vw, 1.1rem);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.page-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  color: #95a1b3;
+  font-size: 0.78rem;
+  margin: 0.65rem 0 1rem;
+  min-width: 0;
+}
+
+.page-status span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.8rem;
+}
+
+.section-header > div {
+  min-width: 0;
 }
 
 .section h3 {
-  margin: 0 0 1rem 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
-  border-bottom: 1px solid #555;
-  padding-bottom: 0.75rem;
+  margin: 0;
+  font-size: clamp(0.98rem, 2vw, 1.1rem);
+  font-weight: 750;
+  color: #f8fafc;
+  line-height: 1.2;
+}
+
+.section-header p {
+  margin: 0.25rem 0 0;
+  color: #98a4b5;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  white-space: nowrap;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.55rem;
+}
+
+.status-live {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.status-error {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
 /* TQI Section */
 .tqi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .tqi-card {
-  background: #333;
-  border-radius: 4px;
-  padding: 1rem;
+  min-width: 0;
+  background: #161d2a;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 8px;
+  padding: 0.9rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.7rem;
 }
 
 .pair-label {
   font-weight: 600;
   font-size: 0.9rem;
-  color: #64B5F6;
+  color: #93c5fd;
+  overflow-wrap: anywhere;
 }
 
 .tqi-main {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: bold;
   color: #00E676;
+  line-height: 1;
 }
 
 .tqi-components {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
   font-size: 0.8rem;
+  min-width: 0;
 }
 
 .component {
   display: flex;
   justify-content: space-between;
-  background: #1e1e1e;
+  gap: 0.35rem;
+  min-width: 0;
+  background: #0c111a;
   padding: 0.35rem 0.5rem;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 .component .label {
@@ -289,14 +495,18 @@ onUnmounted(() => {
 .component .value {
   color: #FFC107;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .regime-cell {
   font-size: 0.8rem;
-  color: #999;
+  color: #a3adbc;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
 .badge {
@@ -310,40 +520,51 @@ onUnmounted(() => {
 /* Regime Section */
 .regime-summary {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .stat {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  background: #0c111a;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 7px;
+  padding: 0.65rem 0.75rem;
 }
 
 .stat .label {
-  color: #999;
-  font-size: 0.9rem;
+  color: #98a4b5;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
 }
 
 .stat .value {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #00E676;
+  overflow-wrap: anywhere;
 }
 
 .regime-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .regime-cell-card {
-  background: #1e1e1e;
-  border: 1px solid #444;
-  border-radius: 4px;
+  min-width: 0;
+  background: #0c111a;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 7px;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -353,12 +574,13 @@ onUnmounted(() => {
 .regime-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #64B5F6;
+  color: #93c5fd;
+  overflow-wrap: anywhere;
 }
 
 .cell-idx {
   font-size: 0.7rem;
-  color: #999;
+  color: #98a4b5;
 }
 
 .metrics {
@@ -369,16 +591,20 @@ onUnmounted(() => {
 
 .metric-row {
   display: flex;
+  gap: 0.5rem;
   justify-content: space-between;
   font-size: 0.75rem;
+  min-width: 0;
 }
 
 .metric-row .label {
-  color: #999;
+  color: #98a4b5;
 }
 
 .metric-row .value {
   font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .recommendation-badge {
@@ -415,7 +641,8 @@ onUnmounted(() => {
 .error {
   padding: 1rem;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 7px;
+  overflow-wrap: anywhere;
 }
 
 .loading {
@@ -426,5 +653,43 @@ onUnmounted(() => {
 .error {
   background: rgba(255, 82, 82, 0.2);
   color: #FF5252;
+}
+
+@media (max-width: 760px) {
+  .page-header {
+    grid-template-columns: 1fr;
+  }
+
+  .page-actions,
+  .status-strip {
+    justify-content: flex-start;
+  }
+
+  .refresh-button {
+    width: 100%;
+  }
+
+  .regime-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .tqi-regime-metrics {
+    padding: 0.65rem;
+  }
+
+  .page-header,
+  .section {
+    border-radius: 6px;
+  }
+
+  .section-header {
+    gap: 0.5rem;
+  }
+
+  .tqi-components {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

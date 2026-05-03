@@ -3,7 +3,7 @@ export const useChartConfigStore = defineStore(
   () => {
     const strategy = ref<string>('');
     const useLiveData = ref<boolean>(false);
-    const selectedTimeframe = ref<string>('1h');
+    const selectedTimeframe = ref<string>('1m');
     const timerange = ref<string>('');
 
     return {
@@ -16,7 +16,7 @@ export const useChartConfigStore = defineStore(
   {
     persist: {
       key: 'ftUIChartSettings',
-      pick: ['useLiveData'],
+      pick: ['useLiveData', 'selectedTimeframe'],
     },
   },
 );

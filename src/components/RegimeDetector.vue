@@ -16,6 +16,7 @@ const MOCK_DATA: RegimeData = {
 const regimeData = ref<RegimeData>(MOCK_DATA);
 const lastUpdated = ref<Date>(new Date());
 const isLive = ref(false);
+const errorMessage = ref('');
 const pollInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
 // --- helpers ------------------------------------------------------------------
@@ -61,7 +62,7 @@ const formattedTime = computed(() =>
 
 async function fetchRegime() {
   try {
-    const res = await fetch('http://localhost:5000/api/v1/regime')
+    const res = await fetch('http://localhost:5001/api/v1/regime')
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
     regimeData.value = {
@@ -70,11 +71,12 @@ async function fetchRegime() {
       dominant_prob: data.dominant_prob,
     }
     isLive.value = data.source === 'live'
+    errorMessage.value = ''
     lastUpdated.value = new Date()
-  } catch {
-    // fall back to mock silently
+  } catch (error) {
     regimeData.value = MOCK_DATA
     isLive.value = false
+    errorMessage.value = error instanceof Error ? error.message : 'Regime API unreachable'
     lastUpdated.value = new Date()
   }
 }
@@ -99,7 +101,7 @@ onBeforeUnmount(() => {
         <span class="text-sm font-semibold uppercase tracking-widest text-surface-300">Regime</span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute right-0 sm:left-4 sm:right-auto top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             A <strong>6-state Hidden Markov Model</strong> classifies the market using 7 features: log returns, volatility, volume spikes, VWAP deviation, vol ratio, and momentum. Each state carries a specific risk posture:<br /><br />
             <span class="text-emerald-300 font-semibold">Strong Bull</span> / <span class="text-green-400 font-semibold">Bull</span> — full position size<br />
@@ -120,6 +122,10 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- Current regime badge -->
+    <div v-if="errorMessage" class="rounded border border-yellow-500/40 bg-yellow-500/10 px-2 py-1 text-xs text-yellow-200">
+      {{ errorMessage }}
+    </div>
+
     <div
       class="flex items-center justify-center gap-2 rounded-md border px-4 py-3"
       :class="regimeBg"

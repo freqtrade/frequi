@@ -15,7 +15,7 @@ watch(
 </script>
 
 <template>
-  <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
+  <div id="app" class="flex flex-col h-dvh min-w-0 bg-surface-950 text-surface-100" :style="colorStore.cssVars">
     <NavBar />
     <Toast />
     <BodyLayout class="grow overflow-auto" />
@@ -25,10 +25,10 @@ watch(
 
 <style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
 
 /* * {

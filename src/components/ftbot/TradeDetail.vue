@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="text-start grid grid-cols-[repeat(auto-fit,minmax(500px,1fr))] gap-4 px-2">
+  <div class="text-start grid grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-4 px-2">
     <div class="">
       <h5 class="detail-header">General</h5>
       <ValuePair description="Trade Id">{{ trade.trade_id }}</ValuePair>
@@ -47,16 +47,16 @@ defineProps<{
         timestampms(trade.close_timestamp)
       }}</ValuePair>
       <ValuePair
-        v-if="trade.is_open && trade.realized_profit && !trade.total_profit_abs"
+        v-if="trade.is_open && trade.realized_profit !== undefined && !trade.total_profit_abs"
         description="Realized Profit"
       >
         <TradeProfit :trade="trade" mode="realized" />
       </ValuePair>
-      <ValuePair v-if="trade.is_open && trade.total_profit_abs" description="Total Profit">
+      <ValuePair v-if="trade.is_open && trade.total_profit_abs !== undefined" description="Total Profit">
         <TradeProfit :trade="trade" mode="total" />
       </ValuePair>
       <ValuePair
-        v-if="trade.profit_ratio && trade.profit_abs"
+        v-if="trade.profit_ratio !== undefined && trade.profit_ratio !== null && trade.profit_abs !== undefined"
         :description="`${trade.is_open ? 'Current Profit' : 'Close Profit'}`"
       >
         <TradeProfit :trade="trade" />

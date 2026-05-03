@@ -20,14 +20,19 @@ function buildToolTip(
   side: string,
   quoteCurrency: string,
 ): string {
-  let tooltip = `${trade.is_short ? 'Short' : 'Long'} ${side}
+  const isExit = side === 'exit';
+  const actionLabel = `${trade.is_short ? 'Short' : 'Long'} ${isExit ? 'historical exit' : 'entry'}`;
+  const entryTagLabel = isExit ? 'Original enter-tag' : 'Enter-tag';
+  const orderTagLabel = isExit ? 'Exit order-tag' : 'Order-tag';
+
+  let tooltip = `${actionLabel}
   ${formatPercent(trade.profit_ratio)} ${
     trade.profit_abs ? '(' + formatPriceCurrency(trade.profit_abs, quoteCurrency) + ')' : ''
   }
   ${buildTooltipCost(order, quoteCurrency)}
-  Enter-tag: ${trade.enter_tag ?? ''}
+  ${entryTagLabel}: ${trade.enter_tag ?? ''}
   Order Price: ${formatPriceCurrency(order.safe_price, quoteCurrency)}`;
-  tooltip += `${'ft_order_tag' in order && order.ft_order_tag && trade.enter_tag != order.ft_order_tag ? '\nOrder-Tag: ' + order.ft_order_tag : ''}`;
+  tooltip += `${'ft_order_tag' in order && order.ft_order_tag && trade.enter_tag != order.ft_order_tag ? '\n' + orderTagLabel + ': ' + order.ft_order_tag : ''}`;
   tooltip += `${trade.exit_reason ? '\nExit-Tag: ' + trade.exit_reason : ''}`;
   return tooltip;
 }
@@ -105,16 +110,6 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
     const closeTs = getTradeCloseTimestamp(trade);
     const { quoteCurrency } = splitTradePair(trade.quote_currency ?? trade.pair ?? '');
 
-    console.log('--- tradeChartData trade check ---');
-    console.log('trade pair:', trade.pair);
-    console.log('trade object:', trade);
-    console.log('resolved openTs:', openTs);
-    console.log('resolved closeTs:', closeTs);
-    console.log('open_rate:', trade.open_rate);
-    console.log('close_rate:', trade.close_rate);
-    console.log('is_open:', trade.is_open);
-    console.log('orders:', trade.orders);
-
     const tradeTouchesVisibleRange =
       (openTs !== undefined &&
         roundTimeframe(dataset.timeframe_ms ?? 0, openTs) <= stop_ts_adjusted) ||
@@ -175,7 +170,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
               OPEN_CLOSE_SYMBOL,
               trade.is_short ? 0 : 180,
               trade.is_short ? SHORT_COLOR : LONG_COLOR,
-              formatPercent(trade.profit_ratio, 2),
+              `EXIT ${formatPercent(trade.profit_ratio, 2)}`,
               buildToolTip(trade, order, 'exit', quoteCurrency),
             ]);
           }
@@ -239,18 +234,16 @@ Order Price: ${formatPriceCurrency(trade.open_rate, quoteCurrency)}`,
         OPEN_CLOSE_SYMBOL,
         trade.is_short ? 0 : 180,
         trade.is_short ? SHORT_COLOR : LONG_COLOR,
-        formatPercent(trade.profit_ratio, 2),
-        `${trade.is_short ? 'Short' : 'Long'} exit
+        `EXIT ${formatPercent(trade.profit_ratio, 2)}`,
+        `${trade.is_short ? 'Short' : 'Long'} historical exit
 ${formatPercent(trade.profit_ratio)}
 ${trade.profit_abs ? '(' + formatPriceCurrency(trade.profit_abs, quoteCurrency) + ')' : ''}
-Enter-tag: ${trade.enter_tag ?? ''}
+Original enter-tag: ${trade.enter_tag ?? ''}
 Exit-Tag: ${trade.exit_reason ?? ''}
 Order Price: ${formatPriceCurrency(trade.close_rate, quoteCurrency)}`,
       ]);
     }
   }
-
-  console.log('FINAL tradeData built for chart:', tradeData);
 
   return { tradeData };
 }
@@ -268,6 +261,7 @@ export function generateTradeSeries(
   const { tradeData } = getTradeEntries(dataset, trades);
 
   const openTrade = trades.find((t) => t.is_open);
+  const isDarkTheme = theme === 'dark';
 
   const tradesSeries: ScatterSeriesOption = {
     name: nameTrades,
@@ -281,14 +275,25 @@ export function generateTradeSeries(
       tooltip: 6,
     },
     label: {
-      show: true,
-      fontSize: 12,
-      backgroundColor: theme !== 'dark' ? '#fff' : '#000',
-      padding: 2,
-      color: theme === 'dark' ? '#fff' : '#000',
-      rotate: 75,
-      offset: [10, 0],
+      show: false,
+      fontSize: 10,
+      backgroundColor: isDarkTheme ? 'rgba(3, 7, 18, 0.86)' : 'rgba(255, 255, 255, 0.9)',
+      borderColor: isDarkTheme ? 'rgba(148, 163, 184, 0.35)' : 'rgba(15, 23, 42, 0.18)',
+      borderWidth: 1,
+      borderRadius: 3,
+      padding: [2, 4],
+      color: isDarkTheme ? '#f8fafc' : '#0f172a',
+      position: 'right',
+      rotate: 0,
+      offset: [4, 0],
       align: 'left',
+      width: 56,
+      overflow: 'truncate',
+    },
+    emphasis: {
+      label: {
+        show: true,
+      },
     },
     itemStyle: {
       // color: tradeSellColor,

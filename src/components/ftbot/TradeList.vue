@@ -19,6 +19,7 @@ const props = withDefaults(
     showFilter?: boolean;
     multiBotView?: boolean;
     emptyText?: string;
+    pageScroll?: boolean;
   }>(),
   {
     title: 'Trades',
@@ -27,6 +28,7 @@ const props = withDefaults(
     showFilter: false,
     multiBotView: false,
     emptyText: 'No Trades to show.',
+    pageScroll: false,
   },
 );
 
@@ -66,7 +68,7 @@ const tableFields = ref([
   },
   {
     field: 'profit',
-    header: props.activeTrades ? 'Current profit %' : 'Profit %',
+    header: props.activeTrades ? 'Current profit % / USD' : 'Profit % / USD',
   },
   { field: 'open_timestamp', header: 'Open date' },
   ...(props.activeTrades
@@ -183,7 +185,7 @@ watch(
 </script>
 
 <template>
-  <div class="h-full overflow-auto w-full">
+  <div class="w-full" :class="pageScroll ? 'h-auto overflow-visible' : 'h-full overflow-auto'">
     <DataTable
       ref="tradesTable"
       v-model:selection="selectedItem"
@@ -204,8 +206,8 @@ watch(
       selection-mode="single"
       class="text-center"
       size="small"
-      :scrollable="true"
-      scroll-height="flex"
+      :scrollable="!pageScroll"
+      :scroll-height="pageScroll ? undefined : 'flex'"
       @row-click="onRowClicked"
     >
       <template #empty>

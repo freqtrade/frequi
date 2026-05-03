@@ -5,7 +5,22 @@ import { MarginMode, TradingMode } from '@/types';
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();
 const pairs = ref<string[]>(['BTC/USDT:USDT', 'ETH/USDT:USDT']);
-const timeframes = ref<string[]>(['1m']);
+const importTimeframeOptions = [
+  '1s',
+  '5s',
+  '10s',
+  '15s',
+  '30s',
+  '45s',
+  '1m',
+  '3m',
+  '5m',
+  '15m',
+  '30m',
+  '1h',
+];
+const timeframes = ref<string[]>([...importTimeframeOptions]);
+const hasSecondTimeframes = computed(() => timeframes.value.some((timeframe) => timeframe.endsWith('s')));
 
 const timeSelection = ref({
   useCustomTimerange: false,
@@ -139,7 +154,28 @@ async function startDownload() {
             <div class="flex-fill px-3">
               <div class="flex flex-col gap-2">
                 <h4 class="text-start font-bold text-lg">Select timeframes</h4>
-                <BaseStringList v-model="timeframes" placeholder="Timeframe" />
+                <MultiSelect
+                  v-model="timeframes"
+                  :options="importTimeframeOptions"
+                  display="chip"
+                  class="w-full"
+                  placeholder="Select timeframes"
+                />
+                <div class="flex gap-2">
+                  <Button
+                    size="small"
+                    severity="secondary"
+                    @click="timeframes = [...importTimeframeOptions]"
+                  >
+                    Select all
+                  </Button>
+                  <Button size="small" severity="secondary" @click="timeframes = ['1m']">
+                    1m only
+                  </Button>
+                </div>
+                <Message v-if="hasSecondTimeframes" severity="warn" class="py-2">
+                  Second timeframes require exchange/API support for sub-minute candle data.
+                </Message>
               </div>
             </div>
           </div>

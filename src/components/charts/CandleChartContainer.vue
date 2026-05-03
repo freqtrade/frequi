@@ -142,12 +142,12 @@ const singlePairSelection = computed({
 <template>
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
-      <div class="flex me-0 items-center md:gap-2">
+      <div class="chart-toolbar">
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
         <MultiSelect
           v-if="settingsStore.multiPairSelection"
           v-model="botStore.activeBot.plotMultiPairs"
-          class="w-80"
+          class="chart-pair-select"
           :options="availablePairs"
           optionlabel=""
           placeholder="Select pairs to plot"
@@ -158,7 +158,7 @@ const singlePairSelection = computed({
         <Select
           v-else
           v-model="singlePairSelection"
-          class="w-80"
+          class="chart-pair-select"
           :options="availablePairs"
           size="small"
           :clearable="false"
@@ -178,7 +178,7 @@ const singlePairSelection = computed({
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
           <span class="text-nowrap">Multi pair</span>
         </BaseCheckbox>
-        <div class="ms-auto flex items-center gap-2">
+        <div class="chart-toolbar-actions">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
           </BaseCheckbox>
@@ -238,3 +238,49 @@ const singlePairSelection = computed({
     </Dialog>
   </div>
 </template>
+
+<style scoped>
+.chart-toolbar {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.chart-pair-select {
+  width: min(20rem, 100%);
+  min-width: min(14rem, 100%);
+  flex: 0 1 20rem;
+}
+
+.chart-toolbar-actions {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .chart-toolbar {
+    align-items: stretch;
+  }
+
+  .chart-toolbar > span {
+    width: 100%;
+  }
+
+  .chart-pair-select {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .chart-toolbar-actions {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+</style>

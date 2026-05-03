@@ -3,6 +3,8 @@
 
 interface SignalRow {
   pair: string;
+  source?: string;
+  dataSource?: string;
   signal: number;      // -1.0 to 1.0
   confidence: number;  // 0.0 to 1.0
   regimeGate: string;  // e.g. "Bull", "Any"
@@ -21,6 +23,8 @@ const MOCK_SIGNALS: SignalRow[] = [
 const signals = ref<SignalRow[]>(MOCK_SIGNALS);
 const isLive = ref(false);
 const lastUpdated = ref(new Date());
+const errorMessage = ref('');
+const pollInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
 // --- helpers ------------------------------------------------------------------
 
@@ -57,21 +61,27 @@ function confidencePct(confidence: number): string {
 
 async function fetchSignals() {
   try {
-    const res = await fetch('http://localhost:5000/api/v1/signals')
+    const res = await fetch('http://localhost:5001/api/v1/signals')
     if (!res.ok) throw new Error()
     const data = await res.json()
     signals.value = data.signals
     isLive.value = true
+    errorMessage.value = ''
     lastUpdated.value = new Date()
-  } catch {
+  } catch (error) {
     signals.value = MOCK_SIGNALS
     isLive.value = false
+    errorMessage.value = error instanceof Error ? error.message : 'Signals API unreachable'
   }
 }
 
 onMounted(() => {
   fetchSignals()
-  setInterval(fetchSignals, 30000)
+  pollInterval.value = setInterval(fetchSignals, 30000)
+})
+
+onBeforeUnmount(() => {
+  if (pollInterval.value !== null) clearInterval(pollInterval.value)
 })
 </script>
 
@@ -85,7 +95,7 @@ onMounted(() => {
         </span>
         <div class="group relative flex items-center">
           <i-mdi-information-outline class="text-surface-400 hover:text-surface-200 cursor-default text-base transition-colors" />
-          <div class="pointer-events-none absolute left-4 top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
+          <div class="pointer-events-none absolute right-0 sm:left-4 sm:right-auto top-full mt-2 w-64 md:w-72 max-w-[85vw] rounded-md bg-surface-700 border border-surface-500 px-3 py-2 text-xs text-surface-200 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 shadow-lg leading-5">
             <div class="absolute -top-1.5 left-3 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-surface-500" />
             Each pair gets a blended score from <strong class="text-red-400">−1</strong> (strong sell) to <strong class="text-green-400">+1</strong> (strong buy), combining a trend model with a mean-reversion signal weighted by the current regime. <strong>Confidence</strong> measures how certain the blend is. The <strong>Regime Gate</strong> further scales position size:<br /><br />
             <span class="text-green-400 font-semibold">Bull / Strong Bull</span> — full size<br />
@@ -104,6 +114,10 @@ onMounted(() => {
         </span>
         <span class="text-xs text-surface-500">threshold {{ (CONFIDENCE_THRESHOLD * 100).toFixed(0) }}%</span>
       </div>
+    </div>
+
+    <div v-if="errorMessage" class="rounded border border-yellow-500/40 bg-yellow-500/10 px-2 py-1 text-xs text-yellow-200">
+      {{ errorMessage }}
     </div>
 
     <!-- Table -->
@@ -173,6 +187,7 @@ onMounted(() => {
             <!-- Regime Gate -->
             <td class="py-2 pr-4 hidden sm:table-cell">
               <span class="text-xs text-surface-300">{{ row.regimeGate }}</span>
+              <div v-if="row.dataSource" class="text-[11px] text-surface-500">{{ row.dataSource }}</div>
             </td>
 
             <!-- Status -->

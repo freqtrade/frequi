@@ -3,6 +3,20 @@ import { EMPTY_PLOTCONFIG } from '@/types';
 
 const FT_PLOT_CONFIG_KEY = 'ftPlotConfig';
 
+function ensureTrendSlopePlot(config: PlotConfig): PlotConfig {
+  return {
+    ...config,
+    subplots: {
+      ...(config.subplots ?? {}),
+      Trend: {
+        trend_slope_20: { color: '#f59e0b', type: 'line' },
+        trend_zero: { color: '#64748b', type: 'line' },
+        ...(config.subplots?.Trend ?? {}),
+      },
+    },
+  };
+}
+
 function migratePlotConfigs() {
   // Legacy config names
   const PLOT_CONFIG = 'ft_custom_plot_config';
@@ -94,6 +108,10 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       if (Object.keys(context.store.customPlotConfigs).length === 0) {
         console.log('Initialized plotconfig');
         context.store.customPlotConfigs = { default: deepClone(EMPTY_PLOTCONFIG) };
+      }
+      const defaultConfig = context.store.customPlotConfigs.default;
+      if (defaultConfig) {
+        context.store.customPlotConfigs.default = ensureTrendSlopePlot(defaultConfig);
       }
     },
   },
