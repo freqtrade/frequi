@@ -227,7 +227,6 @@ const singlePairSelection = computed({
       </div>
     </div>
     <UModal
-      id="plotConfiguratorModal"
       v-model:open="showPlotConfigModal"
       title="Plot Configurator"
       class="max-w-xl"
