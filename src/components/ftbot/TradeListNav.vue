@@ -101,7 +101,7 @@ watch(
         </div>
         <Transition>
           <div v-if="ordersVisible[i]">
-            <ul class="px-3 m-0 list-disc list-inside">
+            <ul class="px-3 m-0 list-disc list-inside text-start">
               <li
                 v-for="order in trade.orders?.filter((o) => o.order_filled_timestamp !== null)"
                 :key="order.order_timestamp"
