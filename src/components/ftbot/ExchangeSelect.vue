@@ -16,11 +16,14 @@ const exchangeList = computed<SelectMenuItem[]>(() => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return [
-    { label: 'Supported', type: 'label' },
-    ...supported.map((e) => ({ value: e.classname ?? e.name, label: e.name })),
-    { type: 'separator' },
-    { label: 'Unsupported', type: 'label' },
-    ...unsupported.map((e) => ({ value: e.classname ?? e.name, label: e.name })),
+    [
+      { label: 'Supported', type: 'label' },
+      ...supported.map((e) => ({ value: e.classname ?? e.name, label: e.name })),
+    ],
+    [
+      { label: 'Unsupported', type: 'label' },
+      ...unsupported.map((e) => ({ value: e.classname ?? e.name, label: e.name })),
+    ],
   ];
 });
 
