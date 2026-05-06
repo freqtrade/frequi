@@ -13,6 +13,7 @@ const props = withDefaults(
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 
 const selColor_ = ref(randomColor());
+const { t } = useUiText();
 const selColor = computed({
   get: () => selColor_.value,
   set: (val) => {
@@ -27,7 +28,17 @@ const selColor = computed({
   },
 });
 const graphType = ref<ChartTypeString>(ChartType.line);
-const availableGraphTypes = ref<ChartTypeString[]>(Object.keys(ChartType) as ChartTypeString[]);
+const availableGraphTypes = computed(() =>
+  Object.keys(ChartType).map((value) => ({
+    value,
+    text:
+      value === ChartType.line
+        ? t('lineChart')
+        : value === ChartType.bar
+          ? t('barChart')
+          : t('scatterChart'),
+  })),
+);
 const selAvailableIndicator = ref('');
 const cancelled = ref(false);
 const fillTo = ref('');
@@ -96,18 +107,20 @@ watchDebounced(
   <div>
     <div class="flex flex-col lg:flex-row justify-between mt-1">
       <div class="flex flex-col w-full">
-        <label for="plotTypeSelector" class="form-label">Type</label>
+        <label for="plotTypeSelector" class="form-label">{{ t('type') }}</label>
         <Select
           id="plotTypeSelector"
           v-model="graphType"
           class="text-left"
           size="small"
           :options="availableGraphTypes"
+          option-label="text"
+          option-value="value"
         >
         </Select>
       </div>
       <div class="flex flex-col w-full">
-        <label for="selAvailableIndicator" class="colsel">Color</label>
+        <label for="selAvailableIndicator" class="colsel">{{ t('color') }}</label>
         <InputGroup>
           <InputGroupAddon class="p-0!">
             <ColorPicker v-model="selColor" type="color" class="m-auto"></ColorPicker>
@@ -128,10 +141,10 @@ watchDebounced(
       v-model="fillTo"
       :columns="columns"
       class="mt-1"
-      label="Area chart - Fill to (leave empty for line chart)"
+      :label="t('areaChartFillTo')"
     />
     <div v-if="graphType === ChartType.scatter" class="flex flex-col mt-2 gap-1 items-center">
-      <label for="scatterSymbolSize" class="text-nowrap">Scatter symbol size</label>
+      <label for="scatterSymbolSize" class="text-nowrap">{{ t('scatterSymbolSize') }}</label>
       <InputNumber
         id="scatterSymbolSize"
         v-model="scatterSymbolSize"

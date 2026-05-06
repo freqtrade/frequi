@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const botStore = useBotStore();
+const { t } = useUiText();
 const autoRefreshLoc = computed({
   get() {
     return botStore.globalAutoRefresh;
@@ -12,13 +13,13 @@ const autoRefreshLoc = computed({
 
 <template>
   <div class="flex items-center ms-2">
-    <BaseCheckbox v-model="autoRefreshLoc" size="small" title="Auto Refresh" />
+    <BaseCheckbox v-model="autoRefreshLoc" size="small" :title="t('autoRefresh')" />
     <Button
       class="m-1"
       severity="contrast"
       variant="outlined"
       size="small"
-      title="Auto Refresh all bots now"
+      :title="t('autoRefreshAllNow')"
       @click="botStore.allRefreshFull"
     >
       <template #icon>

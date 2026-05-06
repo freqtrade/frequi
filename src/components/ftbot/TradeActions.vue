@@ -11,6 +11,7 @@ withDefaults(
     enableForceEntry: false,
   },
 );
+const { t } = useUiText();
 defineEmits<{
   forceExit: [trade: Trade, type?: 'limit' | 'market'];
   forceExitPartial: [trade: Trade];
@@ -28,8 +29,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Forceexit"
-      label="Forceexit"
+      :title="t('forceExitTrade')"
+      :label="t('forceExitTrade')"
       @click="$emit('forceExit', trade)"
     >
       <template #icon>
@@ -41,8 +42,8 @@ defineEmits<{
       size="small"
       class="justify-start!"
       severity="secondary"
-      title="Forceexit limit"
-      label="Forceexit limit"
+      :title="t('forceExitTradeLimit')"
+      :label="t('forceExitTradeLimit')"
       @click="$emit('forceExit', trade, 'limit')"
     >
       <template #icon>
@@ -54,8 +55,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Forceexit market"
-      label="Forceexit market"
+      :title="t('forceExitTradeMarket')"
+      :label="t('forceExitTradeMarket')"
       @click="$emit('forceExit', trade, 'market')"
     >
       <template #icon>
@@ -67,8 +68,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Forceexit partial"
-      label="Forceexit partial"
+      :title="t('forceExitPartial')"
+      :label="t('forceExitPartial')"
       @click="$emit('forceExitPartial', trade)"
     >
       <template #icon>
@@ -80,8 +81,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Cancel open orders"
-      label="Cancel open orders"
+      :title="t('cancelOpenOrders')"
+      :label="t('cancelOpenOrders')"
       @click="$emit('cancelOpenOrder', trade)"
     >
       <template #icon>
@@ -93,8 +94,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Increase position"
-      label="Increase position"
+      :title="t('increasePosition')"
+      :label="t('increasePosition')"
       @click="$emit('forceEntry', trade)"
     >
       <template #icon>
@@ -106,8 +107,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Reload"
-      label="Reload"
+      :title="t('reloadTrade')"
+      :label="t('reloadTrade')"
       @click="$emit('reloadTrade', trade)"
     >
       <template #icon><i-mdi-reload-alert /> </template>
@@ -116,8 +117,8 @@ defineEmits<{
       class="justify-start!"
       size="small"
       severity="secondary"
-      title="Delete trade"
-      label="Delete trade"
+      :title="t('deleteTrade')"
+      :label="t('deleteTrade')"
       @click="$emit('deleteTrade', trade)"
     >
       <template #icon>

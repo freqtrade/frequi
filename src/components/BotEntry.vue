@@ -16,13 +16,18 @@ function confirmRemoveBot() {
 
 function removeBotQuestion() {
   msgBox.value?.show({
-    title: 'Logout confirmation',
-    message: `Really remove (logout) from ${props.bot.botName} (${props.bot.botId})?`,
+    title: t('logoutConfirmation'),
+    message: t('reallyRemoveBot', {
+      botName: props.bot.botName,
+      botId: props.bot.botId,
+    }),
     accept: () => {
       confirmRemoveBot();
     },
   });
 }
+
+const { t } = useUiText();
 
 const selectedBotStore = computed<BotSubStore>(() => {
   return botStore.botStores[props.bot.botId]!;
@@ -47,14 +52,14 @@ const autoRefreshLoc = computed({
         <ToggleSwitch v-model="autoRefreshLoc" class="mr-2" />
         <div
           v-if="selectedBotStore.isBotLoggedIn"
-          :title="selectedBotStore.isBotOnline ? 'Online' : 'Offline'"
+          :title="selectedBotStore.isBotOnline ? t('online') : t('offline')"
         >
           <i-mdi-circle
             class="mx-1"
             :class="selectedBotStore.isBotOnline ? 'text-green-500' : 'text-red-500'"
           />
         </div>
-        <div v-else title="Login info expired, please login again.">
+        <div v-else :title="t('loginInfoExpired')">
           <i-mdi-cancel class="text-red-500 mx-1" />
         </div>
       </div>
@@ -64,7 +69,7 @@ const autoRefreshLoc = computed({
           v-if="selectedBotStore.isBotLoggedIn"
           size="small"
           severity="secondary"
-          title="Edit bot"
+          :title="t('editBot')"
           @click="$emit('edit')"
         >
           <i-mdi-pencil />
@@ -73,12 +78,12 @@ const autoRefreshLoc = computed({
           v-else
           size="small"
           severity="secondary"
-          title="Login again"
+          :title="t('loginAgain')"
           @click="$emit('editLogin')"
         >
           <i-mdi-login />
         </Button>
-        <Button size="small" severity="secondary" title="Delete bot" @click="removeBotQuestion">
+        <Button size="small" severity="secondary" :title="t('deleteBot')" @click="removeBotQuestion">
           <i-mdi-delete />
         </Button>
       </div>

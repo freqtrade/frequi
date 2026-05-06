@@ -28,6 +28,7 @@ const emit = defineEmits<{
 const settingsStore = useSettingsStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
+const { t } = useUiText();
 
 const dataset = computed((): PairHistory => {
   const firstpair = botStore.activeBot.plotMultiPairs[0];
@@ -150,7 +151,7 @@ const singlePairSelection = computed({
           class="w-80"
           :options="availablePairs"
           optionlabel=""
-          placeholder="Select pairs to plot"
+          :placeholder="t('selectPairsToPlot')"
           size="small"
           filter
         >
@@ -167,7 +168,7 @@ const singlePairSelection = computed({
         </Select>
 
         <Button
-          title="Refresh chart"
+          :title="t('refreshChart')"
           severity="secondary"
           :disabled="botStore.activeBot.plotMultiPairs.length === 0"
           size="small"
@@ -176,14 +177,14 @@ const singlePairSelection = computed({
           <i-mdi-refresh />
         </Button>
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
-          <span class="text-nowrap">Multi pair</span>
+          <span class="text-nowrap">{{ t('multiPair') }}</span>
         </BaseCheckbox>
         <div class="ms-auto flex items-center gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
-            <span class="text-nowrap">Show Chart Areas</span>
+            <span class="text-nowrap">{{ t('showChartAreas') }}</span>
           </BaseCheckbox>
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
-            <span class="text-nowrap">Heikin Ashi</span>
+            <span class="text-nowrap">{{ t('heikinAshi') }}</span>
           </BaseCheckbox>
 
           <PlotConfigSelect></PlotConfigSelect>
@@ -191,7 +192,7 @@ const singlePairSelection = computed({
           <div class="me-0 md:me-1">
             <Button
               size="small"
-              title="Plot configurator"
+              :title="t('plotConfigurator')"
               severity="secondary"
               @click="showConfigurator"
             >
@@ -224,13 +225,13 @@ const singlePairSelection = computed({
         </SingleCandleChartContainer>
       </div>
       <div v-else class="flex flex-col items-center justify-center h-full w-full">
-        <span class="text-2xl font-semibold">No pair selected</span>
+        <span class="text-2xl font-semibold">{{ t('noPairSelected') }}</span>
       </div>
     </div>
     <Dialog
       id="plotConfiguratorModal"
       v-model:visible="showPlotConfigModal"
-      header="Plot Configurator"
+      :header="t('plotConfigurator')"
       ok-only
       hide-backdrop
     >

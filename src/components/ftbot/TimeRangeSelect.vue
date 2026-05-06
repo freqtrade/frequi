@@ -9,6 +9,7 @@ const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 const dateFrom = ref<string>('');
 const dateTo = ref<string>('');
+const { t } = useUiText();
 
 const props = withDefaults(
   defineProps<{
@@ -69,7 +70,7 @@ onMounted(() => {
   <div>
     <div class="flex justify-content-center">
       <div>
-        <label for="dateFrom">Start Date</label>
+        <label for="dateFrom">{{ t('startDate') }}</label>
         <VueDatePicker
           id="dateFrom"
           v-model="dateFrom"
@@ -84,7 +85,7 @@ onMounted(() => {
         ></VueDatePicker>
       </div>
       <div class="ms-2">
-        <label for="dateTo">End Date</label>
+        <label for="dateTo">{{ t('endDate') }}</label>
         <VueDatePicker
           v-model="dateTo"
           :dark="settingsStore.isDarkTheme"
@@ -100,7 +101,7 @@ onMounted(() => {
     </div>
 
     <label class="mt-1 text-start">
-      Timerange: <b>{{ timeRange }}</b>
+      {{ t('timerange') }} <b>{{ timeRange }}</b>
     </label>
   </div>
 </template>

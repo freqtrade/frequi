@@ -7,6 +7,7 @@ import type { MenuItem } from 'primevue/menuitem';
 import { breakpointsTailwind } from '@vueuse/core';
 
 const botStore = useBotStore();
+const { t } = useUiText();
 
 const settingsStore = useSettingsStore();
 const layoutStore = useLayoutStore();
@@ -100,43 +101,43 @@ watch(
 );
 
 // Navigation items array
-const navItems = ref([
+const navItems = computed(() => [
   {
-    label: 'Trade',
+    label: t('trade'),
     to: '/trade',
     visible: computed(() => !botStore.canRunBacktest),
     icon: 'i-mdi-currency-usd',
   },
   {
-    label: 'Dashboard',
+    label: t('dashboard'),
     to: '/dashboard',
     visible: computed(() => !botStore.canRunBacktest),
     icon: 'i-mdi-view-dashboard',
   },
   {
-    label: 'Chart',
+    label: t('chart'),
     to: '/graph',
     icon: 'i-mdi-chart-line',
   },
   {
-    label: 'Logs',
+    label: t('logs'),
     to: '/logs',
     icon: 'i-mdi-format-list-bulleted',
   },
   {
-    label: 'Settings',
+    label: t('settings'),
     to: '/settings',
     mobileOnly: true,
     icon: 'i-mdi-cog',
   },
   {
-    label: 'Backtest',
+    label: t('backtest'),
     to: '/backtest',
     visible: computed(() => botStore.canRunBacktest),
     icon: 'i-mdi-currency-usd',
   },
   {
-    label: 'Download Data',
+    label: t('downloadData'),
     to: '/download_data',
     visible: computed(
       () => botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,
@@ -144,7 +145,7 @@ const navItems = ref([
     icon: 'i-mdi-download',
   },
   {
-    label: 'Pairlist Config',
+    label: t('pairlistConfig'),
     to: '/pairlist_config',
     icon: 'i-mdi-format-list-numbered-rtl',
     visible: computed(
@@ -157,16 +158,16 @@ const navItems = ref([
 
 const menuItems = computed<MenuItem[]>(() => [
   {
-    label: `V: ${settingsStore.uiVersion}`,
+    label: `${t('version')}: ${settingsStore.uiVersion}`,
     disabled: true,
   },
   {
-    label: 'Settings',
+    label: t('settings'),
     icon: 'i-mdi-cog',
     command: () => router.push('/settings'),
   },
   {
-    label: 'Lock dynamic Layout',
+    label: t('lockDynamicLayout'),
     checkbox: true,
     checked: layoutStore.layoutLocked,
     command: () => {
@@ -174,12 +175,12 @@ const menuItems = computed<MenuItem[]>(() => [
     },
   },
   {
-    label: 'Reset Layout',
+    label: t('resetLayout'),
     icon: 'i-mdi-lock-reset',
     command: resetDynamicLayout,
   },
   {
-    label: 'Logout',
+    label: t('logout'),
     icon: 'i-mdi-logout',
     command: clickLogout,
     visible: botStore.hasBots && botStore.botCount === 1,
@@ -196,8 +197,8 @@ const drawerVisible = ref(false);
   <header>
     <div class="flex bg-primary-500 border-b border-primary">
       <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
-        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
+        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" :alt="t('appTitle')" />
+        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">{{ t('appTitle') }}</span>
       </RouterLink>
       <div class="flex justify-between w-full text-center items-center ms-3">
         <div class="items-center hidden md:flex gap-5 ms-5">
@@ -221,7 +222,7 @@ const drawerVisible = ref(false);
           <div
             v-if="!settingsStore.confirmDialog"
             class="my-auto me-5 flex text-yellow-300"
-            title="Confirm dialog deactivated, Forced exits will be executed immediately. Be careful."
+            :title="t('confirmDialogOff')"
           >
             <i-mdi-run-fast />
             <i-mdi-alert />
@@ -247,7 +248,7 @@ const drawerVisible = ref(false);
                 <BotEntry :bot="option" :no-buttons="true" />
               </template>
             </Select>
-            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
+            <ReloadControl class="me-3" :title="t('confirmDialogOff')" />
           </div>
           <div
             class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
@@ -255,14 +256,14 @@ const drawerVisible = ref(false);
             <span class="text-sm me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
-                'No bot selected'
+                t('noBotSelected')
               }}
             </span>
             <span v-if="botStore.botCount === 1">
               {{
                 botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
-                  ? 'Online'
-                  : 'Offline'
+                  ? t('online')
+                  : t('offline')
               }}
             </span>
           </div>
@@ -272,7 +273,7 @@ const drawerVisible = ref(false);
               <div class="flex items-center">
                 <Avatar shape="circle" severity="contrast">
                   <!-- <Avatar label="FT" shape="circle"></Avatar> -->
-                  FT
+                  {{ t('appTitle') }}
                 </Avatar>
                 <i-mdi-chevron-down />
               </div>
@@ -313,13 +314,15 @@ const drawerVisible = ref(false);
           </Button>
           <Drawer
             v-model:visible="drawerVisible"
-            header="Drawer"
+            :header="t('drawer')"
             position="right"
             class="bg-primary-500"
           >
             <template #container>
               <div class="flex flex-row items-center">
-                <h3 class="text-xl font-bold w-full text-center text-surface-200">Freqtrade UI</h3>
+                <h3 class="text-xl font-bold w-full text-center text-surface-200">
+                  {{ t('appTitle') }}
+                </h3>
                 <Button
                   class="float-right mt-1 me-1"
                   variant="outlined"
@@ -342,7 +345,7 @@ const drawerVisible = ref(false);
                 </RouterLink>
                 <Divider />
                 <span class="text-surface-200 text-center"
-                  >Version: {{ settingsStore.uiVersion }}</span
+                  >{{ t('version') }}: {{ settingsStore.uiVersion }}</span
                 >
 
                 <div class="flex flex-row items-center justify-center">
@@ -368,7 +371,7 @@ const drawerVisible = ref(false);
                     <BotEntry :bot="option" :no-buttons="true" />
                   </template>
                 </Select>
-                <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
+                <ReloadControl class="justify-center w-full" :title="t('confirmDialogOff')" />
               </div>
             </template>
           </Drawer>

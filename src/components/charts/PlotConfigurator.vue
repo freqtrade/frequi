@@ -48,7 +48,7 @@ const usedColumns = computed((): { text: string; value: string }[] => {
   }
   return usedCols.map((col) => ({
     value: col,
-    text: !props.columns.includes(col) ? `${col} <-- not available in this chart` : col,
+    text: !props.columns.includes(col) ? `${col} <-- ${t('notAvailableInThisChart')}` : col,
   }));
 });
 
@@ -177,7 +177,7 @@ function loadConfigFromString() {
 
 async function loadPlotConfigFromStrategy() {
   if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy?.strategy) {
-    showAlert(`No strategy selected, can't load plot config.`);
+    showAlert(t('noStrategySelectedCannotLoadPlotConfig'));
     return;
   }
   try {
@@ -187,7 +187,7 @@ async function loadPlotConfigFromStrategy() {
     }
   } catch (error) {
     //
-    showAlert('Failed to load Plot configuration from Strategy.');
+    showAlert(t('failedToLoadPlotConfigFromStrategy'));
   }
 }
 
@@ -239,6 +239,7 @@ watch(
   },
 );
 const fromPlotTemplateVisible = ref(false);
+const { t } = useUiText();
 
 const showTagsInTooltips = computed({
   get() {
@@ -266,23 +267,27 @@ const markAreaZIndex = computed({
 
 <template>
   <div v-if="columns">
-    <label for="idPlotConfigName">Plot config name</label>
+    <label for="idPlotConfigName">{{ t('plotConfigName') }}</label>
     <PlotConfigSelect allow-edit></PlotConfigSelect>
     <Divider />
-    <BaseCheckbox v-model="showTagsInTooltips" class="mb-1">Show Tags in Tooltips</BaseCheckbox>
+    <BaseCheckbox v-model="showTagsInTooltips" class="mb-1">{{ t('showTagsInTooltips') }}</BaseCheckbox>
     <div class="grid grid-cols-2 items-center gap-2 w-full">
-      <label>Mark Area Z-Index <br /><small>(defaults to 1 - Candlechart is at Z=2)</small></label>
+      <label
+        >{{ t('markAreaZIndex') }} <br /><small
+          >{{ t('defaultsTo') }} 1，K 線圖的 Z=2。</small
+        ></label
+      >
 
       <InputNumber v-model="markAreaZIndex" class="mb-1" size="small" />
     </div>
     <Divider />
 
-    <label for="fieldSel" class="mb">Target Plot</label>
+    <label for="fieldSel" class="mb">{{ t('targetPlot') }}</label>
     <EditValue
       v-model="selSubPlot"
       :allow-edit="!isMainPlot"
       allow-add
-      editable-name="plot configuration"
+      :editable-name="t('plotConfigName')"
       align-vertical
       @new="addSubplot"
       @delete="deleteSubplot"
@@ -293,6 +298,8 @@ const markAreaZIndex = computed({
         v-model="selSubPlot"
         :options="subplots"
         size="small"
+        :selection-message="t('itemsSelected')"
+        :empty-selection-message="t('noSelectedItem')"
         :pt="{
           listContainer: {
             class: 'h-30',
@@ -303,12 +310,14 @@ const markAreaZIndex = computed({
     </EditValue>
     <Divider />
     <div>
-      <label for="selectedIndicators">Indicators in this plot</label>
+      <label for="selectedIndicators">{{ t('indicatorsInThisPlot') }}</label>
       <ListBox
         id="selectedIndicators"
         v-model="selIndicatorName"
         size="small"
-        empty-message="No indicators selected"
+        :empty-message="t('noIndicatorsSelected')"
+        :selection-message="t('itemsSelected')"
+        :empty-selection-message="t('noSelectedItem')"
         option-label="text"
         option-value="value"
         :disabled="addNewIndicator"
@@ -324,31 +333,31 @@ const markAreaZIndex = computed({
     <div class="flex flex-row mt-1 gap-1">
       <Button
         severity="secondary"
-        title="Remove indicator to plot"
+        :title="t('removeIndicatorToPlot')"
         size="small"
         :disabled="!selIndicatorName"
         class="col"
         @click="removeIndicator"
       >
-        Remove indicator
+        {{ t('removeIndicatorToPlot') }}
       </Button>
       <Button
         severity="secondary"
-        title="Load indicator config from template"
+        :title="t('indicatorFromTemplate')"
         size="small"
         @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
       >
-        Indicator from template
+        {{ t('indicatorFromTemplate') }}
       </Button>
       <Button
         severity="primary"
-        title="Add indicator to plot"
+        :title="t('addIndicatorToPlot')"
         size="small"
         class="col"
         :disabled="addNewIndicator"
         @click="clickAddNewIndicator"
       >
-        Add new indicator
+        {{ t('addIndicatorToPlot') }}
       </Button>
     </div>
 
@@ -356,7 +365,7 @@ const markAreaZIndex = computed({
       v-if="addNewIndicator"
       :columns="columns"
       class="mt-1"
-      label="Select indicator to add"
+      :label="t('selectIndicatorToAdd')"
       @indicator-selected="addNewIndicatorSelected"
     />
 
@@ -375,9 +384,9 @@ const markAreaZIndex = computed({
         severity="secondary"
         size="small"
         :disabled="addNewIndicator"
-        title="Reset to last saved configuration"
+        :title="t('resetToLastSavedConfiguration')"
         @click="loadPlotConfig"
-        >Reset</Button
+        >{{ t('reset') }}</Button
       >
 
       <!--
@@ -402,16 +411,16 @@ const markAreaZIndex = computed({
         size="small"
         @click="loadPlotConfigFromStrategy"
       >
-        From strategy
+        {{ t('fromStrategy') }}
       </Button>
       <Button
         id="showButton"
         severity="secondary"
         size="small"
         :disabled="addNewIndicator"
-        title="Show configuration for easy transfer to a strategy"
+        :title="t('showConfiguration')"
         @click="showConfig = !showConfig"
-        >{{ showConfig ? 'Hide' : 'Show' }}</Button
+        >{{ showConfig ? t('hideConfiguration') : t('showConfiguration') }}</Button
       >
 
       <Button
@@ -419,9 +428,9 @@ const markAreaZIndex = computed({
         size="small"
         data-toggle="tooltip"
         :disabled="addNewIndicator"
-        title="Save configuration"
+        :title="t('saveConfiguration')"
         @click="savePlotConfig"
-        >Save</Button
+        >{{ t('save') }}</Button
       >
     </div>
     <Button
@@ -429,9 +438,9 @@ const markAreaZIndex = computed({
       class="ms-1 mt-1"
       severity="secondary"
       size="small"
-      title="Load configuration from text box below"
+      :title="t('loadConfigurationFromTextBox')"
       @click="loadConfigFromString"
-      >Load from String</Button
+      >{{ t('loadFromString') }}</Button
     >
     <div v-if="showConfig" class="w-full ms-1 mt-2">
       <Textarea

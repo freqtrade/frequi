@@ -4,56 +4,76 @@ import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 const layoutStore = useLayoutStore();
+const { t, locale } = useUiText();
 
 const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
-const openTradesOptions = [
-  { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
-  { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
-  { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
-];
-const colorPreferenceOptions = [
-  { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
-  { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
-];
+const languageOptions = computed(() => [
+  { value: 'en', text: t('english') },
+  { value: 'zh-TW', text: t('traditionalChinese') },
+]);
+const openTradesOptions = computed(() => [
+  { value: OpenTradeVizOptions.showPill, text: t('showPillInIcon') },
+  { value: OpenTradeVizOptions.asTitle, text: t('showInTitle') },
+  { value: OpenTradeVizOptions.noOpenTrades, text: t('dontShowOpenTradesInHeader') },
+]);
+const colorPreferenceOptions = computed(() => [
+  { value: ColorPreferences.GREEN_UP, text: t('greenUpRedDown') },
+  { value: ColorPreferences.RED_UP, text: t('greenDownRedUp') },
+]);
 
 const resetDynamicLayout = () => {
   layoutStore.resetTradingLayout();
   layoutStore.resetDashboardLayout();
-  showAlert('Layouts have been reset.');
+  showAlert(t('resetLayout'));
 };
 </script>
 
 <template>
   <Card class="mx-auto mt-3 p-4 max-w-4xl">
-    <template #title>FreqUI Settings</template>
+    <template #title>{{ t('settings') }}</template>
     <template #content>
       <div class="flex flex-col gap-4 text-start dark:text-surface-300">
-        <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
+        <p class="text-left">{{ t('version') }}: {{ settingsStore.uiVersion }}</p>
 
         <div class="border border-surface-400 rounded-sm p-4 space-y-4">
-          <h4 class="text-xl font-semibold">UI settings</h4>
+          <h4 class="text-xl font-semibold">{{ t('uiSettings') }}</h4>
+
+          <div class="space-y-1">
+            <label class="block text-sm">{{ t('language') }}</label>
+            <Select
+              v-model="locale"
+              :options="languageOptions"
+              option-label="text"
+              option-value="value"
+              size="small"
+              class="w-full"
+            />
+            <small class="text-surface-600 dark:text-surface-400"
+              >{{ t('language') }}</small
+            >
+          </div>
 
           <BaseCheckbox v-model="layoutStore.layoutLocked" class="space-y-1">
-            Lock dynamic layouts
+            {{ t('lockDynamicLayout') }}
             <template #hint>
-              Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at
-              the top.
+              {{ t('lockDynamicLayout') }}, so they cannot move anymore. Can also be set from the
+              navbar at the top.
             </template>
           </BaseCheckbox>
 
           <div class="flex flex-row items-center gap-2 space-y-2">
             <Button severity="secondary" size="small" class="mb-0" @click="resetDynamicLayout"
-              >Reset layout</Button
+              >{{ t('resetLayout') }}</Button
             >
             <small class="block text-surface-600 dark:text-surface-400"
-              >Reset dynamic layouts to how they were.</small
+              >{{ t('resetLayout') }}.</small
             >
           </div>
 
           <Divider />
 
           <div class="space-y-1">
-            <label class="block text-sm">Show open trades in header</label>
+            <label class="block text-sm">{{ t('showOpenTradesInHeader') }}</label>
             <Select
               v-model="settingsStore.openTradesInTitle"
               :options="openTradesOptions"
@@ -63,12 +83,12 @@ const resetDynamicLayout = () => {
               class="w-full"
             />
             <small class="text-surface-600 dark:text-surface-400"
-              >Decide if open trades should be visualized</small
+              >{{ t('showOpenTradesInHeader') }}</small
             >
           </div>
 
           <div class="space-y-1">
-            <label class="block text-sm">UTC Timezone</label>
+            <label class="block text-sm">{{ t('utcTimezone') }}</label>
             <Select
               v-model="settingsStore.timezone"
               :options="timezoneOptions"
@@ -76,17 +96,17 @@ const resetDynamicLayout = () => {
               size="small"
             />
             <small class="text-surface-600 dark:text-surface-400"
-              >Select timezone (UTC is recommended as exchanges usually work in UTC)</small
+              >{{ t('utcTimezone') }}</small
             >
           </div>
 
           <BaseCheckbox v-model="settingsStore.backgroundSync" class="space-y-1">
-            Background sync
+            {{ t('backgroundSync') }}
             <template #hint> Keep background sync running while other bots are selected. </template>
           </BaseCheckbox>
 
           <BaseCheckbox v-model="settingsStore.confirmDialog" class="space-y-1">
-            Show Confirm Dialog for Trade Exits
+            {{ t('confirmDialogForTradeExits') }}
             <template #hint
               >Use confirmation dialogs when force-exiting a trade.<br />
               This will also show <i-mdi-run-fast class="text-yellow-300 inline" />
@@ -96,7 +116,7 @@ const resetDynamicLayout = () => {
           </BaseCheckbox>
 
           <BaseCheckbox v-model="settingsStore.multiPaneButtonsShowText" class="space-y-1">
-            Show Text on Multi Pane Buttons
+            {{ t('showTextOnMultiPaneButtons') }}
             <template #hint
               >Show text on multi pane buttons. If disabled, only shows images.</template
             >
@@ -104,18 +124,18 @@ const resetDynamicLayout = () => {
         </div>
 
         <div class="border border-surface-400 rounded-sm p-4 space-y-4">
-          <h4 class="text-lg font-semibold">Chart settings</h4>
+          <h4 class="text-lg font-semibold">{{ t('chartSettings') }}</h4>
 
           <div class="space-y-1">
-            <label class="block text-sm">Chart scale Side</label>
+            <label class="block text-sm">{{ t('chartScaleSide') }}</label>
             <div class="flex gap-4">
               <div class="flex items-center">
                 <RadioButton v-model="settingsStore.chartLabelSide" value="left" size="small" />
-                <label class="ml-2">Left</label>
+                <label class="ml-2">{{ t('left') }}</label>
               </div>
               <div class="flex items-center">
                 <RadioButton v-model="settingsStore.chartLabelSide" value="right" size="small" />
-                <label class="ml-2">Right</label>
+                <label class="ml-2">{{ t('right') }}</label>
               </div>
             </div>
             <small class="text-surface-600 dark:text-surface-400">
@@ -124,12 +144,12 @@ const resetDynamicLayout = () => {
           </div>
 
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles" class="space-y-1">
-            Use Heikin Ashi candles
-            <template #hint>Use Heikin Ashi candles in your charts</template>
+            {{ t('useHeikinAshiCandles') }}
+            <template #hint>{{ t('useHeikinAshiCandles') }}</template>
           </BaseCheckbox>
 
           <BaseCheckbox v-model="settingsStore.useReducedPairCalls" class="space-y-1">
-            Only request necessary columns
+            {{ t('onlyRequestNecessaryColumns') }}
             <template #hint
               >Can reduce the transfer size for large dataframes. May require additional calls if
               the plot config changes.</template
@@ -137,7 +157,7 @@ const resetDynamicLayout = () => {
           </BaseCheckbox>
 
           <div>
-            <p>Default number of candles to display (defaults to 250)</p>
+            <p>{{ t('defaultCandlesToDisplay') }} (defaults to 250)</p>
             <div class="flex flex-row gap-5 w-full items-center">
               <Slider
                 v-model="settingsStore.chartDefaultCandleCount"
@@ -157,7 +177,7 @@ const resetDynamicLayout = () => {
           </div>
 
           <div class="space-y-1">
-            <label class="block">Candle Color Preference</label>
+            <label class="block">{{ t('candleColorPreference') }}</label>
             <div class="flex flex-row gap-5 items-center">
               <div
                 v-for="option in colorPreferenceOptions"
@@ -196,27 +216,27 @@ const resetDynamicLayout = () => {
         </div>
 
         <div class="border rounded-sm p-4 space-y-4">
-          <h4 class="text-lg font-semibold">Notification Settings</h4>
+          <h4 class="text-lg font-semibold">{{ t('notificationSettings') }}</h4>
           <div class="space-y-2">
             <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]">
-              Entry notifications
+              {{ t('entryNotifications') }}
             </BaseCheckbox>
             <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitFill]">
-              Exit notifications
+              {{ t('exitNotifications') }}
             </BaseCheckbox>
             <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryCancel]">
-              Entry Cancel notifications
+              {{ t('entryCancelNotifications') }}
             </BaseCheckbox>
             <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.exitCancel]">
-              Exit Cancel notifications
+              {{ t('exitCancelNotifications') }}
             </BaseCheckbox>
           </div>
         </div>
 
         <div class="border rounded-sm p-4 space-y-4">
-          <h4 class="text-lg font-semibold">Backtesting settings</h4>
+          <h4 class="text-lg font-semibold">{{ t('backtestingSettings') }}</h4>
           <div>
-            <label for="backtestMetrics" class="block text-sm">Backtesting metrics</label>
+            <label for="backtestMetrics" class="block text-sm">{{ t('backtestingMetrics') }}</label>
             <MultiSelect
               id="backtestMetrics"
               v-model="settingsStore.backtestAdditionalMetrics"
@@ -228,7 +248,7 @@ const resetDynamicLayout = () => {
               display="chip"
             />
             <small class="text-surface-600 dark:text-surface-400"
-              >Select which metrics should be shown on a per pair / tag basis.</small
+              >{{ t('selectMetricsByPairTag') }}</small
             >
           </div>
         </div>
