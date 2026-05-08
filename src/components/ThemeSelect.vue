@@ -3,6 +3,7 @@ import type { ThemeName } from '@/types';
 
 const activeTheme = ref('');
 const settingsStore = useSettingsStore();
+const { t } = useUiText();
 
 withDefaults(defineProps<{ showText?: boolean }>(), { showText: false });
 
@@ -44,9 +45,9 @@ function toggleNight() {
 <template>
   <Button
     variant="link"
-    title="Toggle Night Mode"
+    :title="t('toggleNightMode')"
     class="text-surface-200"
-    :label="showText ? 'Toggle Night Mode' : ''"
+    :label="showText ? t('toggleNightMode') : ''"
     @click="toggleNight"
   >
     <template #icon>

@@ -6,6 +6,7 @@ const blackListShow = ref(false);
 const blacklistAddPopover = ref<InstanceType<typeof Popover>>();
 const blacklistSelect = ref<number[]>([]);
 const botStore = useBotStore();
+const { t } = useUiText();
 
 function initBlacklist() {
   if (botStore.activeBot.whitelist.length === 0) {
@@ -60,7 +61,7 @@ onMounted(() => {
 <template>
   <div>
     <div>
-      <h3 class="text-xl">Whitelist Methods</h3>
+      <h3 class="text-xl">{{ t('blacklistMethods') }}</h3>
 
       <ul v-if="botStore.activeBot.pairlistMethods.length" class="list wide">
         <li
@@ -73,8 +74,8 @@ onMounted(() => {
       </ul>
     </div>
     <!-- Show Whitelist -->
-    <h3 class="text-lg font-bold" :title="`${botStore.activeBot.whitelist.length} pairs`">
-      Whitelist
+      <h3 class="text-lg font-bold" :title="`${botStore.activeBot.whitelist.length} ${t('pair')}`">
+      {{ t('whitelist') }}
     </h3>
     <ul v-if="botStore.activeBot.whitelist.length" class="list">
       <li
@@ -85,7 +86,7 @@ onMounted(() => {
         {{ pair }}
       </li>
     </ul>
-    <p v-else>List Unavailable. Please Login and make sure server is running.</p>
+    <p v-else>{{ t('listUnavailable') }}</p>
     <Divider />
 
     <!-- Blacklsit -->
@@ -93,9 +94,9 @@ onMounted(() => {
       <div class="flex flex-row justify-center mb-1">
         <label
           class="text-lg font-bold mb-2 w-full"
-          title="Blacklist - Select (followed by a click on '-') to remove pairs"
+          :title="`${t('blacklist')} - ${t('selectPairsToDeleteFromBlacklist')}`"
         >
-          Blacklist
+          {{ t('blacklist') }}
         </label>
         <div class="flex flex-cols items-center gap-1 pe-1">
           <Button
@@ -113,7 +114,7 @@ onMounted(() => {
             v-if="botStore.activeBot.botFeatures.botBlacklistModify"
             size="small"
             severity="secondary"
-            title="Select pairs to delete pairs from your blacklist."
+            :title="t('selectPairsToDeleteFromBlacklist')"
             :disabled="blacklistSelect.length === 0"
             @click="deletePairs"
           >
@@ -126,9 +127,9 @@ onMounted(() => {
       <Popover ref="blacklistAddPopover" class="p-1">
         <form ref="form" @submit.prevent="addBlacklistPair">
           <div class="space-y-1">
-            <h4 class="font-bold mb-2">Add Pair to Blacklist</h4>
+            <h4 class="font-bold mb-2">{{ t('addPairToBlacklist') }}</h4>
             <div class="space-x-2">
-              <label for="pair-input">Pair</label>
+              <label for="pair-input">{{ t('pair') }}</label>
               <InputText id="pair-input" v-model="newblacklistpair" required autofocus></InputText>
             </div>
             <Button
@@ -138,7 +139,7 @@ onMounted(() => {
               severity="primary"
               type="submit"
             >
-              Add
+              {{ t('add') }}
             </Button>
           </div>
         </form>
@@ -156,7 +157,7 @@ onMounted(() => {
         <span class="check"><i-mdi-check-circle /></span>{{ pair }}
       </li>
     </ul>
-    <p v-else>BlackList Unavailable. Please Login and make sure server is running.</p>
+    <p v-else>{{ t('blacklistUnavailable') }}</p>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const values = defineModel<string[]>({ required: true });
+const { t } = useUiText();
 withDefaults(
   defineProps<{
     placeholder?: string;
@@ -25,7 +26,7 @@ withDefaults(
         <Button
           severity="secondary"
           variant="outlined"
-          title="Delete this value."
+          :title="t('deleteThisValue')"
           class="flex align-items-center justify-content-center"
           @click="values.splice(idx, 1)"
         >
@@ -36,7 +37,7 @@ withDefaults(
       </div>
     </div>
     <Button
-      :title="`Add new value`"
+      :title="t('addNewValue')"
       severity="secondary"
       class="mt-auto flex align-items-center justify-content-center"
       @click="values.push('')"

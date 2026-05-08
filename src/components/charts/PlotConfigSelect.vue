@@ -10,6 +10,7 @@ withDefaults(
   },
 );
 const plotStore = usePlotConfigStore();
+const { t } = useUiText();
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const plotStore = usePlotConfigStore();
     :allow-edit="allowEdit"
     :allow-add="allowEdit"
     :allow-duplicate="allowEdit"
-    editable-name="plot configuration"
+    :editable-name="t('plotConfigurator')"
     @rename="plotStore.renamePlotConfig"
     @delete="plotStore.deletePlotConfig"
     @new="plotStore.newPlotConfig"

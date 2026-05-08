@@ -23,6 +23,7 @@ const emit = defineEmits<{
   forceEntry: [trade: Trade];
 }>();
 const popoverOpen = ref(false);
+const { t } = useUiText();
 
 function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
   popoverOpen.value = false;
@@ -58,7 +59,7 @@ const popover = ref<InstanceType<typeof Popover> | null>(null);
       class="btn-xs"
       size="small"
       severity="secondary"
-      title="Actions"
+      :title="t('actions')"
       @click="popover?.toggle"
     >
       <i-mdi-gesture-tap />
@@ -66,7 +67,7 @@ const popover = ref<InstanceType<typeof Popover> | null>(null);
     <Popover
       ref="popover"
       :target="`btn-actions-${id}`"
-      :title="`Actions for ${trade.pair}`"
+      :title="`${t('actions')} - ${trade.pair}`"
       triggers="manual"
       placement="left"
     >
@@ -85,7 +86,7 @@ const popover = ref<InstanceType<typeof Popover> | null>(null);
         class="mt-1 w-full text-start"
         size="small"
         severity="secondary"
-        label="Close Actions menu"
+        :label="t('closeActionsMenu')"
         @click="popover?.hide"
       >
         <template #icon><i-mdi-cancel class="me-1" /></template>

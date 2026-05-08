@@ -11,6 +11,7 @@ const props = defineProps<{
 const model = defineModel<boolean>();
 
 const botStore = useBotStore();
+const { t } = useUiText();
 
 const form = ref<HTMLFormElement>();
 const amount = ref<number | undefined>(undefined);
@@ -62,19 +63,23 @@ const amountDebounced = refDebounced(amount, 250, { maxWait: 500 });
 
 const amountInBase = computed<string>(() => {
   return amountDebounced.value && props.trade.current_rate
-    ? `~${formatPriceCurrency(amountDebounced.value * props.trade.current_rate, props.trade.quote_currency || '', props.stakeCurrencyDecimals)} (Estimated value) `
+    ? `~${formatPriceCurrency(
+        amountDebounced.value * props.trade.current_rate,
+        props.trade.quote_currency || '',
+        props.stakeCurrencyDecimals,
+      )} (${t('estimatedValue')}) `
     : '';
 });
 const orderTypeOptions = [
-  { value: 'market', text: 'Market' },
-  { value: 'limit', text: 'Limit' },
+  { value: 'market', text: t('market') },
+  { value: 'limit', text: t('limit') },
 ];
 </script>
 
 <template>
   <Dialog
     v-model:visible="model"
-    :header="`Force exiting a trade`"
+    :header="t('forceExitPosition')"
     modal
     @show="resetForm"
     @hide="resetForm"
@@ -82,15 +87,15 @@ const orderTypeOptions = [
     <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
       <div class="mb-4">
         <p class="mb-2">
-          <span>Exiting Trade #{{ trade.trade_id }} {{ trade.pair }}.</span>
+          <span>{{ t('forceExitPosition') }} #{{ trade.trade_id }} {{ trade.pair }}.</span>
           <br />
-          <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
+          <span>{{ t('currentlyOwning') }} {{ trade.amount }} {{ trade.base_currency }}</span>
         </p>
       </div>
 
       <div>
         <label for="stake-input" class="block font-medium mb-1">
-          Amount in {{ trade.base_currency }} [optional]
+          {{ t('stakeAmountOptional') }} {{ trade.base_currency }}
           <span class="text-sm italic ml-1">{{ amountInBase }}</span>
         </label>
         <div class="space-y-2">
@@ -116,8 +121,8 @@ const orderTypeOptions = [
       </div>
       <div v-if="botStore.activeBot.botFeatures.forceExitWithPrice">
         <label for="price-input" class="block font-medium mb-1">
-          Price
-          <span class="text-sm italic ml-1">Only available with limit orders</span>
+          {{ t('priceOptional') }}
+          <span class="text-sm italic ml-1">{{ t('onlyAvailableWithLimitOrders') }}</span>
         </label>
         <div class="space-y-2">
           <InputNumber
@@ -135,7 +140,7 @@ const orderTypeOptions = [
       </div>
 
       <div>
-        <label class="block font-medium mb-1">*OrderType</label>
+        <label class="block font-medium mb-1">{{ t('orderType') }}</label>
         <SelectButton
           v-model="ordertype"
           :options="orderTypeOptions"
@@ -150,8 +155,8 @@ const orderTypeOptions = [
 
     <template #footer>
       <div class="flex justify-end gap-2">
-        <Button severity="secondary" size="small" @click="model = false">Cancel</Button>
-        <Button severity="primary" size="small" @click="handleExit">Exit Position</Button>
+        <Button severity="secondary" size="small" @click="model = false">{{ t('cancel') }}</Button>
+        <Button severity="primary" size="small" @click="handleExit">{{ t('exitPosition') }}</Button>
       </div>
     </template>
   </Dialog>

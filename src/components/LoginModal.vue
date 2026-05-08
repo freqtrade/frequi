@@ -11,6 +11,7 @@ withDefaults(
 );
 const loginViewOpen = ref(false);
 const loginInfo = ref<AuthStorageWithBotId | undefined>(undefined);
+const { t } = useUiText();
 
 const handleLoginResult = (result: boolean) => {
   if (result) {
@@ -31,12 +32,12 @@ defineExpose({
 <template>
   <div>
     <Button severity="secondary" @click="openLoginModal()"
-      ><i-mdi-login class="me-1" />{{ loginText }}</Button
+      ><i-mdi-login class="me-1" />{{ loginText || t('login') }}</Button
     >
     <Dialog
       id="modal-prevent-closing"
       v-model:visible="loginViewOpen"
-      header="Login to your bot"
+      :header="t('botLoginHeader')"
       :dismissable-mask="true"
     >
       <BotLogin

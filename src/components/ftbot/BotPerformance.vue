@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const botStore = useBotStore();
+const { t } = useUiText();
 enum PerformanceOptions {
   performance = 'performance',
   entryStats = 'entryStats',
@@ -27,29 +28,29 @@ const performanceTable = computed<
     [PerformanceOptions.performance]: { key: 'pair', label: 'Pair' },
     [PerformanceOptions.entryStats]: {
       key: 'enter_tag',
-      label: 'Enter tag',
+      label: t('entryTag'),
       formatter: (v: unknown) => formatTextLen(v as string, textLength),
     },
     [PerformanceOptions.exitStats]: {
       key: 'exit_reason',
-      label: 'Exit Reason',
+      label: t('closeReason'),
       formatter: (v: unknown) => formatTextLen(v as string, textLength),
     },
     [PerformanceOptions.mixTagStats]: {
       key: 'mix_tag',
-      label: 'Mix Tag',
+      label: t('mixTag'),
       formatter: (v: unknown) => formatTextLen(v as string, textLength),
     },
   };
   return [
     initialCol[selectedOption.value],
-    { key: 'profit', label: 'Profit %' },
+    { key: 'profit', label: t('profitPercent') },
     {
       key: 'profit_abs',
       label: `Profit ${botStore.activeBot.botState?.stake_currency}`,
       formatter: (v: unknown) => formatPrice(v as number, 5),
     },
-    { key: 'count', label: 'Count' },
+    { key: 'count', label: t('count') },
   ];
 });
 
@@ -70,10 +71,10 @@ const performanceData = computed(() => {
 });
 
 const options = [
-  { value: PerformanceOptions.performance, text: 'Performance' },
-  { value: PerformanceOptions.entryStats, text: 'Entries' },
-  { value: PerformanceOptions.exitStats, text: 'Exits' },
-  { value: PerformanceOptions.mixTagStats, text: 'Mix Tag' },
+  { value: PerformanceOptions.performance, text: t('performance') },
+  { value: PerformanceOptions.entryStats, text: t('entries') },
+  { value: PerformanceOptions.exitStats, text: t('exits') },
+  { value: PerformanceOptions.mixTagStats, text: t('mixTag') },
 ];
 
 function refreshSummary() {
@@ -98,7 +99,7 @@ onMounted(() => {
 <template>
   <div>
     <div class="mb-2">
-      <h3 class="me-auto text-2xl inline">Performance</h3>
+      <h3 class="me-auto text-2xl inline">{{ t('performance') }}</h3>
       <Button class="float-end" severity="secondary" @click="refreshSummary">
         <template #icon>
           <i-mdi-refresh />

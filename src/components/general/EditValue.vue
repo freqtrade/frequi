@@ -32,6 +32,7 @@ enum EditState {
 
 const localName = ref<string>('');
 const mode = ref<EditState>(EditState.None);
+const { t } = useUiText();
 onMounted(() => {
   localName.value = props.modelValue;
 });
@@ -82,7 +83,7 @@ function saveNewName() {
         <Button
           size="small"
           severity="secondary"
-          :title="`Edit this ${editableName}.`"
+          :title="t('editThis', { name: editableName })"
           @click="mode = EditState.Editing"
         >
           <template #icon>
@@ -93,7 +94,7 @@ function saveNewName() {
           v-if="allowDuplicate"
           size="small"
           severity="secondary"
-          :title="`Duplicate ${editableName}.`"
+          :title="t('duplicateThis', { name: editableName })"
           @click="duplicate"
         >
           <template #icon>
@@ -103,7 +104,7 @@ function saveNewName() {
         <Button
           size="small"
           severity="secondary"
-          :title="`Delete this ${editableName}.`"
+          :title="t('deleteThis', { name: editableName })"
           @click="$emit('delete', modelValue)"
         >
           <template #icon>
@@ -114,7 +115,7 @@ function saveNewName() {
       <Button
         v-if="allowAdd && mode === EditState.None"
         size="small"
-        :title="`Add new ${editableName}.`"
+        :title="t('addNewThis', { name: editableName })"
         severity="primary"
         @click="addNewClick"
       >
@@ -125,7 +126,7 @@ function saveNewName() {
       <template v-if="mode !== EditState.None">
         <Button
           size="small"
-          :title="`Add new ${editableName}`"
+          :title="t('addNewThis', { name: editableName })"
           severity="primary"
           @click="saveNewName"
         >
@@ -133,7 +134,7 @@ function saveNewName() {
             <i-mdi-check />
           </template>
         </Button>
-        <Button size="small" title="Abort" severity="secondary" @click="abort">
+        <Button size="small" :title="t('abort')" severity="secondary" @click="abort">
           <template #icon>
             <i-mdi-close />
           </template>

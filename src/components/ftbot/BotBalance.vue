@@ -4,6 +4,7 @@ import type { BalanceValues } from '@/types';
 const botStore = useBotStore();
 const hideSmallBalances = ref(true);
 const showBotOnly = ref(true);
+const { t } = useUiText();
 
 const smallBalance = computed<number>(() => {
   return Number((1.1 ** botStore.activeBot.stakeCurrencyDecimals).toFixed(8));
@@ -48,10 +49,10 @@ const chartValues = computed<BalanceValues[]>(() => {
 
 const tableFields = computed(() => {
   return [
-    { field: 'currency', header: 'Currency' },
+    { field: 'currency', header: t('currency') },
     {
       field: showBotOnly.value && canUseBotBalance.value ? 'bot_owned' : 'free',
-      header: 'Available',
+      header: t('available'),
       asCurrency: true,
     },
     {
@@ -74,12 +75,14 @@ onMounted(() => {
 <template>
   <div>
     <div class="flex flex-wrap flex-row mb-2 justify-end items-center">
-      <label class="text-xl ms-1 me-auto mb-0">{{ showBotOnly ? 'Bot' : 'Account' }} Balance</label>
+      <label class="text-xl ms-1 me-auto mb-0">
+        {{ showBotOnly ? t('botBalance') : t('accountBalance') }}
+      </label>
       <div class="flex flex-row gap-1">
         <Button
           v-if="canUseBotBalance"
           severity="secondary"
-          :tooltip="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
+          :tooltip="!showBotOnly ? t('showingAccountBalance') : t('showingBotBalance')"
           @click="showBotOnly = !showBotOnly"
         >
           <template #icon>
@@ -89,7 +92,7 @@ onMounted(() => {
         </Button>
         <Button
           severity="secondary"
-          :tooltip="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
+          :tooltip="!hideSmallBalances ? t('hideSmallBalances') : t('showAllBalances')"
           @click="hideSmallBalances = !hideSmallBalances"
         >
           <template #icon>
@@ -121,12 +124,12 @@ onMounted(() => {
         >
         <ColumnGroup type="footer">
           <Row>
-            <Column footer="Total" f />
+            <Column :footer="t('totalLabel')" f />
             <Column>
               <template #footer>
                 <span
                   class="font-italic"
-                  :title="`Increase over initial capital of ${formatCurrency(
+                  :title="`${t('increaseOverInitialCapital')} ${formatCurrency(
                     botStore.activeBot.balance.starting_capital,
                   )} ${botStore.activeBot.balance.stake}`"
                 >

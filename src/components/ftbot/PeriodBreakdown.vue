@@ -3,6 +3,7 @@ import { TimeSummaryOptions } from '@/types';
 
 const botStore = useBotStore();
 const settingsStore = useSettingsStore();
+const { t } = useUiText();
 
 const props = defineProps<{
   multiBotView?: boolean;
@@ -13,17 +14,17 @@ const hasWeekly = computed(
 );
 
 const periodicBreakdownSelections = computed(() => {
-  const vals = [{ value: TimeSummaryOptions.daily, text: 'Days' }];
+  const vals = [{ value: TimeSummaryOptions.daily, text: t('days') }];
   if (hasWeekly.value) {
-    vals.push({ value: TimeSummaryOptions.weekly, text: 'Weeks' });
-    vals.push({ value: TimeSummaryOptions.monthly, text: 'Months' });
+    vals.push({ value: TimeSummaryOptions.weekly, text: t('weeks') });
+    vals.push({ value: TimeSummaryOptions.monthly, text: t('months') });
   }
   return vals;
 });
 
 const absRelSelections = ref([
-  { value: 'abs_profit', text: 'Abs $' },
-  { value: 'rel_profit', text: 'Rel %' },
+  { value: 'abs_profit', text: t('absDollar') },
+  { value: 'rel_profit', text: t('relPercent') },
 ]);
 
 const selectedStats = computed(() => {
@@ -74,7 +75,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col h-full">
     <div v-if="!props.multiBotView" class="mb-2">
-      <h3 class="me-auto inline text-xl">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
+      <h3 class="me-auto inline text-xl">{{ t('periodBreakdown') }}</h3>
       <Button class="float-end" severity="secondary" @click="refreshSummary">
         <template #icon>
           <i-mdi-refresh />
@@ -123,29 +124,29 @@ onMounted(() => {
       />
     </div>
     <div v-else class="flex items-center justify-center h-full w-full p-2">
-      Time period chart is only available when a single bot is selected and showing absolute profit.
+      {{ t('timePeriodChartOnlySingleBot') }}
     </div>
     <div v-if="!props.multiBotView">
       <DataTable size="small" :value="selectedStats.data">
-        <Column field="date" header="Day"></Column>
-        <Column field="abs_profit" header="Profit">
+        <Column field="date" :header="t('days')"></Column>
+        <Column field="abs_profit" :header="t('profit')">
           <template #body="{ data, field }">
             {{ formatPrice(data[field as string], botStore.activeBot.stakeCurrencyDecimals) }}
           </template>
         </Column>
         <Column
           field="fiat_value"
-          :header="`In ${botStore.activeBot.dailyStats.fiat_display_currency}`"
+          :header="`${t('in')} ${botStore.activeBot.dailyStats.fiat_display_currency}`"
         >
           <template #body="{ data, field }">
             {{ formatPrice(data[field as string], 2) }}
           </template>
         </Column>
-        <Column field="trade_count" header="Trades"></Column>
+        <Column field="trade_count" :header="t('trades')"></Column>
         <Column
           v-if="botStore.activeBot.botFeatures.advancedDailyMetrics"
           field="rel_profit"
-          header="Profit%"
+          :header="t('profitPercent')"
         >
           <template #body="{ data, field }">
             {{ formatPercent(data[field as string], 2) }}

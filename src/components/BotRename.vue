@@ -6,6 +6,7 @@ const props = defineProps<{
 const emit = defineEmits<{ cancelled: []; saved: [] }>();
 
 const botStore = useBotStore();
+const { t } = useUiText();
 const newName = ref<string>('');
 
 onMounted(() => {
@@ -23,17 +24,23 @@ const save = () => {
 
 <template>
   <form class="flex w-full gap-2" @submit.prevent="save">
-    <InputText v-model="newName" size="small" class="w-full" placeholder="Bot name" autofocus />
+    <InputText
+      v-model="newName"
+      size="small"
+      class="w-full"
+      :placeholder="t('botNamePlaceholder')"
+      autofocus
+    />
 
     <div class="flex gap-1">
-      <Button type="submit" size="small" severity="secondary" title="Save" class="w-8 h-8 p-0!">
+      <Button type="submit" size="small" severity="secondary" :title="t('save')" class="w-8 h-8 p-0!">
         <i-mdi-check />
       </Button>
 
       <Button
         size="small"
         severity="secondary"
-        title="Cancel"
+        :title="t('cancel')"
         class="w-8 h-8 p-0!"
         @click="$emit('cancelled')"
       >

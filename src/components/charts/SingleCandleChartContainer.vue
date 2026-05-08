@@ -29,6 +29,7 @@ const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
+const { t } = useUiText();
 
 const dataset = computed((): PairHistory => {
   if (props.historicView) {
@@ -59,15 +60,15 @@ const noDatasetText = computed((): string => {
 
   switch (status) {
     case LoadingStatus.not_loaded:
-      return 'Not loaded yet.';
+      return t('notLoadedYet');
     case LoadingStatus.loading:
-      return 'Loading...';
+      return t('loading');
     case LoadingStatus.success:
-      return 'No data available';
+      return t('noDataAvailable');
     case LoadingStatus.error:
-      return 'Failed to load data';
+      return t('failedToLoadData');
     default:
-      return 'Unknown';
+      return t('unknown');
   }
 });
 
@@ -133,28 +134,28 @@ watch(
       <div class="ms-1 md:ms-2 flex flex-wrap md:flex-nowrap items-center gap-1">
         <div class="flex flex-col md:flex-row md:gap-2">
           <div class="flex flex-row flex-wrap gap-2">
-            <small v-if="dataset" class="text-sm text-nowrap" title="Long entry signals"
-              >Long entries: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
+            <small v-if="dataset" class="text-sm text-nowrap" :title="t('longEntrySignals')"
+              >{{ t('longEntrySignals') }}: {{ dataset.enter_long_signals || dataset.buy_signals }}</small
             >
-            <small v-if="dataset" class="text-sm text-nowrap" title="Long exit signals"
-              >Long exit: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
+            <small v-if="dataset" class="text-sm text-nowrap" :title="t('longExitSignals')"
+              >{{ t('longExitSignals') }}: {{ dataset.exit_long_signals || dataset.sell_signals }}</small
             >
           </div>
           <div class="flex flex-row flex-wrap gap-2">
             <small v-if="dataset && dataset.enter_short_signals" class="text-sm text-nowrap"
-              >Short entries: {{ dataset.enter_short_signals }}</small
+              >{{ t('shortEntrySignals') }}: {{ dataset.enter_short_signals }}</small
             >
             <small v-if="dataset && dataset.exit_short_signals" class="text-sm text-nowrap"
-              >Short exits: {{ dataset.exit_short_signals }}</small
+              >{{ t('shortExitSignals') }}: {{ dataset.exit_short_signals }}</small
             >
           </div>
         </div>
       </div>
       <div>
-        {{ pair || 'Pair' }}
+        {{ pair || t('pairLabel') }}
       </div>
       <div v-if="isLoadingDataset">
-        <ProgressSpinner class="w-4 h-4" stroke-width="4" small label="Spinning" />
+        <ProgressSpinner class="w-4 h-4" stroke-width="4" small :label="t('spinning')" />
       </div>
       <div v-else class="w-4 h-4"></div>
     </div>
@@ -176,12 +177,12 @@ watch(
           :label-side="settingsStore.chartLabelSide"
         />
         <div v-else class="m-auto">
-          <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" label="Spinning" />
+          <ProgressSpinner v-if="isLoadingDataset" class="w-5 h-5" :label="t('spinning')" />
           <div v-else class="text-lg">
             {{ noDatasetText }}
           </div>
           <p v-if="botStore.activeBot.historyTakesLonger">
-            This is taking longer than expected ... Hold on ...
+            {{ t('longerThanExpectedHoldOn') }}
           </p>
         </div>
       </div>

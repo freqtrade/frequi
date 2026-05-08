@@ -90,6 +90,7 @@ const shortexitSignalColor = '#faba25';
 
 const candleChart = useTemplateRef<InstanceType<typeof ECharts>>('candleChart');
 const chartOptions = shallowRef<EChartsOption>({});
+const { t } = useUiText();
 
 const strategy = computed(() => {
   return props.dataset ? props.dataset.strategy : '';
@@ -235,7 +236,7 @@ function updateChart(initial = false) {
 
     series: [
       {
-        name: 'Candles',
+        name: t('candles'),
         type: 'candlestick',
         barWidth: '80%',
         itemStyle: {
@@ -251,7 +252,7 @@ function updateChart(initial = false) {
         },
       },
       {
-        name: 'Volume',
+        name: t('volume'),
         type: 'bar',
         xAxisIndex: 1,
         yAxisIndex: 1,
@@ -343,39 +344,39 @@ function updateChart(initial = false) {
     const signalConfigs = [
       {
         colData: colEntryData,
-        name: 'Entry',
+        name: t('entry'),
         symbol: 'triangle',
         symbolSize: 10,
         color: buySignalColor,
-        tooltipPrefix: 'Long entry',
+        tooltipPrefix: t('longEntry'),
         colTooltip: colEnterTag,
       },
       {
         colData: colExitData,
-        name: 'Exit',
+        name: t('exit'),
         symbol: 'diamond',
         symbolSize: 8,
         color: sellSignalColor,
-        tooltipPrefix: 'Long exit',
+        tooltipPrefix: t('longExit'),
         colTooltip: colExitTag,
       },
       {
         colData: colShortEntryData,
-        name: 'Entry',
+        name: t('entry'),
         symbol: 'triangle',
         symbolSize: 10,
         symbolRotate: 180,
         color: shortEntrySignalColor,
-        tooltipPrefix: 'Short entry',
+        tooltipPrefix: t('shortEntry'),
         colTooltip: colEnterTag,
       },
       {
         colData: colShortExitData,
-        name: 'Exit',
+        name: t('exit'),
         symbol: 'pin',
         symbolSize: 8,
         color: shortexitSignalColor,
-        tooltipPrefix: 'Short exit',
+        tooltipPrefix: t('shortExit'),
         colTooltip: colExitTag,
       },
     ];
@@ -565,7 +566,7 @@ function updateChart(initial = false) {
     }
   }
 
-  const nameTrades = 'Trades';
+  const nameTrades = t('tradesLegend');
   // Insert trades into legend, after the default columns
   addLegend(nameTrades, 4);
   const tradesSeries: ScatterSeriesOption = generateTradeSeries(
@@ -603,7 +604,7 @@ function initializeChartOptions() {
     animation: false,
     legend: {
       // Initial legend, further entries are pushed to the below list
-      data: ['Candles', 'Volume', 'Entry', 'Exit'],
+      data: [t('candles'), t('volume'), t('entry'), t('exit')],
       right: '1%',
       top: 0,
       type: 'scroll',

@@ -33,6 +33,7 @@ const props = withDefaults(
 const botStore = useBotStore();
 const router = useRouter();
 const settingsStore = useSettingsStore();
+const { t } = useUiText();
 const currentPage = ref(1);
 const selectedItem = ref();
 const filterText = ref('');
@@ -51,41 +52,41 @@ function formatPriceWithDecimals(price: number) {
 
 const tableFields = ref([
   { field: 'trade_id', header: 'ID' },
-  { field: 'pair', header: 'Pair' },
-  { field: 'amount', header: 'Amount' },
+  { field: 'pair', header: t('pair') },
+  { field: 'amount', header: t('amount') },
   props.activeTrades
-    ? { field: 'stake_amount', header: 'Stake amount' }
-    : { field: 'max_stake_amount', header: 'Total stake amount' },
+    ? { field: 'stake_amount', header: t('stakeAmount') }
+    : { field: 'max_stake_amount', header: t('totalStakeAmount') },
   {
     field: 'open_rate',
-    header: 'Open rate',
+    header: t('openRate'),
   },
   {
     field: props.activeTrades ? 'current_rate' : 'close_rate',
-    header: props.activeTrades ? 'Current rate' : 'Close rate',
+    header: props.activeTrades ? t('currentRate') : t('closeRate'),
   },
   {
     field: 'profit',
-    header: props.activeTrades ? 'Current profit %' : 'Profit %',
+    header: props.activeTrades ? t('currentProfit') : t('closeProfit'),
   },
-  { field: 'open_timestamp', header: 'Open date' },
+  { field: 'open_timestamp', header: t('openDate') },
   ...(props.activeTrades
     ? [{ field: 'actions', header: '' }]
     : [
-        { field: 'close_timestamp', header: 'Close date' },
-        { field: 'exit_reason', header: 'Close Reason' },
+        { field: 'close_timestamp', header: t('closeDate') },
+        { field: 'exit_reason', header: t('closeReason') },
       ]),
 ]);
 
 if (props.multiBotView) {
-  tableFields.value.unshift({ field: 'botName', header: 'Bot' });
+  tableFields.value.unshift({ field: 'botName', header: t('botName') });
 }
 
 const feOrderType = ref<string | undefined>(undefined);
 function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
   feTrade.value = item;
   confirmExitValue.value = ModalReasons.forceExit;
-  confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
+  confirmExitText.value = `真的要使用 ${ordertype} 訂單平掉交易 ${item.trade_id}（${item.pair}）嗎？`;
   feOrderType.value = ordertype;
   if (settingsStore.confirmDialog === true) {
     removeTradeVisible.value = true;
@@ -128,7 +129,7 @@ function forceExitExecuter() {
 }
 
 function removeTradeHandler(item: Trade) {
-  confirmExitText.value = `Really delete trade ${item.trade_id} (Pair ${item.pair})?`;
+  confirmExitText.value = `真的要刪除交易 ${item.trade_id}（${item.pair}）嗎？`;
   confirmExitValue.value = ModalReasons.removeTrade;
   feTrade.value = item;
   removeTradeVisible.value = true;
@@ -140,7 +141,7 @@ function forceExitPartialHandler(item: Trade) {
 }
 
 function cancelOpenOrderHandler(item: Trade) {
-  confirmExitText.value = `Cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`;
+  confirmExitText.value = `要取消交易 ${item.trade_id}（${item.pair}）的未成交訂單嗎？`;
   feTrade.value = item;
   confirmExitValue.value = ModalReasons.cancelOpenOrder;
   removeTradeVisible.value = true;
@@ -157,7 +158,6 @@ function handleForceEntry(item: Trade) {
 
 const onRowClicked = ({ data: item }) => {
   if (props.multiBotView && botStore.selectedBot !== item.botId) {
-    // Multibotview - on click switch to the bot trade view
     botStore.selectBot(item.botId);
   }
   if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
@@ -222,7 +222,7 @@ watch(
             {{ data.trade_id }}
             {{
               botStore.activeBot.botFeatures.futures && data.trading_mode !== 'spot'
-                ? (data.trade_id ? '| ' : '') + (data.is_short ? 'Short' : 'Long')
+                ? (data.trade_id ? '| ' : '') + (data.is_short ? t('short') : t('long'))
                 : ''
             }}
           </template>
