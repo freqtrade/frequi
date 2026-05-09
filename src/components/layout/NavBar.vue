@@ -279,8 +279,8 @@ function editBotLogin(botId: string) {
             color="neutral"
             @click="loginDialog({})"
             icon="mdi:login"
-            >Login</UButton
-          >
+            >Login
+          </UButton>
         </div>
 
         <!-- Mobile menu -->
@@ -329,7 +329,12 @@ function editBotLogin(botId: string) {
                       'No bot selected'
                     }}
                   </span>
-                  <BotEntry :bot="botStore.availableBots[botStore.selectedBot]" noButtons no-text />
+                  <BotEntry
+                    :bot="botStore.availableBots[botStore.selectedBot]"
+                    noButtons
+                    no-text
+                    @edit-login="editBotLogin"
+                  />
                 </div>
                 <BotSelect />
                 <USeparator class="my-2" />
