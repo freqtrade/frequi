@@ -99,8 +99,13 @@ function stopEditBot(botId: string) {
         />
       </li>
     </ul>
-    <UButton v-if="!small" color="neutral" class="mt-2" @click="loginDialog({})" icon="mdi:login"
-      >Login</UButton
-    >
+    <UButton
+      v-if="!small"
+      color="neutral"
+      class="mt-2"
+      @click="loginDialog({})"
+      icon="mdi:login"
+      label="Add new Bot"
+    />
   </div>
 </template>

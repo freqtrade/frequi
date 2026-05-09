@@ -51,7 +51,7 @@ test.describe('Chart', () => {
     await page.waitForSelector('span:has-text("NoActionStrategyFut | 1m")');
 
     await page.getByRole('button', { name: 'Plot configurator' }).click();
-    await page.getByRole('button', { name: 'Indicator from template' }).click();
+    await page.getByRole('button', { name: 'From template' }).click();
     // Apply bollinger bands
 
     await page.getByRole('option', { name: 'BollingerBands' }).click();
