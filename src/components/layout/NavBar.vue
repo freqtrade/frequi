@@ -13,6 +13,7 @@ const route = useRoute();
 const router = useRouter();
 const favicon = ref<Favico | undefined>(undefined);
 const pingInterval = ref<number>();
+const loginDialog = useLoginDialog();
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 
@@ -253,10 +254,13 @@ const drawerVisible = ref(false);
               </UButton>
             </UDropdownMenu>
           </div>
-          <div v-else>
-            <!-- should open Modal window! -->
-            <LoginModal v-if="route?.path !== '/login'" />
-          </div>
+          <UButton
+            v-else-if="route?.path !== '/login'"
+            color="neutral"
+            @click="loginDialog({})"
+            icon="mdi:login"
+            >Login</UButton
+          >
         </div>
 
         <!-- Mobile menu -->

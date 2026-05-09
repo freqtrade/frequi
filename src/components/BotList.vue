@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import LoginModal from '@/components/LoginModal.vue';
-
 import type { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
 
@@ -11,7 +9,7 @@ defineProps<{
 const botStore = useBotStore();
 
 const editingBots = ref<string[]>([]);
-const loginModal = useTemplateRef('loginModal');
+const loginDialog = useLoginDialog();
 const sortContainer = ref<HTMLElement | null>(null);
 const botListComp = computed<BotDescriptor[]>(() => {
   //Convert to array
@@ -49,7 +47,8 @@ function editBotLogin(botId: string) {
     ...bot.getLoginInfo(),
     botId,
   };
-  loginModal.value?.openLoginModal(loginInfo);
+
+  loginDialog({ loginInfo: loginInfo });
 }
 
 function stopEditBot(botId: string) {
@@ -100,6 +99,8 @@ function stopEditBot(botId: string) {
         />
       </li>
     </ul>
-    <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
+    <UButton v-if="!small" color="neutral" class="mt-2" @click="loginDialog({})" icon="mdi:login"
+      >Login</UButton
+    >
   </div>
 </template>
