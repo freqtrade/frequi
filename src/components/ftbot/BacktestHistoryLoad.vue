@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import MessageBox from '@/components/general/MessageBox.vue';
-
 import type { BacktestHistoryEntry } from '@/types';
 import type { TableColumn } from '@nuxt/ui';
 
 const botStore = useBotStore();
-const msgBox = ref<typeof MessageBox>();
+const { confirm } = useConfirmBox();
 const filterText = ref('');
 const filterTextDebounced = refDebounced(filterText, 350, { maxWait: 1000 });
 
@@ -14,15 +11,15 @@ onMounted(() => {
   botStore.activeBot.getBacktestHistory();
 });
 
-function deleteBacktestResult(result: BacktestHistoryEntry) {
-  const msg: MsgBoxObject = {
-    title: 'Delete result',
-    message: `Delete result ${result.filename} from disk?`,
-    accept: () => {
-      botStore.activeBot.deleteBacktestHistoryResult(result);
-    },
-  };
-  msgBox.value?.show(msg);
+async function deleteBacktestResult(result: BacktestHistoryEntry) {
+  if (
+    await confirm({
+      title: 'Delete result',
+      message: `Delete result ${result.filename} from disk?`,
+    })
+  ) {
+    botStore.activeBot.deleteBacktestHistoryResult(result);
+  }
 }
 
 const filteredList = computed(() =>
@@ -116,5 +113,4 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
       </template>
     </UTable>
   </div>
-  <MessageBox ref="msgBox" />
 </template>

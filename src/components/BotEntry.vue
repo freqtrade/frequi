@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { BotDescriptor } from '@/types';
-import type MessageBox from './general/MessageBox.vue';
-const msgBox = ref<typeof MessageBox>();
+const { confirm } = useConfirmBox();
 
 const props = defineProps<{
   bot: BotDescriptor;
@@ -18,14 +17,15 @@ function confirmRemoveBot() {
   botStore.removeBot(props.bot.botId);
 }
 
-function removeBotQuestion() {
-  msgBox.value?.show({
-    title: 'Logout confirmation',
-    message: `Really remove (logout) from ${props.bot.botName} (${props.bot.botId})?`,
-    accept: () => {
-      confirmRemoveBot();
-    },
-  });
+async function removeBotQuestion() {
+  if (
+    await confirm({
+      title: 'Logout confirmation',
+      message: `Really remove (logout) from ${props.bot.botName} (${props.bot.botId})?`,
+    })
+  ) {
+    confirmRemoveBot();
+  }
 }
 
 const selectedBotStore = computed<BotSubStore>(() => {
@@ -95,6 +95,5 @@ const autoRefreshLoc = computed({
         />
       </div>
     </div>
-    <MessageBox ref="msgBox" />
   </div>
 </template>
