@@ -231,39 +231,17 @@ const drawerVisible = ref(false);
             <i-mdi-run-fast />
             <i-mdi-alert />
           </div>
-          <div class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item me-2">
+          <div class="hidden md:flex md:flex-nowrap items-center nav-item me-2">
             <span class="text-sm me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
             </span>
-            <span
-              v-if="
-                botStore.botCount === 1 &&
-                botStore.activeBotorUndefined &&
-                botStore.activeBotorUndefined.isBotOnline
-              "
-              class="text-sm flex items-center"
-            >
-              <UIcon name="mdi:circle" class="text-green-500 me-1" />
-              Online
-            </span>
-            <span v-else-if="botStore.botCount === 1" class="text-sm flex items-center">
-              <UIcon name="mdi:circle" class="text-red-500 me-1" />
-              Offline
-            </span>
+            <BotEntry :bot="botStore.availableBots[botStore.selectedBot]" noButtons no-text />
           </div>
           <div class="flex justify-between">
-            <USelectMenu
-              v-if="botStore.botCount > 1"
-              :model-value="botStore.selectedBot"
-              label-key="botName"
-              value-key="botId"
-              class="m-1 min-w-36"
-              :items="botStore.availableBotsSorted"
-              @update:model-value="botStore.selectBot($event)"
-            />
+            <BotSelect />
 
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
@@ -321,16 +299,7 @@ const drawerVisible = ref(false);
                 <div class="flex flex-row items-center justify-center">
                   <ThemeSelect show-text />
                 </div>
-                <USelectMenu
-                  v-if="botStore.botCount > 1"
-                  :model-value="botStore.selectedBot"
-                  label-key="botName"
-                  value-key="botId"
-                  size="sm"
-                  class="m-1 min-w-36"
-                  :items="botStore.availableBotsSorted"
-                  @update:model-value="botStore.selectBot($event)"
-                />
+                <BotSelect />
                 <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
               </div>
             </template>

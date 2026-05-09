@@ -6,6 +6,8 @@ const msgBox = ref<typeof MessageBox>();
 const props = defineProps<{
   bot: BotDescriptor;
   noButtons?: boolean;
+  noRefreshSwitch?: boolean;
+  noText?: boolean;
 }>();
 defineEmits<{ edit: []; editLogin: [] }>();
 const botStore = useBotStore();
@@ -40,11 +42,16 @@ const autoRefreshLoc = computed({
 
 <template>
   <div v-if="bot" class="flex items-center justify-between w-full">
-    <span class="me-2">{{ bot.botName || bot.botId }}</span>
+    <span v-if="!noText" class="me-2">{{ bot.botName || bot.botId }}</span>
 
     <div class="flex items-center gap-2">
       <div class="flex items-center">
-        <USwitch v-model="autoRefreshLoc" class="mr-2" />
+        <USwitch
+          v-if="!noRefreshSwitch"
+          v-model="autoRefreshLoc"
+          class="mr-2"
+          :title="`Auto refresh for ${bot.botName || bot.botId}`"
+        />
         <div
           v-if="selectedBotStore.isBotLoggedIn"
           :title="selectedBotStore.isBotOnline ? 'Online' : 'Offline'"
@@ -59,9 +66,9 @@ const autoRefreshLoc = computed({
         </div>
       </div>
 
-      <div v-if="!noButtons" class="flex items-center gap-1">
+      <div class="flex items-center gap-1">
         <UButton
-          v-if="selectedBotStore.isBotLoggedIn"
+          v-if="!noButtons && selectedBotStore.isBotLoggedIn"
           color="neutral"
           variant="soft"
           title="Edit bot"
@@ -69,7 +76,7 @@ const autoRefreshLoc = computed({
           icon="mdi:pencil"
         />
         <UButton
-          v-else
+          v-if="!noRefreshSwitch && !selectedBotStore.isBotLoggedIn"
           variant="soft"
           color="neutral"
           title="Login again"
@@ -77,6 +84,7 @@ const autoRefreshLoc = computed({
           icon="mdi:login"
         />
         <UButton
+          v-if="!noButtons"
           variant="soft"
           color="neutral"
           title="Delete bot"

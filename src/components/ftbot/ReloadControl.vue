@@ -12,7 +12,7 @@ const autoRefreshLoc = computed({
 
 <template>
   <div class="flex items-center ms-2">
-    <BaseCheckbox v-model="autoRefreshLoc" size="sm" title="Auto Refresh" />
+    <BaseCheckbox v-model="autoRefreshLoc" size="sm" title="Auto Refresh for all bots" />
     <UButton
       class="m-1"
       color="neutral"
