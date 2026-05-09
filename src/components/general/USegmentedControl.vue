@@ -1,4 +1,13 @@
-<script setup lang="ts" generic="T extends string | number | boolean | object">
+<script
+  setup
+  lang="ts"
+  generic="
+    T extends string | number | boolean | object,
+    VK extends GetItemKeys<T> | undefined = undefined
+  "
+>
+import type { GetItemKeys, GetItemValue } from '@nuxt/ui';
+
 /**
  * SegmentedControl — NuxtUI replacement for PrimeVue SelectButton.
  * Uses UFieldGroup + UButton internally.
@@ -6,34 +15,58 @@
 const props = withDefaults(
   defineProps<{
     items: T[];
-    labelKey?: string;
-    valueKey?: string;
+    labelKey?: GetItemKeys<T>;
+    valueKey?: VK;
     allowEmpty?: boolean;
-    disabledKey?: string;
+    disabledKey?: GetItemKeys<T>;
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   }>(),
   {
-    labelKey: 'label',
-    valueKey: 'value',
     allowEmpty: false,
     size: 'sm',
   },
 );
 
-const modelValue = defineModel<any>();
+const modelValue = defineModel<GetItemValue<T, VK>>();
+
+function asRecord(item: T): Record<string, unknown> | null {
+  if (typeof item === 'object' && item !== null) {
+    return item as Record<string, unknown>;
+  }
+
+  return null;
+}
+
+function getRecordValue(record: Record<string, unknown>, key: string): unknown {
+  return key.split('.').reduce<unknown>((value, segment) => {
+    if (typeof value === 'object' && value !== null) {
+      return (value as Record<string, unknown>)[segment];
+    }
+
+    return undefined;
+  }, record);
+}
 
 function getLabel(item: T): string {
-  if (typeof item === 'object' && item !== null) {
-    return String((item as any)[props.labelKey] ?? (item as any)['label'] ?? item);
+  const record = asRecord(item);
+
+  if (record) {
+    return String(
+      (props.labelKey ? getRecordValue(record, props.labelKey) : undefined) ?? record.label ?? item,
+    );
   }
+
   return String(item);
 }
 
-function getValue(item: T): any {
-  if (typeof item === 'object' && item !== null) {
-    return (item as any)[props.valueKey] ?? item;
+function getValue(item: T): GetItemValue<T, VK> {
+  const record = asRecord(item);
+
+  if (record && props.valueKey) {
+    return getRecordValue(record, props.valueKey) as GetItemValue<T, VK>;
   }
-  return item;
+
+  return item as GetItemValue<T, VK>;
 }
 
 function isSelected(item: T): boolean {
@@ -41,11 +74,12 @@ function isSelected(item: T): boolean {
 }
 
 function isDisabled(item: T): boolean {
-  if (props.disabledKey) {
-    if (typeof item === 'object' && item !== null) {
-      return !!item[props.disabledKey];
-    }
+  const record = asRecord(item);
+
+  if (record && props.disabledKey) {
+    return !!getRecordValue(record, props.disabledKey);
   }
+
   return false;
 }
 
