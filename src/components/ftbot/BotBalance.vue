@@ -15,11 +15,23 @@ const canUseBotBalance = computed(() => {
 });
 
 const balanceCurrencies = computed(() => {
-  return botStore.activeBot.balance.currencies?.filter(
-    (v) =>
-      (!hideSmallBalances.value || v.est_stake >= smallBalance.value) &&
-      (!canUseBotBalance.value || !showBotOnly.value || (v.is_bot_managed ?? true) === true),
+  return (
+    botStore.activeBot.balance.currencies?.filter(
+      (v) =>
+        (!hideSmallBalances.value || v.est_stake >= smallBalance.value) &&
+        (!canUseBotBalance.value || !showBotOnly.value || (v.is_bot_managed ?? true) === true),
+    ) ?? []
   );
+});
+
+const tableData = computed<Record<string, string | number | null>[]>(() => {
+  return balanceCurrencies.value.map((v) => ({
+    currency: v.currency,
+    free: v.free,
+    bot_owned: v.bot_owned ?? null,
+    est_stake: v.est_stake,
+    est_stake_bot: v.est_stake_bot ?? null,
+  }));
 });
 
 const formatCurrency = (value) => {
@@ -27,7 +39,7 @@ const formatCurrency = (value) => {
 };
 
 const chartValues = computed<BalanceValues[]>(() => {
-  return balanceCurrencies.value?.map((v) => {
+  return balanceCurrencies.value.map((v) => {
     return {
       balance:
         showBotOnly.value && canUseBotBalance.value && v.bot_owned != undefined
@@ -72,7 +84,7 @@ const tableColumns = computed(() => {
     accessorKey: field.field,
     header: field.header,
     cell: field.asCurrency
-      ? ({ row }: { row: { original: Record<string, any> } }) =>
+      ? ({ row }: { row: { original: Record<string, number | string | null> } }) =>
           formatCurrency(row.original[field.field])
       : undefined,
     footer:
@@ -132,7 +144,7 @@ onMounted(() => {
       <p v-if="botStore.activeBot.balance.note">
         <strong>{{ botStore.activeBot.balance.note }}</strong>
       </p>
-      <UTable :data="balanceCurrencies" :columns="tableColumns" />
+      <UTable :data="tableData" :columns="tableColumns" />
     </div>
   </div>
 </template>

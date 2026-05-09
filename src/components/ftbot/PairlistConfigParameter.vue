@@ -12,7 +12,7 @@ const paramValue = defineModel<any>();
 
 const options = computed(() => {
   if (props.param.type === PairlistParamType.option) {
-    return props.param.options.map((option) => (option === '' ? undefined : option)) ?? [];
+    return props.param.options.map((option) => (option === '' ? null : option)) ?? [];
   }
   return [];
 });
