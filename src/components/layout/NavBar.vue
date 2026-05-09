@@ -197,25 +197,27 @@ const drawerVisible = ref(false);
 
 <template>
   <header>
-    <div class="flex bg-primary-500 border-b border-primary">
+    <div class="flex border-b border-primary">
       <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
-        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
+        <AppIcon class="h-9 w-9" />
+        <AppText class="md:hidden lg:inline" />
       </RouterLink>
       <div class="flex justify-between w-full text-center items-center ms-3">
         <div class="items-center hidden md:flex gap-5 ms-5">
-          <RouterLink
+          <UButton
             v-for="(item, index) in navItems.filter(
               (item) => (item.visible ?? true) && !item.mobileOnly,
             )"
             :key="index"
             :to="item.to"
-            class="text-neutral-200 flex items-center gap-2"
+            variant="link"
+            size="xl"
+            color="neutral"
             active-class="underline"
           >
             {{ item.label }}
-          </RouterLink>
-          <ThemeSelect class="text-neutral-200" />
+          </UButton>
+          <ThemeSelect />
         </div>
 
         <!-- Right aligned nav items -->
@@ -229,9 +231,7 @@ const drawerVisible = ref(false);
             <i-mdi-run-fast />
             <i-mdi-alert />
           </div>
-          <div
-            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-neutral-300 me-2"
-          >
+          <div class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item me-2">
             <span class="text-sm me-2">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
@@ -297,22 +297,24 @@ const drawerVisible = ref(false);
             <UButton class="text-neutral-300 text-xl" size="xl" variant="ghost" icon="mdi:menu" />
             <template #title>
               <div class="flex flex-row items-center gap-2">
-                <img class="h-8 align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-                <h3 class="text-xl font-bold w-full text-center">Freqtrade UI</h3>
+                <AppIcon class="h-9 w-9" />
+                <AppText class="md:hidden lg:inline" />
               </div>
             </template>
             <template #body>
               <div class="flex flex-col gap-1 items-center p-4 h-full">
-                <RouterLink
+                <UButton
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
                   :to="item.to"
-                  class="p-2"
-                  active-class="underline"
+                  class="p-2 justify-center w-full"
+                  variant="link"
+                  color="neutral"
+                  size="xl"
+                  active-class="underline font-bold"
                   @click="drawerVisible = false"
-                >
-                  {{ item.label }}
-                </RouterLink>
+                  :label="item.label"
+                />
                 <USeparator class="my-2" />
                 <span>Version: {{ settingsStore.uiVersion }}</span>
 
