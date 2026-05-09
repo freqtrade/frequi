@@ -70,7 +70,8 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
       class="mt-2 h-[80dvh]"
       :data="filteredList"
       :columns="columns"
-      virtualize
+      :virtualize="{ estimateSize: 38, overscan: 12 }"
+      sticky
       @select="(e, row) => botStore.activeBot.getBacktestHistoryResult(row.original)"
     >
       <template #timeframe-cell="{ row }">
