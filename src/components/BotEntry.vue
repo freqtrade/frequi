@@ -78,7 +78,7 @@ const autoRefreshLoc = computed({
           icon="mdi:pencil"
         />
         <UButton
-          v-if="!noButtons && !selectedBotStore.isBotLoggedIn"
+          v-if="!noRefreshSwitch && !selectedBotStore.isBotLoggedIn"
           variant="soft"
           color="neutral"
           title="Login again"

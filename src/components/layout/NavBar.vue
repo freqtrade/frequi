@@ -4,6 +4,7 @@ import Favico from 'favico.js';
 import { useRoute } from 'vue-router';
 import type { DropdownMenuItem } from '@nuxt/ui';
 import { breakpointsTailwind } from '@vueuse/core';
+import type { AuthStorageWithBotId } from '@/types';
 
 const botStore = useBotStore();
 
@@ -194,6 +195,20 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
     : []),
 ]);
 const drawerVisible = ref(false);
+
+function editBotLogin(botId: string) {
+  const bot = botStore.botStores[botId];
+  if (!bot) {
+    showAlert('Bot not found', 'warning');
+    return;
+  }
+  const loginInfo: AuthStorageWithBotId = {
+    ...bot.getLoginInfo(),
+    botId,
+  };
+
+  loginDialog({ loginInfo: loginInfo });
+}
 </script>
 
 <template>
@@ -239,7 +254,12 @@ const drawerVisible = ref(false);
                 'No bot selected'
               }}
             </span>
-            <BotEntry :bot="botStore.availableBots[botStore.selectedBot]" noButtons no-text />
+            <BotEntry
+              :bot="botStore.availableBots[botStore.selectedBot]"
+              noButtons
+              no-text
+              @edit-login="editBotLogin"
+            />
             <BotSelect />
 
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />

@@ -6,15 +6,23 @@ export interface LoginModalProps {
 }
 
 defineProps<LoginModalProps>();
-defineEmits<{
+const emit = defineEmits<{
   close: [value: boolean];
 }>();
+
+function loginResult(result: boolean) {
+  console.log("loginresult", result);
+  if (result) {
+    // Only close if
+    emit('close', result);
+  }
+}
 </script>
 
 <template>
   <UModal title="Login to your bot" description="Enter your bot credentials to connect">
     <template #body>
-      <BotLogin in-modal :existing-auth="loginInfo" @login-result="$emit('close', $event)" />
+      <BotLogin in-modal :existing-auth="loginInfo" @login-result="loginResult" />
     </template>
   </UModal>
 </template>
