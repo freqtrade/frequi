@@ -87,20 +87,29 @@ function clickBacktest() {
       placeholder="Use config default"
       :increment="false"
       :decrement="false"
-      :step="0.001"
+      :step="10"
+      :min="0"
+      :stepSnapping="false"
+      :format-options="{
+        maximumFractionDigits: 5,
+      }"
     ></UInputNumber>
     <label for="stake-amount-bool">Stake amount:</label>
     <div class="flex items-center">
-      <div class="flex basis-full">
-        <BaseCheckbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
-          >Unlimited stake</BaseCheckbox
-        >
-      </div>
+      <BaseCheckbox class="basis-1/3" id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
+        >Unlimited stake</BaseCheckbox
+      >
       <UInputNumber
         id="stake-amount"
         v-model="btStore.stakeAmount"
         placeholder="Use strategy default"
-        :step="0.01"
+        class="w-full"
+        :step="10"
+        :stepSnapping="false"
+        :format-options="{
+          maximumFractionDigits: 5,
+        }"
+        :min="0"
         :increment="false"
         :decrement="false"
         :disabled="btStore.stakeAmountUnlimited"
