@@ -53,6 +53,15 @@ function resetForm() {
     'limit';
 }
 
+watch(
+  () => model.value,
+  (open) => {
+    if (open) {
+      resetForm();
+    }
+  },
+);
+
 function handleExit() {
   // Trigger submit handler
   handleSubmit();
@@ -83,6 +92,8 @@ const orderTypeOptions = [
     "
   >
     <template #body>
+      {{ trade.pair }}, {{ trade.amount }}
+      ---
       <form ref="form" class="space-y-4" @submit.prevent="handleSubmit">
         <div class="mb-4">
           <p class="mb-2">
