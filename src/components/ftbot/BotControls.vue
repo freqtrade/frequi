@@ -1,68 +1,63 @@
 forceexit
 <script setup lang="ts">
-import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import type MessageBox from '@/components/general/MessageBox.vue';
-
 import type { ForceExitPayload } from '@/types';
 
 import ForceEntryForm from './ForceEntryForm.vue';
 
 const botStore = useBotStore();
 const forceEnter = ref<boolean>(false);
-const msgBox = ref<typeof MessageBox>();
+const { confirm } = useConfirmBox();
 
 const isRunning = computed((): boolean => {
   return botStore.activeBot.botState?.state === 'running';
 });
 
-function handleStopBot() {
-  const msg: MsgBoxObject = {
+async function handleStopBot() {
+  const result = await confirm({
     title: 'Stop Bot',
     message: 'Stop the bot loop from running?',
-    accept: () => {
-      botStore.activeBot.stopBot();
-    },
-  };
-  msgBox.value?.show(msg);
+  });
+  if (result) {
+    botStore.activeBot.stopBot();
+  }
 }
 
-function handleStopBuy() {
-  const msg: MsgBoxObject = {
-    title: 'Pause - Stop Entering',
-    message:
-      'Freqtrade will continue to handle open trades, but will not enter new trades or increase position sizes.',
-    accept: () => {
-      botStore.activeBot.stopBuy();
-    },
-  };
-  msgBox.value?.show(msg);
+async function handleStopBuy() {
+  if (
+    await confirm({
+      title: 'Pause - Stop Entering',
+      message:
+        'Freqtrade will continue to handle open trades, but will not enter new trades or increase position sizes. \nReally stop entering?',
+    })
+  ) {
+    botStore.activeBot.stopBuy();
+  }
 }
 
-function handleReloadConfig() {
-  const msg: MsgBoxObject = {
-    title: 'Reload',
-    message: 'Reload configuration (including strategy)?',
-    accept: () => {
-      console.log('reload...');
-      botStore.activeBot.reloadConfig();
-    },
-  };
-  msgBox.value?.show(msg);
+async function handleReloadConfig() {
+  if (
+    await confirm({
+      title: 'Reload Config',
+      message: 'Reload configuration (including strategy)?',
+    })
+  ) {
+    botStore.activeBot.reloadConfig();
+  }
 }
 
-function handleForceExit() {
-  const msg: MsgBoxObject = {
-    title: 'ForceExit all',
-    message: 'Really forceexit ALL trades?',
-    accept: () => {
-      const payload: ForceExitPayload = {
-        tradeid: 'all',
-        // TODO: support ordertype (?)
-      };
-      botStore.activeBot.forceexit(payload);
-    },
-  };
-  msgBox.value?.show(msg);
+async function handleForceExit() {
+  if (
+    await confirm({
+      title: 'ForceExit all',
+      message: 'Really forceexit ALL trades?',
+    })
+  ) {
+    const payload: ForceExitPayload = {
+      tradeid: 'all',
+      // TODO: support ordertype (?)
+    };
+    botStore.activeBot.forceexit(payload);
+  }
 }
 </script>
 
@@ -127,6 +122,5 @@ function handleForceExit() {
       @click="botStore.activeBot.startTrade()"
     />
     <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
-    <MessageBox ref="msgBox" />
   </div>
 </template>
