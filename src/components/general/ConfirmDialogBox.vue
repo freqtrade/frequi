@@ -3,9 +3,13 @@ export interface ConfirmDialogBoxProps {
   title: string;
   description?: string;
   message: string;
+  cancelText?: string;
+  confirmText?: string;
 }
 withDefaults(defineProps<ConfirmDialogBoxProps>(), {
   description: 'Confirmation',
+  cancelText: 'Cancel',
+  confirmText: 'Ok',
 });
 defineEmits<{
   close: [value: boolean];
@@ -22,7 +26,7 @@ defineEmits<{
     <template #footer>
       <UButton
         class="min-w-30"
-        label="Cancel"
+        :label="cancelText"
         variant="outline"
         color="neutral"
         icon="mdi:close"
@@ -30,7 +34,7 @@ defineEmits<{
       />
       <UButton
         class="min-w-30"
-        label="Ok"
+        :label="confirmText"
         icon="mdi:check"
         autofocus
         @click="$emit('close', true)"
