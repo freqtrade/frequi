@@ -9,7 +9,9 @@ const props = defineProps<{
   noRefreshSwitch?: boolean;
   noText?: boolean;
 }>();
-defineEmits<{ edit: []; editLogin: [] }>();
+
+defineEmits<{ edit: [botId: string]; editLogin: [botId: string] }>();
+
 const botStore = useBotStore();
 
 function confirmRemoveBot() {
@@ -72,15 +74,15 @@ const autoRefreshLoc = computed({
           color="neutral"
           variant="soft"
           title="Edit bot"
-          @click="$emit('edit')"
+          @click="$emit('edit', bot.botId)"
           icon="mdi:pencil"
         />
         <UButton
-          v-if="!noRefreshSwitch && !selectedBotStore.isBotLoggedIn"
+          v-if="!noButtons && !selectedBotStore.isBotLoggedIn"
           variant="soft"
           color="neutral"
           title="Login again"
-          @click="$emit('editLogin')"
+          @click="$emit('editLogin', bot.botId)"
           icon="mdi:login"
         />
         <UButton

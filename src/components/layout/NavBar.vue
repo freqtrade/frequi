@@ -232,15 +232,13 @@ const drawerVisible = ref(false);
             <i-mdi-alert />
           </div>
           <div class="hidden md:flex md:flex-nowrap items-center nav-item me-2">
-            <span class="text-sm me-2">
+            <span class="text-sm me-2" title="Bot name">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
             </span>
             <BotEntry :bot="botStore.availableBots[botStore.selectedBot]" noButtons no-text />
-          </div>
-          <div class="flex justify-between">
             <BotSelect />
 
             <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
@@ -299,8 +297,19 @@ const drawerVisible = ref(false);
                 <div class="flex flex-row items-center justify-center">
                   <ThemeSelect show-text />
                 </div>
+                <USeparator class="my-2" />
+                <div class="flex flex-row items-center">
+                  <span class="text-sm me-2" title="Bot name">
+                    {{
+                      (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
+                      'No bot selected'
+                    }}
+                  </span>
+                  <BotEntry :bot="botStore.availableBots[botStore.selectedBot]" noButtons no-text />
+                </div>
                 <BotSelect />
-                <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
+                <USeparator class="my-2" />
+                <ReloadControl class="justify-center w-full" />
               </div>
             </template>
           </USlideover>

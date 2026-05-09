@@ -11,7 +11,7 @@ defineProps<{
 const botStore = useBotStore();
 
 const editingBots = ref<string[]>([]);
-const loginModal = ref<typeof LoginModal>();
+const loginModal = useTemplateRef('loginModal');
 const sortContainer = ref<HTMLElement | null>(null);
 const botListComp = computed<BotDescriptor[]>(() => {
   //Convert to array
@@ -95,8 +95,8 @@ function stopEditBot(botId: string) {
           v-else
           :bot="bot"
           :no-buttons="small"
-          @edit="editBot(bot.botId)"
-          @edit-login="editBotLogin(bot.botId)"
+          @edit="editBot"
+          @edit-login="editBotLogin"
         />
       </li>
     </ul>
