@@ -1,7 +1,10 @@
 import type { PlotConfig } from '@/types';
 
 /** Function to extract required indicator names from a plot configuration */
-export function plotConfigColumns(plotConfig: Partial<PlotConfig>, skipTags: boolean = false): string[] {
+export function plotConfigColumns(
+  plotConfig: Partial<PlotConfig>,
+  skipTags: boolean = false,
+): string[] {
   const cols: string[] = [];
   for (const key in plotConfig.main_plot) {
     cols.push(key);

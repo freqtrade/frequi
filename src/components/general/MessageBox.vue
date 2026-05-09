@@ -46,7 +46,7 @@ defineExpose({ show });
         icon="mdi:close"
         @click="showRef = false"
       />
-      <UButton class="min-w-30" label="Ok" icon="mdi:check" autofocus @click="msgBoxOK"/>
+      <UButton class="min-w-30" label="Ok" icon="mdi:check" autofocus @click="msgBoxOK" />
     </template>
   </UModal>
 </template>

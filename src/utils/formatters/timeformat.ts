@@ -1,7 +1,6 @@
 import { parse, toDate } from 'date-fns';
 import { format, toZonedTime, fromZonedTime } from 'date-fns-tz';
 import humanizeDuration from 'humanize-duration';
-import { isNotUndefined } from './numberformat';
 
 /** Parse date from string, returns date in UTC! */
 export function dateFromString(datestring: string, format: string): Date {

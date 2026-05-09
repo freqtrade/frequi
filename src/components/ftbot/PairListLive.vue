@@ -69,7 +69,7 @@ onMounted(() => {
       <li
         v-for="(pair, key) in botStore.activeBot.whitelist"
         :key="key"
-        class="pair bg-white text-black border-secondary "
+        class="pair bg-white text-black border-secondary"
       >
         {{ pair }}
       </li>
@@ -126,8 +126,9 @@ onMounted(() => {
     </ul>
     <p v-else>
       No Blacklist Available. <br />
-      If you expect to have pairs in your blacklist, please login and make sure the server is running.
-  </p>
+      If you expect to have pairs in your blacklist, please login and make sure the server is
+      running.
+    </p>
   </div>
 </template>
 
