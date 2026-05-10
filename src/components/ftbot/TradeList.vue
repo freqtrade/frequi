@@ -5,13 +5,6 @@ import type { MultiDeletePayload, MultiForceExitPayload, Trade } from '@/types';
 
 import { useRouter } from 'vue-router';
 
-enum ModalReasons {
-  removeTrade,
-  forceExit,
-  forceExitPartial,
-  cancelOpenOrder,
-}
-
 const props = withDefaults(
   defineProps<{
     trades: Trade[];
@@ -37,12 +30,9 @@ const router = useRouter();
 const settingsStore = useSettingsStore();
 const tradesTable = useTemplateRef('tradesTable');
 const filterText = ref('');
-const feTrade = ref<Trade>({} as Trade);
 const perPage = props.activeTrades ? 200 : 15;
 const pagination = ref({ pageIndex: 0, pageSize: perPage });
-const removeTradeVisible = ref(false);
-const confirmExitText = ref('');
-const confirmExitValue = ref<ModalReasons | null>(null);
+const { confirm } = useConfirmBox();
 const { forceEntryDialog, forceExitDialog } = useForceTrade();
 
 function formatPriceWithDecimals(price: number) {
@@ -97,57 +87,48 @@ const filteredTrades = computed(() => {
   );
 });
 
-const feOrderType = ref<string | undefined>(undefined);
-function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
-  feTrade.value = item;
-  confirmExitValue.value = ModalReasons.forceExit;
-  confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
-  feOrderType.value = ordertype;
-  if (settingsStore.confirmDialog === true) {
-    removeTradeVisible.value = true;
-  } else {
-    forceExitExecuter();
-  }
-}
-
-function forceExitExecuter() {
-  if (confirmExitValue.value === ModalReasons.removeTrade) {
-    const payload: MultiDeletePayload = {
-      tradeid: String(feTrade.value.trade_id),
-      botId: feTrade.value.botId,
-    };
-    botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-  }
-  if (confirmExitValue.value === ModalReasons.forceExit) {
+async function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
+  const message = ordertype
+    ? `Really exit trade ${item.trade_id} (Pair ${item.pair}) using a ${ordertype} order?`
+    : `Really exit trade ${item.trade_id} (Pair ${item.pair})?`;
+  if (
+    settingsStore.confirmDialog !== true ||
+    (await confirm({
+      title: 'Force exit trade',
+      description: 'This action cannot be undone.',
+      message,
+      confirmText: 'Confirm',
+    }))
+  ) {
     const payload: MultiForceExitPayload = {
-      tradeid: String(feTrade.value.trade_id),
-      botId: feTrade.value.botId,
+      tradeid: String(item.trade_id),
+      botId: item.botId,
     };
-    if (feOrderType.value) {
-      payload.ordertype = feOrderType.value;
+    if (ordertype) {
+      payload.ordertype = ordertype;
     }
     botStore
       .forceSellMulti(payload)
       .then((xxx) => console.log(xxx))
       .catch((error) => console.log(error.response));
   }
-  if (confirmExitValue.value === ModalReasons.cancelOpenOrder) {
-    const payload: MultiDeletePayload = {
-      tradeid: String(feTrade.value.trade_id),
-      botId: feTrade.value.botId,
-    };
-    botStore.cancelOpenOrderMulti(payload);
-  }
-
-  feOrderType.value = undefined;
-  removeTradeVisible.value = false;
 }
 
-function removeTradeHandler(item: Trade) {
-  confirmExitText.value = `Really delete trade ${item.trade_id} (Pair ${item.pair})?`;
-  confirmExitValue.value = ModalReasons.removeTrade;
-  feTrade.value = item;
-  removeTradeVisible.value = true;
+async function removeTradeHandler(item: Trade) {
+  if (
+    await confirm({
+      title: 'Delete trade',
+      description: 'This action cannot be undone.',
+      message: `Really delete trade ${item.trade_id} (Pair ${item.pair})?`,
+      confirmText: 'Confirm',
+    })
+  ) {
+    const payload: MultiDeletePayload = {
+      tradeid: String(item.trade_id),
+      botId: item.botId,
+    };
+    botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
+  }
 }
 
 function forceExitPartialHandler(item: Trade) {
@@ -157,11 +138,21 @@ function forceExitPartialHandler(item: Trade) {
   });
 }
 
-function cancelOpenOrderHandler(item: Trade) {
-  confirmExitText.value = `Cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`;
-  feTrade.value = item;
-  confirmExitValue.value = ModalReasons.cancelOpenOrder;
-  removeTradeVisible.value = true;
+async function cancelOpenOrderHandler(item: Trade) {
+  if (
+    await confirm({
+      title: 'Cancel open order',
+      description: 'This action cannot be undone.',
+      message: `Really cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`,
+      confirmText: 'Confirm',
+    })
+  ) {
+    const payload: MultiDeletePayload = {
+      tradeid: String(item.trade_id),
+      botId: item.botId,
+    };
+    botStore.cancelOpenOrderMulti(payload).catch((error) => console.log(error.response));
+  }
 }
 
 function reloadTradeHandler(item: Trade) {
@@ -280,25 +271,5 @@ function onRowSelect(_e: Event, row: TableRow<Trade>) {
         @update:page="(p) => tradesTable?.tableApi?.setPageIndex(p - 1)"
       />
     </div>
-
-    <UModal
-      v-model:open="removeTradeVisible"
-      :modal="true"
-      title="Exit trade"
-      description="Confirm forced exit"
-    >
-      <template #body>
-        <p>{{ confirmExitText }}</p>
-      </template>
-      <template #footer>
-        <UButton
-          icon="mdi:close"
-          class="ms-auto"
-          label="Cancel"
-          @click="removeTradeVisible = false"
-        />
-        <UButton icon="mdi:check" label="Confirm" color="error" @click="forceExitExecuter" />
-      </template>
-    </UModal>
   </div>
 </template>
