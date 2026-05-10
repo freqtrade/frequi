@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { GridItemData } from '@/types';
+import type { TabsItem } from '@nuxt/ui';
 
 const botStore = useBotStore();
 const layoutStore = useLayoutStore();
@@ -56,6 +57,54 @@ function refreshOHLCV(pair: string, columns: string[]) {
     columns: columns,
   });
 }
+
+const tradingTabItems = computed<TabsItem[]>(() => {
+  const showText = settingsStore.multiPaneButtonsShowText;
+  return [
+    {
+      slot: 'pairs',
+      value: 'pairs',
+      label: showText ? 'Pairs combined' : undefined,
+      icon: 'i-mdi-view-list',
+    },
+    {
+      slot: 'general',
+      value: 'general',
+      label: showText ? 'General' : undefined,
+      icon: 'i-mdi-information',
+    },
+    {
+      slot: 'performance',
+      value: 'performance',
+      label: showText ? 'Performance' : undefined,
+      icon: 'i-mdi-chart-line',
+    },
+    {
+      slot: 'balance',
+      value: 'balance',
+      label: showText ? 'Balance' : undefined,
+      icon: 'i-mdi-bank',
+    },
+    {
+      slot: 'time-breakdown',
+      value: 'time-breakdown',
+      label: showText ? 'Time Breakdown' : undefined,
+      icon: 'i-mdi-folder-clock',
+    },
+    {
+      slot: 'pairlist',
+      value: 'pairlist',
+      label: showText ? 'Pairlist' : undefined,
+      icon: 'i-mdi-format-list-group',
+    },
+    {
+      slot: 'pair-locks',
+      value: 'pair-locks',
+      label: showText ? 'Pair Locks' : undefined,
+      icon: 'i-mdi-lock-alert',
+    },
+  ];
+});
 </script>
 
 <template>
@@ -89,86 +138,33 @@ function refreshOHLCV(pair: string, columns: string[]) {
           <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
-          <Tabs value="0" scrollable lazy>
-            <TabList>
-              <Tab value="0" severity="secondary">
-                <div title="Pairs combined">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Pairs combined</span
-                  >
-                  <i-mdi-view-list v-else />
-                </div>
-              </Tab>
-              <Tab value="1" severity="secondary">
-                <div title="General">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
-                  <i-mdi-information v-else />
-                </div>
-              </Tab>
-              <Tab value="2" severity="secondary">
-                <div title="Performance">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Performance</span
-                  >
-                  <i-mdi-chart-line v-else />
-                </div>
-              </Tab>
-              <Tab value="3" severity="secondary">
-                <div title="Balance">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
-                  <i-mdi-bank v-else />
-                </div>
-              </Tab>
-              <Tab value="4" severity="secondary">
-                <div title="Time Breakdown">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Time Breakdown</span
-                  >
-                  <i-mdi-folder-clock v-else />
-                </div>
-              </Tab>
-              <Tab value="5" severity="secondary">
-                <div title="Pairlist">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
-                  <i-mdi-format-list-group v-else />
-                </div>
-              </Tab>
-              <Tab value="6" severity="secondary">
-                <div title="Pair Locks">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
-                  <i-mdi-lock-alert v-else />
-                </div>
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel value="0">
-                <PairSummary
-                  :pairlist="botStore.activeBot.whitelist"
-                  :current-locks="botStore.activeBot.activeLocks"
-                  :trades="botStore.activeBot.openTrades"
-                />
-              </TabPanel>
-              <TabPanel value="1">
-                <BotStatus />
-              </TabPanel>
-              <TabPanel value="2" lazy>
-                <BotPerformance />
-              </TabPanel>
-              <TabPanel value="3" lazy>
-                <BotBalance />
-              </TabPanel>
-              <TabPanel value="4" lazy>
-                <PeriodBreakdown />
-              </TabPanel>
-
-              <TabPanel value="5" lazy>
-                <PairListLive />
-              </TabPanel>
-              <TabPanel value="6" lazy>
-                <PairLockList />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+          <UTabs color="neutral" :items="tradingTabItems" variant="link" default-value="pairs">
+            <template #pairs>
+              <PairSummary
+                :pairlist="botStore.activeBot.whitelist"
+                :current-locks="botStore.activeBot.activeLocks"
+                :trades="botStore.activeBot.openTrades"
+              />
+            </template>
+            <template #general>
+              <BotStatus />
+            </template>
+            <template #performance>
+              <BotPerformance />
+            </template>
+            <template #balance>
+              <BotBalance />
+            </template>
+            <template #time-breakdown>
+              <PeriodBreakdown />
+            </template>
+            <template #pairlist>
+              <PairListLive />
+            </template>
+            <template #pair-locks>
+              <PairLockList />
+            </template>
+          </UTabs>
         </DraggableContainer>
       </GridItem>
       <GridItem

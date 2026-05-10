@@ -65,60 +65,74 @@ const metrics = computed(() =>
       metric.field !== 'key' && settingsStore.backtestAdditionalMetrics.includes(metric.field),
   ),
 );
+
+const tableColumns = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const cols: any[] = [];
+
+  // Dynamic first columns (key/tags)
+  perTagReason.value.forEach((col, i) => {
+    cols.push({
+      id: `key_${i}`,
+      header: col.label,
+      cell: ({ row }) => col.formatter(row.original['key'] as string, row.original),
+    });
+  });
+
+  // Fixed metric columns
+  cols.push({ accessorKey: 'trades', header: 'Trades' });
+  cols.push({
+    id: 'profit_mean',
+    header: 'Avg Profit %',
+    cell: ({ row }) => formatPercent(row.original.profit_mean, 2),
+  });
+  cols.push({
+    id: 'profit_total_abs',
+    header: `Tot Profit ${props.stakeCurrency}`,
+    cell: ({ row }) => formatPrice(row.original.profit_total_abs, props.stakeCurrencyDecimals),
+  });
+  cols.push({
+    id: 'profit_total',
+    header: 'Tot Profit %',
+    cell: ({ row }) => formatPercent(row.original.profit_total, 2),
+  });
+  cols.push({ accessorKey: 'wins', header: 'Wins' });
+  cols.push({ accessorKey: 'draws', header: 'Draws' });
+  cols.push({ accessorKey: 'losses', header: 'Losses' });
+
+  // Dynamic additional metric columns
+  metrics.value.forEach((col) => {
+    cols.push({
+      accessorKey: col.field,
+      header: col.header,
+      cell: ({ row }) =>
+        col.is_ratio
+          ? formatPercent(row.original[col.field as keyof ResultsTypeWithKey] as number, 2)
+          : formatPrice(row.original[col.field as keyof ResultsTypeWithKey] as number, 2),
+    });
+  });
+
+  return cols;
+});
 </script>
 <template>
   <DraggableContainer>
     <template #header>
-      <div class="flex flex-row w-full justify-between items-center">
+      <div class="flex flex-row w-full justify-between items-center text-">
         {{ title }}
         <div>
           Shown metrics:
-          <MultiSelect
+          <USelectMenu
+            multiple
             id="backtestMetrics"
             v-model="settingsStore.backtestAdditionalMetrics"
-            :options="availableBacktestMetrics"
-            option-label="header"
-            option-value="field"
-            size="small"
+            :items="availableBacktestMetrics"
+            label-key="header"
+            value-key="field"
           />
         </div>
       </div>
     </template>
-    <DataTable size="small" hover stacked="sm" :value="tableItems">
-      <Column v-for="col in perTagReason" :key="col.key" :field="col.key" :header="col.label">
-        <template #body="{ data }">
-          {{ col.formatter(data['key'], data) }}
-        </template>
-      </Column>
-      <Column field="trades" header="Trades"></Column>
-      <Column field="profit_mean" header="Avg Profit %">
-        <template #body="{ data, field }">
-          {{ formatPercent(data[field as string], 2) }}
-        </template>
-      </Column>
-      <Column field="profit_total_abs" :header="`Tot Profit ${props.stakeCurrency}`">
-        <template #body="{ data, field }">
-          {{ formatPrice(data[field as string], props.stakeCurrencyDecimals) }}
-        </template>
-      </Column>
-      <Column field="profit_total" header="Tot Profit %">
-        <template #body="{ data, field }">
-          {{ formatPercent(data[field as string], 2) }}
-        </template>
-      </Column>
-      <Column field="wins" header="Wins"></Column>
-      <Column field="draws" header="Draws"></Column>
-      <Column field="losses" header="Losses"></Column>
-
-      <Column v-for="col in metrics" :key="col.field" :field="col.field" :header="col.header">
-        <template #body="{ data, field }">
-          {{
-            col.is_ratio
-              ? formatPercent(data[field as string], 2)
-              : formatPrice(data[field as string], 2)
-          }}
-        </template>
-      </Column>
-    </DataTable>
+    <UTable :data="tableItems" :columns="tableColumns" />
   </DraggableContainer>
 </template>

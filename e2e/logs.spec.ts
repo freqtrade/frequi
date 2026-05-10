@@ -16,8 +16,7 @@ test.describe('Logs', () => {
 
     const logs = getWaitForResponse(page, '@Logs');
     const ping = getWaitForResponse(page, '@ShowConf');
-    await page.goto('/logs', { waitUntil: 'networkidle' });
-    await Promise.all([logs, ping]);
+    await Promise.all([page.goto('/logs'), logs, ping]);
 
     await expect(page.locator('span', { hasText: 'Checking exchange' })).toBeVisible();
     await expect(page.locator('span', { hasText: 'Checking exchange' })).toHaveText(

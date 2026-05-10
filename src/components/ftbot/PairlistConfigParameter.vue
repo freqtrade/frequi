@@ -2,40 +2,51 @@
 import type { PairlistParameter } from '@/types';
 import { PairlistParamType } from '@/types';
 
-defineProps<{
+const props = defineProps<{
   param: PairlistParameter;
 }>();
 
 // TODO: type should really be PairlistParamValue
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramValue = defineModel<any>();
+
+const options = computed(() => {
+  if (props.param.type === PairlistParamType.option) {
+    return props.param.options.map((option) => (option === '' ? null : option)) ?? [];
+  }
+  return [];
+});
 </script>
 
 <template>
   <div class="pb-1 flex flex-row text-start">
     <label class="w-2/5"> {{ param.description }}</label>
     <div class="flex flex-col w-full">
-      <InputText
-        v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
-        v-model="paramValue"
-        size="small"
-      ></InputText>
+      <UFormField :help="param.help">
+        <UInput
+          v-if="param.type === PairlistParamType.string || param.type === PairlistParamType.number"
+          v-model="paramValue"
+          class="w-full"
+        ></UInput>
 
-      <BaseCheckbox
-        v-if="param.type === PairlistParamType.boolean"
-        v-model="paramValue"
-      ></BaseCheckbox>
+        <BaseCheckbox
+          v-if="param.type === PairlistParamType.boolean"
+          v-model="paramValue"
+          class="w-full"
+        ></BaseCheckbox>
 
-      <Select
-        v-if="param.type === PairlistParamType.option"
-        v-model="paramValue"
-        :options="param.options"
-      ></Select>
-      <BaseStringList
-        v-if="param.type === PairlistParamType.list"
-        v-model="paramValue"
-      ></BaseStringList>
-      <span class="text-muted text-sm text-surface-500">{{ param.help }}</span>
+        <USelect
+          v-if="param.type === PairlistParamType.option"
+          v-model="paramValue"
+          :items="options"
+          class="w-full"
+        ></USelect>
+        <BaseStringList
+          v-if="param.type === PairlistParamType.list"
+          v-model="paramValue"
+          class="w-full"
+        ></BaseStringList>
+      </UFormField>
     </div>
   </div>
 </template>

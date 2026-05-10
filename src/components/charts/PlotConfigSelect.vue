@@ -24,14 +24,13 @@ const plotStore = usePlotConfigStore();
     @new="plotStore.newPlotConfig"
     @duplicate="plotStore.duplicatePlotConfig"
   >
-    <Select
+    <USelect
       id="plotConfigSelect"
       v-model="plotStore.plotConfigName"
-      :options="plotStore.availablePlotConfigNames"
+      :items="plotStore.availablePlotConfigNames"
       class="w-full text-left"
-      size="small"
       @update:model-value="plotStore.plotConfigChanged"
     >
-    </Select>
+    </USelect>
   </EditValue>
 </template>

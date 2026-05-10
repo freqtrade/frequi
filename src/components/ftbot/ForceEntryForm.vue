@@ -2,17 +2,20 @@
 import type { ForceEnterPayload } from '@/types';
 import { OrderSides } from '@/types';
 
-const props = withDefaults(
-  defineProps<{
-    pair?: string;
-    positionIncrease?: boolean;
-  }>(),
-  {
-    pair: '',
-    positionIncrease: false,
-  },
-);
-const model = defineModel<boolean>();
+export interface ForceEntryFormProps {
+  pair?: string;
+  positionIncrease?: boolean;
+}
+
+const props = withDefaults(defineProps<ForceEntryFormProps>(), {
+  pair: '',
+  positionIncrease: false,
+});
+
+const emit = defineEmits<{
+  close: [value: boolean];
+}>();
+
 const botStore = useBotStore();
 
 const form = ref<HTMLFormElement>();
@@ -34,13 +37,13 @@ const orderSideOptions = [
   { value: 'short', text: 'Short' },
 ];
 
-const checkFormValidity = () => {
+function checkFormValidity() {
   const valid = form.value?.checkValidity();
 
   return valid;
-};
+}
 
-const handleSubmit = async () => {
+async function handleEntry() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -68,11 +71,10 @@ const handleSubmit = async () => {
     payload.leverage = leverage.value;
   }
   botStore.activeBot.forceentry(payload);
-  await nextTick();
-  model.value = false;
-};
-const resetForm = () => {
-  console.log('resetForm');
+  emit('close', true);
+}
+
+function resetForm() {
   selectedPair.value = props.pair;
   price.value = undefined;
   stakeAmount.value = undefined;
@@ -82,119 +84,112 @@ const resetForm = () => {
     botStore.activeBot.botState?.order_types?.buy ||
     botStore.activeBot.botState?.order_types?.entry ||
     'limit';
-};
+}
 
-const handleEntry = () => {
-  // Trigger submit handler
-  handleSubmit();
-};
+resetForm();
 </script>
 
 <template>
-  <Dialog
-    v-model:visible="model"
-    :header="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
-    modal
-    @show="resetForm"
-    @hide="resetForm"
+  <UModal
+    :title="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
+    :description="positionIncrease ? 'Increase an existing position' : 'Manually enter a new trade'"
   >
-    <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
-      <div v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed">
-        <label class="block font-medium mb-1">Order direction (Long or Short)</label>
-        <SelectButton
-          v-model="orderSide"
-          :options="orderSideOptions"
-          :allow-empty="false"
-          option-label="text"
-          option-value="value"
-          size="small"
-          class="w-full"
-        />
-      </div>
-
-      <div>
-        <label for="pair-input" class="block font-medium mb-1">Pair</label>
-        <InputText
-          id="pair-input"
-          v-model="selectedPair"
-          :disabled="positionIncrease"
-          required
-          class="w-full"
-          @keydown.enter="handleEntry"
-          @focus="($event.target as HTMLInputElement).select()"
-        />
-      </div>
-
-      <div>
-        <label for="price-input" class="block font-medium mb-1">Price [optional]</label>
-        <InputNumber
-          id="price-input"
-          v-model="price"
-          show-buttons
-          :min="0"
-          :max-fraction-digits="8"
-          :step="0.1"
-          class="w-full"
-          @keydown.enter="handleEntry"
-        />
-      </div>
-
-      <div>
-        <label for="stake-input" class="block font-medium mb-1"
-          >* Stake-amount in {{ botStore.activeBot.stakeCurrency }} [optional]</label
+    <template #body>
+      <form ref="form" class="space-y-4" @submit.prevent="handleEntry">
+        <UFormField
+          v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed"
+          label="Order direction (Long or Short)"
         >
-        <InputNumber
-          id="stake-input"
-          v-model="stakeAmount"
-          show-buttons
-          :min="0"
-          :step="botStore.activeBot.stakeCurrency === 'USDT' ? 10 : 1"
-          :max-fraction-digits="5"
-          fluid
-        />
-      </div>
+          <USegmentedControl
+            v-model="orderSide"
+            :items="orderSideOptions"
+            label-key="text"
+            value-key="value"
+            size="sm"
+            class="w-full"
+          />
+        </UFormField>
 
-      <div v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed">
-        <label for="leverage-input" class="block font-medium mb-1"
-          >Leverage to apply [optional]</label
+        <UFormField label="Pair" required>
+          <UInput
+            v-model="selectedPair"
+            :disabled="positionIncrease"
+            required
+            class="w-full"
+            @keydown.enter="handleEntry"
+            @focus="($event.target as HTMLInputElement).select()"
+          />
+        </UFormField>
+
+        <UFormField label="Price [optional]">
+          <UInputNumber
+            v-model="price"
+            show-buttons
+            :min="0"
+            :stepSnapping="false"
+            :format-options="{
+              maximumFractionDigits: 8,
+            }"
+            :step="0.1"
+            class="w-full"
+            @keydown.enter="handleEntry"
+          />
+        </UFormField>
+
+        <UFormField :label="`Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`">
+          <UInputNumber
+            v-model="stakeAmount"
+            show-buttons
+            :min="0"
+            :stepSnapping="false"
+            :step="botStore.activeBot.stakeCurrency === 'USDT' ? 10 : 1"
+            class="w-full"
+            :format-options="{
+              maximumFractionDigits: 5,
+            }"
+          />
+        </UFormField>
+
+        <UFormField
+          v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed"
+          label="Leverage to apply [optional]"
         >
-        <InputNumber
-          id="leverage-input"
-          v-model="leverage"
-          show-buttons
-          :min="0"
-          :step="1"
-          :max-fraction-digits="1"
-          class="w-full"
-          @keydown.enter="handleEntry"
-        />
-      </div>
+          <UInputNumber
+            id="leverage-input"
+            v-model="leverage"
+            show-buttons
+            :min="1"
+            :step="1"
+            :max-fraction-digits="1"
+            class="w-full"
+            @keydown.enter="handleEntry"
+          />
+        </UFormField>
 
-      <div>
-        <label class="block text-sm font-medium mb-1">OrderType</label>
-        <SelectButton
-          v-model="ordertype"
-          :options="orderTypeOptions"
-          option-label="text"
-          option-value="value"
-          size="small"
-          class="w-full"
-        />
-      </div>
+        <UFormField label="OrderType">
+          <USegmentedControl
+            v-model="ordertype"
+            :items="orderTypeOptions"
+            label-key="text"
+            value-key="value"
+            size="sm"
+            class="w-full"
+          />
+        </UFormField>
 
-      <div v-if="botStore.activeBot.botFeatures.forceEntryTag">
-        <label for="enterTag-input" class="block text-sm font-medium mb-1"
-          >* Custom entry tag [optional]</label
+        <UFormField
+          v-if="botStore.activeBot.botFeatures.forceEntryTag"
+          label="* Custom entry tag [optional]"
         >
-        <InputText id="enterTag-input" v-model="enterTag" class="w-full" />
-      </div>
-    </form>
-
+          <UInput id="enterTag-input" v-model="enterTag" class="w-full" />
+        </UFormField>
+      </form>
+    </template>
     <template #footer>
-      <div class="flex justify-end gap-2">
-        <Button severity="secondary" size="small" @click="model = false"> Cancel </Button>
-        <Button severity="primary" size="small" @click="handleEntry"> Enter Position </Button>
+      <div class="ms-auto flex justify-end gap-2">
+        <UButton color="neutral" @click="$emit('close', false)" icon="mdi:close"> Cancel </UButton>
+        <UButton @click="handleEntry" icon="mdi:check"> Enter Position </UButton>
       </div>
     </template>
-  </Dialog>
+  </UModal>
 </template>

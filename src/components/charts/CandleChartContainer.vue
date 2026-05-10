@@ -142,43 +142,46 @@ const singlePairSelection = computed({
 <template>
   <div class="flex h-full">
     <div class="flex-fill w-full flex-col align-items-stretch flex h-full">
-      <div class="flex me-0 items-center md:gap-2">
+      <div class="flex me-0 items-center md:gap-2 gap-1 flex-wrap mx-1 md:mx-0">
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
-        <MultiSelect
-          v-if="settingsStore.multiPairSelection"
-          v-model="botStore.activeBot.plotMultiPairs"
-          class="w-80"
-          :options="availablePairs"
-          optionlabel=""
-          placeholder="Select pairs to plot"
-          size="small"
-          filter
-        >
-        </MultiSelect>
-        <Select
-          v-else
-          v-model="singlePairSelection"
-          class="w-80"
-          :options="availablePairs"
-          size="small"
-          :clearable="false"
-          @input="refresh"
-        >
-        </Select>
 
-        <Button
-          title="Refresh chart"
-          severity="secondary"
-          :disabled="botStore.activeBot.plotMultiPairs.length === 0"
-          size="small"
-          @click="refresh"
-        >
-          <i-mdi-refresh />
-        </Button>
+        <div class="flex gap-1 md:gap-2 w-full md:w-auto">
+          <USelectMenu
+            multiple
+            v-if="settingsStore.multiPairSelection"
+            v-model="botStore.activeBot.plotMultiPairs"
+            class="md:w-80 w-full"
+            :items="availablePairs"
+            optionlabel=""
+            virtualize
+            placeholder="Select pairs to plot"
+            size="md"
+            filter
+          >
+          </USelectMenu>
+          <USelectMenu
+            v-else
+            v-model="singlePairSelection"
+            class="md:w-80 w-full"
+            :items="availablePairs"
+            size="md"
+            :clearable="false"
+            virtualize
+            @input="refresh"
+          >
+          </USelectMenu>
+          <UButton
+            title="Refresh chart"
+            color="neutral"
+            :disabled="botStore.activeBot.plotMultiPairs.length === 0"
+            icon="mdi:refresh"
+            @click="refresh"
+          />
+        </div>
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
           <span class="text-nowrap">Multi pair</span>
         </BaseCheckbox>
-        <div class="ms-auto flex items-center gap-2">
+        <div class="ms-auto flex flex-wrap items-center gap-2">
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
           </BaseCheckbox>
@@ -186,19 +189,15 @@ const singlePairSelection = computed({
             <span class="text-nowrap">Heikin Ashi</span>
           </BaseCheckbox>
 
-          <PlotConfigSelect></PlotConfigSelect>
+          <div class="me-0 md:me-1 flex grow">
+            <PlotConfigSelect class="grow min-w-40"></PlotConfigSelect>
 
-          <div class="me-0 md:me-1">
-            <Button
-              size="small"
+            <UButton
               title="Plot configurator"
-              severity="secondary"
+              color="neutral"
+              icon="mdi:cog"
               @click="showConfigurator"
-            >
-              <template #icon>
-                <i-mdi-cog width="12" height="12" />
-              </template>
-            </Button>
+            />
           </div>
         </div>
       </div>
@@ -227,14 +226,18 @@ const singlePairSelection = computed({
         <span class="text-2xl font-semibold">No pair selected</span>
       </div>
     </div>
-    <Dialog
-      id="plotConfiguratorModal"
-      v-model:visible="showPlotConfigModal"
-      header="Plot Configurator"
-      ok-only
-      hide-backdrop
+    <DraggableModal
+      v-model:open="showPlotConfigModal"
+      title="Plot Configurator"
+      class="max-w-xl"
+      description="Configure chart plot indicators and subplots"
+      :overlay="false"
+      :modal="false"
+      :dismissible="false"
     >
-      <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
-    </Dialog>
+      <template #body>
+        <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
+      </template>
+    </DraggableModal>
   </div>
 </template>

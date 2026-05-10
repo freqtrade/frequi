@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import LoginModal from '@/components/LoginModal.vue';
-
 import type { AuthStorageWithBotId, BotDescriptor } from '@/types';
 import { useSortable } from '@vueuse/integrations/useSortable';
 
@@ -11,7 +9,7 @@ defineProps<{
 const botStore = useBotStore();
 
 const editingBots = ref<string[]>([]);
-const loginModal = ref<typeof LoginModal>();
+const loginDialog = useLoginDialog();
 const sortContainer = ref<HTMLElement | null>(null);
 const botListComp = computed<BotDescriptor[]>(() => {
   //Convert to array
@@ -49,7 +47,8 @@ function editBotLogin(botId: string) {
     ...bot.getLoginInfo(),
     botId,
   };
-  loginModal.value?.openLoginModal(loginInfo);
+
+  loginDialog({ loginInfo: loginInfo });
 }
 
 function stopEditBot(botId: string) {
@@ -66,7 +65,7 @@ function stopEditBot(botId: string) {
     <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
     <ul
       ref="sortContainer"
-      class="flex flex-col divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-surface-500"
+      class="flex flex-col divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500"
     >
       <li
         v-for="bot in botListComp"
@@ -95,11 +94,18 @@ function stopEditBot(botId: string) {
           v-else
           :bot="bot"
           :no-buttons="small"
-          @edit="editBot(bot.botId)"
-          @edit-login="editBotLogin(bot.botId)"
+          @edit="editBot"
+          @edit-login="editBotLogin"
         />
       </li>
     </ul>
-    <LoginModal v-if="!small" ref="loginModal" class="mt-2" login-text="Add new bot" />
+    <UButton
+      v-if="!small"
+      color="neutral"
+      class="mt-2"
+      @click="loginDialog({})"
+      icon="mdi:login"
+      label="Add new Bot"
+    />
   </div>
 </template>

@@ -45,34 +45,28 @@ onMounted(() => {
   <div>
     <div class="flex flex-row mb-1 items-center">
       <div class="me-2">
-        <Button
+        <UButton
           aria-label="Close"
           title="Pair Navigation"
-          severity="secondary"
-          variant="outlined"
-          size="small"
+          color="neutral"
+          variant="outline"
+          :icon="isBarVisible.left ? 'mdi:chevron-left' : 'mdi:chevron-right'"
           @click="isBarVisible.left = !isBarVisible.left"
-        >
-          <i-mdi-chevron-right v-if="!isBarVisible.left" width="24" height="24" />
-          <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
-        </Button>
+        />
       </div>
       <span class="grow">
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>
       <div class="text-end">
-        <Button
+        <UButton
           aria-label="Close"
-          variant="outlined"
+          variant="outline"
           title="Trade Navigation"
-          size="small"
-          severity="secondary"
+          color="neutral"
+          :icon="isBarVisible.right ? 'mdi:chevron-right' : 'mdi:chevron-left'"
           @click="isBarVisible.right = !isBarVisible.right"
-        >
-          <i-mdi-chevron-right v-if="isBarVisible.right" width="24" height="24" />
-          <i-mdi-chevron-left v-if="!isBarVisible.right" width="24" height="24" />
-        </Button>
+        />
       </div>
     </div>
     <div class="text-center flex flex-row h-full items-stretch overflow-x-clip">

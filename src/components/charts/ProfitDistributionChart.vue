@@ -44,11 +44,11 @@ const settingsStore = useSettingsStore();
 // console.log(profits);
 // const data = [[]];
 const binOptions = [
-  { text: '10', value: 10 },
-  { text: '15', value: 15 },
-  { text: '20', value: 20 },
-  { text: '25', value: 25 },
-  { text: '50', value: 50 },
+  { label: '10', value: 10 },
+  { label: '15', value: 15 },
+  { label: '20', value: 20 },
+  { label: '25', value: 25 },
+  { label: '50', value: 50 },
 ];
 const data = computed(() => {
   const profits = props.trades
@@ -131,23 +131,19 @@ const chartOptions = computed((): EChartsOption => {
     <div class="grow mb-2">
       <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
-    <div
-      class="z-2 absolute fixed-top flex items-center gap-10 ms-2"
+    <UFormField
+      class="z-2 absolute fixed-top flex items-center gap-10 ms-2 mt-1"
       :class="{ 'mx-auto': showTitle }"
       label-for="input-bins"
-      size="sm"
+      label="Bins"
+      orientation="horizontal"
     >
-      <label for="input-bins">Bins</label>
-      <Select
-        id="input-bins"
+      <USelect
         v-model="settingsStore.profitDistributionBins"
-        size="small"
-        option-label="text"
-        option-value="value"
-        class="mt-1"
-        :options="binOptions"
-      ></Select>
-    </div>
+        class="min-w-20"
+        :items="binOptions"
+      ></USelect>
+    </UFormField>
   </div>
 </template>
 

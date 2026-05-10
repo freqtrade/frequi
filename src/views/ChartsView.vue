@@ -107,23 +107,30 @@ watch(
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
-      <Panel header="Settings" toggleable>
+      <UCard :ui="{ body: 'p-3 sm:p-3' }">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-xl font-bold">Settings</span>
+          <InfoBox
+            hint="These settings only apply to the chart view and do not affect the bot's actual configuration or behavior."
+          />
+        </div>
         <div
-          class="mb-2 border dark:border-surface-700 border-surface-300 rounded-md p-2 text-start"
+          class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-2 text-start"
         >
-          <div class="flex flex-row gap-5">
-            <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
-              Custom Exchange
-            </BaseCheckbox>
-            <span v-show="!exchange.customExchange">
-              Current Exchange:
-              {{ botStore.activeBot.botState.exchange }}
-              {{ botStore.activeBot.botState.trading_mode }}
-            </span>
-          </div>
-          <Transition name="fade">
-            <ExchangeSelect v-show="exchange.customExchange" v-model="exchange.selectedExchange" />
-          </Transition>
+          <UCollapsible v-model:open="exchange.customExchange">
+            <div class="flex flex-row gap-5 items-center">
+              <BaseCheckbox v-model="exchange.customExchange">Custom Exchange</BaseCheckbox>
+              <span v-show="!exchange.customExchange" class="text-sm">
+                Current Exchange:
+                {{ botStore.activeBot.botState.exchange }}
+                {{ botStore.activeBot.botState.trading_mode }}
+              </span>
+            </div>
+            <template #content>
+              <ExchangeSelect v-model="exchange.selectedExchange" class="mt-2" />
+            </template>
+          </UCollapsible>
+          <Transition name="fade"> </Transition>
         </div>
         <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 md:gap-2">
           <div class="text-start md:me-1 col-span-2">
@@ -147,7 +154,7 @@ watch(
             class="col-span-3 md:col-span-2"
           ></TimeRangeSelect>
         </div>
-      </Panel>
+      </UCard>
     </div>
 
     <div class="md:mx-2 mt-2 pb-1 h-full">

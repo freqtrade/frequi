@@ -35,7 +35,7 @@ const profitString = computed((): string => {
     :class="{
       'profit-pill-profit': isProfitable === true,
       'profit-pill': isProfitable === false,
-      'border-surface-500': isProfitable === null,
+      'border-neutral-500': isProfitable === null,
     }"
     :title="profitDesc"
   >

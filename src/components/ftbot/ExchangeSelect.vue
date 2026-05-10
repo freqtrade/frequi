@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { ExchangeSelection } from '@/types';
+import type { SelectMenuItem } from '@nuxt/ui';
 
 const exchangeModel = defineModel<ExchangeSelection>({ required: true });
 
 const botStore = useBotStore();
 
-const exchangeList = computed(() => {
+const exchangeList = computed<SelectMenuItem[]>(() => {
   const supported = botStore.activeBot.exchangeList
     .filter((ex) => ex.valid && ex.supported)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -15,14 +16,14 @@ const exchangeList = computed(() => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return [
-    {
-      label: 'Supported',
-      options: supported.map((e) => ({ value: e.classname ?? e.name, text: e.name })),
-    },
-    {
-      label: 'Unsupported',
-      options: unsupported.map((e) => ({ value: e.classname ?? e.name, text: e.name })),
-    },
+    [
+      { label: 'Supported', type: 'label' },
+      ...supported.map((e) => ({ value: e.classname ?? e.name, label: e.name })),
+    ],
+    [
+      { label: 'Unsupported', type: 'label' },
+      ...unsupported.map((e) => ({ value: e.classname ?? e.name, label: e.name })),
+    ],
   ];
 });
 
@@ -37,7 +38,7 @@ const tradeModesTyped = computed(() => {
 const tradeModes = computed(() => {
   return tradeModesTyped.value.map((tm) => {
     return {
-      text: `${tm.margin_mode} ${tm.trading_mode}`,
+      label: `${tm.margin_mode} ${tm.trading_mode}`,
       value: tm,
     };
   });
@@ -61,40 +62,28 @@ onMounted(() => {
 
 <template>
   <div class="w-full flex">
-    <Select
+    <USelectMenu
       id="exchange-select"
       v-model="exchangeModel.exchange"
-      size="small"
       class="min-w-52"
-      filter
-      option-group-label="label"
-      option-group-children="options"
-      option-label="text"
-      option-value="value"
-      :options="exchangeList"
+      value-key="value"
+      :items="exchangeList"
     >
-    </Select>
-    <Select
+    </USelectMenu>
+    <USelectMenu
       id="tradeMode-select"
-      v-model="exchangeModel.trade_mode"
-      size="small"
+      v-model="exchangeModel.trade_mode as any"
       class="min-w-44"
-      :options="tradeModes"
-      option-label="text"
-      option-value="value"
+      :items="tradeModes"
       :disabled="tradeModes.length < 2"
     >
-    </Select>
-    <Button
-      severity="secondary"
-      variant="outlined"
+    </USelectMenu>
+    <UButton
+      color="neutral"
+      variant="outline"
       class="ms-2 no-min-w"
-      size="small"
-      @click="botStore.activeBot.getExchangeList"
-    >
-      <template #icon>
-        <i-mdi-refresh />
-      </template>
-    </Button>
+      icon="mdi:refresh"
+      @click="botStore.activeBot.getExchangeList()"
+    />
   </div>
 </template>

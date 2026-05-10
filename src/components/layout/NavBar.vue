@@ -2,9 +2,9 @@
 import Favico from 'favico.js';
 
 import { useRoute } from 'vue-router';
-import Menu from 'primevue/menu';
-import type { MenuItem } from 'primevue/menuitem';
+import type { DropdownMenuItem } from '@nuxt/ui';
 import { breakpointsTailwind } from '@vueuse/core';
+import type { AuthStorageWithBotId } from '@/types';
 
 const botStore = useBotStore();
 
@@ -14,6 +14,7 @@ const route = useRoute();
 const router = useRouter();
 const favicon = ref<Favico | undefined>(undefined);
 const pingInterval = ref<number>();
+const loginDialog = useLoginDialog();
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 
@@ -155,63 +156,82 @@ const navItems = ref([
   },
 ]);
 
-const menuItems = computed<MenuItem[]>(() => [
-  {
-    label: `V: ${settingsStore.uiVersion}`,
-    disabled: true,
-  },
-  {
-    label: 'Settings',
-    icon: 'i-mdi-cog',
-    command: () => router.push('/settings'),
-  },
-  {
-    label: 'Lock dynamic Layout',
-    checkbox: true,
-    checked: layoutStore.layoutLocked,
-    command: () => {
-      layoutStore.layoutLocked = !layoutStore.layoutLocked;
+const menuItems = computed<DropdownMenuItem[][]>(() => [
+  [
+    {
+      label: `V: ${settingsStore.uiVersion}`,
+      disabled: true,
     },
-  },
-  {
-    label: 'Reset Layout',
-    icon: 'i-mdi-lock-reset',
-    command: resetDynamicLayout,
-  },
-  {
-    label: 'Logout',
-    icon: 'i-mdi-logout',
-    command: clickLogout,
-    visible: botStore.hasBots && botStore.botCount === 1,
-  },
+  ],
+  [
+    {
+      label: 'Settings',
+      icon: 'i-mdi-cog',
+      onSelect: () => router.push('/settings'),
+    },
+    {
+      label: layoutStore.layoutLocked ? 'Unlock Layout' : 'Lock Layout',
+      icon: layoutStore.layoutLocked ? 'i-mdi-lock' : 'i-mdi-lock-open',
+      onSelect: () => {
+        layoutStore.layoutLocked = !layoutStore.layoutLocked;
+      },
+    },
+    {
+      label: 'Reset Layout',
+      icon: 'i-mdi-lock-reset',
+      onSelect: resetDynamicLayout,
+    },
+  ],
+  ...(botStore.hasBots && botStore.botCount === 1
+    ? [
+        [
+          {
+            label: 'Logout',
+            icon: 'i-mdi-logout',
+            onSelect: clickLogout,
+          },
+        ],
+      ]
+    : []),
 ]);
-const menu = ref<InstanceType<typeof Menu> | null>();
-function toggleMenu(event) {
-  menu.value?.toggle(event);
+
+function editBotLogin(botId: string) {
+  const bot = botStore.botStores[botId];
+  if (!bot) {
+    showAlert('Bot not found', 'warning');
+    return;
+  }
+  const loginInfo: AuthStorageWithBotId = {
+    ...bot.getLoginInfo(),
+    botId,
+  };
+
+  loginDialog({ loginInfo: loginInfo });
 }
-const drawerVisible = ref(false);
 </script>
 
 <template>
   <header>
-    <div class="flex bg-primary-500 border-b border-primary">
+    <div class="flex border-b border-primary">
       <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
-        <img class="h-[30px] align-middle" src="@/assets/freqtrade-logo.png" alt="Home Logo" />
-        <span class="text-slate-200 text-xl md:hidden lg:inline text-nowrap">Freqtrade UI</span>
+        <AppIcon class="h-9 w-9" />
+        <AppText class="md:hidden lg:inline" />
       </RouterLink>
       <div class="flex justify-between w-full text-center items-center ms-3">
         <div class="items-center hidden md:flex gap-5 ms-5">
-          <RouterLink
+          <UButton
             v-for="(item, index) in navItems.filter(
               (item) => (item.visible ?? true) && !item.mobileOnly,
             )"
             :key="index"
             :to="item.to"
-            class="text-surface-200 flex items-center gap-2"
+            variant="link"
+            size="xl"
+            color="neutral"
             active-class="underline"
           >
             {{ item.label }}
-          </RouterLink>
+          </UButton>
           <ThemeSelect />
         </div>
 
@@ -226,152 +246,100 @@ const drawerVisible = ref(false);
             <i-mdi-run-fast />
             <i-mdi-alert />
           </div>
-          <div class="flex justify-between">
-            <Select
-              v-if="botStore.botCount > 1"
-              :model-value="botStore.selectedBotObj"
-              size="small"
-              class="m-1"
-              no-caret
-              severity="info"
-              toggle-class="flex align-items-center "
-              menu-class="my-0 py-0"
-              :options="botStore.availableBotsSorted"
-              @update:model-value="botStore.selectBot($event.botId)"
-            >
-              <template #value="{ value }">
-                <BotEntry :bot="value" :no-buttons="true" />
-              </template>
-
-              <template #option="{ option }">
-                <BotEntry :bot="option" :no-buttons="true" />
-              </template>
-            </Select>
-            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
-          </div>
-          <div
-            class="hidden md:flex md:flex-wrap lg:flex-nowrap items-center nav-item text-surface-300 me-2"
-          >
-            <span class="text-sm me-2">
+          <div class="hidden md:flex md:flex-nowrap items-center nav-item me-2">
+            <span class="text-sm me-2" title="Bot name">
               {{
                 (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
                 'No bot selected'
               }}
             </span>
-            <span v-if="botStore.botCount === 1">
-              {{
-                botStore.activeBotorUndefined && botStore.activeBotorUndefined.isBotOnline
-                  ? 'Online'
-                  : 'Offline'
-              }}
-            </span>
+            <BotEntry
+              :bot="botStore.availableBots[botStore.selectedBot]"
+              noButtons
+              no-text
+              @edit-login="editBotLogin"
+            />
+            <BotSelect />
+
+            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
           </div>
           <div v-if="botStore.hasBots" class="flex items-center">
             <!-- Hide dropdown on xs, instead show below  -->
-            <Button severity="contrast" variant="text" size="small" @click="toggleMenu">
-              <div class="flex items-center">
-                <Avatar shape="circle" severity="contrast">
-                  <!-- <Avatar label="FT" shape="circle"></Avatar> -->
-                  FT
-                </Avatar>
-                <i-mdi-chevron-down />
-              </div>
-            </Button>
-            <Menu ref="menu" :model="menuItems" popup class="w-56">
-              <template #item="{ item }">
-                <div
-                  class="flex flex-row items-center gap-2 p-1"
-                  :class="{
-                    'cursor-pointer': !item.disabled,
-                  }"
-                >
-                  <i-mdi-cog v-if="item.icon === 'i-mdi-cog'" />
-                  <i-mdi-logout v-if="item.icon === 'i-mdi-logout'" />
-                  <i-mdi-lock-reset v-if="item.icon === 'i-mdi-lock-reset'" />
-                  <BaseCheckbox v-if="item.checkbox" v-model="item.checked" />
-                  <span>{{ item.label }}</span>
+            <UDropdownMenu :items="menuItems" size="lg">
+              <UButton color="neutral" variant="ghost" size="sm" trailing-icon="mdi:chevron-down">
+                <div class="flex items-center">
+                  <UAvatar size="sm"> FT </UAvatar>
                 </div>
-              </template>
-            </Menu>
+              </UButton>
+            </UDropdownMenu>
           </div>
-          <div v-else>
-            <!-- should open Modal window! -->
-            <LoginModal v-if="route?.path !== '/login'" />
-          </div>
+          <UButton
+            v-else-if="route?.path !== '/login'"
+            color="neutral"
+            @click="loginDialog({})"
+            icon="mdi:login"
+            >Login
+          </UButton>
         </div>
 
         <!-- Mobile menu -->
         <div v-if="isMobile" class="ms-auto flex">
-          <Button
-            class="text-surface-300 text-xl"
-            variant="text"
-            @click="drawerVisible = !drawerVisible"
+          <USlideover
+            direction="right"
+            :close="{
+              color: 'primary',
+              variant: 'outline',
+              class: 'rounded-full',
+            }"
           >
-            <template #icon>
-              <i-mdi-menu />
-            </template>
-          </Button>
-          <Drawer
-            v-model:visible="drawerVisible"
-            header="Drawer"
-            position="right"
-            class="bg-primary-500"
-          >
-            <template #container>
-              <div class="flex flex-row items-center">
-                <h3 class="text-xl font-bold w-full text-center text-surface-200">Freqtrade UI</h3>
-                <Button
-                  class="float-right mt-1 me-1"
-                  variant="outlined"
-                  @click="drawerVisible = !drawerVisible"
-                >
-                  <template #icon>
-                    <i-mdi-close />
-                  </template>
-                </Button>
+            <UButton class="text-neutral-300 text-xl" size="xl" variant="ghost" icon="mdi:menu" />
+            <template #title>
+              <div class="flex flex-row items-center gap-2">
+                <AppIcon class="h-9 w-9" />
+                <AppText class="md:hidden lg:inline" />
               </div>
-              <div class="flex flex-col gap-1 items-center mt-4">
-                <RouterLink
+            </template>
+            <template #body="{ close }">
+              <div class="flex flex-col gap-1 items-center p-4 h-full">
+                <UButton
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
                   :key="index"
                   :to="item.to"
-                  class="text-surface-200 p-2"
-                  active-class="underline"
-                >
-                  {{ item.label }}
-                </RouterLink>
-                <Divider />
-                <span class="text-surface-200 text-center"
-                  >Version: {{ settingsStore.uiVersion }}</span
-                >
+                  class="p-2 justify-center w-full"
+                  variant="link"
+                  color="neutral"
+                  size="xl"
+                  active-class="underline font-bold"
+                  @click="close()"
+                  :label="item.label"
+                />
+                <USeparator class="my-2" />
+                <span>Version: {{ settingsStore.uiVersion }}</span>
 
                 <div class="flex flex-row items-center justify-center">
                   <ThemeSelect show-text />
                 </div>
-                <Select
-                  v-if="botStore.botCount > 1"
-                  :model-value="botStore.selectedBotObj"
-                  size="small"
-                  class="m-1"
-                  no-caret
-                  severity="info"
-                  toggle-class="flex align-items-center "
-                  menu-class="my-0 py-0"
-                  :options="botStore.availableBotsSorted"
-                  @update:model-value="botStore.selectBot($event.botId)"
-                >
-                  <template #value="{ value }">
-                    <BotEntry :bot="value" :no-buttons="true" />
-                  </template>
-
-                  <template #option="{ option }">
-                    <BotEntry :bot="option" :no-buttons="true" />
-                  </template>
-                </Select>
-                <ReloadControl class="justify-center w-full" title="Confirm Dialog deactivated." />
+                <USeparator class="my-2" />
+                <div class="flex flex-row items-center">
+                  <span class="text-sm me-2" title="Bot name">
+                    {{
+                      (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
+                      'No bot selected'
+                    }}
+                  </span>
+                  <BotEntry
+                    :bot="botStore.availableBots[botStore.selectedBot]"
+                    noButtons
+                    no-text
+                    @edit-login="editBotLogin"
+                  />
+                </div>
+                <BotSelect />
+                <USeparator class="my-2" />
+                <ReloadControl class="justify-center w-full" />
               </div>
             </template>
-          </Drawer>
+          </USlideover>
         </div>
       </div>
     </div>

@@ -128,8 +128,7 @@ async function handleSubmit() {
       errorMessage.value = 'Connected to bot, however Login failed, Username or Password wrong.';
     } else {
       urlState.value = false;
-      errorMessage.value = `Login failed.
-Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
+      errorMessage.value = `Please verify that the bot is running, the Bot API is enabled and the URL is reachable.
 You can verify this by navigating to ${auth.value.url}/api/v1/ping to make sure the bot API is reachable`;
       if (auth.value.url !== window.location.origin) {
         errorMessageCORS.value = true;
@@ -167,88 +166,91 @@ onMounted(() => {
 
 <template>
   <form ref="formRef" novalidate @submit.stop.prevent="handleSubmit" @reset="handleReset">
-    <div class="mb-4">
-      <label for="name-input" class="block text-sm font-medium">Bot Name</label>
-      <InputText
-        id="name-input"
+    <UFormField class="mb-4" label="Bot Name">
+      <UInput
         v-model="auth.botName"
         placeholder="Bot Name"
         class="mt-1 block w-full"
         @keydown.enter="handleOk"
       />
-    </div>
-    <div class="mb-4">
-      <label for="url-input" class="block text-sm font-medium">API Url</label>
-      <InputText
+    </UFormField>
+    <UFormField
+      class="mb-4"
+      label="API Url"
+      :error="urlState === false ? 'API URL is required.' : undefined"
+    >
+      <UInput
         id="url-input"
         v-model="auth.url"
         required
         trim
-        :invalid="urlState === false"
         class="mt-1 block w-full"
         @keydown.enter="handleOk"
       />
-      <span v-if="urlState === false" class="mt-2 text-sm text-red-500">API URL required</span>
-      <Message v-if="urlDuplicate" class="mt-2 text-sm" severity="warn">
-        This URL is already in use by another bot.
-      </Message>
-    </div>
-    <div class="mb-4">
-      <label for="username-input" class="block text-sm font-medium">Username</label>
-      <InputText
-        id="username-input"
+      <UAlert
+        v-if="urlDuplicate"
+        class="mt-2"
+        color="warning"
+        title="This URL is already in use by another bot."
+      >
+      </UAlert>
+    </UFormField>
+    <UFormField
+      class="mb-4"
+      label="Username"
+      :error="nameState === false ? 'Name and Password are required.' : undefined"
+    >
+      <UInput
         v-model="auth.username"
         required
         placeholder="Freqtrader"
-        :invalid="nameState === false"
-        class="mt-1 block w-full"
+        class="w-full"
         @keydown.enter="handleOk"
       />
-      <span v-if="nameState === false" class="mt-2 text-sm text-red-500">
-        Name and Password are required.
-      </span>
-    </div>
-    <div class="mb-4">
-      <label for="password-input" class="block text-sm font-medium">Password</label>
-      <InputText
-        id="password-input"
+    </UFormField>
+    <UFormField
+      class="mb-4"
+      label="Password"
+      :error="pwdState === false ? 'Invalid Password' : undefined"
+    >
+      <UInput
         v-model="auth.password"
         required
         type="password"
-        :invalid="pwdState === false"
-        class="mt-1 block w-full"
+        class="w-full"
         @keydown.enter="handleOk"
       />
-      <span v-if="pwdState === false" class="mt-2 text-sm text-red-500"> Invalid Password </span>
-    </div>
+    </UFormField>
     <div>
-      <Message v-if="errorMessage" class="mt-2 text-sm whitespace-pre-line" severity="warn">
-        {{ errorMessage }}
-        <br />
-        <span v-if="errorMessageCORS">
-          Please also check your bot's CORS configuration:
-          <a
-            href="https://www.freqtrade.io/en/latest/rest-api/#cors"
-            class="text-blue-500 underline"
-            >Freqtrade CORS documentation</a
-          >
-        </span>
-      </Message>
+      <UAlert
+        v-if="errorMessage"
+        class="mt-2 whitespace-pre-line"
+        color="warning"
+        title="Login failed"
+      >
+        <template #description>
+          {{ errorMessage }}
+          <span v-if="errorMessageCORS">
+            Please also check your bot's CORS configuration:
+            <a
+              href="https://www.freqtrade.io/en/latest/rest-api/#cors"
+              class="text-blue-500 underline"
+              >Freqtrade CORS documentation</a
+            >
+          </span>
+        </template>
+      </UAlert>
     </div>
     <div class="flex justify-end gap-2 mt-4">
-      <Button label="Reset" severity="danger" type="reset" />
-      <Button
+      <UButton label="Reset" color="error" type="reset" />
+      <UButton
         v-if="inModal"
         label="Cancel"
-        severity="secondary"
+        color="neutral"
         type="button"
         @click="emitLoginResult(true)"
       />
-      <Button label="Submit" severity="primary" type="submit">
-        <template #icon>
-          <i-mdi-login />
-        </template>
-      </Button>
+      <UButton label="Submit" color="primary" type="submit" icon="mdi:login" />
     </div>
   </form>
 </template>

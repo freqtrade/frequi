@@ -15,12 +15,13 @@ watch(
 </script>
 
 <template>
-  <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
-    <NavBar />
-    <Toast />
-    <BodyLayout class="grow overflow-auto" />
-    <NavFooter />
-  </div>
+  <UApp>
+    <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
+      <NavBar />
+      <BodyLayout class="grow overflow-auto" />
+      <NavFooter />
+    </div>
+  </UApp>
 </template>
 
 <style scoped>

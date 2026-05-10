@@ -8,7 +8,7 @@ const { runningJobs, clearJobs } = useBackgroundJob();
       <li
         v-for="(job, key) in runningJobs"
         :key="key"
-        class="border p-1 pb-2 rounded-sm dark:border-surface-700 border-surface-300 flex gap-2 items-center"
+        class="border p-1 pb-2 rounded-sm dark:border-neutral-700 border-neutral-300 flex gap-2 items-center"
         :title="key"
       >
         <i-mdi-download-box-outline v-if="job.taskStatus?.job_category === 'download_data'" />
@@ -18,13 +18,12 @@ const { runningJobs, clearJobs } = useBackgroundJob();
           <span v-else>{{ job.taskStatus?.status }} </span>
           <span v-if="job.taskStatus?.progress" class="w-25">{{ job.taskStatus?.progress }}</span>
         </div>
-        <ProgressBar
+        <UProgress
           v-if="job.taskStatus?.progress"
           class="w-full grow"
-          :value="(job.taskStatus?.progress / 100) * 100"
-          show-progress
+          color="success"
+          :model-value="(job.taskStatus?.progress / 100) * 100"
           :max="100"
-          striped
         />
         <div
           v-if="job.taskStatus?.progress_tasks"
@@ -37,9 +36,10 @@ const { runningJobs, clearJobs } = useBackgroundJob();
           >
             {{ t.description }}
 
-            <ProgressBar
+            <UProgress
               class="w-full grow"
-              :value="Math.round((t.progress / t.total) * 100 * 100) / 100"
+              :model-value="Math.round((t.progress / t.total) * 100 * 100) / 100"
+              color="success"
               show-progress
               :pt="{
                 value: {
@@ -52,15 +52,12 @@ const { runningJobs, clearJobs } = useBackgroundJob();
         </div>
       </li>
     </ul>
-    <Button
+    <UButton
       v-if="Object.keys(runningJobs).length > 0"
-      severity="secondary"
+      color="neutral"
       class="ms-auto"
+      icon="mdi:delete"
       @click="clearJobs"
-    >
-      <template #icon>
-        <i-mdi-delete />
-      </template>
-    </Button>
+    />
   </div>
 </template>

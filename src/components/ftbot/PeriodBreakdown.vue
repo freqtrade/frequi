@@ -69,43 +69,56 @@ function refreshSummary() {
 onMounted(() => {
   refreshSummary();
 });
+
+const tableColumns = computed(() => {
+  const cols: { accessorKey: string; header: string }[] = [
+    { accessorKey: 'date', header: 'Day' },
+    { accessorKey: 'abs_profit', header: 'Profit' },
+    {
+      accessorKey: 'fiat_value',
+      header: `In ${selectedStats.value.fiat_display_currency}`,
+    },
+    { accessorKey: 'trade_count', header: 'Trades' },
+  ];
+  if (botStore.activeBot.botFeatures.advancedDailyMetrics) {
+    cols.push({ accessorKey: 'rel_profit', header: 'Profit%' });
+  }
+  return cols;
+});
+
+watch(
+  () => settingsStore.timeProfitPeriod,
+  () => {
+    refreshSummary();
+  },
+);
 </script>
 
 <template>
   <div class="flex flex-col h-full">
     <div v-if="!props.multiBotView" class="mb-2">
       <h3 class="me-auto inline text-xl">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
-      <Button class="float-end" severity="secondary" @click="refreshSummary">
-        <template #icon>
-          <i-mdi-refresh />
-        </template>
-      </Button>
+      <UButton class="float-end" color="neutral" icon="mdi:refresh" @click="refreshSummary" />
     </div>
     <div class="flex align-center justify-between">
-      <SelectButton
+      <USegmentedControl
         v-if="hasWeekly"
         id="order-direction"
         v-model="settingsStore.timeProfitPeriod"
-        :options="periodicBreakdownSelections"
-        name="radios-btn-default"
-        size="small"
-        :allow-empty="false"
-        option-label="text"
-        option-value="value"
-        @change="refreshSummary"
-      ></SelectButton>
-      <SelectButton
+        :items="periodicBreakdownSelections"
+        size="sm"
+        label-key="text"
+        value-key="value"
+      ></USegmentedControl>
+      <USegmentedControl
         v-model="settingsStore.timeProfitPreference"
         name="radios-btn-select"
-        size="small"
-        :allow-empty="false"
-        option-label="text"
-        option-value="value"
-        :options="absRelSelections"
-        buttons
-        button-variant="outline-primary"
+        size="sm"
+        label-key="text"
+        value-key="value"
+        :items="absRelSelections"
       >
-      </SelectButton>
+      </USegmentedControl>
     </div>
 
     <div
@@ -126,32 +139,23 @@ onMounted(() => {
       Time period chart is only available when a single bot is selected and showing absolute profit.
     </div>
     <div v-if="!props.multiBotView">
-      <DataTable size="small" :value="selectedStats.data">
-        <Column field="date" header="Day"></Column>
-        <Column field="abs_profit" header="Profit">
-          <template #body="{ data, field }">
-            {{ formatPrice(data[field as string], botStore.activeBot.stakeCurrencyDecimals) }}
-          </template>
-        </Column>
-        <Column
-          field="fiat_value"
-          :header="`In ${botStore.activeBot.dailyStats.fiat_display_currency}`"
-        >
-          <template #body="{ data, field }">
-            {{ formatPrice(data[field as string], 2) }}
-          </template>
-        </Column>
-        <Column field="trade_count" header="Trades"></Column>
-        <Column
-          v-if="botStore.activeBot.botFeatures.advancedDailyMetrics"
-          field="rel_profit"
-          header="Profit%"
-        >
-          <template #body="{ data, field }">
-            {{ formatPercent(data[field as string], 2) }}
-          </template>
-        </Column>
-      </DataTable>
+      <UTable
+        :data="selectedStats.data"
+        :columns="tableColumns"
+        :ui="{
+          td: 'whitespace-normal',
+        }"
+      >
+        <template #abs_profit-cell="{ row }">
+          {{ formatPrice(row.original.abs_profit, botStore.activeBot.stakeCurrencyDecimals) }}
+        </template>
+        <template #fiat_value-cell="{ row }">
+          {{ formatPrice(row.original.fiat_value, 2) }}
+        </template>
+        <template #rel_profit-cell="{ row }">
+          {{ formatPercent(row.original.rel_profit, 2) }}
+        </template>
+      </UTable>
     </div>
   </div>
 </template>

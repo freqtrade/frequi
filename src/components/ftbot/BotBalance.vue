@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { h } from 'vue';
 import type { BalanceValues } from '@/types';
 
 const botStore = useBotStore();
@@ -14,11 +15,23 @@ const canUseBotBalance = computed(() => {
 });
 
 const balanceCurrencies = computed(() => {
-  return botStore.activeBot.balance.currencies?.filter(
-    (v) =>
-      (!hideSmallBalances.value || v.est_stake >= smallBalance.value) &&
-      (!canUseBotBalance.value || !showBotOnly.value || (v.is_bot_managed ?? true) === true),
+  return (
+    botStore.activeBot.balance.currencies?.filter(
+      (v) =>
+        (!hideSmallBalances.value || v.est_stake >= smallBalance.value) &&
+        (!canUseBotBalance.value || !showBotOnly.value || (v.is_bot_managed ?? true) === true),
+    ) ?? []
   );
+});
+
+const tableData = computed<Record<string, string | number | null>[]>(() => {
+  return balanceCurrencies.value.map((v) => ({
+    currency: v.currency,
+    free: v.free,
+    bot_owned: v.bot_owned ?? null,
+    est_stake: v.est_stake,
+    est_stake_bot: v.est_stake_bot ?? null,
+  }));
 });
 
 const formatCurrency = (value) => {
@@ -26,7 +39,7 @@ const formatCurrency = (value) => {
 };
 
 const chartValues = computed<BalanceValues[]>(() => {
-  return balanceCurrencies.value?.map((v) => {
+  return balanceCurrencies.value.map((v) => {
     return {
       balance:
         showBotOnly.value && canUseBotBalance.value && v.bot_owned != undefined
@@ -66,6 +79,40 @@ async function refreshBalance() {
   botStore.activeBot.getBalance();
 }
 
+const tableColumns = computed(() => {
+  return tableFields.value.map((field, index) => ({
+    accessorKey: field.field,
+    header: field.header,
+    cell: field.asCurrency
+      ? ({ row }: { row: { original: Record<string, number | string | null> } }) =>
+          formatCurrency(row.original[field.field])
+      : undefined,
+    footer:
+      index === 0
+        ? 'Total'
+        : index === 1
+          ? () =>
+              h(
+                'span',
+                {
+                  class: 'italic',
+                  title: `Increase over initial capital of ${formatCurrency(
+                    botStore.activeBot.balance.starting_capital,
+                  )} ${botStore.activeBot.balance.stake}`,
+                },
+                formatPercent(botStore.activeBot.balance.starting_capital_ratio),
+              )
+          : () =>
+              h(
+                'strong',
+                {},
+                showBotOnly.value && canUseBotBalance.value
+                  ? formatCurrency(botStore.activeBot.balance.total_bot)
+                  : formatCurrency(botStore.activeBot.balance.total),
+              ),
+  }));
+});
+
 onMounted(() => {
   refreshBalance();
 });
@@ -76,32 +123,20 @@ onMounted(() => {
     <div class="flex flex-wrap flex-row mb-2 justify-end items-center">
       <label class="text-xl ms-1 me-auto mb-0">{{ showBotOnly ? 'Bot' : 'Account' }} Balance</label>
       <div class="flex flex-row gap-1">
-        <Button
+        <UButton
           v-if="canUseBotBalance"
-          severity="secondary"
+          color="neutral"
           :tooltip="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
+          :icon="showBotOnly ? 'mdi:robot' : 'mdi:bank'"
           @click="showBotOnly = !showBotOnly"
-        >
-          <template #icon>
-            <i-mdi-robot v-if="showBotOnly" />
-            <i-mdi-bank v-else />
-          </template>
-        </Button>
-        <Button
-          severity="secondary"
+        />
+        <UButton
+          color="neutral"
           :tooltip="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
+          :icon="hideSmallBalances ? 'mdi:eye-off' : 'mdi:eye'"
           @click="hideSmallBalances = !hideSmallBalances"
-        >
-          <template #icon>
-            <i-mdi-eye-off v-if="hideSmallBalances" />
-            <i-mdi-eye v-else />
-          </template>
-        </Button>
-        <Button severity="secondary" @click="refreshBalance">
-          <template #icon>
-            <i-mdi-refresh />
-          </template>
-        </Button>
+        />
+        <UButton color="neutral" icon="mdi:refresh" @click="refreshBalance" />
       </div>
     </div>
     <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />
@@ -109,45 +144,7 @@ onMounted(() => {
       <p v-if="botStore.activeBot.balance.note">
         <strong>{{ botStore.activeBot.balance.note }}</strong>
       </p>
-      <DataTable :value="balanceCurrencies" footer>
-        <Column
-          v-for="field in tableFields"
-          :key="field.field"
-          :field="field.field"
-          :header="field.header"
-          ><template v-if="field.asCurrency" #body="{ data }">
-            {{ formatCurrency(data[field.field]) }}
-          </template></Column
-        >
-        <ColumnGroup type="footer">
-          <Row>
-            <Column footer="Total" f />
-            <Column>
-              <template #footer>
-                <span
-                  class="font-italic"
-                  :title="`Increase over initial capital of ${formatCurrency(
-                    botStore.activeBot.balance.starting_capital,
-                  )} ${botStore.activeBot.balance.stake}`"
-                >
-                  {{ formatPercent(botStore.activeBot.balance.starting_capital_ratio) }}
-                </span>
-              </template>
-            </Column>
-            <Column>
-              <template #footer>
-                <strong>
-                  {{
-                    showBotOnly && canUseBotBalance
-                      ? formatCurrency(botStore.activeBot.balance.total_bot)
-                      : formatCurrency(botStore.activeBot.balance.total)
-                  }}
-                </strong>
-              </template>
-            </Column>
-          </Row>
-        </ColumnGroup>
-      </DataTable>
+      <UTable :data="tableData" :columns="tableColumns" />
     </div>
   </div>
 </template>

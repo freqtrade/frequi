@@ -113,7 +113,7 @@ const combinedPairList = computed(() => {
         'me-2': !backtestMode,
       }"
     >
-      <InputText
+      <UInput
         id="trade-filter"
         v-model="filterText"
         type="text"
@@ -122,7 +122,7 @@ const combinedPairList = computed(() => {
       />
     </div>
     <ul
-      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded-sm border-surface-300 dark:border-surface-700"
+      class="divide-y divide-neutral-300 dark:divide-neutral-700 divide-solid border-x border-y rounded-sm border-neutral-300 dark:border-neutral-700"
     >
       <li
         v-for="comb in combinedPairList"
@@ -130,7 +130,7 @@ const combinedPairList = computed(() => {
         button
         class="flex cursor-pointer last:rounded-b justify-between items-center px-1 py-1.5"
         :class="{
-          'bg-primary dark:border-primary text-primary-contrast':
+          'bg-primary dark:bg-primary-700 dark:border-primary text-white':
             comb.pair === botStore.activeBot.selectedPair,
         }"
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"

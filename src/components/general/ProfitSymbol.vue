@@ -18,7 +18,7 @@ const isProfitable = computed<boolean | null>(() => {
       :class="{
         'triangle-up': isProfitable === true,
         'triangle-down': isProfitable === false,
-        'border-transparent border-t-surface-500': isProfitable === null,
+        'border-transparent border-t-neutral-500': isProfitable === null,
       }"
     ></div>
   </div>
