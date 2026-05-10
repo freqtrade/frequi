@@ -40,11 +40,10 @@ const filterText = ref('');
 const feTrade = ref<Trade>({} as Trade);
 const perPage = props.activeTrades ? 200 : 15;
 const pagination = ref({ pageIndex: 0, pageSize: perPage });
-const forceExitVisible = ref(false);
 const removeTradeVisible = ref(false);
 const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
-const { forceEntryDialog } = useForceTrade();
+const { forceEntryDialog, forceExitDialog } = useForceTrade();
 
 function formatPriceWithDecimals(price: number) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
@@ -152,8 +151,10 @@ function removeTradeHandler(item: Trade) {
 }
 
 function forceExitPartialHandler(item: Trade) {
-  feTrade.value = item;
-  forceExitVisible.value = true;
+  forceExitDialog({
+    trade: item,
+    stakeCurrencyDecimals: botStore.activeBot.botState.stake_currency_decimals ?? 3,
+  });
 }
 
 function cancelOpenOrderHandler(item: Trade) {
@@ -279,13 +280,6 @@ function onRowSelect(_e: Event, row: TableRow<Trade>) {
         @update:page="(p) => tradesTable?.tableApi?.setPageIndex(p - 1)"
       />
     </div>
-
-    <ForceExitForm
-      v-if="activeTrades"
-      v-model="forceExitVisible"
-      :trade="feTrade"
-      :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
-    />
 
     <UModal
       v-model:open="removeTradeVisible"

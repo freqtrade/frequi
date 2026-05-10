@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import type { ForceExitPayload, Trade } from '@/types';
-import { ref, computed } from 'vue';
 import { refDebounced } from '@vueuse/core';
 
-const props = defineProps<{
+export interface ForceExitFormProps {
   trade: Trade;
   stakeCurrencyDecimals: number;
-}>();
+}
 
-const model = defineModel<boolean>();
+const props = defineProps<ForceExitFormProps>();
+const emit = defineEmits<{
+  close: [value: boolean];
+}>();
 
 const botStore = useBotStore();
 
@@ -23,7 +25,7 @@ const checkFormValidity = () => {
   return valid;
 };
 
-async function handleSubmit() {
+async function handleExit() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -42,7 +44,7 @@ async function handleSubmit() {
   }
   await nextTick();
   botStore.activeBot.forceexit(payload);
-  model.value = false;
+  emit('close', true);
 }
 
 function resetForm() {
@@ -51,20 +53,6 @@ function resetForm() {
     botStore.activeBot.botState?.order_types?.force_exit ||
     botStore.activeBot.botState?.order_types?.exit ||
     'limit';
-}
-
-watch(
-  () => model.value,
-  (open) => {
-    if (open) {
-      resetForm();
-    }
-  },
-);
-
-function handleExit() {
-  // Trigger submit handler
-  handleSubmit();
 }
 
 const amountDebounced = refDebounced(amount, 250, { maxWait: 500 });
@@ -78,23 +66,13 @@ const orderTypeOptions = [
   { value: 'market', text: 'Market' },
   { value: 'limit', text: 'Limit' },
 ];
+resetForm();
 </script>
 
 <template>
-  <UModal
-    v-model:open="model"
-    :title="`Force exiting a trade`"
-    description="Configure and confirm a forced trade exit"
-    @update:open="
-      (v) => {
-        if (!v) resetForm();
-      }
-    "
-  >
+  <UModal :title="`Force exiting a trade`" description="Configure and confirm a forced trade exit">
     <template #body>
-      {{ trade.pair }}, {{ trade.amount }}
-      ---
-      <form ref="form" class="space-y-4" @submit.prevent="handleSubmit">
+      <form ref="form" class="space-y-4" @submit.prevent="handleExit">
         <div class="mb-4">
           <p class="mb-2">
             <span>Exiting Trade #{{ trade.trade_id }} {{ trade.pair }}.</span>
@@ -158,7 +136,7 @@ const orderTypeOptions = [
       </form>
     </template>
     <template #footer>
-      <UButton class="ms-auto" icon="mdi:close" color="neutral" @click="model = false"
+      <UButton class="ms-auto" icon="mdi:close" color="neutral" @click="emit('close', false)"
         >Cancel</UButton
       >
       <UButton icon="mdi:exit-to-app" @click="handleExit">Exit Position</UButton>

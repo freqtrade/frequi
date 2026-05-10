@@ -1,4 +1,3 @@
-forceexit
 <script setup lang="ts">
 import type { ForceExitPayload } from '@/types';
 

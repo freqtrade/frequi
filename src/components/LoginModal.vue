@@ -11,7 +11,6 @@ const emit = defineEmits<{
 }>();
 
 function loginResult(result: boolean) {
-  console.log("loginresult", result);
   if (result) {
     // Only close if
     emit('close', result);
