@@ -226,7 +226,7 @@ const singlePairSelection = computed({
         <span class="text-2xl font-semibold">No pair selected</span>
       </div>
     </div>
-    <UModal
+    <DraggableModal
       v-model:open="showPlotConfigModal"
       title="Plot Configurator"
       class="max-w-xl"
@@ -238,6 +238,6 @@ const singlePairSelection = computed({
       <template #body>
         <PlotConfigurator :is-visible="showPlotConfigModal" :columns="datasetColumns" />
       </template>
-    </UModal>
+    </DraggableModal>
   </div>
 </template>
