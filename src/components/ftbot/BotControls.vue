@@ -2,11 +2,10 @@ forceexit
 <script setup lang="ts">
 import type { ForceExitPayload } from '@/types';
 
-import ForceEntryForm from './ForceEntryForm.vue';
-
 const botStore = useBotStore();
-const forceEnter = ref<boolean>(false);
 const { confirm } = useConfirmBox();
+
+const { forceEntryDialog } = useForceTrade();
 
 const isRunning = computed((): boolean => {
   return botStore.activeBot.botState?.state === 'running';
@@ -59,6 +58,12 @@ async function handleForceExit() {
     botStore.activeBot.forceexit(payload);
   }
 }
+
+async function handleForceEntry() {
+  await forceEntryDialog({
+    pair: botStore.activeBot.selectedPair,
+  });
+}
 </script>
 
 <template>
@@ -110,7 +115,7 @@ async function handleForceExit() {
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
       icon="mdi:plus-box-multiple-outline"
-      @click="forceEnter = true"
+      @click="handleForceEntry"
     />
     <UButton
       v-if="botStore.activeBot.isWebserverMode && false"
@@ -121,6 +126,5 @@ async function handleForceExit() {
       icon="mdi:play"
       @click="botStore.activeBot.startTrade()"
     />
-    <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
   </div>
 </template>

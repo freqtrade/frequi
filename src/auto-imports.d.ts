@@ -260,6 +260,7 @@ declare global {
   const useFileUpload: typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.0_@internationalized+number@3.6.5_@tiptap+e_b973c901dafa1636782f6663fb2ffbe9/node_modules/@nuxt/ui/dist/runtime/composables/useFileUpload').useFileUpload
   const useFocus: typeof import('@vueuse/core').useFocus
   const useFocusWithin: typeof import('@vueuse/core').useFocusWithin
+  const useForceTrade: typeof import('./composables/useForceTrade').useForceTrade
   const useFormField: typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.0_@internationalized+number@3.6.5_@tiptap+e_b973c901dafa1636782f6663fb2ffbe9/node_modules/@nuxt/ui/dist/runtime/composables/useFormField').useFormField
   const useFps: typeof import('@vueuse/core').useFps
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
@@ -681,6 +682,7 @@ declare module 'vue' {
     readonly useFileUpload: UnwrapRef<typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.0_@internationalized+number@3.6.5_@tiptap+e_b973c901dafa1636782f6663fb2ffbe9/node_modules/@nuxt/ui/dist/runtime/composables/useFileUpload')['useFileUpload']>
     readonly useFocus: UnwrapRef<typeof import('@vueuse/core')['useFocus']>
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
+    readonly useForceTrade: UnwrapRef<typeof import('./composables/useForceTrade')['useForceTrade']>
     readonly useFormField: UnwrapRef<typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.0_@internationalized+number@3.6.5_@tiptap+e_b973c901dafa1636782f6663fb2ffbe9/node_modules/@nuxt/ui/dist/runtime/composables/useFormField')['useFormField']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>

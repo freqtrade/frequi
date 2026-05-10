@@ -2,17 +2,20 @@
 import type { ForceEnterPayload } from '@/types';
 import { OrderSides } from '@/types';
 
-const props = withDefaults(
-  defineProps<{
-    pair?: string;
-    positionIncrease?: boolean;
-  }>(),
-  {
-    pair: '',
-    positionIncrease: false,
-  },
-);
-const model = defineModel<boolean>();
+export interface ForceEntryFormProps {
+  pair?: string;
+  positionIncrease?: boolean;
+}
+
+const props = withDefaults(defineProps<ForceEntryFormProps>(), {
+  pair: '',
+  positionIncrease: false,
+});
+
+const emit = defineEmits<{
+  close: [value: boolean];
+}>();
+
 const botStore = useBotStore();
 
 const form = ref<HTMLFormElement>();
@@ -40,7 +43,7 @@ function checkFormValidity() {
   return valid;
 }
 
-async function handleSubmit() {
+async function handleEntry() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
@@ -68,9 +71,9 @@ async function handleSubmit() {
     payload.leverage = leverage.value;
   }
   botStore.activeBot.forceentry(payload);
-  await nextTick();
-  model.value = false;
+  emit('close', true);
 }
+
 function resetForm() {
   selectedPair.value = props.pair;
   price.value = undefined;
@@ -83,29 +86,16 @@ function resetForm() {
     'limit';
 }
 
-watch(
-  () => model.value,
-  (open) => {
-    if (open) {
-      resetForm();
-    }
-  },
-);
-
-function handleEntry() {
-  // Trigger submit handler
-  handleSubmit();
-}
+resetForm();
 </script>
 
 <template>
   <UModal
-    v-model:open="model"
     :title="positionIncrease ? `Increasing position for ${pair}` : 'Force entering a trade'"
     :description="positionIncrease ? 'Increase an existing position' : 'Manually enter a new trade'"
   >
     <template #body>
-      <form ref="form" class="space-y-4" @submit.prevent="handleSubmit">
+      <form ref="form" class="space-y-4" @submit.prevent="handleEntry">
         <UFormField
           v-if="botStore.activeBot.botFeatures.forceEnterShort && botStore.activeBot.shortAllowed"
           label="Order direction (Long or Short)"
@@ -197,7 +187,7 @@ function handleEntry() {
     </template>
     <template #footer>
       <div class="ms-auto flex justify-end gap-2">
-        <UButton color="neutral" @click="model = false" icon="mdi:close"> Cancel </UButton>
+        <UButton color="neutral" @click="$emit('close', false)" icon="mdi:close"> Cancel </UButton>
         <UButton @click="handleEntry" icon="mdi:check"> Enter Position </UButton>
       </div>
     </template>

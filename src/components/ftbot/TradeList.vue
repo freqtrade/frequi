@@ -44,8 +44,8 @@ const forceExitVisible = ref(false);
 const removeTradeVisible = ref(false);
 const confirmExitText = ref('');
 const confirmExitValue = ref<ModalReasons | null>(null);
+const { forceEntryDialog } = useForceTrade();
 
-const increasePosition = ref({ visible: false, trade: {} as Trade });
 function formatPriceWithDecimals(price: number) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
@@ -168,8 +168,10 @@ function reloadTradeHandler(item: Trade) {
 }
 
 function handleForceEntry(item: Trade) {
-  increasePosition.value.trade = item;
-  increasePosition.value.visible = true;
+  forceEntryDialog({
+    pair: item.pair,
+    positionIncrease: true,
+  });
 }
 
 const onRowClicked = (item: Trade) => {
@@ -283,11 +285,6 @@ function onRowSelect(_e: Event, row: TableRow<Trade>) {
       v-model="forceExitVisible"
       :trade="feTrade"
       :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
-    />
-    <ForceEntryForm
-      v-model="increasePosition.visible"
-      :pair="increasePosition.trade?.pair"
-      position-increase
     />
 
     <UModal
