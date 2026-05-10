@@ -194,7 +194,6 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       ]
     : []),
 ]);
-const drawerVisible = ref(false);
 
 function editBotLogin(botId: string) {
   const bot = botStore.botStores[botId];
@@ -286,7 +285,6 @@ function editBotLogin(botId: string) {
         <!-- Mobile menu -->
         <div v-if="isMobile" class="ms-auto flex">
           <USlideover
-            v-model:open="drawerVisible"
             direction="right"
             :close="{
               color: 'primary',
@@ -301,7 +299,7 @@ function editBotLogin(botId: string) {
                 <AppText class="md:hidden lg:inline" />
               </div>
             </template>
-            <template #body>
+            <template #body="{ close }">
               <div class="flex flex-col gap-1 items-center p-4 h-full">
                 <UButton
                   v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
@@ -312,7 +310,7 @@ function editBotLogin(botId: string) {
                   color="neutral"
                   size="xl"
                   active-class="underline font-bold"
-                  @click="drawerVisible = false"
+                  @click="close()"
                   :label="item.label"
                 />
                 <USeparator class="my-2" />
