@@ -142,7 +142,7 @@ resetForm();
             show-buttons
             :min="0"
             :stepSnapping="false"
-            :step="botStore.activeBot.stakeCurrency === 'USDT' ? 10 : 1"
+            :step="['USDC', 'USDT'].includes(botStore.activeBot.stakeCurrency) ? 10 : 1"
             class="w-full"
             :format-options="{
               maximumFractionDigits: 5,
