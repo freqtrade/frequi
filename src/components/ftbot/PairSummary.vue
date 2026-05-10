@@ -130,7 +130,7 @@ const combinedPairList = computed(() => {
         button
         class="flex cursor-pointer last:rounded-b justify-between items-center px-1 py-1.5"
         :class="{
-          'bg-primary dark:border-primary text-white':
+          'bg-primary dark:bg-primary-700 dark:border-primary text-white':
             comb.pair === botStore.activeBot.selectedPair,
         }"
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"

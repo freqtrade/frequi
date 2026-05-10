@@ -184,6 +184,19 @@ const onRowClicked = (item: Trade) => {
 function onRowSelect(_e: Event, row: TableRow<Trade>) {
   onRowClicked(row.original);
 }
+
+const rowSelection = computed({
+  get() {
+    const selectedTradeIndex = filteredTrades.value.findIndex(
+      (t) => String(t.trade_id) === String(botStore.activeBot.detailTradeId),
+    );
+    if (selectedTradeIndex === -1) return {};
+    return { [String(selectedTradeIndex)]: true };
+  },
+  set() {
+    // noop, selection is controlled by activeBot.detailTradeId
+  },
+});
 </script>
 
 <template>
@@ -195,11 +208,9 @@ function onRowSelect(_e: Event, row: TableRow<Trade>) {
       :data="filteredTrades"
       :columns="tableColumns"
       class="text-center"
+      v-model:row-selection="rowSelection"
       :ui="{
-        tr: ((row: any) =>
-          row.original.trade_id === botStore.activeBot.detailTradeId
-            ? 'bg-elevated/50'
-            : '') as unknown as string,
+        tr: 'data-[selected=true]:bg-primary/30 dark:data-[selected=true]:bg-primary-700',
       }"
       @select="onRowSelect"
     >
