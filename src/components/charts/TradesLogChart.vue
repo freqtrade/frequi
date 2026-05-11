@@ -3,6 +3,7 @@ import ECharts from 'vue-echarts';
 import type { EChartsOption } from 'echarts';
 
 import { use } from 'echarts/core';
+import { format as echartsFormat } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, BarChart } from 'echarts/charts';
 import {
@@ -88,7 +89,11 @@ const chartOptions = computed((): EChartsOption => {
       trigger: 'axis',
       formatter: (params) => {
         const botName = params[0].data[3] ? ` | ${params[0].data[3]}` : '';
-        return `${params[0].data[2]} | ${params[0].data[5]} ${botName}<br>${params[0].data[4]}<br>Profit ${params[0].data[1]} %`;
+        return `${echartsFormat.encodeHTML(params[0].data[2])}
+        | ${echartsFormat.encodeHTML(params[0].data[5])} ${echartsFormat.encodeHTML(botName)}
+        <br />
+        ${echartsFormat.encodeHTML(params[0].data[4])}<br/>
+        Profit ${echartsFormat.encodeHTML(params[0].data[1])} %`;
       },
       axisPointer: {
         type: 'line',

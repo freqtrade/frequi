@@ -11,6 +11,7 @@ import {
   TitleComponent,
   TooltipComponent,
 } from 'echarts/components';
+import { format as echartsFormat } from 'echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 
@@ -222,7 +223,7 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
           const profitText = currentProfit
             ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
             : `Profit: ${formatPrice(profit, 3)}`;
-          return `${timestampToDateString(params[1].data.date)}<br />${
+          return `${echartsFormat.encodeHTML(timestampToDateString(params[1].data.date))}<br />${
             params[1].marker
           }${profitText}`;
         },

@@ -2,6 +2,7 @@
 import ECharts from 'vue-echarts';
 import type { ClosedTrade } from '@/types';
 import type { EChartsOption } from 'echarts';
+import { format as echartsFormat } from 'echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -126,12 +127,12 @@ const chartOptions = computed((): EChartsOption => {
         if (params.seriesType === 'boxplot') {
           const statistics = params.data;
           return `
-            <div>${params.name}</div>
-            <div>Min: ${formatDuration(statistics[1])}</div>
-            <div>Q1: ${formatDuration(statistics[2])}</div>
-            <div>Median: ${formatDuration(statistics[3])}</div>
-            <div>Q3: ${formatDuration(statistics[4])}</div>
-            <div>Max: ${formatDuration(statistics[5])}</div>
+            <div>${echartsFormat.encodeHTML(params.name)}</div>
+            <div>Min: ${echartsFormat.encodeHTML(formatDuration(statistics[1]))}</div>
+            <div>Q1: ${echartsFormat.encodeHTML(formatDuration(statistics[2]))}</div>
+            <div>Median: ${echartsFormat.encodeHTML(formatDuration(statistics[3]))}</div>
+            <div>Q3: ${echartsFormat.encodeHTML(formatDuration(statistics[4]))}</div>
+            <div>Max: ${echartsFormat.encodeHTML(formatDuration(statistics[5]))}</div>
           `;
         }
         return '';

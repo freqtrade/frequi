@@ -2,6 +2,7 @@
 import ECharts from 'vue-echarts';
 
 import { use } from 'echarts/core';
+import { format as echartsFormat } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart } from 'echarts/charts';
 import {
@@ -269,7 +270,7 @@ const walletHistoryOptions: ComputedRef<EChartsOption> = computed(() => {
           };
           const yIdx = typedPoint.encode?.y?.[0] ?? 0;
           const walletHistory = Number(typedPoint.data[yIdx]);
-          return `${typedPoint.marker}${typedPoint.seriesName}: ${formatPrice(walletHistory, 3)}`;
+          return `${typedPoint.marker}${echartsFormat.encodeHTML(typedPoint.seriesName)}: ${echartsFormat.encodeHTML(formatPrice(walletHistory, 3))}`;
         });
 
         return `${label}<br />${lines.join('<br />')}`;
