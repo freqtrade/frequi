@@ -5,6 +5,7 @@ import type {
   MarkLineComponentOption,
   MarkPointComponentOption,
   ScatterSeriesOption,
+  TooltipComponentOption,
 } from 'echarts';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {
@@ -238,6 +239,7 @@ export function generateMarkArea(
   markArea?: MarkAreaComponentOption;
   markLine?: MarkLineComponentOption;
   markPoint?: MarkPointComponentOption;
+  tooltip?: TooltipComponentOption;
 } {
   if (!dataset.annotations || !enabled) return {};
 
@@ -329,6 +331,9 @@ export function generateMarkArea(
     markArea,
     markLine,
     markPoint,
+    tooltip: {
+      show: false,
+    },
   };
 }
 
