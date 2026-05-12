@@ -125,6 +125,8 @@ usePercentageTool(
   toRef(() => props.dataset.timeframe_ms),
 );
 
+const { formatCandleTooltip } = useCandleChartTooltip(chartOptions);
+
 function addLegend(name: string, position: number | undefined = undefined) {
   if (
     !chartOptions.value.legend ||
@@ -616,7 +618,8 @@ function initializeChartOptions() {
     tooltip: {
       show: true,
       trigger: 'axis',
-      renderMode: 'richText',
+      renderMode: 'html',
+      formatter: formatCandleTooltip,
       backgroundColor: 'rgba(80,80,80,0.7)',
       borderWidth: 0,
       textStyle: {

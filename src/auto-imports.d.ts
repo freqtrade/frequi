@@ -60,6 +60,7 @@ declare global {
   const extendRef: typeof import('@vueuse/core').extendRef
   const extractShortcuts: typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.0_@internationalized+number@3.6.5_@tiptap+e_c73588db61e23bd231e892502466ee38/node_modules/@nuxt/ui/dist/runtime/composables/defineShortcuts').extractShortcuts
   const findGridLayout: typeof import('./stores/layout').findGridLayout
+  const formatCandleTooltip: typeof import('./composables/useCandleChartTooltip.js').formatCandleTooltip
   const formatDecimal: typeof import('./utils/formatters/numberformat').formatDecimal
   const formatNumber: typeof import('./utils/formatters/numberformat').formatNumber
   const formatObjectForTable: typeof import('./utils/objectToTableItems').formatObjectForTable
@@ -213,6 +214,8 @@ declare global {
   const useBrowserLocation: typeof import('@vueuse/core').useBrowserLocation
   const useBtStore: typeof import('./stores/btStore').useBtStore
   const useCached: typeof import('@vueuse/core').useCached
+  const useCandleChartTooltip: typeof import('./composables/useCandleChartTooltip').useCandleChartTooltip
+  const useCandleTooltip: typeof import('./composables/useCandleChartTooltip.js').useCandleTooltip
   const useChartConfigStore: typeof import('./stores/chartConfig').useChartConfigStore
   const useClipboard: typeof import('@vueuse/core').useClipboard
   const useClipboardItems: typeof import('@vueuse/core').useClipboardItems
@@ -636,6 +639,7 @@ declare module 'vue' {
     readonly useBrowserLocation: UnwrapRef<typeof import('@vueuse/core')['useBrowserLocation']>
     readonly useBtStore: UnwrapRef<typeof import('./stores/btStore')['useBtStore']>
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
+    readonly useCandleChartTooltip: UnwrapRef<typeof import('./composables/useCandleChartTooltip')['useCandleChartTooltip']>
     readonly useChartConfigStore: UnwrapRef<typeof import('./stores/chartConfig')['useChartConfigStore']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>
     readonly useClipboardItems: UnwrapRef<typeof import('@vueuse/core')['useClipboardItems']>
