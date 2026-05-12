@@ -639,7 +639,7 @@ function initializeChartOptions() {
         // and on the left if hovering on the right.
         const obj = { top: 60 };
         const mouseIsLeft = pos[0] < size.viewSize[0] / 2;
-        obj[['left', 'right'][+mouseIsLeft]!] = mouseIsLeft ? 5 : 60;
+        obj[['left', 'right'][+mouseIsLeft]!] = mouseIsLeft ? MARGINRIGHT : MARGINLEFT;
         return obj;
       },
     },
