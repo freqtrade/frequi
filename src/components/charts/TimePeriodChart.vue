@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
+import { format as echartsFormat } from 'echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -143,10 +144,16 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         const tradeCount = data.trade_count ?? '-';
 
         return `
-          ${date}<br/>
+          ${echartsFormat.encodeHTML(date)}<br/>
           <div style=">
-            <div style="display: flex; justify-content: space-between;"><span>${params[0].marker} Profit:</span> <span style="margin-left: 2em"><strong>${absProfit} (${relProfit})</strong></span></div>
-            <div style="display: flex; justify-content: space-between;"><span>${params[1].marker} Trade count:</span> <span style="margin-left: 2em"><strong>${tradeCount}</strong></span></div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>${params[0].marker} Profit:</span> <span style="margin-left: 2em">
+              <strong>${echartsFormat.encodeHTML(absProfit)} (${echartsFormat.encodeHTML(relProfit)})</strong></span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>${params[1].marker} Trade count:</span>
+              <span style="margin-left: 2em"><strong>${echartsFormat.encodeHTML(tradeCount)}</strong></span>
+            </div>
           </div>
         `;
       },
