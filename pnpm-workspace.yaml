@@ -3,7 +3,7 @@ minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - "@nuxt/ui"
 blockExoticSubdeps: true
-trustPolicy: no-downgrade
+# trustPolicy: no-downgrade
 preferFrozenLockfile: true
 allowBuilds:
   '@parcel/watcher': true
