@@ -106,13 +106,13 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: [
       {
-        dimensions: ['date', props.profitCol, 'trade_count'],
+        dimensions: ['date', 'rel_profit', 'abs_profit', 'trade_count'],
         source: props.dailyStats.data,
       },
       {
         transform: {
           type: 'ft:multiple',
-          config: { dimension: props.profitCol, factor: props.profitCol == 'rel_profit' ? 100 : 1 },
+          config: { dimension: 'rel_profit', factor: 100 },
         },
       },
     ],
@@ -129,12 +129,13 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         const data = entry?.data ?? {};
         const date = entry?.axisValue ?? '';
 
-        const absProfit = typeof data.abs_profit === 'number' ? data.abs_profit.toFixed(2) : '-';
+        const absProfit =
+          typeof data.abs_profit === 'number' ? formatNumber(data.abs_profit, 3) : '-';
 
-        let relProfit = '';
+        let relProfit: string;
 
         if (typeof data.rel_profit === 'number') {
-          relProfit = data.rel_profit.toFixed(2) + '%';
+          relProfit = formatNumber(data.rel_profit, 2) + '%';
         } else {
           relProfit = '-';
         }
@@ -173,7 +174,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     ],
     visualMap: [
       {
-        dimension: 1,
+        dimension: props.profitCol === 'rel_profit' ? 1 : 2,
         seriesIndex: 0,
         show: false,
         pieces: [
@@ -225,6 +226,10 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         name: CHART_PROFIT.value,
         // Color is induced by visualMap
         datasetIndex: 1,
+        encode: {
+          x: 'date',
+          y: props.profitCol === 'rel_profit' ? 'rel_profit' : 'abs_profit',
+        },
       },
       {
         type: 'bar',
@@ -234,6 +239,10 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
         yAxisIndex: 1,
         datasetIndex: 1,
+        encode: {
+          x: 'date',
+          y: 'trade_count',
+        },
       },
     ],
   };
