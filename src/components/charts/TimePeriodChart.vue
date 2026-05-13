@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ECharts from 'vue-echarts';
 // import { EChartsOption } from 'echarts';
+import { format as echartsFormat } from 'echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -106,13 +107,13 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     backgroundColor: 'rgba(0, 0, 0, 0)',
     dataset: [
       {
-        dimensions: ['date', props.profitCol, 'trade_count'],
+        dimensions: ['date', 'rel_profit', 'abs_profit', 'trade_count'],
         source: props.dailyStats.data,
       },
       {
         transform: {
           type: 'ft:multiple',
-          config: { dimension: props.profitCol, factor: props.profitCol == 'rel_profit' ? 100 : 1 },
+          config: { dimension: 'rel_profit', factor: 100 },
         },
       },
     ],
@@ -123,6 +124,38 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         label: {
           backgroundColor: '#6a7985',
         },
+      },
+      formatter: (params) => {
+        const entry = params[0];
+        const data = entry?.data ?? {};
+        const date = entry?.axisValue ?? '';
+
+        const absProfit =
+          typeof data.abs_profit === 'number' ? formatNumber(data.abs_profit, 3) : '-';
+
+        let relProfit: string;
+
+        if (typeof data.rel_profit === 'number') {
+          relProfit = formatNumber(data.rel_profit, 2) + '%';
+        } else {
+          relProfit = '-';
+        }
+
+        const tradeCount = data.trade_count ?? '-';
+
+        return `
+          ${echartsFormat.encodeHTML(date)}<br/>
+          <div style=">
+            <div style="display: flex; justify-content: space-between;">
+              <span>${params[0].marker} Profit:</span> <span style="margin-left: 2em">
+              <strong>${echartsFormat.encodeHTML(absProfit)} (${echartsFormat.encodeHTML(relProfit)})</strong></span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>${params[1].marker} Trade count:</span>
+              <span style="margin-left: 2em"><strong>${echartsFormat.encodeHTML(tradeCount)}</strong></span>
+            </div>
+          </div>
+        `;
       },
     },
     legend: {
@@ -148,7 +181,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
     ],
     visualMap: [
       {
-        dimension: 1,
+        dimension: props.profitCol === 'rel_profit' ? 1 : 2,
         seriesIndex: 0,
         show: false,
         pieces: [
@@ -200,6 +233,10 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         name: CHART_PROFIT.value,
         // Color is induced by visualMap
         datasetIndex: 1,
+        encode: {
+          x: 'date',
+          y: props.profitCol === 'rel_profit' ? 'rel_profit' : 'abs_profit',
+        },
       },
       {
         type: 'bar',
@@ -209,6 +246,10 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
         yAxisIndex: 1,
         datasetIndex: 1,
+        encode: {
+          x: 'date',
+          y: 'trade_count',
+        },
       },
     ],
   };
