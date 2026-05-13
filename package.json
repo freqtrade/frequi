@@ -23,7 +23,7 @@
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^14.3.0",
     "@vueuse/integrations": "^14.3.0",
-    "axios": "^1.15.2",
+    "axios": "^1.16.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "deepmerge": "^4.3.1",
