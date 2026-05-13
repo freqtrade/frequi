@@ -129,15 +129,9 @@ importers:
       typescript:
         specifier: ~6.0.3
         version: 6.0.3
-      unplugin-auto-import:
-        specifier: ^21.0.0
-        version: 21.0.0(@nuxt/kit@4.4.2)(@vueuse/core@14.3.0(vue@3.5.33(typescript@6.0.3)))
       unplugin-icons:
         specifier: ^23.0.1
         version: 23.0.1(@vue/compiler-sfc@3.5.33)
-      unplugin-vue-components:
-        specifier: ^32.0.0
-        version: 32.0.0(@nuxt/kit@4.4.2)(vue@3.5.33(typescript@6.0.3))
       vite:
         specifier: ^8.0.10
         version: 8.0.10(@types/node@25.6.0)(esbuild@0.27.4)(jiti@2.6.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3)
