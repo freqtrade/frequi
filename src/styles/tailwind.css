@@ -1,8 +1,22 @@
 @import 'tailwindcss';
-
-@plugin 'tailwindcss-primeui';
+@import '@nuxt/ui';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme static {
+      --color-brand-50: #DBFAFF;
+      --color-brand-100: #B8F4FF;
+      --color-brand-200: #75EAFF;
+      --color-brand-300: #2EE0FF;
+      --color-brand-400: #00C3E6;
+      --color-brand-500: #0089A1;
+      --color-brand-600: #006C80;
+      --color-brand-700: #005261;
+      --color-brand-800: #003842;
+      --color-brand-900: #001A1F;
+      --color-brand-950: #000D0F;
+
+}
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -20,101 +34,19 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  /* Cursor pointer for Buttons - workaround for Tailwind v4 change */
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
 }
 
-
-
-
-@layer frequi {
-  /* Customization for freqUI components */
-  :root {
-
-    --p-primary-50: #DBFAFF;
-    --p-primary-100: #B8F4FF;
-    --p-primary-200: #75EAFF;
-    --p-primary-300: #2EE0FF;
-    --p-primary-400: #00C3E6;
-    --p-primary-500: #0089A1;
-    --p-primary-600: #006C80;
-    --p-primary-700: #005261;
-    --p-primary-800: #003842;
-    --p-primary-900: #001A1F;
-    --p-primary-950: #000D0F;
-
-    --p-primary-color: var(--p-primary-600);
-
-    /* Reduce size of listboxes*/
-    --p-listbox-option-padding: 0.15rem 0.75rem;
-
-    /* Secondary Button */
-    --p-button-secondary-background: var(--p-surface-200);
-    --p-button-secondary-hover-background: var(--p-surface-300);
-
-    /* default profit loss colors, could be overwritten by custom style */
-    --color-profit: #12bb7b;
-    --color-loss: #ef5350;
-
-    --p-tabs-tabpanel-padding: unset;
-
-    --p-togglebutton-content-checked-background: var(--p-primary-500);
-    --p-togglebutton-sm-padding: 0;
-
-
-    --p-selectbutton-border-radius: var(--radius-sm);
-    --p-togglebutton-content-border-radius: 0px;
-    /* --p-button-link-color: var(--p-surface-200); */
-    /* --p-togglebutton-content-border-radius: var(--radius-sm); */
-    /* --p-button-sm-padding-y: 0.1rem;
-    --p-button-sm-padding-x: 0.4rem; */
-
-    /* --p-datatable-row-selected-background: var(--p-highlight-background); */
-    /* --p-datatable-row-selected-color: var(--p-primary-contrast); */
-
-      /* --p-primary-color: var(--p-primary-500); */
-  }
-
-  .ft-dark-theme {
-      --p-content-background: var(--p-surface-950);
-      --p-menu-background: var(--p-surface-900);
-
-      --p-primary-contrast-color: var(--p-text-200);
-      --p-button-secondary-background: var(--p-surface-700);
-      --p-button-secondary-hover-background: var(--p-surface-600);
-  }
-
-  .p-button-icon-only.p-button-sm {
-    --p-button-sm-icon-only-height: 2.25rem;
-    /* height: var(--p-button-sm-icon-only-width); */
-    padding : 0.1rem 0.4rem 0.1rem 0.4rem;
-    /* padding: unset; */
-  }
-  .p-button-icon-only {
-    /* padding : 0.1rem 0.4rem 0.1rem 0.4rem; */
-    padding: unset;
-    aspect-ratio: 1 / 1;
-  }
-
-  .p-selectbutton {
-    border-color: var(--p-primary-500);
-    border: 1px solid var(--p-primary-500);
-    &>.p-togglebutton {
-      border: none;
-
-    }
-  }
-
+:root {
+  /* default profit loss colors, can be overridden by custom style */
+  --color-profit: #12bb7b;
+  --color-loss: #ef5350;
 }
-
-
-@layer primevue {
-    /* Base component style overrides */
-    :root {
-
-        --p-datatable-row-background: unset;
-    }
-}
-
-
 
 body.ft-theme-transition,
 body.ft-theme-transition *,
@@ -127,7 +59,6 @@ body.ft-theme-transition *:after {
     ;
     transition-delay: 0 !important;
 }
-
 
 html {
     /*  Set the default font size to 14px */

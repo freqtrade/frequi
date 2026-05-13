@@ -3,14 +3,15 @@ import type { Trade } from '@/types';
 
 type modes = 'default' | 'total' | 'realized';
 
-const props = defineProps({
-  trade: { required: true, type: Object as () => Trade },
-  mode: {
-    required: false,
-    default: 'default',
-    type: String as PropType<modes>,
+const props = withDefaults(
+  defineProps<{
+    trade: Trade;
+    mode?: modes;
+  }>(),
+  {
+    mode: 'default',
   },
-});
+);
 
 const modeDescs: { [key in modes]: string } = {
   default: 'Current profit',
@@ -18,7 +19,7 @@ const modeDescs: { [key in modes]: string } = {
   realized: 'Realized profit',
 };
 
-const profitRatio = computed<number | undefined>(() => {
+const profitRatio = computed<number | undefined | null>(() => {
   switch (props.mode) {
     case 'default':
       return props.trade.profit_ratio;

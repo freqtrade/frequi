@@ -1,5 +1,6 @@
 import type { Lock } from './locks';
 import type { ClosedTrade, Trade } from './trades';
+import type { MarginMode, TradingMode } from './types';
 
 export interface BacktestPayload {
   strategy: string;
@@ -25,8 +26,6 @@ export interface PairResult {
   losses: number;
   profit_mean: number;
   profit_mean_pct: number;
-  profit_sum: number;
-  profit_sum_pct: number;
   profit_total_abs: number;
   profit_total_pct: number;
   profit_total: number;
@@ -51,8 +50,6 @@ export interface ExitReasonResults {
   losses: number;
   profit_mean: number;
   profit_mean_pct: number;
-  profit_sum: number;
-  profit_sum_pct: number;
   profit_total_abs: number;
   /** Total profit as ratio */
   profit_total: number;
@@ -80,6 +77,7 @@ export interface PeriodicBreakdown {
   week: PeriodicStat[];
   month: PeriodicStat[];
   year?: PeriodicStat[];
+  weekday?: PeriodicStat[];
 }
 
 export interface StrategyBacktestResult {
@@ -128,6 +126,8 @@ export interface StrategyBacktestResult {
   timeframe_detail?: string;
   timerange: string;
   strategy_name: string;
+  freqaimodel?: string;
+  freqai_identifier?: string;
   enable_protections: boolean;
   stoploss: number;
   trailing_stop: boolean;
@@ -136,8 +136,8 @@ export interface StrategyBacktestResult {
   trailing_only_offset_is_reached: boolean;
   use_custom_stoploss: boolean;
   minimal_roi: Record<string, number>;
-  margin_mode?: 'cross' | 'isolated';
-  trading_mode?: 'spot' | 'futures';
+  margin_mode?: MarginMode;
+  trading_mode?: TradingMode;
 
   /** @deprecated - replaced by use_exit_signal 2.x */
   use_sell_signal?: boolean;
@@ -161,6 +161,10 @@ export interface StrategyBacktestResult {
   drawdown_end_ts: number;
   drawdown_start: string;
   drawdown_start_ts: number;
+  loser_holding_min?: string;
+  loser_holding_min_s?: number;
+  loser_holding_max?: string;
+  loser_holding_max_s?: number;
   loser_holding_avg: string;
   loser_holding_avg_s: number;
   max_consecutive_wins?: number;
@@ -172,6 +176,7 @@ export interface StrategyBacktestResult {
   max_drawdown_abs: number;
   max_drawdown_low: number;
   max_drawdown_high: number;
+  drawdown_duration?: string;
 
   csum_min: number;
   csum_max: number;
@@ -181,6 +186,37 @@ export interface StrategyBacktestResult {
   sqn?: number;
   expectancy?: number;
   expectancy_ratio?: number;
+  wallet_stats?: {
+    start_balance: number;
+    end_balance: number;
+    high_balance: number;
+    low_balance: number;
+    low_date: string;
+    low_ts: number;
+    high_date: string;
+    high_ts: number;
+
+    // Added later on
+    sharpe?: number;
+    sortino?: number;
+    calmar?: number;
+    max_drawdown_account?: number;
+    max_relative_drawdown?: number;
+    max_drawdown_abs?: number;
+    drawdown_start?: string;
+    drawdown_start_ts?: number;
+    drawdown_end?: string;
+    drawdown_end_ts?: number;
+    drawdown_duration?: string;
+    drawdown_duration_s?: number;
+    max_drawdown_low?: number;
+    max_drawdown_high?: number;
+  };
+
+  winner_holding_min?: string;
+  winner_holding_min_s?: number;
+  winner_holding_max?: string;
+  winner_holding_max_s?: number;
 
   winner_holding_avg: string;
   winner_holding_avg_s: number;

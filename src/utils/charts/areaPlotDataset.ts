@@ -23,7 +23,7 @@ export function calculateDiff(
       const diff =
         candle === null || candle[toIdx] === null || candle[fromIdx] === null
           ? null
-          : candle[toIdx] - candle[fromIdx];
+          : candle[toIdx]! - candle[fromIdx]!;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       candle.push(diff);

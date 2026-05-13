@@ -13,9 +13,7 @@ import { use } from 'echarts/core';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { useSettingsStore } from '@/stores/settings';
 import type { BalanceValues } from '@/types';
-import { useElementSize } from '@vueuse/core';
 
 use([
   PieChart,
@@ -30,10 +28,15 @@ use([
 const balanceChart = ref(null);
 const { width } = useElementSize(balanceChart);
 
-const props = defineProps({
-  currencies: { required: true, type: Array as () => BalanceValues[] },
-  showTitle: { required: false, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    currencies: BalanceValues[];
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
+  },
+);
 const settingsStore = useSettingsStore();
 
 const balanceChartOptions = computed((): EChartsOption => {

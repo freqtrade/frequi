@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 const locFreqaiModel = defineModel<string>();
 const botStore = useBotStore();
 
@@ -14,24 +12,19 @@ onMounted(() => {
 <template>
   <div>
     <div class="w-full flex">
-      <Select
+      <USelectMenu
         v-model="locFreqaiModel"
-        :options="botStore.activeBot.freqaiModelList"
-        fluid
-        size="small"
+        :items="botStore.activeBot.freqaiModelList"
+        class="w-full"
       >
-      </Select>
+      </USelectMenu>
       <div class="ms-2">
-        <Button
-          severity="secondary"
-          variant="outlined"
-          size="small"
-          @click="botStore.activeBot.getFreqAIModelList"
-        >
-          <template #icon>
-            <i-mdi-refresh />
-          </template>
-        </Button>
+        <UButton
+          color="neutral"
+          variant="outline"
+          icon="mdi:refresh"
+          @click="botStore.activeBot.getFreqAIModelList()"
+        />
       </div>
     </div>
   </div>

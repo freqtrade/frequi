@@ -92,8 +92,7 @@ test.describe('Pairlists', () => {
     ]);
 
     await expect(resultsButton).toBeEnabled();
-    // TODO primevue: Fix selectButton "checked" state
-    // await expect(resultsButton).toBeChecked();
+    await expect(resultsButton).toHaveAttribute('aria-pressed', 'true');
 
     await expect(copyContainer).toContainText('"BTC/USDT",');
     await expect(copyContainer).toContainText('"ETH/USDT",');

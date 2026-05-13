@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { BacktestPayload } from '@/types';
 
-import { useBtStore } from '@/stores/btStore';
 const botStore = useBotStore();
 const btStore = useBtStore();
 
@@ -55,13 +53,13 @@ function clickBacktest() {
     <StrategySelect v-model="btStore.strategy"></StrategySelect>
   </div>
   <div
-    class="grid grid-cols-2 border border-surface-500 rounded-sm gap-y-2 gap-2 items-center p-1 pt-3"
+    class="grid grid-cols-2 border border-neutral-500 rounded-sm gap-y-2 gap-2 items-center p-1 pt-3"
     :disabled="botStore.activeBot.backtestRunning"
   >
     <!-- Backtesting parameters -->
     <h3 class="font-bold mb-2 col-span-2 text-center">Backtesting parameters</h3>
     <label for="timeframe-select">Timeframe:</label>
-    <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" size="small" />
+    <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" />
     <label for="timeframe-detail-select" class="flex justify-end items-center gap-2"
       >Detail Timeframe:
       <InfoBox
@@ -71,52 +69,61 @@ function clickBacktest() {
     <TimeframeSelect
       id="timeframe-detail-select"
       v-model="btStore.selectedDetailTimeframe"
-      size="small"
       :below-timeframe="btStore.selectedTimeframe"
     />
 
     <label for="max-open-trades">Max open trades:</label>
-    <InputNumber
+    <UInputNumber
       id="max-open-trades"
       v-model="btStore.maxOpenTrades"
-      size="small"
       placeholder="Use strategy default"
-      type="number"
-    ></InputNumber>
+      :increment="false"
+      :decrement="false"
+    ></UInputNumber>
     <label for="starting-capital">Starting capital:</label>
-    <InputNumber
+    <UInputNumber
       id="starting-capital"
       v-model="btStore.startingCapital"
-      size="small"
       placeholder="Use config default"
-      type="number"
-      :step="0.001"
-    ></InputNumber>
+      :increment="false"
+      :decrement="false"
+      :step="10"
+      :min="0"
+      :stepSnapping="false"
+      :format-options="{
+        maximumFractionDigits: 5,
+      }"
+    ></UInputNumber>
     <label for="stake-amount-bool">Stake amount:</label>
     <div class="flex items-center">
-      <div class="flex basis-full">
-        <BaseCheckbox id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
-          >Unlimited stake</BaseCheckbox
-        >
-      </div>
-      <InputNumber
+      <BaseCheckbox class="basis-1/3" id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
+        >Unlimited stake</BaseCheckbox
+      >
+      <UInputNumber
         id="stake-amount"
         v-model="btStore.stakeAmount"
         placeholder="Use strategy default"
-        :step="0.01"
-        size="small"
+        class="w-full"
+        :step="10"
+        :stepSnapping="false"
+        :format-options="{
+          maximumFractionDigits: 5,
+        }"
+        :min="0"
+        :increment="false"
+        :decrement="false"
         :disabled="btStore.stakeAmountUnlimited"
-      ></InputNumber>
+      ></UInputNumber>
     </div>
 
     <label for="enable-protections">Enable Protections:</label>
     <BaseCheckbox id="enable-protections" v-model="btStore.enableProtections"></BaseCheckbox>
-    <template v-if="botStore.activeBot.botApiVersion >= 2.22">
+    <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
       <label for="enable-cache">Cache Backtest results:</label>
       <BaseCheckbox id="enable-cache" v-model="btStore.allowCache"></BaseCheckbox>
     </template>
 
-    <template v-if="botStore.activeBot.botApiVersion >= 2.22">
+    <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
       <div class="flex justify-end items-center">
         <span class="me-2">Enable FreqAI:</span>
         <InfoBox
@@ -127,12 +134,11 @@ function clickBacktest() {
 
       <template v-if="btStore.freqAI.enabled">
         <label for="freqai-identifier">FreqAI identifier:</label>
-        <InputText
+        <UInput
           id="freqai-identifier"
           v-model="btStore.freqAI.identifier"
           placeholder="Use config default"
-          size="small"
-        ></InputText>
+        ></UInput>
       </template>
       <template v-if="btStore.freqAI.enabled">
         <label for="freqai-model">FreqAI Model:</label>
@@ -140,15 +146,16 @@ function clickBacktest() {
       </template>
     </template>
 
-    <Divider class="col-span-2" />
+    <USeparator class="col-span-2 my-2" />
     <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-2 col-span-2"></TimeRangeSelect>
   </div>
 
   <h3 class="mt-3 font-bold text-2xl">Backtesting summary</h3>
-  <div class="flex flex-wrap md:flex-nowrap justify-between md:justify-center">
-    <Button
+  <div class="flex flex-wrap md:flex-nowrap justify-between md:justify-center mt-2">
+    <UButton
       id="start-backtest"
-      severity="primary"
+      variant="solid"
+      icon="mdi:play"
       :disabled="
         !btStore.canRunBacktest ||
         botStore.activeBot.backtestRunning ||
@@ -158,31 +165,34 @@ function clickBacktest() {
       @click="clickBacktest"
     >
       Start backtest
-    </Button>
-    <Button
-      severity="secondary"
+    </UButton>
+    <UButton
+      color="neutral"
+      icon="mdi:refresh"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
       class="mx-1"
-      @click="botStore.activeBot.pollBacktest"
+      @click="botStore.activeBot.pollBacktest()"
     >
       Load backtest result
-    </Button>
-    <Button
-      severity="secondary"
+    </UButton>
+    <UButton
+      color="neutral"
+      icon="mdi:stop"
       class="mx-1"
       :disabled="!botStore.activeBot.backtestRunning"
-      @click="botStore.activeBot.stopBacktest"
+      @click="botStore.activeBot.stopBacktest()"
     >
       Stop Backtest
-    </Button>
-    <Button
-      severity="secondary"
+    </UButton>
+    <UButton
+      color="neutral"
       class="mx-1"
+      icon="mdi:delete"
       :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-      @click="botStore.activeBot.removeBacktest"
+      @click="botStore.activeBot.removeBacktest()"
     >
       Reset Backtest
-    </Button>
+    </UButton>
   </div>
 </template>
 <style lang="css" scoped>

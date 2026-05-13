@@ -30,18 +30,24 @@ const backtestResultSettings = computed(() => {
       <div class="flex flex-col xl:flex-row">
         <div class="px-0 px-xl-0 pe-xl-1 grow">
           <DraggableContainer header="Strategy settings">
-            <DataTable size="small" :value="backtestResultSettings">
-              <Column field="setting" header="Setting"></Column>
-              <Column field="value" header="Value"></Column>
-            </DataTable>
+            <UTable
+              :data="backtestResultSettings"
+              :columns="[
+                { accessorKey: 'setting', header: 'Setting' },
+                { accessorKey: 'value', header: 'Value' },
+              ]"
+            />
           </DraggableContainer>
         </div>
         <div class="px-0 xl:px-0 pt-2 xl:pt-0 xl:ps-1 grow">
           <DraggableContainer header="Metrics">
-            <DataTable size="small" borderless :value="backtestResultStats">
-              <Column field="metric" header="Metric" />
-              <Column field="value" header="Value" />
-            </DataTable>
+            <UTable
+              :data="backtestResultStats"
+              :columns="[
+                { accessorKey: 'metric', header: 'Metric' },
+                { accessorKey: 'value', header: 'Value' },
+              ]"
+            />
           </DraggableContainer>
         </div>
       </div>

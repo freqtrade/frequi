@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 import type { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
 
 const props = defineProps<{
@@ -14,12 +12,12 @@ const botStore = useBotStore();
 const isBarVisible = ref({ right: true, left: true });
 const sliderPosition = ref<ChartSliderPosition>();
 
-const navigateChartToTrade = (trade: Trade) => {
+function navigateChartToTrade(trade: Trade) {
   sliderPosition.value = {
     startValue: trade.open_timestamp,
     endValue: trade.close_timestamp,
   };
-};
+}
 
 function refreshOHLCV(pair: string, columns: string[]) {
   botStore.activeBot.getPairHistory({
@@ -29,45 +27,49 @@ function refreshOHLCV(pair: string, columns: string[]) {
     strategy: props.strategy,
     freqaimodel: props.freqaiModel,
     columns: columns,
+    margin_mode: props.backtestResult.margin_mode,
+    trading_mode: props.backtestResult.trading_mode,
   });
 }
+onMounted(() => {
+  if (!botStore.activeBot.selectedPair && props.backtestResult.pairlist.length > 0) {
+    const [firstPair] = props.backtestResult.pairlist;
+    if (firstPair) {
+      botStore.activeBot.selectedPair = firstPair;
+    }
+  }
+});
 </script>
 
 <template>
   <div>
     <div class="flex flex-row mb-1 items-center">
       <div class="me-2">
-        <Button
+        <UButton
           aria-label="Close"
           title="Pair Navigation"
-          severity="secondary"
-          variant="outlined"
-          size="small"
+          color="neutral"
+          variant="outline"
+          :icon="isBarVisible.left ? 'mdi:chevron-left' : 'mdi:chevron-right'"
           @click="isBarVisible.left = !isBarVisible.left"
-        >
-          <i-mdi-chevron-right v-if="!isBarVisible.left" width="24" height="24" />
-          <i-mdi-chevron-left v-if="isBarVisible.left" width="24" height="24" />
-        </Button>
+        />
       </div>
       <span class="grow">
         Graph will always show the latest values for the selected strategy. <br />
         Timerange: {{ timerange }} - {{ strategy }}
       </span>
       <div class="text-end">
-        <Button
+        <UButton
           aria-label="Close"
-          variant="outlined"
+          variant="outline"
           title="Trade Navigation"
-          size="small"
-          severity="secondary"
+          color="neutral"
+          :icon="isBarVisible.right ? 'mdi:chevron-right' : 'mdi:chevron-left'"
           @click="isBarVisible.right = !isBarVisible.right"
-        >
-          <i-mdi-chevron-right v-if="isBarVisible.right" width="24" height="24" />
-          <i-mdi-chevron-left v-if="!isBarVisible.right" width="24" height="24" />
-        </Button>
+        />
       </div>
     </div>
-    <div class="text-center flex flex-row h-full items-stretch">
+    <div class="text-center flex flex-row h-full items-stretch overflow-x-clip">
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
@@ -82,12 +84,13 @@ function refreshOHLCV(pair: string, columns: string[]) {
       </Transition>
       <CandleChartContainer
         :available-pairs="backtestResult.pairlist"
-        :historic-view="!!true"
+        historic-view
+        reload-data-on-switch
         :timeframe="timeframe"
         :timerange="timerange"
         :strategy="strategy"
         :trades="backtestResult.trades"
-        class="flex-shrink-1 candle-chart-container w-full px-0 h-full align-self-stretch"
+        class="flex-1 candle-chart-container px-0 h-full align-self-stretch min-w-0 overflow-y-auto"
         :slider-position="sliderPosition"
         :freqai-model="freqaiModel"
         @refresh-data="refreshOHLCV"

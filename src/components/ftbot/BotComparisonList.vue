@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import type { ProfitInterface, ComparisonTableItems } from '@/types';
+import type { ComparisonTableItems } from '@/types';
+import type { TableColumn } from '@nuxt/ui';
 
 const botStore = useBotStore();
 
 const allToggled = computed<boolean>({
   get: () => Object.values(botStore.botStores).every((i) => i.isSelected),
   set: (val) => {
-    for (const botId in botStore.botStores) {
-      botStore.botStores[botId].isSelected = val;
+    for (const bot of Object.values(botStore.botStores)) {
+      bot.isSelected = val;
     }
   },
 });
@@ -25,16 +25,22 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     stakeCurrency: 'USDT',
     wins: 0,
     losses: 0,
+    balance: 0,
+    balanceAppendix: '',
   };
+  Object.entries(botStore.allProfit).forEach(([k, v]) => {
+    const thisBotStore = botStore.botStores[k];
+    if (!thisBotStore) return;
 
-  Object.entries(botStore.allProfit).forEach(([k, v]: [k: string, v: ProfitInterface]) => {
-    const allStakes = botStore.allOpenTrades[k].reduce((a, b) => a + b.stake_amount, 0);
+    const allOpenTrades = botStore.allOpenTrades[k];
+    if (!allOpenTrades) return;
+    const allStakes = allOpenTrades.reduce((a, b) => a + b.stake_amount, 0);
     const profitOpenRatio =
-      botStore.allOpenTrades[k].reduce(
-        (a, b) => a + (b.total_profit_ratio ?? b.profit_ratio) * b.stake_amount,
+      allOpenTrades.reduce(
+        (a, b) => a + (b.total_profit_ratio ?? b.profit_ratio ?? 0) * b.stake_amount,
         0,
       ) / allStakes;
-    const profitOpen = botStore.allOpenTrades[k].reduce(
+    const profitOpen = allOpenTrades.reduce(
       (a, b) => a + (b.total_profit_abs ?? b.profit_abs ?? 0),
       0,
     );
@@ -42,29 +48,43 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
     // TODO: handle one inactive bot ...
     val.push({
       botId: k,
-      botName: botStore.availableBots[k].botName || botStore.availableBots[k].botId,
+      // botName:
+      //   `${thisBotStore.botName} - ${botStore.availableBots[k].botName}` || thisBotStore.botId,
+
+      botName: thisBotStore.uiBotName || thisBotStore.botId,
       trades: `${botStore.allOpenTradeCount[k]} / ${
         botStore.allBotState[k]?.max_open_trades || 'N/A'
       }`,
-      profitClosed: v.profit_closed_coin,
-      profitClosedRatio: v.profit_closed_ratio || 0,
+      profitClosed: v?.profit_closed_coin ?? 0,
+      profitClosedRatio: v?.profit_closed_ratio || 0,
       stakeCurrency: botStore.allBotState[k]?.stake_currency || '',
       profitOpenRatio,
       profitOpen,
-      wins: v.winning_trades,
-      losses: v.losing_trades,
-      balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total,
+      wins: v?.winning_trades ?? 0,
+      losses: v?.losing_trades ?? 0,
+      balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total ?? 0,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
       isDryRun: botStore.allBotState[k]?.dry_run,
       isOnline: botStore.botStores[k]?.isBotOnline,
+      balanceAppendix: botStore.allBotState[k]?.dry_run ? '(dry)' : '',
     });
-    if (v.profit_closed_coin !== undefined) {
-      if (botStore.botStores[k].isSelected) {
+    if (v?.profit_closed_coin !== undefined) {
+      if (thisBotStore.isSelected) {
         // Summary should only include selected bots
         summary.profitClosed += v.profit_closed_coin;
         summary.profitOpen += profitOpen;
         summary.wins += v.winning_trades;
         summary.losses += v.losing_trades;
+        if (botStore.allSelectedBotsSameStake) {
+          summary.balance +=
+            botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total ?? 0;
+          summary.stakeCurrencyDecimals = botStore.allBotState[k]?.stake_currency_decimals || 3;
+          if (botStore.allSelectedBotsSameState) {
+            summary.balanceAppendix = botStore.allBotState[k]?.dry_run ? '(dry)' : '(live)';
+          } else {
+            summary.balanceAppendix = '(mixed dry and live)';
+          }
+        }
         // summary.decimals = this.allBotState[k]?.stake_currency_decimals || summary.decimals;
         // This will always take the last bot's stake currency
         // And therefore may result in wrong values.
@@ -75,94 +95,107 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
   val.push(summary);
   return val;
 });
+
+const columns: TableColumn<ComparisonTableItems>[] = [
+  { accessorKey: 'botName' },
+  { accessorKey: 'trades', header: 'Trades' },
+  { id: 'profitOpen', header: 'Open Profit' },
+  { id: 'profitClosed', header: 'Closed Profit' },
+  { accessorKey: 'balance', header: 'Balance' },
+  { id: 'winVsLoss', header: 'W/L' },
+];
 </script>
 
 <template>
-  <DataTable size="small" :value="tableItems">
-    <Column field="botName" header="Bot">
-      <template #body="{ data, field }">
-        <div class="flex flex-row justify-between items-center">
-          <div>
-            <BaseCheckbox
-              v-if="data.botId && botStore.botCount > 1"
-              v-model="
-                botStore.botStores[(data as unknown as ComparisonTableItems).botId ?? ''].isSelected
-              "
-              title="Show this bot in Dashboard"
-              >{{ data[field] }}</BaseCheckbox
-            >
-            <BaseCheckbox
-              v-if="!data.botId && botStore.botCount > 1"
-              v-model="allToggled"
-              title="Toggle all bots"
-              class="font-bold"
-              >{{ data[field] }}</BaseCheckbox
-            >
-            <span v-if="botStore.botCount <= 1">{{ data[field] }}</span>
-          </div>
-          <Badge
-            v-if="data.isOnline && data.isDryRun"
-            class="items-center bg-green-800 text-slate-200"
-            severity="success"
-            >Dry</Badge
+  <UTable :data="tableItems" :columns="columns">
+    <template #botName-header>
+      <div class="flex justify-between flex-row w-full">
+        <b>Bot Name</b
+        ><UBadge
+          class="items-center text-slate-200 bg-slate-800 cursor-pointer"
+          color="neutral"
+          title="Click to select all bots"
+          @click="botStore.toggleBotsByState('all')"
+          >All</UBadge
+        >
+      </div>
+    </template>
+    <template #botName-cell="{ row }">
+      <div class="flex flex-row justify-between items-center">
+        <div>
+          <BaseCheckbox
+            v-if="row.original.botId && botStore.botCount > 1"
+            v-model="
+              botStore.botStores[(row.original as unknown as ComparisonTableItems).botId!]!
+                .isSelected
+            "
+            title="Show this bot in Dashboard"
+            >{{ row.original.botName }}</BaseCheckbox
           >
-          <Badge v-if="data.isOnline && !data.isDryRun" class="items-center" severity="warning"
-            >Live</Badge
+          <BaseCheckbox
+            v-if="!row.original.botId && botStore.botCount > 1"
+            v-model="allToggled"
+            title="Toggle all bots"
+            class="font-bold"
+            >{{ row.original.botName }}</BaseCheckbox
           >
-          <Badge v-if="data.isOnline === false" class="items-center" severity="secondary"
-            >Offline</Badge
-          >
+          <span v-if="botStore.botCount <= 1">{{ row.original.botName }}</span>
         </div>
-      </template>
-    </Column>
-    <Column field="trades" header="Trades"> </Column>
-    <Column header="Open Profit">
-      <template #body="{ data }">
-        <ProfitPill
-          v-if="data.profitOpen && data.botId != 'Summary'"
-          :profit-ratio="(data as unknown as ComparisonTableItems).profitOpenRatio"
-          :profit-abs="(data as unknown as ComparisonTableItems).profitOpen"
-          :profit-desc="`Total Profit (Open and realized) ${formatPercent(
-            (data as ComparisonTableItems).profitOpenRatio ?? 0.0,
-          )}`"
-          :stake-currency="(data as ComparisonTableItems).stakeCurrency"
-        />
-      </template>
-    </Column>
-    <Column header="Closed Profit">
-      <template #body="{ data }">
-        <ProfitPill
-          v-if="data.profitClosed && data.botId != 'Summary'"
-          :profit-ratio="(data as ComparisonTableItems).profitClosedRatio"
-          :profit-abs="(data as ComparisonTableItems).profitClosed"
-          :stake-currency="(data as unknown as ComparisonTableItems).stakeCurrency"
-        />
-      </template>
-    </Column>
-    <Column field="balance" header="Balance">
-      <template #body="{ data }">
-        <div v-if="data.balance">
-          <span :title="(data as ComparisonTableItems).stakeCurrency"
-            >{{
-              formatPrice(
-                (data as ComparisonTableItems).balance ?? 0,
-                (data as ComparisonTableItems).stakeCurrencyDecimals,
-              )
-            }}
-          </span>
-          <span class="text-sm">{{
-            ` ${data.stakeCurrency}${data.isDryRun ? ' (dry)' : ''}`
-          }}</span>
-        </div>
-      </template>
-    </Column>
-    <Column field="winVsLoss" header="W/L">
-      <template #body="{ data }">
-        <div v-if="data.losses !== undefined">
-          <span class="text-profit">{{ data.wins }}</span> /
-          <span class="text-loss">{{ data.losses }}</span>
-        </div>
-      </template>
-    </Column>
-  </DataTable>
+        <UBadge
+          v-if="row.original.isOnline && row.original.isDryRun"
+          class="items-center bg-green-800 text-slate-200 cursor-pointer"
+          color="success"
+          title="Click to select all dry run bots"
+          @click="botStore.toggleBotsByState('dry')"
+          >Dry</UBadge
+        >
+        <UBadge
+          v-if="row.original.isOnline && !row.original.isDryRun"
+          class="items-center cursor-pointer"
+          color="warning"
+          title="Click to select all live bots"
+          @click="botStore.toggleBotsByState('live')"
+          >Live</UBadge
+        >
+        <UBadge v-if="row.original.isOnline === false" class="items-center" color="neutral"
+          >Offline</UBadge
+        >
+      </div>
+    </template>
+    <template #profitOpen-cell="{ row }">
+      <ProfitPill
+        v-if="row.original.profitOpen && row.original.botId !== 'Summary'"
+        :profit-ratio="row.original.profitOpenRatio"
+        :profit-abs="row.original.profitOpen"
+        :profit-desc="`Total Profit (Open and realized) ${formatPercent(
+          row.original.profitOpenRatio ?? 0.0,
+        )}`"
+        :stake-currency="row.original.stakeCurrency"
+      />
+    </template>
+    <template #profitClosed-cell="{ row }">
+      <ProfitPill
+        v-if="row.original.profitClosed && row.original.botId !== 'Summary'"
+        :profit-ratio="row.original.profitClosedRatio"
+        :profit-abs="row.original.profitClosed"
+        :stake-currency="row.original.stakeCurrency"
+      />
+    </template>
+    <template #balance-cell="{ row }">
+      <div v-if="row.original.balance">
+        <span :title="row.original.stakeCurrency"
+          >{{ formatPrice(row.original.balance ?? 0, row.original.stakeCurrencyDecimals) }}
+        </span>
+        <span class="text-sm">{{
+          ` ${row.original.stakeCurrency}${row.original.balanceAppendix}`
+        }}</span>
+      </div>
+    </template>
+    <template #winVsLoss-cell="{ row }">
+      <div v-if="row.original.losses !== undefined">
+        <span class="text-profit">{{ row.original.wins }}</span> /
+        <span class="text-loss">{{ row.original.losses }}</span>
+      </div>
+    </template>
+  </UTable>
 </template>

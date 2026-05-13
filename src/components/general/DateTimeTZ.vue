@@ -1,9 +1,15 @@
 <script setup lang="ts">
-const props = defineProps({
-  date: { required: true, type: Number },
-  showTimezone: { required: false, type: Boolean, default: false },
-  dateOnly: { required: false, type: Boolean, default: false },
-});
+const props = withDefaults(
+  defineProps<{
+    date: number;
+    showTimezone?: boolean;
+    dateOnly?: boolean;
+  }>(),
+  {
+    showTimezone: false,
+    dateOnly: false,
+  },
+);
 const formattedDate = computed((): string => {
   if (props.dateOnly) {
     return timestampToDateString(props.date);

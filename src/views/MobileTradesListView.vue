@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-defineProps({
-  history: { default: false, type: Boolean },
-});
+defineProps<{
+  history?: boolean;
+}>();
 const botStore = useBotStore();
 </script>
 
@@ -35,13 +33,13 @@ const botStore = useBotStore();
       v-if="botStore.activeBot.detailTradeId && botStore.activeBot.tradeDetail"
       class="flex flex-col"
     >
-      <Button
-        size="small"
-        severity="secondary"
+      <UButton
+        color="neutral"
         class="self-start my-1 ms-1"
         @click="botStore.activeBot.setDetailTrade(null)"
-        ><i-mdi-arrow-left /> Back</Button
-      >
+        label="Back"
+        icon="mdi:arrow-left"
+      />
       <TradeDetail
         :trade="botStore.activeBot.tradeDetail"
         :stake-currency="botStore.activeBot.stakeCurrency"

@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { BacktestResultInMemory, BacktestResultUpdate } from '@/types';
 
-defineProps({
-  backtestHistory: {
-    required: true,
-    type: Object as () => Record<string, BacktestResultInMemory>,
+withDefaults(
+  defineProps<{
+    backtestHistory: Record<string, BacktestResultInMemory>;
+    selectedBacktestResultKey?: string;
+    canUseModify?: boolean;
+  }>(),
+  {
+    selectedBacktestResultKey: '',
+    canUseModify: false,
   },
-  selectedBacktestResultKey: { required: false, default: '', type: String },
-  canUseModify: { required: false, default: false, type: Boolean },
-});
+);
+
 const emit = defineEmits<{
   selectionChange: [value: string];
   removeResult: [value: string];
@@ -36,14 +40,14 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
   <div class="flex flex-col items-stretch">
     <h3 class="font-bold text-2xl">Available results:</h3>
     <ul
-      class="ms-2 divide-y border-x border-surface-500 rounded-sm border-y divide-solid divide-surface-500"
+      class="ms-2 divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500"
     >
       <li
         v-for="[key, result] in Object.entries(backtestHistory)"
         :key="key"
         button
         :class="{
-          'bg-primary dark:border-primary text-primary-contrast': key === selectedBacktestResultKey,
+          'bg-primary dark:border-primary text-white': key === selectedBacktestResultKey,
         }"
         class="flex justify-between items-center py-1 px-1"
         @click="setBacktestResult(key)"
@@ -51,39 +55,35 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
         <template v-if="!result.metadata.editing">
           <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
           <div class="flex">
-            <Button
+            <UButton
               v-if="canUseModify"
               class="flex-nowrap"
-              size="small"
-              severity="secondary"
+              size="sm"
+              color="neutral"
               title="Modify result notes."
+              icon="mdi:pencil"
               @click.stop="result.metadata.editing = !result.metadata.editing"
-            >
-              <template #icon>
-                <i-mdi-pencil />
-              </template>
-            </Button>
-            <Button
-              size="small"
+            />
+            <UButton
+              size="sm"
               class="flex-nowrap"
-              severity="secondary"
+              color="neutral"
               title="Delete this Result from UI."
+              icon="mdi:delete"
               @click.stop="emit('removeResult', key)"
-            >
-              <template #icon>
-                <i-mdi-delete />
-              </template>
-            </Button>
+            />
           </div>
         </template>
         <template v-if="result.metadata.editing">
-          <Textarea v-model="result.metadata.notes" placeholder="notes" size="small"> </Textarea>
-
-          <Button size="small" title="Confirm" @click.stop="confirmInput(key, result)">
-            <template #icon>
-              <i-mdi-check />
-            </template>
-          </Button>
+          <UTextarea v-model="result.metadata.notes" placeholder="notes" size="sm"> </UTextarea>
+          <UButton
+            size="sm"
+            title="Confirm"
+            variant="solid"
+            color="neutral"
+            icon="mdi:check"
+            @click.stop="confirmInput(key, result)"
+          />
         </template>
       </li>
     </ul>

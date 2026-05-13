@@ -14,7 +14,9 @@ import {
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
+  TransformComponent,
 } from 'echarts/components';
+import { registerTransform } from 'echarts';
 
 import type { BacktestMarketChange } from '@/types';
 import type { EChartsOption } from 'echarts';
@@ -30,6 +32,7 @@ use([
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
+  TransformComponent,
 ]);
 
 // Define Column labels here to avoid typos
@@ -48,6 +51,7 @@ const props = withDefaults(
 const settingsStore = useSettingsStore();
 
 const marketChangeChart = ref(null);
+registerTransform(ftEchartsTransforms.multiple);
 
 const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
   if (!props.marketChangeData) {
@@ -62,9 +66,17 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    dataset: {
-      source: props.marketChangeData.data,
-    },
+    dataset: [
+      {
+        source: props.marketChangeData.data,
+      },
+      {
+        transform: {
+          type: 'ft:multiple',
+          config: { dimension: colRelMean, factor: 100, mode: 'array' },
+        },
+      },
+    ],
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -80,6 +92,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
     legend: {
       data: [CHART_MARKET_CHANGE],
       right: '5%',
+      top: 0,
       selectedMode: false,
     },
     xAxis: [
@@ -129,6 +142,7 @@ const marketChangeOptions: ComputedRef<EChartsOption> = computed(() => {
         name: CHART_MARKET_CHANGE,
         showSymbol: false,
         color: settingsStore.chartTheme === 'dark' ? '#c2c2c2' : 'black',
+        datasetIndex: 1,
         encode: {
           x: colDate,
           // open, close, low, high

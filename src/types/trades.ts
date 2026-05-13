@@ -71,7 +71,7 @@ interface TradeBase {
   fee_close_currency?: string;
 
   /** Current profit as ratio */
-  profit_ratio: number;
+  profit_ratio: number | null;
   /** Current profit in % */
   profit_pct: number | null;
   /** Current absolute profit */
@@ -98,8 +98,10 @@ interface TradeBase {
 
   /** deprecated, to be replaced with "has_open_orders" */
   open_order_id?: string;
-  /** Added only recently, replaces open_order_id */
+  /** Replaces open_order_id */
   has_open_orders?: boolean;
+  nr_of_successful_entries?: number;
+  nr_of_successful_exits?: number;
   /** Short properties - only available in API versions 2.x and up */
   is_short?: boolean;
   leverage?: number;

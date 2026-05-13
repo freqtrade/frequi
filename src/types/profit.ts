@@ -1,4 +1,4 @@
-export interface ProfitInterface {
+export interface ProfitStats {
   profit_closed_coin: number;
   profit_closed_percent_mean: number;
   profit_closed_ratio_mean: number;
@@ -47,6 +47,12 @@ export interface ProfitInterface {
   max_drawdown_start_timestamp?: number;
   max_drawdown_end?: string;
   max_drawdown_end_timestamp?: number;
+  /** Current drawdown we're in */
+  current_drawdown?: number;
+  current_drawdown_abs?: number;
+  current_drawdown_high?: number;
+  current_drawdown_start?: string;
+  current_drawdown_start_timestamp?: number;
   trading_volume?: number;
   /** Initial bot start date*/
   bot_start_timestamp?: number;
@@ -54,4 +60,15 @@ export interface ProfitInterface {
   winrate?: number;
   expectancy?: number;
   expectancy_ratio?: number;
+  cagr?: number;
+  calmar?: number;
+  sharpe?: number;
+  sortino?: number;
+  sqn?: number;
+}
+
+export interface AllProfitStats {
+  all: ProfitStats;
+  short?: ProfitStats;
+  long?: ProfitStats;
 }

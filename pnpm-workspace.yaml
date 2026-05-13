@@ -1,0 +1,12 @@
+# 7 days
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - "@nuxt/ui"
+blockExoticSubdeps: true
+# trustPolicy: no-downgrade
+preferFrozenLockfile: true
+allowBuilds:
+  '@parcel/watcher': true
+  '@tailwindcss/oxide': true
+  esbuild: true
+  vue-demi: true

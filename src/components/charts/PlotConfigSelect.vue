@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { usePlotConfigStore } from '@/stores/plotConfig';
-
-defineProps({
-  allowEdit: {
-    type: Boolean,
-    default: false,
+withDefaults(
+  defineProps<{
+    allowEdit?: boolean;
+    editableName?: string;
+  }>(),
+  {
+    allowEdit: false,
+    editableName: 'plot configuration',
   },
-  editableName: {
-    type: String,
-    default: 'plot configuration',
-  },
-});
+);
 const plotStore = usePlotConfigStore();
 </script>
 
@@ -26,14 +24,13 @@ const plotStore = usePlotConfigStore();
     @new="plotStore.newPlotConfig"
     @duplicate="plotStore.duplicatePlotConfig"
   >
-    <Select
+    <USelect
       id="plotConfigSelect"
       v-model="plotStore.plotConfigName"
-      :options="plotStore.availablePlotConfigNames"
+      :items="plotStore.availablePlotConfigNames"
       class="w-full text-left"
-      size="small"
       @update:model-value="plotStore.plotConfigChanged"
     >
-    </Select>
+    </USelect>
   </EditValue>
 </template>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 const botStore = useBotStore();
 const autoRefreshLoc = computed({
   get() {
@@ -14,18 +12,14 @@ const autoRefreshLoc = computed({
 
 <template>
   <div class="flex items-center ms-2">
-    <BaseCheckbox v-model="autoRefreshLoc" size="small" title="Auto Refresh" />
-    <Button
+    <BaseCheckbox v-model="autoRefreshLoc" size="sm" title="Auto Refresh for all bots" />
+    <UButton
       class="m-1"
-      severity="contrast"
-      variant="outlined"
-      size="small"
+      color="neutral"
+      variant="outline"
       title="Auto Refresh all bots now"
+      icon="mdi:refresh"
       @click="botStore.allRefreshFull"
-    >
-      <template #icon>
-        <i-mdi-refresh />
-      </template>
-    </Button>
+    />
   </div>
 </template>

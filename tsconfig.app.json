@@ -14,7 +14,6 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
     "noImplicitAny": false,
     "types": [
       "vite/client",
@@ -22,6 +21,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "#build/ui/*": [
+        "./node_modules/.nuxt-ui/ui/*"
       ]
     },
   },

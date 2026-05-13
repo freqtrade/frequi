@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Lock, Trade } from '@/types';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 interface CombinedPairList {
   pair: string;
   lockReason: string;
@@ -13,18 +11,26 @@ interface CombinedPairList {
   profitAbs: number;
   tradeCount: number;
 }
-const filterText = ref('');
 
-const props = defineProps({
-  // TOOD: Should be string list
-  pairlist: { required: true, type: Array as () => string[] },
-  currentLocks: { required: false, type: Array as () => Lock[], default: () => [] },
-  trades: { required: true, type: Array as () => Trade[] },
-  sortMethod: { default: 'normal', type: String },
-  backtestMode: { required: false, default: false, type: Boolean },
-  startingBalance: { required: false, type: Number, default: 0 },
-});
+const props = withDefaults(
+  defineProps<{
+    pairlist: string[];
+    currentLocks?: Lock[];
+    trades: Trade[];
+    sortMethod?: string;
+    backtestMode?: boolean;
+    startingBalance?: number;
+  }>(),
+  {
+    currentLocks: () => [],
+    sortMethod: 'normal',
+    backtestMode: false,
+    startingBalance: 0,
+  },
+);
 const botStore = useBotStore();
+
+const filterText = ref('');
 const combinedPairList = computed(() => {
   const comb: CombinedPairList[] = [];
 
@@ -44,7 +50,7 @@ const combinedPairList = computed(() => {
     let profit = 0;
     let profitAbs = 0;
     trades.forEach((trade) => {
-      profit += trade.profit_ratio;
+      profit += trade.profit_ratio ?? 0;
       profitAbs += trade.profit_abs ?? 0;
     });
     if (props.sortMethod == 'profit' && props.startingBalance) {
@@ -107,7 +113,7 @@ const combinedPairList = computed(() => {
         'me-2': !backtestMode,
       }"
     >
-      <InputText
+      <UInput
         id="trade-filter"
         v-model="filterText"
         type="text"
@@ -116,7 +122,7 @@ const combinedPairList = computed(() => {
       />
     </div>
     <ul
-      class="divide-y divide-surface-300 dark:divide-surface-700 divide-solid border-x border-y rounded-sm border-surface-300 dark:border-surface-700"
+      class="divide-y divide-neutral-300 dark:divide-neutral-700 divide-solid border-x border-y rounded-sm border-neutral-300 dark:border-neutral-700"
     >
       <li
         v-for="comb in combinedPairList"
@@ -124,13 +130,13 @@ const combinedPairList = computed(() => {
         button
         class="flex cursor-pointer last:rounded-b justify-between items-center px-1 py-1.5"
         :class="{
-          'bg-primary dark:border-primary text-primary-contrast':
+          'bg-primary dark:bg-primary-700 dark:border-primary text-white':
             comb.pair === botStore.activeBot.selectedPair,
         }"
         :title="`${formatPriceCurrency(comb.profitAbs, botStore.activeBot.stakeCurrency, botStore.activeBot.stakeCurrencyDecimals)} - ${comb.pair} - ${comb.tradeCount} trades`"
         @click="botStore.activeBot.selectedPair = comb.pair"
       >
-        <div>
+        <div class="flex items-center gap-2">
           {{ comb.pair }}
           <span v-if="comb.locks" :title="comb.lockReason"> <i-mdi-lock /> </span>
         </div>

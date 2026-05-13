@@ -1,6 +1,12 @@
 import type { Order, PairHistory, Trade, BTOrder } from '@/types';
 
-import type { MarkAreaComponentOption, ScatterSeriesOption } from 'echarts';
+import type {
+  MarkAreaComponentOption,
+  MarkLineComponentOption,
+  MarkPointComponentOption,
+  ScatterSeriesOption,
+  TooltipComponentOption,
+} from 'echarts';
 
 function buildTooltipCost(order: Order | BTOrder, quoteCurrency: string): string {
   return `${order.ft_order_side === 'buy' ? '+' : '-'}${formatPriceCurrency(
@@ -62,8 +68,8 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
   // 5: label
   // 6: tooltip
   const stop_ts_adjusted = dataset.data_stop_ts + dataset.timeframe_ms;
-  for (let i = 0, len = trades.length; i < len; i += 1) {
-    const trade: Trade = trades[i];
+  for (const trade of trades) {
+    // const trade: Trade = trades[i];
     const openTs = trade.open_fill_timestamp ?? trade.open_timestamp;
     if (
       // Trade is open or closed and within timerange
@@ -72,8 +78,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
       (trade.close_timestamp && trade.close_timestamp >= dataset.data_start_ts)
     ) {
       if (trade.orders) {
-        for (let i = 0; i < trade.orders.length; i++) {
-          const order: Order | BTOrder = trade.orders[i];
+        for (const [j, order] of trade.orders.entries()) {
           const orderTs =
             order.order_filled_timestamp ??
             ('order_timestamp' in order ? order.order_timestamp : trade.open_timestamp);
@@ -84,7 +89,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
             orderTs > dataset.data_start_ts
           ) {
             // Trade entry
-            if (i === 0) {
+            if (j === 0) {
               tradeData.push([
                 roundTimeframe(dataset.timeframe_ms ?? 0, openTs),
                 order.safe_price,
@@ -96,7 +101,7 @@ function getTradeEntries(dataset: PairHistory, trades: Trade[]) {
                 buildToolTip(trade, order, 'entry', quoteCurrency),
               ]);
               // Trade exit
-            } else if (i === trade.orders.length - 1 && trade.close_timestamp) {
+            } else if (j === trade.orders.length - 1 && trade.close_timestamp) {
               if (
                 roundTimeframe(dataset.timeframe_ms ?? 0, trade.close_timestamp) <=
                   stop_ts_adjusted &&
@@ -229,18 +234,26 @@ export function generateTradeSeries(
 export function generateMarkArea(
   dataset: PairHistory,
   enabled: boolean,
-): { markArea?: MarkAreaComponentOption } {
+  markAreaZIndex?: number | undefined,
+): {
+  markArea?: MarkAreaComponentOption;
+  markLine?: MarkLineComponentOption;
+  markPoint?: MarkPointComponentOption;
+  tooltip?: TooltipComponentOption;
+} {
   if (!dataset.annotations || !enabled) return {};
 
   const markArea: MarkAreaComponentOption = {
     label: {
       position: 'insideTop',
     },
+    z: markAreaZIndex ?? 1,
     data: dataset.annotations
-      .filter((area) => area.type == 'area')
+      .filter((area) => area.type === 'area')
       .map((area) => {
         return [
           {
+            z2: area.z_index ?? 1,
             xAxis: area.start,
             yAxis: area.y_start,
             itemStyle: {
@@ -251,13 +264,94 @@ export function generateMarkArea(
             },
           },
           {
+            z2: area.z_index ?? 1,
             xAxis: area.end,
             yAxis: area.y_end,
           },
         ];
       }),
   };
+  const markLine: MarkLineComponentOption = {
+    label: {
+      position: 'middle',
+    },
+    symbol: ['none', 'none'],
+    z: markAreaZIndex ?? 1,
+    data: dataset.annotations
+      .filter((line) => line.type === 'line')
+      .map((line) => {
+        return [
+          {
+            name: line.label,
+            xAxis: line.start,
+            yAxis: line.y_start,
+            lineStyle: {
+              color: line.color,
+              width: line.width ?? 1,
+              type: line.line_style ?? 'solid',
+            },
+            z2: line.z_index ?? 1,
+          },
+          {
+            xAxis: line.end,
+            yAxis: line.y_end,
+            z2: line.z_index ?? 1,
+          },
+        ];
+      }),
+  };
+
+  const markPoint: MarkPointComponentOption = {
+    label: {
+      position: 'top',
+      show: true,
+    },
+    z: markAreaZIndex ? markAreaZIndex : 5,
+    data: dataset.annotations
+      .filter((point) => point.type === 'point')
+      .map((point) => {
+        return {
+          name: point.label ?? '',
+          xAxis: point.x,
+          yAxis: point.y,
+          itemStyle: {
+            color: point.color,
+          },
+          label: {
+            formatter: '{b}',
+          },
+          symbolSize: point.size ?? 10,
+          symbol: point.shape ?? 'circle',
+          symbolRotate: point.rotate,
+          z2: point.z_index ?? 1,
+        };
+      }),
+  };
   return {
     markArea,
+    markLine,
+    markPoint,
+    tooltip: {
+      show: false,
+    },
+  };
+}
+
+export function generateMarkAreaSeries(
+  dataset: PairHistory,
+  enabled: boolean,
+  markAreaZIndex?: number | undefined,
+): ScatterSeriesOption | undefined {
+  if (!dataset.annotations || !enabled) {
+    return undefined;
+  }
+  // Invisible series added to chart to work around marklines bug
+  // TODO: https://github.com/apache/echarts/issues/21300
+  return {
+    // Invisible
+    type: 'scatter',
+    symbol: 'none',
+    xAxisIndex: 0,
+    ...generateMarkArea(dataset, enabled, markAreaZIndex),
   };
 }

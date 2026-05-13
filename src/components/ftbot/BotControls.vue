@@ -1,153 +1,129 @@
-forceexit
 <script setup lang="ts">
-import type { MsgBoxObject } from '@/components/general/MessageBox.vue';
-import type MessageBox from '@/components/general/MessageBox.vue';
-import { useBotStore } from '@/stores/ftbotwrapper';
-import type { ForceSellPayload } from '@/types';
-
-import ForceEntryForm from './ForceEntryForm.vue';
+import type { ForceExitPayload } from '@/types';
 
 const botStore = useBotStore();
-const forceEnter = ref<boolean>(false);
-const msgBox = ref<typeof MessageBox>();
+const { confirm } = useConfirmBox();
+
+const { forceEntryDialog } = useForceTrade();
 
 const isRunning = computed((): boolean => {
   return botStore.activeBot.botState?.state === 'running';
 });
 
-const handleStopBot = () => {
-  const msg: MsgBoxObject = {
+async function handleStopBot() {
+  const result = await confirm({
     title: 'Stop Bot',
     message: 'Stop the bot loop from running?',
-    accept: () => {
-      botStore.activeBot.stopBot();
-    },
-  };
-  msgBox.value?.show(msg);
-};
+  });
+  if (result) {
+    botStore.activeBot.stopBot();
+  }
+}
 
-const handleStopBuy = () => {
-  const msg: MsgBoxObject = {
-    title: 'Pause - Stop Entering',
-    message:
-      'Freqtrade will continue to handle open trades, but will not enter new trades or increase position sizes.',
-    accept: () => {
-      botStore.activeBot.stopBuy();
-    },
-  };
-  msgBox.value?.show(msg);
-};
+async function handleStopBuy() {
+  if (
+    await confirm({
+      title: 'Pause - Stop Entering',
+      message:
+        'Freqtrade will continue to handle open trades, but will not enter new trades or increase position sizes. \nReally stop entering?',
+    })
+  ) {
+    botStore.activeBot.stopBuy();
+  }
+}
 
-const handleReloadConfig = () => {
-  const msg: MsgBoxObject = {
-    title: 'Reload',
-    message: 'Reload configuration (including strategy)?',
-    accept: () => {
-      console.log('reload...');
-      botStore.activeBot.reloadConfig();
-    },
-  };
-  msgBox.value?.show(msg);
-};
+async function handleReloadConfig() {
+  if (
+    await confirm({
+      title: 'Reload Config',
+      message: 'Reload configuration (including strategy)?',
+    })
+  ) {
+    botStore.activeBot.reloadConfig();
+  }
+}
 
-const handleForceExit = () => {
-  const msg: MsgBoxObject = {
-    title: 'ForceExit all',
-    message: 'Really forceexit ALL trades?',
-    accept: () => {
-      const payload: ForceSellPayload = {
-        tradeid: 'all',
-        // TODO: support ordertype (?)
-      };
-      botStore.activeBot.forceexit(payload);
-    },
-  };
-  msgBox.value?.show(msg);
-};
+async function handleForceExit() {
+  if (
+    await confirm({
+      title: 'ForceExit all',
+      message: 'Really forceexit ALL trades?',
+    })
+  ) {
+    const payload: ForceExitPayload = {
+      tradeid: 'all',
+      // TODO: support ordertype (?)
+    };
+    botStore.activeBot.forceexit(payload);
+  }
+}
+
+async function handleForceEntry() {
+  await forceEntryDialog({
+    pair: botStore.activeBot.selectedPair,
+  });
+}
 </script>
 
 <template>
   <div class="flex flex-row gap-1">
-    <Button
-      size="large"
-      severity="secondary"
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || isRunning"
       title="Start Trading"
+      icon="mdi:play"
       @click="botStore.activeBot.startBot()"
-    >
-      <template #icon>
-        <i-mdi-play />
-      </template>
-    </Button>
-    <Button
-      size="large"
-      severity="secondary"
+    />
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Stop Trading - Also stops handling open trades."
+      icon="mdi:stop"
       @click="handleStopBot()"
-    >
-      <template #icon>
-        <i-mdi-stop />
-      </template>
-    </Button>
-    <Button
-      size="large"
-      severity="secondary"
+    />
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Pause (StopBuy) - Freqtrade will continue to handle open trades, but will not enter new trades or increase position sizes."
+      icon="mdi:pause"
       @click="handleStopBuy()"
-    >
-      <template #icon>
-        <i-mdi-pause />
-      </template>
-    </Button>
-    <Button
-      size="large"
-      severity="secondary"
+    />
+    <UButton
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading"
       title="Reload Config - reloads configuration including strategy, resetting all settings changed on the fly."
+      icon="mdi:reload"
       @click="handleReloadConfig()"
-    >
-      <template #icon>
-        <i-mdi-reload />
-      </template>
-    </Button>
-    <Button
-      severity="secondary"
-      size="large"
+    />
+    <UButton
+      color="neutral"
+      size="xl"
       :disabled="!botStore.activeBot.isTrading"
       title="Force exit all"
+      icon="mdi:close-box-multiple"
       @click="handleForceExit()"
-    >
-      <template #icon>
-        <i-mdi-close-box-multiple />
-      </template>
-    </Button>
-    <Button
+    />
+    <UButton
       v-if="botStore.activeBot.botState && botStore.activeBot.botState.force_entry_enable"
-      size="large"
-      severity="secondary"
+      size="xl"
+      color="neutral"
       :disabled="!botStore.activeBot.isTrading || !isRunning"
       title="Force enter - Immediately enter a trade at an optional price. Exits are then handled according to strategy rules."
-      @click="forceEnter = true"
-    >
-      <template #icon>
-        <i-mdi-plus-box-multiple-outline />
-      </template>
-    </Button>
-    <Button
+      icon="mdi:plus-box-multiple-outline"
+      @click="handleForceEntry"
+    />
+    <UButton
       v-if="botStore.activeBot.isWebserverMode && false"
-      size="large"
-      severity="secondary"
+      size="xl"
+      color="neutral"
       :disabled="botStore.activeBot.isTrading"
       title="Start Trading mode"
+      icon="mdi:play"
       @click="botStore.activeBot.startTrade()"
-    >
-      <template #icon>
-        <i-mdi-play />
-      </template>
-    </Button>
-    <ForceEntryForm v-model="forceEnter" :pair="botStore.activeBot.selectedPair" />
-    <MessageBox ref="msgBox" />
+    />
   </div>
 </template>

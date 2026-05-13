@@ -1,10 +1,10 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.app.json",
   "compilerOptions": {
     "sourceMap": false,
   },
   "include": [
-    "e2e/*.ts",
-    "e2e/*.tsx"
-  ],
+    "*.ts",
+    "*.tsx"
+  ]
 }

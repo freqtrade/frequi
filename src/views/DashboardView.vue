@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { DashboardLayout, findGridLayout, useLayoutStore } from '@/stores/layout';
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { GridItemData } from '@/types';
 
 const botStore = useBotStore();
@@ -52,6 +50,11 @@ const gridLayoutAllClosedTrades = computed((): GridItemData => {
 const gridLayoutCumChart = computed((): GridItemData => {
   return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
 });
+
+const gridLayoutWalletHistory = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.walletHistoryChart);
+});
+
 const gridLayoutProfitDistribution = computed((): GridItemData => {
   return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
 });
@@ -133,16 +136,10 @@ onMounted(async () => {
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer>
-          <template #header>
-            <div class="flex justify-content-center">
-              Open Trades
-              <InfoBox
-                class="ms-2"
-                hint="Open trades of all selected bots. Click on a trade to go to the trade page for that trade/bot."
-              />
-            </div>
-          </template>
+        <DraggableContainer
+          header="Open Trades"
+          info-text="Open trades of all selected bots. Click on a trade to go to the trade page for that trade/bot."
+        >
           <TradeList active-trades :trades="botStore.allOpenTradesSelectedBots" multi-bot-view />
         </DraggableContainer>
       </GridItem>
@@ -167,6 +164,21 @@ onMounted(async () => {
       </GridItem>
       <GridItem
         v-bind="gridItemProps"
+        :i="gridLayoutWalletHistory.i"
+        :x="gridLayoutWalletHistory.x"
+        :y="gridLayoutWalletHistory.y"
+        :w="gridLayoutWalletHistory.w"
+        :h="gridLayoutWalletHistory.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Wallet History">
+          <WalletHistoryChart :wallet-data="botStore.allBalanceHistory" :show-title="false" />
+        </DraggableContainer>
+      </GridItem>
+      <GridItem
+        v-bind="gridItemProps"
         :i="gridLayoutAllClosedTrades.i"
         :x="gridLayoutAllClosedTrades.x"
         :y="gridLayoutAllClosedTrades.y"
@@ -176,16 +188,10 @@ onMounted(async () => {
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer>
-          <template #header>
-            <div class="flex justify-content-center">
-              Closed Trades
-              <InfoBox
-                class="ms-2"
-                hint="Closed trades for all selected bots. Click on a trade to go to the trade page for that trade/bot."
-              />
-            </div>
-          </template>
+        <DraggableContainer
+          header="Closed Trades"
+          info-text="Closed trades for all selected bots. Click on a trade to go to the trade page for that trade/bot."
+        >
           <TradeList
             :active-trades="false"
             show-filter

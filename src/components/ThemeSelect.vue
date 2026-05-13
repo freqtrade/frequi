@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useSettingsStore } from '@/stores/settings';
 import type { ThemeName } from '@/types';
 
 const activeTheme = ref('');
@@ -22,10 +21,10 @@ function setTheme(themeName: ThemeName) {
       }, 1000);
     }
     if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'light') {
-      document.documentElement.classList.remove('dark', 'ft-dark-theme');
+      document.documentElement.classList.remove('dark');
     } else {
       // Add the dark theme
-      document.documentElement.classList.add('dark', 'ft-dark-theme');
+      document.documentElement.classList.add('dark');
     }
   }
   // Save the theme as localstorage
@@ -43,15 +42,13 @@ function toggleNight() {
 </script>
 
 <template>
-  <Button
+  <UButton
     variant="link"
     title="Toggle Night Mode"
-    class="text-surface-200"
+    color="neutral"
     :label="showText ? 'Toggle Night Mode' : ''"
     @click="toggleNight"
+    icon="mdi:brightness-6"
   >
-    <template #icon>
-      <i-mdi-brightness-6 />
-    </template>
-  </Button>
+  </UButton>
 </template>

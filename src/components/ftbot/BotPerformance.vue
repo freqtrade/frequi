@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-
 const botStore = useBotStore();
 enum PerformanceOptions {
   performance = 'performance',
@@ -71,8 +69,6 @@ const performanceData = computed(() => {
   return [];
 });
 
-const hasAdvancedStats = computed(() => botStore.activeBot.botApiVersion >= 2.34);
-
 const options = [
   { value: PerformanceOptions.performance, text: 'Performance' },
   { value: PerformanceOptions.entryStats, text: 'Entries' },
@@ -98,41 +94,35 @@ function refreshSummary() {
 onMounted(() => {
   refreshSummary();
 });
+
+const tableColumns = computed(() => {
+  return performanceTable.value.map((field) => ({
+    accessorKey: field.key,
+    header: field.label,
+    cell: ({ row }: { row: { original: Record<string, unknown> } }) =>
+      field.formatter ? field.formatter(row.original[field.key]) : row.original[field.key],
+  }));
+});
+
+watch(selectedOption, () => {
+  refreshSummary();
+});
 </script>
 <template>
   <div>
     <div class="mb-2">
       <h3 class="me-auto text-2xl inline">Performance</h3>
-      <Button class="float-end" severity="secondary" @click="refreshSummary">
-        <template #icon>
-          <i-mdi-refresh />
-        </template>
-      </Button>
+      <UButton class="float-end" color="neutral" icon="mdi:refresh" @click="refreshSummary" />
     </div>
-    <SelectButton
-      v-if="hasAdvancedStats"
+    <USegmentedControl
+      v-if="botStore.activeBot.botFeatures.hasAdvancedStats"
       id="order-direction"
       v-model="selectedOption"
-      :options="options"
-      :allow-empty="false"
-      option-label="text"
-      option-value="value"
-      size="small"
-      @change="refreshSummary"
-    ></SelectButton>
-    <DataTable size="small" class="text-center" :value="performanceData">
-      <Column
-        v-for="field in performanceTable"
-        :key="field.key"
-        :field="field.key"
-        :header="field.label"
-      >
-        <template #body="slotProps">
-          {{
-            field.formatter ? field.formatter(slotProps.data[field.key]) : slotProps.data[field.key]
-          }}
-        </template>
-      </Column>
-    </DataTable>
+      :items="options"
+      label-key="text"
+      value-key="value"
+      size="sm"
+    ></USegmentedControl>
+    <UTable class="text-center" :data="performanceData" :columns="tableColumns" />
   </div>
 </template>

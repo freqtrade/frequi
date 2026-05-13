@@ -1,4 +1,3 @@
-import { useSettingsStore } from '@/stores/settings';
 import type { FTWsMessage } from '@/types/wsMessageTypes';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
@@ -20,11 +19,11 @@ export function showNotification(msg: FTWsMessage, botname: string) {
         break;
       case FtWsMessageTypes.exitCancel:
         console.log('exitCancel', msg);
-        showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warn', botname);
+        showAlert(`Exit order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning', botname);
         break;
       case FtWsMessageTypes.entryCancel:
         console.log('entryCancel', msg);
-        showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warn', botname);
+        showAlert(`Entry order cancelled for ${msg.pair} due to ${msg.reason}`, 'warning', botname);
         break;
     }
   } else {

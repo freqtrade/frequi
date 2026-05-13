@@ -2,8 +2,10 @@ export function isNotUndefined<T>(val: T | undefined | null): val is T {
   return !(val === undefined || val === null);
 }
 
-export function formatPercent(value: number, decimals = 3): string {
-  return isNotUndefined(value) ? `${(value * 100).toFixed(decimals)}%` : '';
+export function formatPercent(value: number | undefined | null, decimals = 3): string {
+  return isNotUndefined(value)
+    ? `${(value * 100).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}%`
+    : 'N/A%';
 }
 
 /**
@@ -12,7 +14,7 @@ export function formatPercent(value: number, decimals = 3): string {
  * @param decimals number of decimals (Defaults to 15)
  * @returns Formatted string
  */
-export function formatPrice(value: number | null, decimals = 15): string {
+export function formatNumber(value: number | null | undefined, decimals = 15): string {
   // const format = new Intl.NumberFormat('', {maximumFractionDigits: decimals}
   return isNotUndefined(value)
     ? value.toLocaleString('fullwide', {
@@ -20,6 +22,18 @@ export function formatPrice(value: number | null, decimals = 15): string {
         maximumFractionDigits: decimals,
       })
     : 'N/A';
+}
+
+/**
+ * Format number to `decimals` without trailing zeros
+ * Compatibility function
+ * // TODO: should be replaced with formatNumber!
+ * @param value Number to format
+ * @param decimals number of decimals (Defaults to 15)
+ * @returns Formatted string
+ */
+export function formatPrice(value: number | null, decimals = 15): string {
+  return formatNumber(value, decimals);
 }
 
 /**
@@ -33,8 +47,35 @@ export function formatPriceCurrency(price: number | null, currency: string, deci
   return `${formatPrice(price, decimals)} ${currency ?? ''}`;
 }
 
-export default {
-  isNotUndefined,
-  formatPrice,
-  formatPercent,
-};
+/**
+ * Formats a decimal number to a string with a varying number of decimal places
+ * depending on the size of the number.
+ * @param value Number to format
+ * @returns Formatted string
+ */
+export function formatDecimal(value: number | null): string {
+  if (!isNotUndefined(value)) {
+    return 'N/A';
+  }
+  let decimals = 2;
+  const absValue = Math.abs(value);
+  if (absValue < 0.0000001) {
+    decimals = 15;
+  } else if (absValue < 0.000001) {
+    decimals = 11;
+  } else if (absValue < 0.0001) {
+    decimals = 8;
+  } else if (absValue < 0.01) {
+    decimals = 5;
+  } else if (absValue < 1) {
+    decimals = 5;
+  } else if (absValue < 10) {
+    decimals = 4;
+  } else if (absValue < 100) {
+    decimals = 3;
+  }
+  return value.toLocaleString('fullwide', {
+    useGrouping: false,
+    maximumFractionDigits: decimals,
+  });
+}

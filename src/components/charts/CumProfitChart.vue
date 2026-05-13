@@ -11,10 +11,10 @@ import {
   TitleComponent,
   TooltipComponent,
 } from 'echarts/components';
+import { format as echartsFormat } from 'echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { useSettingsStore } from '@/stores/settings';
 import type {
   ClosedTrade,
   CumProfitChartData,
@@ -58,8 +58,6 @@ const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 // const botList = ref<string[]>([]);
 
-const chart = ref<InstanceType<typeof ECharts>>();
-
 const openProfit = computed<number>(() => {
   return props.openTrades.reduce(
     (a, v) => a + (v['total_profit_abs'] ?? v[props.profitColumn] ?? 0),
@@ -78,6 +76,7 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
 
   for (let i = 0, len = closedTrades.length; i < len; i += 1) {
     const trade = closedTrades[i];
+    if (!trade) continue;
     if (first) {
       // Start with chart with a 0 entry
       first = false;
@@ -86,22 +85,23 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
         resD[trade.open_timestamp] = { profit, [trade.botId]: profit };
       } else {
         // Add to existing profit
-        resD[trade.open_timestamp][trade.botId] = profit;
+        resD[trade.open_timestamp]![trade.botId] = profit;
       }
     }
 
     if (trade.close_timestamp && trade[props.profitColumn]) {
       profit += trade[props.profitColumn];
-      if (!resD[trade.close_timestamp]) {
+      const resDEntry = resD[trade.close_timestamp];
+      if (!resDEntry) {
         // New timestamp
         resD[trade.close_timestamp] = { profit, [trade.botId]: profit };
       } else {
         // Add to existing profit
-        resD[trade.close_timestamp].profit += trade[props.profitColumn];
-        if (resD[trade.close_timestamp][trade.botId]) {
-          resD[trade.close_timestamp][trade.botId] += trade[props.profitColumn];
+        resDEntry.profit += trade[props.profitColumn];
+        if (resDEntry[trade.botId]) {
+          resDEntry[trade.botId] += trade[props.profitColumn];
         } else {
-          resD[trade.close_timestamp][trade.botId] = profit;
+          resDEntry[trade.botId] = profit;
         }
       }
       // res.push({ date: trade.close_timestamp, profit, [trade.botId]: profit });
@@ -121,19 +121,20 @@ const cumulativeData = computed<CumProfitChartData[]>(() => {
 
   if (props.openTrades.length > 0) {
     let lastProfit = 0;
-    let lastDate = 0;
-    if (valueArray.length > 0) {
-      const lastPoint = valueArray[valueArray.length - 1];
+    let lastDate: number;
+    const lastPoint = valueArray[valueArray.length - 1];
+    if (lastPoint) {
       lastProfit = lastPoint.profit ?? 0;
       lastDate = lastPoint.date ?? 0;
     } else {
-      lastDate = props.openTrades[0].open_timestamp;
+      const firstOpenTrade = props.openTrades[0];
+      lastDate = firstOpenTrade ? firstOpenTrade.open_timestamp : 0;
     }
-    const resultWitHOpen = (lastProfit ?? 0) + openProfit.value;
+    const resultWithOpen = (lastProfit ?? 0) + openProfit.value;
     valueArray.push({ date: lastDate, currentProfit: lastProfit });
     // Add one day to date to ensure it's showing properly
     const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
-    valueArray.push({ date: tomorrow, currentProfit: resultWitHOpen });
+    valueArray.push({ date: tomorrow, currentProfit: resultWithOpen });
   }
   return valueArray;
 });
@@ -203,12 +204,6 @@ function generateChart(initial = false) {
   // });
   return chartOptionsLoc;
 }
-function updateChart(initial = false) {
-  const chartOptionsLoc = generateChart(initial);
-  chart.value?.setOption(chartOptionsLoc, {
-    replaceMerge: ['series', 'dataset'],
-  });
-}
 
 const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWithControl(
   () => props.trades,
@@ -228,7 +223,7 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
           const profitText = currentProfit
             ? `Projected profit (incl. unrealized): ${formatPrice(currentProfit, 3)}`
             : `Profit: ${formatPrice(profit, 3)}`;
-          return `${timestampToDateString(params[1].data.date)}<br />${
+          return `${echartsFormat.encodeHTML(timestampToDateString(params[1].data.date))}<br />${
             params[1].marker
           }${profitText}`;
         },
@@ -242,6 +237,7 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
       legend: {
         data: [CHART_PROFIT],
         right: '5%',
+        top: 0,
         selectedMode: false,
       },
       useUTC: false,
@@ -268,7 +264,6 @@ const cumProfitChartOptions: ComputedRefWithControl<EChartsOption> = computedWit
           type: 'inside',
           // xAxisIndex: [0],
           start: 0,
-
           end: 100,
         },
         {
@@ -297,8 +292,7 @@ onMounted(() => {
 watchThrottled(
   () => props.openTrades,
   () => {
-    // cumProfitChartOptions.trigger();
-    updateChart();
+    cumProfitChartOptions.trigger();
   },
   { throttle: 60 * 1000 },
 );
@@ -313,7 +307,6 @@ watch(
 <template>
   <ECharts
     v-if="trades"
-    ref="chart"
     :option="cumProfitChartOptions"
     :theme="settingsStore.chartTheme"
     autoresize

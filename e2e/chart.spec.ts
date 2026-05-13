@@ -51,7 +51,7 @@ test.describe('Chart', () => {
     await page.waitForSelector('span:has-text("NoActionStrategyFut | 1m")');
 
     await page.getByRole('button', { name: 'Plot configurator' }).click();
-    await page.getByRole('button', { name: 'Indicator from template' }).click();
+    await page.getByRole('button', { name: 'From template' }).click();
     // Apply bollinger bands
 
     await page.getByRole('option', { name: 'BollingerBands' }).click();
@@ -63,15 +63,15 @@ test.describe('Chart', () => {
     await page.getByRole('button', { name: 'Apply Template' }).click();
     await page.getByRole('button', { name: 'Save' }).click();
 
-    const indicatorPanel = page.locator('ul#selectedIndicators_list');
+    const indicatorPanel = page.getByText('Indicators in this plotb');
 
-    const options = await indicatorPanel.locator('li').allTextContents();
+    const options = await indicatorPanel.getByRole('option').allTextContents();
     await expect(options).toContain('bb_lowerband');
     await expect(options).toStrictEqual(['bb_upperband', 'bb_lowerband']);
 
     // indicatorPanel.selectOption('bb_lowerband');
     // Close Plot configurator
-    await page.getByRole('button', { name: 'Plot configurator' }).click();
+    await page.getByRole('button', { name: 'Close' }).click();
 
     await expect(page.locator('canvas')).toHaveScreenshot(
       'Chart-Plot-with_BollingerBands-Dark.png',

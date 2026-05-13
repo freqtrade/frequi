@@ -49,7 +49,8 @@ function replaceTemplateColumns(template: Partial<PlotConfig>, nameMap: Record<s
   const newMainPlot: Record<string, IndicatorConfig> = {};
   for (const key in template.main_plot) {
     const newKey = nameMap[key] || key;
-    newMainPlot[newKey] = template.main_plot[key];
+    // TODO: typecheck / don't force the type
+    newMainPlot[newKey] = template.main_plot[key]!;
     if (newMainPlot[newKey].fill_to !== undefined) {
       newMainPlot[newKey].fill_to =
         nameMap[newMainPlot[newKey].fill_to] || newMainPlot[newKey].fill_to;
@@ -65,7 +66,8 @@ function replaceTemplateColumns(template: Partial<PlotConfig>, nameMap: Record<s
     const newSubplot: Record<string, IndicatorConfig> = {};
     for (const key in template.subplots[subplotKey]) {
       const newKey = nameMap[key] || key;
-      newSubplot[newKey] = template.subplots[subplotKey][key];
+      // TODO: typecheck / don't force the type
+      newSubplot[newKey] = template.subplots[subplotKey][key]!;
       if (newSubplot[newKey].fill_to !== undefined) {
         newSubplot[newKey].fill_to =
           nameMap[newSubplot[newKey].fill_to] || newSubplot[newKey].fill_to;

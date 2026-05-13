@@ -1,6 +1,6 @@
 <script setup lang="ts">
+// TODO: is this component used?!?
 import ECharts from 'vue-echarts';
-import { useSettingsStore } from '@/stores/settings';
 
 import type { Trade } from '@/types';
 import type { EChartsOption } from 'echarts';
@@ -16,7 +16,6 @@ import {
   VisualMapComponent,
   VisualMapPiecewiseComponent,
 } from 'echarts/components';
-import { useColorStore } from '@/stores/colors';
 
 use([
   BarChart,
@@ -35,10 +34,15 @@ use([
 const CHART_PROFIT = 'Profit %';
 const CHART_TRADE_COUNT = 'Trade Count';
 
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  showTitle: { default: true, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: Trade[];
+    showTitle?: boolean;
+  }>(),
+  {
+    showTitle: true,
+  },
+);
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 
@@ -50,7 +54,7 @@ const hourlyData = computed(() => {
 
   for (let i = 0, len = props.trades.length; i < len; i += 1) {
     const trade = props.trades[i];
-    if (trade.close_timestamp) {
+    if (trade && trade.close_timestamp) {
       const hour = timestampHour(trade.close_timestamp);
 
       res[hour].profit += trade.profit_ratio;
@@ -82,6 +86,7 @@ const hourlyChartOptions = computed((): EChartsOption => {
     legend: {
       data: [CHART_PROFIT, CHART_TRADE_COUNT],
       right: '5%',
+      top: 0,
     },
     xAxis: {
       type: 'category',

@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import type { IndicatorConfig, PlotConfig } from '@/types';
 
-const props = defineProps({
-  columns: { required: true, type: Array as () => string[] },
-  isVisible: { required: false, default: false, type: Boolean },
-});
+const props = withDefaults(
+  defineProps<{
+    columns: string[];
+    isVisible?: boolean;
+  }>(),
+  {
+    isVisible: false,
+  },
+);
 
 const plotStore = usePlotConfigStore();
 const botStore = useBotStore();
@@ -32,30 +37,34 @@ const subplots = computed((): string[] => {
   // Subplot keys (for selection window)
   return ['main_plot', ...Object.keys(plotStore.editablePlotConfig.subplots)];
 });
-const usedColumns = computed((): { text: string; value: string }[] => {
+const usedColumns = computed((): { label: string; value: string }[] => {
   let usedCols: string[] = [];
   if (isMainPlot.value) {
     usedCols = Object.keys(plotStore.editablePlotConfig.main_plot);
   }
-  if (selSubPlot.value in plotStore.editablePlotConfig.subplots) {
-    usedCols = Object.keys(plotStore.editablePlotConfig.subplots[selSubPlot.value]);
+  const selSubPlot_ = plotStore.editablePlotConfig.subplots[selSubPlot.value];
+  if (selSubPlot_) {
+    usedCols = Object.keys(selSubPlot_);
   }
   return usedCols.map((col) => ({
     value: col,
-    text: !props.columns.includes(col) ? `${col} <-- not available in this chart` : col,
+    label: !props.columns.includes(col) ? `${col} <-- not available in this chart` : col,
   }));
 });
 
 function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
+  console.log('Adding indicator', newIndicator);
   // const { plotConfig.value } = this;
   const name = Object.keys(newIndicator)[0];
+  if (!name) return;
+
   const indicator = newIndicator[name];
   if (isMainPlot.value) {
     // console.log(`Adding ${name} to MainPlot`);
     plotStore.editablePlotConfig.main_plot[name] = { ...indicator };
   } else {
     // console.log(`Adding ${name} to ${selSubPlot.value}`);
-    plotStore.editablePlotConfig.subplots[selSubPlot.value][name] = { ...indicator };
+    plotStore.editablePlotConfig.subplots[selSubPlot.value]![name] = { ...indicator };
   }
 
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
@@ -63,15 +72,18 @@ function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
   addNewIndicator.value = false;
 }
 
-const selIndicator = computed({
+const selIndicator = computed<Record<string, IndicatorConfig>>({
   get() {
     if (addNewIndicator.value) {
       return {};
     }
     if (selIndicatorName.value) {
-      return {
-        [selIndicatorName.value]: currentPlotConfig.value[selIndicatorName.value],
-      };
+      const currentIndicator = currentPlotConfig.value?.[selIndicatorName.value];
+      if (currentIndicator) {
+        return {
+          [selIndicatorName.value]: currentIndicator,
+        };
+      }
     }
     return {};
   },
@@ -108,7 +120,7 @@ function removeIndicator() {
     delete plotStore.editablePlotConfig.main_plot[selIndicatorName.value];
   } else {
     console.log(`Removing ${selIndicatorName.value} from ${selSubPlot.value}`);
-    delete plotStore.editablePlotConfig.subplots[selSubPlot.value][selIndicatorName.value];
+    delete plotStore.editablePlotConfig.subplots[selSubPlot.value]?.[selIndicatorName.value];
   }
 
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
@@ -132,18 +144,24 @@ function deleteSubplot(subplotName: string) {
   delete plotStore.editablePlotConfig.subplots[subplotName];
   // Reassign to trigger reactivity
   plotStore.editablePlotConfig = { ...plotStore.editablePlotConfig };
-  selSubPlot.value = subplots.value[subplots.value.length - 1];
+  selSubPlot.value = subplots.value[subplots.value.length - 1] ?? 'main_plot';
 }
 
 function renameSubplot(oldName: string, newName: string) {
-  plotStore.editablePlotConfig.subplots[newName] = plotStore.editablePlotConfig.subplots[oldName];
-  delete plotStore.editablePlotConfig.subplots[oldName];
+  const oldSubPlot = plotStore.editablePlotConfig.subplots[oldName];
+  if (oldSubPlot) {
+    plotStore.editablePlotConfig.subplots[newName] = oldSubPlot;
+  }
   selSubPlot.value = newName;
+  delete plotStore.editablePlotConfig.subplots[oldName];
 }
 
 function loadPlotConfig() {
   // Reset from store
-  plotStore.editablePlotConfig = deepClone(plotStore.customPlotConfigs[plotStore.plotConfigName]);
+  const existingConf = plotStore.customPlotConfigs[plotStore.plotConfigName];
+  if (existingConf) {
+    plotStore.editablePlotConfig = deepClone(existingConf);
+  }
 }
 
 function loadConfigFromString() {
@@ -158,14 +176,14 @@ function loadConfigFromString() {
 // }
 
 async function loadPlotConfigFromStrategy() {
-  if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy.strategy) {
+  if (botStore.activeBot.isWebserverMode && !botStore.activeBot.strategy?.strategy) {
     showAlert(`No strategy selected, can't load plot config.`);
     return;
   }
   try {
-    await botStore.activeBot.getStrategyPlotConfig();
-    if (botStore.activeBot.strategyPlotConfig) {
-      plotStore.editablePlotConfig = botStore.activeBot.strategyPlotConfig;
+    const strategyPlotConfig = await botStore.activeBot.getStrategyPlotConfig();
+    if (strategyPlotConfig) {
+      plotStore.editablePlotConfig = strategyPlotConfig;
     }
   } catch (error) {
     //
@@ -216,88 +234,106 @@ watch(
       plotStore.isEditing = false;
     }
   },
+  {
+    immediate: true,
+  },
 );
 const fromPlotTemplateVisible = ref(false);
+
+const showTagsInTooltips = computed({
+  get() {
+    return plotStore.editablePlotConfig.options?.showTags ?? true;
+  },
+  set(value: boolean) {
+    if (!plotStore.editablePlotConfig.options) {
+      plotStore.editablePlotConfig.options = {};
+    }
+    plotStore.editablePlotConfig.options.showTags = value;
+  },
+});
+const markAreaZIndex = computed({
+  get() {
+    return plotStore.editablePlotConfig.options?.markAreaZIndex ?? 1;
+  },
+  set(value: number) {
+    if (!plotStore.editablePlotConfig.options) {
+      plotStore.editablePlotConfig.options = {};
+    }
+    plotStore.editablePlotConfig.options.markAreaZIndex = value;
+  },
+});
 </script>
 
 <template>
   <div v-if="columns">
-    <label for="idPlotConfigName">Plot config name</label>
-    <PlotConfigSelect allow-edit></PlotConfigSelect>
-    <Divider />
-    <label for="fieldSel" class="mb">Target Plot</label>
-    <EditValue
-      v-model="selSubPlot"
-      :allow-edit="!isMainPlot"
-      allow-add
-      editable-name="plot configuration"
-      align-vertical
-      @new="addSubplot"
-      @delete="deleteSubplot"
-      @rename="renameSubplot"
-    >
-      <ListBox
-        id="fieldSel"
-        v-model="selSubPlot"
-        :options="subplots"
-        size="small"
-        :pt="{
-          list: {
-            class: 'h-30',
-          },
-        }"
-      >
-      </ListBox>
-    </EditValue>
-    <Divider />
-    <div>
-      <label for="selectedIndicators">Indicators in this plot</label>
-      <ListBox
-        id="selectedIndicators"
-        v-model="selIndicatorName"
-        size="small"
-        empty-message="No indicators selected"
-        option-label="text"
-        option-value="value"
-        :disabled="addNewIndicator"
-        :options="usedColumns"
-        :pt="{
-          list: {
-            class: 'h-30',
-          },
-        }"
-      >
-      </ListBox>
+    <UFormField label="Plot config name" class="text-md">
+      <PlotConfigSelect allow-edit></PlotConfigSelect>
+    </UFormField>
+    <USeparator class="my-2" />
+    <BaseCheckbox v-model="showTagsInTooltips" class="mb-1">Show Tags in Tooltips</BaseCheckbox>
+    <div class="grid grid-cols-2 items-center gap-2 w-full">
+      <label>Mark Area Z-Index <br /><small>(defaults to 1 - Candlechart is at Z=2)</small></label>
+
+      <UInputNumber v-model="markAreaZIndex" class="mb-1" />
     </div>
+    <USeparator class="my-2" />
+
+    <UFormField label="Target Plot" class="text-md">
+      <EditValue
+        v-model="selSubPlot"
+        :allow-edit="!isMainPlot"
+        allow-add
+        editable-name="plot configuration"
+        align-vertical
+        @new="addSubplot"
+        @delete="deleteSubplot"
+        @rename="renameSubplot"
+      >
+        <UListbox
+          id="fieldSel"
+          v-model="selSubPlot"
+          value-key="value"
+          :items="
+            subplots.map((plot) => ({
+              value: plot,
+              label: plot,
+            }))
+          "
+        >
+        </UListbox>
+      </EditValue>
+    </UFormField>
+    <USeparator class="my-2" />
+    <UFormField label="Indicators in this plot" class="text-md">
+      <UListbox v-model="selIndicatorName" value-key="value" :items="usedColumns"> </UListbox>
+    </UFormField>
     <div class="flex flex-row mt-1 gap-1">
-      <Button
-        severity="secondary"
+      <UButton
+        color="neutral"
         title="Remove indicator to plot"
-        size="small"
         :disabled="!selIndicatorName"
         class="col"
         @click="removeIndicator"
-      >
-        Remove indicator
-      </Button>
-      <Button
-        severity="secondary"
+        label="Remove indicator"
+        icon="mdi:minus-box-outline"
+      />
+
+      <UButton
+        color="neutral"
         title="Load indicator config from template"
-        size="small"
         @click="fromPlotTemplateVisible = !fromPlotTemplateVisible"
-      >
-        Indicator from template
-      </Button>
-      <Button
-        severity="primary"
+        label="From template"
+        icon="mdi:folder-arrow-down-outline"
+      />
+
+      <UButton
         title="Add indicator to plot"
-        size="small"
+        icon="mdi:plus-box-outline"
         class="col"
         :disabled="addNewIndicator"
         @click="clickAddNewIndicator"
-      >
-        Add new indicator
-      </Button>
+        label="Add indicator"
+      />
     </div>
 
     <PlotIndicatorSelect
@@ -316,90 +352,81 @@ const fromPlotTemplateVisible = ref(false);
       class="mt-1"
       :columns="columns"
     />
-    <Divider />
+    <USeparator class="my-2" />
 
     <div class="flex flex-row gap-1">
-      <Button
-        severity="secondary"
-        size="small"
+      <UButton
+        color="neutral"
         :disabled="addNewIndicator"
         title="Reset to last saved configuration"
         @click="loadPlotConfig"
-        >Reset</Button
-      >
+        label="Reset"
+        icon="mdi:restore"
+      />
 
       <!--
         Does Resetting a config to "nothing" make sense, or can this be done via "delete / create"?
-        <Button
+        <UButton
         class="ms-1 "
-        severity="secondary"
-        size="small"
+        color="neutral"
         :disabled="addNewIndicator"
         title="Start with empty configuration"
         @click="clearConfig"
-        >Reset</Button
+        >Reset</UButton
       > -->
-      <Button
+      <UButton
         :disabled="
-          (botStore.activeBot.isWebserverMode && botStore.activeBot.botApiVersion < 2.23) ||
+          (botStore.activeBot.isWebserverMode &&
+            !botStore.activeBot.botFeatures.plotConfigFromServer) ||
           !botStore.activeBot.isBotOnline ||
           addNewIndicator
         "
-        severity="secondary"
-        size="small"
+        color="neutral"
+        label="From strategy"
+        icon="mdi:download"
         @click="loadPlotConfigFromStrategy"
-      >
-        From strategy
-      </Button>
-      <Button
+      />
+
+      <UButton
         id="showButton"
-        severity="secondary"
-        size="small"
+        color="neutral"
         :disabled="addNewIndicator"
         title="Show configuration for easy transfer to a strategy"
         @click="showConfig = !showConfig"
-        >{{ showConfig ? 'Hide' : 'Show' }}</Button
-      >
+        :icon="showConfig ? 'mdi:eye-off' : 'mdi:eye'"
+        :label="showConfig ? 'Hide' : 'Show'"
+      />
 
-      <Button
-        severity="primary"
-        size="small"
+      <UButton
         data-toggle="tooltip"
         :disabled="addNewIndicator"
         title="Save configuration"
         @click="savePlotConfig"
-        >Save</Button
-      >
+        label="Save"
+        variant="solid"
+        icon="mdi:content-save"
+      />
     </div>
-    <Button
+    <UButton
       v-if="showConfig"
-      class="ms-1 mt-1"
-      severity="secondary"
-      size="small"
+      class="mt-1"
+      color="neutral"
+      size="sm"
       title="Load configuration from text box below"
       @click="loadConfigFromString"
-      >Load from String</Button
+      icon="mdi:upload"
+      >Load from string below</UButton
     >
     <div v-if="showConfig" class="w-full ms-1 mt-2">
-      <Textarea
+      <UTextarea
         id="TextArea"
         v-model="plotConfigJson"
-        class="w-full min-h-[250px]"
-        size="small"
+        class="w-full"
+        autoresize
+        :maxrows="10"
         :state="tempPlotConfigValid"
       >
-      </Textarea>
+      </UTextarea>
     </div>
   </div>
 </template>
-
-<style scoped lang="css">
-.form-group {
-  margin-bottom: 0.5rem;
-}
-
-hr {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-}
-</style>

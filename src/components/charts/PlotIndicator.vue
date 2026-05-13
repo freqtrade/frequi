@@ -2,10 +2,13 @@
 import type { ChartTypeString, IndicatorConfig } from '@/types';
 import { ChartType } from '@/types';
 
-const props = defineProps({
-  modelValue: { required: true, type: Object as () => Record<string, IndicatorConfig> },
-  columns: { required: true, type: Array as () => string[] },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: Record<string, IndicatorConfig>;
+    columns: string[];
+  }>(),
+  {},
+);
 
 const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
 
@@ -60,10 +63,14 @@ function emitIndicator() {
 watch(
   () => props.modelValue,
   () => {
-    [selAvailableIndicator.value] = Object.keys(props.modelValue);
+    const [firstIndicator] = Object.keys(props.modelValue);
+    if (firstIndicator) {
+      selAvailableIndicator.value = firstIndicator;
+    }
     cancelled.value = false;
     if (selAvailableIndicator.value && props.modelValue) {
       const xx = props.modelValue[selAvailableIndicator.value];
+      if (!xx) return;
       selColor.value = xx.color || randomColor();
       graphType.value = xx.type || ChartType.line;
       fillTo.value = xx.fill_to || '';
@@ -87,34 +94,28 @@ watchDebounced(
 
 <template>
   <div>
-    <div class="flex flex-col lg:flex-row justify-between mt-1">
-      <div class="flex flex-col w-full">
-        <label for="plotTypeSelector" class="form-label">Type</label>
-        <Select
+    <div class="flex flex-col lg:flex-row justify-between mt-1 gap-1">
+      <UFormField label="Type" class="w-full">
+        <USelect
           id="plotTypeSelector"
           v-model="graphType"
-          class="text-left"
-          size="small"
-          :options="availableGraphTypes"
+          class="text-left w-full"
+          :items="availableGraphTypes"
         >
-        </Select>
-      </div>
-      <div class="flex flex-col w-full">
-        <label for="selAvailableIndicator" class="colsel">Color</label>
-        <InputGroup>
-          <InputGroupAddon class="p-0!">
-            <ColorPicker v-model="selColor" type="color" class="m-auto"></ColorPicker>
-          </InputGroupAddon>
-          <InputText id="colsel" v-model="selColor" size="small" class="grow"> </InputText>
-          <InputGroupAddon>
-            <Button severity="primary" size="small" @click="newColor">
-              <template #icon>
-                <i-mdi-dice-multiple />
-              </template>
-            </Button>
-          </InputGroupAddon>
-        </InputGroup>
-      </div>
+        </USelect>
+      </UFormField>
+      <UFormField label="Color" class="w-full">
+        <UFieldGroup>
+          <UPopover placement="bottom" :close-on-click="false">
+            <UButton class="h-8 w-8" :style="{ backgroundColor: selColor }"></UButton>
+            <template #content>
+              <UColorPicker v-model="selColor" class="m-auto"></UColorPicker>
+            </template>
+          </UPopover>
+          <UInput v-model="selColor" class="grow"> </UInput>
+          <UButton icon="mdi:dice-multiple" @click="newColor" />
+        </UFieldGroup>
+      </UFormField>
     </div>
     <PlotIndicatorSelect
       v-if="graphType === ChartType.line"
@@ -123,17 +124,14 @@ watchDebounced(
       class="mt-1"
       label="Area chart - Fill to (leave empty for line chart)"
     />
-    <div v-if="graphType === ChartType.scatter" class="flex flex-col mt-2 gap-1 items-center">
-      <label for="scatterSymbolSize" class="text-nowrap">Scatter symbol size</label>
-      <InputNumber
-        id="scatterSymbolSize"
+    <UFormField label="Scatter symbol size" class="w-full" v-if="graphType === ChartType.scatter">
+      <UInputNumber
         v-model="scatterSymbolSize"
         :min="0"
         show-buttons
-        size="small"
         button-layout="horizontal"
         class="text-center w-full"
       />
-    </div>
+    </UFormField>
   </div>
 </template>

@@ -49,12 +49,15 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     deletePlotConfig(plotConfigName: string) {
       delete this.customPlotConfigs[plotConfigName];
       if (this.plotConfigName === plotConfigName) {
-        this.plotConfigName =
-          this.availablePlotConfigNames[this.availablePlotConfigNames.length - 1];
+        const configName = this.availablePlotConfigNames[this.availablePlotConfigNames.length - 1];
+        if (!configName) return;
+        this.plotConfigName = configName;
       }
     },
     renamePlotConfig(oldName: string, newName: string) {
-      this.customPlotConfigs[newName] = this.customPlotConfigs[oldName];
+      const oldConfig = this.customPlotConfigs[oldName];
+      if (!oldConfig) return;
+      this.customPlotConfigs[newName] = oldConfig;
       delete this.customPlotConfigs[oldName];
       this.plotConfigName = newName;
     },
@@ -68,14 +71,18 @@ export const usePlotConfigStore = defineStore('plotConfig', {
       if (plotConfigName) {
         this.plotConfigName = plotConfigName;
       }
-      console.log('plotConfigChanged', this.plotConfigName);
+
       if (this.isEditing) {
-        this.editablePlotConfig = deepClone(this.customPlotConfigs[this.plotConfigName]);
+        const oldConfig = this.customPlotConfigs[this.plotConfigName];
+        if (!oldConfig) return;
+        this.editablePlotConfig = deepClone(oldConfig);
       }
     },
     duplicatePlotConfig(oldName: string, newName: string) {
       console.log(oldName, newName);
-      this.customPlotConfigs[newName] = deepClone(this.customPlotConfigs[oldName]);
+      const oldConfig = this.customPlotConfigs[oldName];
+      if (!oldConfig) return;
+      this.customPlotConfigs[newName] = deepClone(oldConfig);
       this.plotConfigChanged(newName);
     },
   },
@@ -83,6 +90,7 @@ export const usePlotConfigStore = defineStore('plotConfig', {
     key: FT_PLOT_CONFIG_KEY,
     pick: ['plotConfigName', 'customPlotConfigs'],
     afterHydrate: (context) => {
+      // Ensure default plot config exists
       if (Object.keys(context.store.customPlotConfigs).length === 0) {
         console.log('Initialized plotconfig');
         context.store.customPlotConfigs = { default: deepClone(EMPTY_PLOTCONFIG) };

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import type { Pairlist } from '@/types';
 
 const pairlistStore = usePairlistConfigStore();
@@ -20,20 +19,20 @@ function toggleVisible() {
 </script>
 
 <template>
-  <div class="shadow-sm rounded-sm border border-surface-300 dark:border-surface-700">
+  <div class="shadow-sm rounded-sm border border-neutral-300 dark:border-neutral-700">
     <div
-      class="flex w-full text-start items-center bg-surface-200 dark:bg-surface-700 p-2 border-b border-surface-300 dark:border-surface-600"
+      class="flex w-full text-start items-center bg-neutral-200 dark:bg-neutral-700 p-2 border-b border-neutral-300 dark:border-neutral-600"
     >
       <div class="flex grow items-center">
         <i-mdi-reorder-horizontal
           role="button"
-          class="handle me-2 ms-2 shrink"
+          class="handle me-2 ms-2 flex-auto shrink"
           width="24"
           height="24"
         />
         <div
           role="button"
-          class="flex grow items-start flex-col user-select-none"
+          class="flex items-start flex-col user-select-none w-full"
           @click="toggleVisible"
         >
           <span class="font-bold">{{ pairlist.name }}</span>
@@ -63,11 +62,11 @@ function toggleVisible() {
       />
     </div>
     <Transition>
-      <div v-if="pairlist.showParameters" class="p-2">
+      <div v-if="pairlist.showParameters" class="p-2 space-y-1">
         <PairlistConfigParameter
           v-for="(parameter, key) in pairlist.params"
           :key="key"
-          v-model="pairlist.params[key].value"
+          v-model="parameter.value"
           :param="parameter"
         />
       </div>

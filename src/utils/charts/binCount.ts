@@ -11,9 +11,9 @@ export function binData(data: number[], bins: number) {
 
   // console.log(baseBins);
   for (let i = 0; i < data.length; i++) {
-    const index = Math.min(Math.floor((data[i] - minimum) / binSize), bins - 1);
+    const index = Math.min(Math.floor((data[i]! - minimum) / binSize), bins - 1);
     if (!isNaN(index)) {
-      baseBins[index][1]++;
+      baseBins[index]![1]!++;
     }
   }
 

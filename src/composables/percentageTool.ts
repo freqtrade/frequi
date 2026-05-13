@@ -4,7 +4,7 @@ import type ECharts from 'vue-echarts';
 import type { Ref } from 'vue';
 
 export function usePercentageTool(
-  chartRef: Ref<InstanceType<typeof ECharts> | undefined>,
+  chartRef: Ref<InstanceType<typeof ECharts> | null>,
   theme: Ref<string>,
   timeframe_ms: Ref<number>,
 ) {
@@ -37,7 +37,7 @@ export function usePercentageTool(
       startValues[0] = roundTF(Number(startValues[0]));
       const startnew = chartRef.value?.convertToPixel({ seriesIndex: 0 }, startValues) ?? [0, 0];
 
-      startPos.value = { x: startnew[0], y: startnew[1] };
+      startPos.value = { x: startnew[0]!, y: startnew[1]! };
 
       chartRef.value?.chart?.getZr().on('mousemove', mouseMove);
       drawStart();

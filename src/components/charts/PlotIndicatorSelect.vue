@@ -1,9 +1,14 @@
 <script setup lang="ts">
-const props = defineProps({
-  modelValue: { required: false, default: '', type: String },
-  columns: { required: true, type: Array as () => string[] },
-  label: { required: true, type: String },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string;
+    columns: string[];
+    label: string;
+  }>(),
+  {
+    modelValue: '',
+  },
+);
 const emit = defineEmits<{
   'update:modelValue': [value: string];
   indicatorSelected: [value: string];
@@ -38,15 +43,17 @@ watch(
 
 <template>
   <div class="flex flex-row">
-    <div class="flex flex-col grow">
-      <label for="selAvailableIndicator" class="form-label">{{ label }}</label>
-      <Select v-model="selAvailableIndicator" :options="columns" size="small" :clearable="false">
-      </Select>
-    </div>
-    <Button size="small" title="Abort" class="ms-1 mt-auto" severity="secondary" @click="abort">
-      <template #icon>
-        <i-mdi-close />
-      </template>
-    </Button>
+    <UFormField :label class="grow">
+      <USelectMenu
+        v-model="selAvailableIndicator"
+        :items="columns"
+        :clearable="false"
+        filter
+        class="w-full"
+        auto-filter-focus
+      >
+      </USelectMenu>
+    </UFormField>
+    <UButton title="Abort" class="ms-1 mt-auto" color="neutral" icon="mdi:close" @click="abort" />
   </div>
 </template>

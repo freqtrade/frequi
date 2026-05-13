@@ -1,7 +1,5 @@
 <script setup lang="ts">
-defineProps({
-  hint: { type: String, required: true },
-});
+defineProps<{ hint: string }>();
 </script>
 
 <template>

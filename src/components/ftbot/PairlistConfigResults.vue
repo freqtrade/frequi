@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { usePairlistConfigStore } from '@/stores/pairlistConfig';
 import ChartView from '@/views/ChartsView.vue';
 
 const botStore = useBotStore();
@@ -27,7 +25,7 @@ watch(
       <!-- TODO: look into flexbox solution to have overflow scroll? -->
       <BListGroup class="overflow-auto" style="height: calc(100vh - 135px)">
         <BListGroupItem
-          v-for="(pair, i) in whitelist"
+          v-for="pair in whitelist"
           :key="pair.pair"
           button
           class="flex py-2"
@@ -35,8 +33,7 @@ watch(
           :title="pair.pair"
           @click="botStore.activeBot.selectedPair = pair.pair"
         >
-          <BFormCheckbox v-model="whitelist[i].enabled"></BFormCheckbox>
-          {{ pair.pair }}
+          <BaseCheckbox v-model="pair.enabled">{{ pair.pair }}</BaseCheckbox>
         </BListGroupItem>
       </BListGroup>
       <div class="flex-fill">

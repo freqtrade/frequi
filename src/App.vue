@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useSettingsStore } from './stores/settings';
-import { useColorStore } from './stores/colors';
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 onMounted(() => {
@@ -17,12 +15,13 @@ watch(
 </script>
 
 <template>
-  <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
-    <NavBar />
-    <Toast />
-    <BodyLayout class="grow overflow-auto" />
-    <NavFooter />
-  </div>
+  <UApp>
+    <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
+      <NavBar />
+      <BodyLayout class="grow overflow-auto" />
+      <NavFooter />
+    </div>
+  </UApp>
 </template>
 
 <style scoped>

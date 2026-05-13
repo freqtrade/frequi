@@ -16,6 +16,10 @@ export interface IndicatorConfig {
 export interface PlotConfig {
   main_plot: Record<string, IndicatorConfig>;
   subplots: Record<string, Record<string, IndicatorConfig>>;
+  options?: {
+    showTags?: boolean;
+    markAreaZIndex?: number;
+  };
 }
 
 export interface PlotConfigStorage {

@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type { MultiDeletePayload, MultiForcesellPayload, Trade } from '@/types';
-import { useBotStore } from '@/stores/ftbotwrapper';
-import { useRouter } from 'vue-router';
+import { getPaginationRowModel } from '@tanstack/vue-table';
+import type { TableColumn, TableRow } from '@nuxt/ui';
+import type { MultiDeletePayload, MultiForceExitPayload, Trade } from '@/types';
 
-enum ModalReasons {
-  removeTrade,
-  forceExit,
-  forceExitPartial,
-  cancelOpenOrder,
-}
+import { useRouter } from 'vue-router';
 
 const props = withDefaults(
   defineProps<{
@@ -33,18 +28,13 @@ const props = withDefaults(
 const botStore = useBotStore();
 const router = useRouter();
 const settingsStore = useSettingsStore();
-const currentPage = ref(1);
-const selectedItem = ref();
+const tradesTable = useTemplateRef('tradesTable');
 const filterText = ref('');
-const feTrade = ref<Trade>({} as Trade);
 const perPage = props.activeTrades ? 200 : 15;
-const tradesTable = ref<HTMLFormElement>();
-const forceExitVisible = ref(false);
-const removeTradeVisible = ref(false);
-const confirmExitText = ref('');
-const confirmExitValue = ref<ModalReasons | null>(null);
+const pagination = ref({ pageIndex: 0, pageSize: perPage });
+const { confirm } = useConfirmBox();
+const { forceEntryDialog, forceExitDialog } = useForceTrade();
 
-const increasePosition = ref({ visible: false, trade: {} as Trade });
 function formatPriceWithDecimals(price: number) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
@@ -81,69 +71,88 @@ if (props.multiBotView) {
   tableFields.value.unshift({ field: 'botName', header: 'Bot' });
 }
 
-const feOrderType = ref<string | undefined>(undefined);
-function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
-  feTrade.value = item;
-  confirmExitValue.value = ModalReasons.forceExit;
-  confirmExitText.value = `Really exit trade ${item.trade_id} (Pair ${item.pair}) using ${ordertype} Order?`;
-  feOrderType.value = ordertype;
-  if (settingsStore.confirmDialog === true) {
-    removeTradeVisible.value = true;
-  } else {
-    forceExitExecuter();
-  }
-}
+const tableColumns = computed<TableColumn<Trade>[]>(() =>
+  tableFields.value.map((f) => ({ accessorKey: f.field, header: f.header })),
+);
 
-function forceExitExecuter() {
-  if (confirmExitValue.value === ModalReasons.removeTrade) {
-    const payload: MultiDeletePayload = {
-      tradeid: String(feTrade.value.trade_id),
-      botId: feTrade.value.botId,
+const filteredTrades = computed(() => {
+  if (!filterText.value) return props.trades;
+  const text = filterText.value.toLowerCase();
+  return props.trades.filter(
+    (t) =>
+      t.pair.toLowerCase().includes(text) ||
+      t.exit_reason?.toLowerCase().includes(text) ||
+      t.enter_tag?.toLowerCase().includes(text) ||
+      (props.multiBotView ? t.botName?.toLowerCase().includes(text) : false),
+  );
+});
+
+async function forceExitHandler(item: Trade, ordertype: string | undefined = undefined) {
+  const message = ordertype
+    ? `Really exit trade ${item.trade_id} (Pair ${item.pair}) using a ${ordertype} order?`
+    : `Really exit trade ${item.trade_id} (Pair ${item.pair})?`;
+  if (
+    settingsStore.confirmDialog !== true ||
+    (await confirm({
+      title: 'Force exit trade',
+      description: 'This action cannot be undone.',
+      message,
+      confirmText: 'Confirm',
+    }))
+  ) {
+    const payload: MultiForceExitPayload = {
+      tradeid: String(item.trade_id),
+      botId: item.botId,
     };
-    botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
-  }
-  if (confirmExitValue.value === ModalReasons.forceExit) {
-    const payload: MultiForcesellPayload = {
-      tradeid: String(feTrade.value.trade_id),
-      botId: feTrade.value.botId,
-    };
-    if (feOrderType.value) {
-      payload.ordertype = feOrderType.value;
+    if (ordertype) {
+      payload.ordertype = ordertype;
     }
     botStore
       .forceSellMulti(payload)
       .then((xxx) => console.log(xxx))
       .catch((error) => console.log(error.response));
   }
-  if (confirmExitValue.value === ModalReasons.cancelOpenOrder) {
-    const payload: MultiDeletePayload = {
-      tradeid: String(feTrade.value.trade_id),
-      botId: feTrade.value.botId,
-    };
-    botStore.cancelOpenOrderMulti(payload);
-  }
-
-  feOrderType.value = undefined;
-  removeTradeVisible.value = false;
 }
 
-function removeTradeHandler(item: Trade) {
-  confirmExitText.value = `Really delete trade ${item.trade_id} (Pair ${item.pair})?`;
-  confirmExitValue.value = ModalReasons.removeTrade;
-  feTrade.value = item;
-  removeTradeVisible.value = true;
+async function removeTradeHandler(item: Trade) {
+  if (
+    await confirm({
+      title: 'Delete trade',
+      description: 'This action cannot be undone.',
+      message: `Really delete trade ${item.trade_id} (Pair ${item.pair})?`,
+      confirmText: 'Confirm',
+    })
+  ) {
+    const payload: MultiDeletePayload = {
+      tradeid: String(item.trade_id),
+      botId: item.botId,
+    };
+    botStore.deleteTradeMulti(payload).catch((error) => console.log(error.response));
+  }
 }
 
 function forceExitPartialHandler(item: Trade) {
-  feTrade.value = item;
-  forceExitVisible.value = true;
+  forceExitDialog({
+    trade: item,
+    stakeCurrencyDecimals: botStore.activeBot.botState.stake_currency_decimals ?? 3,
+  });
 }
 
-function cancelOpenOrderHandler(item: Trade) {
-  confirmExitText.value = `Cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`;
-  feTrade.value = item;
-  confirmExitValue.value = ModalReasons.cancelOpenOrder;
-  removeTradeVisible.value = true;
+async function cancelOpenOrderHandler(item: Trade) {
+  if (
+    await confirm({
+      title: 'Cancel open order',
+      description: 'This action cannot be undone.',
+      message: `Really cancel open order for trade ${item.trade_id} (Pair ${item.pair})?`,
+      confirmText: 'Confirm',
+    })
+  ) {
+    const payload: MultiDeletePayload = {
+      tradeid: String(item.trade_id),
+      botId: item.botId,
+    };
+    botStore.cancelOpenOrderMulti(payload).catch((error) => console.log(error.response));
+  }
 }
 
 function reloadTradeHandler(item: Trade) {
@@ -151,11 +160,13 @@ function reloadTradeHandler(item: Trade) {
 }
 
 function handleForceEntry(item: Trade) {
-  increasePosition.value.trade = item;
-  increasePosition.value.visible = true;
+  forceEntryDialog({
+    pair: item.pair,
+    positionIncrease: true,
+  });
 }
 
-const onRowClicked = ({ data: item }) => {
+const onRowClicked = (item: Trade) => {
   if (props.multiBotView && botStore.selectedBot !== item.botId) {
     // Multibotview - on click switch to the bot trade view
     botStore.selectBot(item.botId);
@@ -170,125 +181,106 @@ const onRowClicked = ({ data: item }) => {
   }
 };
 
-watch(
-  () => botStore.activeBot.detailTradeId,
-  (val) => {
-    const index = props.trades.findIndex((v) => v.trade_id === val);
-    // Unselect when another tradeTable is selected!
-    if (index < 0) {
-      selectedItem.value = undefined;
-    }
+function onRowSelect(_e: Event, row: TableRow<Trade>) {
+  onRowClicked(row.original);
+}
+
+const rowSelection = computed({
+  get() {
+    const selectedTradeIndex = filteredTrades.value.findIndex(
+      (t) => String(t.trade_id) === String(botStore.activeBot.detailTradeId),
+    );
+    if (selectedTradeIndex === -1) return {};
+    return { [String(selectedTradeIndex)]: true };
   },
-);
+  set() {
+    // noop, selection is controlled by activeBot.detailTradeId
+  },
+});
 </script>
 
 <template>
   <div class="h-full overflow-auto w-full">
-    <DataTable
+    <UTable
       ref="tradesTable"
-      v-model:selection="selectedItem"
-      :value="
-        trades.filter(
-          (t) =>
-            t.pair.toLowerCase().includes(filterText.toLowerCase()) ||
-            t.exit_reason?.toLowerCase().includes(filterText.toLowerCase()) ||
-            t.enter_tag?.toLowerCase().includes(filterText.toLowerCase()),
-        )
-      "
-      :rows="perPage"
-      :paginator="!activeTrades"
-      :first="(currentPage - 1) * perPage"
-      selection-mode="single"
+      v-model:pagination="pagination"
+      :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
+      :data="filteredTrades"
+      :columns="tableColumns"
       class="text-center"
-      size="small"
-      :scrollable="true"
-      scroll-height="flex"
-      @row-click="onRowClicked"
+      v-model:row-selection="rowSelection"
+      :ui="{
+        tr: 'data-[selected=true]:bg-primary/30 dark:data-[selected=true]:bg-primary-700',
+      }"
+      @select="onRowSelect"
     >
       <template #empty>
         {{ emptyText }}
       </template>
-      <Column
-        v-for="column in tableFields"
-        :key="column.field"
-        :field="column.field"
-        :header="column.header"
-      >
-        <template #body="{ data, field, index }">
-          <template v-if="field === 'trade_id'">
-            {{ data.trade_id }}
-            {{
-              botStore.activeBot.botApiVersion > 2.0 && data.trading_mode !== 'spot'
-                ? (data.trade_id ? '| ' : '') + (data.is_short ? 'Short' : 'Long')
-                : ''
-            }}
-          </template>
-          <template v-else-if="field === 'pair'">
-            {{ `${data.pair}${data.open_order_id || data.has_open_orders ? '*' : ''}` }}
-          </template>
-          <template v-else-if="field === 'actions'">
-            <TradeActionsPopover
-              :id="index"
-              :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
-              :trade="data as Trade"
-              :bot-api-version="botStore.activeBot.botApiVersion"
-              @delete-trade="removeTradeHandler(data as Trade)"
-              @force-exit="forceExitHandler"
-              @force-exit-partial="forceExitPartialHandler"
-              @cancel-open-order="cancelOpenOrderHandler"
-              @reload-trade="reloadTradeHandler"
-              @force-entry="handleForceEntry"
-            />
-          </template>
-          <template v-else-if="field === 'stake_amount' || field === 'max_stake_amount'">
-            {{ formatPriceWithDecimals(data[field]) }}
-            {{ data.trading_mode !== 'spot' ? `(${data.leverage}x)` : '' }}
-          </template>
-          <template
-            v-else-if="field === 'open_rate' || field === 'current_rate' || field === 'close_rate'"
-          >
-            {{ formatPrice(data[field]) }}
-          </template>
-          <template v-else-if="field === 'profit'">
-            <TradeProfit :trade="data" />
-          </template>
-          <template v-else-if="field === 'open_timestamp'">
-            <DateTimeTZ :date="data.open_timestamp" />
-          </template>
-          <template v-else-if="field === 'close_timestamp'">
-            <DateTimeTZ :date="data.close_timestamp ?? 0" />
-          </template>
-          <template v-else>
-            {{ data[field] }}
-          </template>
-        </template>
-      </Column>
-
-      <template v-if="showFilter" #header>
-        <div class="flex justify-end gap-2 p-2">
-          <InputText v-model="filterText" placeholder="Filter" class="w-64" size="small" />
-        </div>
+      <template #trade_id-cell="{ row }">
+        {{ row.original.trade_id }}
+        {{
+          botStore.activeBot.botFeatures.futures && row.original.trading_mode !== 'spot'
+            ? (row.original.trade_id ? '| ' : '') + (row.original.is_short ? 'Short' : 'Long')
+            : ''
+        }}
       </template>
-    </DataTable>
-
-    <ForceExitForm
-      v-if="activeTrades"
-      v-model="forceExitVisible"
-      :trade="feTrade"
-      :stake-currency-decimals="botStore.activeBot.botState.stake_currency_decimals ?? 3"
-    />
-    <ForceEntryForm
-      v-model="increasePosition.visible"
-      :pair="increasePosition.trade?.pair"
-      position-increase
-    />
-
-    <Dialog v-model:visible="removeTradeVisible" :modal="true" header="Exit trade">
-      <p>{{ confirmExitText }}</p>
-      <template #footer>
-        <Button label="Cancel" @click="removeTradeVisible = false" />
-        <Button label="Confirm" severity="danger" @click="forceExitExecuter" />
+      <template #pair-cell="{ row }">
+        {{
+          `${row.original.pair}${row.original.open_order_id || row.original.has_open_orders ? '*' : ''}`
+        }}
       </template>
-    </Dialog>
+      <template #actions-cell="{ row }">
+        <TradeActionsPopover
+          :id="row.original.trade_id ?? row.index"
+          :enable-force-entry="botStore.activeBot.botState.force_entry_enable"
+          :trade="row.original"
+          :bot-features="botStore.activeBot.botFeatures"
+          @delete-trade="removeTradeHandler(row.original)"
+          @force-exit="forceExitHandler"
+          @force-exit-partial="forceExitPartialHandler"
+          @cancel-open-order="cancelOpenOrderHandler"
+          @reload-trade="reloadTradeHandler"
+          @force-entry="handleForceEntry"
+        />
+      </template>
+      <template #stake_amount-cell="{ row }">
+        {{ formatPriceWithDecimals(row.original.stake_amount) }}
+        {{ row.original.trading_mode !== 'spot' ? `(${row.original.leverage}x)` : '' }}
+      </template>
+      <template #max_stake_amount-cell="{ row }">
+        {{ formatPriceWithDecimals(row.original.max_stake_amount ?? 0) }}
+        {{ row.original.trading_mode !== 'spot' ? `(${row.original.leverage}x)` : '' }}
+      </template>
+      <template #open_rate-cell="{ row }">{{ formatPrice(row.original.open_rate) }}</template>
+      <template #current_rate-cell="{ row }">{{
+        formatPrice(row.original.current_rate ?? null)
+      }}</template>
+      <template #close_rate-cell="{ row }">{{
+        formatPrice(row.original.close_rate ?? null)
+      }}</template>
+      <template #amount-cell="{ row }">{{ formatPrice(row.original.amount) }}</template>
+      <template #profit-cell="{ row }"><TradeProfit :trade="row.original" /></template>
+      <template #open_timestamp-cell="{ row }"
+        ><DateTimeTZ :date="row.original.open_timestamp"
+      /></template>
+      <template #close_timestamp-cell="{ row }"
+        ><DateTimeTZ :date="row.original.close_timestamp ?? 0"
+      /></template>
+      <template #exit_reason-cell="{ row }">{{ row.original.exit_reason }}</template>
+      <template #botName-cell="{ row }">{{ row.original.botName }}</template>
+    </UTable>
+
+    <div v-if="showFilter" class="flex justify-end gap-2 p-2">
+      <UInput v-model="filterText" placeholder="Filter" class="w-64" />
+    </div>
+    <div v-if="!activeTrades" class="flex justify-end border-t border-default pt-2">
+      <UPagination
+        :page="(tradesTable?.tableApi?.getState().pagination.pageIndex || 0) + 1"
+        :items-per-page="tradesTable?.tableApi?.getState().pagination.pageSize"
+        :total="tradesTable?.tableApi?.getFilteredRowModel().rows.length ?? 0"
+        @update:page="(p) => tradesTable?.tableApi?.setPageIndex(p - 1)"
+      />
+    </div>
   </div>
 </template>

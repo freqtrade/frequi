@@ -6,7 +6,7 @@
 export function splitTradePair(pair: string): { baseCurrency: string; quoteCurrency: string } {
   if (!pair) return { baseCurrency: '', quoteCurrency: '' };
   const [baseCurrency, quoteCurrency] = pair.split('/');
-  if (quoteCurrency !== undefined) {
+  if (quoteCurrency !== undefined && baseCurrency !== undefined) {
     const quoteCurrencySplit = quoteCurrency.split(':');
     return { baseCurrency: baseCurrency, quoteCurrency: quoteCurrencySplit[0] || quoteCurrency };
   }

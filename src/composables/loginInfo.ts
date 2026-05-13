@@ -19,17 +19,19 @@ const allLoginInfos = useStorage<AuthStorageMulti>(AUTH_LOGIN_INFO, {});
 /**
  * Get available bots with their descriptors
  */
-export const availableBots = computed<BotDescriptors>(() => {
+export const loggedInBots = computed<BotDescriptors>(() => {
   const allInfo = allLoginInfos.value;
   const response: BotDescriptors = {};
   Object.keys(allInfo)
-    .sort((a, b) => (allInfo[a].sortId ?? 0) - (allInfo[b].sortId ?? 0))
+    .sort((a, b) => (allInfo[a]?.sortId ?? 0) - (allInfo[b]?.sortId ?? 0))
     .forEach((k, idx) => {
+      const bot = allInfo[k];
+      if (!bot) return;
       response[k] = {
         botId: k,
-        botName: allInfo[k].botName,
-        botUrl: allInfo[k].apiUrl,
-        sortId: allInfo[k].sortId ?? idx,
+        botName: bot.botName,
+        botUrl: bot.apiUrl,
+        sortId: bot.sortId ?? idx,
       };
     });
 
@@ -40,7 +42,7 @@ export function useLoginInfo(botId: string) {
   console.log('botId', botId);
 
   const currentInfo = computed({
-    get: () => allLoginInfos.value[botId],
+    get: () => allLoginInfos.value[botId]!,
     set: (val) => (allLoginInfos.value[botId] = val),
   });
 
@@ -76,12 +78,9 @@ export function useLoginInfo(botId: string) {
    * Get login info for current bot
    */
   function getLoginInfo(): AuthStorage {
-    if (
-      botId in allLoginInfos.value &&
-      'apiUrl' in allLoginInfos.value[botId] &&
-      'refreshToken' in allLoginInfos.value[botId]
-    ) {
-      return allLoginInfos.value[botId];
+    const allLoginBot = allLoginInfos.value[botId];
+    if (allLoginBot && 'apiUrl' in allLoginBot && 'refreshToken' in allLoginBot) {
+      return allLoginBot;
     }
     return {
       botName: '',
@@ -113,6 +112,7 @@ export function useLoginInfo(botId: string) {
       {},
       {
         auth: { ...auth },
+        withCredentials: true,
       },
     );
     if (data.access_token && data.refresh_token) {

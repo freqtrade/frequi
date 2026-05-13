@@ -1,4 +1,3 @@
-import { useBotStore } from '@/stores/ftbotwrapper';
 import type { AxiosHeaders } from 'axios';
 import axios from 'axios';
 

@@ -59,36 +59,18 @@ const absoluteMin = computed(
   () =>
     props.dailyStats.data.reduce(
       (min, p) => (p[props.profitCol] < min ? p[props.profitCol] : min),
-      props.dailyStats.data[0]?.[props.profitCol],
+      props.dailyStats.data[0]?.[props.profitCol] ?? 0,
     ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
 const absoluteMax = computed(
   () =>
     props.dailyStats.data.reduce(
       (max, p) => (p[props.profitCol] > max ? p[props.profitCol] : max),
-      props.dailyStats.data[0]?.[props.profitCol],
+      props.dailyStats.data[0]?.[props.profitCol] ?? 0,
     ) * (props.profitCol === 'rel_profit' ? 100 : 1),
 );
 
-const units = {
-  multiple: {
-    // the tranform code
-    type: 'units:multiple',
-    transform: function (params) {
-      const rawData = params.upstream.cloneRawData();
-      const { dimension, factor } = params.config; // add default case and error management
-      const data = rawData.map((o) => ({ ...o, [dimension]: o[dimension] * factor }));
-      return [
-        {
-          dimensions: params.upstream.cloneAllDimensionInfo(),
-          data,
-        },
-      ];
-    },
-  },
-};
-
-registerTransform(units.multiple);
+registerTransform(ftEchartsTransforms.multiple);
 
 const colorStops: LinearGradientObject = {
   type: 'linear',
@@ -129,7 +111,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
       },
       {
         transform: {
-          type: 'units:multiple',
+          type: 'ft:multiple',
           config: { dimension: props.profitCol, factor: props.profitCol == 'rel_profit' ? 100 : 1 },
         },
       },
@@ -161,7 +143,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
 
         return `
           ${date}<br/>
-          <div style=">  
+          <div style=">
             <div style="display: flex; justify-content: space-between;"><span>${params[0].marker} Profit:</span> <span style="margin-left: 2em"><strong>${absProfit} (${relProfit})</strong></span></div>
             <div style="display: flex; justify-content: space-between;"><span>${params[1].marker} Trade count:</span> <span style="margin-left: 2em"><strong>${tradeCount}</strong></span></div>
           </div>
@@ -181,6 +163,7 @@ const dailyChartOptions: ComputedRef<EChartsOption> = computed(() => {
         },
         { name: CHART_TRADE_COUNT },
       ],
+      top: 0,
       right: '5%',
     },
     xAxis: [

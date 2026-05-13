@@ -9,8 +9,9 @@ export interface ComparisonTableItems {
   stakeCurrency: string;
   wins: number;
   losses: number;
-  balance?: number;
+  balance: number;
   stakeCurrencyDecimals?: number;
   isDryRun?: boolean;
   isOnline?: boolean;
+  balanceAppendix: string;
 }

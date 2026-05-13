@@ -6,7 +6,6 @@ import {
   setTimezone,
   timestampToDateString,
   timestampToTimeRangeString,
-  dateStringToTimeRange,
   timestampHour,
   dateFromString,
   timestampmsOrNa,
@@ -75,11 +74,6 @@ describe('timeformatter.ts', () => {
     expect(timestampToTimeRangeString(timestamp)).toEqual('20220427');
     setTimezone('CET');
     expect(timestampToTimeRangeString(timestamp)).toEqual('20220428');
-  });
-
-  it('dateStringToTimeRange converts to correct timerange', () => {
-    expect(dateStringToTimeRange('2022-04-28')).toEqual('20220428');
-    expect(dateStringToTimeRange('2019-04-01')).toEqual('20190401');
   });
 
   it('timestampHour converts', () => {

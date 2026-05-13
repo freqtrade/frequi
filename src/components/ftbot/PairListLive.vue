@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import type Popover from 'primevue/popover';
-
 const newblacklistpair = ref('');
-const blackListShow = ref(false);
-const blacklistAddPopover = ref<InstanceType<typeof Popover>>();
 const blacklistSelect = ref<number[]>([]);
 const botStore = useBotStore();
 
@@ -19,16 +14,9 @@ function initBlacklist() {
 
 function addBlacklistPair() {
   if (newblacklistpair.value) {
-    blackListShow.value = false;
-    blacklistAddPopover.value?.hide();
-
     botStore.activeBot.addBlacklist({ blacklist: [newblacklistpair.value] });
     newblacklistpair.value = '';
   }
-}
-
-function showPopover(event: MouseEvent) {
-  blacklistAddPopover.value?.show(event);
 }
 
 function blacklistSelectClick(key: number) {
@@ -81,13 +69,13 @@ onMounted(() => {
       <li
         v-for="(pair, key) in botStore.activeBot.whitelist"
         :key="key"
-        class="pair bg-white text-black align-middle border border-secondary"
+        class="pair bg-white text-black border-secondary"
       >
         {{ pair }}
       </li>
     </ul>
     <p v-else>List Unavailable. Please Login and make sure server is running.</p>
-    <Divider />
+    <USeparator />
 
     <!-- Blacklsit -->
     <div>
@@ -99,57 +87,36 @@ onMounted(() => {
           Blacklist
         </label>
         <div class="flex flex-cols items-center gap-1 pe-1">
-          <Button
-            ref="blacklist-add-btn"
-            severity="secondary"
-            :class="botStore.activeBot.botApiVersion >= 1.12 ? 'col-6' : ''"
-            size="small"
-            @click="showPopover"
-          >
-            <template #icon>
-              <i-mdi-plus-box-outline />
+          <UPopover>
+            <UButton color="neutral" icon="mdi:plus-box-outline" size="md" />
+            <template #content>
+              <form ref="form" @submit.prevent="addBlacklistPair" class="py-2 px-3">
+                <div class="space-y-1">
+                  <h4 class="font-bold mb-2">Add Pair to Blacklist</h4>
+                  <UFormField label="Pair" class="space-x-2" required>
+                    <UInput v-model="newblacklistpair" required autofocus></UInput>
+                  </UFormField>
+                  <UButton id="blacklist-submit" class="ms-auto mb-2" type="submit"> Add </UButton>
+                </div>
+              </form>
             </template>
-          </Button>
-          <Button
-            v-if="botStore.activeBot.botApiVersion >= 1.12"
-            size="small"
-            severity="secondary"
+          </UPopover>
+          <UButton
+            v-if="botStore.activeBot.botFeatures.botBlacklistModify"
+            color="neutral"
             title="Select pairs to delete pairs from your blacklist."
             :disabled="blacklistSelect.length === 0"
+            icon="mdi:delete"
             @click="deletePairs"
-          >
-            <template #icon>
-              <i-mdi-delete />
-            </template>
-          </Button>
+          />
         </div>
       </div>
-      <Popover ref="blacklistAddPopover" class="p-1">
-        <form ref="form" @submit.prevent="addBlacklistPair">
-          <div class="space-y-1">
-            <h4 class="font-bold mb-2">Add Pair to Blacklist</h4>
-            <div class="space-x-2">
-              <label for="pair-input">Pair</label>
-              <InputText id="pair-input" v-model="newblacklistpair" required autofocus></InputText>
-            </div>
-            <Button
-              id="blacklist-submit"
-              class="float-end mb-2"
-              size="small"
-              severity="primary"
-              type="submit"
-            >
-              Add
-            </Button>
-          </div>
-        </form>
-      </Popover>
     </div>
     <ul v-if="botStore.activeBot.blacklist.length" class="list">
       <li
         v-for="(pair, key) in botStore.activeBot.blacklist"
         :key="key"
-        class="pair bg-black text-white text-ellipsis overflow-hidden"
+        class="pair bg-black text-white"
         :title="pair"
         :class="blacklistSelect.indexOf(key) > -1 ? 'active' : ''"
         @click="blacklistSelectClick(key)"
@@ -157,7 +124,11 @@ onMounted(() => {
         <span class="check"><i-mdi-check-circle /></span>{{ pair }}
       </li>
     </ul>
-    <p v-else>BlackList Unavailable. Please Login and make sure server is running.</p>
+    <p v-else>
+      No Blacklist Available. <br />
+      If you expect to have pairs in your blacklist, please login and make sure the server is
+      running.
+    </p>
   </div>
 </template>
 
@@ -193,6 +164,6 @@ onMounted(() => {
 }
 
 .pair {
-  @apply p-2 border rounded cursor-pointer relative border-surface-500;
+  @apply p-2 border rounded cursor-pointer relative border-neutral-500 text-ellipsis overflow-hidden;
 }
 </style>

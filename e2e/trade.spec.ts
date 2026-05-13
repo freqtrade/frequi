@@ -33,7 +33,7 @@ test.describe('Trade', () => {
 
     // // Click on Performance button and wait for response
 
-    const performanceButton = page.locator('button[role="tab"] div[title="Performance"]');
+    const performanceButton = page.locator('button[role="tab"][id*="performance"]');
     await expect(performanceButton).toBeVisible();
     await Promise.all([page.waitForResponse('**/performance'), performanceButton.click()]);
 
@@ -67,7 +67,7 @@ test.describe('Trade', () => {
     // // Click on General tab
     const performancePair = page.locator('td:has-text("XRP/USDT")');
     await expect(performancePair).toBeInViewport();
-    await page.locator('button[role="tab"] div[title="General"]').click();
+    await page.locator('button[role="tab"][id*="general"]').click();
 
     // // Check visibility of elements
     await expect(performancePair).not.toBeInViewport();
@@ -96,7 +96,9 @@ test.describe('Trade', () => {
     await expect(modalOkButton).toBeVisible();
     await modalOkButton.click();
 
-    await expect(page.getByText('Config reloaded successfully.')).toBeInViewport();
+    const configReloadToast = page.getByText('Config reloaded successfully.', { exact: true });
+    await expect(configReloadToast).toBeInViewport();
+    await expect(configReloadToast).toBeVisible();
   });
   test('Trade page - drag and drop', async ({ page }) => {
     await Promise.all([
@@ -118,7 +120,7 @@ test.describe('Trade', () => {
     const multiPanebb = await multiPane.boundingBox();
 
     await page.getByRole('button', { name: 'FT' }).click();
-    await page.getByText('Lock dynamic Layout').click();
+    await page.getByText('Unlock Layout').click();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
     // Click outside of popup to ensure it's closed

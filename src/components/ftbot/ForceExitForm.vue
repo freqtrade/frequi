@@ -1,26 +1,22 @@
 <script setup lang="ts">
-import { useBotStore } from '@/stores/ftbotwrapper';
-import type { ForceSellPayload, Trade } from '@/types';
-import { ref, computed } from 'vue';
+import type { ForceExitPayload, Trade } from '@/types';
 import { refDebounced } from '@vueuse/core';
 
-const props = defineProps({
-  trade: {
-    type: Object as () => Trade,
-    required: true,
-  },
-  stakeCurrencyDecimals: {
-    type: Number,
-    required: true,
-  },
-});
+export interface ForceExitFormProps {
+  trade: Trade;
+  stakeCurrencyDecimals: number;
+}
 
-const model = defineModel<boolean>();
+const props = defineProps<ForceExitFormProps>();
+const emit = defineEmits<{
+  close: [value: boolean];
+}>();
 
 const botStore = useBotStore();
 
 const form = ref<HTMLFormElement>();
 const amount = ref<number | undefined>(undefined);
+const price = ref<number | undefined>(undefined);
 const ordertype = ref('limit');
 
 const checkFormValidity = () => {
@@ -29,13 +25,13 @@ const checkFormValidity = () => {
   return valid;
 };
 
-async function handleSubmit() {
+async function handleExit() {
   // Exit when the form isn't valid
   if (!checkFormValidity()) {
     return;
   }
   // call forceentry
-  const payload: ForceSellPayload = { tradeid: String(props.trade.trade_id) };
+  const payload: ForceExitPayload = { tradeid: String(props.trade.trade_id) };
 
   if (ordertype.value) {
     payload.ordertype = ordertype.value;
@@ -43,9 +39,12 @@ async function handleSubmit() {
   if (amount.value) {
     payload.amount = amount.value;
   }
+  if (price.value && botStore.activeBot.botFeatures.forceExitWithPrice) {
+    payload.price = price.value;
+  }
   await nextTick();
   botStore.activeBot.forceexit(payload);
-  model.value = false;
+  emit('close', true);
 }
 
 function resetForm() {
@@ -54,11 +53,6 @@ function resetForm() {
     botStore.activeBot.botState?.order_types?.force_exit ||
     botStore.activeBot.botState?.order_types?.exit ||
     'limit';
-}
-
-function handleExit() {
-  // Trigger submit handler
-  handleSubmit();
 }
 
 const amountDebounced = refDebounced(amount, 250, { maxWait: 500 });
@@ -72,65 +66,80 @@ const orderTypeOptions = [
   { value: 'market', text: 'Market' },
   { value: 'limit', text: 'Limit' },
 ];
+resetForm();
 </script>
 
 <template>
-  <Dialog
-    v-model:visible="model"
-    :header="`Force exiting a trade`"
-    modal
-    @show="resetForm"
-    @hide="resetForm"
-  >
-    <form ref="form" class="space-y-4 md:min-w-[32rem]" @submit.prevent="handleSubmit">
-      <div class="mb-4">
-        <p class="mb-2">
-          <span>Exiting Trade #{{ trade.trade_id }} {{ trade.pair }}.</span>
-          <br />
-          <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
-        </p>
-      </div>
-
-      <div>
-        <label for="stake-input" class="block font-medium mb-1">
-          Amount in {{ trade.base_currency }} [optional]
-          <span class="text-sm italic ml-1">{{ amountInBase }}</span>
-        </label>
-        <div class="space-y-2">
-          <InputNumber
-            id="stake-input"
-            v-model="amount"
-            :min="0"
-            :max="trade.amount"
-            :use-grouping="false"
-            :step="0.000001"
-            :max-fraction-digits="8"
-            class="w-full"
-            show-buttons
-          />
-          <Slider v-model="amount" :min="0" :max="trade.amount" :step="0.000001" class="w-full" />
+  <UModal :title="`Force exiting a trade`" description="Configure and confirm a forced trade exit">
+    <template #body>
+      <form ref="form" class="space-y-4" @submit.prevent="handleExit">
+        <div class="mb-4">
+          <p class="mb-2">
+            <span>Exiting Trade #{{ trade.trade_id }} {{ trade.pair }}.</span>
+            <br />
+            <span>Currently owning {{ trade.amount }} {{ trade.base_currency }}</span>
+          </p>
         </div>
-      </div>
 
-      <div>
-        <label class="block font-medium mb-1">*OrderType</label>
-        <SelectButton
-          v-model="ordertype"
-          :options="orderTypeOptions"
-          :allow-empty="false"
-          option-label="text"
-          option-value="value"
-          size="small"
-          class="w-full"
-        />
-      </div>
-    </form>
+        <UFormField
+          :label="`Amount in ${trade.base_currency} [optional]`"
+          :description="amountInBase"
+        >
+          <div class="space-y-2">
+            <UInputNumber
+              v-model="amount"
+              :min="0"
+              :max="trade.amount"
+              :step="trade.amount_precision ?? 0.000001"
+              :format-options="{
+                maximumFractionDigits: 8,
+              }"
+              class="w-full"
+            />
+            <USlider
+              v-model="amount"
+              :min="0"
+              :max="trade.amount"
+              :step="trade.amount_precision ?? 0.000001"
+              class="w-full"
+            />
+          </div>
+        </UFormField>
+        <UFormField
+          label="Price"
+          v-if="botStore.activeBot.botFeatures.forceExitWithPrice"
+          description="Only available with limit orders"
+        >
+          <UInputNumber
+            id="price-input"
+            v-model="price"
+            :disabled="ordertype !== 'limit'"
+            :min="0"
+            :step="trade.price_precision ?? 0.000001"
+            :stepSnapping="false"
+            :format-options="{
+              maximumFractionDigits: 8,
+            }"
+            class="w-full"
+          />
+        </UFormField>
 
-    <template #footer>
-      <div class="flex justify-end gap-2">
-        <Button severity="secondary" size="small" @click="model = false">Cancel</Button>
-        <Button severity="primary" size="small" @click="handleExit">Exit Position</Button>
-      </div>
+        <UFormField label="OrderType" required>
+          <USegmentedControl
+            v-model="ordertype"
+            :items="orderTypeOptions"
+            label-key="text"
+            value-key="value"
+            class="w-full"
+          />
+        </UFormField>
+      </form>
     </template>
-  </Dialog>
+    <template #footer>
+      <UButton class="ms-auto" icon="mdi:close" color="neutral" @click="emit('close', false)"
+        >Cancel</UButton
+      >
+      <UButton icon="mdi:exit-to-app" @click="handleExit">Exit Position</UButton>
+    </template>
+  </UModal>
 </template>

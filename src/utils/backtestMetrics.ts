@@ -1,23 +1,23 @@
 import type { StrategyBacktestResult, Trade } from '@/types';
 
 function getSortedTrades(trades: Trade[]): Trade[] {
-  const sortedTrades = trades.slice().sort((a, b) => a.profit_ratio - b.profit_ratio);
+  const sortedTrades = trades.slice().sort((a, b) => (a.profit_ratio ?? 0) - (b.profit_ratio ?? 0));
   return sortedTrades;
 }
 
 function getBestPair(trades: Trade[]) {
-  if (trades.length === 0) {
+  const value = trades[trades.length - 1];
+  if (!value) {
     return 'N/A';
   }
-  const value = trades[trades.length - 1];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 }
 
 function getWorstPair(trades: Trade[]) {
-  if (trades.length === 0) {
+  const value = trades[0];
+  if (!value) {
     return 'N/A';
   }
-  const value = trades[0];
   return `${value.pair} ${formatPercent(value.profit_ratio, 2)}`;
 }
 
@@ -60,6 +60,41 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
         ]
       : [];
 
+  const _b_append = ` (wallet balance)`;
+  const walletBalanceMetrics = result.wallet_stats
+    ? [
+        { '--- Wallet Balance metrics ---': '' },
+        {
+          [`Max Drawdown${_b_append}`]: formatPercent(result.wallet_stats.max_drawdown_account),
+        },
+        {
+          [`Max Drawdown abs${_b_append}`]: formatPriceStake(result.wallet_stats.max_drawdown_abs),
+        },
+        {
+          [`Drawdown duration${_b_append}`]: result.wallet_stats.drawdown_duration ?? 'N/A',
+        },
+        {
+          [`Profit at Drawdown start | end${_b_append}`]: `${formatPriceStake(result.wallet_stats.max_drawdown_high)} | ${formatPriceStake(
+            result.wallet_stats.max_drawdown_low,
+          )}`,
+        },
+        // { 'Max Drawdown dates (wallet balance)': formatPercent(result.wallet_stats.max_drawdown_account) },
+        {
+          [`Drawdown start${_b_append}`]: timestampms(result.wallet_stats?.drawdown_start_ts ?? 0),
+        },
+        { [`Drawdown end${_b_append}`]: timestampms(result.wallet_stats?.drawdown_end_ts ?? 0) },
+        {
+          [`Sortino${_b_append}`]: formatNumber(result.wallet_stats.sortino, 2),
+        },
+        {
+          [`Sharpe${_b_append}`]: formatNumber(result.wallet_stats.sharpe, 2),
+        },
+        {
+          [`Calmar${_b_append}`]: formatNumber(result.wallet_stats.calmar, 2),
+        },
+      ]
+    : [];
+
   const tmp = [
     {
       'Total Profit': `${formatPercent(result.profit_total)} | ${formatPriceStake(
@@ -70,31 +105,31 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       CAGR: `${result.cagr ? formatPercent(result.cagr) : 'N/A'}`,
     },
     {
-      Sortino: `${result.sortino ? result.sortino.toFixed(2) : 'N/A'}`,
+      Sortino: formatNumber(result.sortino, 2),
     },
     {
-      Sharpe: `${result.sharpe ? result.sharpe.toFixed(2) : 'N/A'}`,
+      Sharpe: formatNumber(result.sharpe, 2),
     },
     {
-      Calmar: `${result.calmar ? result.calmar.toFixed(2) : 'N/A'}`,
+      Calmar: formatNumber(result.calmar, 2),
     },
     {
-      'System Quality Number (SQN)': `${result.sqn ? result.sqn.toFixed(2) : 'N/A'}`,
+      'System Quality Number (SQN)': formatNumber(result.sqn, 2),
     },
     {
       [`Expectancy ${result.expectancy_ratio ? '(ratio)' : ''}`]: `${
         result.expectancy
           ? result.expectancy_ratio
-            ? result.expectancy.toFixed(2) + ' (' + result.expectancy_ratio.toFixed(2) + ')'
-            : result.expectancy.toFixed(2)
+            ? `${formatNumber(result.expectancy, 2)} (${formatNumber(result.expectancy_ratio, 2)})`
+            : formatNumber(result.expectancy, 2)
           : 'N/A'
       }`,
     },
     {
-      'Profit factor': `${result.profit_factor ? formatPrice(result.profit_factor, 3) : 'N/A'}`,
+      'Profit factor': formatNumber(result.profit_factor, 3),
     },
     {
-      'Total trades / Daily Avg Trades': `${result.total_trades} / ${result.trades_per_day}`,
+      'Total trades / Daily Avg Trades': `${result.total_trades} / ${formatNumber(result.trades_per_day, 2)}`,
     },
     // { 'First trade': result.backtest_fi },
     // { 'First trade Pair': result.backtest_best_day },
@@ -110,11 +145,11 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
     },
 
     {
-      'Win/Draw/Loss': `${pairSummary.wins} / ${pairSummary.draws} / ${pairSummary.losses} ${
-        isNotUndefined(pairSummary.winrate)
+      'Win/Draw/Loss': `${pairSummary?.wins} / ${pairSummary?.draws} / ${pairSummary?.losses} ${
+        isNotUndefined(pairSummary?.winrate)
           ? '(WR: ' +
             formatPercent(
-              result.results_per_pair[result.results_per_pair.length - 1].winrate ?? 0,
+              result.results_per_pair[result.results_per_pair.length - 1]?.winrate ?? 0,
               2,
             ) +
             ')'
@@ -125,10 +160,23 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       'Days win/draw/loss': `${result.winning_days} / ${result.draw_days} / ${result.losing_days}`,
     },
     {
+      // TODO: min/max/avg trade duration should be aligned with the terminal output
+      'Min. Duration winners': humanizeDurationFromSeconds(result.winner_holding_min_s),
+    },
+    {
       'Avg. Duration winners': humanizeDurationFromSeconds(result.winner_holding_avg_s),
     },
     {
+      'Max. Duration winners': humanizeDurationFromSeconds(result.winner_holding_max_s),
+    },
+    {
+      'Min. Duration Losers': humanizeDurationFromSeconds(result.loser_holding_min_s),
+    },
+    {
       'Avg. Duration Losers': humanizeDurationFromSeconds(result.loser_holding_avg_s),
+    },
+    {
+      'Max. Duration Losers': humanizeDurationFromSeconds(result.loser_holding_max_s),
     },
     {
       'Max Consecutive Wins / Loss':
@@ -153,8 +201,12 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
     ...shortMetrics,
 
     { ___: '___' },
-    { 'Min balance': formatPriceStake(result.csum_min) },
-    { 'Max balance': formatPriceStake(result.csum_max) },
+    {
+      'Min/Max balance (closed trades)': `${formatPriceStake(result.csum_min)} / ${formatPriceStake(result.csum_max)}`,
+    },
+    {
+      'Min/Max balance (wallet balance)': `${formatPriceStake(result.wallet_stats?.low_balance)} / ${formatPriceStake(result.wallet_stats?.high_balance)}`,
+    },
     { 'Market change': formatPercent(result.market_change) },
     { '___  ': '___' },
     {
@@ -164,14 +216,17 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       'Max Drawdown ABS': formatPriceStake(result.max_drawdown_abs),
     },
     {
-      'Drawdown high | low': `${formatPriceStake(result.max_drawdown_high)} | ${formatPriceStake(
+      'Drawdown duration': result.drawdown_duration ?? 'N/A',
+    },
+    {
+      'Profit at Drawdown start | end': `${formatPriceStake(result.max_drawdown_high)} | ${formatPriceStake(
         result.max_drawdown_low,
       )}`,
     },
     { 'Drawdown start': timestampms(result.drawdown_start_ts) },
     { 'Drawdown end': timestampms(result.drawdown_end_ts) },
-    { '___   ': '___' },
-
+    ...walletBalanceMetrics,
+    { '___    ': '___' },
     {
       'Best Pair': `${result.best_pair.key} ${formatPercent(result.best_pair.profit_total)}`,
     },
@@ -224,25 +279,20 @@ export function generateBacktestSettingRows(result: StrategyBacktestResult) {
     {
       'Trail only when offset is reached': result.trailing_only_offset_is_reached,
     },
-    { 'Trailing Stop positive': result.trailing_stop_positive },
+    { 'Trailing Stop positive': formatNumber(result.trailing_stop_positive) },
     {
-      'Trailing stop positive offset': result.trailing_stop_positive_offset,
+      'Trailing stop positive offset': formatNumber(result.trailing_stop_positive_offset),
     },
     { 'Custom Stoploss': result.use_custom_stoploss },
     { ROI: JSON.stringify(result.minimal_roi) },
     {
-      'Use Exit Signal':
-        result.use_exit_signal !== undefined ? result.use_exit_signal : result.use_sell_signal,
+      'Use Exit Signal': result.use_exit_signal ?? result.use_sell_signal,
     },
     {
-      'Exit profit only':
-        result.exit_profit_only !== undefined ? result.exit_profit_only : result.sell_profit_only,
+      'Exit profit only': result.exit_profit_only ?? result.sell_profit_only,
     },
     {
-      'Exit profit offset':
-        result.exit_profit_offset !== undefined
-          ? result.exit_profit_offset
-          : result.sell_profit_offset,
+      'Exit profit offset': formatNumber(result.exit_profit_offset ?? result.sell_profit_offset),
     },
     { 'Enable protections': result.enable_protections },
     {

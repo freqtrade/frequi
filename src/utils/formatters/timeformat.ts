@@ -1,7 +1,6 @@
 import { parse, toDate } from 'date-fns';
 import { format, toZonedTime, fromZonedTime } from 'date-fns-tz';
 import humanizeDuration from 'humanize-duration';
-import { isNotUndefined } from './numberformat';
 
 /** Parse date from string, returns date in UTC! */
 export function dateFromString(datestring: string, format: string): Date {
@@ -77,14 +76,6 @@ export function timestampToTimeRangeString(ts: number | Date): string {
   return formatDate(toDate(ts), 'yyyyMMdd');
 }
 
-/**
- * Converts a String of the format yyyy-MM-dd to YYYYMMDD. To be used as timerange.
- * @param datestring Input string (in the format yyyy-MM-dd)
- */
-export function dateStringToTimeRange(datestring: string): string {
-  return isNotUndefined(datestring) ? datestring.replace(/-/g, '') : '';
-}
-
 export function timestampHour(ts: number): number {
   return Number(formatDate(toDate(ts), 'HH'));
 }
@@ -93,15 +84,14 @@ export function timestampHour(ts: number): number {
  *  Get humanized Duration from seconds
  * @param duration Duration in seconds
  */
-export function humanizeDurationFromSeconds(duration: number): string {
-  return humanizeDuration(duration * 1000);
+export function humanizeDurationFromSeconds(duration: number | undefined): string {
+  return duration ? humanizeDuration(duration * 1000) : 'N/A';
 }
 
 export default {
   timestampms,
   timestampmsWithTimezone,
   timestampToDateString,
-  dateStringToTimeRange,
   setTimezone,
 };
 

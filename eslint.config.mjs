@@ -1,28 +1,17 @@
 import pluginJs from '@eslint/js';
 import prettierConfig from '@vue/eslint-config-prettier';
-import vueEslintConfig from '@vue/eslint-config-typescript';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfigWithVueTs(
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/recommended'],
-  ...vueEslintConfig({
-    extends: [
-      'recommended',
-      // 'strict',
-    ],
-  }),
+  pluginVue.configs['flat/essential'],
+  vueTsConfigs.recommended,
+
   prettierConfig,
   {
-    languageOptions: {
-      parserOptions: {
-        parser: '@typescript-eslint/parser',
-      },
-    },
     rules: {
       // // disable eslint no-shadow as it's causing false positives on typescript enums
       // 'no-shadow': 'off',
@@ -36,20 +25,12 @@ export default [
           caughtErrorsIgnorePattern: '^err|^error',
         },
       ],
-      // Custom vue rules
-
-      'vue/block-lang': [
-        'error',
-        {
-          script: {
-            lang: 'ts',
-          },
-        },
-      ],
     },
   },
   {
+    files: ['src/**/*.vue'],
     rules: {
+      // Custom vue rules
       'vue/component-api-style': ['error'],
       'vue/component-name-in-template-casing': [
         'error',
@@ -65,7 +46,17 @@ export default [
         },
       ],
       'vue/define-emits-declaration': ['error'],
+      'vue/define-props-declaration': ['error'],
       'vue/enforce-style-attribute': ['error'],
+      // TODO: should be activated
+      // 'vue/prefer-use-template-ref': ['error'],
+      // 'vue/no-useless-v-bind': ['error'],
+      'vue/no-undef-directives': ['error'],
+      'vue/no-ref-object-reactivity-loss': ['error'],
+      'vue/no-use-v-else-with-v-for': ['error'],
+      'vue/no-useless-mustaches': ['error'],
+      'vue/no-import-compiler-macros': ['error'],
+      'vue/eqeqeq': ['error'],
       'vue/block-order': [
         'error',
         {
@@ -74,4 +65,4 @@ export default [
       ],
     },
   },
-];
+);

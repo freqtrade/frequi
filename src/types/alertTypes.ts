@@ -1,4 +1,4 @@
-export type AlertSeverity = 'error' | 'warn' | 'info' | 'success';
+export type AlertSeverity = 'error' | 'warning' | 'info' | 'success';
 
 export interface AlertType {
   message: string;

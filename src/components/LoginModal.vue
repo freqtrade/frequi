@@ -1,45 +1,27 @@
 <script setup lang="ts">
 import type { AuthStorageWithBotId } from '@/types';
 
-defineProps({
-  loginText: { required: false, default: 'Login', type: String },
-});
-const loginViewOpen = ref(false);
-const loginInfo = ref<AuthStorageWithBotId | undefined>(undefined);
+export interface LoginModalProps {
+  loginInfo?: AuthStorageWithBotId;
+}
 
-const handleLoginResult = (result: boolean) => {
+defineProps<LoginModalProps>();
+const emit = defineEmits<{
+  close: [value: boolean];
+}>();
+
+function loginResult(result: boolean) {
   if (result) {
-    loginViewOpen.value = false;
+    // Only close if
+    emit('close', result);
   }
-};
-
-const openLoginModal = async (botInfo: AuthStorageWithBotId | undefined = undefined) => {
-  loginInfo.value = botInfo;
-  await nextTick();
-  loginViewOpen.value = true;
-};
-defineExpose({
-  openLoginModal,
-});
+}
 </script>
 
 <template>
-  <div>
-    <Button severity="secondary" @click="openLoginModal()"
-      ><i-mdi-login class="me-1" />{{ loginText }}</Button
-    >
-    <Dialog
-      id="modal-prevent-closing"
-      v-model:visible="loginViewOpen"
-      header="Login to your bot"
-      :dismissable-mask="true"
-    >
-      <BotLogin
-        class="w-[1000px] max-w-[500px]"
-        in-modal
-        :existing-auth="loginInfo"
-        @login-result="handleLoginResult"
-      />
-    </Dialog>
-  </div>
+  <UModal title="Login to your bot" description="Enter your bot credentials to connect">
+    <template #body>
+      <BotLogin in-modal :existing-auth="loginInfo" @login-result="loginResult" />
+    </template>
+  </UModal>
 </template>

@@ -11,7 +11,7 @@ test.describe('Settings', () => {
       // page.waitForResponse('**/ShowConf'),
     ]);
     // await expect(page.locator('li', { hasText: 'Online' })).toBeInViewport();
-    await expect(page.locator('h1', { hasText: 'Welcome to the Freqtrade UI' })).toBeInViewport({
+    await expect(page.locator('h1', { hasText: 'Welcome to the FreqtradeUI' })).toBeInViewport({
       timeout: 5000,
     });
     await expect(page.getByRole('button', { name: 'FT' })).toBeVisible();
@@ -22,7 +22,7 @@ test.describe('Settings', () => {
     await expect(page.url()).toBe('http://localhost:3000/settings');
 
     // Switch option in the settings.
-    await page.getByRole('combobox', { name: 'Show pill in icon' }).click();
+    await page.getByRole('combobox').filter({ hasText: 'Show pill in icon' }).click();
     await page.getByRole('option', { name: 'Show in title' }).click();
 
     const settings = await page.evaluate(() =>

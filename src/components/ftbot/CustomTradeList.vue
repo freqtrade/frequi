@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
 
-import { useBotStore } from '@/stores/ftbotwrapper';
-
-const props = defineProps({
-  trades: { required: true, type: Array as () => Trade[] },
-  title: { default: 'Trades', type: String },
-  stakeCurrency: { required: false, default: '', type: String },
-  activeTrades: { default: false, type: Boolean },
-  showFilter: { default: false, type: Boolean },
-  multiBotView: { default: false, type: Boolean },
-  emptyText: { default: 'No Trades to show.', type: String },
-  stakeCurrencyDecimals: { default: 3, type: Number },
-});
+const props = withDefaults(
+  defineProps<{
+    trades: Trade[];
+    title?: string;
+    stakeCurrency?: string;
+    activeTrades?: boolean;
+    showFilter?: boolean;
+    multiBotView?: boolean;
+    emptyText?: string;
+    stakeCurrencyDecimals?: number;
+  }>(),
+  {
+    title: 'Trades',
+    stakeCurrency: '',
+    activeTrades: false,
+    showFilter: false,
+    multiBotView: false,
+    emptyText: 'No Trades to show.',
+    stakeCurrencyDecimals: 3,
+  },
+);
 const botStore = useBotStore();
 const currentPage = ref(1);
 const filterText = ref('');
@@ -35,31 +44,23 @@ const tradeClick = (trade) => {
       <div
         v-for="trade in filteredTrades"
         :key="trade.trade_id"
-        class="border border-surface-500 rounded-sm my-0.5 px-1 py-2"
+        class="border border-neutral-500 rounded-sm my-0.5 px-1 py-2"
         @click="tradeClick(trade)"
       >
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
       </div>
     </div>
-
-    <span v-if="trades.length == 0" class="mt-5">{{ emptyText }}</span>
+    <span v-if="trades.length === 0" class="mt-5">{{ emptyText }}</span>
 
     <div class="w-full flex justify-content-between mt-1">
-      <Paginator
+      <UPagination
         v-if="!activeTrades"
-        v-model="currentPage"
-        :total-records="rows"
-        :rows="perPage"
+        v-model:page="currentPage"
+        :total="rows"
+        :items-per-page="perPage"
         aria-controls="tradeList"
-      ></Paginator>
-      <BFormInput
-        v-if="showFilter"
-        v-model="filterText"
-        type="text"
-        placeholder="Filter"
-        size="sm"
-        style="width: unset"
       />
+      <UInput v-if="showFilter" v-model="filterText" type="text" placeholder="Filter" />
     </div>
   </div>
 </template>
