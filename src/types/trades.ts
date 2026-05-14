@@ -160,3 +160,16 @@ export interface TradeResponse {
   /** Total trade count */
   total_trades: number;
 }
+
+export interface TradeCustomDataEntry {
+  key: string;
+  type: string; // 'bool' | 'float' | 'int' | 'str' | 'dict' | ...;
+  value: any;
+  created_at: string;
+  updated_at: string | null;
+}
+
+export interface TradeCustomData {
+  trade_id: number;
+  custom_data: TradeCustomDataEntry[];
+}

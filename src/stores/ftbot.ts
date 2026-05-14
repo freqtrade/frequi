@@ -53,6 +53,7 @@ import type {
   TimeSummaryPayload,
   TimeSummaryReturnValue,
   Trade,
+  TradeCustomData,
   TradeResponse,
   WalletHistory,
   WalletHistoryPerBot,
@@ -881,6 +882,20 @@ export function createBotSubStore(botId: string, botName: string) {
             console.error(error.response);
           }
           showAlert(`Failed to reload trade ${tradeid}`, 'error');
+          return Promise.reject(error);
+        }
+      },
+      async getCustomDataForTrade(tradeid: Trade['trade_id']) {
+        try {
+          const res = await api.get<never, AxiosResponse<TradeCustomData[]>>(
+            `/trades/${tradeid}/custom-data`,
+          );
+          return Promise.resolve(res.data);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error(error.response);
+          }
+          showAlert(`Failed to get custom data for trade ${tradeid}`, 'error');
           return Promise.reject(error);
         }
       },
