@@ -136,7 +136,7 @@ resetForm();
       </form>
     </template>
     <template #footer>
-      <UButton class="ms-auto" icon="mdi:close" color="neutral" @click="emit('close', false)"
+      <UButton class="ms-auto" icon="mdi:close" color="neutral" @click="$emit('close', false)"
         >Cancel</UButton
       >
       <UButton icon="mdi:exit-to-app" @click="handleExit">Exit Position</UButton>

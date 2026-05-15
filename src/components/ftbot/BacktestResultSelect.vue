@@ -70,7 +70,7 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
               color="neutral"
               title="Delete this Result from UI."
               icon="mdi:delete"
-              @click.stop="emit('removeResult', key)"
+              @click.stop="$emit('removeResult', key)"
             />
           </div>
         </template>
