@@ -152,11 +152,9 @@ const singlePairSelection = computed({
             v-model="botStore.activeBot.plotMultiPairs"
             class="md:w-80 w-full"
             :items="availablePairs"
-            optionlabel=""
             virtualize
             placeholder="Select pairs to plot"
             size="md"
-            filter
           >
           </USelectMenu>
           <USelectMenu
@@ -165,11 +163,9 @@ const singlePairSelection = computed({
             class="md:w-80 w-full"
             :items="availablePairs"
             size="md"
-            :clearable="false"
             virtualize
             @input="refresh"
-          >
-          </USelectMenu>
+          />
           <UButton
             title="Refresh chart"
             color="neutral"
