@@ -72,23 +72,31 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
     }
     const seriesValues = param.value;
 
-    const tooltipDimensions = Array.isArray(param.encode?.tooltip)
+    let tooltipDimensions: number[] = Array.isArray(param.encode?.tooltip)
       ? param.encode.tooltip
       : param.encode?.tooltip !== undefined
         ? [param.encode.tooltip]
         : [];
-    if (tooltipDimensions.length > 0) {
-      return tooltipDimensions
-        .map((dimension) => formatTooltipValue(seriesValues[Number(dimension)]))
-        .filter(Boolean);
+
+    if (
+      tooltipDimensions.length === 0 &&
+      param.seriesName === 'Trades' &&
+      param.componentSubType === 'scatter'
+    ) {
+      // Use the latest value for Trades tooltip if available
+      // Unfortunately, the "tooltip" encode does not seem to be passed to tooltip params.
+      tooltipDimensions = [seriesValues.length - 1];
     }
 
-    const yDimensions = Array.isArray(param.encode?.y)
-      ? param.encode.y
-      : param.encode?.y !== undefined
-        ? [param.encode.y]
-        : [];
-    return yDimensions
+    if (tooltipDimensions.length === 0) {
+      // use Y axis value as fallback if tooltip encode is not specified
+      tooltipDimensions = Array.isArray(param.encode?.y)
+        ? param.encode.y
+        : param.encode?.y !== undefined
+          ? [param.encode.y]
+          : [];
+    }
+    return tooltipDimensions
       .map((dimension) => formatTooltipValue(seriesValues[Number(dimension)]))
       .filter(Boolean);
   }
@@ -165,7 +173,7 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
     return `
   <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><span>${labelHtml}</span
     ><span style="font-weight:700;text-align:right;white-space:pre-wrap;"
-    >${echartsFormat.encodeHTML(formatTooltipHtmlValue(row.value))}</span></div>`;
+    >${formatTooltipHtmlValue(echartsFormat.encodeHTML(row.value))}</span></div>`;
   }
 
   /** Main chandlechart tooltip formatter */
