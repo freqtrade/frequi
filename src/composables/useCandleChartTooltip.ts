@@ -17,12 +17,6 @@ type CandleTooltipRow = {
 };
 
 export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
-  function normalizeTooltipParams(
-    params: TooltipComponentFormatterCallbackParams,
-  ): CandleTooltipParam[] {
-    return (Array.isArray(params) ? params : [params]) as CandleTooltipParam[];
-  }
-
   function formatTooltipValue(value: unknown): string {
     if (typeof value === 'number') {
       return value.toLocaleString(undefined, { maximumFractionDigits: 15 });
@@ -176,7 +170,8 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
 
   /** Main chandlechart tooltip formatter */
   function formatCandleTooltip(params: TooltipComponentFormatterCallbackParams): string {
-    const tooltipParams = normalizeTooltipParams(params);
+    // console.log('tooltipParams', params);
+    const tooltipParams: CandleTooltipParam[] = Array.isArray(params) ? params : [params];
     if (tooltipParams.length === 0) {
       return '';
     }
