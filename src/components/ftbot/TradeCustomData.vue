@@ -13,10 +13,16 @@ const { state: customData, execute } = useAsyncState(
 </script>
 
 <template>
-  <template v-for="x in customData" :key="x.trade_id">
-    <template v-for="y in x.custom_data" :key="y.key">
-      <ValuePair :description="y.key">{{ y.value }}</ValuePair>
+  <div>
+    <template v-for="x in customData" :key="x.trade_id">
+      <template v-for="y in x.custom_data" :key="y.key">
+        <ValuePair :description="y.key">{{ y.value }}</ValuePair>
+      </template>
+      <template v-if="x.custom_data.length === 0">
+        <p class="italic text-sm text-neutral-500">No custom data for this trade</p>
+      </template>
     </template>
-  </template>
-  <UButton @click="execute()" icon="mdi:reload" label="Reload Custom Data" />
+
+    <UButton @click="execute()" icon="mdi:reload" label="Reload Custom Data" class="mt-2" />
+  </div>
 </template>

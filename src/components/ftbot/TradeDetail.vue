@@ -162,6 +162,9 @@ defineProps<{
           <template v-if="order.ft_order_tag"> | {{ order.ft_order_tag ?? '' }}</template>
         </div>
       </details>
+      <BaseCollapsible title="Custom data">
+        <TradeCustomData :trade-id="trade.trade_id" class="mx-4 mb-1" />
+      </BaseCollapsible>
     </div>
   </div>
 </template>
