@@ -17,10 +17,12 @@ const { showTradeCustomData } = useTradeCustomData();
       <div class="flex justify-between items-center border-b">
         <h5 class="text-xl font-semibold w-full block mb-1">General</h5>
         <UButton
-          size="xs"
+          size="sm"
           variant="outline"
+          color="neutral"
           @click="showTradeCustomData({ tradeId: trade.trade_id })"
           label="Show custom data"
+          icon="mdi:database-search"
         />
       </div>
       <ValuePair description="Trade Id">{{ trade.trade_id }}</ValuePair>
