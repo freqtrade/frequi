@@ -7,12 +7,22 @@ defineProps<{
   trade: Trade;
   stakeCurrency: string;
 }>();
+
+const { showTradeCustomData } = useTradeCustomData();
 </script>
 
 <template>
   <div class="text-start grid md:grid-cols-[repeat(auto-fit,minmax(500px,1fr))] gap-4 px-2">
     <div class="">
-      <h5 class="detail-header">General</h5>
+      <div class="flex justify-between items-center border-b">
+        <h5 class="text-xl font-semibold w-full block mb-1">General</h5>
+        <UButton
+          size="xs"
+          variant="outline"
+          @click="showTradeCustomData({ tradeId: trade.trade_id })"
+          label="Show custom data"
+        />
+      </div>
       <ValuePair description="Trade Id">{{ trade.trade_id }}</ValuePair>
       <ValuePair description="Pair">{{ trade.pair }}</ValuePair>
 
@@ -163,9 +173,6 @@ defineProps<{
           <span title="Filled">{{ formatPrice(order.filled ?? 0, 8) }}</span>
           <template v-if="order.ft_order_tag"> | {{ order.ft_order_tag ?? '' }}</template>
         </div>
-      </BaseCollapsible>
-      <BaseCollapsible title="Custom data">
-        <TradeCustomData :trade-id="trade.trade_id" class="mx-2 mb-1" />
       </BaseCollapsible>
     </div>
   </div>

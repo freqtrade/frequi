@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { Trade } from '@/types';
-const props = defineProps<{
+export interface TradeCustomDataProps {
   tradeId: Trade['trade_id'];
-}>();
+}
+const props = defineProps<TradeCustomDataProps>();
 
 const botStore = useBotStore();
 const { state: customData, execute } = useAsyncState(

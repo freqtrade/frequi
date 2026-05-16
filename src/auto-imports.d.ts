@@ -371,6 +371,7 @@ declare global {
   const useToString: typeof import('@vueuse/core').useToString
   const useToast: typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.1_@internationalized+number@3.6.5_@tiptap+e_830c8a0832ccec5706b5fd368d4211b2/node_modules/@nuxt/ui/dist/runtime/composables/useToast').useToast
   const useToggle: typeof import('@vueuse/core').useToggle
+  const useTradeCustomData: typeof import('./composables/useTradeCustomData').useTradeCustomData
   const useTransition: typeof import('@vueuse/core').useTransition
   const useUrlSearchParams: typeof import('@vueuse/core').useUrlSearchParams
   const useUserMedia: typeof import('@vueuse/core').useUserMedia
@@ -793,6 +794,7 @@ declare module 'vue' {
     readonly useToString: UnwrapRef<typeof import('@vueuse/core')['useToString']>
     readonly useToast: UnwrapRef<typeof import('../node_modules/.pnpm/@nuxt+ui@4.7.1_@internationalized+date@3.12.1_@internationalized+number@3.6.5_@tiptap+e_830c8a0832ccec5706b5fd368d4211b2/node_modules/@nuxt/ui/dist/runtime/composables/useToast')['useToast']>
     readonly useToggle: UnwrapRef<typeof import('@vueuse/core')['useToggle']>
+    readonly useTradeCustomData: UnwrapRef<typeof import('./composables/useTradeCustomData')['useTradeCustomData']>
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
