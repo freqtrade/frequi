@@ -8,13 +8,20 @@ withDefaults(
     size: 'lg',
   },
 );
+const open = defineModel('open', {
+  type: Boolean,
+  default: false,
+});
 defineOptions({
   inheritAttrs: false,
 });
 </script>
 
 <template>
-  <UCollapsible class="border border-neutral-300 dark:border-neutral-700 rounded-sm">
+  <UCollapsible
+    class="border border-neutral-300 dark:border-neutral-700 rounded-sm"
+    v-model:open="open"
+  >
     <UButton
       block
       :size="size"
