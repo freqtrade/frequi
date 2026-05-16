@@ -61,8 +61,7 @@ defineProps<{
       >
         <TradeProfit :trade="trade" />
       </ValuePair>
-      <details>
-        <summary>Details</summary>
+      <BaseCollapsible title="Details" class="px-2 pb-2">
         <ValuePair v-if="trade.min_rate" description="Min Rate">{{
           formatPrice(trade.min_rate)
         }}</ValuePair>
@@ -81,7 +80,7 @@ defineProps<{
             formatPercent(trade.fee_close)
           }})
         </ValuePair>
-      </details>
+      </BaseCollapsible>
     </div>
     <div class="mt-2 lg:mt-0">
       <h5 class="detail-header">Stoploss</h5>
@@ -129,8 +128,11 @@ defineProps<{
           {{ formatPrice(trade.liquidation_price) }}
         </ValuePair>
       </div>
-      <details v-if="trade.orders">
-        <summary>Orders {{ trade.orders.length > 1 ? `[${trade.orders.length}]` : '' }}</summary>
+      <BaseCollapsible
+        v-if="trade.orders"
+        :title="`Orders ${trade.orders.length > 1 ? `[${trade.orders.length}]` : ''}`"
+        class="px-2 pb-2"
+      >
         <div
           v-for="(order, key) in trade.orders"
           :key="key"
@@ -161,9 +163,9 @@ defineProps<{
           <span title="Filled">{{ formatPrice(order.filled ?? 0, 8) }}</span>
           <template v-if="order.ft_order_tag"> | {{ order.ft_order_tag ?? '' }}</template>
         </div>
-      </details>
+      </BaseCollapsible>
       <BaseCollapsible title="Custom data">
-        <TradeCustomData :trade-id="trade.trade_id" class="mx-4 mb-1" />
+        <TradeCustomData :trade-id="trade.trade_id" class="mx-2 mb-1" />
       </BaseCollapsible>
     </div>
   </div>

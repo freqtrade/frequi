@@ -8,6 +8,9 @@ withDefaults(
     size: 'lg',
   },
 );
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>
@@ -25,7 +28,9 @@ withDefaults(
       :label="title"
     />
     <template #content>
-      <slot />
+      <div v-bind="$attrs">
+        <slot />
+      </div>
     </template>
   </UCollapsible>
 </template>
