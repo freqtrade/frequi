@@ -146,17 +146,15 @@ const singlePairSelection = computed({
         <span class="md:ms-2 text-nowrap">{{ strategyName }} | {{ timeframe || '' }}</span>
 
         <div class="flex gap-1 md:gap-2 w-full md:w-auto">
-          <USelectMenu
-            multiple
+          <BaseStringMultiSelectMenu
             v-if="settingsStore.multiPairSelection"
             v-model="botStore.activeBot.plotMultiPairs"
             class="md:w-80 w-full"
             :items="availablePairs"
-            virtualize
             placeholder="Select pairs to plot"
+            virtualize
             size="md"
-          >
-          </USelectMenu>
+          />
           <USelectMenu
             v-else
             v-model="singlePairSelection"
