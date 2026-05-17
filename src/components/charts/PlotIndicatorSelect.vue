@@ -1,56 +1,34 @@
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string;
-    columns: string[];
-    label: string;
-  }>(),
-  {
-    modelValue: '',
-  },
-);
+defineProps<{
+  columns: string[];
+  label: string;
+}>();
+
+const model = defineModel<string>({
+  default: '',
+});
+
 const emit = defineEmits<{
-  'update:modelValue': [value: string];
   indicatorSelected: [value: string];
 }>();
 
-const selAvailableIndicator = ref('');
-
-function emitIndicator() {
-  emit('indicatorSelected', selAvailableIndicator.value);
-  emit('update:modelValue', selAvailableIndicator.value);
-}
 function abort() {
-  selAvailableIndicator.value = '';
-  emitIndicator();
+  model.value = '';
+  emit('indicatorSelected', model.value);
 }
-
-onMounted(() => {
-  selAvailableIndicator.value = props.modelValue;
-});
-
-watch(selAvailableIndicator, () => {
-  emitIndicator();
-});
-
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    selAvailableIndicator.value = newValue;
-  },
-);
 </script>
 
 <template>
   <div class="flex flex-row">
     <UFormField :label class="grow">
       <USelectMenu
-        v-model="selAvailableIndicator"
+        v-model="model"
         :items="columns"
         :clearable="false"
         filter
         class="w-full"
         auto-filter-focus
+        @change="emit('indicatorSelected', model)"
       >
       </USelectMenu>
     </UFormField>
