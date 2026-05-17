@@ -1,26 +1,22 @@
 <script setup lang="ts">
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    modelValue: string;
     showDetails?: boolean;
   }>(),
   {
     showDetails: false,
   },
 );
-const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
+
+const strategy = defineModel<string>();
 
 const botStore = useBotStore();
 
 const strategyCode = computed((): string => botStore.activeBot.strategy?.code ?? '');
-const locStrategy = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(strategy: string) {
-    botStore.activeBot.getStrategy(strategy);
-    emit('update:modelValue', strategy);
-  },
+
+watch(strategy, (newStrategy, oldStrategy) => {
+  if (!newStrategy || newStrategy === oldStrategy) return;
+  botStore.activeBot.getStrategy(newStrategy);
 });
 
 onMounted(() => {
@@ -35,7 +31,7 @@ onMounted(() => {
     <div class="w-full flex">
       <USelectMenu
         id="strategy-select"
-        v-model="locStrategy"
+        v-model="strategy"
         filter
         class="w-full"
         :items="botStore.activeBot.strategyList"
