@@ -53,8 +53,7 @@ const usedColumns = computed((): { label: string; value: string }[] => {
 });
 
 function addIndicator(newIndicator: Record<string, IndicatorConfig>) {
-  console.log('Adding indicator', newIndicator);
-  // const { plotConfig.value } = this;
+  // console.log('Adding indicator', newIndicator);
   const name = Object.keys(newIndicator)[0];
   if (!name) return;
 
