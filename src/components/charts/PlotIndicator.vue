@@ -56,10 +56,6 @@ const combinedIndicator = computed<IndicatorConfig>(() => {
   };
 });
 
-function emitIndicator() {
-  emit('update:modelValue', combinedIndicator.value);
-}
-
 watch(
   () => props.modelValue,
   () => {
@@ -84,7 +80,7 @@ watch(
 watchDebounced(
   [selColor, graphType, fillTo, scatterSymbolSize],
   () => {
-    emitIndicator();
+    emit('update:modelValue', combinedIndicator.value);
   },
   {
     debounce: 200,
