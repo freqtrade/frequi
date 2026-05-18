@@ -5,13 +5,7 @@ const now = new Date();
 const maxDateNow = new CalendarDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
 const maxDateTomorrow = maxDateNow.add({ days: 1 });
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: string;
-  }>(),
-  {},
-);
-const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
+const timeRangeModel = defineModel<string>({ required: true });
 
 const dateFromText = ref('');
 const dateToText = ref('');
@@ -65,7 +59,7 @@ function onToCalendarSelect(v: unknown) {
 }
 
 function updateInput() {
-  const tr = props.modelValue.split('-');
+  const tr = timeRangeModel.value.split('-');
   if (tr[0]) {
     const d =
       tr[0].length === 8 ? dateFromString(tr[0], 'yyyyMMdd') : new Date(parseInt(tr[0]) * 1000);
@@ -84,19 +78,18 @@ function updateInput() {
 
 watch(
   () => timeRange.value,
-  () => emit('update:modelValue', timeRange.value),
-);
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    if (newValue !== timeRange.value) {
-      updateInput();
-    }
+  () => {
+    timeRangeModel.value = timeRange.value;
   },
 );
+watch(timeRangeModel, (newValue) => {
+  if (newValue !== timeRange.value) {
+    updateInput();
+  }
+});
 
 onMounted(() => {
-  if (!props.modelValue) {
+  if (!timeRangeModel.value) {
     const d = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     dateFromText.value = calendarDateToInputString(
       new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate()),
@@ -104,7 +97,7 @@ onMounted(() => {
   } else {
     updateInput();
   }
-  emit('update:modelValue', timeRange.value);
+  timeRangeModel.value = timeRange.value;
 });
 </script>
 
