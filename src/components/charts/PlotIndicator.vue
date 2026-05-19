@@ -2,15 +2,15 @@
 import type { ChartTypeString, IndicatorConfig } from '@/types';
 import { ChartType } from '@/types';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: Record<string, IndicatorConfig>;
-    columns: string[];
-  }>(),
-  {},
-);
+type IndicatorModel = Record<string, IndicatorConfig>;
 
-const emit = defineEmits<{ 'update:modelValue': [value: IndicatorConfig] }>();
+const indicatorModel = defineModel<IndicatorModel>({
+  required: true,
+});
+
+defineProps<{
+  columns: string[];
+}>();
 
 const selColor_ = ref(randomColor());
 const selColor = computed({
@@ -37,7 +37,7 @@ function newColor() {
   selColor.value = randomColor();
 }
 
-const combinedIndicator = computed<IndicatorConfig>(() => {
+const combinedIndicator = computed<IndicatorModel>(() => {
   if (cancelled.value || !selAvailableIndicator.value) {
     return {};
   }
@@ -57,15 +57,15 @@ const combinedIndicator = computed<IndicatorConfig>(() => {
 });
 
 watch(
-  () => props.modelValue,
+  indicatorModel,
   () => {
-    const [firstIndicator] = Object.keys(props.modelValue);
+    const [firstIndicator] = Object.keys(indicatorModel.value);
     if (firstIndicator) {
       selAvailableIndicator.value = firstIndicator;
     }
     cancelled.value = false;
-    if (selAvailableIndicator.value && props.modelValue) {
-      const xx = props.modelValue[selAvailableIndicator.value];
+    if (selAvailableIndicator.value) {
+      const xx = indicatorModel.value[selAvailableIndicator.value];
       if (!xx) return;
       selColor.value = xx.color || randomColor();
       graphType.value = xx.type || ChartType.line;
@@ -80,7 +80,7 @@ watch(
 watchDebounced(
   [selColor, graphType, fillTo, scatterSymbolSize],
   () => {
-    emit('update:modelValue', combinedIndicator.value);
+    indicatorModel.value = combinedIndicator.value;
   },
   {
     debounce: 200,
