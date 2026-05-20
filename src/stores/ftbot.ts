@@ -101,7 +101,7 @@ export function createBotSubStore(botId: string, botName: string) {
     const freqaiModelList = ref<string[]>([]);
     const hyperoptLossList = ref<HyperoptLossObj[]>([]);
     const exchangeList = ref<Exchange[]>([]);
-    const strategy = ref<StrategyResult | undefined>({} as StrategyResult);
+    const strategy = ref<StrategyResult | undefined>(undefined);
     const pairlist = ref<string[]>([]);
     const pairlistWithTimeframe = ref<PairIntervalTuple[]>([]);
 
