@@ -138,33 +138,34 @@ const sortedParamsBySpace = computed<Record<string, typeof props.strategy.params
           <span>{{ param.value }}</span>
         </template>
         <template v-else>
-          <label :for="`strategy-param-${param.name}`" class="grow">{{ param.name }}</label>
-          <UInputNumber
-            v-if="isNumericParameter(param)"
-            :id="`strategy-param-${param.name}`"
-            :model-value="getNumericValue(param.name)"
-            class="w-44"
-            :min="param.low"
-            :max="param.high"
-            :step="getNumberStep(param)"
-            :step-snapping="param.param_type === ParameterType.IntParameter"
-            :format-options="getNumberFormatOptions(param)"
-            @update:model-value="(value) => setParameterValue(param.name, value ?? param.low)"
-          />
-          <USelect
-            v-else-if="isCategoricalParameter(param)"
-            :id="`strategy-param-${param.name}`"
-            :model-value="getStringValue(param.name)"
-            :items="param.opt_range"
-            class="w-44"
-            @update:model-value="(value) => setParameterValue(param.name, value)"
-          />
-          <USwitch
-            v-else-if="isBooleanParameter(param)"
-            :id="`strategy-param-${param.name}`"
-            :model-value="getBooleanValue(param.name)"
-            @update:model-value="(value) => setParameterValue(param.name, value)"
-          />
+          <UFormField orientation="horizontal" :label="param.name" class="w-full">
+            <UInputNumber
+              v-if="isNumericParameter(param)"
+              :id="`strategy-param-${param.name}`"
+              :model-value="getNumericValue(param.name)"
+              class="w-44"
+              :min="param.low"
+              :max="param.high"
+              :step="getNumberStep(param)"
+              :step-snapping="param.param_type === ParameterType.IntParameter"
+              :format-options="getNumberFormatOptions(param)"
+              @update:model-value="(value) => setParameterValue(param.name, value ?? param.low)"
+            />
+            <USelect
+              v-else-if="isCategoricalParameter(param)"
+              :id="`strategy-param-${param.name}`"
+              :model-value="getStringValue(param.name)"
+              :items="param.opt_range"
+              class="w-44"
+              @update:model-value="(value) => setParameterValue(param.name, value)"
+            />
+            <USwitch
+              v-else-if="isBooleanParameter(param)"
+              :id="`strategy-param-${param.name}`"
+              :model-value="getBooleanValue(param.name)"
+              @update:model-value="(value) => setParameterValue(param.name, value)"
+            />
+          </UFormField>
         </template>
       </div>
     </div>
