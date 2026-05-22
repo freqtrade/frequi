@@ -2,6 +2,7 @@
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - "@nuxt/ui"
+  - "js-cookie@3.0.7"
 blockExoticSubdeps: true
 # trustPolicy: no-downgrade
 preferFrozenLockfile: true
@@ -10,3 +11,6 @@ allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
   vue-demi: true
+
+overrides:
+  "js-cookie@3": "3.0.7"
