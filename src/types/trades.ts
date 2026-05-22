@@ -164,6 +164,7 @@ export interface TradeResponse {
 export interface TradeCustomDataEntry {
   key: string;
   type: string; // 'bool' | 'float' | 'int' | 'str' | 'dict' | ...;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
   created_at: string;
   updated_at: string | null;
