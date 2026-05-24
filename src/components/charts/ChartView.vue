@@ -108,7 +108,7 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
 </script>
 
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
     <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
       <BaseCollapsible size="md" open title="Chart Settings">
         <template #title>
@@ -183,7 +183,7 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
       </BaseCollapsible>
     </div>
 
-    <div class="md:mx-2 mt-2 pb-1 h-full">
+    <div class="md:mx-2 mt-2 flex-1 min-h-0 min-w-0 pb-1 overflow-hidden">
       <CandleChartContainer
         :available-pairs="availablePairs"
         :historic-view="botStore.activeBot.isWebserverMode"
