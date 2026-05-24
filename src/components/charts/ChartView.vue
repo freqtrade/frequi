@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { MarginMode, TradingMode } from '@/types';
-import type { ExchangeSelection, Markets, MarketsPayload, PairHistoryPayload } from '@/types';
+import type {
+  ExchangeSelection,
+  Markets,
+  MarketsPayload,
+  PairHistoryPayload,
+  StrategyParameterValue,
+} from '@/types';
 
 const botStore = useBotStore();
 const chartStore = useChartConfigStore();
@@ -108,41 +114,38 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
-      <UCard :ui="{ body: 'p-3 sm:p-3' }">
+      <UCard :ui="{ body: 'py-1 px-2 sm:py-3 sm:px-2' }">
         <div class="flex items-center gap-2 mb-1">
-          <span class="text-xl font-bold">Settings</span>
+          <span class="text-lg font-bold">Settings</span>
           <InfoBox
             hint="These settings only apply to the chart view and do not affect the bot's actual configuration or behavior."
           />
         </div>
-        <div
-          class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-2 text-start"
-        >
-          <UCollapsible v-model:open="exchange.customExchange">
-            <div class="flex flex-row gap-5 items-center">
-              <BaseCheckbox v-model="exchange.customExchange">Custom Exchange</BaseCheckbox>
-              <span
-                v-show="!exchange.customExchange"
-                class="text-sm"
-                title="Current exchange from the configuration"
-              >
-                Current Exchange:
-                <span class="font-bold">
-                  {{ botStore.activeBot.botState.exchange }}
-                  {{ botStore.activeBot.botState.trading_mode }}
-                </span>
-              </span>
+        <div class="grid grid-cols-3 md:grid-cols-5 gap-2">
+          <UFormField label="Exchange" class="col-span-2">
+            <div
+              class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-1 text-start col-span-2"
+            >
+              <UCollapsible v-model:open="exchange.customExchange">
+                <div class="flex flex-row gap-5 items-center">
+                  <BaseCheckbox v-model="exchange.customExchange">Custom Exchange</BaseCheckbox>
+                  <span
+                    v-show="!exchange.customExchange"
+                    class="text-sm"
+                    title="Current exchange from the configuration"
+                  >
+                    Current Exchange:
+                    <span class="font-bold">
+                      {{ botStore.activeBot.botState.exchange }}
+                      {{ botStore.activeBot.botState.trading_mode }}
+                    </span>
+                  </span>
+                </div>
+                <template #content>
+                  <ExchangeSelect v-model="exchange.selectedExchange" class="mt-2" />
+                </template>
+              </UCollapsible>
             </div>
-            <template #content>
-              <ExchangeSelect v-model="exchange.selectedExchange" class="mt-2" />
-            </template>
-          </UCollapsible>
-          <Transition name="fade"> </Transition>
-        </div>
-        <div class="grid grid-cols-3 md:grid-cols-5 mx-1 gap-1 md:gap-2">
-          <div class="text-start md:me-1 col-span-2">
-            <span>Strategy</span>
-            <StrategySelect v-model="chartStore.strategy" class="mt-1 mb-1"></StrategySelect>
             <BaseCheckbox
               v-if="botStore.activeBot.botFeatures.chartLiveData"
               v-model="chartStore.useLiveData"
@@ -151,17 +154,22 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
             >
               Use Live Data
             </BaseCheckbox>
-          </div>
+          </UFormField>
           <div class="flex flex-col text-start">
-            <span>Timeframe</span>
-            <TimeframeSelect v-model="chartStore.selectedTimeframe" class="mt-1" />
+            <UFormField label="Timeframe">
+              <TimeframeSelect v-model="chartStore.selectedTimeframe" class="w-full" />
+            </UFormField>
           </div>
           <TimeRangeSelect
             v-model="chartStore.timerange"
             :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
             class="col-span-3 md:col-span-2"
           ></TimeRangeSelect>
-          <div class="col-span-3 md:col-span-3">
+          <UFormField label="Strategy" class="col-span-3 md:col-span-2">
+            <StrategySelect v-model="chartStore.strategy" class="" />
+          </UFormField>
+
+          <UFormField label="Strategy params" class="col-span-3 md:col-span-3">
             <BaseCollapsible
               v-if="true && botStore.activeBot.strategy"
               title="Strategy parameters"
@@ -174,7 +182,7 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
                 v-model:parameters="modifiedParams"
               />
             </BaseCollapsible>
-          </div>
+          </UFormField>
         </div>
       </UCard>
     </div>
