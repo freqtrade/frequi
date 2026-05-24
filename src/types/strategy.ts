@@ -54,6 +54,8 @@ export interface BooleanParameter extends BaseParameter {
 export type AllStrategyParameter =
   IntParameter | RealParameter | DecimalParameter | CategoricalParameter | BooleanParameter;
 
+export type StrategyParameterValue = AllStrategyParameter['value'];
+
 export interface StrategyResult {
   /** Strategy name */
   strategy: string;

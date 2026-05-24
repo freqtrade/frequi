@@ -98,6 +98,7 @@ watch(
     immediate: true,
   },
 );
+const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
 </script>
 
 <template>
@@ -160,6 +161,20 @@ watch(
             :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
             class="col-span-3 md:col-span-2"
           ></TimeRangeSelect>
+          <div class="col-span-3 md:col-span-3">
+            <BaseCollapsible
+              v-if="true && botStore.activeBot.strategy"
+              title="Strategy parameters"
+              size="md"
+            >
+              <StrategyParameters
+                :strategy="botStore.activeBot.strategy"
+                class="m-3"
+                editable
+                v-model:parameters="modifiedParams"
+              />
+            </BaseCollapsible>
+          </div>
         </div>
       </UCard>
     </div>
