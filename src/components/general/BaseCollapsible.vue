@@ -1,12 +1,14 @@
 <script setup lang="ts">
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
+    class?: string;
   }>(),
   {
     title: '',
     size: 'lg',
+    class: '',
   },
 );
 const open = defineModel('open', {
@@ -39,7 +41,7 @@ defineOptions({
       </slot>
     </UButton>
     <template #content>
-      <div v-bind="$attrs">
+      <div :class="props.class">
         <slot />
       </div>
     </template>
