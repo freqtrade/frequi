@@ -114,14 +114,14 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
     <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
     <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
-      <UCard :ui="{ body: 'py-1 px-2 sm:py-3 sm:px-2' }">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-lg font-bold">Settings</span>
+      <BaseCollapsible size="md" open>
+        <template #title>
+          <span class="text-lg font-bold">Chart Settings</span>
           <InfoBox
             hint="These settings only apply to the chart view and do not affect the bot's actual configuration or behavior."
           />
-        </div>
-        <div class="grid grid-cols-3 md:grid-cols-5 gap-2">
+        </template>
+        <div class="grid grid-cols-3 md:grid-cols-5 gap-2 m-2">
           <UFormField label="Exchange" class="col-span-2">
             <div
               class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-1 text-start col-span-2"
@@ -184,7 +184,7 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
             </BaseCollapsible>
           </UFormField>
         </div>
-      </UCard>
+      </BaseCollapsible>
     </div>
 
     <div class="md:mx-2 mt-2 pb-1 h-full">

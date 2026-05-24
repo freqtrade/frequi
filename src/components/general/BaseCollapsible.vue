@@ -1,10 +1,11 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    title: string;
+    title?: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
   }>(),
   {
+    title: '',
     size: 'lg',
   },
 );
@@ -32,8 +33,11 @@ defineOptions({
       :ui="{
         trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200',
       }"
-      :label="title"
-    />
+    >
+      <slot name="title">
+        {{ title }}
+      </slot>
+    </UButton>
     <template #content>
       <div v-bind="$attrs">
         <slot />
