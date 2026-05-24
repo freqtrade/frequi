@@ -165,12 +165,14 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
             <StrategySelect v-model="chartStore.strategy" class="" />
           </UFormField>
 
-          <UFormField label="Strategy params" class="col-span-3 md:col-span-3">
-            <BaseCollapsible
-              v-if="true && botStore.activeBot.strategy"
-              title="Strategy parameters"
-              size="md"
-            >
+          <UFormField
+            label="Strategy params"
+            class="col-span-3 md:col-span-3"
+            v-if="
+              botStore.activeBot.botFeatures.strategyParametersModify && botStore.activeBot.strategy
+            "
+          >
+            <BaseCollapsible title="Strategy parameters" size="md">
               <StrategyParameters
                 :strategy="botStore.activeBot.strategy"
                 class="m-3"
