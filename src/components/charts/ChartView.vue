@@ -109,12 +109,8 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
 
 <template>
   <div class="flex flex-col h-full">
-    <!-- <div v-if="isWebserverMode" class="me-auto ms-3"> -->
-    <!-- Currently only available in Webserver mode -->
-    <!-- <b-form-checkbox v-model="historicView">HistoricData</b-form-checkbox> -->
-    <!-- </div> -->
     <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
-      <BaseCollapsible size="md" open>
+      <BaseCollapsible size="md" open title="Chart Settings">
         <template #title>
           <span class="text-lg font-bold">Chart Settings</span>
           <InfoBox
