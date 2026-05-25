@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { StrategyResult } from '@/types';
+
 withDefaults(
   defineProps<{
     showDetails?: boolean;
@@ -9,15 +11,36 @@ withDefaults(
 );
 
 const strategy = defineModel<string>();
+const strategyDetails = defineModel<StrategyResult | undefined>('details');
 
 const botStore = useBotStore();
 
-const strategyCode = computed((): string => botStore.activeBot.strategy?.code ?? '');
+const strategyCode = computed((): string => strategyDetails.value?.code ?? '');
 
-watch(strategy, (newStrategy, oldStrategy) => {
-  if (!newStrategy || newStrategy === oldStrategy) return;
-  botStore.activeBot.getStrategy(newStrategy);
-});
+watch(
+  strategy,
+  async (newStrategy, oldStrategy) => {
+    if (!newStrategy) {
+      strategyDetails.value = undefined;
+      return;
+    }
+    if (newStrategy === oldStrategy && strategyDetails.value?.strategy === newStrategy) {
+      return;
+    }
+
+    strategyDetails.value = undefined;
+
+    try {
+      const strategyResult = await botStore.activeBot.getStrategy(newStrategy);
+      if (strategyResult.strategy === newStrategy) {
+        strategyDetails.value = strategyResult;
+      }
+    } catch {
+      strategyDetails.value = undefined;
+    }
+  },
+  { immediate: true },
+);
 
 onMounted(() => {
   if (botStore.activeBot.strategyList.length === 0) {
@@ -48,9 +71,10 @@ onMounted(() => {
     </div>
 
     <textarea
-      v-if="showDetails && botStore.activeBot.strategy"
-      v-model="strategyCode"
+      v-if="showDetails && strategyDetails"
+      :value="strategyCode"
       class="w-full h-full"
+      readonly
     ></textarea>
   </div>
 </template>

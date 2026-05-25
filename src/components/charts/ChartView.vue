@@ -6,14 +6,19 @@ import type {
   MarketsPayload,
   PairHistoryPayload,
   StrategyParameterValue,
+  StrategyResult,
 } from '@/types';
 
 const botStore = useBotStore();
 const chartStore = useChartConfigStore();
+const selectedStrategyDetails = ref<StrategyResult>();
 
 const finalTimeframe = computed<string>(() => {
   return botStore.activeBot.isWebserverMode
-    ? chartStore.selectedTimeframe || botStore.activeBot.strategy?.timeframe || ''
+    ? chartStore.selectedTimeframe ||
+        botStore.activeBot.strategy?.timeframe ||
+        selectedStrategyDetails.value?.timeframe ||
+        ''
     : botStore.activeBot.timeframe;
 });
 
@@ -66,7 +71,9 @@ function refreshOHLCV(pair: string, columns: string[]) {
 
     if (strategyParams.value && Object.keys(strategyParams.value).length > 0) {
       payload.strategy_params = Object.entries(strategyParams.value).map(([name, value]) => {
-        const param = botStore.activeBot.strategy?.params.find((p) => p.name === name);
+        const param = selectedStrategyDetails.value?.params.find((strategyParam) => {
+          return strategyParam.name === name;
+        });
         if (!param) {
           throw new Error(`Parameter ${name} not found in strategy parameters`);
         }
@@ -176,24 +183,33 @@ const strategyParams = ref<Record<string, StrategyParameterValue>>({});
             class="col-span-3 md:col-span-2"
           ></TimeRangeSelect>
           <UFormField label="Strategy" class="col-span-3 md:col-span-2">
-            <StrategySelect v-model="chartStore.strategy" class="" />
+            <StrategySelect
+              v-model="chartStore.strategy"
+              v-model:details="selectedStrategyDetails"
+              class=""
+            />
           </UFormField>
 
           <UFormField
+            v-if="
+              botStore.activeBot.botFeatures.strategyParametersModify && selectedStrategyDetails
+            "
             label="Strategy params"
             class="col-span-3 md:col-span-3"
-            v-if="
-              botStore.activeBot.botFeatures.strategyParametersModify && botStore.activeBot.strategy
-            "
           >
-            <BaseCollapsible title="Open to modify strategy parameters" size="md">
+            <BaseCollapsible
+              title="Open to modify strategy parameters"
+              size="md"
+              v-if="selectedStrategyDetails?.params.length > 0"
+            >
               <StrategyParameters
-                :strategy="botStore.activeBot.strategy"
+                :strategy="selectedStrategyDetails"
                 class="m-3"
                 editable
                 v-model:parameters="strategyParams"
               />
             </BaseCollapsible>
+            <span v-else class="text-md font-bold">No strategy parameters available</span>
           </UFormField>
         </div>
       </BaseCollapsible>
