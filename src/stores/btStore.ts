@@ -1,27 +1,36 @@
-export const useBtStore = defineStore('btStore', {
-  state: () => {
-    return {
-      strategy: '',
-      selectedTimeframe: '',
-      selectedDetailTimeframe: '',
-      timerange: '',
-      maxOpenTrades: null as number | null,
-      stakeAmount: null as number | null,
-      startingCapital: null as number | null,
-      allowCache: true,
-      enableProtections: false,
-      stakeAmountUnlimited: false,
-      freqAI: {
-        enabled: false,
-        model: '',
-        identifier: '',
-      },
-    };
-  },
-  getters: {
-    canRunBacktest: (state) => state.strategy !== '',
-  },
-  actions: {},
+export const useBtStore = defineStore('btStore', () => {
+  const strategy = ref('');
+  const selectedTimeframe = ref('');
+  const selectedDetailTimeframe = ref('');
+  const timerange = ref('');
+  const maxOpenTrades = ref<number | null>(null);
+  const stakeAmount = ref<number | null>(null);
+  const startingCapital = ref<number | null>(null);
+  const allowCache = ref(true);
+  const enableProtections = ref(false);
+  const stakeAmountUnlimited = ref(false);
+  const freqAI = ref({
+    enabled: false,
+    model: '',
+    identifier: '',
+  });
+
+  const canRunBacktest = computed(() => strategy.value !== '');
+
+  return {
+    strategy,
+    selectedTimeframe,
+    selectedDetailTimeframe,
+    timerange,
+    maxOpenTrades,
+    stakeAmount,
+    startingCapital,
+    allowCache,
+    enableProtections,
+    stakeAmountUnlimited,
+    freqAI,
+    canRunBacktest,
+  };
 });
 
 if (import.meta.hot) {
