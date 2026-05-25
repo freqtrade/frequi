@@ -58,6 +58,9 @@ function clickBacktest() {
   >
     <!-- Backtesting parameters -->
     <h3 class="font-bold mb-2 col-span-2 text-center">Backtesting parameters</h3>
+    <label>Strategy:</label>
+    <StrategySelect v-model="btStore.strategy"></StrategySelect>
+
     <label for="timeframe-select">Timeframe:</label>
     <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" />
     <label for="timeframe-detail-select" class="flex justify-end items-center gap-2"
