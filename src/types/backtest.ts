@@ -1,4 +1,5 @@
 import type { Lock } from './locks';
+import type { StrategyParameterInputs } from './strategy';
 import type { ClosedTrade, Trade } from './trades';
 import type { MarginMode, TradingMode } from './types';
 
@@ -17,6 +18,7 @@ export interface BacktestPayload {
   freqai?: {
     identifier: string;
   };
+  strategy_params?: StrategyParameterInputs[];
 }
 
 export interface PairResult {
