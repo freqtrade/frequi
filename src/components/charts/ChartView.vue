@@ -64,8 +64,8 @@ function refreshOHLCV(pair: string, columns: string[]) {
     }
     botStore.activeBot.getPairHistory(payload);
 
-    if (modifiedParams.value && Object.keys(modifiedParams.value).length > 0) {
-      payload.strategy_params = Object.entries(modifiedParams.value).map(([name, value]) => {
+    if (strategyParams.value && Object.keys(strategyParams.value).length > 0) {
+      payload.strategy_params = Object.entries(strategyParams.value).map(([name, value]) => {
         const param = botStore.activeBot.strategy?.params.find((p) => p.name === name);
         if (!param) {
           throw new Error(`Parameter ${name} not found in strategy parameters`);
@@ -118,7 +118,7 @@ watch(
     immediate: true,
   },
 );
-const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
+const strategyParams = ref<Record<string, StrategyParameterValue>>({});
 </script>
 
 <template>
@@ -186,12 +186,12 @@ const modifiedParams = ref<Record<string, StrategyParameterValue>>({});
               botStore.activeBot.botFeatures.strategyParametersModify && botStore.activeBot.strategy
             "
           >
-            <BaseCollapsible title="Strategy parameters" size="md">
+            <BaseCollapsible title="Open to modify strategy parameters" size="md">
               <StrategyParameters
                 :strategy="botStore.activeBot.strategy"
                 class="m-3"
                 editable
-                v-model:parameters="modifiedParams"
+                v-model:parameters="strategyParams"
               />
             </BaseCollapsible>
           </UFormField>
