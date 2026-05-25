@@ -63,6 +63,20 @@ function refreshOHLCV(pair: string, columns: string[]) {
       payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
     }
     botStore.activeBot.getPairHistory(payload);
+
+    if (modifiedParams.value && Object.keys(modifiedParams.value).length > 0) {
+      payload.strategy_params = Object.entries(modifiedParams.value).map(([name, value]) => {
+        const param = botStore.activeBot.strategy?.params.find((p) => p.name === name);
+        if (!param) {
+          throw new Error(`Parameter ${name} not found in strategy parameters`);
+        }
+        return {
+          name,
+          param_type: param.param_type,
+          value,
+        };
+      });
+    }
   } else {
     botStore.activeBot.getPairCandles({
       pair: pair,

@@ -1,3 +1,4 @@
+import type { StrategyParameterInputs } from './strategy';
 import type { ExchangeSelectPayload } from './types';
 
 export interface AvailablePairPayload {
@@ -31,6 +32,7 @@ export interface PairHistoryPayload extends ExchangeSelectPayload {
   freqaimodel?: string;
   columns?: string[];
   live_mode?: boolean;
+  strategy_params?: StrategyParameterInputs[];
 }
 
 export interface _MarkArea {
