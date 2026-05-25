@@ -98,52 +98,62 @@ export function findGridLayout(gridLayout: GridItemData[], name: number): GridIt
   return layout;
 }
 
-export const useLayoutStore = defineStore('layoutStore', {
-  state: () => {
+export const useLayoutStore = defineStore(
+  'layoutStore',
+  () => {
+    const dashboardLayout = ref<GridItemData[]>(deepClone(DEFAULT_DASHBOARD_LAYOUT));
+    const tradingLayout = ref<GridItemData[]>(deepClone(DEFAULT_TRADING_LAYOUT));
+    const layoutLocked = ref(true);
+
+    const getDashboardLayoutSm = computed(() => [...DEFAULT_DASHBOARD_LAYOUT_SM]);
+    const getTradingLayoutSm = computed(() => [...DEFAULT_TRADING_LAYOUT_SM]);
+
+    function resetTradingLayout() {
+      tradingLayout.value = deepClone(DEFAULT_TRADING_LAYOUT);
+    }
+
+    function resetDashboardLayout() {
+      dashboardLayout.value = deepClone(DEFAULT_DASHBOARD_LAYOUT);
+    }
+
     return {
-      dashboardLayout: JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT)),
-      tradingLayout: JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT)),
-      layoutLocked: true,
+      dashboardLayout,
+      tradingLayout,
+      layoutLocked,
+      getDashboardLayoutSm,
+      getTradingLayoutSm,
+      resetTradingLayout,
+      resetDashboardLayout,
     };
   },
-  getters: {
-    getDashboardLayoutSm: () => [...DEFAULT_DASHBOARD_LAYOUT_SM],
-    getTradingLayoutSm: () => [...DEFAULT_TRADING_LAYOUT_SM],
-  },
-  actions: {
-    resetTradingLayout() {
-      this.tradingLayout = JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT));
-    },
-    resetDashboardLayout() {
-      this.dashboardLayout = JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT));
-    },
-  },
-  persist: {
-    key: STORE_LAYOUTS,
-    afterHydrate: (context) => {
-      if (
-        context.store.dashboardLayout === null ||
-        typeof context.store.dashboardLayout === 'string' ||
-        context.store.dashboardLayout.length === 0 ||
-        typeof context.store.dashboardLayout[0]['i'] === 'string' ||
-        context.store.dashboardLayout.length < DEFAULT_DASHBOARD_LAYOUT.length
-      ) {
-        console.log('loading dashboard Layout from default.');
-        context.store.dashboardLayout = JSON.parse(JSON.stringify(DEFAULT_DASHBOARD_LAYOUT));
-      }
-      if (
-        context.store.tradingLayout === null ||
-        typeof context.store.tradingLayout === 'string' ||
-        context.store.tradingLayout.length === 0 ||
-        typeof context.store.tradingLayout[0]['i'] === 'string' ||
-        context.store.tradingLayout.length < DEFAULT_TRADING_LAYOUT.length
-      ) {
-        console.log('loading trading Layout from default.');
-        context.store.tradingLayout = JSON.parse(JSON.stringify(DEFAULT_TRADING_LAYOUT));
-      }
+  {
+    persist: {
+      key: STORE_LAYOUTS,
+      afterHydrate: (context) => {
+        if (
+          context.store.dashboardLayout === null ||
+          typeof context.store.dashboardLayout === 'string' ||
+          context.store.dashboardLayout.length === 0 ||
+          typeof context.store.dashboardLayout[0]['i'] === 'string' ||
+          context.store.dashboardLayout.length < DEFAULT_DASHBOARD_LAYOUT.length
+        ) {
+          console.log('loading dashboard Layout from default.');
+          context.store.dashboardLayout = deepClone(DEFAULT_DASHBOARD_LAYOUT);
+        }
+        if (
+          context.store.tradingLayout === null ||
+          typeof context.store.tradingLayout === 'string' ||
+          context.store.tradingLayout.length === 0 ||
+          typeof context.store.tradingLayout[0]['i'] === 'string' ||
+          context.store.tradingLayout.length < DEFAULT_TRADING_LAYOUT.length
+        ) {
+          console.log('loading trading Layout from default.');
+          context.store.tradingLayout = deepClone(DEFAULT_TRADING_LAYOUT);
+        }
+      },
     },
   },
-});
+);
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useLayoutStore, import.meta.hot));
 }
