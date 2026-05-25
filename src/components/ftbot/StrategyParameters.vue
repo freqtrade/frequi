@@ -119,6 +119,16 @@ const sortedParamsBySpace = computed<Record<string, typeof props.strategy.params
   });
   return sortedParamsBySpace;
 });
+
+function resetParameters(): void {
+  parameters.value = Object.fromEntries(
+    props.strategy.params.map((param) => [param.name, normalizeParameterValue(param)]),
+  );
+}
+
+function resetParameter(param: AllStrategyParameter): void {
+  setParameterValue(param.name, normalizeParameterValue(param));
+}
 </script>
 
 <template>
@@ -130,7 +140,7 @@ const sortedParamsBySpace = computed<Record<string, typeof props.strategy.params
       <div
         v-for="param in params"
         :key="param.name"
-        class="mb-2 flex items-center justify-between gap-3"
+        class="mb-2 flex items-center justify-between gap-2"
         :title="param.param_type"
       >
         <template v-if="!editable">
@@ -166,7 +176,24 @@ const sortedParamsBySpace = computed<Record<string, typeof props.strategy.params
               @update:model-value="(value) => setParameterValue(param.name, value)"
             />
           </UFormField>
+          <UButton
+            variant="outline"
+            color="neutral"
+            size="md"
+            @click="resetParameter(param)"
+            icon="mdi:restore"
+            title="Reset parameter to default value"
+          />
         </template>
+      </div>
+      <div v-if="editable" class="flex justify-end">
+        <UButton
+          variant="outline"
+          @click="resetParameters"
+          icon="mdi:restore"
+          title="Reset modified parameters"
+          label="Reset all Parameters"
+        />
       </div>
     </div>
   </div>
