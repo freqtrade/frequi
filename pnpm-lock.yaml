@@ -19,7 +19,7 @@ importers:
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3))
       '@nuxt/ui':
         specifier: ^4.7.0
-        version: 4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.5)(@tiptap/extensions@3.22.5(@tiptap/core@3.22.5(@tiptap/pm@3.22.5))(@tiptap/pm@3.22.5))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.7)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.16.0)(embla-carousel@8.6.0)(sortablejs@1.15.7)(tailwindcss@4.3.0)(typescript@6.0.3)(vite@8.0.12(@types/node@25.7.0)(esbuild@0.27.4)(jiti@2.7.0)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))(vue-router@5.0.6(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3))(yjs@13.6.29)
+        version: 4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.5)(@tiptap/extensions@3.22.5(@tiptap/core@3.22.5(@tiptap/pm@3.22.5))(@tiptap/pm@3.22.5))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.7)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.16.1)(embla-carousel@8.6.0)(sortablejs@1.15.7)(tailwindcss@4.3.0)(typescript@6.0.3)(vite@8.0.12(@types/node@25.7.0)(esbuild@0.27.4)(jiti@2.7.0)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))(vue-router@5.0.6(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3))(yjs@13.6.29)
       '@tanstack/vue-table':
         specifier: ^8.21.3
         version: 8.21.3(vue@3.5.34(typescript@6.0.3))
@@ -28,10 +28,10 @@ importers:
         version: 14.3.0(vue@3.5.34(typescript@6.0.3))
       '@vueuse/integrations':
         specifier: ^14.3.0
-        version: 14.3.0(axios@1.16.0)(fuse.js@7.3.0)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))
+        version: 14.3.0(axios@1.16.1)(fuse.js@7.3.0)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))
       axios:
-        specifier: ^1.16.0
-        version: 1.16.0
+        specifier: ^1.16.1
+        version: 1.16.1
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1592,6 +1592,10 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  agent-base@6.0.2:
+    resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
+    engines: {node: '>= 6.0.0'}
+
   ajv@6.15.0:
     resolution: {integrity: sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw==}
 
@@ -1637,8 +1641,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.16.0:
-    resolution: {integrity: sha512-6hp5CwvTPlN2A31g5dxnwAX0orzM7pmCRDLnZSX772mv8WDqICwFjowHuPs04Mc8deIld1+ejhtaMn5vp6b+1w==}
+  axios@1.16.1:
+    resolution: {integrity: sha512-caYkukvroVPO8KrzuJEb50Hm07KwfBZPEC3VeFHTsqWHvKTsy54hjJz9BS/cdaypROE2rH6xvm9mHX4fgWkr3A==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -2192,6 +2196,10 @@ packages:
 
   hookable@6.1.1:
     resolution: {integrity: sha512-U9LYDy1CwhMCnprUfeAZWZGByVbhd54hwepegYTK7Pi5NvqEj63ifz5z+xukznehT7i6NIZRu89Ay1AZmRsLEQ==}
+
+  https-proxy-agent@5.0.1:
+    resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
+    engines: {node: '>= 6'}
 
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
@@ -3952,7 +3960,7 @@ snapshots:
       pkg-types: 2.3.1
       std-env: 4.1.0
 
-  '@nuxt/ui@4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.5)(@tiptap/extensions@3.22.5(@tiptap/core@3.22.5(@tiptap/pm@3.22.5))(@tiptap/pm@3.22.5))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.7)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.16.0)(embla-carousel@8.6.0)(sortablejs@1.15.7)(tailwindcss@4.3.0)(typescript@6.0.3)(vite@8.0.12(@types/node@25.7.0)(esbuild@0.27.4)(jiti@2.7.0)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))(vue-router@5.0.6(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3))(yjs@13.6.29)':
+  '@nuxt/ui@4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.5)(@tiptap/extensions@3.22.5(@tiptap/core@3.22.5(@tiptap/pm@3.22.5))(@tiptap/pm@3.22.5))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.7)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.16.1)(embla-carousel@8.6.0)(sortablejs@1.15.7)(tailwindcss@4.3.0)(typescript@6.0.3)(vite@8.0.12(@types/node@25.7.0)(esbuild@0.27.4)(jiti@2.7.0)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))(vue-router@5.0.6(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3))(yjs@13.6.29)':
     dependencies:
       '@floating-ui/dom': 1.7.6
       '@iconify/vue': 5.0.0(vue@3.5.34(typescript@6.0.3))
@@ -3985,7 +3993,7 @@ snapshots:
       '@tiptap/vue-3': 3.22.5(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.5(@tiptap/pm@3.22.5))(@tiptap/pm@3.22.5)(vue@3.5.34(typescript@6.0.3))
       '@unhead/vue': 2.1.13(vue@3.5.34(typescript@6.0.3))
       '@vueuse/core': 14.3.0(vue@3.5.34(typescript@6.0.3))
-      '@vueuse/integrations': 14.3.0(axios@1.16.0)(fuse.js@7.3.0)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))
+      '@vueuse/integrations': 14.3.0(axios@1.16.1)(fuse.js@7.3.0)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))
       '@vueuse/shared': 14.3.0(vue@3.5.34(typescript@6.0.3))
       colortranslator: 5.0.0
       consola: 3.4.2
@@ -4937,13 +4945,13 @@ snapshots:
       '@vueuse/shared': 14.3.0(vue@3.5.34(typescript@6.0.3))
       vue: 3.5.34(typescript@6.0.3)
 
-  '@vueuse/integrations@14.3.0(axios@1.16.0)(fuse.js@7.3.0)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))':
+  '@vueuse/integrations@14.3.0(axios@1.16.1)(fuse.js@7.3.0)(sortablejs@1.15.7)(vue@3.5.34(typescript@6.0.3))':
     dependencies:
       '@vueuse/core': 14.3.0(vue@3.5.34(typescript@6.0.3))
       '@vueuse/shared': 14.3.0(vue@3.5.34(typescript@6.0.3))
       vue: 3.5.34(typescript@6.0.3)
     optionalDependencies:
-      axios: 1.16.0
+      axios: 1.16.1
       fuse.js: 7.3.0
       sortablejs: 1.15.7
 
@@ -4969,6 +4977,12 @@ snapshots:
       acorn: 8.16.0
 
   acorn@8.16.0: {}
+
+  agent-base@6.0.2:
+    dependencies:
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
 
   ajv@6.15.0:
     dependencies:
@@ -5012,13 +5026,15 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.16.0:
+  axios@1.16.1:
     dependencies:
       follow-redirects: 1.16.0
       form-data: 4.0.5
+      https-proxy-agent: 5.0.1
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
+      - supports-color
 
   balanced-match@1.0.2: {}
 
@@ -5617,6 +5633,13 @@ snapshots:
   hookable@5.5.3: {}
 
   hookable@6.1.1: {}
+
+  https-proxy-agent@5.0.1:
+    dependencies:
+      agent-base: 6.0.2
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
 
   human-signals@5.0.0: {}
 
