@@ -30,9 +30,9 @@ const colorStore = useColorStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
-const dataset = computed((): PairHistory => {
+const dataset = computed((): PairHistory | null => {
   if (props.historicView) {
-    return botStore.activeBot.history[`${props.pair}__${props.timeframe}`]?.data;
+    return botStore.activeBot.history[`${props.pair}__${props.timeframe}`]?.data || null;
   }
   return botStore.activeBot.candleData[`${props.pair}__${props.timeframe}`]?.data;
 });
