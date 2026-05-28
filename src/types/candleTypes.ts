@@ -106,3 +106,12 @@ export interface PairHistory {
   /** Data end date in as millisecond timestamp */
   data_stop_ts: number;
 }
+
+export interface PairHistoryLocal {
+  [key: string]: {
+    pair: string;
+    timeframe: string;
+    timerange?: string;
+    data: PairHistory;
+  };
+}

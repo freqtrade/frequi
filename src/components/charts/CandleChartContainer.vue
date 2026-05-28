@@ -29,12 +29,12 @@ const settingsStore = useSettingsStore();
 const botStore = useBotStore();
 const plotStore = usePlotConfigStore();
 
-const dataset = computed((): PairHistory | null => {
+const dataset = computed((): PairHistory | undefined => {
   const firstpair = botStore.activeBot.plotMultiPairs[0];
   if (props.historicView) {
-    return botStore.activeBot.history[`${firstpair}__${props.timeframe}`]?.data || null;
+    return botStore.activeBot.history[`${firstpair}__${props.timeframe}`]?.data;
   }
-  return botStore.activeBot.candleData[`${firstpair}__${props.timeframe}`]?.data || null;
+  return botStore.activeBot.candleData[`${firstpair}__${props.timeframe}`]?.data;
 });
 
 const datasetColumns = computed(() =>

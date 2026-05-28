@@ -38,6 +38,7 @@ import type {
   MixTagStats,
   PairCandlePayload,
   PairHistory,
+  PairHistoryLocal,
   PairHistoryPayload,
   PairIntervalTuple,
   PairlistEvalResponse,
@@ -106,24 +107,9 @@ export function createBotSubStore(botId: string, botName: string) {
     const detailTradeId = ref<number | null>(null);
     const selectedPair = ref('');
     const plotMultiPairs = ref<string[]>([]);
-    // TODO: type me
-
-    const candleData = ref<Record<string, { pair: string; timeframe: string; data: PairHistory }>>(
-      {},
-    );
+    const candleData = ref<PairHistoryLocal>({});
     const candleDataStatus = ref(LoadingStatus.not_loaded);
-    // TODO: type me
-    const history = ref<
-      Record<
-        string,
-        {
-          pair: string;
-          timeframe: string;
-          timerange: PairHistoryPayload['timerange'];
-          data: PairHistory | null;
-        }
-      >
-    >({});
+    const history = ref<PairHistoryLocal>({});
     const historyStatus = ref(LoadingStatus.not_loaded);
     const historyTakesLonger = ref(false);
     const strategyList = ref<string[]>([]);
