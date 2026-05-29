@@ -75,6 +75,7 @@ onMounted(() => {
       v-model="exchangeModel.trade_mode as any"
       class="min-w-44"
       :items="tradeModes"
+      value-key="value"
       :disabled="tradeModes.length < 2"
     >
     </USelectMenu>
