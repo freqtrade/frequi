@@ -54,7 +54,7 @@ export function formatPriceCurrency(price: number | null, currency: string, deci
  * @param value Number to format
  * @returns Formatted string
  */
-export function formatDecimal(value: number | null): string {
+export function formatDecimal(value: number | null, locale = 'fullwide'): string {
   if (!isNotUndefined(value)) {
     return 'N/A';
   }
@@ -75,7 +75,7 @@ export function formatDecimal(value: number | null): string {
   } else if (absValue < 100) {
     decimals = 3;
   }
-  return value.toLocaleString('fullwide', {
+  return value.toLocaleString(locale, {
     useGrouping: false,
     maximumFractionDigits: decimals,
   });

@@ -301,10 +301,10 @@ function updateChart(initial = false) {
       {
         scale: true,
         max: (value) => {
-          return formatDecimal(value.max + (value.max - value.min) * 0.02);
+          return formatDecimal(value.max + (value.max - value.min) * 0.02, 'en-EN');
         },
         min: (value) => {
-          return formatDecimal(value.min - (value.max - value.min) * 0.04);
+          return formatDecimal(value.min - (value.max - value.min) * 0.04, 'en-EN');
         },
         name: ' ', // Necessary to avoid layout shift
         nameLocation: 'middle',
