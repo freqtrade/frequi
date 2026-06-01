@@ -57,4 +57,9 @@ describe('formatters.ts', () => {
     expect(formatDecimal(-0.001952123)).toEqual('-0.00195');
     expect(formatDecimal(-1051230.5123512)).toEqual('-1051230.51');
   });
+
+  it('Formats decimal with explicit locale', () => {
+    expect(formatDecimal(123.51245, 'de-DE')).toEqual('123,51');
+    expect(formatDecimal(123.51245, 'en-EN')).toEqual('123.51');
+  });
 });
