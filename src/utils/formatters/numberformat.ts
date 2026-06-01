@@ -75,8 +75,7 @@ export function formatDecimal(value: number | null, locale = 'fullwide'): string
   } else if (absValue < 100) {
     decimals = 3;
   }
-  return value.toLocaleString(locale, {
-    useGrouping: false,
-    maximumFractionDigits: decimals,
-  });
+  return Intl.NumberFormat(locale, { useGrouping: false, maximumFractionDigits: decimals }).format(
+    value,
+  );
 }
