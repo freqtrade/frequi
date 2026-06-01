@@ -37,7 +37,7 @@ export function formatPrice(value: number | null, decimals = 15): string {
 }
 
 /**
- * Formats price in the format "<price> <StakeCurrency>" using "deciaml" decimals
+ * Formats price in the format "<price> <StakeCurrency>" using "decimal" decimals
  * @param price Price to format
  * @param currency currency to use
  * @param decimals Decimals
@@ -50,6 +50,7 @@ export function formatPriceCurrency(price: number | null, currency: string, deci
 /**
  * Formats a decimal number to a string with a varying number of decimal places
  * depending on the size of the number.
+ * Respects the locale for decimal separator but disables grouping.
  * @param value Number to format
  * @returns Formatted string
  */
