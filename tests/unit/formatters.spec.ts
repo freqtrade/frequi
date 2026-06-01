@@ -4,7 +4,7 @@ import {
   formatPriceCurrency,
   formatDecimal,
 } from '@/utils/formatters/numberformat';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 describe('formatters.ts', () => {
   it('Format percent correctly', () => {
@@ -61,5 +61,21 @@ describe('formatters.ts', () => {
   it('Formats decimal with explicit locale', () => {
     expect(formatDecimal(123.51245, 'de-DE')).toEqual('123,51');
     expect(formatDecimal(123.51245, 'en-EN')).toEqual('123.51');
+  });
+
+  it('Formats decimals with predefined locale', () => {
+    const originalNumberFormat = globalThis.Intl.NumberFormat;
+    const spy = vi.spyOn(globalThis.Intl, 'NumberFormat');
+    expect(formatDecimal(-0.001952123)).toEqual('-0.00195');
+
+    spy.mockImplementation((_, opts) => originalNumberFormat('de-DE', opts));
+    expect(formatDecimal(-0.001952123)).toEqual('-0,00195');
+
+    spy.mockImplementation((_, opts) => originalNumberFormat('fr-FR', opts));
+    expect(formatDecimal(-0.001952123)).toEqual('-0,00195');
+
+    spy.mockImplementation((_, opts) => originalNumberFormat('en-EN', opts));
+    expect(formatDecimal(-0.001952123)).toEqual('-0.00195');
+    spy.mockRestore();
   });
 });
