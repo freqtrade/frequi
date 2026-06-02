@@ -405,8 +405,9 @@ function updateChart(initial = false) {
                     : value[1]?.toString();
                   const tagShort = tag.substring(0, 100);
 
-                  // Show both value and tag
-                  return `${signal.tooltipPrefix} ${value[0]} ${tagShort ? `(${tagShort})` : ''}`;
+                  // Show both prefix and tag
+                  // Value would be in value[0] - but we don't show this to avoid showing the same data multiple times as it would correspond to the close price of the candle.
+                  return `${signal.tooltipPrefix} ${tagShort ? `(${tagShort})` : ''}`;
                 }
                 // fall back to empty output if tag ain't set.
                 return '';
@@ -582,7 +583,7 @@ function updateChart(initial = false) {
 
   // Merge this into original data
   Object.assign(chartOptions.value, options);
-  // console.log('chartOptions', chartOptions.value);
+  console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
     notMerge: initial,

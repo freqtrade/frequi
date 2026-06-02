@@ -1,4 +1,4 @@
-import type { EChartsOption, TooltipComponentFormatterCallbackParams } from 'echarts';
+import type { EChartsOption, SeriesOption, TooltipComponentFormatterCallbackParams } from 'echarts';
 import type { Ref } from 'vue';
 import { format as echartsFormat } from 'echarts';
 
@@ -34,11 +34,29 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
     return echartsFormat.encodeHTML(value ?? '').replaceAll('\n', '<br />');
   }
 
-  function getSeriesOptionForTooltip(seriesIndex: number | undefined) {
+  function getSeriesOptionForTooltip(seriesIndex: number | undefined): SeriesOption | undefined {
     if (seriesIndex === undefined || !Array.isArray(chartOptions.value.series)) {
       return undefined;
     }
     return chartOptions.value.series[seriesIndex];
+  }
+
+  function getTooltipEncodedDimension(
+    seriesIndex: number | undefined,
+    dimensionType: 'tooltip' | 'y',
+  ): number[] {
+    const series = getSeriesOptionForTooltip(seriesIndex);
+    if (!series || typeof series !== 'object' || !('encode' in series) || !series.encode) {
+      return [];
+    }
+    const encodeValue = series.encode[dimensionType];
+    if (Array.isArray(encodeValue)) {
+      return encodeValue.map((value) => Number(value));
+    }
+    if (encodeValue !== undefined) {
+      return [Number(encodeValue)];
+    }
+    return [];
   }
 
   function getTooltipSectionTitle(seriesIndex: number | undefined): string {
@@ -66,10 +84,17 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
     return 'Candles';
   }
 
+  /**
+   * Called per series in the tooltip params.
+   * Returns the values to render as list
+   * @param param
+   * @returns List of values to render as string.
+   */
   function getTooltipDimensionValues(param: CandleTooltipParam): string[] {
     if (!Array.isArray(param.value)) {
       return [formatTooltipValue(param.value)];
     }
+    const series = getSeriesOptionForTooltip(param.seriesIndex);
     const seriesValues = param.value;
 
     let tooltipDimensions: number[] = Array.isArray(param.encode?.tooltip)
@@ -78,14 +103,22 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
         ? [param.encode.tooltip]
         : [];
 
-    if (
-      tooltipDimensions.length === 0 &&
-      param.seriesName === 'Trades' &&
-      param.componentSubType === 'scatter'
-    ) {
-      // Use the latest value for Trades tooltip if available
+    if (tooltipDimensions.length === 0) {
       // Unfortunately, the "tooltip" encode does not seem to be passed to tooltip params.
-      tooltipDimensions = [seriesValues.length - 1];
+      // Workaround - get tooltipDimension from chartOptions
+      const seriesOption = getTooltipEncodedDimension(param.seriesIndex, 'tooltip');
+      if (seriesOption.length > 0) {
+        tooltipDimensions = seriesOption;
+      }
+    }
+
+    if (series?.tooltip?.valueFormatter) {
+      // ValueFormatter handling (mainly for entry/exit signals)
+      const valueFormatterData = Array.isArray(tooltipDimensions)
+        ? tooltipDimensions.map((dim) => seriesValues[Number(dim)])
+        : seriesValues;
+
+      return [String(series.tooltip.valueFormatter(valueFormatterData, param.dataIndex))];
     }
 
     if (tooltipDimensions.length === 0) {
@@ -178,7 +211,7 @@ export function useCandleChartTooltip(chartOptions: Ref<EChartsOption>) {
 
   /** Main chandlechart tooltip formatter */
   function formatCandleTooltip(params: TooltipComponentFormatterCallbackParams): string {
-    // console.log('tooltipParams', params);
+    // console.log('tooltipParams', params[0].data[0], params);
     const tooltipParams: CandleTooltipParam[] = Array.isArray(params) ? params : [params];
     if (tooltipParams.length === 0) {
       return '';
