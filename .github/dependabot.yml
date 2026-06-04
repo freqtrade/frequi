@@ -36,6 +36,7 @@ updates:
     interval: "cron"
     # Wednesday
     cronjob: "25 1 * * 3"
+    timezone: "UTC"
   open-pull-requests-limit: 20
   target-branch: main
   groups:
