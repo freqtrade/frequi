@@ -120,15 +120,6 @@ export function createBotSubStore(botId: string, botName: string) {
     const pairlist = ref<string[]>([]);
     const pairlistWithTimeframe = ref<PairIntervalTuple[]>([]);
     const currentLocks = ref<LockResponse | undefined>(undefined);
-    // backtesting
-    const backtestRunning = ref(false);
-    const backtestProgress = ref(0.0);
-    const backtestStep = ref(BacktestSteps.none);
-    const backtestTradeCount = ref(0);
-    const selectedBacktestResultKey = ref('');
-    const backtestHistory = ref<Record<string, BacktestResultInMemory>>({});
-    const backtestHistoryList = ref<BacktestHistoryEntry[]>([]);
-    const sysInfo = ref<SysInfoResponse>({} as SysInfoResponse);
 
     const version = computed(() => botState.value?.version || versionState.value);
     const botApiVersion = computed(() => botState.value?.api_version || 1.0);
@@ -137,14 +128,8 @@ export function createBotSubStore(botId: string, botName: string) {
     );
     const stakeCurrency = computed(() => botState.value?.stake_currency || '');
     const stakeCurrencyDecimals = computed(() => botState.value?.stake_currency_decimals || 3);
-    const canRunBacktest = computed(() => botState.value?.runmode === RunModes.WEBSERVER);
     const isWebserverMode = computed(() => botState.value?.runmode === RunModes.WEBSERVER);
-    const selectedBacktestResult = computed(
-      () => backtestHistory.value[selectedBacktestResultKey.value]?.strategy,
-    );
-    const selectedBacktestMetadata = computed(
-      () => backtestHistory.value[selectedBacktestResultKey.value]?.metadata,
-    );
+
     const shortAllowed = computed(() => botState.value?.short_allowed || false);
     const openTradeCount = computed(() => openTrades.value.length);
     const isTrading = computed(
@@ -1057,6 +1042,34 @@ export function createBotSubStore(botId: string, botName: string) {
       return Promise.reject(error);
     }
 
+    const sysInfo = ref<SysInfoResponse>({} as SysInfoResponse);
+    async function getSysInfo() {
+      try {
+        const { data } = await api.get<SysInfoResponse>('/sysinfo');
+        sysInfo.value = data;
+        return Promise.resolve(data);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    }
+
+    // #region backtesting
+    const backtestRunning = ref(false);
+    const backtestProgress = ref(0.0);
+    const backtestStep = ref(BacktestSteps.none);
+    const backtestTradeCount = ref(0);
+    const selectedBacktestResultKey = ref('');
+    const backtestHistory = ref<Record<string, BacktestResultInMemory>>({});
+    const backtestHistoryList = ref<BacktestHistoryEntry[]>([]);
+    const canRunBacktest = computed(() => botState.value?.runmode === RunModes.WEBSERVER);
+
+    const selectedBacktestResult = computed(
+      () => backtestHistory.value[selectedBacktestResultKey.value]?.strategy,
+    );
+    const selectedBacktestMetadata = computed(
+      () => backtestHistory.value[selectedBacktestResultKey.value]?.metadata,
+    );
+
     async function startBacktest(payload: BacktestPayload) {
       try {
         const result = await api.post<BacktestPayload, AxiosResponse<BacktestStatus>>(
@@ -1234,15 +1247,9 @@ export function createBotSubStore(botId: string, botName: string) {
       delete backtestHistory.value[key];
     }
 
-    async function getSysInfo() {
-      try {
-        const { data } = await api.get<SysInfoResponse>('/sysinfo');
-        sysInfo.value = data;
-        return Promise.resolve(data);
-      } catch (err) {
-        return Promise.reject(err);
-      }
-    }
+    // #endregion backtesting
+
+    // #region Websocket handling
 
     function _handleWebsocketMessage(ws: WebSocket, event: MessageEvent<string>) {
       const msg: FTWsMessage = JSON.parse(event.data);
@@ -1336,6 +1343,7 @@ export function createBotSubStore(botId: string, botName: string) {
         },
       );
     }
+    // #endregion websocket handling
 
     return {
       websocketStarted,
