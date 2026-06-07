@@ -76,7 +76,6 @@ export function createBotSubStore(botId: string, botName: string) {
   const { showAlert } = useAlertForBot(botName);
 
   const useBotStore = defineStore(botId, () => {
-    const websocketStarted = ref(false);
     const isSelected = ref(true);
     const ping = ref('');
     const botStatusAvailable = ref(false);
@@ -90,10 +89,6 @@ export function createBotSubStore(botId: string, botName: string) {
     const openTrades = ref<Trade[]>([]);
     const tradeCount = ref(0);
 
-    const botState = ref<BotState>({} as BotState);
-    const balance = ref<BalanceInterface>({} as BalanceInterface);
-
-    const balanceHistory = ref<WalletHistory | undefined>(undefined);
     const pairlistMethods = ref<string[]>([]);
     const detailTradeId = ref<number | null>(null);
     const selectedPair = ref('');
@@ -108,6 +103,7 @@ export function createBotSubStore(botId: string, botName: string) {
     const pairlist = ref<string[]>([]);
     const pairlistWithTimeframe = ref<PairIntervalTuple[]>([]);
 
+    const botState = shallowRef<BotState>({} as BotState);
     const version = computed(() => botState.value?.version || versionState.value);
     const botApiVersion = computed(() => botState.value?.api_version || 1.0);
     const botFeatures = computed<BotFeatures>(() =>
@@ -118,12 +114,14 @@ export function createBotSubStore(botId: string, botName: string) {
     const isWebserverMode = computed(() => botState.value?.runmode === RunModes.WEBSERVER);
 
     const shortAllowed = computed(() => botState.value?.short_allowed || false);
-    const openTradeCount = computed(() => openTrades.value.length);
     const isTrading = computed(
       () =>
         botState.value?.runmode === RunModes.LIVE || botState.value?.runmode === RunModes.DRY_RUN,
     );
     const timeframe = computed(() => botState.value?.timeframe || '');
+
+    const openTradeCount = computed(() => openTrades.value.length);
+
     const closedTrades = computed(() => {
       return trades.value
         .filter((item) => !item.is_open)
@@ -220,7 +218,7 @@ export function createBotSubStore(botId: string, botName: string) {
           updates.push(getTrades());
           updates.push(getBalance());
           updates.push(updateWalletChange());
-          //     /* white/blacklist might be refreshed more often as they are not expensive on the backend */
+          /* white/blacklist might be refreshed more often as they are not expensive on the backend */
           updates.push(getWhitelist());
           updates.push(getBlacklist());
           updates.push(getCurrentStrategy());
@@ -696,6 +694,7 @@ export function createBotSubStore(botId: string, botName: string) {
     }
     // #endregion pairlists
 
+    const balance = shallowRef<BalanceInterface>({} as BalanceInterface);
     async function getBalance() {
       try {
         const { data } = await api.get('/balance');
@@ -706,16 +705,17 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
+    const balanceHistory = shallowRef<WalletHistory | undefined>(undefined);
     async function updateWalletChange() {
       if (!botFeatures.value.walletChange) {
         return;
       }
       try {
         const { data } = await api.get<WalletHistory>('/historic_balance');
-        balanceHistory.value = data;
-        if (balanceHistory.value) {
-          balanceHistory.value.botName = storeBotName.value;
+        if (data) {
+          data.botName = storeBotName.value;
         }
+        balanceHistory.value = data;
       } catch (err) {
         console.error(err);
       }
@@ -1274,6 +1274,7 @@ export function createBotSubStore(botId: string, botName: string) {
 
     // #region Websocket handling
 
+    const websocketStarted = ref(false);
     function _handleWebsocketMessage(ws: WebSocket, event: MessageEvent<string>) {
       const msg: FTWsMessage = JSON.parse(event.data);
       switch (msg.type) {
