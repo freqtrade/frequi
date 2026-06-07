@@ -85,23 +85,14 @@ export function createBotSubStore(botId: string, botName: string) {
     const autoRefresh = ref(false);
     const refreshing = ref(false);
     const versionState = ref('');
-    const lastLogs = ref<LogLine[]>([]);
     const refreshRequired = ref(true);
     const trades = ref<ClosedTrade[]>([]);
     const openTrades = ref<Trade[]>([]);
     const tradeCount = ref(0);
-    const performanceStats = ref<PerformanceEntry[]>([]);
-    const entryStats = ref<EntryStats[]>([]);
-    const exitStats = ref<ExitStats[]>([]);
-    const mixTagStats = ref<MixTagStats[]>([]);
-    const whitelist = ref<string[]>([]);
-    const blacklist = ref<string[]>([]);
-    const profitAll = ref<AllProfitStats | undefined>(undefined);
+
     const botState = ref<BotState>({} as BotState);
     const balance = ref<BalanceInterface>({} as BalanceInterface);
-    const dailyStats = ref<TimeSummaryReturnValue>({} as TimeSummaryReturnValue);
-    const weeklyStats = ref<TimeSummaryReturnValue>({} as TimeSummaryReturnValue);
-    const monthlyStats = ref<TimeSummaryReturnValue>({} as TimeSummaryReturnValue);
+
     const balanceHistory = ref<WalletHistory | undefined>(undefined);
     const pairlistMethods = ref<string[]>([]);
     const detailTradeId = ref<number | null>(null);
@@ -568,6 +559,12 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
+    // #region stats
+    const performanceStats = ref<PerformanceEntry[]>([]);
+    const entryStats = ref<EntryStats[]>([]);
+    const exitStats = ref<ExitStats[]>([]);
+    const mixTagStats = ref<MixTagStats[]>([]);
+
     async function getPerformance() {
       try {
         const { data } = await api.get<PerformanceEntry[]>('/performance');
@@ -612,6 +609,31 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
+    const profitAll = ref<AllProfitStats | undefined>(undefined);
+
+    async function getProfit() {
+      try {
+        if (botFeatures.value.hasProfitAll) {
+          const { data } = await api.get<AllProfitStats>('/profit_all');
+          profitAll.value = data;
+          return Promise.resolve(data);
+        }
+        const { data } = await api.get<ProfitStats>('/profit');
+        if (!profitAll.value) {
+          profitAll.value = {} as AllProfitStats;
+        }
+        profitAll.value.all = data;
+        return Promise.resolve(data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    // #endregion stats
+
+    // #region pairlists
+    const whitelist = ref<string[]>([]);
+    const blacklist = ref<string[]>([]);
     async function getWhitelist() {
       try {
         const { data } = await api.get<WhitelistResponse>('/whitelist');
@@ -633,33 +655,9 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
-    async function getProfit() {
-      try {
-        if (botFeatures.value.hasProfitAll) {
-          const { data } = await api.get<AllProfitStats>('/profit_all');
-          profitAll.value = data;
-          return Promise.resolve(data);
-        }
-        const { data } = await api.get<ProfitStats>('/profit');
-        if (!profitAll.value) {
-          profitAll.value = {} as AllProfitStats;
-        }
-        profitAll.value.all = data;
-        return Promise.resolve(data);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    }
-
-    async function getBalance() {
-      try {
-        const { data } = await api.get('/balance');
-        balance.value = data;
-        return Promise.resolve(data);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    }
+    const dailyStats = ref<TimeSummaryReturnValue>({} as TimeSummaryReturnValue);
+    const weeklyStats = ref<TimeSummaryReturnValue>({} as TimeSummaryReturnValue);
+    const monthlyStats = ref<TimeSummaryReturnValue>({} as TimeSummaryReturnValue);
 
     async function getTimeSummary(
       aggregation: TimeSummaryOptions,
@@ -681,6 +679,17 @@ export function createBotSubStore(botId: string, botName: string) {
         return Promise.resolve(data);
       } catch (error) {
         console.error(error);
+        return Promise.reject(error);
+      }
+    }
+    // #endregion pairlists
+
+    async function getBalance() {
+      try {
+        const { data } = await api.get('/balance');
+        balance.value = data;
+        return Promise.resolve(data);
+      } catch (error) {
         return Promise.reject(error);
       }
     }
@@ -715,6 +724,8 @@ export function createBotSubStore(botId: string, botName: string) {
         return Promise.reject(error);
       }
     }
+
+    const lastLogs = ref<LogLine[]>([]);
 
     async function getLogs() {
       try {
