@@ -98,10 +98,7 @@ export function createBotSubStore(botId: string, botName: string) {
     const detailTradeId = ref<number | null>(null);
     const selectedPair = ref('');
     const plotMultiPairs = ref<string[]>([]);
-    const candleData = ref<PairHistoryLocal>({});
-    const candleDataStatus = ref(LoadingStatus.not_loaded);
-    const history = ref<PairHistoryLocal>({});
-    const historyStatus = ref(LoadingStatus.not_loaded);
+
     const historyTakesLonger = ref(false);
     const strategyList = ref<string[]>([]);
     const freqaiModelList = ref<string[]>([]);
@@ -110,7 +107,6 @@ export function createBotSubStore(botId: string, botName: string) {
     const strategy = ref<StrategyResult | undefined>({} as StrategyResult);
     const pairlist = ref<string[]>([]);
     const pairlistWithTimeframe = ref<PairIntervalTuple[]>([]);
-    const currentLocks = ref<LockResponse | undefined>(undefined);
 
     const version = computed(() => botState.value?.version || versionState.value);
     const botApiVersion = computed(() => botState.value?.api_version || 1.0);
@@ -159,8 +155,6 @@ export function createBotSubStore(botId: string, botName: string) {
     const storeBotName = computed(() => botState.value?.bot_name || 'freqtrade');
     const storeBotId = computed(() => botId);
     const allTrades = computed(() => [...openTrades.value, ...trades.value] as Trade[]);
-    const activeLocks = computed(() => currentLocks.value?.locks || []);
-    const profit = computed<ProfitStats | undefined>(() => profitAll.value?.all);
 
     function botAdded() {
       autoRefresh.value = loginInfo.autoRefresh.value;
@@ -322,11 +316,17 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
-    function getLocks() {
-      return api
-        .get('/locks')
-        .then((result) => (currentLocks.value = result.data))
-        .catch(console.error);
+    // #region locks
+
+    const currentLocks = shallowRef<LockResponse | undefined>(undefined);
+    const activeLocks = computed(() => currentLocks.value?.locks || []);
+    async function getLocks() {
+      try {
+        const result = await api.get('/locks');
+        return (currentLocks.value = result.data);
+      } catch (data) {
+        return console.error(data);
+      }
     }
 
     async function deleteLock(lockid: string) {
@@ -343,6 +343,15 @@ export function createBotSubStore(botId: string, botName: string) {
         return Promise.reject(error);
       }
     }
+
+    // #endregion locks
+
+    // #region Candle history
+
+    const candleData = shallowRef<PairHistoryLocal>({});
+    const candleDataStatus = shallowRef(LoadingStatus.not_loaded);
+    const history = ref<PairHistoryLocal>({});
+    const historyStatus = shallowRef(LoadingStatus.not_loaded);
 
     async function getPairCandles(payload: PairCandlePayload) {
       if (payload.pair && payload.timeframe) {
@@ -466,6 +475,8 @@ export function createBotSubStore(botId: string, botName: string) {
         return Promise.reject(data);
       }
     }
+
+    // #endregion Candle history
 
     async function getStrategyList() {
       try {
@@ -610,6 +621,7 @@ export function createBotSubStore(botId: string, botName: string) {
     }
 
     const profitAll = ref<AllProfitStats | undefined>(undefined);
+    const profit = computed<ProfitStats | undefined>(() => profitAll.value?.all);
 
     async function getProfit() {
       try {
@@ -725,7 +737,7 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
-    const lastLogs = ref<LogLine[]>([]);
+    const lastLogs = shallowRef<LogLine[]>([]);
 
     async function getLogs() {
       try {
