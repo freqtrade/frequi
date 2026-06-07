@@ -80,6 +80,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         return {
           name,
           param_type: param.param_type,
+          space: param.space,
           value,
         };
       });

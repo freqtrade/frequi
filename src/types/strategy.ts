@@ -56,7 +56,10 @@ export type AllStrategyParameter =
 
 export type StrategyParameterValue = AllStrategyParameter['value'];
 
-export type StrategyParameterInputs = Pick<AllStrategyParameter, 'name' | 'param_type' | 'value'>;
+export type StrategyParameterInputs = Pick<
+  AllStrategyParameter,
+  'name' | 'space' | 'param_type' | 'value'
+>;
 
 export interface StrategyResult {
   /** Strategy name */
