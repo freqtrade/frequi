@@ -251,7 +251,8 @@ function editBotLogin(botId: string) {
               {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
             </span>
             <BotEntry
-              :bot="botStore.availableBots[botStore.selectedBot]"
+              v-if="botStore.selectedBotObj"
+              :bot="botStore.selectedBotObj"
               noButtons
               no-text
               @edit-login="editBotLogin"
@@ -322,7 +323,8 @@ function editBotLogin(botId: string) {
                     {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
                   </span>
                   <BotEntry
-                    :bot="botStore.availableBots[botStore.selectedBot]"
+                    v-if="botStore.selectedBotObj"
+                    :bot="botStore.selectedBotObj"
                     noButtons
                     no-text
                     @edit-login="editBotLogin"
