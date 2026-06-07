@@ -47,7 +47,6 @@ interface BotStoreSetup {
   selectedBots: ComputedRef<BotSubStore[]>;
   selectedBotCount: ComputedRef<number>;
   activeBot: ComputedRef<BotSubStore>;
-  activeBotorUndefined: ComputedRef<BotSubStore | undefined>;
   canRunBacktest: ComputedRef<boolean>;
   isWebserverMode: ComputedRef<boolean>;
   selectedBotObj: ComputedRef<BotDescriptor | undefined>;
@@ -121,9 +120,6 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
     () => Object.values(botStores.value).filter((store) => store.isSelected).length,
   );
   const activeBot = computed<BotSubStore>(() => botStores.value[selectedBot.value]);
-  const activeBotorUndefined = computed<BotSubStore | undefined>(
-    () => botStores.value[selectedBot.value],
-  );
   const canRunBacktest = computed<boolean>(
     () => botStores.value[selectedBot.value]?.canRunBacktest ?? false,
   );
@@ -544,7 +540,6 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
     selectedBots,
     selectedBotCount,
     activeBot,
-    activeBotorUndefined,
     canRunBacktest,
     isWebserverMode,
     selectedBotObj,

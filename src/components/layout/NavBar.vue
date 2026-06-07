@@ -58,10 +58,10 @@ const resetDynamicLayout = (): void => {
 const setTitle = () => {
   let title = 'freqUI';
   if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
-    title = `(${botStore.activeBotorUndefined?.openTradeCount}) ${title}`;
+    title = `(${botStore.activeBot?.openTradeCount}) ${title}`;
   }
-  if (botStore.activeBotorUndefined?.botName) {
-    title = `${title} - ${botStore.activeBotorUndefined?.botName}`;
+  if (botStore.activeBot?.botName) {
+    title = `${title} - ${botStore.activeBot?.botName}`;
   }
   document.title = title;
 };
@@ -81,19 +81,19 @@ settingsStore.$subscribe((_, state) => {
   const needsUpdate = settingsStore.openTradesInTitle !== state.openTradesInTitle;
   if (needsUpdate) {
     setTitle();
-    setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount || 0);
+    setOpenTradesAsPill(botStore.activeBot?.openTradeCount || 0);
   }
 });
 
 watch(
-  () => botStore.activeBotorUndefined?.botName,
+  () => botStore.activeBot?.botName,
   () => setTitle(),
 );
 watch(
-  () => botStore.activeBotorUndefined?.openTradeCount,
+  () => botStore.activeBot?.openTradeCount,
   () => {
     if (settingsStore.openTradesInTitle === OpenTradeVizOptions.showPill) {
-      setOpenTradesAsPill(botStore.activeBotorUndefined?.openTradeCount ?? 0);
+      setOpenTradesAsPill(botStore.activeBot?.openTradeCount ?? 0);
     } else if (settingsStore.openTradesInTitle === OpenTradeVizOptions.asTitle) {
       setTitle();
     }
@@ -248,10 +248,7 @@ function editBotLogin(botId: string) {
           </div>
           <div class="hidden md:flex md:flex-nowrap items-center nav-item me-2">
             <span class="text-sm me-2" title="Bot name">
-              {{
-                (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
-                'No bot selected'
-              }}
+              {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
             </span>
             <BotEntry
               :bot="botStore.availableBots[botStore.selectedBot]"
@@ -322,10 +319,7 @@ function editBotLogin(botId: string) {
                 <USeparator class="my-2" />
                 <div class="flex flex-row items-center">
                   <span class="text-sm me-2" title="Bot name">
-                    {{
-                      (botStore.activeBotorUndefined && botStore.activeBotorUndefined.botName) ||
-                      'No bot selected'
-                    }}
+                    {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
                   </span>
                   <BotEntry
                     :bot="botStore.availableBots[botStore.selectedBot]"
