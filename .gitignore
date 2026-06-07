@@ -3,7 +3,7 @@ node_modules
 package-lock.json
 /dist
 src/components.d.ts
-src/auto-import.d.ts
+src/auto-imports.d.ts
 
 
 # local env files
