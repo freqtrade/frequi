@@ -583,7 +583,7 @@ function updateChart(initial = false) {
 
   // Merge this into original data
   Object.assign(chartOptions.value, options);
-  console.log('chartOptions', chartOptions.value);
+  // console.log('chartOptions', chartOptions.value);
   candleChart.value?.setOption(chartOptions.value, {
     replaceMerge: ['series', 'grid', 'yAxis', 'xAxis', 'legend'],
     notMerge: initial,
