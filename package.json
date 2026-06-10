@@ -36,7 +36,7 @@
     "sortablejs": "^1.15.7",
     "vue": "^3.5.35",
     "vue-echarts": "^8.0.1",
-    "vue-router": "^5.0.7"
+    "vue-router": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -63,7 +63,7 @@
     "unplugin-icons": "^23.0.1",
     "vite": "^8.0.16",
     "vitest": "^4.1.8",
-    "vue-tsc": "^3.3.2"
+    "vue-tsc": "^3.3.3"
   },
   "packageManager": "pnpm@11.5.2+sha512.71c631e382066efc25625d5cf029075de07b61b37f6e27350fbd84b1bda5864c8c1967adc280776b45c30a715c0359a3be08fef42d5bb09e2b99029979692916"
 }
