@@ -29,6 +29,7 @@ export interface ExchangeSelection {
 export interface MarketsPayload extends ExchangeSelectPayload {
   quote?: string;
   base?: string;
+  include_inactive?: boolean;
 }
 
 export interface Market {
@@ -37,6 +38,7 @@ export interface Market {
   quote: string;
   spot: boolean;
   swap: boolean;
+  active?: boolean;
 }
 
 export interface Markets {
