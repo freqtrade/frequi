@@ -4,11 +4,13 @@ const props = withDefaults(
     title?: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
     class?: string;
+    unmountOnHide?: boolean;
   }>(),
   {
     title: '',
     size: 'lg',
     class: '',
+    unmountOnHide: true,
   },
 );
 const open = defineModel('open', {
@@ -24,6 +26,7 @@ defineOptions({
   <UCollapsible
     class="border border-neutral-300 dark:border-neutral-700 rounded-sm"
     v-model:open="open"
+    :unmount-on-hide
   >
     <UButton
       block
