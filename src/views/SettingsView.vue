@@ -13,7 +13,7 @@ const openTradesOptions = [
 ];
 const colorPreferenceOptions = [
   { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
-  { value: ColorPreferences.RED_UP, text: 'Green Down/Red Up' },
+  { value: ColorPreferences.RED_UP, text: 'Red Up/Green Down' },
 ];
 
 const resetDynamicLayout = () => {
@@ -161,11 +161,7 @@ const resetDynamicLayout = () => {
                 <div class="flex items-center">
                   <span class="mr-2">{{ item.text }}</span>
                   <UIcon
-                    :name="
-                      item.value === ColorPreferences.GREEN_UP
-                        ? 'mdi:arrow-up-thin'
-                        : 'mdi:arrow-down-thin'
-                    "
+                    name="mdi:arrow-up-thin"
                     :color="
                       item.value === ColorPreferences.GREEN_UP
                         ? colorStore.colorProfit
@@ -174,11 +170,7 @@ const resetDynamicLayout = () => {
                     class="-ml-2 size-5"
                   />
                   <UIcon
-                    :name="
-                      item.value === ColorPreferences.GREEN_UP
-                        ? 'mdi:arrow-down-thin'
-                        : 'mdi:arrow-up-thin'
-                    "
+                    name="mdi:arrow-down-thin"
                     :color="
                       item.value === ColorPreferences.GREEN_UP
                         ? colorStore.colorLoss
