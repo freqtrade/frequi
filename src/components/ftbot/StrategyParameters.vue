@@ -134,13 +134,24 @@ function resetParameter(param: AllStrategyParameter): void {
 <template>
   <div v-if="strategy.params && strategy.params.length > 0" class="text-start">
     <div v-for="(params, space) in sortedParamsBySpace" :key="space" class="mb-4">
-      <h3 class="text-md font-bold underline mb-2" :title="`Space ${space}`">
-        {{ space }}
-      </h3>
+      <div class="flex justify-between">
+        <h3 class="text-md font-bold underline mb-2" :title="`Space ${space}`">
+          {{ space }}
+        </h3>
+        <UButton
+          v-if="editable"
+          variant="outline"
+          class="mb-1"
+          @click="resetParameters"
+          icon="mdi:restore"
+          title="Reset modified parameters"
+          label="Reset space parameters"
+        />
+      </div>
       <div
         v-for="param in params"
         :key="param.name"
-        class="mb-2 flex items-center justify-between gap-2"
+        class="mb-1 flex items-center justify-between gap-2"
         :title="param.param_type"
       >
         <template v-if="!editable">
@@ -185,15 +196,6 @@ function resetParameter(param: AllStrategyParameter): void {
             title="Reset parameter to default value"
           />
         </template>
-      </div>
-      <div v-if="editable" class="flex justify-end">
-        <UButton
-          variant="outline"
-          @click="resetParameters"
-          icon="mdi:restore"
-          title="Reset modified parameters"
-          label="Reset all Parameters"
-        />
       </div>
     </div>
   </div>
