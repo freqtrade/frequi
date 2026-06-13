@@ -49,6 +49,7 @@ onMounted(() => {
     botStore.activeBot.getWhitelist();
   }
 });
+const strategyParams = ref<Record<string, StrategyParameterValue>>({});
 
 function refreshOHLCV(pair: string, columns: string[]) {
   console.log('Refreshing OHLCV for pair:', pair, finalTimeframe.value, 'with columns:', columns);
@@ -67,7 +68,6 @@ function refreshOHLCV(pair: string, columns: string[]) {
       payload.trading_mode = exchange.value.selectedExchange.trade_mode.trading_mode;
       payload.margin_mode = exchange.value.selectedExchange.trade_mode.margin_mode;
     }
-    botStore.activeBot.getPairHistory(payload);
 
     if (strategyParams.value && Object.keys(strategyParams.value).length > 0) {
       payload.strategy_params = Object.entries(strategyParams.value).map(([name, value]) => {
@@ -85,6 +85,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         };
       });
     }
+    botStore.activeBot.getPairHistory(payload);
   } else {
     botStore.activeBot.getPairCandles({
       pair: pair,
@@ -126,7 +127,6 @@ watch(
     immediate: true,
   },
 );
-const strategyParams = ref<Record<string, StrategyParameterValue>>({});
 </script>
 
 <template>
@@ -202,10 +202,11 @@ const strategyParams = ref<Record<string, StrategyParameterValue>>({});
               title="Open to modify strategy parameters"
               size="md"
               v-if="selectedStrategyDetails?.params.length > 0"
+              :unmount-on-hide="false"
             >
               <StrategyParameters
                 :strategy="selectedStrategyDetails"
-                class="m-3"
+                class="m-3 overflow-y-auto max-h-96 pr-1"
                 editable
                 v-model:parameters="strategyParams"
               />
