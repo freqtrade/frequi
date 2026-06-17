@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BacktestHistoryEntry } from '@/types';
 import type { TableColumn } from '@nuxt/ui';
+import type { TableMeta, Row } from '@tanstack/vue-table';
 
 const botStore = useBotStore();
 const { confirm } = useConfirmBox();
@@ -36,6 +37,21 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
   { accessorKey: 'filename', header: 'Filename' },
   { id: 'actions', header: 'Actions' },
 ];
+
+function isRowLoaded(row: Row<BacktestHistoryEntry>) {
+  return row.original.run_id in botStore.activeBot.backtestHistory;
+}
+
+const meta: TableMeta<BacktestHistoryEntry> = {
+  class: {
+    tr: (row: Row<BacktestHistoryEntry>) => {
+      if (isRowLoaded(row)) {
+        return 'dark:bg-mute1d dark:bg-mist-700 bg-mist-200 cursor-not-allowed';
+      }
+      return '';
+    },
+  },
+};
 </script>
 
 <template>
@@ -67,6 +83,7 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
       class="mt-2 h-[80dvh]"
       :data="filteredList"
       :columns="columns"
+      :meta="meta"
       :virtualize="{ estimateSize: 38, overscan: 12 }"
       sticky
       @select="(e, row) => botStore.activeBot.getBacktestHistoryResult(row.original)"
@@ -95,8 +112,9 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
             size="sm"
             variant="solid"
             title="Load this Result."
-            icon="mdi:arrow-right"
-            :disabled="row.original.run_id in botStore.activeBot.backtestHistory"
+            :color="isRowLoaded(row) ? 'success' : 'primary'"
+            :icon="isRowLoaded(row) ? 'mdi:check' : 'mdi:arrow-right'"
+            :disabled="isRowLoaded(row)"
             @click.stop="botStore.activeBot.getBacktestHistoryResult(row.original)"
           />
           <UButton
@@ -106,7 +124,7 @@ const columns: TableColumn<BacktestHistoryEntry>[] = [
             color="neutral"
             title="Delete this Result."
             icon="mdi:delete"
-            :disabled="row.original.run_id in botStore.activeBot.backtestHistory"
+            :disabled="isRowLoaded(row)"
             @click.stop="deleteBacktestResult(row.original)"
           />
         </div>
