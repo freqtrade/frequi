@@ -19,10 +19,6 @@ const emit = defineEmits<{
   updateResult: [value: BacktestResultUpdate];
 }>();
 
-const setBacktestResult = (key: string) => {
-  emit('selectionChange', key);
-};
-
 function confirmInput(run_id: string, result: BacktestResultInMemory) {
   result.metadata.editing = !result.metadata.editing;
   if (result.metadata.filename) {
@@ -50,7 +46,7 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
           'bg-primary dark:border-primary text-white': key === selectedBacktestResultKey,
         }"
         class="flex justify-between items-center py-1 px-1"
-        @click="setBacktestResult(key)"
+        @click="$emit('selectionChange', key)"
       >
         <template v-if="!result.metadata.editing">
           <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
@@ -68,8 +64,8 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
               size="sm"
               class="flex-nowrap"
               color="neutral"
-              title="Delete this Result from UI."
-              icon="mdi:delete"
+              title="Unload this Result from UI."
+              icon="mdi:close"
               @click.stop="$emit('removeResult', key)"
             />
           </div>

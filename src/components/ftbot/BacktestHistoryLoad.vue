@@ -100,15 +100,14 @@ const meta: TableMeta<BacktestHistoryEntry> = {
         <DateTimeTZ :date="row.original.backtest_start_time * 1000" />
       </template>
       <template #actions-cell="{ row }">
-        <div class="flex items-center">
+        <div class="flex items-center gap-1">
           <InfoBox
             v-if="botStore.activeBot.botFeatures.backtestSetNotes"
             :class="row.original.notes ? 'opacity-100' : 'opacity-0'"
             :hint="row.original.notes ?? ''"
           ></InfoBox>
           <UButton
-            v-if="botStore.activeBot.botFeatures.backtestDelete"
-            class="ms-1"
+            v-if="botStore.activeBot.botFeatures.backtestDelete && !isRowLoaded(row)"
             size="sm"
             variant="solid"
             title="Load this Result."
@@ -118,8 +117,16 @@ const meta: TableMeta<BacktestHistoryEntry> = {
             @click.stop="botStore.activeBot.getBacktestHistoryResult(row.original)"
           />
           <UButton
+            v-if="isRowLoaded(row)"
+            title="Unload this Result"
+            icon="mdi:close"
+            size="sm"
+            variant="solid"
+            color="success"
+            @click.stop="botStore.activeBot.removeBacktestResultFromMemory(row.original.run_id)"
+          />
+          <UButton
             v-if="botStore.activeBot.botFeatures.backtestDelete"
-            class="ms-1"
             size="sm"
             color="neutral"
             title="Delete this Result."
