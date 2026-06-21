@@ -184,6 +184,7 @@ export interface StrategyBacktestResult {
   sharpe?: number;
   calmar?: number;
   sqn?: number;
+  p_value?: number;
   expectancy?: number;
   expectancy_ratio?: number;
   wallet_stats?: {

@@ -117,6 +117,9 @@ export function generateBacktestMetricRows(result: StrategyBacktestResult) {
       'System Quality Number (SQN)': formatNumber(result.sqn, 2),
     },
     {
+      'Mean profit p-value': formatNumber(result.p_value, 3),
+    },
+    {
       [`Expectancy ${result.expectancy_ratio ? '(ratio)' : ''}`]: `${
         result.expectancy
           ? result.expectancy_ratio
