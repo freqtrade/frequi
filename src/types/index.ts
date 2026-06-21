@@ -1,3 +1,4 @@
+export * from './analysis';
 export * from './auth';
 export * from './backgroundtasks';
 export * from './backtest';

@@ -33,6 +33,8 @@ import type {
   HyperoptLossObj,
   LockResponse,
   LogLine,
+  LookaheadAnalysis,
+  LookaheadAnalysisPayload,
   Markets,
   MarketsPayload,
   MixTagStats,
@@ -47,6 +49,8 @@ import type {
   PerformanceEntry,
   PlotConfig,
   ProfitStats,
+  RecursiveAnalysis,
+  RecursiveAnalysisPayload,
   StatusResponse,
   StrategyListResult,
   StrategyResult,
@@ -808,6 +812,56 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
+    async function startRecursiveAnalysis(payload: RecursiveAnalysisPayload) {
+      try {
+        const { data } = await api.post<RecursiveAnalysisPayload, AxiosResponse<BgTaskStarted>>(
+          '/recursive_analysis',
+          payload,
+        );
+        const { startBgJob } = useBackgroundJob();
+        startBgJob(api, showAlert, data.job_id, 'recursive_analysis');
+        return Promise.resolve(data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    }
+
+    async function getRecursiveAnalysisResult(jobId: string) {
+      try {
+        const { data } = await api.get<RecursiveAnalysis>(`/recursive_analysis/${jobId}`);
+        return Promise.resolve(data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    }
+
+    async function startLookaheadAnalysis(payload: LookaheadAnalysisPayload) {
+      try {
+        const { data } = await api.post<LookaheadAnalysisPayload, AxiosResponse<BgTaskStarted>>(
+          '/lookahead_analysis',
+          payload,
+        );
+        const { startBgJob } = useBackgroundJob();
+        startBgJob(api, showAlert, data.job_id, 'lookahead_analysis');
+        return Promise.resolve(data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    }
+
+    async function getLookaheadAnalysisResult(jobId: string) {
+      try {
+        const { data } = await api.get<LookaheadAnalysis>(`/lookahead_analysis/${jobId}`);
+        return Promise.resolve(data);
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    }
+
     async function startBot() {
       try {
         const { data } = await api.post<Record<string, never>, AxiosResponse<StatusResponse>>(
@@ -1486,6 +1540,10 @@ export function createBotSubStore(botId: string, botName: string) {
       getPairlistEvalResult,
       getBackgroundJobStatus,
       startDataDownload,
+      startRecursiveAnalysis,
+      getRecursiveAnalysisResult,
+      startLookaheadAnalysis,
+      getLookaheadAnalysisResult,
       startBot,
       stopBot,
       stopBuy,
