@@ -320,6 +320,7 @@ export const availableBacktestMetrics = ref([
   { field: 'sqn', header: 'SQN' },
   { field: 'cagr', header: 'Cagr' },
   { field: 'calmar', header: 'Calmar' },
+  { field: 'p_value', header: 'Mean profit p-value' },
   { field: 'expectancy', header: 'Expectancy' },
   { field: 'profit_factor', header: 'Profit Factor' },
   { field: 'sharpe', header: 'Sharpe' },

@@ -42,6 +42,7 @@ export interface PairResult {
   sharpe?: number;
   sortino?: number;
   sqn?: number;
+  p_value?: number;
 }
 
 // TODO: ExitReasonResult was replaced with PairResult on 2024-03-30.
