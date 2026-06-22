@@ -54,7 +54,7 @@ const candleColumns = computed(() => props.result.startup_candles ?? []);
           >
             <td class="text-start p-2 font-mono">{{ ind }}</td>
             <td v-for="c in candleColumns" :key="c" class="text-end p-2 font-mono">
-              {{ result.results[ind]?.[String(c)] ?? '-' }}
+              {{ formatPercent(result.results[ind]?.[String(c)], 3, '-') }}
             </td>
           </tr>
         </tbody>

@@ -48,5 +48,5 @@ export interface RecursiveResults {
   // {Indicator: {
   //   "candleCount": number,
   // }}
-  [key: string]: { [key: string]: string };
+  [key: string]: { [key: string]: number };
 }
