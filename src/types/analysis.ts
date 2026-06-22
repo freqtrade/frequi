@@ -1,4 +1,13 @@
-export interface LookaheadAnalysisResponse {
+export interface LookaheadAnalysisPayload {
+  strategy: string;
+  timeframe?: string;
+  timerange?: string;
+  minimum_trade_amount: number;
+  targeted_trade_amount: number;
+  lookahead_allow_limit_orders: boolean;
+}
+
+export interface LookaheadAnalysis {
   status: string;
   running: boolean;
   status_msg: string;

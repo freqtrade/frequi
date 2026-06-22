@@ -139,6 +139,14 @@ const navItems = computed<NavItem[]>(() => [
     icon: 'i-mdi-currency-usd',
   },
   {
+    label: 'Recursive Analysis',
+    to: '/recursive_analysis',
+    icon: 'i-mdi-magnify-scan',
+    visible:
+      (botStore.activeBot?.isWebserverMode ?? false) &&
+      botStore.activeBot.botFeatures.recursiveAnalysis,
+  },
+  {
     label: 'Download Data',
     to: '/download_data',
     visible: botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,
