@@ -1,5 +1,13 @@
 <script setup lang="ts">
 const { runningJobs, clearJobs } = useBackgroundJob();
+
+const jobCategoryIcons: Record<string, string> = {
+  pairlist: 'mdi-format-list-bulleted',
+  download_data: 'mdi-download-box-outline',
+  // backtest: 'mdi-chart-timeline-variant-shimmer',
+  // lookahead_analysis: 'mdi-chart-timeline-variant-shimmer',
+  // recursive_analysis: 'mdi-chart-timeline-variant-shimmer',
+};
 </script>
 
 <template>
@@ -11,10 +19,22 @@ const { runningJobs, clearJobs } = useBackgroundJob();
         class="border p-1 pb-2 rounded-sm dark:border-neutral-700 border-neutral-300 flex gap-2 items-center"
         :title="key"
       >
-        <i-mdi-download-box-outline v-if="job.taskStatus?.job_category === 'download_data'" />
+        <UIcon
+          :name="jobCategoryIcons[job.taskStatus?.job_category]"
+          v-if="job.taskStatus?.job_category"
+          :title="job.taskStatus?.job_category"
+        />
         <span v-else>{{ job.taskStatus?.job_category }}</span>
         <div class="flex justify-between">
           <i-mdi-check v-if="job.taskStatus?.status === 'success'" class="text-success" title="" />
+          <div
+            class="flex gap-2 items-center w-full"
+            v-else-if="job.taskStatus?.status === 'failed'"
+          >
+            <i-mdi-close class="text-error" title="" />
+            <span class="capitalize text-error">{{ job.taskStatus?.status }}</span>
+            <span class="ms-2">{{ job.taskStatus?.error }}</span>
+          </div>
           <span v-else>{{ job.taskStatus?.status }} </span>
           <span v-if="job.taskStatus?.progress" class="w-25">{{ job.taskStatus?.progress }}</span>
         </div>
@@ -26,7 +46,9 @@ const { runningJobs, clearJobs } = useBackgroundJob();
           :max="100"
         />
         <div
-          v-if="job.taskStatus?.progress_tasks"
+          v-if="
+            job.taskStatus?.progress_tasks && Object.keys(job.taskStatus?.progress_tasks).length > 0
+          "
           class="flex flex-col md:flex-row w-full grow gap-2"
         >
           <div

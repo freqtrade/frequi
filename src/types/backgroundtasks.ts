@@ -8,13 +8,21 @@ export interface ProgressTask {
   description: string;
 }
 
+export type JobCategory =
+  | 'pairlist'
+  | 'download_data'
+  | 'backtest'
+  | 'lookahead_analysis'
+  | 'recursive_analysis';
+
 export interface BackgroundTaskStatus {
   job_id: string;
-  job_category: string;
+  job_category: JobCategory;
   status: string;
   running: boolean;
   progress?: number;
   progress_tasks?: Record<string, ProgressTask>;
+  error?: string;
 }
 
 export interface BackgroundTaskResult {
