@@ -15,6 +15,9 @@ describe('formatters.ts', () => {
     expect(formatPercent(0.5023, 1)).toEqual('50.2%');
     expect(formatPercent(null, 1)).toEqual('N/A%');
     expect(formatPercent(undefined, 1)).toEqual('N/A%');
+    expect(formatPercent(undefined, 1, 'N/A%')).toEqual('N/A%');
+    expect(formatPercent(undefined, 1, '-')).toEqual('-');
+    expect(formatPercent(0.25123, 1, '-')).toEqual('25.1%');
   });
 
   it('format price currency as expected', () => {
