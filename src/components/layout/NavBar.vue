@@ -224,7 +224,8 @@ function editBotLogin(botId: string) {
             :items="nonMobileNavItems"
             variant="link"
             :ui="{
-              item: 'py-1',
+              item: 'py-0',
+              link: 'text-md',
             }"
           />
           <ThemeSelect />
