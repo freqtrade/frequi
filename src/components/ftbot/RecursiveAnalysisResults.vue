@@ -9,6 +9,18 @@ const props = defineProps<{
 const indicators = computed(() => Object.keys(props.result.results));
 // Column headers - the candle counts reported by the backend.
 const candleColumns = computed(() => props.result.startup_candles ?? []);
+
+const tableColumns = computed(() => [
+  { accessorKey: 'indicator', header: 'Indicator', meta: { class: { td: 'font-mono' } } },
+  ...candleColumns.value.map((c) => ({
+    accessorKey: String(c),
+    header: String(c),
+  })),
+]);
+
+const tableData = computed(() =>
+  indicators.value.map((ind) => ({ indicator: ind, ...props.result.results[ind] })),
+);
 </script>
 
 <template>
@@ -39,26 +51,11 @@ const candleColumns = computed(() => props.result.startup_candles ?? []);
         description="The values below show the percentage difference compared to the analysis
           with the most startup candles. Non-zero values indicate a recursive formula issue."
       />
-      <table class="w-full text-sm border-collapse">
-        <thead>
-          <tr class="border-b dark:border-neutral-700 border-neutral-300">
-            <th class="text-start p-2">Indicator</th>
-            <th v-for="c in candleColumns" :key="c" class="text-end p-2">{{ c }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="ind in indicators"
-            :key="ind"
-            class="border-b dark:border-neutral-800 border-neutral-200"
-          >
-            <td class="text-start p-2 font-mono">{{ ind }}</td>
-            <td v-for="c in candleColumns" :key="c" class="text-end p-2 font-mono">
-              {{ formatPercent(result.results[ind]?.[String(c)], 3, '-') }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <UTable :data="tableData" :columns="tableColumns">
+        <template v-for="c in candleColumns" #[`${c}-cell`]="{ row }" :key="c">
+          {{ formatPercent(row.original[String(c)], 3, '-') }}
+        </template>
+      </UTable>
     </div>
   </div>
 </template>
