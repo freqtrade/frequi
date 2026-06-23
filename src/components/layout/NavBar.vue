@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Favico from 'favico.js';
 
-import { useRoute } from 'vue-router';
-import type { DropdownMenuItem } from '@nuxt/ui';
-import { breakpointsTailwind } from '@vueuse/core';
 import type { AuthStorageWithBotId } from '@/types';
+import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui';
+import { breakpointsTailwind } from '@vueuse/core';
+import { useRoute } from 'vue-router';
 
 const botStore = useBotStore();
 
@@ -101,17 +101,19 @@ watch(
 );
 
 // Navigation items array
-const navItems = ref([
+type NavItem = NavigationMenuItem & { visible?: boolean; mobileOnly?: boolean };
+
+const navItems = computed<NavItem[]>(() => [
   {
     label: 'Trade',
     to: '/trade',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: !botStore.canRunBacktest,
     icon: 'i-mdi-currency-usd',
   },
   {
     label: 'Dashboard',
     to: '/dashboard',
-    visible: computed(() => !botStore.canRunBacktest),
+    visible: !botStore.canRunBacktest,
     icon: 'i-mdi-view-dashboard',
   },
   {
@@ -133,28 +135,27 @@ const navItems = ref([
   {
     label: 'Backtest',
     to: '/backtest',
-    visible: computed(() => botStore.canRunBacktest),
+    visible: botStore.canRunBacktest,
     icon: 'i-mdi-currency-usd',
   },
   {
     label: 'Download Data',
     to: '/download_data',
-    visible: computed(
-      () => botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,
-    ),
+    visible: botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,
     icon: 'i-mdi-download',
   },
   {
     label: 'Pairlist Config',
     to: '/pairlist_config',
     icon: 'i-mdi-format-list-numbered-rtl',
-    visible: computed(
-      () =>
-        (botStore.activeBot?.isWebserverMode ?? false) &&
-        botStore.activeBot.botFeatures.pairlistConfig,
-    ),
+    visible:
+      (botStore.activeBot?.isWebserverMode ?? false) &&
+      botStore.activeBot.botFeatures.pairlistConfig,
   },
 ]);
+
+const visibleNavItems = computed(() => navItems.value.filter((item) => item.visible ?? true));
+const nonMobileNavItems = computed(() => visibleNavItems.value.filter((item) => !item.mobileOnly));
 
 const menuItems = computed<DropdownMenuItem[][]>(() => [
   [
@@ -219,19 +220,13 @@ function editBotLogin(botId: string) {
       </RouterLink>
       <div class="flex justify-between w-full text-center items-center ms-3">
         <div class="items-center hidden md:flex gap-5 ms-5">
-          <UButton
-            v-for="(item, index) in navItems.filter(
-              (item) => (item.visible ?? true) && !item.mobileOnly,
-            )"
-            :key="index"
-            :to="item.to"
+          <UNavigationMenu
+            :items="nonMobileNavItems"
             variant="link"
-            size="xl"
-            color="neutral"
-            active-class="underline"
-          >
-            {{ item.label }}
-          </UButton>
+            :ui="{
+              item: 'py-1',
+            }"
+          />
           <ThemeSelect />
         </div>
 
@@ -299,17 +294,10 @@ function editBotLogin(botId: string) {
             </template>
             <template #body="{ close }">
               <div class="flex flex-col gap-1 items-center p-4 h-full">
-                <UButton
-                  v-for="(item, index) in navItems.filter((item) => item.visible ?? true)"
-                  :key="index"
-                  :to="item.to"
-                  class="p-2 justify-center w-full"
+                <UNavigationMenu
+                  :items="visibleNavItems.map((item) => ({ ...item, onSelect: close }))"
                   variant="link"
-                  color="neutral"
-                  size="xl"
-                  active-class="underline font-bold"
-                  @click="close()"
-                  :label="item.label"
+                  orientation="vertical"
                 />
                 <USeparator class="my-2" />
                 <span>Version: {{ settingsStore.uiVersion }}</span>
