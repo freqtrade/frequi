@@ -147,6 +147,14 @@ const navItems = computed<NavItem[]>(() => [
       botStore.activeBot.botFeatures.recursiveAnalysis,
   },
   {
+    label: 'Lookahead Analysis',
+    to: '/lookahead_analysis',
+    icon: 'i-mdi-chart-timeline-variant-shimmer',
+    visible:
+      (botStore.activeBot?.isWebserverMode ?? false) &&
+      botStore.activeBot.botFeatures.lookaheadAnalysis,
+  },
+  {
     label: 'Download Data',
     to: '/download_data',
     visible: botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,

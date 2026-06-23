@@ -83,6 +83,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/RecursiveAnalysisView.vue'),
   },
   {
+    path: '/lookahead_analysis',
+    name: 'Lookahead Analysis',
+    component: () => import('@/views/LookaheadAnalysisView.vue'),
+  },
+  {
     path: '/(.*)*',
     name: '404',
     component: () => import('@/views/Error404View.vue'),
