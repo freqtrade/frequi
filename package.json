@@ -34,7 +34,7 @@
     "pinia-plugin-persistedstate": "^4.7.1",
     "reka-ui": "^2.9.9",
     "sortablejs": "^1.15.7",
-    "vue": "^3.5.35",
+    "vue": "^3.5.38",
     "vue-echarts": "^8.0.1",
     "vue-router": "^5.1.0"
   },
@@ -47,7 +47,7 @@
     "@types/node": "^25.9.2",
     "@types/sortablejs": "^1.15.9",
     "@vitejs/plugin-vue": "^6.0.7",
-    "@vue/compiler-sfc": "3.5.35",
+    "@vue/compiler-sfc": "3.5.38",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.8.0",
     "@vue/test-utils": "^2.4.11",
@@ -63,7 +63,7 @@
     "unplugin-icons": "^23.0.1",
     "vite": "^8.0.16",
     "vitest": "^4.1.8",
-    "vue-tsc": "^3.3.4"
+    "vue-tsc": "^3.3.5"
   },
   "packageManager": "pnpm@11.8.0+sha512.c1f5e7c4cb241c8f174b743851d82f42b802324afc8b0f116b96adb15aa06664948dde36960a3ba1079ba5b4b29dd0140135b94b5b5f5263592249d68e555f26"
 }
