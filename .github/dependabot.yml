@@ -6,7 +6,7 @@ registries:
     # GitHub's dependabot schema requires credentials for npm-registry
     # (oneOf: token OR username+password). The public registry needs no real
     # auth, but the field is mandatory, so reference a dummy Dependabot secret.
-    token: ${{secrets.GH_DUMMY}}
+    token: ""
     replaces-base: true
 
 updates:
