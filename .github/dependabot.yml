@@ -1,4 +1,10 @@
 version: 2
+registries:
+  npm-registry:
+    type: "npm-registry"
+    url: "https://registry.npmjs.org"
+    replaces-base: true
+
 updates:
 - package-ecosystem: docker # zizmor: ignore[dependabot-cooldown] Docker does not support cooldowns at the moment.
   directories:
