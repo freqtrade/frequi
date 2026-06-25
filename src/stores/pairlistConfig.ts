@@ -16,7 +16,6 @@ export const usePairlistConfigStore = defineStore(
     const botStore = useBotStore();
 
     const evaluating = ref<boolean>(false);
-    const intervalId = ref<number>();
     const stakeCurrency = ref<string>(botStore.activeBot?.stakeCurrency ?? 'USDT');
     const whitelist = ref<string[]>([]);
     const customExchange = ref<boolean>(false);
@@ -147,24 +146,20 @@ export const usePairlistConfigStore = defineStore(
       evaluating.value = true;
       try {
         const { job_id: jobId } = await botStore.activeBot.evaluatePairlist(payload);
-        console.log('jobId', jobId);
-
-        intervalId.value = window.setInterval(async () => {
-          const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
-          if (!res.running) {
-            clearInterval(intervalId.value);
-            const wl = await botStore.activeBot.getPairlistEvalResult(jobId);
-            evaluating.value = false;
-            if (wl.status === 'success') {
-              whitelist.value = wl.result.whitelist;
-            } else if (wl.error) {
-              showAlert(wl.error, 'error');
-              evaluating.value = false;
-            }
-          }
-        }, 1000);
+        const status = await botStore.activeBot.pollBgJob(jobId, 'pairlist');
+        if (status.status === 'failed') {
+          showAlert(status.error || 'Evaluation failed', 'error');
+          return;
+        }
+        const wl = await botStore.activeBot.getPairlistEvalResult(jobId);
+        if (wl.status === 'success') {
+          whitelist.value = wl.result.whitelist;
+        } else if (wl.error) {
+          showAlert(wl.error, 'error');
+        }
       } catch (error) {
         showAlert('Evaluation failed', 'error');
+      } finally {
         evaluating.value = false;
       }
     }
