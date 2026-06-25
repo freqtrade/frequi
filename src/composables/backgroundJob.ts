@@ -65,7 +65,7 @@ async function recoverBgJobs(api: AxiosInstance, showAlert: ShowAlertType) {
 export function useBackgroundJob() {
   const runningJobs = computed(() => jobs.value);
 
-  function clearJobs() {
+  function clearAllJobs() {
     // Clear all jobs that are not running
     for (const [jobId, job] of Object.entries(jobs.value)) {
       if (job.taskStatus?.status !== 'running') {
@@ -77,7 +77,7 @@ export function useBackgroundJob() {
   return {
     runningJobs,
     startBgJob,
-    clearJobs,
+    clearAllJobs,
     recoverBgJobs,
   };
 }

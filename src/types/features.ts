@@ -36,7 +36,8 @@ export type FeatureKey =
   | 'strategyParameters'
   | 'walletChange'
   | 'recursiveAnalysis'
-  | 'lookaheadAnalysis';
+  | 'lookaheadAnalysis'
+  | 'backgroundJobDelete';
 
 export type BotFeatures = Record<FeatureKey, boolean>;
 
@@ -81,4 +82,5 @@ export const FEATURES: Record<FeatureKey, FeatureConfig> = {
   walletChange: { minVersion: 2.48, description: 'Wallet change data endpoint' },
   recursiveAnalysis: { minVersion: 2.49, description: 'Recursive analysis' },
   lookaheadAnalysis: { minVersion: 2.49, description: 'Lookahead analysis' },
+  backgroundJobDelete: { minVersion: 2.49, description: 'Delete background jobs' },
 };

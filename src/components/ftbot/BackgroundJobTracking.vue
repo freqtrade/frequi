@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { runningJobs, clearJobs } = useBackgroundJob();
+const { runningJobs, clearAllJobs } = useBackgroundJob();
 
 const jobCategoryIcons: Record<string, string> = {
   pairlist: 'mdi-format-list-bulleted',
@@ -79,7 +79,7 @@ const jobCategoryIcons: Record<string, string> = {
       color="neutral"
       class="ms-auto"
       icon="mdi:delete"
-      @click="clearJobs"
+      @click="clearAllJobs"
     />
   </div>
 </template>
