@@ -139,20 +139,27 @@ const navItems = computed<NavItem[]>(() => [
     icon: 'i-mdi-currency-usd',
   },
   {
-    label: 'Recursive Analysis',
-    to: '/recursive_analysis',
-    icon: 'i-mdi-magnify-scan',
-    visible:
-      (botStore.activeBot?.isWebserverMode ?? false) &&
-      botStore.activeBot.botFeatures.recursiveAnalysis,
-  },
-  {
-    label: 'Lookahead Analysis',
-    to: '/lookahead_analysis',
-    icon: 'i-mdi-chart-timeline-variant-shimmer',
-    visible:
-      (botStore.activeBot?.isWebserverMode ?? false) &&
-      botStore.activeBot.botFeatures.lookaheadAnalysis,
+    label: 'Analysis',
+    visible: botStore.canRunBacktest,
+    icon: 'mdi:chart-timeline-variant-shimmer',
+    children: [
+      {
+        label: 'Recursive Analysis',
+        to: '/recursive_analysis',
+        icon: 'i-mdi-magnify-scan',
+        visible:
+          (botStore.activeBot?.isWebserverMode ?? false) &&
+          botStore.activeBot.botFeatures.recursiveAnalysis,
+      },
+      {
+        label: 'Lookahead Analysis',
+        to: '/lookahead_analysis',
+        icon: 'i-mdi-chart-timeline-variant-shimmer',
+        visible:
+          (botStore.activeBot?.isWebserverMode ?? false) &&
+          botStore.activeBot.botFeatures.lookaheadAnalysis,
+      },
+    ],
   },
   {
     label: 'Download Data',
@@ -239,6 +246,7 @@ function editBotLogin(botId: string) {
           <UNavigationMenu
             :items="nonMobileNavItems"
             variant="link"
+            content-orientation="vertical"
             :ui="{
               item: 'py-0',
               link: 'text-md',
@@ -314,6 +322,7 @@ function editBotLogin(botId: string) {
                 <UNavigationMenu
                   :items="visibleNavItems.map((item) => ({ ...item, onSelect: close }))"
                   variant="link"
+                  :default-open="true"
                   orientation="vertical"
                 />
                 <USeparator class="my-2" />
