@@ -62,6 +62,22 @@ async function recoverBgJobs(api: AxiosInstance, showAlert: ShowAlertType) {
   }
 }
 
+async function clearAllBgJobs(api: AxiosInstance, showAlert: ShowAlertType) {
+  try {
+    const { data } = await api.delete<BackgroundTaskStatus[]>('/background/clear');
+    // Returns list of still running jobs, omits jobs that have been cleared
+    jobs.value = {};
+    for (const job of data) {
+      jobs.value[job.job_id] = { jobType: job.job_category, taskStatus: job };
+    }
+
+    showAlert('All non-running background jobs cleared', 'success');
+  } catch (error) {
+    console.error(error);
+    showAlert('Failed to clear background jobs', 'error');
+  }
+}
+
 export function useBackgroundJob() {
   const runningJobs = computed(() => jobs.value);
 
@@ -79,5 +95,6 @@ export function useBackgroundJob() {
     startBgJob,
     clearAllJobs,
     recoverBgJobs,
+    clearAllBgJobs,
   };
 }
