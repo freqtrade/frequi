@@ -4,16 +4,8 @@ import type { RecursiveAnalysisPayload, RecursiveResult } from '@/types';
 const botStore = useBotStore();
 
 const running = ref(false);
-const intervalId = ref<number>();
 const result = ref<RecursiveResult | null>(null);
 const statusMessage = ref('');
-
-function clearInterval_() {
-  if (intervalId.value) {
-    window.clearInterval(intervalId.value);
-    intervalId.value = undefined;
-  }
-}
 
 async function startAnalysis(payload: RecursiveAnalysisPayload) {
   running.value = true;
@@ -21,37 +13,27 @@ async function startAnalysis(payload: RecursiveAnalysisPayload) {
   statusMessage.value = '';
   try {
     const { job_id: jobId } = await botStore.activeBot.startRecursiveAnalysis(payload);
-
-    intervalId.value = window.setInterval(async () => {
-      const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
-      if (!res.running) {
-        clearInterval_();
-        running.value = false;
-        try {
-          const analysis = await botStore.activeBot.getRecursiveAnalysisResult(jobId);
-          if (analysis.status === 'ended') {
-            result.value = analysis.result;
-            statusMessage.value = analysis.status_msg;
-          } else {
-            statusMessage.value = analysis.status_msg || 'Recursive analysis failed';
-            showAlert(statusMessage.value, 'error');
-          }
-        } catch (error) {
-          console.error(error);
-          showAlert('Failed to load recursive analysis result', 'error');
-        }
-      }
-    }, 1000);
+    const status = await botStore.activeBot.pollBgJob(jobId, 'recursive_analysis');
+    if (status.status === 'failed') {
+      statusMessage.value = status.error || 'Recursive analysis failed';
+      showAlert(statusMessage.value, 'error');
+      return;
+    }
+    const analysis = await botStore.activeBot.getRecursiveAnalysisResult(jobId);
+    if (analysis.status === 'ended') {
+      result.value = analysis.result;
+      statusMessage.value = analysis.status_msg;
+    } else {
+      statusMessage.value = analysis.status_msg || 'Recursive analysis failed';
+      showAlert(statusMessage.value, 'error');
+    }
   } catch (error) {
     console.error(error);
+    showAlert('Failed to run recursive analysis', 'error');
+  } finally {
     running.value = false;
-    showAlert('Failed to start recursive analysis', 'error');
   }
 }
-
-onBeforeUnmount(() => {
-  clearInterval_();
-});
 </script>
 
 <template>

@@ -4,16 +4,8 @@ import type { LookaheadAnalysisPayload, LookaheadResult } from '@/types';
 const botStore = useBotStore();
 
 const running = ref(false);
-const intervalId = ref<number>();
 const result = ref<LookaheadResult | null>(null);
 const statusMessage = ref('');
-
-function clearInterval_() {
-  if (intervalId.value) {
-    window.clearInterval(intervalId.value);
-    intervalId.value = undefined;
-  }
-}
 
 async function startAnalysis(payload: LookaheadAnalysisPayload) {
   running.value = true;
@@ -21,37 +13,27 @@ async function startAnalysis(payload: LookaheadAnalysisPayload) {
   statusMessage.value = '';
   try {
     const { job_id: jobId } = await botStore.activeBot.startLookaheadAnalysis(payload);
-
-    intervalId.value = window.setInterval(async () => {
-      const res = await botStore.activeBot.getBackgroundJobStatus(jobId);
-      if (!res.running) {
-        clearInterval_();
-        running.value = false;
-        try {
-          const analysis = await botStore.activeBot.getLookaheadAnalysisResult(jobId);
-          if (analysis.status === 'ended') {
-            result.value = analysis.result;
-            statusMessage.value = analysis.status_msg;
-          } else {
-            statusMessage.value = analysis.status_msg || 'Lookahead analysis failed';
-            showAlert(statusMessage.value, 'error');
-          }
-        } catch (error) {
-          console.error(error);
-          showAlert('Failed to load lookahead analysis result', 'error');
-        }
-      }
-    }, 1000);
+    const status = await botStore.activeBot.pollBgJob(jobId, 'lookahead_analysis');
+    if (status.status === 'failed') {
+      statusMessage.value = status.error || 'Lookahead analysis failed';
+      showAlert(statusMessage.value, 'error');
+      return;
+    }
+    const analysis = await botStore.activeBot.getLookaheadAnalysisResult(jobId);
+    if (analysis.status === 'ended') {
+      result.value = analysis.result;
+      statusMessage.value = analysis.status_msg;
+    } else {
+      statusMessage.value = analysis.status_msg || 'Lookahead analysis failed';
+      showAlert(statusMessage.value, 'error');
+    }
   } catch (error) {
     console.error(error);
+    showAlert('Failed to run lookahead analysis', 'error');
+  } finally {
     running.value = false;
-    showAlert('Failed to start lookahead analysis', 'error');
   }
 }
-
-onBeforeUnmount(() => {
-  clearInterval_();
-});
 </script>
 
 <template>
