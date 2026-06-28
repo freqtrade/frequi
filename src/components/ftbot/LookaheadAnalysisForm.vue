@@ -10,30 +10,24 @@ const emit = defineEmits<{
 }>();
 
 const botStore = useBotStore();
-
-const strategy = ref('');
-const timeframe = ref('');
-const timerange = ref('');
-const minimumTradeAmount = ref(10);
-const targetedTradeAmount = ref(20);
-const lookaheadAllowLimitOrders = ref(false);
+const btStore = useBtStore();
 
 const canStart = computed(
-  () => !!strategy.value && !props.running && botStore.activeBot.canRunBacktest,
+  () => !!btStore.strategy && !props.running && botStore.activeBot.canRunBacktest,
 );
 
 function emitStart() {
   const payload: LookaheadAnalysisPayload = {
-    strategy: strategy.value,
-    minimum_trade_amount: minimumTradeAmount.value,
-    targeted_trade_amount: targetedTradeAmount.value,
-    lookahead_allow_limit_orders: lookaheadAllowLimitOrders.value,
+    strategy: btStore.strategy,
+    minimum_trade_amount: btStore.lookaheadMinTradeAmount,
+    targeted_trade_amount: btStore.lookaheadTargetedTradeAmount,
+    lookahead_allow_limit_orders: btStore.lookaheadAllowLimitOrders,
   };
-  if (timeframe.value) {
-    payload.timeframe = timeframe.value;
+  if (btStore.selectedTimeframe) {
+    payload.timeframe = btStore.selectedTimeframe;
   }
-  if (timerange.value) {
-    payload.timerange = timerange.value;
+  if (btStore.timerange) {
+    payload.timerange = btStore.timerange;
   }
   emit('start', payload);
 }
@@ -60,12 +54,12 @@ onMounted(() => {
     <div class="flex flex-col gap-3">
       <div>
         <span class="font-bold">Strategy</span>
-        <StrategySelect v-model="strategy" />
+        <StrategySelect v-model="btStore.strategy" />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
         <label for="lookahead-timeframe" class="md:text-right">Timeframe:</label>
-        <TimeframeSelect id="lookahead-timeframe" v-model="timeframe" />
+        <TimeframeSelect id="lookahead-timeframe" v-model="btStore.selectedTimeframe" />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
@@ -79,7 +73,7 @@ onMounted(() => {
         </div>
         <UInput
           id="lookahead-minimum-trade-amount"
-          v-model.number="minimumTradeAmount"
+          v-model.number="btStore.lookaheadMinTradeAmount"
           type="number"
           min="1"
           class="w-full"
@@ -98,7 +92,7 @@ onMounted(() => {
         </div>
         <UInput
           id="lookahead-targeted-trade-amount"
-          v-model.number="targetedTradeAmount"
+          v-model.number="btStore.lookaheadTargetedTradeAmount"
           type="number"
           min="1"
           class="w-full"
@@ -106,14 +100,14 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-2">
-        <UCheckbox id="lookahead-allow-limit-orders" v-model="lookaheadAllowLimitOrders" />
+        <UCheckbox id="lookahead-allow-limit-orders" v-model="btStore.lookaheadAllowLimitOrders" />
         <label for="lookahead-allow-limit-orders">Allow limit orders</label>
         <InfoBox
           hint="Allow limit orders in lookahead analysis (could cause false positives in lookahead analysis results)."
         />
       </div>
 
-      <TimeRangeSelect v-model="timerange" class="mx-auto mt-1" />
+      <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-1" />
 
       <div class="flex justify-center mt-2">
         <UButton

@@ -10,36 +10,24 @@ const emit = defineEmits<{
 }>();
 
 const botStore = useBotStore();
-
-const strategy = ref('');
-const timeframe = ref('');
-const timerange = ref('');
-// Optional comma-separated list of startup candle counts to test.
-const startupCandlesInput = ref('199,399,499,999,1999');
-
-const startupCandles = computed(() =>
-  startupCandlesInput.value
-    .split(',')
-    .map((c) => Number(c.trim()))
-    .filter((c) => Number.isFinite(c) && c > 0),
-);
+const btStore = useBtStore();
 
 const canStart = computed(
-  () => !!strategy.value && !props.running && botStore.activeBot.canRunBacktest,
+  () => !!btStore.strategy && !props.running && botStore.activeBot.canRunBacktest,
 );
 
 function emitStart() {
   const payload: RecursiveAnalysisPayload = {
-    strategy: strategy.value,
+    strategy: btStore.strategy,
   };
-  if (timeframe.value) {
-    payload.timeframe = timeframe.value;
+  if (btStore.selectedTimeframe) {
+    payload.timeframe = btStore.selectedTimeframe;
   }
-  if (timerange.value) {
-    payload.timerange = timerange.value;
+  if (btStore.timerange) {
+    payload.timerange = btStore.timerange;
   }
-  if (startupCandles.value.length > 0) {
-    payload.startup_candle = startupCandles.value;
+  if (btStore.recursiveStartupCandles.length > 0) {
+    payload.startup_candle = btStore.recursiveStartupCandles;
   }
   emit('start', payload);
 }
@@ -66,12 +54,12 @@ onMounted(() => {
     <div class="flex flex-col gap-3">
       <div>
         <span class="font-bold">Strategy</span>
-        <StrategySelect v-model="strategy" />
+        <StrategySelect v-model="btStore.strategy" />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
         <label for="recursive-timeframe">Timeframe:</label>
-        <TimeframeSelect id="recursive-timeframe" v-model="timeframe" />
+        <TimeframeSelect id="recursive-timeframe" v-model="btStore.selectedTimeframe" />
       </div>
 
       <div class="border dark:border-neutral-700 border-neutral-300 rounded-sm p-2">
@@ -84,13 +72,13 @@ onMounted(() => {
         </div>
         <UInput
           id="recursive-startup-candles"
-          v-model="startupCandlesInput"
+          v-model="btStore.recursiveStartupCandleInput"
           class="w-full mt-1"
           placeholder="e.g. 199,399,499,999,1999"
         />
       </div>
 
-      <TimeRangeSelect v-model="timerange" class="mx-auto mt-1" />
+      <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-1" />
 
       <div class="flex justify-center mt-2">
         <UButton

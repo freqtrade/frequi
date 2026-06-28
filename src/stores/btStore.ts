@@ -20,6 +20,21 @@ export const useBtStore = defineStore('btStore', () => {
   const enableProtections = ref(false);
   const stakeAmountUnlimited = ref(false);
 
+  // Lookahead analysis settings
+  const lookaheadMinTradeAmount = ref(10);
+  const lookaheadTargetedTradeAmount = ref(20);
+  const lookaheadAllowLimitOrders = ref(false);
+
+  // Recursive analysis settings
+  // Comma-separated list of startup candle counts to test.
+  const recursiveStartupCandleInput = ref<string>('199,399,499,999,1999');
+  const recursiveStartupCandles = computed<number[]>(() =>
+    recursiveStartupCandleInput.value
+      .split(',')
+      .map((c) => Number(c.trim()))
+      .filter((c) => Number.isFinite(c) && c > 0),
+  );
+
   const canRunBacktest = computed(() => strategy.value !== '');
 
   return {
@@ -33,6 +48,11 @@ export const useBtStore = defineStore('btStore', () => {
     allowCache,
     enableProtections,
     stakeAmountUnlimited,
+    lookaheadMinTradeAmount,
+    lookaheadTargetedTradeAmount,
+    lookaheadAllowLimitOrders,
+    recursiveStartupCandleInput,
+    recursiveStartupCandles,
     freqAI,
     canRunBacktest,
   };
