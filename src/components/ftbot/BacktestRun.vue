@@ -123,28 +123,10 @@ function clickBacktest() {
       <BaseCheckbox id="enable-cache" v-model="btStore.allowCache"></BaseCheckbox>
     </template>
 
-    <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
-      <div class="flex justify-end items-center">
-        <span class="me-2">Enable FreqAI:</span>
-        <InfoBox
-          hint="Assumes freqAI configuration is setup in the configuration, and the strategy is a freqAI strategy. Will fail if that's not the case."
-        />
-      </div>
-      <BaseCheckbox id="enable-freqai" v-model="btStore.freqAI.enabled"></BaseCheckbox>
-
-      <template v-if="btStore.freqAI.enabled">
-        <label for="freqai-identifier">FreqAI identifier:</label>
-        <UInput
-          id="freqai-identifier"
-          v-model="btStore.freqAI.identifier"
-          placeholder="Use config default"
-        ></UInput>
-      </template>
-      <template v-if="btStore.freqAI.enabled">
-        <label for="freqai-model">FreqAI Model:</label>
-        <FreqaiModelSelect id="freqai-model" v-model="btStore.freqAI.model"></FreqaiModelSelect>
-      </template>
-    </template>
+    <FreqAIModelInput
+      v-if="botStore.activeBot.botFeatures.backtestFreqAI"
+      v-model="btStore.freqAI"
+    />
 
     <USeparator class="col-span-2 my-2" />
     <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-2 col-span-2"></TimeRangeSelect>
