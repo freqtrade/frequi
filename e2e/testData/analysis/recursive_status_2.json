@@ -1,0 +1,15 @@
+{
+    "job_id": "c56b527c-0725-48a1-aa79-7cbd9255987d",
+    "job_category": "recursive_analysis",
+    "status": "success",
+    "running": false,
+    "progress": null,
+    "progress_tasks": {
+        "0": {
+            "progress": 6.0,
+            "total": 6.0,
+            "description": "Startup candle 1999"
+        }
+    },
+    "error": null
+}

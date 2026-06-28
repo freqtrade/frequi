@@ -75,4 +75,50 @@ test.describe('Analysis', () => {
     await expect(page.getByRole('cell', { name: 'AverageStrategy' })).toBeInViewport();
     await expect(page.getByText('No lookahead bias detected')).toBeInViewport();
   });
+
+  test('Recursive analysis test', async ({ page }) => {
+    await page.route('**/api/v1/recursive_analysis**', async (route) => {
+      if (route.request().method() === 'POST') {
+        await route.fulfill({
+          path: './e2e/testData/analysis/recursive_post_start.json',
+        });
+      } else if (route.request().method() === 'GET') {
+        await route.fulfill({
+          path: './e2e/testData/analysis/recursive_get_end.json',
+        });
+      }
+    });
+
+    let recursiveStatusCounter = 0;
+    await page.route('**/api/v1/background/*', async (route) => {
+      recursiveStatusCounter++;
+      if (recursiveStatusCounter > 1) {
+        await route.fulfill({
+          path: './e2e/testData/analysis/recursive_status_2.json',
+        });
+      } else {
+        await route.fulfill({
+          path: './e2e/testData/analysis/recursive_status_1.json',
+        });
+      }
+    });
+
+    await page.goto('/recursive_analysis');
+    await expect(page.getByText('Recursive Analysis', { exact: true })).toBeInViewport();
+    await expect(page.getByRole('button', { name: 'Start recursive analysis' })).not.toBeEnabled();
+    await page.getByRole('button', { name: 'Show popup' }).click();
+    await page.getByText('AverageStrategy').click();
+    await expect(page.getByRole('button', { name: 'Start recursive analysis' })).toBeEnabled();
+    await page.getByRole('button', { name: 'Start recursive analysis' }).click();
+
+    // Delays by a second due to background task timing
+    await expect(page.getByText('Analysis Result', { exact: true })).toBeInViewport();
+    await expect(
+      page.getByText('4 indicator(s) affected by startup candle count'),
+    ).toBeInViewport();
+    await expect(page.getByRole('cell', { name: 'rsi' })).toBeVisible();
+    await expect(page.getByText('4 indicator(s) affected by')).toBeInViewport();
+    await expect(page.getByRole('cell', { name: 'rsi' })).toBeVisible();
+    await expect(page.getByRole('cell', { name: '0.167%' })).toBeVisible();
+  });
 });
