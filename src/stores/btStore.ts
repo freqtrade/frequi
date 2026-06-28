@@ -1,3 +1,5 @@
+import type { BacktestFreqAIInput } from '@/types';
+
 export const useBtStore = defineStore('btStore', () => {
   const strategy = ref('');
   const selectedTimeframe = ref('');
@@ -9,7 +11,7 @@ export const useBtStore = defineStore('btStore', () => {
   const allowCache = ref(true);
   const enableProtections = ref(false);
   const stakeAmountUnlimited = ref(false);
-  const freqAI = ref({
+  const freqAI = ref<BacktestFreqAIInput>({
     enabled: false,
     model: '',
     identifier: '',

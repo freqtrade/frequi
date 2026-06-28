@@ -311,3 +311,9 @@ export interface BacktestMarketChange {
   length: number;
   data: (number | string)[][];
 }
+
+export interface BacktestFreqAIInput {
+  enabled: boolean;
+  model: string;
+  identifier: string;
+}
