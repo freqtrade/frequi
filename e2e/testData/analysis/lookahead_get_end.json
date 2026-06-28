@@ -1,0 +1,13 @@
+{
+    "status": "ended",
+    "running": false,
+    "status_msg": "Analysis ended",
+    "result": {
+        "strategy": "AverageStrategy",
+        "has_bias": false,
+        "total_signals": 20,
+        "biased_entry_signals": 0,
+        "biased_exit_signals": 0,
+        "biased_indicators": []
+    }
+}
