@@ -32,7 +32,7 @@
     "humanize-duration": "^3.33.2",
     "pinia": "3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "reka-ui": "^2.9.10",
+    "reka-ui": "^2.10.0",
     "sortablejs": "^1.15.7",
     "vue": "^3.5.38",
     "vue-echarts": "^8.0.1",
