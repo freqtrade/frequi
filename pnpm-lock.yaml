@@ -58,8 +58,8 @@ importers:
         specifier: ^4.7.1
         version: 4.7.1(@nuxt/kit@4.4.8)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))
       reka-ui:
-        specifier: ^2.10.0
-        version: 2.10.0(vue@3.5.38(typescript@6.0.3))
+        specifier: ^2.10.1
+        version: 2.10.1(vue@3.5.38(typescript@6.0.3))
       sortablejs:
         specifier: ^1.15.7
         version: 1.15.7
@@ -986,6 +986,9 @@ packages:
   '@tanstack/virtual-core@3.17.1':
     resolution: {integrity: sha512-VZyW2Uiml5tmBZwPGrSD3Sz73OxzljQMCmzYHsUTPEuTsERf5xwa+uWb01xEzkz3ZSYTjj8NEb/mKHvgKxyZdA==}
 
+  '@tanstack/virtual-core@3.17.3':
+    resolution: {integrity: sha512-8Np/TFELpI0ySuJoVmjvOrQYXH/8sTX0Biv9szhFhY39xOdAAY+smrMxjxOum/ux3eM8MUJQsEJ0/R0UpvC8dw==}
+
   '@tanstack/vue-table@8.21.3':
     resolution: {integrity: sha512-rusRyd77c5tDPloPskctMyPLFEQUeBzxdQ+2Eow4F7gDPlPOB1UnnhzfpdvqZ8ZyX2rRNGmqNnQWm87OI2OQPw==}
     engines: {node: '>=12'}
@@ -994,6 +997,11 @@ packages:
 
   '@tanstack/vue-virtual@3.13.29':
     resolution: {integrity: sha512-MWb9tNHjpar3sP34b8+3A4I5j9akveoPXIYqqp7/ipyWd49a/kso+1S1LqEmAVR/+g/k1WWTJC4ktvdCGWgXYQ==}
+    peerDependencies:
+      vue: ^2.7.0 || ^3.0.0
+
+  '@tanstack/vue-virtual@3.13.31':
+    resolution: {integrity: sha512-wZMEoSf852jQqaf3Ika1J7PiBae6341LNy/2CxmIyn0XKDQXMuK41wVX+xp6G0yx8jyR95Ef+Tdr13DK7mbJtQ==}
     peerDependencies:
       vue: ^2.7.0 || ^3.0.0
 
@@ -2182,8 +2190,8 @@ packages:
   immutable@5.1.5:
     resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
 
-  immutable@5.1.7:
-    resolution: {integrity: sha512-47Xb+LFbZ/ZIjQMj6Q5J3IfK7PJFuqRdFOC9FpGgRTK6U2dAEVmkR9hp58qU4FpYux5YXpneDwkj2EP6lppzFA==}
+  immutable@5.1.9:
+    resolution: {integrity: sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==}
 
   import-meta-resolve@4.2.0:
     resolution: {integrity: sha512-Iqv2fzaTQN28s/FwZAoFq0ZSs/7hMAHJVX+w8PZl3cY19Pxk6jFFalxQoIfW2826i/fDLXv8IiEZRIT0lDuWcg==}
@@ -2703,8 +2711,8 @@ packages:
     resolution: {integrity: sha512-iETxpjK6YoRWJG5o6hXLwvjYAoW+FEZn9os0PD/b6AP6xQwsa/Y7lCVgIixBbUPMfhu+i2LtdeAqVTgGlQarfA==}
     hasBin: true
 
-  reka-ui@2.10.0:
-    resolution: {integrity: sha512-HIUVfSBM/AyGkcUI7aiOxxMc4N+0UD2ZEun8dcrT0H4fveotEoeDdvzyZu97eeEvEa1H9oGHoOpApkfxlgnC7g==}
+  reka-ui@2.10.1:
+    resolution: {integrity: sha512-drcOQ4rQtDYAcGCsyQBqQg8QQ+H3B+zDaMJU0h8KPEPMa7g9BHu3zcOi4OB39XJSWizceFoNO0Z9tctSGLOXqg==}
     peerDependencies:
       vue: '>= 3.4.0'
 
@@ -4252,6 +4260,8 @@ snapshots:
 
   '@tanstack/virtual-core@3.17.1': {}
 
+  '@tanstack/virtual-core@3.17.3': {}
+
   '@tanstack/vue-table@8.21.3(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@tanstack/table-core': 8.21.3
@@ -4260,6 +4270,11 @@ snapshots:
   '@tanstack/vue-virtual@3.13.29(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@tanstack/virtual-core': 3.17.1
+      vue: 3.5.38(typescript@6.0.3)
+
+  '@tanstack/vue-virtual@3.13.31(vue@3.5.38(typescript@6.0.3))':
+    dependencies:
+      '@tanstack/virtual-core': 3.17.3
       vue: 3.5.38(typescript@6.0.3)
 
   '@tiptap/core@3.26.0(@tiptap/pm@3.26.0)':
@@ -5548,7 +5563,7 @@ snapshots:
 
   immutable@5.1.5: {}
 
-  immutable@5.1.7:
+  immutable@5.1.9:
     optional: true
 
   import-meta-resolve@4.2.0: {}
@@ -6011,13 +6026,13 @@ snapshots:
 
   regexp-tree@0.1.27: {}
 
-  reka-ui@2.10.0(vue@3.5.38(typescript@6.0.3)):
+  reka-ui@2.10.1(vue@3.5.38(typescript@6.0.3)):
     dependencies:
       '@floating-ui/dom': 1.7.6
       '@floating-ui/vue': 1.1.11(vue@3.5.38(typescript@6.0.3))
       '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.7
-      '@tanstack/vue-virtual': 3.13.29(vue@3.5.38(typescript@6.0.3))
+      '@tanstack/vue-virtual': 3.13.31(vue@3.5.38(typescript@6.0.3))
       '@vueuse/core': 14.3.0(vue@3.5.38(typescript@6.0.3))
       '@vueuse/shared': 14.3.0(vue@3.5.38(typescript@6.0.3))
       aria-hidden: 1.2.6
@@ -6168,7 +6183,7 @@ snapshots:
   sass@1.100.0:
     dependencies:
       chokidar: 5.0.0
-      immutable: 5.1.7
+      immutable: 5.1.9
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
