@@ -63,7 +63,7 @@
     "unplugin-icons": "^23.0.1",
     "vite": "^8.1.2",
     "vitest": "^4.1.9",
-    "vue-tsc": "^3.3.6"
+    "vue-tsc": "^3.3.5"
   },
   "packageManager": "pnpm@11.11.0+sha512.4463f65fd80ed80d69bc1d4bf163ee94f605c7380fc318bb5b2ebe15f8cd12d49c51a4d59e951b401e764d3b6ca751cbf51bc50ed7001a6bcb4935e684c34882"
 }
