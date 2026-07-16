@@ -104,7 +104,7 @@ jobs:
         cd ../
 
     - name: Upload release binaries
-      uses: alexellis/upload-assets@13926a61cdb2cb35f5fdef1c06b8b591523236d3 # 0.4.1
+      uses: alexellis/upload-assets@d8de0b9b956cfb3d7633afdb66ef24c36940a9f7 # 0.5.0
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
