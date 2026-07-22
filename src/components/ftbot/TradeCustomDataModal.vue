@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { type TradeCustomDataProps } from '@/components/ftbot/TradeCustomData.vue';
-defineProps<TradeCustomDataProps>();
+import type { Trade } from '@/types';
+defineProps<{ tradeId: Trade['trade_id'] }>();
 defineEmits<{
   close: [value: boolean];
 }>();
