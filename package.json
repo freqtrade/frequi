@@ -59,7 +59,7 @@
     "prettier": "^3.9.5",
     "sass-embedded": "^1.100.0",
     "tailwindcss": "^4.3.2",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "unplugin-icons": "^23.0.1",
     "vite": "^8.1.4",
     "vitest": "^4.1.10",
