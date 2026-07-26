@@ -1,3 +1,11 @@
+<script setup lang="ts">
+definePage({
+  meta: {
+    allowAnonymous: true,
+  },
+});
+</script>
+
 <template>
   <div class="mt-5">
     <div class="flex justify-center">

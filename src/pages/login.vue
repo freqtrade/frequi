@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePage({
+  meta: {
+    allowAnonymous: true,
+  },
+});
+</script>
 
 <template>
   <div class="max-w-xl mx-auto p-4 my-5">
