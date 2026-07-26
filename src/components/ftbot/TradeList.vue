@@ -174,7 +174,7 @@ const onRowClicked = (item: Trade) => {
   if (item && item.trade_id !== botStore.activeBot.detailTradeId) {
     botStore.activeBot.setDetailTrade(item);
     if (props.multiBotView) {
-      router.push({ name: 'Freqtrade Trading' });
+      router.push('/trade');
     }
   } else {
     botStore.activeBot.setDetailTrade(null);
