@@ -109,7 +109,7 @@ async function handleSubmit() {
     if (props.inModal === false) {
       if (typeof route?.query.redirect === 'string') {
         const resolved = router.resolve({ path: route.query.redirect });
-        if (resolved.name === '404') {
+        if (resolved.name === '/[...path]') {
           router.push('/');
         } else {
           router.push(resolved.path);

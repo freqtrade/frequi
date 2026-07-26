@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ChartView from '@/views/ChartsView.vue';
-
 const botStore = useBotStore();
 const pairlistStore = usePairlistConfigStore();
 
