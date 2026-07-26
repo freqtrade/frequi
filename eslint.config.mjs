@@ -65,4 +65,12 @@ export default defineConfigWithVueTs(
       ],
     },
   },
+  {
+    // File-based route pages are named after their URL segment, which is
+    // frequently a single word (e.g. /trade, /logs).
+    files: ['src/pages/**/*.vue'],
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
+  },
 );
