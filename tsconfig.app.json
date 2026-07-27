@@ -16,7 +16,6 @@
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     // Project root, so the typed-router Volar plugin can resolve page files
-    // (keyed relative to the project root, e.g. "src/pages/trade.vue").
     "rootDir": ".",
     "noImplicitAny": false,
     "types": [
