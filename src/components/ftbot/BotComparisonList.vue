@@ -65,7 +65,8 @@ const tableItems = computed<ComparisonTableItems[]>(() => {
       balance: botStore.allBalance[k]?.total_bot ?? botStore.allBalance[k]?.total ?? 0,
       stakeCurrencyDecimals: botStore.allBotState[k]?.stake_currency_decimals || 3,
       isDryRun: botStore.allBotState[k]?.dry_run,
-      isOnline: botStore.botStores[k]?.isBotOnline,
+      isLoggedIn: botStore.botStores[k]?.isBotLoggedIn,
+      isOnline: botStore.botStores[k]?.isBotOnline ?? false,
       balanceAppendix: botStore.allBotState[k]?.dry_run ? '(dry)' : '',
     });
     if (v?.profit_closed_coin !== undefined) {
@@ -142,24 +143,35 @@ const columns: TableColumn<ComparisonTableItems>[] = [
           <span v-if="botStore.botCount <= 1">{{ row.original.botName }}</span>
         </div>
         <UBadge
-          v-if="row.original.isOnline && row.original.isDryRun"
-          class="items-center bg-green-800 text-slate-200 cursor-pointer"
-          color="success"
-          title="Click to select all dry run bots"
-          @click="botStore.toggleBotsByState('dry')"
-          >Dry</UBadge
-        >
+          v-if="row.original.isLoggedIn === false"
+          class="items-center"
+          color="error"
+          label="Needs login"
+        />
         <UBadge
-          v-if="row.original.isOnline && !row.original.isDryRun"
-          class="items-center cursor-pointer"
-          color="warning"
-          title="Click to select all live bots"
-          @click="botStore.toggleBotsByState('live')"
-          >Live</UBadge
-        >
-        <UBadge v-if="row.original.isOnline === false" class="items-center" color="neutral"
-          >Offline</UBadge
-        >
+          v-else-if="row.original.isLoggedIn && row.original.isOnline === false"
+          class="items-center"
+          color="neutral"
+          label="Offline"
+        />
+        <template v-else>
+          <UBadge
+            v-if="row.original.isOnline && row.original.isDryRun"
+            class="items-center bg-green-800 text-slate-200 cursor-pointer"
+            color="success"
+            title="Click to select all dry run bots"
+            @click="botStore.toggleBotsByState('dry')"
+            label="Dry"
+          />
+          <UBadge
+            v-if="row.original.isOnline && !row.original.isDryRun"
+            class="items-center cursor-pointer"
+            color="warning"
+            title="Click to select all live bots"
+            @click="botStore.toggleBotsByState('live')"
+            label="Live"
+          />
+        </template>
       </div>
     </template>
     <template #profitOpen-cell="{ row }">
