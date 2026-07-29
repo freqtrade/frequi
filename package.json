@@ -61,7 +61,7 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
     "unplugin-icons": "^23.0.1",
-    "vite": "^8.1.4",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10",
     "vue-tsc": "^3.3.5"
   },
