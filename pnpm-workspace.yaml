@@ -19,3 +19,4 @@ overrides:
   "esbuild@0": "^0.28.1"
   "brace-expansion@2": "^2.1.2"
   "nanoid@3": "^3.3.18"
+  "postcss@8": "^8.4.25"
