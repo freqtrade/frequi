@@ -1,14 +1,15 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "github": {
-    "silent": true
+    "deploymentEnabled": {
+      "**": false,
+      "main": true
+    }
   },
-  "routes": [
+  "rewrites": [
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

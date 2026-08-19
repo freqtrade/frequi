@@ -52,9 +52,10 @@ const props = withDefaults(
 const settingsStore = useSettingsStore();
 const legendSelection = ref<Record<string, boolean>>({});
 
-const handleLegendSelectChanged = (params: { selected: Record<string, boolean> }) => {
-  legendSelection.value = params.selected;
-};
+// vue-echarts types all chart event payloads as `unknown`.
+function handleLegendSelectChanged(params: unknown) {
+  legendSelection.value = (params as { selected: Record<string, boolean> }).selected;
+}
 
 const hasWalletData = computed(() =>
   Object.values(props.walletData).some(
@@ -332,7 +333,6 @@ const walletHistoryOptions: ComputedRef<EChartsOption> = computed(() => {
     visualMap,
     series,
   };
-  console.log('Wallet balance chart options', option);
   return option;
 });
 </script>
