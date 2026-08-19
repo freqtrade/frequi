@@ -54,7 +54,7 @@
     "@vue/tsconfig": "^0.9.1",
     "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.10.0",
-    "globals": "^17.9.0",
+    "globals": "^17.10.0",
     "happy-dom": "^20.11.2",
     "prettier": "^3.9.6",
     "sass-embedded": "^1.100.0",
