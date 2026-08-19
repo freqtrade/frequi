@@ -55,7 +55,7 @@
     "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.10.0",
     "globals": "^17.9.0",
-    "happy-dom": "^20.11.1",
+    "happy-dom": "^20.11.2",
     "prettier": "^3.9.6",
     "sass-embedded": "^1.100.0",
     "tailwindcss": "^4.3.3",
