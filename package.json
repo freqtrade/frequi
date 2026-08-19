@@ -35,7 +35,7 @@
     "reka-ui": "^2.10.3",
     "sortablejs": "^1.15.7",
     "vue": "^3.5.41",
-    "vue-echarts": "^8.0.1",
+    "vue-echarts": "^8.1.0",
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
