@@ -54,12 +54,14 @@ test.describe('Dashboard', () => {
     // Grid cards must not be wider than the screen - otherwise most columns
     // are rendered off-screen and are unreachable on a phone.
     const cardWidths = await page
-      .locator('.vue-grid-item')
+      .locator('.vue-grid-item:not(.vue-grid-placeholder)')
       .evaluateAll((elements) => elements.map((el) => el.getBoundingClientRect().width));
 
     expect(cardWidths.length).toBeGreaterThan(0);
     for (const cardWidth of cardWidths) {
       expect(cardWidth).toBeLessThanOrEqual(viewportWidth);
     }
+    await expect(page.getByText('Open Trades')).toBeVisible();
+    await expect(page.getByText('Open Trades')).toBeInViewport();
   });
 });
