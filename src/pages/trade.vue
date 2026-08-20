@@ -119,7 +119,7 @@ const tradingTabItems = computed<TabsItem[]>(() => {
     :is-resizable="!isLayoutLocked"
     :is-draggable="!isLayoutLocked"
     :responsive="true"
-    :cols="{ lg: 12, md: 12, sm: 12, xs: 4, xxs: 2 }"
+    :cols="{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }"
     :col-num="12"
     @update:breakpoint="breakpointChanged"
   >
