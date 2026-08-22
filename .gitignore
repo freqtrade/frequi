@@ -26,8 +26,15 @@ yarn-error.log*
 *.sln
 *.sw?
 
-
+# Playwright
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# AI Agents
+*.local.md
+.cursor/
+.codex/
+.claude/*.local.json
+.claude/**/*.log
