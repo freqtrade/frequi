@@ -31,6 +31,7 @@ test.describe('Backtesting', () => {
     await expect(page.locator('a', { hasText: 'Backtest' })).toBeInViewport();
     await expect(page.getByText('Run backtest')).toBeInViewport();
     await expect(page.getByText('Strategy', { exact: true })).toBeInViewport();
+    await expect(page.getByText('Use time')).toBeInViewport();
 
     const strategySelect = page.locator('#strategy-select');
     await expect(strategySelect).toBeVisible();

@@ -1,7 +1,7 @@
 {
     "version": "2024.10",
     "strategy_version": null,
-    "api_version": 2.42,
+    "api_version": 2.50,
     "dry_run": true,
     "trading_mode": "spot",
     "short_allowed": false,
