@@ -73,7 +73,13 @@ export function timestampToDateString(ts: number | Date): string {
  * @param ts
  */
 export function timestampToTimeRangeString(ts: number | Date): string {
-  return formatDate(toDate(ts), 'yyyyMMdd');
+  const date = toDate(ts);
+  const isDay = formatDate(date, 'HH:mm:ss') === '00:00:00';
+  if (isDay) {
+    return formatDate(date, 'yyyyMMdd');
+  }
+  const hasSeconds = formatDate(date, 'ss') !== '00';
+  return formatDate(date, hasSeconds ? "yyyyMMdd'T'HHmmss" : "yyyyMMdd'T'HHmm");
 }
 
 export function timestampHour(ts: number): number {

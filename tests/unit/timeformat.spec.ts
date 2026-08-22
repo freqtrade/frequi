@@ -64,16 +64,31 @@ describe('timeformatter.ts', () => {
     expect(timestampToDateString(timestamp)).toEqual('2022-04-28');
   });
 
-  it('timestampToDateString converts to date', () => {
-    expect(timestampToTimeRangeString(1651057500000)).toEqual('20220427');
+  it('timestampToTimeRangeString converts to timerange', () => {
+    setTimezone('UTC');
+    expect(timestampToTimeRangeString(1651017600000)).toEqual('20220427');
 
     // Set close to midnight - so timezone matters
-    // 2022-04-27T11:26:19 UTC
+    // 2022-04-27T23:26:19 UTC
     const timestamp = 1651101979000;
     setTimezone('UTC');
-    expect(timestampToTimeRangeString(timestamp)).toEqual('20220427');
+    expect(timestampToTimeRangeString(timestamp)).toEqual('20220427T232619');
     setTimezone('CET');
-    expect(timestampToTimeRangeString(timestamp)).toEqual('20220428');
+    expect(timestampToTimeRangeString(timestamp)).toEqual('20220428T012619');
+  });
+
+  it('timestampToTimeRangeString omits zero minutes and seconds', () => {
+    setTimezone('UTC');
+    // 2022-04-27T00:00:00 UTC - minutes and seconds are zero
+    expect(timestampToTimeRangeString(1651017600000)).toEqual('20220427');
+    // 2022-04-27T11:05:00 UTC - minutes and seconds are zero
+    expect(timestampToTimeRangeString(1651057500000)).toEqual('20220427T1105');
+    // 2022-04-27T11:05:30 UTC - seconds non-zero
+    expect(timestampToTimeRangeString(1651057530000)).toEqual('20220427T110530');
+    // 2022-04-27T11:05:00 UTC with CET timezone shifts to 13:05
+    setTimezone('CET');
+    expect(timestampToTimeRangeString(1651057500000)).toEqual('20220427T1305');
+    setTimezone('UTC');
   });
 
   it('timestampHour converts', () => {
