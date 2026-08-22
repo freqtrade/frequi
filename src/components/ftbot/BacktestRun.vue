@@ -129,7 +129,11 @@ function clickBacktest() {
     />
 
     <USeparator class="col-span-2 my-2" />
-    <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-2 col-span-2"></TimeRangeSelect>
+    <TimeRangeSelect
+      v-model="btStore.timerange"
+      :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
+      class="mx-auto mt-2 col-span-2"
+    ></TimeRangeSelect>
   </div>
 
   <h3 class="mt-3 font-bold text-2xl">Backtesting summary</h3>

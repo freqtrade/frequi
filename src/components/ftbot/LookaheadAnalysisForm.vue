@@ -107,7 +107,11 @@ onMounted(() => {
         />
       </div>
 
-      <TimeRangeSelect v-model="btStore.timerange" class="mx-auto mt-1" />
+      <TimeRangeSelect
+        v-model="btStore.timerange"
+        :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
+        class="mx-auto mt-1"
+      />
 
       <div class="flex justify-center mt-2">
         <UButton

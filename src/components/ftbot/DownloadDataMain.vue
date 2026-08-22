@@ -156,7 +156,10 @@ async function startDownload() {
               </div>
 
               <div v-if="timeSelection.useCustomTimerange">
-                <TimeRangeSelect v-model="timeSelection.timerange" />
+                <TimeRangeSelect
+                  v-model="timeSelection.timerange"
+                  :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
+                />
               </div>
               <div v-else class="flex items-center gap-2">
                 <label>Days to download:</label>
