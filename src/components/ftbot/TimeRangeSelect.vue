@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { CalendarDate, Time } from '@internationalized/date';
-import type { TimeValue } from 'reka-ui';
+import type { DateValue, TimeValue } from 'reka-ui';
 
 const now = new Date();
 const maxDateNow = new CalendarDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
 const maxDateTomorrow = maxDateNow.add({ days: 1 });
+
+/** Locale forcing the yyyy-mm-dd segment order of the date inputs */
+const dateLocale = 'en-CA';
 
 const props = defineProps<{
   /** Whether the bot this timerange is sent to supports hour/minute precision (API 2.50) */
@@ -13,8 +16,8 @@ const props = defineProps<{
 
 const timeRangeModel = defineModel<string>({ required: true });
 
-const dateFromText = ref('');
-const dateToText = ref('');
+const dateFrom = shallowRef<DateValue | null>(null);
+const dateTo = shallowRef<DateValue | null>(null);
 const timeFrom = shallowRef<TimeValue | null>(null);
 const timeTo = shallowRef<TimeValue | null>(null);
 /** Use hour/minute precision - requires API 2.50 */
@@ -42,9 +45,9 @@ function parseTimeText(text: string): Time | null {
   return null;
 }
 
-function calendarDateToInputString(d: CalendarDate | null): string {
+function dateToInputString(d: DateValue | null): string {
   if (!d) return '';
-  return `${d.year}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`;
+  return `${String(d.year).padStart(4, '0')}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`;
 }
 
 function parseInputText(text: string): CalendarDate | null {
@@ -55,14 +58,11 @@ function parseInputText(text: string): CalendarDate | null {
   return null;
 }
 
-const dateFrom = computed(() => parseInputText(dateFromText.value));
-const dateTo = computed(() => parseInputText(dateToText.value));
-
 const timeRange = computed(() => {
   const fromTime = useTime.value ? timeToInputString(timeFrom.value) : '';
   const toTime = useTime.value ? timeToInputString(timeTo.value) : '';
-  const from = inputToTimeRangePart(dateFromText.value, fromTime);
-  const to = inputToTimeRangePart(dateToText.value, toTime);
+  const from = inputToTimeRangePart(dateToInputString(dateFrom.value), fromTime);
+  const to = inputToTimeRangePart(dateToInputString(dateTo.value), toTime);
   if (from || to) {
     return `${from}-${to}`;
   }
@@ -70,14 +70,12 @@ const timeRange = computed(() => {
 });
 
 function onFromCalendarSelect(v: unknown) {
-  const d = v as CalendarDate;
-  dateFromText.value = calendarDateToInputString(d);
+  dateFrom.value = v as DateValue;
   popoverFromOpen.value = false;
 }
 
 function onToCalendarSelect(v: unknown) {
-  const d = v as CalendarDate;
-  dateToText.value = calendarDateToInputString(d);
+  dateTo.value = v as DateValue;
   popoverToOpen.value = false;
 }
 
@@ -85,9 +83,9 @@ function updateInput() {
   const tr = timeRangeModel.value.split('-');
   const from = timeRangePartToInput(tr[0] ?? '');
   const to = timeRangePartToInput(tr[1] ?? '');
-  dateFromText.value = from?.date ?? '';
+  dateFrom.value = parseInputText(from?.date ?? '');
   timeFrom.value = parseTimeText(from?.time ?? '');
-  dateToText.value = to?.date ?? '';
+  dateTo.value = parseInputText(to?.date ?? '');
   timeTo.value = parseTimeText(to?.time ?? '');
   withSeconds.value = !!(timeFrom.value?.second || timeTo.value?.second);
   if (timeFrom.value || timeTo.value) {
@@ -110,9 +108,7 @@ watch(timeRangeModel, (newValue) => {
 onMounted(() => {
   if (!timeRangeModel.value) {
     const d = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    dateFromText.value = calendarDateToInputString(
-      new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate()),
-    );
+    dateFrom.value = new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
   } else {
     updateInput();
   }
@@ -125,16 +121,22 @@ onMounted(() => {
     <div class="flex gap-2">
       <div class="flex flex-1 min-w-0 gap-1">
         <UFormField label="Start Date" class="flex-1 min-w-0">
-          <UInput v-model="dateFromText" placeholder="yyyy-mm-dd" class="flex-1 min-w-0">
+          <UInputDate
+            v-model="dateFrom"
+            :locale="dateLocale"
+            :max-value="maxDateNow"
+            :ui="{ base: 'pe-14' }"
+            title="Start date (yyyy-mm-dd, UTC)"
+          >
             <template #trailing>
               <UButton
-                v-if="dateFromText"
+                v-if="dateFrom"
                 icon="mdi:close"
                 color="neutral"
                 variant="ghost"
                 size="xs"
                 title="Clear start date"
-                @click="dateFromText = ''"
+                @click="dateFrom = null"
               />
               <UPopover v-model:open="popoverFromOpen">
                 <UButton icon="mdi:calendar-blank" color="neutral" variant="ghost" size="sm" />
@@ -147,7 +149,7 @@ onMounted(() => {
                 </template>
               </UPopover>
             </template>
-          </UInput>
+          </UInputDate>
         </UFormField>
         <UFormField v-if="useTime" label="Time">
           <UInputTime
@@ -160,16 +162,22 @@ onMounted(() => {
       </div>
       <div class="flex flex-1 min-w-0 gap-1">
         <UFormField label="End Date" class="flex-1 min-w-0">
-          <UInput v-model="dateToText" placeholder="yyyy-mm-dd" class="flex-1 min-w-0">
+          <UInputDate
+            v-model="dateTo"
+            :locale="dateLocale"
+            :max-value="maxDateTomorrow"
+            :ui="{ base: 'pe-14' }"
+            title="End date (yyyy-mm-dd, UTC)"
+          >
             <template #trailing>
               <UButton
-                v-if="dateToText"
+                v-if="dateTo"
                 icon="mdi:close"
                 color="neutral"
                 variant="ghost"
                 size="xs"
                 title="Clear end date"
-                @click="dateToText = ''"
+                @click="dateTo = null"
               />
               <UPopover v-model:open="popoverToOpen">
                 <UButton icon="mdi:calendar-blank" color="neutral" variant="ghost" size="sm" />
@@ -182,7 +190,7 @@ onMounted(() => {
                 </template>
               </UPopover>
             </template>
-          </UInput>
+          </UInputDate>
         </UFormField>
         <UFormField v-if="useTime" label="Time">
           <UInputTime
