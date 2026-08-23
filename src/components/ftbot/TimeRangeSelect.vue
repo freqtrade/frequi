@@ -157,7 +157,19 @@ onMounted(() => {
             :hour-cycle="24"
             :granularity="granularity"
             title="Start time (UTC)"
-          />
+          >
+            <template #trailing>
+              <UButton
+                v-if="timeFrom"
+                icon="mdi:close"
+                color="neutral"
+                variant="ghost"
+                size="xs"
+                title="Clear start time"
+                @click="timeFrom = null"
+              />
+            </template>
+          </UInputTime>
         </UFormField>
       </div>
       <div class="flex flex-1 min-w-0 gap-1">
@@ -198,7 +210,18 @@ onMounted(() => {
             :hour-cycle="24"
             :granularity="granularity"
             title="End time (UTC)"
-          />
+          >
+            <template #trailing>
+              <UButton
+                v-if="timeTo"
+                icon="mdi:close"
+                color="neutral"
+                variant="ghost"
+                size="xs"
+                title="Clear end time"
+                @click="timeTo = null"
+              /> </template
+          ></UInputTime>
         </UFormField>
       </div>
     </div>
