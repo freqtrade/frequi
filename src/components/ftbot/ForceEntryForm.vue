@@ -28,6 +28,28 @@ const ordertype = ref('');
 const orderSide = ref<OrderSides>(OrderSides.long);
 const enterTag = ref('force_entry');
 
+const availableStake = computed<number | undefined>(() => {
+  const stakeBalance = botStore.activeBot.balance.currencies?.find(
+    (curr) => curr.currency === botStore.activeBot.stakeCurrency,
+  );
+  if (!stakeBalance) {
+    return undefined;
+  }
+  return botStore.activeBot.botFeatures.hasBotBalance
+    ? (stakeBalance.bot_owned ?? stakeBalance.free)
+    : stakeBalance.free;
+});
+
+const availableStakeText = computed<string | undefined>(() =>
+  availableStake.value === undefined
+    ? undefined
+    : `Available: ${formatPriceCurrency(
+        availableStake.value,
+        botStore.activeBot.stakeCurrency,
+        botStore.activeBot.stakeCurrencyDecimals,
+      )}`,
+);
+
 const orderTypeOptions = [
   { value: 'market', text: 'Market' },
   { value: 'limit', text: 'Limit' },
@@ -87,6 +109,8 @@ function resetForm() {
 }
 
 resetForm();
+// Ensure the available balance is up to date when opening the dialog.
+botStore.activeBot.getBalance();
 </script>
 
 <template>
@@ -136,7 +160,10 @@ resetForm();
           />
         </UFormField>
 
-        <UFormField :label="`Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`">
+        <UFormField
+          :label="`Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
+          :hint="availableStakeText"
+        >
           <UInputNumber
             v-model="stakeAmount"
             show-buttons
