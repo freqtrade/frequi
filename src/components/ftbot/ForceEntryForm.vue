@@ -50,6 +50,32 @@ const availableStakeText = computed<string | undefined>(() =>
       )}`,
 );
 
+function roundToStakePrecision(value: number): number {
+  return Number(value.toFixed(botStore.activeBot.stakeCurrencyDecimals));
+}
+
+/** Slider proxy - an empty stake-amount (use the bot's configured amount) equals 0 on the slider. */
+const stakeAmountSlider = computed<number>({
+  get: () => stakeAmount.value ?? 0,
+  set: (value) => {
+    stakeAmount.value = value === 0 ? undefined : value;
+  },
+});
+
+const stakeStep = computed<number>(() => {
+  const precision = 10 ** -botStore.activeBot.stakeCurrencyDecimals;
+  return Math.max(roundToStakePrecision((availableStake.value ?? 0) / 100), precision);
+});
+
+const stakeRatios = [0.25, 0.5, 0.75, 1];
+
+function applyStakeRatio(ratio: number) {
+  if (!availableStake.value) {
+    return;
+  }
+  stakeAmount.value = roundToStakePrecision(availableStake.value * ratio);
+}
+
 const orderTypeOptions = [
   { value: 'market', text: 'Market' },
   { value: 'limit', text: 'Limit' },
@@ -164,17 +190,50 @@ botStore.activeBot.getBalance();
           :label="`Stake-amount in ${botStore.activeBot.stakeCurrency} [optional]`"
           :hint="availableStakeText"
         >
-          <UInputNumber
-            v-model="stakeAmount"
-            show-buttons
-            :min="0"
-            :stepSnapping="false"
-            :step="['USDC', 'USDT'].includes(botStore.activeBot.stakeCurrency) ? 10 : 1"
-            class="w-full"
-            :format-options="{
-              maximumFractionDigits: 5,
-            }"
-          />
+          <div class="space-y-2">
+            <UInputNumber
+              v-model="stakeAmount"
+              show-buttons
+              :min="0"
+              :stepSnapping="false"
+              :step="['USDC', 'USDT'].includes(botStore.activeBot.stakeCurrency) ? 10 : 1"
+              class="w-full"
+              :format-options="{
+                maximumFractionDigits: 5,
+              }"
+            />
+            <template v-if="availableStake">
+              <USlider
+                v-model="stakeAmountSlider"
+                :min="0"
+                :max="availableStake"
+                :step="stakeStep"
+                class="w-full"
+              />
+              <div class="flex gap-1">
+                <UButton
+                  v-for="ratio in stakeRatios"
+                  :key="ratio"
+                  size="xs"
+                  color="neutral"
+                  variant="soft"
+                  class="grow justify-center"
+                  @click="applyStakeRatio(ratio)"
+                >
+                  {{ formatPercent(ratio, 0) }}
+                </UButton>
+                <UButton
+                  size="xs"
+                  color="neutral"
+                  variant="soft"
+                  icon="mdi:close"
+                  title="Use the bot's configured stake amount"
+                  :disabled="stakeAmount === undefined"
+                  @click="stakeAmount = undefined"
+                />
+              </div>
+            </template>
+          </div>
         </UFormField>
 
         <UFormField
