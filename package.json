@@ -29,7 +29,7 @@
     "deepmerge": "^4.3.1",
     "echarts": "^6.1.0",
     "favico.js": "^0.3.10",
-    "humanize-duration": "^3.34.0",
+    "humanize-duration": "^3.34.1",
     "pinia": "4.0.3",
     "pinia-plugin-persistedstate": "^4.7.1",
     "reka-ui": "^2.10.3",
