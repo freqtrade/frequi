@@ -177,6 +177,7 @@ export function createBotSubStore(botId: string, botName: string) {
     }
 
     function logout() {
+      closeWebSocket();
       loginInfo.logout();
     }
 
@@ -1410,6 +1411,15 @@ export function createBotSubStore(botId: string, botName: string) {
     // #region Websocket handling
 
     const websocketStarted = ref(false);
+    /** Handle to the active websocket connection - used to prevent duplicate connections. */
+    let websocketHandle: { close: () => void } | undefined = undefined;
+
+    function closeWebSocket() {
+      websocketHandle?.close();
+      websocketHandle = undefined;
+      websocketStarted.value = false;
+    }
+
     function _handleWebsocketMessage(ws: WebSocket, event: MessageEvent<string>) {
       const msg: FTWsMessage = JSON.parse(event.data);
       switch (msg.type) {
@@ -1444,14 +1454,14 @@ export function createBotSubStore(botId: string, botName: string) {
 
     function startWebSocket() {
       if (
-        websocketStarted.value === true ||
+        websocketHandle !== undefined ||
         botStatusAvailable.value === false ||
         !botFeatures.value.websocketConnection ||
         isWebserverMode.value === true
       ) {
         return;
       }
-      const { send, close } = useWebSocket(
+      const wsHandle = useWebSocket(
         // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
         `${loginInfo.baseWsUrl.value}/message/ws?token=${loginInfo.accessToken.value}`,
         {
@@ -1465,8 +1475,7 @@ export function createBotSubStore(botId: string, botName: string) {
           // },
           onError: (ws, event) => {
             console.log('onError', event, ws);
-            websocketStarted.value = false;
-            close();
+            closeWebSocket();
           },
           onMessage: _handleWebsocketMessage,
           onConnected: () => {
@@ -1485,13 +1494,13 @@ export function createBotSubStore(botId: string, botName: string) {
                 subscriptions.push(FtWsMessageTypes.newCandle);
               }
 
-              send(
+              wsHandle.send(
                 JSON.stringify({
                   type: 'subscribe',
                   data: subscriptions,
                 }),
               );
-              send(
+              wsHandle.send(
                 JSON.stringify({
                   type: FtWsMessageTypes.whitelist,
                   data: '',
@@ -1501,6 +1510,7 @@ export function createBotSubStore(botId: string, botName: string) {
           },
         },
       );
+      websocketHandle = wsHandle;
     }
     // #endregion websocket handling
 
