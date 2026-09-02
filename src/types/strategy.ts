@@ -52,11 +52,7 @@ export interface BooleanParameter extends BaseParameter {
 }
 
 export type AllStrategyParameter =
-  | IntParameter
-  | RealParameter
-  | DecimalParameter
-  | CategoricalParameter
-  | BooleanParameter;
+  IntParameter | RealParameter | DecimalParameter | CategoricalParameter | BooleanParameter;
 
 export interface StrategyResult {
   /** Strategy name */
