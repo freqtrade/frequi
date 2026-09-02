@@ -52,8 +52,8 @@ importers:
         specifier: ^0.3.10
         version: 0.3.10
       humanize-duration:
-        specifier: ^3.34.0
-        version: 3.34.0
+        specifier: ^3.34.1
+        version: 3.34.1
       pinia:
         specifier: 4.0.3
         version: 4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.41(typescript@6.0.3))
@@ -2173,8 +2173,8 @@ packages:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
 
-  humanize-duration@3.34.0:
-    resolution: {integrity: sha512-NDxhYxiiRzsST6xULIHuYWRvsCtviJXRdjarhyWyh78S4Ou+MWhM2k4HQ+y7iegdrzreXe11isd0au1N2PB/pQ==}
+  humanize-duration@3.34.1:
+    resolution: {integrity: sha512-YIiigjQ+O31rvcyDJPK1ptTZtvSErjBtmHy93VhbwxB/VwMG0FszKs2IB667tFxmOhNapePQQxa24luQRDkKFQ==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -5681,7 +5681,7 @@ snapshots:
 
   human-signals@5.0.0: {}
 
-  humanize-duration@3.34.0: {}
+  humanize-duration@3.34.1: {}
 
   ignore@5.3.2: {}
 
