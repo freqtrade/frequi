@@ -2,7 +2,6 @@
 import type { AuthPayload, AuthStorageWithBotId } from '@/types';
 
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
 
 const props = withDefaults(
   defineProps<{
@@ -122,7 +121,7 @@ async function handleSubmit() {
     errorMessageCORS.value = false;
     // this.nameState = false;
     console.error(error);
-    if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
+    if (isApiError(error) && error.status === 401) {
       nameState.value = false;
       pwdState.value = false;
       errorMessage.value = 'Connected to bot, however Login failed, Username or Password wrong.';
