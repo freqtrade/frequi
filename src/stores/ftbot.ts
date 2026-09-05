@@ -278,9 +278,6 @@ export function createBotSubStore(botId: string, botName: string) {
         }
         return Promise.resolve();
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         return Promise.reject(error);
       }
     }
@@ -335,9 +332,6 @@ export function createBotSubStore(botId: string, botName: string) {
         currentLocks.value = res;
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert(`Failed to delete lock ${lockid}`, 'error');
         return Promise.reject(error);
       }
@@ -430,7 +424,6 @@ export function createBotSubStore(botId: string, botName: string) {
           console.error(err);
           historyStatus.value = LoadingStatus.error;
           if (isApiError(err)) {
-            console.error(err.status, err.data);
             const isTimeout = isTimeoutError(err);
             const errMsg = isTimeout
               ? 'Timeout exceeded'
@@ -496,7 +489,6 @@ export function createBotSubStore(botId: string, botName: string) {
       } catch (error) {
         console.error(error);
         if (isApiError(error)) {
-          console.error(error.status, error.data);
           const errMsg = error.data?.detail ?? 'Error fetching history';
           showAlert(errMsg, 'warning');
         }
@@ -943,9 +935,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(data.status);
         return Promise.resolve(data);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert('Error starting bot.', 'error');
         return Promise.reject(error);
       }
@@ -957,9 +946,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(res.status);
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert('Error stopping bot.', 'error');
         return Promise.reject(error);
       }
@@ -971,9 +957,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(res.status);
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert('Error calling stopbuy.', 'error');
         return Promise.reject(error);
       }
@@ -986,9 +969,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(res.status);
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert('Error reloading.', 'error');
         return Promise.reject(error);
       }
@@ -1000,9 +980,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(res.result_msg ? res.result_msg : `Deleted Trade ${tradeid}`);
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert(`Failed to delete trade ${tradeid}`, 'error');
         return Promise.reject(error);
       }
@@ -1016,9 +993,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(res.result_msg ? res.result_msg : `Canceled open order for ${tradeid}`);
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert(`Failed to cancel open order ${tradeid}`, 'error');
         return Promise.reject(error);
       }
@@ -1029,9 +1003,6 @@ export function createBotSubStore(botId: string, botName: string) {
         const res = await api<Trade>(`/trades/${tradeid}/reload`, { method: 'POST' });
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert(`Failed to reload trade ${tradeid}`, 'error');
         return Promise.reject(error);
       }
@@ -1042,9 +1013,6 @@ export function createBotSubStore(botId: string, botName: string) {
         const res = await api<TradeCustomData[]>(`/trades/${tradeid}/custom-data`);
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert(`Failed to get custom data for trade ${tradeid}`, 'error');
         return Promise.reject(error);
       }
@@ -1065,9 +1033,6 @@ export function createBotSubStore(botId: string, botName: string) {
         showAlert(`Exit order for ${payload.tradeid} created`, 'success');
         return Promise.resolve(res);
       } catch (error) {
-        if (isApiError(error)) {
-          console.error(error.status, error.data);
-        }
         showAlert(`Failed to create exit order for ${payload.tradeid}`, 'error');
         return Promise.reject(error);
       }
@@ -1085,7 +1050,6 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve(res);
         } catch (error) {
           if (isApiError(error)) {
-            console.error(error.status, error.data);
             showAlert(`Error occured entering: '${error.data?.error}'`, 'error');
           }
           return Promise.reject(error);
@@ -1119,7 +1083,6 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve(result);
         } catch (error) {
           if (isApiError(error)) {
-            console.error(error.status, error.data);
             showAlert(
               `Error occured while adding pairs to Blacklist: '${error.data?.error}'`,
               'error',
@@ -1158,7 +1121,6 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve(result);
         } catch (error) {
           if (isApiError(error)) {
-            console.error(error.status, error.data);
             showAlert(
               `Error occured while removing pairs from Blacklist: '${error.data?.error}'`,
               'error',
