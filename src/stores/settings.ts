@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { ofetch } from 'ofetch';
 import { TimeSummaryCols, TimeSummaryOptions } from '@/types';
 import type { ThemeName, UiVersion } from '@/types';
 import { FtWsMessageTypes } from '@/types/wsMessageTypes';
@@ -50,10 +50,9 @@ export const useSettingsStore = defineStore(
     async function loadUIVersion() {
       if (import.meta.env.PROD) {
         try {
-          const result = await axios.get<UiVersion>('/ui_version', {
-            withCredentials: true,
+          const { version } = await ofetch<UiVersion>('/ui_version', {
+            credentials: 'include',
           });
-          const { version } = result.data;
           _uiVersion.value = version ?? 'dev';
         } catch (error) {
           //

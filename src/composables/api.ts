@@ -1,81 +1,73 @@
-import type { AxiosHeaders } from 'axios';
-import axios from 'axios';
+import type { $Fetch } from 'ofetch';
+import { FetchError, ofetch } from 'ofetch';
 
 type UserServiceType = ReturnType<typeof useLoginInfo>;
 
-export function useApi(userService: UserServiceType, botId: string) {
-  const api = axios.create({
+/** Error body shapes returned by the freqtrade API. */
+export interface ApiErrorBody {
+  detail?: string;
+  error?: string;
+}
+
+/** Type guard for errors thrown by the API client (non-2xx responses, network errors, timeouts). */
+export function isApiError(error: unknown): error is FetchError<ApiErrorBody> {
+  return error instanceof FetchError;
+}
+
+/** True if the error was caused by the request timeout. */
+export function isTimeoutError(error: unknown): boolean {
+  return isApiError(error) && (error.cause as Error | undefined)?.name === 'TimeoutError';
+}
+
+export function useApi(userService: UserServiceType, botId: string): { api: $Fetch } {
+  function markBotOffline(loggedOut = false) {
+    const botStore = useBotStore();
+    const subStore = botStore.botStores[botId];
+    if (subStore) {
+      subStore.setIsBotOnline(false);
+      if (loggedOut) {
+        subStore.isBotLoggedIn = false;
+      }
+    }
+  }
+
+  const api = ofetch.create({
     baseURL: userService.baseUrl.value,
     timeout: 20000,
-    withCredentials: true,
-  });
-  // Sent auth headers interceptor
-  api.interceptors.request.use(
-    (request) => {
+    credentials: 'include',
+    // Retry exactly once, and only after a 401 - the retried request runs through
+    // onRequest again and picks up the refreshed access token.
+    retry: 1,
+    retryDelay: 0,
+    retryStatusCodes: [401],
+    onRequest({ options }) {
       const token = userService.accessToken.value;
-      try {
-        if (token) {
-          request.headers = request.headers as AxiosHeaders;
-          // Append token to each request
-          request.headers.set('Authorization', `Bearer ${token}`);
+      if (token) {
+        options.headers.set('Authorization', `Bearer ${token}`);
+      }
+    },
+    onRequestError() {
+      // fetch itself failed (network error, CORS, DNS, ...) - no response available.
+      console.log('Bot not running...');
+      markBotOffline();
+    },
+    async onResponseError({ response, options }) {
+      if (response.status === 401) {
+        try {
+          await userService.refreshToken();
+        } catch (error) {
+          console.log('No new token received');
+          console.log(error);
+          markBotOffline(true);
+          // Refresh failed - don't retry, let the original 401 propagate to the caller.
+          options.retry = 0;
         }
-      } catch (e) {
-        console.log(e);
-      }
-      return request;
-    },
-    (error) => Promise.reject(error),
-  );
-
-  api.interceptors.response.use(
-    (response) => response,
-    (err) => {
-      // console.log(err);
-      if (err.response && err.response.status === 401) {
-        return userService
-          .refreshToken()
-          .catch((error) => {
-            console.log('No new token received');
-            console.log(error);
-            const botStore = useBotStore();
-            if (botStore.botStores[botId]) {
-              botStore.botStores[botId].setIsBotOnline(false);
-              botStore.botStores[botId].isBotLoggedIn = false;
-            }
-          })
-          .then((token) => {
-            // Retry original request with new token
-            const { config } = err;
-            config.headers.Authorization = `Bearer ${token}`;
-
-            return new Promise((resolve, reject) => {
-              axios
-                .request(config)
-                .then((response) => {
-                  resolve(response);
-                })
-                .catch((error) => {
-                  reject(error);
-                });
-            });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-
-        // maybe redirect to /login if needed !
-      }
-      if ((err.response && err.response.status === 500) || err.message === 'Network Error') {
+      } else if (response.status === 500) {
         console.log('Bot not running...');
-        const botStore = useBotStore();
-        botStore.botStores[botId]?.setIsBotOnline(false);
+        markBotOffline();
       }
-
-      return new Promise((resolve, reject) => {
-        reject(err);
-      });
     },
-  );
+  });
 
   return {
     api,

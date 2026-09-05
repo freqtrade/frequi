@@ -1,5 +1,4 @@
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
+import { ofetch } from 'ofetch';
 
 import type {
   AuthPayload,
@@ -37,6 +36,12 @@ export const loggedInBots = computed<BotDescriptors>(() => {
 
   return response;
 });
+
+/** Build a UTF-8 safe HTTP Basic Authorization header value. */
+function basicAuthHeader(username: string, password: string): string {
+  const bytes = new TextEncoder().encode(`${username}:${password}`);
+  return `Basic ${btoa(String.fromCharCode(...bytes))}`;
+}
 
 export function useLoginInfo(botId: string) {
   console.log('botId', botId);
@@ -107,14 +112,12 @@ export function useLoginInfo(botId: string) {
   }
 
   async function loginCall(auth: AuthPayload): Promise<AuthStorage> {
-    const { data } = await axios.post<Record<string, never>, AxiosResponse<AuthResponse>>(
-      `${auth.url}/api/v1/token/login`,
-      {},
-      {
-        auth: { ...auth },
-        withCredentials: true,
-      },
-    );
+    const data = await ofetch<AuthResponse>(`${auth.url}${APIBASE}/token/login`, {
+      method: 'POST',
+      body: {},
+      credentials: 'include',
+      headers: { Authorization: basicAuthHeader(auth.username, auth.password) },
+    });
     if (data.access_token && data.refresh_token) {
       const obj: AuthStorage = {
         botName: auth.botName,
@@ -124,7 +127,7 @@ export function useLoginInfo(botId: string) {
         refreshToken: data.refresh_token || '',
         autoRefresh: true,
       };
-      return Promise.resolve(obj);
+      return obj;
     }
     return Promise.reject('login failed');
   }
@@ -134,35 +137,47 @@ export function useLoginInfo(botId: string) {
     currentInfo.value = loginInfo;
   }
 
-  function refreshToken(): Promise<string> {
+  // Shared across concurrent 401s so that an expired access token triggers only one refresh call.
+  let refreshInFlight: Promise<string> | null = null;
+
+  async function doRefreshToken(): Promise<string> {
     console.log('Refreshing token...');
     const token = currentInfo.value.refreshToken;
-    return new Promise((resolve, reject) => {
-      axios
-        .post<Record<string, never>, AxiosResponse<AuthResponse>>(
-          `${currentInfo.value.apiUrl}${APIBASE}/token/refresh`,
-          {},
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
-        .then((response) => {
-          if (response.data.access_token) {
-            currentInfo.value.accessToken = response.data.access_token;
-            resolve(response.data.access_token);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          if (err.response && err.response.status === 401) {
-            console.log('Refresh token did not refresh.');
-            setRefreshTokenExpired();
-          } else if (err.response && (err.response.status === 500 || err.response.status === 404)) {
-            console.log('Bot seems to be offline... - retrying later');
-          }
-          reject(err);
-        });
-    });
+    try {
+      const data = await ofetch<AuthResponse>(
+        `${currentInfo.value.apiUrl}${APIBASE}/token/refresh`,
+        {
+          method: 'POST',
+          body: {},
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!data.access_token) {
+        throw new Error('No access token received');
+      }
+      currentInfo.value.accessToken = data.access_token;
+      return data.access_token;
+    } catch (err) {
+      console.error(err);
+      if (isApiError(err)) {
+        if (err.status === 401) {
+          console.log('Refresh token did not refresh.');
+          setRefreshTokenExpired();
+        } else if (err.status === 500 || err.status === 404) {
+          console.log('Bot seems to be offline... - retrying later');
+        }
+      }
+      throw err;
+    }
+  }
+
+  function refreshToken(): Promise<string> {
+    if (!refreshInFlight) {
+      refreshInFlight = doRefreshToken().finally(() => {
+        refreshInFlight = null;
+      });
+    }
+    return refreshInFlight;
   }
 
   return {
