@@ -30,7 +30,7 @@ const enterTag = ref('force_entry');
 
 const availableStake = computed<number | undefined>(() => {
   const stakeBalance = botStore.activeBot.balance.currencies?.find(
-    (curr) => curr.currency === botStore.activeBot.stakeCurrency,
+    (curr) => curr.currency === botStore.activeBot.proxyCoin,
   );
   if (!stakeBalance) {
     return undefined;

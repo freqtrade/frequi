@@ -112,6 +112,8 @@ export function createBotSubStore(botId: string, botName: string) {
       evaluateFeatures(botState.value, botApiVersion.value),
     );
     const stakeCurrency = computed(() => botState.value?.stake_currency || '');
+    /** Coin the stake currency is actually held as - differs from stakeCurrency when a proxy coin is used. */
+    const proxyCoin = computed(() => botState.value?.proxy_coin || stakeCurrency.value);
     const stakeCurrencyDecimals = computed(() => botState.value?.stake_currency_decimals || 3);
     const isWebserverMode = computed(() => botState.value?.runmode === RunModes.WEBSERVER);
 
@@ -1503,6 +1505,7 @@ export function createBotSubStore(botId: string, botName: string) {
       botApiVersion,
       botFeatures,
       stakeCurrency,
+      proxyCoin,
       stakeCurrencyDecimals,
       canRunBacktest,
       isWebserverMode,
