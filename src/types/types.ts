@@ -157,6 +157,8 @@ export interface BotState {
   stake_amount: string;
   stake_currency: string;
   stake_currency_decimals?: number;
+  /** Only available when using BNFCR mode */
+  proxy_coin?: string;
   available_balance?: number;
   strategy: string;
   /** Timeframe in readable form (e.g. 5m) */
