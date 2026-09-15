@@ -266,8 +266,10 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getTrades() {
         try {
-          let totalTrades = 0;
           const pageLength = 500;
+          // Loading the whole trade history can be several MB for long running bots,
+          // which is why the number of trades to load can be limited (0 = no limit).
+          const { maxTradesLoaded } = useSettingsStore();
           const fetchTrades = async (limit: number, offset: number) => {
             return api.get<TradeResponse>('/trades', {
               params: { limit, offset },
@@ -277,17 +279,23 @@ export function createBotSubStore(botId: string, botName: string) {
           const result: TradeResponse = res.data;
           let { trades } = result;
           if (Array.isArray(trades)) {
-            if (trades.length !== result.total_trades) {
-              // Pagination necessary
-              // Don't use Promise.all - this would fire all requests at once, which can
-              // cause problems for big sqlite databases
-              do {
-                const res = await fetchTrades(pageLength, trades.length);
-
-                const result: TradeResponse = res.data;
-                trades = trades.concat(result.trades);
-                totalTrades = res.data.total_trades;
-              } while (trades.length !== totalTrades);
+            // Pagination necessary
+            // Don't use Promise.all - this would fire all requests at once, which can
+            // cause problems for big sqlite databases
+            while (
+              trades.length < result.total_trades &&
+              (maxTradesLoaded === 0 || trades.length < maxTradesLoaded)
+            ) {
+              const pageSize =
+                maxTradesLoaded === 0
+                  ? pageLength
+                  : Math.min(pageLength, maxTradesLoaded - trades.length);
+              const next = await fetchTrades(pageSize, trades.length);
+              if (!next.data.trades.length) {
+                // Avoid endless loops in case the backend returns no more trades.
+                break;
+              }
+              trades = trades.concat(next.data.trades);
             }
             const tradesCount = trades.length;
             // Add botId to all trades

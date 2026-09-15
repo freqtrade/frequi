@@ -4,12 +4,20 @@ import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 const layoutStore = useLayoutStore();
+const botStore = useBotStore();
 
 const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
 const openTradesOptions = [
   { value: OpenTradeVizOptions.showPill, text: 'Show pill in icon' },
   { value: OpenTradeVizOptions.asTitle, text: 'Show in title' },
   { value: OpenTradeVizOptions.noOpenTrades, text: "Don't show open trades in header" },
+];
+const maxTradesOptions = [
+  { value: 500, text: '500 trades' },
+  { value: 1000, text: '1000 trades' },
+  { value: 2000, text: '2000 trades' },
+  { value: 5000, text: '5000 trades' },
+  { value: 0, text: 'Unlimited' },
 ];
 const colorPreferenceOptions = [
   { value: ColorPreferences.GREEN_UP, text: 'Green Up/Red Down' },
@@ -21,6 +29,12 @@ const resetDynamicLayout = () => {
   layoutStore.resetDashboardLayout();
   showAlert('Layouts have been reset.');
 };
+
+// Timers need to be re-created when the intervals change.
+watch(
+  () => [settingsStore.frequentRefreshInterval, settingsStore.slowRefreshInterval],
+  () => botStore.restartRefreshTimers(),
+);
 </script>
 
 <template>
@@ -135,6 +149,49 @@ const resetDynamicLayout = () => {
               the plot config changes.</template
             >
           </BaseCheckbox>
+
+          <div class="space-y-1">
+            <label class="block text-sm">Maximum number of trades to load</label>
+            <Select
+              v-model="settingsStore.maxTradesLoaded"
+              :options="maxTradesOptions"
+              option-label="text"
+              option-value="value"
+              class="w-full md:w-64"
+            />
+            <small class="text-surface-600 dark:text-surface-400">
+              Trade history can easily be several MB for long running bots. Limiting the number of
+              trades loaded will speed up the UI, but older trades won't be available in the trade
+              list.
+            </small>
+          </div>
+
+          <div>
+            <p>Automatic refresh intervals (in ms)</p>
+            <div class="flex flex-row gap-5 w-full items-center">
+              <span class="w-56">Open trades / locks</span>
+              <InputNumber
+                v-model="settingsStore.frequentRefreshInterval"
+                :step="1000"
+                :min="1000"
+                :max="600000"
+                size="small"
+              />
+            </div>
+            <div class="flex flex-row gap-5 w-full items-center mt-2">
+              <span class="w-56">Trade history / balance</span>
+              <InputNumber
+                v-model="settingsStore.slowRefreshInterval"
+                :step="5000"
+                :min="5000"
+                :max="3600000"
+                size="small"
+              />
+            </div>
+            <small class="text-surface-600 dark:text-surface-400">
+              Increase these values to reduce the load on the bot, at the cost of slower updates.
+            </small>
+          </div>
 
           <div>
             <p>Default number of candles to display (defaults to 250)</p>

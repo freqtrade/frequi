@@ -340,19 +340,28 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     startRefresh() {
       console.log('Starting automatic refresh.');
       this.allRefreshFull();
+      this.startRefreshTimers();
+    },
+    startRefreshTimers() {
+      const { frequentRefreshInterval, slowRefreshInterval } = useSettingsStore();
       if (!this.refreshInterval) {
         // Set interval for refresh
         const refreshInterval = window.setInterval(() => {
           this.allRefreshFrequent();
-        }, 5000);
+        }, frequentRefreshInterval);
         this.refreshInterval = refreshInterval;
       }
       if (!this.refreshIntervalSlow) {
         const refreshIntervalSlow = window.setInterval(() => {
           this.allRefreshSlow(false);
-        }, 60000);
+        }, slowRefreshInterval);
         this.refreshIntervalSlow = refreshIntervalSlow;
       }
+    },
+    /** Restart the timers, e.g. after the refresh intervals have been changed. */
+    restartRefreshTimers() {
+      this.stopRefresh();
+      this.startRefreshTimers();
     },
     stopRefresh() {
       console.log('Stopping automatic refresh.');

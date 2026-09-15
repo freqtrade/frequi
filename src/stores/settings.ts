@@ -38,6 +38,12 @@ export const useSettingsStore = defineStore('uiSettings', {
       multiPaneButtonsShowText: false,
       multiPairSelection: false,
       backtestAdditionalMetrics: ['profit_factor', 'expectancy'] as string[],
+      /** Maximum number of historic trades to load. 0 means no limit. */
+      maxTradesLoaded: 500,
+      /** Interval for the frequent refresh (open trades) in ms. */
+      frequentRefreshInterval: 5000,
+      /** Interval for the slow refresh (trade history, balance, ...) in ms. */
+      slowRefreshInterval: 60000,
     };
   },
   getters: {
