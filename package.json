@@ -36,7 +36,7 @@
     "sortablejs": "^1.15.7",
     "vue": "^3.5.42",
     "vue-echarts": "^8.3.0",
-    "vue-router": "^5.3.0"
+    "vue-router": "^5.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
