@@ -22,8 +22,8 @@ importers:
         specifier: 1.9.16
         version: 1.9.16(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@nuxt/ui':
-        specifier: ^4.11.0
-        version: 4.11.0(466e6103c00c3c649b830ed1da2fe05e)
+        specifier: ^4.11.1
+        version: 4.11.1(466e6103c00c3c649b830ed1da2fe05e)
       '@tanstack/vue-table':
         specifier: ^8.21.3
         version: 8.21.3(vue@3.5.42(typescript@6.0.3))
@@ -59,7 +59,7 @@ importers:
         version: 4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       pinia-plugin-persistedstate:
         specifier: ^4.7.1
-        version: 4.7.1(@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))
+        version: 4.7.1(@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))
       reka-ui:
         specifier: ^2.10.4
         version: 2.10.4(vue@3.5.42(typescript@6.0.3))
@@ -569,8 +569,8 @@ packages:
     resolution: {integrity: sha512-h9g1kt9O2iU9nX6HDFu9gvwtpn+8oSJX0RSTWRBnEx/Pkz+WlOHtjuS0SbkTAXw5aT1+H1GysWVwNTjJfBY/0w==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  '@nuxt/ui@4.11.0':
-    resolution: {integrity: sha512-gDs67/fWk3kipcEV4Pc5h1VnZD1glfWfINmJU7s3qpkxxRTkfkPxnUszXG664whNWcoqucS1WgZ/rNjZa3pTMw==}
+  '@nuxt/ui@4.11.1':
+    resolution: {integrity: sha512-6/xTMQNO4bcVesaaiIorH65cZ3eu0xenH+gC2L/b9pfmeVc0aMGXDKpW2JxoVUlrlcHo/beoUTI0B164HcwweQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -946,6 +946,9 @@ packages:
   '@tanstack/virtual-core@3.17.7':
     resolution: {integrity: sha512-bp+v10y65sp2H7WpWfIMyxTNfl8ZVfxFTLRjPIFRryi6FV/J33z4IS53WO4pTk36KlvJ4iLiQz+oaydDC1xbcA==}
 
+  '@tanstack/virtual-core@3.17.9':
+    resolution: {integrity: sha512-M8Bzy7CCMvUjRiuoHVH9mRjyUVczRs8v8RcUEphLFGc445ZP4KQ15Y1sLqhQqJi/HgGJrxfCHnEnIX0x9mVrBg==}
+
   '@tanstack/vue-table@8.21.3':
     resolution: {integrity: sha512-rusRyd77c5tDPloPskctMyPLFEQUeBzxdQ+2Eow4F7gDPlPOB1UnnhzfpdvqZ8ZyX2rRNGmqNnQWm87OI2OQPw==}
     engines: {node: '>=12'}
@@ -954,6 +957,11 @@ packages:
 
   '@tanstack/vue-virtual@3.13.35':
     resolution: {integrity: sha512-lOfSPvgPdlaH6Qy+CyIc3XpycitaSQ9GECndGpTuDiu+uDA1am+90yWXwzDSd/20ZM196ggWJLS+Qb6WjVd/OA==}
+    peerDependencies:
+      vue: ^2.7.0 || ^3.0.0
+
+  '@tanstack/vue-virtual@3.13.37':
+    resolution: {integrity: sha512-1QNT8EXVKUx537/qvn/tFGs48eITBrrTWcyaMVjD4SCpij7E1LksbXZQLqkXBoJ9lfOVely/8Fgzqe/olQ+drw==}
     peerDependencies:
       vue: ^2.7.0 || ^3.0.0
 
@@ -2365,8 +2373,8 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
-  magic-string@1.2.2:
-    resolution: {integrity: sha512-veT/+7iXrXzT39XnEN4lOxtNl72dMgJ8Lp+5Bd6YcMSWpb0n0MjBM8Uuooi6jgJr8dhUW2swQgBmoZVMni5SVg==}
+  magic-string@1.2.3:
+    resolution: {integrity: sha512-Bpb0W2TbLKOZ7vJnOUnVRGq3WL2p+ISV29M6hYPL1AFCpyKZpdr5ytiXoTSSxRVhg8YW7f65+6gbG8WG6PCa/g==}
 
   marked@17.0.6:
     resolution: {integrity: sha512-gB0gkNafnonOw0obSTEGZTT86IuhILt2Wfx0mWH/1Au83kybTayroZ/V6nS25mN7u8ASy+5fMhgB3XPNrOZdmA==}
@@ -2423,8 +2431,8 @@ packages:
   motion-utils@13.0.0:
     resolution: {integrity: sha512-7DnN7TmbLcYXcG4RVadXIihWlyuM9afoUww8Y5Agg431kGKiuL2/OMyP4mJ5wLz+pvN3t5ySClLOaVXJ+wekRQ==}
 
-  motion-v@2.4.0:
-    resolution: {integrity: sha512-kRDGMAZk3nvdjEO36Wo6pezSEIStGXGhVFiwo1QkUDsUg8mB5igjYPXyece8wtu2DrHhmFfA6Y1nOz07+5QH4A==}
+  motion-v@2.4.2:
+    resolution: {integrity: sha512-I3+pa3s1iCtk1hS7En7+ZYH1E165FQHAC4ZRjv6wsQPkd7wqyE+ooOPqal3FXQOCCYesmUs5BS6KLx4Fz83m+A==}
     peerDependencies:
       '@vueuse/core': '>=10.0.0'
       vue: '>=3.0.0'
@@ -2694,11 +2702,6 @@ packages:
   regexp-tree@0.1.27:
     resolution: {integrity: sha512-iETxpjK6YoRWJG5o6hXLwvjYAoW+FEZn9os0PD/b6AP6xQwsa/Y7lCVgIixBbUPMfhu+i2LtdeAqVTgGlQarfA==}
     hasBin: true
-
-  reka-ui@2.10.3:
-    resolution: {integrity: sha512-nJGZbwcha8AcP2wbnjodfzsciTKBqp1mIzepC9Pi2xDI/YK3++ej3vpJOSPyxqrkq1Oorj4K+BdJkbVCV6x6ag==}
-    peerDependencies:
-      vue: '>= 3.4.0'
 
   reka-ui@2.10.4:
     resolution: {integrity: sha512-kbS5GAbkHkYj0EVKAg5ZPEPndhBjeUFSa1Aq5m5ftQwyHnB1v5tw8X6fcwfKH/ry3StPXblMWM1DW82MVS71cw==}
@@ -3779,9 +3782,9 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.1
 
-  '@nuxt/devtools-kit@3.4.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))':
+  '@nuxt/devtools-kit@3.4.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))':
     dependencies:
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       execa: 8.0.1
       vite: 8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)
     transitivePeerDependencies:
@@ -3791,10 +3794,10 @@ snapshots:
       - rolldown
       - unplugin
 
-  '@nuxt/fonts@0.14.0(esbuild@0.28.1)(magic-string@1.2.2)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))':
+  '@nuxt/fonts@0.14.0(esbuild@0.28.1)(magic-string@1.2.3)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))':
     dependencies:
-      '@nuxt/devtools-kit': 3.4.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/devtools-kit': 3.4.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       consola: 3.4.2
       defu: 6.1.7
       fontless: 0.2.1(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
@@ -3841,14 +3844,14 @@ snapshots:
       - vite
       - webpack
 
-  '@nuxt/icon@2.5.1(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))':
+  '@nuxt/icon@2.5.1(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       '@iconify/collections': 1.0.728
       '@iconify/types': 2.0.0
       '@iconify/utils': 3.1.4
       '@iconify/vue': 5.0.1(vue@3.5.42(typescript@6.0.3))
-      '@nuxt/devtools-kit': 3.4.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/devtools-kit': 3.4.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       consola: 3.4.2
       local-pkg: 1.2.1
       mlly: 1.8.2
@@ -3866,7 +3869,7 @@ snapshots:
       - vite
       - vue
 
-  '@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))':
+  '@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))':
     dependencies:
       c12: 3.3.4
       consola: 3.4.2
@@ -3886,7 +3889,7 @@ snapshots:
       scule: 1.3.0
       tinyglobby: 0.2.17
       ufo: 1.6.4
-      unctx: 3.0.0(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      unctx: 3.0.0(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       untyped: 2.0.0
       verkit: 0.3.2
     transitivePeerDependencies:
@@ -3905,20 +3908,20 @@ snapshots:
       pkg-types: 2.3.1
       std-env: 4.2.0
 
-  '@nuxt/ui@4.11.0(466e6103c00c3c649b830ed1da2fe05e)':
+  '@nuxt/ui@4.11.1(466e6103c00c3c649b830ed1da2fe05e)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@iconify/vue': 5.0.1(vue@3.5.42(typescript@6.0.3))
-      '@nuxt/fonts': 0.14.0(esbuild@0.28.1)(magic-string@1.2.2)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
-      '@nuxt/icon': 2.5.1(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/fonts': 0.14.0(esbuild@0.28.1)(magic-string@1.2.3)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
+      '@nuxt/icon': 2.5.1(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       '@nuxt/schema': 4.5.2
-      '@nuxtjs/color-mode': 4.0.1(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxtjs/color-mode': 4.0.1(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       '@standard-schema/spec': 1.1.0
       '@tailwindcss/postcss': 4.3.3
       '@tailwindcss/vite': 4.3.3(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
       '@tanstack/vue-table': 8.21.3(vue@3.5.42(typescript@6.0.3))
-      '@tanstack/vue-virtual': 3.13.35(vue@3.5.42(typescript@6.0.3))
+      '@tanstack/vue-virtual': 3.13.37(vue@3.5.42(typescript@6.0.3))
       '@tiptap/core': 3.26.0(@tiptap/pm@3.26.0)
       '@tiptap/extension-bubble-menu': 3.26.0(@tiptap/core@3.26.0(@tiptap/pm@3.26.0))(@tiptap/pm@3.26.0)
       '@tiptap/extension-code': 3.26.0(@tiptap/core@3.26.0(@tiptap/pm@3.26.0))
@@ -3953,12 +3956,12 @@ snapshots:
       fuse.js: 7.5.0
       hookable: 6.1.1
       knitwork: 1.3.0
-      magic-string: 1.2.2
+      magic-string: 1.2.3
       mlly: 1.8.2
-      motion-v: 2.4.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3))
+      motion-v: 2.4.2(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3))
       ohash: 2.0.12
       pathe: 2.0.3
-      reka-ui: 2.10.3(vue@3.5.42(typescript@6.0.3))
+      reka-ui: 2.10.4(vue@3.5.42(typescript@6.0.3))
       scule: 1.3.0
       tailwind-merge: 3.6.0
       tailwind-variants: 3.2.2(tailwind-merge@3.6.0)(tailwindcss@4.3.3)
@@ -3967,9 +3970,9 @@ snapshots:
       typescript: 6.0.3
       ufo: 1.6.4
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
-      unplugin-auto-import: 21.1.0(@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
-      unplugin-vue-components: 32.1.0(@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))
-      vaul-vue: 0.4.1(reka-ui@2.10.3(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3))
+      unplugin-auto-import: 21.1.0(@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
+      unplugin-vue-components: 32.1.0(@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))
+      vaul-vue: 0.4.1(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3))
       vue-component-type-helpers: 3.3.11
     optionalDependencies:
       '@internationalized/date': 3.12.4
@@ -4026,9 +4029,9 @@ snapshots:
       - vue
       - webpack
 
-  '@nuxtjs/color-mode@4.0.1(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))':
+  '@nuxtjs/color-mode@4.0.1(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))':
     dependencies:
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       exsolve: 1.1.1
       pathe: 2.0.3
       pkg-types: 2.3.1
@@ -4246,6 +4249,8 @@ snapshots:
 
   '@tanstack/virtual-core@3.17.7': {}
 
+  '@tanstack/virtual-core@3.17.9': {}
+
   '@tanstack/vue-table@8.21.3(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       '@tanstack/table-core': 8.21.3
@@ -4254,6 +4259,11 @@ snapshots:
   '@tanstack/vue-virtual@3.13.35(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       '@tanstack/virtual-core': 3.17.7
+      vue: 3.5.42(typescript@6.0.3)
+
+  '@tanstack/vue-virtual@3.13.37(vue@3.5.42(typescript@6.0.3))':
+    dependencies:
+      '@tanstack/virtual-core': 3.17.9
       vue: 3.5.42(typescript@6.0.3)
 
   '@tiptap/core@3.26.0(@tiptap/pm@3.26.0)':
@@ -4612,7 +4622,7 @@ snapshots:
 
   '@unhead/bundler@3.4.0(@oxc-project/types@0.146.0)(esbuild@0.28.1)(lightningcss@1.33.0)(rolldown@1.2.5)(unhead@3.4.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))':
     dependencies:
-      magic-string: 1.2.2
+      magic-string: 1.2.3
       oxc-walker: 1.1.1(@oxc-project/types@0.146.0)(rolldown@1.2.5)
       unhead: 3.4.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
@@ -5727,7 +5737,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  magic-string@1.2.2:
+  magic-string@1.2.3:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
@@ -5778,7 +5788,7 @@ snapshots:
 
   motion-utils@13.0.0: {}
 
-  motion-v@2.4.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3)):
+  motion-v@2.4.2(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3)):
     dependencies:
       '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
       framer-motion: 13.1.1
@@ -5890,11 +5900,11 @@ snapshots:
 
   picomatch@4.0.5: {}
 
-  pinia-plugin-persistedstate@4.7.1(@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))):
+  pinia-plugin-persistedstate@4.7.1(@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))):
     dependencies:
       defu: 6.1.7
     optionalDependencies:
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       pinia: 4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
 
   pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)):
@@ -6039,22 +6049,6 @@ snapshots:
   readdirp@5.0.0: {}
 
   regexp-tree@0.1.27: {}
-
-  reka-ui@2.10.3(vue@3.5.42(typescript@6.0.3)):
-    dependencies:
-      '@floating-ui/dom': 1.8.0
-      '@floating-ui/vue': 1.1.11(vue@3.5.42(typescript@6.0.3))
-      '@internationalized/date': 3.12.4
-      '@internationalized/number': 3.6.7
-      '@tanstack/vue-virtual': 3.13.35(vue@3.5.42(typescript@6.0.3))
-      '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
-      '@vueuse/shared': 14.4.0(vue@3.5.42(typescript@6.0.3))
-      aria-hidden: 1.2.6
-      defu: 6.1.7
-      ohash: 2.0.12
-      vue: 3.5.42(typescript@6.0.3)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
 
   reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)):
     dependencies:
@@ -6314,9 +6308,9 @@ snapshots:
 
   uncrypto@0.1.3: {}
 
-  unctx@3.0.0(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))):
+  unctx@3.0.0(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))):
     optionalDependencies:
-      magic-string: 1.2.2
+      magic-string: 1.2.3
       rolldown: 1.2.5
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
 
@@ -6350,7 +6344,7 @@ snapshots:
       escape-string-regexp: 5.0.0
       estree-walker: 3.0.3
       local-pkg: 1.2.1
-      magic-string: 1.2.2
+      magic-string: 1.2.3
       mlly: 1.8.2
       pathe: 2.0.3
       picomatch: 4.0.5
@@ -6372,16 +6366,16 @@ snapshots:
       - vite
       - webpack
 
-  unplugin-auto-import@21.1.0(@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)):
+  unplugin-auto-import@21.1.0(@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(@vueuse/core@14.4.0(vue@3.5.42(typescript@6.0.3)))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)):
     dependencies:
       local-pkg: 1.2.1
-      magic-string: 1.2.2
+      magic-string: 1.2.3
       picomatch: 4.0.5
       unimport: 6.4.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))
       unplugin-utils: 0.3.2
     optionalDependencies:
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
       '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
     transitivePeerDependencies:
       - '@farmfe/core'
@@ -6410,7 +6404,7 @@ snapshots:
       pathe: 2.0.3
       picomatch: 4.0.5
 
-  unplugin-vue-components@32.1.0(@nuxt/kit@4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3)):
+  unplugin-vue-components@32.1.0(@nuxt/kit@4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))))(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3)):
     dependencies:
       chokidar: 5.0.0
       local-pkg: 1.2.1
@@ -6423,7 +6417,7 @@ snapshots:
       unplugin-utils: 0.3.2
       vue: 3.5.42(typescript@6.0.3)
     optionalDependencies:
-      '@nuxt/kit': 4.5.2(magic-string@1.2.2)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
+      '@nuxt/kit': 4.5.2(magic-string@1.2.3)(rolldown@1.2.5)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.5)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(yaml@2.9.0)))
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rspack/core'
@@ -6479,10 +6473,10 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vaul-vue@0.4.1(reka-ui@2.10.3(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3)):
+  vaul-vue@0.4.1(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3)):
     dependencies:
       '@vueuse/core': 10.11.1(vue@3.5.42(typescript@6.0.3))
-      reka-ui: 2.10.3(vue@3.5.42(typescript@6.0.3))
+      reka-ui: 2.10.4(vue@3.5.42(typescript@6.0.3))
       vue: 3.5.42(typescript@6.0.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
