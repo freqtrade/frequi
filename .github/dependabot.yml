@@ -23,9 +23,15 @@ updates:
   #     - "vscode/devcontainers/typescript-node"
   schedule:
     interval: "cron"
-    # Daily at 2 AM
-    cronjob: "0 2 * * *"
+    # Thursday at 2 AM
+    cronjob: "0 2 * * 4"
   open-pull-requests-limit: 10
+  # Group all directories into a single PR (otherwise dependabot opens one PR
+  # per directory, e.g. nginx in "/" and "/docker/" separately).
+  groups:
+    docker-images:
+      patterns:
+        - "*"
 
 - package-ecosystem: devcontainers
   directory: "/"
@@ -33,8 +39,8 @@ updates:
     default-days: 7
   schedule:
     interval: "cron"
-    # Daily at 2 AM
-    cronjob: "0 2 * * *"
+    # Thursday at 2 AM
+    cronjob: "0 2 * * 4"
   open-pull-requests-limit: 10
 
 
