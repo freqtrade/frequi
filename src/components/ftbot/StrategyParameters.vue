@@ -126,6 +126,18 @@ function resetParameters(): void {
   );
 }
 
+function resetSpaceParameters(space: string): void {
+  const spaceDefaults = Object.fromEntries(
+    props.strategy.params
+      .filter((param) => param.space === space)
+      .map((param) => [param.name, normalizeParameterValue(param)]),
+  );
+  parameters.value = {
+    ...parameters.value,
+    ...spaceDefaults,
+  };
+}
+
 function resetParameter(param: AllStrategyParameter): void {
   setParameterValue(param.name, normalizeParameterValue(param));
 }
@@ -141,11 +153,13 @@ function resetParameter(param: AllStrategyParameter): void {
         <UButton
           v-if="editable"
           variant="outline"
+          color="neutral"
+          size="sm"
           class="mb-1"
-          @click="resetParameters"
+          @click="resetSpaceParameters(space)"
           icon="mdi:restore"
-          title="Reset modified parameters"
-          label="Reset space parameters"
+          title="Reset parameters of this space to their default values"
+          label="Reset space"
         />
       </div>
       <div
@@ -197,6 +211,15 @@ function resetParameter(param: AllStrategyParameter): void {
           />
         </template>
       </div>
+    </div>
+    <div v-if="editable" class="flex justify-end mb-2">
+      <UButton
+        variant="outline"
+        @click="resetParameters"
+        icon="mdi:restore"
+        title="Reset all parameters to their default values"
+        label="Reset all"
+      />
     </div>
   </div>
   <div v-else class="p-4">
