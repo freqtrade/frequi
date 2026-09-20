@@ -85,6 +85,7 @@ const selectedStrategyDetails = ref<StrategyResult>();
         title="Open to modify strategy parameters"
         size="md"
         v-if="selectedStrategyDetails && selectedStrategyDetails?.params.length > 0"
+        :unmount-on-hide="false"
       >
         <StrategyParameters
           v-if="selectedStrategyDetails"

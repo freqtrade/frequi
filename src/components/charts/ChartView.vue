@@ -132,7 +132,7 @@ watch(
 <template>
   <div class="flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
     <div v-if="botStore.activeBot.isWebserverMode" class="md:mx-3 mt-2 px-1">
-      <BaseCollapsible size="md" open title="Chart Settings">
+      <BaseCollapsible size="md" open title="Chart Settings" :unmount-on-hide="false">
         <template #title>
           <span class="text-lg font-bold">Chart Settings</span>
           <InfoBox
