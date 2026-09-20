@@ -35,6 +35,18 @@ export interface PairHistoryPayload extends ExchangeSelectPayload {
   strategy_params?: StrategyParameterInputs[];
 }
 
+export interface BacktestPairHistoryPayload {
+  /** Filename (without extension) of the backtest result */
+  filename: string;
+  strategy: string;
+  pair: string;
+  /** Timeframe of the backtest result - used for local caching only */
+  timeframe: string;
+  /** Defaults to the timerange the backtest ran on */
+  timerange?: string;
+  columns?: string[];
+}
+
 export interface _MarkArea {
   start?: string;
   end?: string;

@@ -9,8 +9,16 @@ const props = defineProps<{
   backtestResult: StrategyBacktestResult;
 }>();
 const botStore = useBotStore();
+const plotStore = usePlotConfigStore();
 const isBarVisible = ref({ right: true, left: true });
 const sliderPosition = ref<ChartSliderPosition>();
+
+const btMetadata = computed(() => botStore.activeBot.selectedBacktestMetadata);
+/** Results loaded from disk can be analyzed with the strategy stored in the result */
+const canUseBacktestStrategy = computed(
+  () => botStore.activeBot.botFeatures.backtestPairHistory && !!btMetadata.value?.filename,
+);
+const useBacktestStrategy = ref(true);
 
 function navigateChartToTrade(trade: Trade) {
   sliderPosition.value = {
@@ -20,6 +28,18 @@ function navigateChartToTrade(trade: Trade) {
 }
 
 function refreshOHLCV(pair: string, columns: string[]) {
+  const filename = btMetadata.value?.filename;
+  if (useBacktestStrategy.value && canUseBacktestStrategy.value && filename) {
+    botStore.activeBot.getBacktestPairHistory({
+      filename,
+      strategy: btMetadata.value?.strategyName ?? props.strategy,
+      pair: pair,
+      timeframe: props.timeframe,
+      timerange: props.timerange || undefined,
+      columns: columns,
+    });
+    return;
+  }
   botStore.activeBot.getPairHistory({
     pair: pair,
     timeframe: props.timeframe,
@@ -31,6 +51,12 @@ function refreshOHLCV(pair: string, columns: string[]) {
     trading_mode: props.backtestResult.trading_mode,
   });
 }
+watch(useBacktestStrategy, () => {
+  for (const pair of botStore.activeBot.plotMultiPairs) {
+    refreshOHLCV(pair, plotStore.usedColumns);
+  }
+});
+
 onMounted(() => {
   if (!botStore.activeBot.selectedPair && props.backtestResult.pairlist.length > 0) {
     const [firstPair] = props.backtestResult.pairlist;
@@ -54,10 +80,16 @@ onMounted(() => {
           @click="isBarVisible.left = !isBarVisible.left"
         />
       </div>
-      <span class="grow">
-        Graph will always show the latest values for the selected strategy. <br />
-        Timerange: {{ timerange }} - {{ strategy }}
-      </span>
+      <div class="grow flex flex-col items-center">
+        <span v-if="useBacktestStrategy && canUseBacktestStrategy">
+          Graph uses the strategy and parameters stored in the backtest result.
+        </span>
+        <span v-else>Graph will always show the latest values for the selected strategy.</span>
+        <span>Timerange: {{ timerange }} - {{ strategy }}</span>
+      </div>
+      <BaseCheckbox v-if="canUseBacktestStrategy" v-model="useBacktestStrategy" class="me-2">
+        <span class="text-nowrap">Use backtest strategy</span>
+      </BaseCheckbox>
       <div class="text-end">
         <UButton
           aria-label="Close"
