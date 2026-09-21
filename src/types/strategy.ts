@@ -39,22 +39,25 @@ export interface DecimalParameter extends BaseParameter {
   high: number;
 }
 
+/** Categorical options - strings, numbers and booleans are common. */
+export type StrategyCategoricalValue = string | number | boolean;
+
 export interface CategoricalParameter extends BaseParameter {
   param_type: ParameterType.CategoricalParameter;
-  value: string;
-  opt_range: string[];
+  value: StrategyCategoricalValue;
+  opt_range: StrategyCategoricalValue[];
 }
 
 export interface BooleanParameter extends BaseParameter {
   param_type: ParameterType.BooleanParameter;
-  value: string;
+  value: boolean | null;
   opt_range: boolean[];
 }
 
 export type AllStrategyParameter =
   IntParameter | RealParameter | DecimalParameter | CategoricalParameter | BooleanParameter;
 
-export type StrategyParameterValue = AllStrategyParameter['value'];
+export type StrategyParameterValue = Exclude<AllStrategyParameter['value'], null>;
 
 export type StrategyParameterInputs = Pick<
   AllStrategyParameter,

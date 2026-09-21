@@ -6,11 +6,11 @@ import type {
   DecimalParameter,
   IntParameter,
   RealParameter,
+  StrategyCategoricalValue,
+  StrategyParameterValue,
   StrategyResult,
 } from '@/types';
 import { ParameterType } from '@/types';
-
-type StrategyParameterValue = boolean | number | string;
 
 const props = withDefaults(
   defineProps<{
@@ -28,7 +28,8 @@ const parameters = defineModel<Record<string, StrategyParameterValue>>('paramete
 
 function normalizeParameterValue(param: AllStrategyParameter): StrategyParameterValue {
   if (param.param_type === ParameterType.BooleanParameter) {
-    return typeof param.value === 'boolean' ? param.value : param.value === 'true';
+    // A null default (unset) is treated as false, as the switch needs a concrete value.
+    return param.value ?? false;
   }
   return param.value;
 }
@@ -94,9 +95,8 @@ function getNumericValue(name: string): number | null {
   return typeof value === 'number' ? value : null;
 }
 
-function getStringValue(name: string): string | undefined {
-  const value = parameters.value[name];
-  return typeof value === 'string' ? value : undefined;
+function getCategoricalValue(name: string): StrategyCategoricalValue | undefined {
+  return parameters.value[name];
 }
 
 function getBooleanValue(name: string): boolean {
@@ -189,7 +189,7 @@ function resetParameter(param: AllStrategyParameter): void {
             <USelect
               v-else-if="isCategoricalParameter(param)"
               :id="`strategy-param-${param.name}`"
-              :model-value="getStringValue(param.name)"
+              :model-value="getCategoricalValue(param.name)"
               :items="param.opt_range"
               class="w-44"
               @update:model-value="(value) => setParameterValue(param.name, value)"
