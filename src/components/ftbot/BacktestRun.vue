@@ -42,25 +42,14 @@ function clickBacktest() {
       btPayload.freqai = { identifier: btStore.freqAI.identifier };
     }
   }
-  if (
-    botStore.activeBot.botFeatures.strategyParametersModify &&
-    strategyParams.value &&
-    Object.keys(strategyParams.value).length > 0
-  ) {
-    btPayload.strategy_params = Object.entries(strategyParams.value).map(([name, value]) => {
-      const param = selectedStrategyDetails.value?.params.find((strategyParam) => {
-        return strategyParam.name === name;
-      });
-      if (!param) {
-        throw new Error(`Parameter ${name} not found in strategy parameters`);
-      }
-      return {
-        name,
-        param_type: param.param_type,
-        space: param.space,
-        value,
-      };
-    });
+  if (botStore.activeBot.botFeatures.strategyParametersModify) {
+    const strategyParamsPayload = buildStrategyParamsPayload(
+      selectedStrategyDetails.value,
+      strategyParams.value,
+    );
+    if (strategyParamsPayload) {
+      btPayload.strategy_params = strategyParamsPayload;
+    }
   }
 
   botStore.activeBot.startBacktest(btPayload);
