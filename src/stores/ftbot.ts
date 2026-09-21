@@ -349,17 +349,30 @@ export function createBotSubStore(botId: string, botName: string) {
     const history = ref<PairHistoryLocal>({});
     const historyStatus = shallowRef(LoadingStatus.not_loaded);
 
+    /**
+     * Apply the "Only request necessary columns" setting.
+     * Dropping `columns` makes the backend return the full dataframe.
+     */
+    function _applyColumnFilter<T extends { columns?: string[] }>(payload: T): T {
+      const settingsStore = useSettingsStore();
+      if (settingsStore.useReducedPairCalls) {
+        return payload;
+      }
+      const withoutColumns = { ...payload };
+      delete withoutColumns.columns;
+      return withoutColumns;
+    }
+
     async function getPairCandles(payload: PairCandlePayload) {
       if (payload.pair && payload.timeframe) {
         candleDataStatus.value = LoadingStatus.loading;
         try {
           let result: PairHistory | null = null;
-          const settingsStore = useSettingsStore();
-          if (botFeatures.value.reducedPairCalls && settingsStore.useReducedPairCalls) {
-            // Modern approach, allowing filtering of columns
+          if (botFeatures.value.reducedPairCalls) {
+            // Modern endpoint - preferred whenever the bot supports it.
             const data = await api<PairHistory>('/pair_candles', {
               method: 'POST',
-              body: payload,
+              body: _applyColumnFilter(payload),
             });
             result = data;
           } else {
@@ -434,11 +447,14 @@ export function createBotSubStore(botId: string, botName: string) {
 
     async function getPairHistory(payload: PairHistoryPayload) {
       if (payload.pair && payload.timeframe) {
-        const settingsStore = useSettingsStore();
         return _loadPairHistory(payload, (timeout) =>
-          botFeatures.value.reducedPairCalls && settingsStore.useReducedPairCalls
-            ? // Modern approach, allowing filtering of columns
-              api<PairHistory>('/pair_history', { method: 'POST', body: payload, timeout })
+          botFeatures.value.reducedPairCalls
+            ? // Modern endpoint - preferred whenever the bot supports it.
+              api<PairHistory>('/pair_history', {
+                method: 'POST',
+                body: _applyColumnFilter(payload),
+                timeout,
+              })
             : api<PairHistory>('/pair_history', { query: { ...payload }, timeout }),
         );
       }
