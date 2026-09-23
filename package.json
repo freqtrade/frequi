@@ -44,7 +44,7 @@
     "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tsconfig/node22": "^22.0.6",
-    "@types/node": "^26.5.0",
+    "@types/node": "^26.6.1",
     "@types/sortablejs": "^1.15.9",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/compiler-sfc": "3.5.42",
