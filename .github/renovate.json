@@ -11,5 +11,14 @@
     "schedule": [
       "* 0-5 * * 4"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Breaking changes without a major release",
+      "matchPackageNames": [
+        "@noction/vue-draggable-grid"
+      ],
+      "enabled": false
+    }
+  ]
 }
