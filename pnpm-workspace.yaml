@@ -1,4 +1,5 @@
 minimumReleaseAge: 10080
+# 7 days
 minimumReleaseAgeExclude:
   - "@nuxt/ui"
   - form-data@4.0.6
