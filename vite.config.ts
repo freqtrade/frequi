@@ -85,6 +85,29 @@ export default defineConfig({
       '@': resolve(import.meta.dirname, 'src'),
     },
   },
+  optimizeDeps: {
+    // Avoid optimized dependencies changed. reloading reload cycles
+    include: [
+      '@internationalized/date',
+      '@tanstack/vue-table',
+      '@vueuse/integrations/useSortable',
+      'date-fns',
+      'date-fns-tz',
+      'deepmerge',
+      'echarts',
+      'echarts/charts',
+      'echarts/components',
+      'echarts/core',
+      'echarts/features',
+      'echarts/renderers',
+      'favico.js',
+      'humanize-duration',
+      'ofetch',
+      'reka-ui',
+      'vue-echarts',
+      'vue-router/experimental',
+    ],
+  },
   build: {
     chunkSizeWarningLimit: 700, // Default is 500
     sourcemap: true,
