@@ -35,7 +35,7 @@
     "reka-ui": "^2.10.5",
     "sortablejs": "^1.15.7",
     "vue": "^3.5.43",
-    "vue-echarts": "^8.3.0",
+    "vue-echarts": "^8.3.1",
     "vue-router": "^5.3.1"
   },
   "devDependencies": {
@@ -65,5 +65,5 @@
     "vitest": "^5.0.1",
     "vue-tsc": "^3.3.11"
   },
-  "packageManager": "pnpm@12.7.0+sha512.9c56477e360068d6e9dca6a92efb4e46b3dc5a52fcebf3d84d78b9736c0ded589a561621a52f68219a7a39facc63cdc079c3226ef9c9d5f02b79f74e69a807b6"
+  "packageManager": "pnpm@12.8.2+sha512.a5941679663d952c5f0ecc38ba98af98b4dc01b95780354f6894f2f873973cef2f7e2989d7db3ee5393938ae21f62fe06bcdf685d475ddad829a62095d2b8b11"
 }
