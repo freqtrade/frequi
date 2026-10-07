@@ -1,4 +1,3 @@
-# 7 days
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - "@nuxt/ui"
@@ -18,5 +17,5 @@ overrides:
   "form-data@4": "^4.0.6"
   "esbuild@0": "^0.28.1"
   "brace-expansion@2": "^2.1.2"
-  "nanoid@3": "^3.3.18"
+  "nanoid@3": "^6.0.1"
   "postcss@8": "^8.4.25"
