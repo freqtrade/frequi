@@ -1,3 +1,4 @@
+/// <reference types="unplugin-icons/types/vue" />
 /* Provide Type for Vite's import.meta.env structure */
 interface ImportMetaEnv extends Readonly<Record<string, string>> {
   readonly BASE_URL: string;

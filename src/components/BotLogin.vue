@@ -145,7 +145,11 @@ function handleOk(evt) {
 
 function reset() {
   resetLogin();
-  console.log('reset ', props.existingAuth);
+  if (!props.existingAuth) {
+    if (typeof route.query.account === 'string') auth.value.botName = route.query.account;
+    if (typeof route.query.api === 'string' && /^https?:\/\//.test(route.query.api))
+      auth.value.url = route.query.api;
+  }
   if (props.existingAuth) {
     botEdit.value = true;
     auth.value.botName = props.existingAuth.botName;

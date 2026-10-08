@@ -4,11 +4,11 @@ import { defaultMocks } from './helpers';
 test.describe('Login', () => {
   test('Is not logged in', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('button', { hasText: 'Login' })).toBeInViewport();
-
-    await page.locator('li', { hasText: 'No bot selected' });
-    await page.locator('button:has-text("Login")').click();
-    await page.locator('.modal-title:has-text("Login to your bot")');
+    await expect(page.getByRole('heading', { name: 'agent-commons', exact: false })).toBeVisible({
+      timeout: 20000,
+    });
+    await page.getByRole('link', { name: 'Connect your first strategy' }).click();
+    await expect(page).toHaveURL(/\/login$/);
     // Test prefilled URL
     await expect(page.locator('input[id=url-input]').inputValue()).resolves.toBe(
       'http://localhost:3000',
@@ -61,14 +61,11 @@ test.describe('Login', () => {
     await expect(loginButton).toContainText('Submit');
     await Promise.all([loginButton.click(), page.waitForResponse('**/api/v1/token/login')]);
 
-    await expect(page.getByText('TestBot', { exact: true })).toBeVisible();
-    await expect(page.locator('button', { hasText: 'Add new Bot' })).toBeVisible();
-    await expect(page.locator('button', { hasText: 'Login' })).not.toBeVisible();
-    // Test logout
-    await page.getByRole('button', { name: 'FT' }).click();
-    await page.getByRole('menuitem', { name: 'Logout' }).click();
+    await page.getByRole('button', { name: /TestBot/ }).click();
+    await expect(page.getByRole('heading', { name: 'TestBot', level: 1 })).toBeVisible();
+    await page.getByRole('button', { name: 'Disconnect account' }).click();
     // Assert we're logged out again
-    await expect(page.locator('button', { hasText: 'Login' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Connect your first strategy' })).toBeVisible();
   });
 
   test('Test Login failed - wrong api url', async ({ page }) => {
