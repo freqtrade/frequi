@@ -19,7 +19,7 @@
   "dependencies": {
     "@internationalized/date": "^3.12.4",
     "@noction/vue-draggable-grid": "1.9.16",
-    "@nuxt/ui": "^4.11.2",
+    "@nuxt/ui": "^4.11.3",
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^15.0.0",
     "@vueuse/integrations": "^15.0.0",
@@ -32,7 +32,7 @@
     "ofetch": "^1.5.1",
     "pinia": "4.0.3",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "reka-ui": "^2.10.5",
+    "reka-ui": "^2.11.0",
     "sortablejs": "^1.15.7",
     "vue": "^3.5.43",
     "vue-echarts": "^8.3.1",
@@ -65,5 +65,5 @@
     "vitest": "^5.0.2",
     "vue-tsc": "^3.3.11"
   },
-  "packageManager": "pnpm@12.8.2+sha512.a5941679663d952c5f0ecc38ba98af98b4dc01b95780354f6894f2f873973cef2f7e2989d7db3ee5393938ae21f62fe06bcdf685d475ddad829a62095d2b8b11"
+  "packageManager": "pnpm@12.10.1+sha512.ba40a37eb1a370d60fea8c4cf1d364c13bcccef518e98ad2bcee954f539d38da37458e58261a3fa55e06523450ea0ffff9f497b135be41f2c15c1642bacace6c"
 }
