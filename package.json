@@ -44,7 +44,7 @@
     "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tsconfig/node24": "^24.0.5",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.4",
     "@types/sortablejs": "^1.15.9",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/compiler-sfc": "3.5.43",
@@ -52,18 +52,18 @@
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/test-utils": "^2.5.1",
     "@vue/tsconfig": "^0.9.1",
-    "eslint": "^10.11.0",
+    "eslint": "^10.12.0",
     "eslint-plugin-vue": "^10.11.1",
-    "globals": "^17.12.0",
+    "globals": "^17.13.0",
     "happy-dom": "^20.14.5",
     "prettier": "^3.9.9",
     "sass-embedded": "^1.105.1",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
     "unplugin-icons": "^24.0.0",
-    "vite": "^8.3.1",
-    "vitest": "^5.0.2",
-    "vue-tsc": "^3.3.11"
+    "vite": "^8.3.3",
+    "vitest": "^5.0.3",
+    "vue-tsc": "^3.3.12"
   },
   "packageManager": "pnpm@12.10.1+sha512.ba40a37eb1a370d60fea8c4cf1d364c13bcccef518e98ad2bcee954f539d38da37458e58261a3fa55e06523450ea0ffff9f497b135be41f2c15c1642bacace6c"
 }

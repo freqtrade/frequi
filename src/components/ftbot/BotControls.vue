@@ -116,14 +116,5 @@ async function handleForceEntry() {
       icon="mdi:plus-box-multiple-outline"
       @click="handleForceEntry"
     />
-    <UButton
-      v-if="botStore.activeBot.isWebserverMode && false"
-      size="xl"
-      color="neutral"
-      :disabled="botStore.activeBot.isTrading"
-      title="Start Trading mode"
-      icon="mdi:play"
-      @click="botStore.activeBot.startTrade()"
-    />
   </div>
 </template>
