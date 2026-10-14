@@ -1020,15 +1020,6 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
-    async function startTrade() {
-      try {
-        const res = await api('/start_trade', { method: 'POST', body: {} });
-        return Promise.resolve(res);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    }
-
     async function forceexit(payload: ForceExitPayload) {
       try {
         const res = await api<StatusResponse>('/forcesell', { method: 'POST', body: payload });
@@ -1581,7 +1572,6 @@ export function createBotSubStore(botId: string, botName: string) {
       cancelOpenOrder,
       reloadTrade,
       getCustomDataForTrade,
-      startTrade,
       forceexit,
       forceentry,
       addBlacklist,
