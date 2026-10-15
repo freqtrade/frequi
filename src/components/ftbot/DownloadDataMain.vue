@@ -214,9 +214,20 @@ async function startDownload() {
               class="mb-2 border dark:border-neutral-700 border-neutral-300 rounded-md p-2 text-start"
             >
               <UCollapsible v-model:open="exchange.customExchange">
-                <BaseCheckbox v-model="exchange.customExchange" class="mb-2">
-                  Custom Exchange
-                </BaseCheckbox>
+                <div class="flex flex-row gap-5 items-center mb-2">
+                  <BaseCheckbox v-model="exchange.customExchange"> Custom Exchange </BaseCheckbox>
+                  <span
+                    v-show="!exchange.customExchange"
+                    class="text-sm"
+                    title="Current exchange from the configuration"
+                  >
+                    Current Exchange:
+                    <span class="font-bold">
+                      {{ botStore.activeBot.botState.exchange }}
+                      {{ botStore.activeBot.botState.trading_mode }}
+                    </span>
+                  </span>
+                </div>
                 <template #content>
                   <ExchangeSelect
                     v-show="exchange.customExchange"

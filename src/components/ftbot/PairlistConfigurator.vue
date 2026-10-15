@@ -115,9 +115,22 @@ if (pairlistStore.whitelist.length > 0) {
         </div>
 
         <div class="mb-2 border rounded-sm border-neutral-500 p-2 text-start">
-          <BaseCheckbox v-model="pairlistStore.customExchange" class="mb-2">
-            Custom Exchange
-          </BaseCheckbox>
+          <div class="flex gap-5">
+            <BaseCheckbox v-model="pairlistStore.customExchange" class="mb-2">
+              Custom Exchange
+            </BaseCheckbox>
+            <span
+              v-show="!pairlistStore.customExchange"
+              class="text-sm"
+              title="Current exchange from the configuration"
+            >
+              Current Exchange:
+              <span class="font-bold">
+                {{ botStore.activeBot.botState.exchange }}
+                {{ botStore.activeBot.botState.trading_mode }}
+              </span>
+            </span>
+          </div>
           <Transition name="fade">
             <ExchangeSelect
               v-if="pairlistStore.customExchange"

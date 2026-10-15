@@ -120,10 +120,16 @@ watch(
           <UCollapsible v-model:open="exchange.customExchange">
             <div class="flex flex-row gap-5 items-center">
               <BaseCheckbox v-model="exchange.customExchange">Custom Exchange</BaseCheckbox>
-              <span v-show="!exchange.customExchange" class="text-sm">
+              <span
+                v-show="!exchange.customExchange"
+                class="text-sm"
+                title="Current exchange from the configuration"
+              >
                 Current Exchange:
-                {{ botStore.activeBot.botState.exchange }}
-                {{ botStore.activeBot.botState.trading_mode }}
+                <span class="font-bold">
+                  {{ botStore.activeBot.botState.exchange }}
+                  {{ botStore.activeBot.botState.trading_mode }}
+                </span>
               </span>
             </div>
             <template #content>
