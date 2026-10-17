@@ -51,6 +51,10 @@ function getNumberStep(param: AllStrategyParameter): number | undefined {
   if (param.param_type === ParameterType.DecimalParameter) {
     return 1 / 10 ** param.decimals;
   }
+  if (param.param_type === ParameterType.RealParameter) {
+    // Step 1% of the range, limited to 8 decimals
+    return 0.01;
+  }
   return undefined;
 }
 
@@ -60,6 +64,9 @@ function getNumberFormatOptions(param: AllStrategyParameter): Intl.NumberFormatO
   }
   if (param.param_type === ParameterType.DecimalParameter) {
     return { maximumFractionDigits: param.decimals };
+  }
+  if (param.param_type === ParameterType.RealParameter) {
+    return { maximumFractionDigits: 8 };
   }
   return undefined;
 }
