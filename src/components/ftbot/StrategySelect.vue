@@ -32,11 +32,14 @@ watch(
 
     try {
       const strategyResult = await botStore.activeBot.getStrategy(newStrategy);
-      if (strategyResult.strategy === newStrategy) {
+      // ensure the response corresponds to the currently selected strategy
+      if (strategy.value === newStrategy && strategyResult.strategy === newStrategy) {
         strategyDetails.value = strategyResult;
       }
     } catch {
-      strategyDetails.value = undefined;
+      if (strategy.value === newStrategy) {
+        strategyDetails.value = undefined;
+      }
     }
   },
   { immediate: true },
