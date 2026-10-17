@@ -57,6 +57,9 @@ function clickBacktest() {
 
 const strategyParams = ref<Record<string, StrategyParameterValue>>({});
 const selectedStrategyDetails = ref<StrategyResult>();
+const strategyParamsModified = computed(() =>
+  hasModifiedStrategyParams(selectedStrategyDetails.value, strategyParams.value),
+);
 </script>
 
 <template>
@@ -71,11 +74,14 @@ const selectedStrategyDetails = ref<StrategyResult>();
     <template v-if="botStore.activeBot.botFeatures.strategyParametersModify">
       <label>Strategy Parameters</label>
       <BaseCollapsible
-        title="Open to modify strategy parameters"
-        size="md"
         v-if="selectedStrategyDetails && selectedStrategyDetails?.params.length > 0"
+        size="md"
         :unmount-on-hide="false"
       >
+        <template #title>
+          Open to modify strategy parameters
+          <span v-if="strategyParamsModified" class="text-warning"> (modified) </span>
+        </template>
         <StrategyParameters
           v-if="selectedStrategyDetails"
           :strategy="selectedStrategyDetails"

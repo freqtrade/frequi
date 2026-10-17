@@ -39,7 +39,7 @@ defineOptions({
         trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200',
       }"
     >
-      <slot name="title">
+      <slot name="title" :open="open">
         {{ title }}
       </slot>
     </UButton>

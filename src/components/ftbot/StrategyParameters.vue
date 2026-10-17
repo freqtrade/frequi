@@ -26,14 +26,6 @@ const parameters = defineModel<Record<string, StrategyParameterValue>>('paramete
   default: () => ({}),
 });
 
-function normalizeParameterValue(param: AllStrategyParameter): StrategyParameterValue {
-  if (param.param_type === ParameterType.BooleanParameter) {
-    // A null default (unset) is treated as false, as the switch needs a concrete value.
-    return param.value ?? false;
-  }
-  return param.value;
-}
-
 watch(
   () => props.strategy.params,
   (nextParams) => {

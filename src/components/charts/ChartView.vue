@@ -50,6 +50,9 @@ onMounted(() => {
   }
 });
 const strategyParams = ref<Record<string, StrategyParameterValue>>({});
+const strategyParamsModified = computed(() =>
+  hasModifiedStrategyParams(selectedStrategyDetails.value, strategyParams.value),
+);
 
 function refreshOHLCV(pair: string, columns: string[]) {
   console.log('Refreshing OHLCV for pair:', pair, finalTimeframe.value, 'with columns:', columns);
@@ -190,11 +193,18 @@ watch(
             class="col-span-3 md:col-span-3"
           >
             <BaseCollapsible
-              title="Open to modify strategy parameters"
-              size="md"
               v-if="selectedStrategyDetails?.params.length > 0"
+              size="md"
               :unmount-on-hide="false"
             >
+              <template #title>
+                Open to modify strategy parameters
+                <span v-if="strategyParamsModified" class="text-warning"> (modified) </span>
+              </template>
+              <p class="flex items-center gap-1 mx-3 mt-2 text-sm text-muted">
+                <UIcon name="i-mdi-information-outline" />
+                Explicitly reload the chart after changing parameters.
+              </p>
               <StrategyParameters
                 :strategy="selectedStrategyDetails"
                 class="m-3 overflow-y-auto max-h-96 pr-1"
