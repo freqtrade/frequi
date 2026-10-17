@@ -16,8 +16,8 @@ const selectedStrategyDetails = ref<StrategyResult>();
 const finalTimeframe = computed<string>(() => {
   return botStore.activeBot.isWebserverMode
     ? chartStore.selectedTimeframe ||
-        botStore.activeBot.strategy?.timeframe ||
         selectedStrategyDetails.value?.timeframe ||
+        botStore.activeBot.strategy?.timeframe ||
         ''
     : botStore.activeBot.timeframe;
 });
