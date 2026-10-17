@@ -124,7 +124,6 @@ watchDebounced(
       <UInputNumber
         v-model="scatterSymbolSize"
         :min="0"
-        show-buttons
         button-layout="horizontal"
         class="text-center w-full"
       />

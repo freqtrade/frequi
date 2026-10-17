@@ -9,7 +9,7 @@ const value = defineModel<boolean>();
 <template>
   <div>
     <div class="flex items-center">
-      <UCheckbox v-model="value" binary>
+      <UCheckbox v-model="value">
         <template #label><slot /></template>
         <template #description>
           <slot name="hint"></slot>

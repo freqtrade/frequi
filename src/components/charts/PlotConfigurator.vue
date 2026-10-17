@@ -397,7 +397,6 @@ const markAreaZIndex = computed({
       />
 
       <UButton
-        data-toggle="tooltip"
         :disabled="addNewIndicator"
         title="Save configuration"
         @click="savePlotConfig"

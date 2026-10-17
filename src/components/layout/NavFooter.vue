@@ -9,7 +9,6 @@ const botStore = useBotStore();
     <div class="flex gap-2 justify-between px-2">
       <UButton
         v-if="!botStore.canRunBacktest"
-        icon-pos="top"
         variant="link"
         active-class="underline"
         class="flex flex-col gap-1"
@@ -19,7 +18,6 @@ const botStore = useBotStore();
       />
       <UButton
         v-if="!botStore.canRunBacktest"
-        icon-pos="top"
         variant="link"
         active-class="underline"
         class="flex flex-col gap-1"
@@ -29,7 +27,6 @@ const botStore = useBotStore();
       />
       <UButton
         v-if="!botStore.canRunBacktest"
-        icon-pos="top"
         variant="link"
         class="flex flex-col gap-1"
         active-class="underline"
@@ -39,7 +36,6 @@ const botStore = useBotStore();
       />
       <UButton
         v-if="!botStore.canRunBacktest"
-        icon-pos="top"
         variant="link"
         active-class="underline"
         class="flex flex-col gap-1"
@@ -49,7 +45,6 @@ const botStore = useBotStore();
       />
       <UButton
         v-if="!botStore.canRunBacktest"
-        icon-pos="top"
         variant="link"
         class="flex flex-col gap-1"
         active-class="underline"

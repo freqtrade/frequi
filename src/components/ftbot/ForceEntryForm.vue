@@ -174,7 +174,6 @@ botStore.activeBot.getBalance();
         <UFormField label="Price [optional]">
           <UInputNumber
             v-model="price"
-            show-buttons
             :min="0"
             :stepSnapping="false"
             :format-options="{
@@ -193,7 +192,6 @@ botStore.activeBot.getBalance();
           <div class="space-y-2">
             <UInputNumber
               v-model="stakeAmount"
-              show-buttons
               :min="0"
               :stepSnapping="false"
               :step="['USDC', 'USDT'].includes(botStore.activeBot.stakeCurrency) ? 10 : 1"
@@ -243,7 +241,6 @@ botStore.activeBot.getBalance();
           <UInputNumber
             id="leverage-input"
             v-model="leverage"
-            show-buttons
             :min="1"
             :step="1"
             :max-fraction-digits="1"

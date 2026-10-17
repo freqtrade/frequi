@@ -150,7 +150,7 @@ async function startDownload() {
             <div class="flex flex-col gap-2">
               <div class="flex justify-between items-center">
                 <h4 class="text-start mb-0 font-bold text-lg">Time Selection</h4>
-                <BaseCheckbox v-model="timeSelection.useCustomTimerange" class="mb-0" switch>
+                <BaseCheckbox v-model="timeSelection.useCustomTimerange" class="mb-0">
                   Use custom timerange
                 </BaseCheckbox>
               </div>

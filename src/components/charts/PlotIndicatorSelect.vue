@@ -27,7 +27,6 @@ function abort() {
         :clearable="false"
         filter
         class="w-full"
-        auto-filter-focus
         @change="emit('indicatorSelected', model)"
       >
       </USelectMenu>
