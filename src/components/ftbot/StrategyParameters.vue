@@ -183,7 +183,7 @@ function resetParameter(param: AllStrategyParameter): void {
               :step="getNumberStep(param)"
               :step-snapping="param.param_type === ParameterType.IntParameter"
               :format-options="getNumberFormatOptions(param)"
-              @update:model-value="(value) => setParameterValue(param.name, value ?? param.low)"
+              @update:model-value="(value) => setParameterValue(param.name, value ?? param.value)"
             />
             <USelect
               v-else-if="isCategoricalParameter(param)"
