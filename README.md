@@ -8,7 +8,7 @@ Freqtrade UI build with [Vue.js](https://vuejs.org/) and [primevue](https://prim
 ## Run this project
 
 Using FreqUI, does require [freqtrade](https://github.com/freqtrade/freqtrade) to be setup and running.
-In newer versions (2021.2 and newer), freqUI is builtin to freqtrade, so manual setup of freqUI will no longer be necessary unless you want to modify freqUI.
+In newer versions (2021.2 and newer), freqUI is built into freqtrade, so manual setup of freqUI will no longer be necessary unless you want to modify freqUI.
 Instructions for this end-user setup can be found in the [freqtrade API documentation](https://www.freqtrade.io/en/stable/rest-api/).
 
 ### Running a standalone version of FreqUI
