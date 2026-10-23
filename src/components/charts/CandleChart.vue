@@ -399,7 +399,7 @@ function updateChart(initial = false) {
             valueFormatter: (value) => {
               if (Array.isArray(value)) {
                 if (value.length > 0 && value[0]) {
-                  // If tag column number get's too high, we get the full list as second argument (for no good reason)
+                  // If tag column number gets too high, we get the full list as second argument (for no good reason)
                   const tag = Array.isArray(value[1])
                     ? value[1][signal.colTooltip]?.toString()
                     : value[1]?.toString();

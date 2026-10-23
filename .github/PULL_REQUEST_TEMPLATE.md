@@ -21,6 +21,6 @@ Solve the issue: #___
 
 ## What's new
 
-*Explain in details what this PR solve or improve. You can include visuals.*
+*Explain in detail what this PR solves or improves. You can include visuals.*
 
 <!-- Please include visuals if this Pull Request changes how things look-->

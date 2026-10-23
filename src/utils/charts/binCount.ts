@@ -3,7 +3,7 @@ export function binData(data: number[], bins: number) {
   const maximum = Math.max(...data);
   const binSize = ((maximum - minimum) * 1.01) / bins;
   // console.log(`data ranges from ${minimum} to ${maximum}, binsize ${binSize}`);
-  // Count occurances an array with [bucketStart, count in this bucket]
+  // Count occurrences in an array with [bucketStart, count in this bucket]
   const baseBins = [...Array(bins).keys()].map((i) => [
     Math.round((minimum + i * binSize) * 1000) / 1000,
     0,

@@ -2,7 +2,7 @@ import type { PlotConfig } from '@/types';
 
 /**
  * Calculate diff over 2 dataset columns and adds it to the end of the dataset
- * modifies the incomming dataset array inplace!
+ * modifies the incoming dataset array in place!
  */
 export function calculateDiff(
   columns: string[],

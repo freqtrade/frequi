@@ -1084,7 +1084,7 @@ export function createBotSubStore(botId: string, botName: string) {
           return Promise.resolve(res);
         } catch (error) {
           if (isApiError(error)) {
-            showAlert(`Error occured entering: '${error.data?.error}'`, 'error');
+            showAlert(`Error occurred entering: '${error.data?.error}'`, 'error');
           }
           return Promise.reject(error);
         }
@@ -1118,7 +1118,7 @@ export function createBotSubStore(botId: string, botName: string) {
         } catch (error) {
           if (isApiError(error)) {
             showAlert(
-              `Error occured while adding pairs to Blacklist: '${error.data?.error}'`,
+              `Error occurred while adding pairs to Blacklist: '${error.data?.error}'`,
               'error',
             );
           }
@@ -1156,7 +1156,7 @@ export function createBotSubStore(botId: string, botName: string) {
         } catch (error) {
           if (isApiError(error)) {
             showAlert(
-              `Error occured while removing pairs from Blacklist: '${error.data?.error}'`,
+              `Error occurred while removing pairs from Blacklist: '${error.data?.error}'`,
               'error',
             );
           }

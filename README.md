@@ -3,12 +3,12 @@
 [![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://vscode.dev/github/freqtrade/frequi)
 [![FreqUI CI](https://github.com/freqtrade/frequi/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/freqtrade/frequi/actions/)
 
-Freqtrade UI build with [Vue.js](https://vuejs.org/) and [primevue](https://primevue.org/).
+Freqtrade UI built with [Vue.js](https://vuejs.org/) and [Nuxt UI](https://ui.nuxt.com/).
 
 ## Run this project
 
-Using FreqUI, does require [freqtrade](https://github.com/freqtrade/freqtrade) to be setup and running.
-In newer versions (2021.2 and newer), freqUI is builtin to freqtrade, so manual setup of freqUI will no longer be necessary unless you want to modify freqUI.
+Using FreqUI requires [freqtrade](https://github.com/freqtrade/freqtrade) to be set up and running.
+In newer versions (2021.2 and newer), freqUI is built into freqtrade, so manual setup of freqUI will no longer be necessary unless you want to modify freqUI.
 Instructions for this end-user setup can be found in the [freqtrade API documentation](https://www.freqtrade.io/en/stable/rest-api/).
 
 ### Running a standalone version of FreqUI

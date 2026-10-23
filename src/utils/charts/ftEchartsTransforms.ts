@@ -11,7 +11,7 @@ export const ftEchartsTransforms = {
    * ```
    */
   multiple: {
-    // the tranform code
+    // the transform code
     type: 'ft:multiple',
     transform: function (params) {
       const rawData = params.upstream.cloneRawData();
