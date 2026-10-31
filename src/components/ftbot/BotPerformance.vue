@@ -46,7 +46,7 @@ const performanceTable = computed<
     {
       key: 'profit_ratio',
       label: 'Profit %',
-      formatter: (v: number | null) => formatPercent(v, 2),
+      formatter: (v: unknown) => formatPercent(v as number | null, 2),
     },
     {
       key: 'profit_abs',
