@@ -43,7 +43,11 @@ const performanceTable = computed<
   };
   return [
     initialCol[selectedOption.value],
-    { key: 'profit', label: 'Profit %' },
+    {
+      key: 'profit_ratio',
+      label: 'Profit %',
+      formatter: (v: number | null) => formatPercent(v, 2),
+    },
     {
       key: 'profit_abs',
       label: `Profit ${botStore.activeBot.botState?.stake_currency}`,
