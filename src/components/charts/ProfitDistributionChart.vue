@@ -60,9 +60,15 @@ function binLabel(bin: ProfitBin, idx: number): string {
 
 const chartOptions = computed((): EChartsOption => {
   const total = profits.value.length;
+  const xMin = bins.value[0]?.start ?? 0;
+  const xMax = bins.value[bins.value.length - 1]?.end ?? 0;
   const markLines = [
-    { name: 'Avg. loss', value: avgLoss.value, color: colorStore.colorLoss },
-    { name: 'Avg. win', value: avgWin.value, color: colorStore.colorProfit },
+    { name: 'Avg. loss', value: avgLoss.value, color: colorStore.colorLoss, type: 'dashed' },
+    { name: 'Avg. win', value: avgWin.value, color: colorStore.colorProfit, type: 'dashed' },
+    // Break-even line - only when 0 is within the visible range
+    ...(xMin < 0 && xMax > 0
+      ? [{ name: 'Break-even', value: 0, color: '#9ca3af', type: 'solid' }]
+      : []),
   ].filter((l) => l.value !== undefined);
 
   return {
@@ -87,8 +93,8 @@ const chartOptions = computed((): EChartsOption => {
     },
     xAxis: {
       type: 'value',
-      min: bins.value[0]?.start,
-      max: bins.value[bins.value.length - 1]?.end,
+      min: xMin,
+      max: xMax,
       splitLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
@@ -132,7 +138,11 @@ const chartOptions = computed((): EChartsOption => {
           data: markLines.map((l) => ({
             name: l.name,
             xAxis: l.value,
-            lineStyle: { color: l.color, type: 'dashed', width: 1.5 },
+            lineStyle: {
+              color: l.color,
+              type: l.type as 'dashed' | 'solid',
+              width: l.type === 'solid' ? 1 : 1.5,
+            },
           })),
         },
       },
