@@ -5,30 +5,12 @@ import type { EChartsOption } from 'echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart } from 'echarts/charts';
-import {
-  DatasetComponent,
-  DataZoomComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
-} from 'echarts/components';
+import { MarkLineComponent, TitleComponent, TooltipComponent } from 'echarts/components';
 
 import type { ClosedTrade } from '@/types';
+import type { ProfitBin } from '@/utils/charts/binCount';
 
-use([
-  BarChart,
-
-  CanvasRenderer,
-
-  DatasetComponent,
-  DataZoomComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
-]);
-
-// Define Column labels here to avoid typos
-const CHART_PROFIT = 'Trade count';
+use([BarChart, CanvasRenderer, MarkLineComponent, TitleComponent, TooltipComponent]);
 
 const props = withDefaults(
   defineProps<{
@@ -40,9 +22,8 @@ const props = withDefaults(
   },
 );
 const settingsStore = useSettingsStore();
-// registerTransform(ecStat.transform.histogram);
-// console.log(profits);
-// const data = [[]];
+const colorStore = useColorStore();
+
 const binOptions = [
   { label: '10', value: 10 },
   { label: '15', value: 15 },
@@ -50,79 +31,113 @@ const binOptions = [
   { label: '25', value: 25 },
   { label: '50', value: 50 },
 ];
-const data = computed(() => {
-  const profits = props.trades
-    .filter((trade) => isDefined(trade.profit_ratio))
-    .map((trade) => trade.profit_ratio ?? 0);
 
-  return binData(profits, settingsStore.profitDistributionBins);
-});
+const profits = computed(() =>
+  props.trades
+    .filter((trade) => isDefined(trade.profit_ratio))
+    .map((trade) => trade.profit_ratio ?? 0),
+);
+
+const bins = computed(() => binData(profits.value, settingsStore.profitDistributionBins));
+
+function mean(values: number[]): number | undefined {
+  return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : undefined;
+}
+const avgWin = computed(() => mean(profits.value.filter((p) => p > 0)));
+const avgLoss = computed(() => mean(profits.value.filter((p) => p < 0)));
+
+function formatPct(value: number): string {
+  return `${Number((value * 100).toFixed(3))}%`;
+}
+
+function binLabel(bin: ProfitBin, idx: number): string {
+  const isFirst = idx === 0;
+  const isLast = idx === bins.value.length - 1;
+  if (bin.clipped && isFirst) return `< ${formatPct(bin.end)}`;
+  if (bin.clipped && isLast) return `≥ ${formatPct(bin.start)}`;
+  return `${formatPct(bin.start)} to ${formatPct(bin.end)}`;
+}
 
 const chartOptions = computed((): EChartsOption => {
-  const chartOptionsLoc: EChartsOption = {
+  const total = profits.value.length;
+  const markLines = [
+    { name: 'Avg. loss', value: avgLoss.value, color: colorStore.colorLoss },
+    { name: 'Avg. win', value: avgWin.value, color: colorStore.colorProfit },
+  ].filter((l) => l.value !== undefined);
+
+  return {
     title: {
       text: 'Profit distribution',
       left: 'center',
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    dataset: {
-      source: data.value,
-    },
     tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'line',
-        label: {
-          backgroundColor: '#6a7985',
-        },
+      trigger: 'item',
+      formatter: (params) => {
+        const p = Array.isArray(params) ? params[0]! : params;
+        if (p.componentType === 'markLine') {
+          return `${p.name}: <b>${formatPct(p.value as number)}</b>`;
+        }
+        const bin = bins.value[p.dataIndex];
+        if (!bin) return '';
+        const share = total > 0 ? ((bin.count / total) * 100).toFixed(1) : '0';
+        return `${binLabel(bin, p.dataIndex)}<br/><b>${bin.count}</b> trades (${share}%)`;
       },
-    },
-    legend: {
-      data: [CHART_PROFIT],
-      right: '5%',
-      top: 0,
-      selectedMode: false,
     },
     xAxis: {
-      type: 'category',
-      name: 'Profit %',
-      nameLocation: 'middle',
-      nameGap: 25,
-    },
-    yAxis: [
-      {
-        type: 'value',
-        name: CHART_PROFIT,
-        splitLine: {
-          show: false,
-        },
-        nameRotate: 90,
-        nameLocation: 'middle',
-        nameGap: 35,
-        position: 'left',
+      type: 'value',
+      min: bins.value[0]?.start,
+      max: bins.value[bins.value.length - 1]?.end,
+      splitLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: {
+        formatter: (value: number) => formatPct(value),
+        hideOverlap: true,
       },
-    ],
-    grid: {
-      ...echartsGridDefault,
-      bottom: 50,
     },
-
+    yAxis: {
+      type: 'value',
+      position: 'right',
+      minInterval: 1,
+      splitLine: {
+        lineStyle: { type: 'dashed', opacity: 0.3 },
+      },
+    },
+    grid: {
+      left: 15,
+      right: 45,
+      top: props.showTitle ? 45 : 40,
+      bottom: 30,
+    },
     series: [
       {
         type: 'bar',
-        name: CHART_PROFIT,
+        name: 'Trades',
         animation: true,
-        encode: {
-          x: 'x0',
-          y: 'y0',
+        barWidth: '75%',
+        data: bins.value.map((bin) => ({
+          value: [(bin.start + bin.end) / 2, bin.count],
+          itemStyle: {
+            color: bin.start >= 0 ? colorStore.colorProfit : colorStore.colorLoss,
+            // Outlier bins are de-emphasized, as they accumulate everything beyond the clipped range
+            opacity: bin.clipped ? 0.45 : 1,
+            borderRadius: [2, 2, 0, 0],
+          },
+        })),
+        markLine: {
+          silent: false,
+          symbol: 'none',
+          label: { show: false },
+          data: markLines.map((l) => ({
+            name: l.name,
+            xAxis: l.value,
+            lineStyle: { color: l.color, type: 'dashed', width: 1.5 },
+          })),
         },
-
-        // symbol: 'none',
       },
     ],
   };
-  return chartOptionsLoc;
 });
 </script>
 
