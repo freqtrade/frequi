@@ -58,6 +58,7 @@ onMounted(() => {
       <USelectMenu
         id="strategy-select"
         v-model="strategy"
+        :search-input="{ id: 'strategy-select-search' }"
         filter
         class="w-full"
         :items="botStore.activeBot.strategyList"
