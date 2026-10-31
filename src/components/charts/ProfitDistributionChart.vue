@@ -153,7 +153,7 @@ const chartOptions = computed((): EChartsOption => {
 
 <template>
   <div class="flex flex-col h-full relative">
-    <div class="grow mb-2">
+    <div class="grow">
       <ECharts v-if="trades" :option="chartOptions" autoresize :theme="settingsStore.chartTheme" />
     </div>
     <UFormField

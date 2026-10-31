@@ -75,6 +75,10 @@ const chartOptions = computed((): EChartsOption => {
       show: props.showTitle,
     },
     backgroundColor: 'rgba(0, 0, 0, 0)',
+    grid: {
+      top: props.showTitle ? 45 : 40,
+      bottom: 30,
+    },
     dataset: [
       {
         id: 'allTrades',
