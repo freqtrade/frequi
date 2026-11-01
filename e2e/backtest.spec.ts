@@ -29,8 +29,7 @@ test.describe('Backtesting', () => {
     await page.goto('/backtest');
 
     await expect(page.locator('a', { hasText: 'Backtest' })).toBeInViewport();
-    await expect(page.getByText('Run backtest')).toBeInViewport();
-    await expect(page.getByText('Strategy:', { exact: true })).toBeInViewport();
+    await expect(page.getByRole('heading', { name: 'New backtest' })).toBeInViewport();
     await expect(page.getByText('Use time')).toBeInViewport();
 
     const strategySelect = page.locator('#strategy-select');
@@ -41,13 +40,22 @@ test.describe('Backtesting', () => {
 
     const option = page.locator('[id="strategy-select"]');
     await expect(option).toBeAttached();
-    const analyzeButton = page.getByRole('tab', { name: 'Analyze result' });
-    await expect(analyzeButton).toBeDisabled();
+    const overviewTab = page.getByRole('tab', { name: 'Overview' });
+    await expect(overviewTab).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /Compare/ })).toBeDisabled();
 
     const startBacktestButton = page.getByRole('button', { name: 'Start Backtest' });
     await Promise.all([startBacktestButton.click(), page.waitForResponse('**/api/v1/backtest')]);
 
-    // All buttons are now enabled
-    await expect(analyzeButton).toBeEnabled();
+    // Result view is shown after the backtest finished
+    await expect(overviewTab).toBeVisible();
+    await expect(page.getByText('Max drawdown', { exact: true })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Trades' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Breakdowns' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Charts' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Pair chart' })).toBeVisible();
+
+    // Switch to trades view
+    await page.getByRole('tab', { name: 'Trades' }).click();
   });
 });
