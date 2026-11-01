@@ -1277,9 +1277,13 @@ export function createBotSubStore(botId: string, botName: string) {
         const stratKey =
           existingMetadata.run_id ??
           `${key}_${strat.total_trades}_${strat.profit_total.toFixed(3)}`;
+        // Backtest trades don't contain trading_mode - inherit it from the strategy result
+        const trades = strat.trading_mode
+          ? strat.trades.map((t) => ({ ...t, trading_mode: t.trading_mode ?? strat.trading_mode }))
+          : strat.trades;
         const btResult: BacktestResultInMemory = {
           metadata,
-          strategy: strat,
+          strategy: { ...strat, trades },
         };
         backtestHistory.value = { ...backtestHistory.value, ...{ [stratKey]: btResult } };
         selectedBacktestResultKey.value = stratKey;

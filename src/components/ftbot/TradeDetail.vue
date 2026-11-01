@@ -32,7 +32,7 @@ const { showTradeCustomData } = useTradeCustomData();
       <ValuePair v-if="trade.enter_tag" description="Entry tag">{{ trade.enter_tag }}</ValuePair>
       <ValuePair v-if="trade.is_open" description="Stake">
         {{ formatPriceCurrency(trade.stake_amount, stakeCurrency) }}
-        <template v-if="trade.trading_mode !== 'spot'">
+        <template v-if="trade.trading_mode !== undefined && trade.trading_mode !== 'spot'">
           ({{ trade.leverage }}x)
           <span title="Position value" class="italic">{{
             formatPriceCurrency(trade.amount * trade.open_rate, stakeCurrency)
@@ -41,7 +41,11 @@ const { showTradeCustomData } = useTradeCustomData();
       </ValuePair>
       <ValuePair v-if="!trade.is_open" description="Total Stake">
         {{ formatPriceCurrency(trade.max_stake_amount ?? trade.stake_amount, stakeCurrency) }}
-        {{ trade.trading_mode !== 'spot' ? `(${trade.leverage}x)` : '' }}
+        {{
+          trade.trading_mode !== undefined && trade.trading_mode !== 'spot'
+            ? `(${trade.leverage}x)`
+            : ''
+        }}
       </ValuePair>
       <ValuePair description="Amount">{{ formatPrice(trade.amount) }}</ValuePair>
       <ValuePair description="Open Rate">{{ formatPrice(trade.open_rate) }}</ValuePair>

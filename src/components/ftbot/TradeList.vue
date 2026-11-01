@@ -39,6 +39,10 @@ function formatPriceWithDecimals(price: number) {
   return formatPrice(price, botStore.activeBot.stakeCurrencyDecimals);
 }
 
+function isLeveraged(trade: Trade) {
+  return trade.trading_mode !== undefined && trade.trading_mode !== 'spot';
+}
+
 const tableFields = ref([
   { field: 'trade_id', header: 'ID' },
   { field: 'pair', header: 'Pair' },
@@ -220,7 +224,7 @@ const rowSelection = computed({
       <template #trade_id-cell="{ row }">
         {{ row.original.trade_id }}
         {{
-          botStore.activeBot.botFeatures.futures && row.original.trading_mode !== 'spot'
+          botStore.activeBot.botFeatures.futures && isLeveraged(row.original)
             ? (row.original.trade_id ? '| ' : '') + (row.original.is_short ? 'Short' : 'Long')
             : ''
         }}
@@ -246,11 +250,11 @@ const rowSelection = computed({
       </template>
       <template #stake_amount-cell="{ row }">
         {{ formatPriceWithDecimals(row.original.stake_amount) }}
-        {{ row.original.trading_mode !== 'spot' ? `(${row.original.leverage}x)` : '' }}
+        {{ isLeveraged(row.original) ? `(${row.original.leverage}x)` : '' }}
       </template>
       <template #max_stake_amount-cell="{ row }">
-        {{ formatPriceWithDecimals(row.original.max_stake_amount ?? 0) }}
-        {{ row.original.trading_mode !== 'spot' ? `(${row.original.leverage}x)` : '' }}
+        {{ formatPriceWithDecimals(row.original.max_stake_amount ?? row.original.stake_amount) }}
+        {{ isLeveraged(row.original) ? `(${row.original.leverage}x)` : '' }}
       </template>
       <template #open_rate-cell="{ row }">{{ formatPrice(row.original.open_rate) }}</template>
       <template #current_rate-cell="{ row }">{{
