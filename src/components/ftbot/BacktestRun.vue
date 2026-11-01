@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import type { BacktestPayload, StrategyParameterValue, StrategyResult } from '@/types';
 
+withDefaults(
+  defineProps<{
+    /** Show a cancel button (e.g. when there are results to return to) */
+    canCancel?: boolean;
+  }>(),
+  { canCancel: false },
+);
+defineEmits<{
+  cancel: [];
+}>();
+
 const botStore = useBotStore();
 const btStore = useBtStore();
 
@@ -63,160 +74,173 @@ const strategyParamsModified = computed(() =>
 </script>
 
 <template>
-  <div
-    class="grid grid-cols-2 border border-neutral-500 rounded-sm gap-y-2 gap-2 items-center p-1 pt-3"
-    :disabled="botStore.activeBot.backtestRunning"
-  >
-    <!-- Backtesting parameters -->
-    <h3 class="font-bold mb-2 col-span-2 text-center">Backtesting parameters</h3>
-    <label>Strategy:</label>
-    <StrategySelect v-model="btStore.strategy" v-model:details="selectedStrategyDetails" />
-    <template v-if="botStore.activeBot.botFeatures.strategyParametersModify">
-      <label>Strategy Parameters</label>
-      <BaseCollapsible
-        v-if="selectedStrategyDetails && selectedStrategyDetails?.params.length > 0"
-        size="md"
-        :unmount-on-hide="false"
-      >
-        <template #title>
-          Open to modify strategy parameters
-          <span v-if="strategyParamsModified" class="text-warning"> (modified) </span>
-        </template>
-        <StrategyParameters
-          v-if="selectedStrategyDetails"
-          :strategy="selectedStrategyDetails"
-          class="m-3"
-          editable
-          v-model:parameters="strategyParams"
-        />
-      </BaseCollapsible>
-      <span v-else class="py-1.5">No strategy parameters available</span>
-    </template>
-    <label for="timeframe-select">Timeframe:</label>
-    <TimeframeSelect id="timeframe-select" v-model="btStore.selectedTimeframe" />
-    <label for="timeframe-detail-select" class="flex justify-end items-center gap-2"
-      >Detail Timeframe:
-      <InfoBox
-        hint="Detail timeframe, to simulate intra-candle results. Not setting this will not use this functionality."
-      />
-    </label>
-    <TimeframeSelect
-      id="timeframe-detail-select"
-      v-model="btStore.selectedDetailTimeframe"
-      :below-timeframe="btStore.selectedTimeframe"
-    />
+  <div class="flex flex-col gap-3">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 items-start">
+      <div class="flex flex-col gap-3">
+        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
+          <template #header>
+            <h4 class="font-bold flex items-center gap-2">
+              <UIcon name="i-mdi-strategy" />Strategy
+            </h4>
+          </template>
+          <UFormField label="Strategy">
+            <StrategySelect v-model="btStore.strategy" v-model:details="selectedStrategyDetails" />
+          </UFormField>
+          <div class="grid grid-cols-2 gap-2">
+            <UFormField label="Timeframe">
+              <TimeframeSelect
+                id="timeframe-select"
+                v-model="btStore.selectedTimeframe"
+                class="w-full"
+              />
+            </UFormField>
+            <UFormField
+              label="Detail timeframe"
+              help="Simulates intra-candle results. Leave empty to disable."
+            >
+              <TimeframeSelect
+                id="timeframe-detail-select"
+                v-model="btStore.selectedDetailTimeframe"
+                :below-timeframe="btStore.selectedTimeframe"
+                class="w-full"
+              />
+            </UFormField>
+          </div>
+          <UFormField
+            v-if="botStore.activeBot.botFeatures.strategyParametersModify"
+            label="Strategy parameters"
+          >
+            <BaseCollapsible
+              v-if="selectedStrategyDetails && selectedStrategyDetails?.params.length > 0"
+              size="md"
+              :unmount-on-hide="false"
+            >
+              <template #title>
+                Open to modify strategy parameters
+                <UBadge v-if="strategyParamsModified" color="warning" variant="subtle" size="sm">
+                  modified
+                </UBadge>
+              </template>
+              <StrategyParameters
+                v-if="selectedStrategyDetails"
+                :strategy="selectedStrategyDetails"
+                class="m-3"
+                editable
+                v-model:parameters="strategyParams"
+              />
+            </BaseCollapsible>
+            <span v-else class="text-muted text-sm">No strategy parameters available</span>
+          </UFormField>
+        </UCard>
 
-    <label for="max-open-trades">Max open trades:</label>
-    <UInputNumber
-      id="max-open-trades"
-      v-model="btStore.maxOpenTrades"
-      placeholder="Use strategy default"
-      :increment="false"
-      :decrement="false"
-    ></UInputNumber>
-    <label for="starting-capital">Starting capital:</label>
-    <UInputNumber
-      id="starting-capital"
-      v-model="btStore.startingCapital"
-      placeholder="Use config default"
-      :increment="false"
-      :decrement="false"
-      :step="10"
-      :min="0"
-      :stepSnapping="false"
-      :format-options="{
-        maximumFractionDigits: 5,
-      }"
-    ></UInputNumber>
-    <label for="stake-amount-bool">Stake amount:</label>
-    <div class="flex items-center">
-      <BaseCheckbox class="basis-1/3" id="stake-amount-bool" v-model="btStore.stakeAmountUnlimited"
-        >Unlimited stake</BaseCheckbox
-      >
-      <UInputNumber
-        id="stake-amount"
-        v-model="btStore.stakeAmount"
-        placeholder="Use strategy default"
-        class="w-full"
-        :step="10"
-        :stepSnapping="false"
-        :format-options="{
-          maximumFractionDigits: 5,
-        }"
-        :min="0"
-        :increment="false"
-        :decrement="false"
-        :disabled="btStore.stakeAmountUnlimited"
-      ></UInputNumber>
+        <UCard :ui="{ body: 'p-0 sm:p-0' }">
+          <BaseCollapsible title="Advanced" class="p-3" :unmount-on-hide="false">
+            <div class="grid grid-cols-2 gap-2 items-center [&_label]:text-right">
+              <label for="enable-protections">Enable Protections:</label>
+              <UCheckbox id="enable-protections" v-model="btStore.enableProtections" />
+              <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
+                <label for="enable-cache">Cache Backtest results:</label>
+                <UCheckbox id="enable-cache" v-model="btStore.allowCache" />
+                <FreqAIModelInput v-model="btStore.freqAI" />
+              </template>
+            </div>
+          </BaseCollapsible>
+        </UCard>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'sm:p-4' }">
+          <template #header>
+            <h4 class="font-bold flex items-center gap-2">
+              <UIcon name="i-mdi-calendar-range" />Time range
+            </h4>
+          </template>
+          <TimeRangeSelect
+            v-model="btStore.timerange"
+            :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
+          />
+        </UCard>
+
+        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
+          <template #header>
+            <h4 class="font-bold flex items-center gap-2"><UIcon name="i-mdi-wallet" />Wallet</h4>
+          </template>
+          <UFormField label="Starting capital">
+            <UInputNumber
+              id="starting-capital"
+              v-model="btStore.startingCapital"
+              placeholder="Use config default"
+              :increment="false"
+              :decrement="false"
+              :step="10"
+              :min="0"
+              :stepSnapping="false"
+              :format-options="{
+                maximumFractionDigits: 5,
+              }"
+            />
+          </UFormField>
+          <UFormField label="Max open trades">
+            <UInputNumber
+              id="max-open-trades"
+              v-model="btStore.maxOpenTrades"
+              placeholder="Use strategy default"
+              :increment="false"
+              :decrement="false"
+            />
+          </UFormField>
+          <UFormField label="Stake amount">
+            <div class="flex items-center gap-3">
+              <UInputNumber
+                id="stake-amount"
+                v-model="btStore.stakeAmount"
+                placeholder="Use strategy default"
+                class="grow"
+                :step="10"
+                :stepSnapping="false"
+                :format-options="{
+                  maximumFractionDigits: 5,
+                }"
+                :min="0"
+                :increment="false"
+                :decrement="false"
+                :disabled="btStore.stakeAmountUnlimited"
+              />
+              <UCheckbox
+                id="stake-amount-bool"
+                v-model="btStore.stakeAmountUnlimited"
+                label="Unlimited"
+              />
+            </div>
+          </UFormField>
+        </UCard>
+      </div>
     </div>
 
-    <label for="enable-protections">Enable Protections:</label>
-    <BaseCheckbox id="enable-protections" v-model="btStore.enableProtections"></BaseCheckbox>
-    <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
-      <label for="enable-cache">Cache Backtest results:</label>
-      <BaseCheckbox id="enable-cache" v-model="btStore.allowCache"></BaseCheckbox>
-    </template>
-
-    <FreqAIModelInput
-      v-if="botStore.activeBot.botFeatures.backtestFreqAI"
-      v-model="btStore.freqAI"
-    />
-
-    <USeparator class="col-span-2 my-2" />
-    <TimeRangeSelect
-      v-model="btStore.timerange"
-      :can-use-time="botStore.activeBot.botFeatures.timerangeWithTime"
-      class="mx-auto mt-2 col-span-2"
-    ></TimeRangeSelect>
-  </div>
-
-  <h3 class="mt-3 font-bold text-2xl">Backtesting summary</h3>
-  <div class="flex flex-wrap md:flex-nowrap justify-between md:justify-center mt-2">
-    <UButton
-      id="start-backtest"
-      variant="solid"
-      icon="mdi:play"
-      :disabled="
-        !btStore.canRunBacktest ||
-        botStore.activeBot.backtestRunning ||
-        !botStore.activeBot.canRunBacktest
-      "
-      class="mx-1"
-      @click="clickBacktest"
-    >
-      Start backtest
-    </UButton>
-    <UButton
-      color="neutral"
-      icon="mdi:refresh"
-      :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-      class="mx-1"
-      @click="botStore.activeBot.pollBacktest()"
-    >
-      Load backtest result
-    </UButton>
-    <UButton
-      color="neutral"
-      icon="mdi:stop"
-      class="mx-1"
-      :disabled="!botStore.activeBot.backtestRunning"
-      @click="botStore.activeBot.stopBacktest()"
-    >
-      Stop Backtest
-    </UButton>
-    <UButton
-      color="neutral"
-      class="mx-1"
-      icon="mdi:delete"
-      :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-      @click="botStore.activeBot.removeBacktest()"
-    >
-      Reset Backtest
-    </UButton>
+    <div class="flex flex-wrap justify-end gap-2">
+      <UButton
+        v-if="canCancel"
+        color="neutral"
+        icon="i-mdi-cancel"
+        variant="outline"
+        @click="$emit('cancel')"
+      >
+        Cancel
+      </UButton>
+      <UButton
+        id="start-backtest"
+        variant="solid"
+        icon="i-mdi-play"
+        :loading="botStore.activeBot.backtestRunning"
+        :disabled="
+          !btStore.canRunBacktest ||
+          botStore.activeBot.backtestRunning ||
+          !botStore.activeBot.canRunBacktest
+        "
+        @click="clickBacktest"
+      >
+        Start backtest
+      </UButton>
+    </div>
   </div>
 </template>
-<style lang="css" scoped>
-label {
-  @apply text-right;
-}
-</style>

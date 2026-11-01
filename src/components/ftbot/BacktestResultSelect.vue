@@ -13,6 +13,14 @@ withDefaults(
   },
 );
 
+/** Keys of results selected for comparison */
+const compareKeys = defineModel<string[]>('compareKeys', { default: () => [] });
+
+function toggleCompare(key: string, value: boolean | 'indeterminate') {
+  compareKeys.value =
+    value === true ? [...compareKeys.value, key] : compareKeys.value.filter((k) => k !== key);
+}
+
 const emit = defineEmits<{
   selectionChange: [value: string];
   removeResult: [value: string];
@@ -33,55 +41,65 @@ function confirmInput(run_id: string, result: BacktestResultInMemory) {
 </script>
 
 <template>
-  <div class="flex flex-col items-stretch">
-    <h3 class="font-bold text-2xl">Available results:</h3>
-    <ul
-      class="ms-2 divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500"
+  <ul class="flex flex-col gap-1">
+    <li
+      v-for="[key, result] in Object.entries(backtestHistory)"
+      :key="key"
+      :class="
+        key === selectedBacktestResultKey
+          ? 'border-primary bg-primary/10'
+          : 'border-default hover:bg-elevated'
+      "
+      class="flex justify-between items-start gap-1 p-2 border rounded-md cursor-pointer"
+      @click="$emit('selectionChange', key)"
     >
-      <li
-        v-for="[key, result] in Object.entries(backtestHistory)"
-        :key="key"
-        button
-        :class="{
-          'bg-primary dark:border-primary text-white': key === selectedBacktestResultKey,
-        }"
-        class="flex justify-between items-center py-1 px-1"
-        @click="$emit('selectionChange', key)"
-      >
-        <template v-if="!result.metadata.editing">
-          <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
-          <div class="flex">
-            <UButton
-              v-if="canUseModify"
-              class="flex-nowrap"
-              size="sm"
-              color="neutral"
-              title="Modify result notes."
-              icon="mdi:pencil"
-              @click.stop="result.metadata.editing = !result.metadata.editing"
+      <template v-if="!result.metadata.editing">
+        <BacktestResultSelectEntry :backtest-result="result" :can-use-modify="canUseModify" />
+        <div class="flex flex-col items-center gap-1 shrink-0" @click.stop>
+          <UTooltip text="Select for comparison">
+            <UCheckbox
+              :model-value="compareKeys.includes(key)"
+              :aria-label="`Compare ${result.metadata.strategyName}`"
+              class="p-1"
+              @update:model-value="toggleCompare(key, $event)"
             />
-            <UButton
-              size="sm"
-              class="flex-nowrap"
-              color="neutral"
-              title="Unload this Result from UI."
-              icon="mdi:close"
-              @click.stop="$emit('removeResult', key)"
-            />
-          </div>
-        </template>
-        <template v-if="result.metadata.editing">
-          <UTextarea v-model="result.metadata.notes" placeholder="notes" size="sm"> </UTextarea>
+          </UTooltip>
           <UButton
-            size="sm"
-            title="Confirm"
-            variant="solid"
+            v-if="canUseModify"
+            size="xs"
             color="neutral"
-            icon="mdi:check"
-            @click.stop="confirmInput(key, result)"
+            variant="ghost"
+            title="Modify result notes."
+            icon="i-mdi-pencil"
+            @click="result.metadata.editing = !result.metadata.editing"
           />
-        </template>
-      </li>
-    </ul>
-  </div>
+          <UButton
+            size="xs"
+            color="neutral"
+            variant="ghost"
+            title="Unload this Result from UI."
+            icon="i-mdi-close"
+            @click="$emit('removeResult', key)"
+          />
+        </div>
+      </template>
+      <div v-else class="flex items-start gap-1 w-full" @click.stop>
+        <UTextarea
+          v-model="result.metadata.notes"
+          placeholder="notes"
+          size="sm"
+          autoresize
+          class="grow"
+        />
+        <UButton
+          size="sm"
+          title="Confirm"
+          variant="solid"
+          color="neutral"
+          icon="i-mdi-check"
+          @click="confirmInput(key, result)"
+        />
+      </div>
+    </li>
+  </ul>
 </template>

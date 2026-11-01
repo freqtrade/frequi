@@ -1217,6 +1217,16 @@ export function createBotSubStore(botId: string, botName: string) {
       }
     }
 
+    /** Fetch the running state only - doesn't load results or show alerts */
+    async function getBacktestStatus() {
+      try {
+        const data = await api<BacktestStatus>('/backtest');
+        updateBacktestRunning(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     async function removeBacktest() {
       backtestHistory.value = {};
       try {
@@ -1620,6 +1630,7 @@ export function createBotSubStore(botId: string, botName: string) {
       deleteBlacklist,
       startBacktest,
       pollBacktest,
+      getBacktestStatus,
       removeBacktest,
       updateBacktestRunning,
       stopBacktest,

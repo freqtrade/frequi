@@ -80,7 +80,7 @@ const meta: TableMeta<BacktestHistoryEntry> = {
     </div>
     <UTable
       v-if="botStore.activeBot.backtestHistoryList.length > 0"
-      class="mt-2 h-[80dvh]"
+      class="mt-2 h-[65dvh]"
       :data="filteredList"
       :columns="columns"
       :meta="meta"
