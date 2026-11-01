@@ -20,6 +20,9 @@ const timeframe = computed((): string => {
 const view = ref<BtView>(hasBacktestResult.value ? 'result' : 'new');
 const resultTab = ref('overview');
 const railCollapsed = ref(false);
+// Width of the rail - only follows railCollapsed once the old content has faded out,
+// so charts in the main area resize once instead of on every animation frame.
+const railNarrow = ref(railCollapsed.value);
 const showHistoryLoad = ref(false);
 const pollInterval = ref<number | null>(null);
 
@@ -136,103 +139,114 @@ const resultSelectItems = computed(() =>
     <div class="flex flex-row grow min-h-0 gap-2">
       <!-- Result list -->
       <aside
-        class="hidden md:flex flex-col gap-1 shrink-0 border-r border-default pe-2 transition-all duration-200"
-        :class="railCollapsed ? 'w-10' : 'w-72'"
+        class="hidden md:flex flex-col gap-1 shrink-0 border-r border-default pe-2 overflow-x-clip"
+        :class="railNarrow ? 'w-10' : 'w-72'"
       >
-        <template v-if="!railCollapsed">
-          <UButton
-            icon="i-mdi-plus"
-            block
-            :variant="view === 'new' ? 'solid' : 'outline'"
-            :disabled="!botStore.activeBot.canRunBacktest"
-            @click="view = 'new'"
-          >
-            New backtest
-          </UButton>
-          <div class="flex gap-1">
+        <Transition
+          mode="out-in"
+          enter-active-class="transition duration-75"
+          leave-active-class="transition duration-75"
+          enter-from-class="opacity-0 -translate-x-4"
+          leave-to-class="opacity-0 -translate-x-4"
+          @before-enter="railNarrow = railCollapsed"
+        >
+          <div v-if="!railCollapsed" class="flex flex-col gap-1 grow min-h-0">
             <UButton
-              v-if="botStore.activeBot.botFeatures.backtestHistory"
-              icon="i-mdi-cloud-download"
-              color="neutral"
-              variant="outline"
+              icon="i-mdi-plus"
               block
-              class="grow"
+              :variant="view === 'new' ? 'solid' : 'outline'"
               :disabled="!botStore.activeBot.canRunBacktest"
-              @click="showHistoryLoad = true"
+              @click="view = 'new'"
             >
-              Load from disk
+              New backtest
             </UButton>
+            <div class="flex gap-1">
+              <UButton
+                v-if="botStore.activeBot.botFeatures.backtestHistory"
+                icon="i-mdi-cloud-download"
+                color="neutral"
+                variant="outline"
+                block
+                class="grow"
+                :disabled="!botStore.activeBot.canRunBacktest"
+                @click="showHistoryLoad = true"
+              >
+                Load from disk
+              </UButton>
+              <UTooltip text="Reset backtest">
+                <UButton
+                  color="neutral"
+                  variant="outline"
+                  icon="i-mdi-replay"
+                  aria-label="Reset backtest"
+                  :disabled="
+                    botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest
+                  "
+                  @click="resetBacktest"
+                />
+              </UTooltip>
+            </div>
+            <BacktestRunningStatus />
+            <USeparator label="Results" />
+            <div class="grow min-h-0 overflow-y-auto">
+              <BacktestResultSelect
+                v-model:compare-keys="compareKeys"
+                :backtest-history="botStore.activeBot.backtestHistory"
+                :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
+                :can-use-modify="botStore.activeBot.botFeatures.backtestSetNotes"
+                @selection-change="botStore.activeBot.setBacktestResultKey"
+                @remove-result="botStore.activeBot.removeBacktestResultFromMemory"
+                @update-result="botStore.activeBot.saveBacktestResultMetadata"
+              />
+              <p v-if="!hasBacktestResult" class="text-sm text-muted text-center p-2">
+                No results loaded yet.
+              </p>
+            </div>
+            <UButton
+              icon="i-mdi-compare-horizontal"
+              color="neutral"
+              :variant="view === 'compare' ? 'solid' : 'outline'"
+              block
+              :disabled="!canCompare"
+              :title="canCompare ? '' : 'Tick at least 2 results to compare them'"
+              @click="view = 'compare'"
+            >
+              Compare ({{ Object.keys(compareResults).length }})
+            </UButton>
+          </div>
+          <div v-else class="flex flex-col gap-1 grow min-h-0">
+            <UTooltip text="New backtest">
+              <UButton
+                icon="i-mdi-plus"
+                :variant="view === 'new' ? 'solid' : 'outline'"
+                :disabled="!botStore.activeBot.canRunBacktest"
+                @click="view = 'new'"
+              />
+            </UTooltip>
+            <UTooltip v-if="botStore.activeBot.botFeatures.backtestHistory" text="Load from disk">
+              <UButton
+                icon="i-mdi-cloud-download"
+                color="neutral"
+                variant="outline"
+                :disabled="!botStore.activeBot.canRunBacktest"
+                @click="showHistoryLoad = true"
+              />
+            </UTooltip>
             <UTooltip text="Reset backtest">
               <UButton
                 color="neutral"
                 variant="outline"
-                icon="i-mdi-replay"
+                icon="i-mdi-delete"
                 aria-label="Reset backtest"
                 :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
                 @click="resetBacktest"
               />
             </UTooltip>
+            <UTooltip v-if="botStore.activeBot.backtestRunning" text="Backtest running">
+              <UIcon name="i-mdi-loading" class="animate-spin text-primary size-5 mx-auto" />
+            </UTooltip>
           </div>
-          <BacktestRunningStatus />
-          <USeparator label="Results" />
-          <div class="grow min-h-0 overflow-y-auto">
-            <BacktestResultSelect
-              v-model:compare-keys="compareKeys"
-              :backtest-history="botStore.activeBot.backtestHistory"
-              :selected-backtest-result-key="botStore.activeBot.selectedBacktestResultKey"
-              :can-use-modify="botStore.activeBot.botFeatures.backtestSetNotes"
-              @selection-change="botStore.activeBot.setBacktestResultKey"
-              @remove-result="botStore.activeBot.removeBacktestResultFromMemory"
-              @update-result="botStore.activeBot.saveBacktestResultMetadata"
-            />
-            <p v-if="!hasBacktestResult" class="text-sm text-muted text-center p-2">
-              No results loaded yet.
-            </p>
-          </div>
-          <UButton
-            icon="i-mdi-compare-horizontal"
-            color="neutral"
-            :variant="view === 'compare' ? 'solid' : 'outline'"
-            block
-            :disabled="!canCompare"
-            :title="canCompare ? '' : 'Tick at least 2 results to compare them'"
-            @click="view = 'compare'"
-          >
-            Compare ({{ Object.keys(compareResults).length }})
-          </UButton>
-        </template>
-        <template v-else>
-          <UTooltip text="New backtest">
-            <UButton
-              icon="i-mdi-plus"
-              :variant="view === 'new' ? 'solid' : 'outline'"
-              :disabled="!botStore.activeBot.canRunBacktest"
-              @click="view = 'new'"
-            />
-          </UTooltip>
-          <UTooltip v-if="botStore.activeBot.botFeatures.backtestHistory" text="Load from disk">
-            <UButton
-              icon="i-mdi-cloud-download"
-              color="neutral"
-              variant="outline"
-              :disabled="!botStore.activeBot.canRunBacktest"
-              @click="showHistoryLoad = true"
-            />
-          </UTooltip>
-          <UTooltip text="Reset backtest">
-            <UButton
-              color="neutral"
-              variant="outline"
-              icon="i-mdi-delete"
-              aria-label="Reset backtest"
-              :disabled="botStore.activeBot.backtestRunning || !botStore.activeBot.canRunBacktest"
-              @click="resetBacktest"
-            />
-          </UTooltip>
-          <UTooltip v-if="botStore.activeBot.backtestRunning" text="Backtest running">
-            <UIcon name="i-mdi-loading" class="animate-spin text-primary size-5 mx-auto" />
-          </UTooltip>
-        </template>
+        </Transition>
         <UButton
           :icon="railCollapsed ? 'i-mdi-chevron-double-right' : 'i-mdi-chevron-double-left'"
           color="neutral"
