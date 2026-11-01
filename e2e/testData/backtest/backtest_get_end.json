@@ -40,7 +40,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1643688000000.0,
-                        "close_timestamp": 1643878800000.0
+                        "close_timestamp": 1643878800000.0,
+                        "max_stake_amount": 330.0,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     },
                     {
                         "pair": "DOT/USDT",
@@ -66,7 +69,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1644033600000.0,
-                        "close_timestamp": 1644501600000.0
+                        "close_timestamp": 1644501600000.0,
+                        "max_stake_amount": 324.34264497,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     },
                     {
                         "pair": "XRP/USDT",
@@ -92,7 +98,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1643994000000.0,
-                        "close_timestamp": 1644613200000.0
+                        "close_timestamp": 1644613200000.0,
+                        "max_stake_amount": 324.342645,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     },
                     {
                         "pair": "DOT/USDT",
@@ -118,7 +127,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1644969600000.0,
-                        "close_timestamp": 1645016400000.0
+                        "close_timestamp": 1645016400000.0,
+                        "max_stake_amount": 343.0528433,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     },
                     {
                         "pair": "XRP/USDT",
@@ -144,7 +156,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1645833600000.0,
-                        "close_timestamp": 1645920000000.0
+                        "close_timestamp": 1645920000000.0,
+                        "max_stake_amount": 337.17171688,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     },
                     {
                         "pair": "XRP/USDT",
@@ -170,7 +185,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1647036000000.0,
-                        "close_timestamp": 1647208800000.0
+                        "close_timestamp": 1647208800000.0,
+                        "max_stake_amount": 331.39141355,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     },
                     {
                         "pair": "XRP/USDT",
@@ -196,7 +214,10 @@
                         "enter_tag": null,
                         "is_short": false,
                         "open_timestamp": 1647554400000.0,
-                        "close_timestamp": 1648738800000.0
+                        "close_timestamp": 1648738800000.0,
+                        "max_stake_amount": 325.71020485,
+                        "leverage": 1.0,
+                        "funding_fees": 0.0
                     }
                 ],
                 "locks": [],
@@ -634,7 +655,9 @@
                 "max_drawdown_low": -12.999379229999999,
                 "max_drawdown_high": 39.5540706,
                 "csum_min": 970.90139094,
-                "csum_max": 1039.5540706
+                "csum_max": 1039.5540706,
+                "trading_mode": "spot",
+                "margin_mode": ""
             }
         },
         "strategy_comparison": [
