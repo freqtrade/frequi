@@ -5,7 +5,10 @@ import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 
 export default defineConfigWithVueTs(
-  { languageOptions: { globals: globals.browser } },
+  {
+    languageOptions: { globals: globals.browser },
+    linterOptions: { reportUnusedDisableDirectives: 'error' },
+  },
   pluginJs.configs.recommended,
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
