@@ -292,6 +292,7 @@ onMounted(() => {
 watchThrottled(
   () => props.openTrades,
   () => {
+    // eslint-disable-next-line vue/no-ref-as-operand
     cumProfitChartOptions.trigger();
   },
   { throttle: 60 * 1000 },
@@ -299,6 +300,7 @@ watchThrottled(
 watch(
   () => settingsStore.chartTheme,
   () => {
+    // eslint-disable-next-line vue/no-ref-as-operand
     cumProfitChartOptions.trigger();
   },
 );
