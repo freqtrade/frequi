@@ -258,7 +258,7 @@ const resultSelectItems = computed(() =>
       </aside>
 
       <!-- Main area -->
-      <div class="flex flex-col grow min-w-0 overflow-y-auto gap-2 p-0.5 pe-1">
+      <div class="flex flex-col grow min-w-0 overflow-y-auto gap-2 p-0.5 pe-1 *:shrink-0">
         <UAlert
           v-if="!botStore.activeBot.canRunBacktest"
           color="warning"

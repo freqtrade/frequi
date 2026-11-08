@@ -76,8 +76,9 @@ const strategyParamsModified = computed(() =>
 <template>
   <div class="flex flex-col gap-3 text-start">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 items-start">
-      <div class="flex flex-col gap-3">
-        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
+      <!-- "contents" on mobile so cards can be reordered: strategy, timerange, wallet, advanced -->
+      <div class="contents lg:flex lg:flex-col lg:gap-3">
+        <UCard class="order-1" :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
           <template #header>
             <h4 class="font-bold flex items-center gap-2">
               <UIcon name="i-mdi-strategy" />Strategy
@@ -133,7 +134,7 @@ const strategyParamsModified = computed(() =>
           </UFormField>
         </UCard>
 
-        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
+        <UCard class="order-4" :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
           <template #header>
             <h4 class="font-bold flex items-center gap-2"><UIcon name="i-mdi-cog" />Advanced</h4>
           </template>
@@ -155,8 +156,8 @@ const strategyParamsModified = computed(() =>
         </UCard>
       </div>
 
-      <div class="flex flex-col gap-3">
-        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'sm:p-4' }">
+      <div class="contents lg:flex lg:flex-col lg:gap-3">
+        <UCard class="order-2" :ui="{ header: 'py-2 sm:px-4', body: 'sm:p-4' }">
           <template #header>
             <h4 class="font-bold flex items-center gap-2">
               <UIcon name="i-mdi-calendar-range" />Time range
@@ -168,7 +169,7 @@ const strategyParamsModified = computed(() =>
           />
         </UCard>
 
-        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
+        <UCard class="order-3" :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
           <template #header>
             <h4 class="font-bold flex items-center gap-2"><UIcon name="i-mdi-wallet" />Wallet</h4>
           </template>
