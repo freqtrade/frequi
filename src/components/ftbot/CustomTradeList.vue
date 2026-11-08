@@ -50,7 +50,7 @@ const tradeClick = (trade) => {
         <CustomTradeListEntry :trade="trade" :stake-currency-decimals="stakeCurrencyDecimals" />
       </div>
     </div>
-    <span v-if="trades.length === 0" class="mt-5">{{ emptyText }}</span>
+    <div v-if="trades.length === 0" class="text-center my-5">{{ emptyText }}</div>
 
     <div class="w-full flex justify-content-between mt-1">
       <UPagination

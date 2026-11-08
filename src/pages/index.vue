@@ -7,7 +7,7 @@ definePage({
 </script>
 
 <template>
-  <div class="mt-5">
+  <div class="mt-5 text-center">
     <div class="flex justify-center">
       <BotList class="max-w-xl" />
     </div>

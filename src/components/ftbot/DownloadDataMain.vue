@@ -238,8 +238,8 @@ async function startDownload() {
             </div>
           </BaseCollapsible>
 
-          <div class="px-3">
-            <UButton variant="solid" icon="mdi:download" @click="startDownload"
+          <div class="px-3 flex justify-center">
+            <UButton variant="solid" icon="mdi:download" @click="startDownload" size="lg"
               >Start Download</UButton
             >
           </div>

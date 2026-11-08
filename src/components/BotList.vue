@@ -105,6 +105,7 @@ function stopEditBot(botId: string) {
       class="mt-2"
       @click="loginDialog({})"
       icon="mdi:login"
+      size="lg"
       label="Add new Bot"
     />
   </div>

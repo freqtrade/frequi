@@ -164,6 +164,6 @@ onMounted(() => {
 }
 
 .pair {
-  @apply p-2 border rounded cursor-pointer relative border-neutral-500 text-ellipsis overflow-hidden;
+  @apply p-2 border rounded cursor-pointer relative border-neutral-500 text-ellipsis overflow-hidden text-center;
 }
 </style>

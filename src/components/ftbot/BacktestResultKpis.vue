@@ -58,7 +58,7 @@ const kpis = computed<Kpi[]>(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+  <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2 text-center">
     <UCard v-for="kpi in kpis" :key="kpi.label" :ui="{ body: 'p-2 sm:p-2' }">
       <div class="text-xs text-muted uppercase tracking-wide">{{ kpi.label }}</div>
       <div
