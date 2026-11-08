@@ -74,7 +74,7 @@ const strategyParamsModified = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-3 text-start">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 items-start">
       <div class="flex flex-col gap-3">
         <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
@@ -133,18 +133,25 @@ const strategyParamsModified = computed(() =>
           </UFormField>
         </UCard>
 
-        <UCard :ui="{ body: 'p-0 sm:p-0' }">
-          <BaseCollapsible title="Advanced" class="p-3" :unmount-on-hide="false">
-            <div class="grid grid-cols-2 gap-2 items-center [&_label]:text-right">
-              <label for="enable-protections">Enable Protections:</label>
-              <UCheckbox id="enable-protections" v-model="btStore.enableProtections" />
-              <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
-                <label for="enable-cache">Cache Backtest results:</label>
-                <UCheckbox id="enable-cache" v-model="btStore.allowCache" />
-                <FreqAIModelInput v-model="btStore.freqAI" />
-              </template>
-            </div>
-          </BaseCollapsible>
+        <UCard :ui="{ header: 'py-2 sm:px-4', body: 'flex flex-col gap-3 sm:p-4' }">
+          <template #header>
+            <h4 class="font-bold flex items-center gap-2"><UIcon name="i-mdi-cog" />Advanced</h4>
+          </template>
+          <USwitch
+            id="enable-protections"
+            v-model="btStore.enableProtections"
+            label="Enable protections"
+            description="Apply the strategy's protections during the backtest."
+          />
+          <template v-if="botStore.activeBot.botFeatures.backtestFreqAI">
+            <USwitch
+              id="enable-cache"
+              v-model="btStore.allowCache"
+              label="Cache backtest results"
+              description="Reuse previous results when strategy and settings are unchanged."
+            />
+            <FreqAIModelInput v-model="btStore.freqAI" />
+          </template>
         </UCard>
       </div>
 
