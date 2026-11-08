@@ -229,11 +229,11 @@ const strategyParamsModified = computed(() =>
       <UButton
         v-if="canCancel"
         color="neutral"
-        icon="i-mdi-cancel"
+        icon="i-mdi-arrow-left"
         variant="outline"
         @click="$emit('cancel')"
       >
-        Cancel
+        Back to results
       </UButton>
       <UButton
         id="start-backtest"
