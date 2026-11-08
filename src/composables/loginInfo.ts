@@ -149,6 +149,7 @@ export function useLoginInfo(botId: string) {
         {
           method: 'POST',
           body: {},
+          credentials: 'include',
           headers: { Authorization: `Bearer ${token}` },
         },
       );
