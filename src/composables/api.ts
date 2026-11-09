@@ -46,11 +46,6 @@ export function useApi(userService: UserServiceType, botId: string): { api: $Fet
         options.headers.set('Authorization', `Bearer ${token}`);
       }
     },
-    onRequestError() {
-      // fetch itself failed (network error, CORS, DNS, ...) - no response available.
-      console.log('Bot not running...');
-      markBotOffline();
-    },
     async onResponseError({ response, options }) {
       if (response.status === 401) {
         try {
@@ -62,9 +57,6 @@ export function useApi(userService: UserServiceType, botId: string): { api: $Fet
           // Refresh failed - don't retry, let the original 401 propagate to the caller.
           options.retry = 0;
         }
-      } else if (response.status === 500) {
-        console.log('Bot not running...');
-        markBotOffline();
       }
     },
   });

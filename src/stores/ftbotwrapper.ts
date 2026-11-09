@@ -89,6 +89,8 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
   const refreshing = ref<boolean>(false);
   const refreshInterval = ref<number | null>(null);
   const refreshIntervalSlow = ref<number | null>(null);
+  let healthInterval: number | null = null;
+  const pendingPings = new Map<BotSubStore, Promise<void>>();
 
   const botStores = ref<SubStores>({});
 
@@ -381,16 +383,28 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
     await Promise.all(updates);
   }
 
-  async function pingAll() {
+  async function pingBots(bots: BotSubStore[]) {
     await Promise.all(
-      Object.values(botStores.value).map(async (store) => {
-        try {
-          await store.fetchPing();
-        } catch {
-          // pass
+      bots.map((store) => {
+        let pending = pendingPings.get(store);
+        if (!pending) {
+          pending = store
+            .fetchPing()
+            .catch(() => {
+              // fetchPing sets this bot offline. A later health check can recover it.
+            })
+            .finally(() => {
+              pendingPings.delete(store);
+            });
+          pendingPings.set(store, pending);
         }
+        return pending;
       }),
     );
+  }
+
+  async function pingAll() {
+    await pingBots(allBotStores.value.filter((store) => store.isBotLoggedIn));
   }
 
   async function allRefreshFull() {
@@ -424,6 +438,15 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
   function startRefresh() {
     console.log('Starting automatic refresh.');
     allRefreshFull();
+    if (healthInterval === null) {
+      healthInterval = window.setInterval(() => {
+        if (globalAutoRefresh.value) {
+          void pingBots(
+            allBotStores.value.filter((store) => store.isBotLoggedIn && store.autoRefresh),
+          );
+        }
+      }, 15000);
+    }
     if (!refreshInterval.value) {
       refreshInterval.value = window.setInterval(() => {
         allRefreshFrequent();
@@ -438,6 +461,10 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
 
   function stopRefresh() {
     console.log('Stopping automatic refresh.');
+    if (healthInterval !== null) {
+      window.clearInterval(healthInterval);
+      healthInterval = null;
+    }
     if (refreshInterval.value) {
       window.clearInterval(refreshInterval.value);
       refreshInterval.value = null;
@@ -447,6 +474,8 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
       refreshIntervalSlow.value = null;
     }
   }
+
+  onScopeDispose(stopRefresh);
 
   function allGetState() {
     Object.values(botStores.value).map(async (store) => {
