@@ -15,6 +15,9 @@ const APIBASE = '/api/v1';
 // Global state for all login infos
 const allLoginInfos = useStorage<AuthStorageMulti>(AUTH_LOGIN_INFO, {});
 
+// Pending token refreshes, by botId.
+const refreshesInFlight = new Map<string, Promise<string>>();
+
 /**
  * Get available bots with their descriptors
  */
@@ -140,9 +143,6 @@ export function useLoginInfo(botId: string) {
     currentInfo.value = loginInfo;
   }
 
-  // Shared across concurrent 401s so that an expired access token triggers only one refresh call.
-  let refreshInFlight: Promise<string> | null = null;
-
   async function doRefreshToken(): Promise<string> {
     console.log('Refreshing token...');
     const token = allLoginInfos.value[botId]?.refreshToken;
@@ -183,12 +183,14 @@ export function useLoginInfo(botId: string) {
   }
 
   function refreshToken(): Promise<string> {
-    if (!refreshInFlight) {
-      refreshInFlight = doRefreshToken().finally(() => {
-        refreshInFlight = null;
+    let refresh = refreshesInFlight.get(botId);
+    if (!refresh) {
+      refresh = doRefreshToken().finally(() => {
+        refreshesInFlight.delete(botId);
       });
+      refreshesInFlight.set(botId, refresh);
     }
-    return refreshInFlight;
+    return refresh;
   }
 
   return {
