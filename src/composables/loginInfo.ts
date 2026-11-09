@@ -145,18 +145,19 @@ export function useLoginInfo(botId: string) {
 
   async function doRefreshToken(): Promise<string> {
     console.log('Refreshing token...');
-    const token = currentInfo.value.refreshToken;
+    const token = allLoginInfos.value[botId]?.refreshToken;
+    if (!token) {
+      // Refresh token expired or bot logged out - no point in asking the server.
+      throw new Error('No refresh token available - please log in again');
+    }
     try {
-      const data = await ofetch<AuthResponse>(
-        `${currentInfo.value.apiUrl}${APIBASE}/token/refresh`,
-        {
-          method: 'POST',
-          body: {},
-          credentials: 'include',
-          headers: { Authorization: `Bearer ${token}` },
-          timeout: 10000,
-        },
-      );
+      const data = await ofetch<AuthResponse>(`${baseUrl.value}/token/refresh`, {
+        method: 'POST',
+        body: {},
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+        timeout: 10000,
+      });
       if (!data.access_token) {
         throw new Error('No access token received');
       }
