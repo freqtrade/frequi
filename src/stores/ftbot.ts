@@ -1394,10 +1394,21 @@ export function createBotSubStore(botId: string, botName: string) {
     let websocketHandle: { close: () => void } | undefined = undefined;
 
     function closeWebSocket() {
-      websocketHandle?.close();
+      const handle = websocketHandle;
       websocketHandle = undefined;
       websocketStarted.value = false;
+      handle?.close();
     }
+
+    watch(
+      () => loginInfo.getLoginInfo().accessToken,
+      (token) => {
+        // Logout removes the login info, so use the safe descriptor getter.
+        closeWebSocket();
+        if (token && isBotLoggedIn.value) startWebSocket();
+      },
+    );
+    onScopeDispose(closeWebSocket);
 
     function _handleWebsocketMessage(ws: WebSocket, event: MessageEvent<string>) {
       const msg: FTWsMessage = JSON.parse(event.data);
@@ -1434,6 +1445,8 @@ export function createBotSubStore(botId: string, botName: string) {
     function startWebSocket() {
       if (
         websocketHandle !== undefined ||
+        !isBotLoggedIn.value ||
+        !loginInfo.getLoginInfo().accessToken ||
         botStatusAvailable.value === false ||
         !botFeatures.value.websocketConnection ||
         isWebserverMode.value === true
@@ -1454,10 +1467,11 @@ export function createBotSubStore(botId: string, botName: string) {
           // },
           onError: (ws, event) => {
             console.log('onError', event, ws);
-            closeWebSocket();
+            if (websocketHandle === wsHandle) closeWebSocket();
           },
           onMessage: _handleWebsocketMessage,
           onConnected: () => {
+            if (websocketHandle !== wsHandle) return;
             console.log('subscribing');
             if (isWebserverMode.value !== true) {
               websocketStarted.value = true;
