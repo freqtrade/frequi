@@ -102,8 +102,11 @@ export function useLoginInfo(botId: string) {
   }
 
   function setRefreshTokenExpired(): void {
-    currentInfo.value.refreshToken = '';
-    currentInfo.value.accessToken = '';
+    const info = allLoginInfos.value[botId];
+    // The bot may have been logged out / removed in the meantime.
+    if (!info) return;
+    info.refreshToken = '';
+    info.accessToken = '';
   }
 
   function logout(): void {
@@ -151,12 +154,18 @@ export function useLoginInfo(botId: string) {
           body: {},
           credentials: 'include',
           headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000,
         },
       );
       if (!data.access_token) {
         throw new Error('No access token received');
       }
-      currentInfo.value.accessToken = data.access_token;
+      // The bot may have been logged out / removed while the refresh was running.
+      const info = allLoginInfos.value[botId];
+      if (!info) {
+        throw new Error('Bot was logged out during token refresh');
+      }
+      info.accessToken = data.access_token;
       return data.access_token;
     } catch (err) {
       console.error(err);
