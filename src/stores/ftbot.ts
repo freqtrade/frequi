@@ -1442,8 +1442,10 @@ export function createBotSubStore(botId: string, botName: string) {
       }
       const wsHandle = useWebSocket(
         // 'ws://localhost:8080/api/v1/message/ws?token=testtoken',
-        `${loginInfo.baseWsUrl.value}/message/ws?token=${loginInfo.accessToken.value}`,
+        // Getter, so reconnects pick up the current (refreshed) access token.
+        () => `${loginInfo.baseWsUrl.value}/message/ws?token=${loginInfo.accessToken.value}`,
         {
+          autoConnect: false,
           autoReconnect: {
             delay: 10000,
             // retries: 10
