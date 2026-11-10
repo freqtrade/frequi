@@ -179,6 +179,12 @@ const singlePairSelection = computed({
           <BaseCheckbox v-model="settingsStore.showMarkArea">
             <span class="text-nowrap">Show Chart Areas</span>
           </BaseCheckbox>
+          <BaseCheckbox
+            v-model="settingsStore.showCurrentPriceLine"
+            title="Draw the open trade's current rate. The rate is cached and can lag the exchange."
+          >
+            <span class="text-nowrap">Current price</span>
+          </BaseCheckbox>
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
             <span class="text-nowrap">Heikin Ashi</span>
           </BaseCheckbox>

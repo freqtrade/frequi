@@ -57,6 +57,7 @@ const props = defineProps<{
   dataset: PairHistory;
   heikinAshi: boolean;
   showMarkArea: boolean;
+  showCurrentPrice: boolean;
   useUTC: boolean;
   plotConfig: PlotConfig;
   theme: 'dark' | 'light';
@@ -577,6 +578,10 @@ function updateChart(initial = false) {
     props.dataset,
     filteredTrades.value,
   );
+  if (props.showCurrentPrice) {
+    const openTrade = filteredTrades.value.find((trade) => trade.is_open && trade.current_rate);
+    appendCurrentPriceLine(tradesSeries, openTrade?.current_rate);
+  }
   if (Array.isArray(options.series)) {
     options.series.push(tradesSeries);
   }
@@ -733,7 +738,15 @@ watch([() => props.useUTC, () => props.theme, () => props.plotConfig], () =>
   initializeChartOptions(),
 );
 
-watch([() => props.dataset, () => props.heikinAshi, () => props.showMarkArea], () => updateChart());
+watch(
+  [
+    () => props.dataset,
+    () => props.heikinAshi,
+    () => props.showMarkArea,
+    () => props.showCurrentPrice,
+  ],
+  () => updateChart(),
+);
 
 watch(
   () => props.sliderPosition,
