@@ -166,6 +166,7 @@ watch(
           :plot-config="plotStore.plotConfig"
           :heikin-ashi="settingsStore.useHeikinAshiCandles"
           :show-mark-area="settingsStore.showMarkArea"
+          :show-current-price="settingsStore.showCurrentPriceLine"
           :use-u-t-c="settingsStore.timezone === 'UTC'"
           :theme="settingsStore.chartTheme"
           :slider-position="sliderPosition"

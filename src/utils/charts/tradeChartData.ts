@@ -231,6 +231,38 @@ export function generateTradeSeries(
   return tradesSeries;
 }
 
+/** Horizontal line at an open trade's cached current rate. */
+export function appendCurrentPriceLine(
+  series: ScatterSeriesOption,
+  currentRate: number | undefined,
+): void {
+  if (currentRate === undefined || !Number.isFinite(currentRate)) {
+    return;
+  }
+  const point = {
+    name: 'Current price',
+    yAxis: currentRate,
+    label: {
+      show: true,
+      position: 'insideEndTop' as const,
+      formatter: 'Current price',
+    },
+    lineStyle: {
+      color: '#4c9aff',
+      type: 'dashed' as const,
+      width: 1,
+    },
+  };
+  if (!series.markLine) {
+    series.markLine = {
+      symbol: 'none',
+      data: [point],
+    };
+    return;
+  }
+  series.markLine.data = [...(series.markLine.data ?? []), point];
+}
+
 export function generateMarkArea(
   dataset: PairHistory,
   enabled: boolean,

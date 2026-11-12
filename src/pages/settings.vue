@@ -119,6 +119,14 @@ const resetDynamicLayout = () => {
           <template #hint>Use Heikin Ashi candles in your charts</template>
         </BaseCheckbox>
 
+        <BaseCheckbox v-model="settingsStore.showCurrentPriceLine" class="space-y-1">
+          Show current price line
+          <template #hint>
+            Draw a horizontal line at the open trade's current rate. Off by default. The rate is
+            cached and can lag the exchange. No line is drawn when the pair has no open trade.
+          </template>
+        </BaseCheckbox>
+
         <BaseCheckbox v-model="settingsStore.useReducedPairCalls" class="space-y-1">
           Only request necessary columns
           <template #hint
