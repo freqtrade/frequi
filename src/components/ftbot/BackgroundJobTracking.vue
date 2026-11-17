@@ -17,7 +17,7 @@ const jobCategoryIcons: Record<string, string> = {
       <li
         v-for="(job, key) in runningJobs"
         :key="key"
-        class="border p-1 pb-2 rounded-sm dark:border-neutral-700 border-neutral-300 flex gap-2 items-center"
+        class="glass p-1 pb-2 rounded-xl flex gap-2 items-center"
         :title="job.job_category + ' - ' + job.status"
       >
         <UIcon

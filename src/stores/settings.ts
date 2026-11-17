@@ -16,6 +16,17 @@ const notificationDefaults = {
   [FtWsMessageTypes.exitCancel]: true,
 };
 
+export const ACCENT_PRESETS = [
+  { name: 'cyan', label: 'Cyan', swatch: '#00c3e6' },
+  { name: 'violet', label: 'Violet', swatch: '#8b5cf6' },
+  { name: 'emerald', label: 'Emerald', swatch: '#10b981' },
+  { name: 'amber', label: 'Amber', swatch: '#f59e0b' },
+  { name: 'rose', label: 'Rose', swatch: '#f43f5e' },
+  { name: 'blue', label: 'Blue', swatch: '#3b82f6' },
+] as const;
+
+export type AccentName = (typeof ACCENT_PRESETS)[number]['name'];
+
 export const useSettingsStore = defineStore(
   'uiSettings',
   () => {
@@ -23,6 +34,9 @@ export const useSettingsStore = defineStore(
     const timezone = ref('UTC');
     const backgroundSync = ref(true);
     const currentTheme = ref('dark' as ThemeName);
+    const accent = ref<AccentName>('cyan');
+    const density = ref<'comfortable' | 'compact'>('comfortable');
+    const sidebarCollapsed = ref(false);
     const useHeikinAshiCandles = ref(false);
     const showMarkArea = ref(true);
     const useReducedPairCalls = ref(true);
@@ -65,6 +79,9 @@ export const useSettingsStore = defineStore(
       timezone,
       backgroundSync,
       currentTheme,
+      accent,
+      density,
+      sidebarCollapsed,
       useHeikinAshiCandles,
       showMarkArea,
       useReducedPairCalls,

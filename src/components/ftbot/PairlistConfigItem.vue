@@ -19,9 +19,9 @@ function toggleVisible() {
 </script>
 
 <template>
-  <div class="shadow-sm rounded-sm border border-neutral-300 dark:border-neutral-700">
+  <div class="glass rounded-xl overflow-hidden">
     <div
-      class="flex w-full text-start items-center bg-neutral-200 dark:bg-neutral-700 p-2 border-b border-neutral-300 dark:border-neutral-600"
+      class="flex w-full text-start items-center bg-white/5 p-2 border-b border-(--ft-glass-border)"
     >
       <div class="flex grow items-center">
         <i-mdi-reorder-horizontal

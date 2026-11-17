@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <BotBalance />
+  <WidgetBoard board-id="balance" />
 </template>

@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <DownloadDataMain class="pt-4" />
+  <WidgetBoard board-id="download_data" />
 </template>

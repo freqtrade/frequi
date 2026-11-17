@@ -65,7 +65,7 @@ function stopEditBot(botId: string) {
     <h3 v-if="!small" class="font-bold text-2xl mb-2">Available bots</h3>
     <ul
       ref="sortContainer"
-      class="flex flex-col divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500"
+      class="flex flex-col divide-y border-x border-neutral-500 rounded-xl border-y divide-solid divide-neutral-500"
     >
       <li
         v-for="bot in botListComp"

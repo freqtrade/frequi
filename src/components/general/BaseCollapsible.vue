@@ -24,7 +24,7 @@ defineOptions({
 
 <template>
   <UCollapsible
-    class="border border-neutral-300 dark:border-neutral-700 rounded-sm"
+    class="glass rounded-xl"
     v-model:open="open"
     :unmount-on-hide
   >

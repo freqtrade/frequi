@@ -5,6 +5,11 @@ onMounted(() => {
   setTimezone(settingsStore.timezone);
   colorStore.updateProfitLossColor();
 });
+// Apply the selected accent preset (see html[data-accent] in tailwind.css)
+watchEffect(() => {
+  document.documentElement.dataset.accent = settingsStore.accent;
+  document.documentElement.dataset.density = settingsStore.density;
+});
 watch(
   () => settingsStore.timezone,
   (tz) => {
@@ -16,17 +21,20 @@ watch(
 
 <template>
   <UApp>
-    <div id="app" class="flex flex-col h-dvh" :style="colorStore.cssVars">
-      <NavBar />
-      <BodyLayout class="grow overflow-auto" />
-      <NavFooter />
+    <div id="app" class="flex h-dvh" :style="colorStore.cssVars">
+      <SideNav />
+      <div class="flex min-w-0 grow flex-col">
+        <NavBar />
+        <BodyLayout class="grow overflow-auto" />
+        <NavFooter />
+      </div>
     </div>
   </UApp>
 </template>
 
 <style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

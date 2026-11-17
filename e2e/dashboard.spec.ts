@@ -51,17 +51,19 @@ test.describe('Dashboard', () => {
     await expect(page.locator('.drag-header', { hasText: 'Bot comparison' })).toBeVisible();
 
     const viewportWidth = page.viewportSize()?.width ?? 0;
-    // Grid cards must not be wider than the screen - otherwise most columns
-    // are rendered off-screen and are unreachable on a phone.
+    // Widgets are stacked on phones and must not be wider than the screen -
+    // otherwise most columns are rendered off-screen and are unreachable.
     const cardWidths = await page
-      .locator('.vue-grid-item:not(.vue-grid-placeholder)')
+      .locator('.board-stack-item')
       .evaluateAll((elements) => elements.map((el) => el.getBoundingClientRect().width));
 
     expect(cardWidths.length).toBeGreaterThan(0);
     for (const cardWidth of cardWidths) {
       expect(cardWidth).toBeLessThanOrEqual(viewportWidth);
     }
-    await expect(page.getByText('Open Trades')).toBeVisible();
-    await expect(page.getByText('Open Trades')).toBeInViewport();
+    const openTrades = page.locator('.drag-header', { hasText: 'Open Trades' });
+    await openTrades.scrollIntoViewIfNeeded();
+    await expect(openTrades).toBeVisible();
+    await expect(openTrades).toBeInViewport();
   });
 });

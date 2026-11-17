@@ -2,14 +2,14 @@
 import Favico from 'favico.js';
 
 import type { AuthStorageWithBotId } from '@/types';
-import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui';
+import type { DropdownMenuItem } from '@nuxt/ui';
 import { breakpointsTailwind } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 
 const botStore = useBotStore();
 
 const settingsStore = useSettingsStore();
-const layoutStore = useLayoutStore();
+const boardsStore = useBoardsStore();
 const route = useRoute();
 const router = useRouter();
 const favicon = ref<Favico | undefined>(undefined);
@@ -41,18 +41,6 @@ const setOpenTradesAsPill = (tradeCount: number) => {
   } else {
     favicon.value.reset();
     console.log('reset');
-  }
-};
-const resetDynamicLayout = (): void => {
-  console.log(`resetLayout called for ${route?.fullPath}`);
-  switch (route?.fullPath) {
-    case '/trade':
-      layoutStore.resetTradingLayout();
-      break;
-    case '/dashboard':
-      layoutStore.resetDashboardLayout();
-      break;
-    default:
   }
 };
 const setTitle = () => {
@@ -100,85 +88,13 @@ watch(
   },
 );
 
-// Navigation items array
-type NavItem = NavigationMenuItem & { visible?: boolean; mobileOnly?: boolean };
-
-const navItems = computed<NavItem[]>(() => [
-  {
-    label: 'Trade',
-    to: '/trade',
-    visible: !botStore.canRunBacktest,
-    icon: 'i-mdi-currency-usd',
-  },
-  {
-    label: 'Dashboard',
-    to: '/dashboard',
-    visible: !botStore.canRunBacktest,
-    icon: 'i-mdi-view-dashboard',
-  },
-  {
-    label: 'Chart',
-    to: '/graph',
-    icon: 'i-mdi-chart-line',
-  },
-  {
-    label: 'Logs',
-    to: '/logs',
-    icon: 'i-mdi-format-list-bulleted',
-  },
-  {
-    label: 'Settings',
-    to: '/settings',
-    mobileOnly: true,
-    icon: 'i-mdi-cog',
-  },
-  {
-    label: 'Backtest',
-    to: '/backtest',
-    visible: botStore.canRunBacktest,
-    icon: 'i-mdi-currency-usd',
-  },
-  {
-    label: 'Analysis',
-    visible: botStore.canRunBacktest,
-    icon: 'mdi:chart-timeline-variant-shimmer',
-    children: [
-      {
-        label: 'Recursive Analysis',
-        to: '/recursive_analysis',
-        icon: 'i-mdi-magnify-scan',
-        visible:
-          (botStore.activeBot?.isWebserverMode ?? false) &&
-          botStore.activeBot.botFeatures.recursiveAnalysis,
-      },
-      {
-        label: 'Lookahead Analysis',
-        to: '/lookahead_analysis',
-        icon: 'i-mdi-chart-timeline-variant-shimmer',
-        visible:
-          (botStore.activeBot?.isWebserverMode ?? false) &&
-          botStore.activeBot.botFeatures.lookaheadAnalysis,
-      },
-    ],
-  },
-  {
-    label: 'Download Data',
-    to: '/download_data',
-    visible: botStore.isWebserverMode && botStore.activeBot.botFeatures.downloadDataView,
-    icon: 'i-mdi-download',
-  },
-  {
-    label: 'Pairlist Config',
-    to: '/pairlist_config',
-    icon: 'i-mdi-format-list-numbered-rtl',
-    visible:
-      (botStore.activeBot?.isWebserverMode ?? false) &&
-      botStore.activeBot.botFeatures.pairlistConfig,
-  },
-]);
-
-const visibleNavItems = computed(() => navItems.value.filter((item) => item.visible ?? true));
-const nonMobileNavItems = computed(() => visibleNavItems.value.filter((item) => !item.mobileOnly));
+const { flatItems } = useNavItems();
+const pageTitle = computed(() => {
+  const board = boardsStore.activeBoardId ? boardsStore.boards[boardsStore.activeBoardId] : undefined;
+  if (board) return board.name;
+  if (route?.path === '/settings') return 'Settings';
+  return flatItems.value.find((i) => route?.path.startsWith(i.to))?.label ?? '';
+});
 
 const menuItems = computed<DropdownMenuItem[][]>(() => [
   [
@@ -192,18 +108,6 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       label: 'Settings',
       icon: 'i-mdi-cog',
       onSelect: () => router.push('/settings'),
-    },
-    {
-      label: layoutStore.layoutLocked ? 'Unlock Layout' : 'Lock Layout',
-      icon: layoutStore.layoutLocked ? 'i-mdi-lock' : 'i-mdi-lock-open',
-      onSelect: () => {
-        layoutStore.layoutLocked = !layoutStore.layoutLocked;
-      },
-    },
-    {
-      label: 'Reset Layout',
-      icon: 'i-mdi-lock-reset',
-      onSelect: resetDynamicLayout,
     },
   ],
   ...(botStore.hasBots && botStore.botCount === 1
@@ -235,62 +139,44 @@ function editBotLogin(botId: string) {
 </script>
 
 <template>
-  <header>
-    <div class="flex border-b border-primary">
-      <RouterLink class="ms-2 flex flex-row items-center pe-2 gap-2" exact to="/">
-        <AppIcon class="h-9 w-9" />
-        <AppText class="md:hidden lg:inline" />
+  <header class="relative z-30 px-2 pt-2 md:px-3">
+    <div class="glass-strong flex items-center gap-3 rounded-2xl px-3 py-1">
+      <!-- Mobile: brand (desktop has it in the sidebar) -->
+      <RouterLink class="flex flex-row items-center gap-2 md:hidden" exact to="/">
+        <AppIcon class="h-8 w-8 drop-shadow-[0_0_8px_var(--ft-accent-glow)]" />
+        <AppText />
       </RouterLink>
-      <div class="flex justify-between w-full text-center items-center ms-3">
-        <div class="items-center hidden md:flex gap-5 ms-5">
-          <UNavigationMenu
-            :items="nonMobileNavItems"
-            variant="link"
-            content-orientation="vertical"
-            :ui="{
-              item: 'py-0',
-              link: 'text-md',
-            }"
-          />
-          <ThemeSelect />
+      <h1 class="hidden truncate text-lg font-semibold tracking-tight md:block">{{ pageTitle }}</h1>
+      <BoardControls v-if="!isMobile" />
+
+      <div class="ms-auto flex items-center gap-2">
+        <div
+          v-if="!settingsStore.confirmDialog"
+          class="flex text-yellow-300"
+          title="Confirm dialog deactivated, Forced exits will be executed immediately. Be careful."
+        >
+          <i-mdi-run-fast />
+          <i-mdi-alert />
         </div>
 
-        <!-- Right aligned nav items -->
-        <div v-if="!isMobile" class="flex ms-auto">
-          <!-- TODO This should show outside of the dropdown in XS mode -->
-          <div
-            v-if="!settingsStore.confirmDialog"
-            class="my-auto me-5 flex text-yellow-300"
-            title="Confirm dialog deactivated, Forced exits will be executed immediately. Be careful."
-          >
-            <i-mdi-run-fast />
-            <i-mdi-alert />
-          </div>
-          <div class="hidden md:flex md:flex-nowrap items-center nav-item me-2">
-            <span class="text-sm me-2" title="Bot name">
-              {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
-            </span>
-            <BotEntry
-              v-if="botStore.selectedBotObj"
-              :bot="botStore.selectedBotObj"
-              noButtons
-              no-text
-              @edit-login="editBotLogin"
-            />
-            <BotSelect />
-
-            <ReloadControl class="me-3" title="Confirm Dialog deactivated." />
-          </div>
-          <div v-if="botStore.hasBots" class="flex items-center">
-            <!-- Hide dropdown on xs, instead show below  -->
-            <UDropdownMenu :items="menuItems" size="lg">
-              <UButton color="neutral" variant="ghost" size="sm" trailing-icon="mdi:chevron-down">
-                <div class="flex items-center">
-                  <UAvatar size="sm"> FT </UAvatar>
-                </div>
-              </UButton>
-            </UDropdownMenu>
-          </div>
+        <template v-if="!isMobile">
+          <span class="text-sm text-muted" title="Bot name">
+            {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
+          </span>
+          <BotEntry
+            v-if="botStore.selectedBotObj"
+            :bot="botStore.selectedBotObj"
+            noButtons
+            no-text
+            @edit-login="editBotLogin"
+          />
+          <BotSelect />
+          <ReloadControl title="Confirm Dialog deactivated." />
+          <UDropdownMenu v-if="botStore.hasBots" :items="menuItems" size="lg">
+            <UButton color="neutral" variant="ghost" size="sm" trailing-icon="mdi:chevron-down">
+              <UAvatar size="sm"> FT </UAvatar>
+            </UButton>
+          </UDropdownMenu>
           <UButton
             v-else-if="route?.path !== '/login'"
             color="neutral"
@@ -298,59 +184,64 @@ function editBotLogin(botId: string) {
             icon="mdi:login"
             >Login
           </UButton>
-        </div>
+        </template>
 
         <!-- Mobile menu -->
-        <div v-if="isMobile" class="ms-auto flex">
-          <USlideover
-            direction="right"
-            :close="{
-              color: 'primary',
-              variant: 'outline',
-              class: 'rounded-full',
-            }"
-          >
-            <UButton class="text-neutral-300 text-xl" size="xl" variant="ghost" icon="mdi:menu" />
-            <template #title>
-              <div class="flex flex-row items-center gap-2">
-                <AppIcon class="h-9 w-9" />
-                <AppText class="md:hidden lg:inline" />
-              </div>
-            </template>
-            <template #body="{ close }">
-              <div class="flex flex-col gap-1 items-center p-4 h-full">
-                <UNavigationMenu
-                  :items="visibleNavItems.map((item) => ({ ...item, onSelect: close }))"
-                  variant="link"
-                  :default-open="true"
-                  orientation="vertical"
-                />
-                <USeparator class="my-2" />
-                <span>Version: {{ settingsStore.uiVersion }}</span>
+        <USlideover
+          v-else
+          direction="right"
+          :close="{
+            color: 'primary',
+            variant: 'outline',
+            class: 'rounded-full',
+          }"
+        >
+          <UButton class="text-xl" size="xl" variant="ghost" color="neutral" icon="mdi:menu" />
+          <template #title>
+            <div class="flex flex-row items-center gap-2">
+              <AppIcon class="h-9 w-9" />
+              <AppText />
+            </div>
+          </template>
+          <template #body="{ close }">
+            <div class="flex flex-col gap-1 items-center p-4 h-full">
+              <UNavigationMenu
+                :items="[
+                  ...flatItems.map((item) => ({ ...item, onSelect: close })),
+                  { label: 'Settings', to: '/settings', icon: 'i-mdi-cog', onSelect: close },
+                ]"
+                variant="link"
+                :default-open="true"
+                orientation="vertical"
+              />
+              <USeparator class="my-2" />
+              <span>Version: {{ settingsStore.uiVersion }}</span>
 
-                <div class="flex flex-row items-center justify-center">
-                  <ThemeSelect show-text />
-                </div>
-                <USeparator class="my-2" />
-                <div class="flex flex-row items-center">
-                  <span class="text-sm me-2" title="Bot name">
-                    {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
-                  </span>
-                  <BotEntry
-                    v-if="botStore.selectedBotObj"
-                    :bot="botStore.selectedBotObj"
-                    noButtons
-                    no-text
-                    @edit-login="editBotLogin"
-                  />
-                </div>
-                <BotSelect />
-                <USeparator class="my-2" />
-                <ReloadControl class="justify-center w-full" />
+              <div class="flex flex-row items-center justify-center">
+                <ThemeSelect show-text />
               </div>
-            </template>
-          </USlideover>
-        </div>
+              <AccentSelect show-text class="my-2" />
+              <USeparator class="my-2" />
+              <div class="flex flex-row items-center">
+                <span class="text-sm me-2" title="Bot name">
+                  {{ (botStore.activeBot && botStore.activeBot.botName) || 'No bot selected' }}
+                </span>
+                <BotEntry
+                  v-if="botStore.selectedBotObj"
+                  :bot="botStore.selectedBotObj"
+                  noButtons
+                  no-text
+                  @edit-login="editBotLogin"
+                />
+              </div>
+              <BotSelect />
+              <USeparator class="my-2" />
+              <ReloadControl class="justify-center w-full" />
+              <USeparator class="my-2" />
+              <BoardControls />
+            </div>
+          </template>
+        </USlideover>
       </div>
     </div>
   </header>

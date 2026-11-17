@@ -119,8 +119,7 @@ test.describe('Trade', () => {
 
     const multiPanebb = await multiPane.boundingBox();
 
-    await page.getByRole('button', { name: 'FT' }).click();
-    await page.getByText('Unlock Layout').click();
+    await page.getByRole('button', { name: 'Customize' }).click();
 
     const chartHeader = await page.locator('.drag-header:has-text("Chart")');
     // Click outside of popup to ensure it's closed
@@ -134,7 +133,16 @@ test.describe('Trade', () => {
       await chartHeader.hover();
       await page.mouse.down();
 
-      await page.mouse.move(chartHeaderbb?.x + chartHeaderbb.width / 2, chartHeaderbb?.y + 200);
+      // Boards compact vertically, so drag the chart below the open trades
+      // panel - a small move would snap back to the top.
+      const openTradesbb = await page
+        .locator('.drag-header', { hasText: 'Open Trades' })
+        .boundingBox();
+      await page.mouse.move(
+        chartHeaderbb.x + chartHeaderbb.width / 2,
+        (openTradesbb?.y ?? chartHeaderbb.y) + 150,
+        { steps: 10 },
+      );
       await page.mouse.up();
       await expect(multiPane).toBeInViewport();
       // Multipane wasn't moved.

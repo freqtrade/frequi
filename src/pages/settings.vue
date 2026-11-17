@@ -3,7 +3,7 @@ import { FtWsMessageTypes } from '@/types/wsMessageTypes';
 
 const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
-const layoutStore = useLayoutStore();
+const boardsStore = useBoardsStore();
 
 const timezoneOptions = ['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone];
 const openTradesOptions = [
@@ -17,9 +17,8 @@ const colorPreferenceOptions = [
 ];
 
 const resetDynamicLayout = () => {
-  layoutStore.resetTradingLayout();
-  layoutStore.resetDashboardLayout();
-  showAlert('Layouts have been reset.');
+  boardsStore.resetAllBoards();
+  showAlert('All built-in boards have been reset. Your own boards were kept.');
 };
 </script>
 
@@ -29,23 +28,36 @@ const resetDynamicLayout = () => {
     <div class="flex flex-col gap-4 text-start dark:text-neutral-300">
       <p class="text-left">UI Version: {{ settingsStore.uiVersion }}</p>
 
-      <div class="border border-neutral-400 rounded-sm p-4 space-y-4">
+      <div class="glass rounded-2xl p-4 space-y-4">
         <h4 class="text-xl font-semibold">UI settings</h4>
 
-        <BaseCheckbox v-model="layoutStore.layoutLocked" class="space-y-1">
-          Lock dynamic layouts
-          <template #hint>
-            Lock dynamic layouts, so they cannot move anymore. Can also be set from the navbar at
-            the top.
-          </template>
-        </BaseCheckbox>
+        <div class="space-y-1">
+          <label class="block text-sm">Information density</label>
+          <USelect
+            v-model="settingsStore.density"
+            :items="[
+              { value: 'comfortable', text: 'Comfortable (more spacing, fewer table columns)' },
+              { value: 'compact', text: 'Compact (more data on screen)' },
+            ]"
+            label-key="text"
+            value-key="value"
+            class="w-full"
+          />
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-sm">Accent colour</label>
+          <AccentSelect />
+        </div>
+
+        <USeparator />
 
         <div class="flex flex-row items-center gap-2 space-y-2">
           <UButton color="neutral" size="md" class="mb-0" @click="resetDynamicLayout"
-            >Reset layout</UButton
+            >Reset all boards</UButton
           >
           <small class="text-sm block text-neutral-600 dark:text-neutral-400"
-            >Reset dynamic layouts to how they were.</small
+            >Restore the default widgets and layout of every page. Use "Customize" in the page header to change a single board.</small
           >
         </div>
 
@@ -96,7 +108,7 @@ const resetDynamicLayout = () => {
         </BaseCheckbox>
       </div>
 
-      <div class="border border-neutral-400 rounded-sm p-4 space-y-4">
+      <div class="glass rounded-2xl p-4 space-y-4">
         <h4 class="text-lg font-semibold">Chart settings</h4>
 
         <div class="space-y-1">
@@ -185,7 +197,7 @@ const resetDynamicLayout = () => {
         </div>
       </div>
 
-      <div class="border rounded-sm border-neutral-400 p-4 space-y-4">
+      <div class="glass rounded-2xl p-4 space-y-4">
         <h4 class="text-lg font-semibold">Notification Settings</h4>
         <div class="space-y-2">
           <BaseCheckbox v-model="settingsStore.notifications[FtWsMessageTypes.entryFill]">
@@ -203,7 +215,7 @@ const resetDynamicLayout = () => {
         </div>
       </div>
 
-      <div class="border rounded-sm border-neutral-400 p-4 space-y-4">
+      <div class="glass rounded-2xl p-4 space-y-4">
         <h4 class="text-lg font-semibold">Backtesting settings</h4>
         <div>
           <label for="backtestMetrics" class="block">Backtesting metrics</label>

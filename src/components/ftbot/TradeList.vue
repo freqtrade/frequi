@@ -75,8 +75,13 @@ if (props.multiBotView) {
   tableFields.value.unshift({ field: 'botName', header: 'Bot' });
 }
 
+// Secondary columns are only shown in compact density to keep the table readable.
+const compactOnlyFields = ['amount', 'stake_amount', 'max_stake_amount'];
+
 const tableColumns = computed<TableColumn<Trade>[]>(() =>
-  tableFields.value.map((f) => ({ accessorKey: f.field, header: f.header })),
+  tableFields.value
+    .filter((f) => settingsStore.density === 'compact' || !compactOnlyFields.includes(f.field))
+    .map((f) => ({ accessorKey: f.field, header: f.header })),
 );
 
 const filteredTrades = computed(() => {

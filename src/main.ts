@@ -6,6 +6,9 @@ import App from './App.vue';
 import { VueDraggableGrid } from './plugins/vue-grid-layout';
 import router from './router';
 import './styles/tailwind.css';
+import { registerFtEchartsThemes } from './utils/charts/ftTheme';
+
+registerFtEchartsThemes();
 
 const myApp = createApp(App);
 

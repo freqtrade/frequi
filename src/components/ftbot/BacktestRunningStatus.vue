@@ -5,7 +5,7 @@ const botStore = useBotStore();
 <template>
   <div
     v-if="botStore.activeBot.backtestRunning"
-    class="flex flex-col gap-1 p-2 border border-primary rounded-md"
+    class="flex flex-col gap-1 p-2 glass rounded-xl border-primary/40"
   >
     <div class="flex items-center gap-2">
       <UIcon name="i-mdi-loading" class="animate-spin text-primary shrink-0" />

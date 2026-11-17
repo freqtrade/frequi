@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <ChartView />
+  <WidgetBoard board-id="graph" />
 </template>

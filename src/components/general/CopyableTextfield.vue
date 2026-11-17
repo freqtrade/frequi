@@ -27,7 +27,7 @@ const { copy, isSupported, copied } = useClipboard();
       />
     </div>
     <pre
-      class="text-start border rounded-sm border-neutral-500 p-2 m-0 bg-neutral-50 dark:bg-neutral-900 overflow-auto"
+      class="text-start glass rounded-xl p-2 m-0 overflow-auto"
     ><code>{{ content }}</code></pre>
   </div>
 </template>

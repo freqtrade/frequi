@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <MobileTradesList />
+  <WidgetBoard board-id="open_trades" />
 </template>

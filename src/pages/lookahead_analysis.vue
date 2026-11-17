@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <LookaheadAnalysis class="py-4" />
+  <WidgetBoard board-id="lookahead_analysis" />
 </template>

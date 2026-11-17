@@ -4,18 +4,23 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme static {
-      --color-brand-50: #DBFAFF;
-      --color-brand-100: #B8F4FF;
-      --color-brand-200: #75EAFF;
-      --color-brand-300: #2EE0FF;
-      --color-brand-400: #00C3E6;
-      --color-brand-500: #0089A1;
-      --color-brand-600: #006C80;
-      --color-brand-700: #005261;
-      --color-brand-800: #003842;
-      --color-brand-900: #001A1F;
-      --color-brand-950: #000D0F;
+  --color-brand-50: #dbfaff;
+  --color-brand-100: #b8f4ff;
+  --color-brand-200: #75eaff;
+  --color-brand-300: #2ee0ff;
+  --color-brand-400: #00c3e6;
+  --color-brand-500: #0089a1;
+  --color-brand-600: #006c80;
+  --color-brand-700: #005261;
+  --color-brand-800: #003842;
+  --color-brand-900: #001a1f;
+  --color-brand-950: #000d0f;
 
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 /*
@@ -37,7 +42,7 @@
 
   /* Cursor pointer for Buttons - workaround for Tailwind v4 change */
   button,
-  [role="button"] {
+  [role='button'] {
     cursor: pointer;
   }
 }
@@ -48,25 +53,218 @@
   --color-loss: #ef5350;
 }
 
+/* ------------------------------------------------------------------ */
+/* Accent presets                                                       */
+/* Overrides the brand palette (used as Nuxt UI "primary" colour).      */
+/* The attribute is set on <html> by the settings store (accent).       */
+/* "cyan" is the default palette defined in @theme above.               */
+/* ------------------------------------------------------------------ */
+html[data-accent='violet'] {
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #4c1d95;
+  --color-brand-950: #2e1065;
+}
+
+html[data-accent='emerald'] {
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+  --color-brand-950: #022c22;
+}
+
+html[data-accent='amber'] {
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #f59e0b;
+  --color-brand-600: #d97706;
+  --color-brand-700: #b45309;
+  --color-brand-800: #92400e;
+  --color-brand-900: #78350f;
+  --color-brand-950: #451a03;
+}
+
+html[data-accent='rose'] {
+  --color-brand-50: #fff1f2;
+  --color-brand-100: #ffe4e6;
+  --color-brand-200: #fecdd3;
+  --color-brand-300: #fda4af;
+  --color-brand-400: #fb7185;
+  --color-brand-500: #f43f5e;
+  --color-brand-600: #e11d48;
+  --color-brand-700: #be123c;
+  --color-brand-800: #9f1239;
+  --color-brand-900: #881337;
+  --color-brand-950: #4c0519;
+}
+
+html[data-accent='blue'] {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+  --color-brand-950: #172554;
+}
+
+/* ------------------------------------------------------------------ */
+/* Glass / Neo-dark design tokens                                       */
+/* ------------------------------------------------------------------ */
+:root {
+  --ft-bg: #eaf0f7;
+  --ft-glow-1: color-mix(in oklab, var(--color-brand-400) 22%, transparent);
+  --ft-glow-2: color-mix(in oklab, var(--color-brand-600) 16%, transparent);
+  --ft-glass-bg: rgb(255 255 255 / 0.62);
+  --ft-glass-bg-strong: rgb(255 255 255 / 0.82);
+  --ft-glass-border: rgb(15 23 42 / 0.08);
+  --ft-glass-highlight: rgb(255 255 255 / 0.7);
+  --ft-glass-shadow: 0 8px 32px -12px rgb(15 23 42 / 0.18);
+  --ft-accent: var(--color-brand-500);
+  --ft-accent-glow: color-mix(in oklab, var(--color-brand-500) 35%, transparent);
+  --ui-bg: #ffffff;
+}
+
+.dark {
+  --ft-bg: #060a12;
+  --ft-glow-1: color-mix(in oklab, var(--color-brand-500) 30%, transparent);
+  --ft-glow-2: color-mix(in oklab, var(--color-brand-700) 38%, transparent);
+  --ft-glass-bg: rgb(16 23 38 / 0.55);
+  --ft-glass-bg-strong: rgb(11 17 30 / 0.78);
+  --ft-glass-border: rgb(255 255 255 / 0.08);
+  --ft-glass-highlight: rgb(255 255 255 / 0.06);
+  --ft-glass-shadow: 0 8px 40px -12px rgb(0 0 0 / 0.65);
+  --ft-accent: var(--color-brand-400);
+  --ft-accent-glow: color-mix(in oklab, var(--color-brand-400) 45%, transparent);
+  --ui-bg: #0a101c;
+}
+
+body {
+  background-color: var(--ft-bg);
+  background-image:
+    radial-gradient(60rem 36rem at 8% -8%, var(--ft-glow-1), transparent 62%),
+    radial-gradient(52rem 38rem at 100% 0%, var(--ft-glow-2), transparent 58%),
+    radial-gradient(46rem 32rem at 50% 115%, var(--ft-glow-1), transparent 62%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+@layer components {
+  /* Frosted glass surface. Utilities (bg-*, border-*) can still override. */
+  .glass {
+    background-color: var(--ft-glass-bg);
+    border: 1px solid var(--ft-glass-border);
+    box-shadow:
+      inset 0 1px 0 var(--ft-glass-highlight),
+      var(--ft-glass-shadow);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+  }
+
+  /* More opaque variant for chrome (header, tab bar) */
+  .glass-strong {
+    background-color: var(--ft-glass-bg-strong);
+    border: 1px solid var(--ft-glass-border);
+    box-shadow:
+      inset 0 1px 0 var(--ft-glass-highlight),
+      var(--ft-glass-shadow);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    backdrop-filter: blur(22px) saturate(160%);
+  }
+
+  /* Soft accent glow, e.g. for the active navigation entry */
+  .accent-glow {
+    box-shadow: 0 0 18px -2px var(--ft-accent-glow);
+  }
+
+  .text-gradient-accent {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-brand-300),
+      var(--color-brand-500) 60%,
+      var(--color-brand-400)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* No blur for users who asked for reduced transparency: use solid surfaces. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--ui-bg);
+  }
+}
+
+/* Numbers should align in tables and tiles */
+table,
+.tabular-nums-all {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Thin, unobtrusive scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-neutral-500, #888) 45%, transparent) transparent;
+}
+
 body.ft-theme-transition,
 body.ft-theme-transition *,
 body.ft-theme-transition *:before,
 body.ft-theme-transition *:after {
-    transition:
-        background 750ms ease-in-out,
-        border-color 750ms ease-in-out,
-        background-color 750ms ease-in-out,
-    ;
-    transition-delay: 0 !important;
+  transition:
+    background 750ms ease-in-out,
+    border-color 750ms ease-in-out,
+    background-color 750ms ease-in-out;
+  transition-delay: 0 !important;
 }
 
 html {
-    /*  Set the default font size to 14px */
-    font-size: 14px;
+  /*  Set the default font size to 14px */
+  font-size: 14px;
+}
+
+/* Information density: comfortable (default) gives rows more room, compact packs more in. */
+html[data-density='comfortable'] table td,
+html[data-density='comfortable'] table th {
+  padding-block: 0.7rem;
+}
+
+html[data-density='compact'] {
+  font-size: 13px;
+}
+
+html[data-density='compact'] table td,
+html[data-density='compact'] table th {
+  padding-block: 0.3rem;
 }
 
 .vue-grid-item {
-    /*  Fix white corners in vue-grid-item. */
-    background-color: unset !important;
+  /*  Fix white corners in vue-grid-item. */
+  background-color: unset !important;
 }
-

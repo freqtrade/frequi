@@ -20,14 +20,13 @@ withDefaults(
 </script>
 
 <template>
-  <div
-    class="flex flex-col h-full w-full border dark:border-neutral-800 border-neutral-200 rounded-sm"
-  >
-    <div
-      class="drag-header py-1 px-2 dark:bg-neutral-800 bg-neutral-100 border-b border-neutral-300 dark:border-neutral-700"
-    >
+  <div class="glass flex flex-col h-full w-full rounded-2xl overflow-hidden">
+    <div class="drag-header py-1.5 px-3 border-b border-(--ft-glass-border) bg-white/3">
       <slot name="header">
-        <div class="flex justify-center items-center gap-2">
+        <div
+          class="flex justify-center items-center gap-2 text-sm font-semibold tracking-wide text-muted uppercase"
+        >
+          <span class="size-1.5 rounded-full bg-primary accent-glow" aria-hidden="true" />
           {{ header }}
           <InfoBox v-if="infoText" :hint="infoText" />
         </div>

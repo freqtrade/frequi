@@ -48,6 +48,15 @@ export default defineConfig({
             variant: 'subtle',
           },
         },
+        card: {
+          variants: {
+            variant: {
+              outline: {
+                root: 'rounded-2xl bg-(color:--ft-glass-bg) ring-(color:--ft-glass-border) backdrop-blur-xl',
+              },
+            },
+          },
+        },
         table: {
           slots: {
             td: 'px-2 py-2 text-default text-md text-left',
@@ -115,7 +124,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8080',
+        // Override with FT_API_TARGET to proxy to a remote bot (avoids CORS in dev).
+        target: process.env.FT_API_TARGET ?? 'http://127.0.0.1:8080',
         changeOrigin: true,
       },
     },

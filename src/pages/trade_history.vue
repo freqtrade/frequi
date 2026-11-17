@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <MobileTradesList :history="true" />
+  <WidgetBoard board-id="trade_history" />
 </template>

@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <PairlistConfigurator class="pt-4" />
+  <WidgetBoard board-id="pairlist_config" />
 </template>

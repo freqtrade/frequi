@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
-  <PairListLive />
+  <WidgetBoard board-id="pairlist" />
 </template>
