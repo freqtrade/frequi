@@ -5,7 +5,6 @@ import type {
   BotState,
   ClosedTrade,
   TimeSummaryPayload,
-  TimeSummaryRecord,
   TimeSummaryReturnValue,
   MultiCancelOpenOrderPayload,
   MultiDeletePayload,
@@ -17,6 +16,7 @@ import type {
 } from '@/types';
 import type { ComputedRef, Ref } from 'vue';
 import { TimeSummaryOptions } from '@/types';
+import { combineTimeSummaries } from '@/utils/timeSummary';
 import { createBotSubStore } from './ftbot';
 const AUTH_SELECTED_BOT = 'ftSelectedBot';
 
@@ -207,77 +207,28 @@ export const useBotStore = defineStore('ftbot-wrapper', (): BotStoreSetup => {
     });
     return result;
   });
-  const allDailyStatsSelectedBots = computed<TimeSummaryReturnValue>(() => {
-    const resp: Record<string, TimeSummaryRecord> = {};
-    Object.entries(botStores.value).forEach(([, botStore]) => {
-      if (botStore.isSelected) {
-        botStore.dailyStats?.data?.forEach((daily) => {
-          const existing = resp[daily.date];
-          if (!existing) {
-            resp[daily.date] = { ...daily };
-          } else {
-            existing.abs_profit += daily.abs_profit;
-            existing.fiat_value += daily.fiat_value;
-            existing.trade_count += daily.trade_count;
-          }
-        });
-      }
-    });
+  function combineSelectedBotsStats(
+    getStats: (botStore: BotSubStore) => TimeSummaryReturnValue,
+  ): TimeSummaryReturnValue {
+    const summaries = Object.values(botStores.value)
+      .filter((botStore) => botStore.isSelected)
+      .map((botStore) => getStats(botStore)?.data ?? []);
 
     return {
       stake_currency: 'USDT',
       fiat_display_currency: 'USD',
-      data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
+      data: combineTimeSummaries(summaries),
     };
-  });
-  const allWeeklyStatsSelectedBots = computed<TimeSummaryReturnValue>(() => {
-    const resp: Record<string, TimeSummaryRecord> = {};
-    Object.entries(botStores.value).forEach(([, botStore]) => {
-      if (botStore.isSelected) {
-        botStore.weeklyStats?.data?.forEach((weekly) => {
-          const existing = resp[weekly.date];
-          if (!existing) {
-            resp[weekly.date] = { ...weekly };
-          } else {
-            existing.abs_profit += weekly.abs_profit;
-            existing.fiat_value += weekly.fiat_value;
-            existing.trade_count += weekly.trade_count;
-          }
-        });
-      }
-    });
-
-    return {
-      stake_currency: 'USDT',
-      fiat_display_currency: 'USD',
-      data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
-    };
-  });
-  const allMonthlyStatsSelectedBots = computed<TimeSummaryReturnValue>(() => {
-    const resp: Record<string, TimeSummaryRecord> = {};
-    Object.entries(botStores.value).forEach(([, botStore]) => {
-      if (botStore.isSelected) {
-        botStore.monthlyStats?.data?.forEach((monthly) => {
-          const existing = resp[monthly.date];
-          if (!existing) {
-            resp[monthly.date] = { ...monthly };
-          } else {
-            existing.abs_profit += monthly.abs_profit;
-            existing.fiat_value += monthly.fiat_value;
-            existing.starting_balance += monthly.starting_balance;
-            existing.rel_profit += monthly.rel_profit;
-            existing.trade_count += monthly.trade_count;
-          }
-        });
-      }
-    });
-
-    return {
-      stake_currency: 'USDT',
-      fiat_display_currency: 'USD',
-      data: Object.values(resp).sort((a, b) => (a.date > b.date ? 1 : -1)),
-    };
-  });
+  }
+  const allDailyStatsSelectedBots = computed<TimeSummaryReturnValue>(() =>
+    combineSelectedBotsStats((botStore) => botStore.dailyStats),
+  );
+  const allWeeklyStatsSelectedBots = computed<TimeSummaryReturnValue>(() =>
+    combineSelectedBotsStats((botStore) => botStore.weeklyStats),
+  );
+  const allMonthlyStatsSelectedBots = computed<TimeSummaryReturnValue>(() =>
+    combineSelectedBotsStats((botStore) => botStore.monthlyStats),
+  );
 
   function selectBot(botId: string) {
     if (botId in availableBots.value) {
