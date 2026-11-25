@@ -19,7 +19,7 @@
   "dependencies": {
     "@internationalized/date": "^3.12.4",
     "@noction/vue-draggable-grid": "1.9.16",
-    "@nuxt/ui": "^4.12.0",
+    "@nuxt/ui": "^4.12.2",
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^15.0.0",
     "@vueuse/integrations": "^15.0.0",
@@ -36,7 +36,7 @@
     "sortablejs": "^1.15.7",
     "vue": "^3.5.45",
     "vue-echarts": "^8.3.2",
-    "vue-router": "^5.5.0"
+    "vue-router": "^5.5.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -65,5 +65,5 @@
     "vitest": "^5.1.0",
     "vue-tsc": "^3.3.14"
   },
-  "packageManager": "pnpm@12.19.0+sha512.87327b6619853205834e4be59ba3a231e303d9f5e435912ede3312b7539b79af890942f6513b05a4690745666888045c09b33fc420c2cd2d3bd95c01ba21dbeb"
+  "packageManager": "pnpm@12.22.0+sha512.894940a3d9a57dfa6fd373990fb4e41e09c2f2d76d982ed1d75275d39267f988fb4e2d40900cbe9921c68d97c67aa1a1096d276633db248f7b34927ac9ddb7a4"
 }
