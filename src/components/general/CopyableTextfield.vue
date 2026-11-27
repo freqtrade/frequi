@@ -15,7 +15,7 @@ const { copy, isSupported, copied } = useClipboard();
 </script>
 
 <template>
-  <div class="relative group copy-container">
+  <div class="relative group copy-container flex flex-col min-h-0">
     <div
       class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity hover:cursor-pointer flex dark:bg-neutral-700 bg-neutral-200 p-1 rounded-sm items-center justify-center flex-row gap-1"
       @click="copy(typeof content === 'string' ? content : JSON.stringify(content))"
@@ -27,7 +27,7 @@ const { copy, isSupported, copied } = useClipboard();
       />
     </div>
     <pre
-      class="text-start border rounded-sm border-neutral-500 p-2 m-0 bg-neutral-50 dark:bg-neutral-900 overflow-auto"
+      class="text-start border rounded-sm border-neutral-500 p-2 m-0 bg-neutral-50 dark:bg-neutral-900 overflow-auto min-h-0"
     ><code>{{ content }}</code></pre>
   </div>
 </template>

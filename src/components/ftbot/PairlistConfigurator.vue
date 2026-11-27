@@ -81,7 +81,7 @@ if (pairlistStore.whitelist.length > 0) {
   <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] px-3 mb-3 gap-3 w-full">
     <ul
       ref="availablePairlistsEl"
-      class="divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500 min-w-72"
+      class="divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500 min-w-72 lg:max-h-[60dvh] lg:overflow-y-auto"
     >
       <!-- Available pairlists-->
       <li
@@ -162,7 +162,8 @@ if (pairlistStore.whitelist.length > 0) {
         />
       </div>
     </div>
-    <div class="flex flex-col w-full min-w-72">
+    <!-- Capped height: long results scroll inside, keeping the chart below in reach -->
+    <div class="flex flex-col w-full min-w-72 max-h-[60dvh]">
       <USegmentedControl
         v-model="selectedView"
         class="mb-2"
@@ -176,7 +177,7 @@ if (pairlistStore.whitelist.length > 0) {
         disabled-key="disabled"
       >
       </USegmentedControl>
-      <div class="relative overflow-auto">
+      <div class="flex flex-col min-h-0">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
           class="w-full"
