@@ -29,19 +29,16 @@ const botStore = useBotStore();
             : ''
         }}</strong
       >
-      markets, with Strategy <strong>{{ botStore.activeBot.botState.strategy }}</strong
-      >.
+      markets, with Strategy <strong>{{ botStore.activeBot.botState.strategy }}</strong>.
     </p>
     <p v-if="'stoploss_on_exchange' in botStore.activeBot.botState" class="mb-4">
       Stoploss on exchange is
       <strong>{{
         botStore.activeBot.botState.stoploss_on_exchange ? 'enabled' : 'disabled'
-      }}</strong
-      >.
+      }}</strong>.
     </p>
     <p class="mb-4">
-      Currently <strong>{{ botStore.activeBot.botState.state }}</strong
-      >,
+      Currently <strong>{{ botStore.activeBot.botState.state }}</strong>,
       <strong>force entry: {{ botStore.activeBot.botState.force_entry_enable }}</strong>
     </p>
     <p>
