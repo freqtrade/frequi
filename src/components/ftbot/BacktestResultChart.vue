@@ -105,8 +105,7 @@ onMounted(() => {
       <Transition name="fadeleft">
         <PairSummary
           v-if="isBarVisible.left"
-          class="overflow-y-auto overflow-x-hidden"
-          style="max-height: calc(100vh - 200px)"
+          class="overflow-y-auto overflow-x-hidden max-h-[calc(100dvh-200px)]"
           :pairlist="backtestResult.pairlist"
           :trades="backtestResult.trades"
           :starting-balance="backtestResult.starting_balance"
@@ -131,8 +130,7 @@ onMounted(() => {
       <Transition name="fade">
         <TradeListNav
           v-if="isBarVisible.right"
-          class="overflow-y-auto overflow-x-visible min-w-56"
-          style="max-height: calc(100vh - 200px)"
+          class="overflow-y-auto overflow-x-visible min-w-56 max-h-[calc(100dvh-200px)]"
           :trades="backtestResult.trades.filter((t) => t.pair === botStore.activeBot.selectedPair)"
           @trade-select="navigateChartToTrade"
         />
@@ -152,7 +150,7 @@ onMounted(() => {
 .candle-chart-container {
   /* TODO: Rough estimate - still to fix correctly
    Applies to all "calc" usages in this file. */
-  height: calc(100vh - 250px) !important;
+  height: calc(100dvh - 250px) !important;
 }
 
 .fade-enter-active,

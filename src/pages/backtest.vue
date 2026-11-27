@@ -135,7 +135,7 @@ const resultSelectItems = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-col p-1 pt-2" style="height: calc(100vh - 60px)">
+  <div class="flex flex-col p-1 pt-2 h-[calc(100dvh-60px)]">
     <div class="flex flex-row grow min-h-0 gap-2">
       <!-- Result list -->
       <aside
