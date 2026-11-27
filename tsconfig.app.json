@@ -18,6 +18,11 @@
     // Project root, so the typed-router Volar plugin can resolve page files
     "rootDir": ".",
     "noImplicitAny": false,
+    // ES2023 for Array.prototype.toSorted & co. (Baseline widely available)
+    "lib": [
+      "ES2023",
+      "DOM",
+    ],
     "types": [
       "vite/client",
     ],

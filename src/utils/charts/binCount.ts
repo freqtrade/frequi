@@ -32,7 +32,7 @@ export function binData(data: number[], bins: number, clipQuantile = 0.01): Prof
   if (data.length === 0) {
     return [];
   }
-  const sorted = [...data].sort((a, b) => a - b);
+  const sorted = data.toSorted((a, b) => a - b);
   let lower = quantile(sorted, clipQuantile);
   let upper = quantile(sorted, 1 - clipQuantile);
   if (upper <= lower) {

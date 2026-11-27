@@ -68,9 +68,9 @@ const openProfit = computed<number>(() => {
 const cumulativeData = computed<CumProfitChartData[]>(() => {
   // const res: CumProfitData[] = [];
   const resD: CumProfitDataPerDate = {};
-  const closedTrades = props.trades
-    .slice()
-    .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
+  const closedTrades = props.trades.toSorted((a, b) =>
+    a.close_timestamp > b.close_timestamp ? 1 : -1,
+  );
   let profit = 0.0;
   let first = true;
 

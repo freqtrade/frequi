@@ -50,9 +50,9 @@ const settingsStore = useSettingsStore();
 const colorStore = useColorStore();
 const chartData = computed(() => {
   const res: (number | string)[][] = [];
-  const sortedTrades = props.trades
-    .slice(0)
-    .sort((a, b) => (a.close_timestamp > b.close_timestamp ? 1 : -1));
+  const sortedTrades = props.trades.toSorted((a, b) =>
+    a.close_timestamp > b.close_timestamp ? 1 : -1,
+  );
   for (let i = 0, len = sortedTrades.length; i < len; i += 1) {
     const trade = sortedTrades[i];
     if (trade) {
