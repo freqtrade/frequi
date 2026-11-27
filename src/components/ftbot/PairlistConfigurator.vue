@@ -104,6 +104,7 @@ if (pairlistStore.whitelist.length > 0) {
           variant="ghost"
           :disabled="pairlistStore.config.pairlists.length === 0 && !pairlist.is_pairlist_generator"
           icon="mdi:arrow-right-bold-box-outline"
+          :title="`Add ${pairlist.name} to configuration`"
           @click="pairlistStore.addToConfig(pairlist, pairlistStore.config.pairlists.length)"
         />
       </li>

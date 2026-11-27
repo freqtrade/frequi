@@ -23,6 +23,7 @@ onMounted(() => {
           color="neutral"
           variant="outline"
           icon="mdi:refresh"
+          title="Refresh FreqAI model list"
           @click="botStore.activeBot.getFreqAIModelList()"
         />
       </div>

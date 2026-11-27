@@ -97,6 +97,8 @@ watch(
             color="neutral"
             @click="ordersVisible[i] = !ordersVisible[i]"
             :icon="ordersVisible[i] ? 'mdi:chevron-down' : 'mdi:chevron-right'"
+            title="Show orders"
+            :aria-expanded="!!ordersVisible[i]"
           />
         </div>
         <Transition>

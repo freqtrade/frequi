@@ -34,6 +34,7 @@ const configNames = computed(() =>
               size="sm"
               color="neutral"
               icon="mdi:close"
+              title="Remove from blacklist"
               @click="pairlistStore.removeFromBlacklist(i)"
             />
           </span>

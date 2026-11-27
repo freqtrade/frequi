@@ -84,6 +84,7 @@ onMounted(() => {
       variant="outline"
       class="ms-2 no-min-w"
       icon="mdi:refresh"
+      title="Refresh exchange list"
       @click="botStore.activeBot.getExchangeList()"
     />
   </div>

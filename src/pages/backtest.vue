@@ -218,6 +218,7 @@ const resultSelectItems = computed(() =>
             <UTooltip text="New backtest">
               <UButton
                 icon="i-mdi-plus"
+                aria-label="New backtest"
                 :variant="view === 'new' ? 'solid' : 'outline'"
                 :disabled="!botStore.activeBot.canRunBacktest"
                 @click="view = 'new'"
@@ -226,6 +227,7 @@ const resultSelectItems = computed(() =>
             <UTooltip v-if="botStore.activeBot.botFeatures.backtestHistory" text="Load from disk">
               <UButton
                 icon="i-mdi-cloud-download"
+                aria-label="Load from disk"
                 color="neutral"
                 variant="outline"
                 :disabled="!botStore.activeBot.canRunBacktest"

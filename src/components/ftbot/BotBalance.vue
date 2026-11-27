@@ -126,17 +126,23 @@ onMounted(() => {
         <UButton
           v-if="canUseBotBalance"
           color="neutral"
-          :tooltip="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
+          :title="!showBotOnly ? 'Showing Account balance' : 'Showing Bot balance'"
+          :aria-label="!showBotOnly ? 'Show bot balance' : 'Show account balance'"
           :icon="showBotOnly ? 'mdi:robot' : 'mdi:bank'"
           @click="showBotOnly = !showBotOnly"
         />
         <UButton
           color="neutral"
-          :tooltip="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
+          :title="!hideSmallBalances ? 'Hide small balances' : 'Show all balances'"
           :icon="hideSmallBalances ? 'mdi:eye-off' : 'mdi:eye'"
           @click="hideSmallBalances = !hideSmallBalances"
         />
-        <UButton color="neutral" icon="mdi:refresh" @click="refreshBalance" />
+        <UButton
+          color="neutral"
+          icon="mdi:refresh"
+          title="Refresh balance"
+          @click="refreshBalance"
+        />
       </div>
     </div>
     <BalanceChart v-if="balanceCurrencies" :currencies="chartValues" />

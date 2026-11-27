@@ -29,6 +29,7 @@ function removePairLock(item: Lock) {
         class="float-end"
         color="neutral"
         icon="mdi:refresh"
+        title="Refresh pair locks"
         @click="botStore.activeBot.getLocks"
       />
     </div>

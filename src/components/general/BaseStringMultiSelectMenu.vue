@@ -84,6 +84,7 @@ function toggleFilteredItems() {
           :disabled="filteredItems.length === 0"
           @click.stop="toggleFilteredItems"
           icon="mdi:check"
+          title="Toggle all filtered items"
         />
       </div>
     </template>

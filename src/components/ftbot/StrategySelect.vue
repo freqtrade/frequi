@@ -69,6 +69,7 @@ onMounted(() => {
           color="neutral"
           variant="outline"
           icon="mdi:refresh"
+          title="Refresh strategy list"
           @click="botStore.activeBot.getStrategyList()"
         />
       </div>

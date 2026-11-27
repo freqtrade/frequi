@@ -116,7 +116,13 @@ watch(selectedOption, () => {
   <div>
     <div class="mb-2">
       <h3 class="me-auto text-2xl inline">Performance</h3>
-      <UButton class="float-end" color="neutral" icon="mdi:refresh" @click="refreshSummary" />
+      <UButton
+        class="float-end"
+        color="neutral"
+        icon="mdi:refresh"
+        title="Refresh performance"
+        @click="refreshSummary"
+      />
     </div>
     <USegmentedControl
       v-if="botStore.activeBot.botFeatures.hasAdvancedStats"

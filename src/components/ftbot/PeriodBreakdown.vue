@@ -98,7 +98,13 @@ watch(
   <div class="flex flex-col h-full">
     <div v-if="!props.multiBotView" class="mb-2">
       <h3 class="me-auto inline text-xl">{{ hasWeekly ? 'Period' : 'Daily' }} Breakdown</h3>
-      <UButton class="float-end" color="neutral" icon="mdi:refresh" @click="refreshSummary" />
+      <UButton
+        class="float-end"
+        color="neutral"
+        icon="mdi:refresh"
+        title="Refresh breakdown"
+        @click="refreshSummary"
+      />
     </div>
     <div class="flex align-center justify-between">
       <USegmentedControl

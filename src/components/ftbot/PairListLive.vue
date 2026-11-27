@@ -88,7 +88,12 @@ onMounted(() => {
         </label>
         <div class="flex flex-cols items-center gap-1 pe-1">
           <UPopover>
-            <UButton color="neutral" icon="mdi:plus-box-outline" size="md" />
+            <UButton
+              color="neutral"
+              icon="mdi:plus-box-outline"
+              size="md"
+              title="Add pair to blacklist"
+            />
             <template #content>
               <form ref="form" @submit.prevent="addBlacklistPair" class="py-2 px-3">
                 <div class="space-y-1">

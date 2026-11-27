@@ -71,6 +71,7 @@ const jobCategoryIcons: Record<string, string> = {
       color="neutral"
       class="ms-auto"
       icon="mdi:delete"
+      title="Clear background jobs"
       @click="botStore.activeBot.clearBgJobs()"
     />
   </div>

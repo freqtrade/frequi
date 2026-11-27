@@ -139,7 +139,13 @@ onMounted(() => {
                 @click="dateFrom = null"
               />
               <UPopover v-model:open="popoverFromOpen">
-                <UButton icon="mdi:calendar-blank" color="neutral" variant="ghost" size="sm" />
+                <UButton
+                  icon="mdi:calendar-blank"
+                  color="neutral"
+                  variant="ghost"
+                  size="sm"
+                  title="Pick start date"
+                />
                 <template #content>
                   <UCalendar
                     :model-value="dateFrom"
@@ -192,7 +198,13 @@ onMounted(() => {
                 @click="dateTo = null"
               />
               <UPopover v-model:open="popoverToOpen">
-                <UButton icon="mdi:calendar-blank" color="neutral" variant="ghost" size="sm" />
+                <UButton
+                  icon="mdi:calendar-blank"
+                  color="neutral"
+                  variant="ghost"
+                  size="sm"
+                  title="Pick end date"
+                />
                 <template #content>
                   <UCalendar
                     :model-value="dateTo"

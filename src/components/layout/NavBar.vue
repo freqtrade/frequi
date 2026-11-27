@@ -310,7 +310,13 @@ function editBotLogin(botId: string) {
               class: 'rounded-full',
             }"
           >
-            <UButton class="text-neutral-300 text-xl" size="xl" variant="ghost" icon="mdi:menu" />
+            <UButton
+              class="text-neutral-300 text-xl"
+              size="xl"
+              variant="ghost"
+              icon="mdi:menu"
+              title="Open menu"
+            />
             <template #title>
               <div class="flex flex-row items-center gap-2">
                 <AppIcon class="h-9 w-9" />
