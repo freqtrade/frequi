@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Favico from 'favico.js';
-
 import type { AuthStorageWithBotId } from '@/types';
 import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui';
 import { breakpointsTailwind } from '@vueuse/core';
@@ -12,7 +10,7 @@ const settingsStore = useSettingsStore();
 const layoutStore = useLayoutStore();
 const route = useRoute();
 const router = useRouter();
-const favicon = ref<Favico | undefined>(undefined);
+const faviconBadge = useFaviconBadge();
 const pingInterval = ref<number>();
 const loginDialog = useLoginDialog();
 
@@ -27,20 +25,10 @@ async function clickLogout() {
 }
 
 const setOpenTradesAsPill = (tradeCount: number) => {
-  if (!favicon.value) {
-    favicon.value = new Favico({
-      animation: 'none',
-      // position: 'up',
-      // fontStyle: 'normal',
-      // bgColor: '#',
-      // textColor: '#FFFFFF',
-    });
-  }
   if (tradeCount !== 0 && settingsStore.openTradesInTitle === 'showPill') {
-    favicon.value.badge(tradeCount);
+    faviconBadge.setBadge(tradeCount);
   } else {
-    favicon.value.reset();
-    console.log('reset');
+    faviconBadge.reset();
   }
 };
 const resetDynamicLayout = (): void => {

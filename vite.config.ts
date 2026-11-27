@@ -100,7 +100,6 @@ export default defineConfig({
       'echarts/core',
       'echarts/features',
       'echarts/renderers',
-      'favico.js',
       'humanize-duration',
       'ofetch',
       'reka-ui',

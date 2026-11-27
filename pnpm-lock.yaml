@@ -212,9 +212,6 @@ importers:
       echarts:
         specifier: ^6.1.0
         version: 6.1.0
-      favico.js:
-        specifier: ^0.3.10
-        version: 0.3.10
       humanize-duration:
         specifier: ^3.35.1
         version: 3.35.1
@@ -2146,9 +2143,6 @@ packages:
 
   fastq@1.20.3:
     resolution: {integrity: sha512-XKv5nnLs6nLF71NgiKJLIZFLkPyIEuOselLG7ujZnGrRfQK8HpvY+WqKhAJUAdLomwVHErVS4LfxFlPq0/FTAw==}
-
-  favico.js@0.3.10:
-    resolution: {integrity: sha512-S5KvqAOczRjlyjQPPZPSlUEybBkfBgKosY/pzTIxkvKgigB+DkITvIEI70dxQarbv4PZ+UD77QzquCAcU/6LHQ==}
 
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
@@ -5395,8 +5389,6 @@ snapshots:
   fastq@1.20.3:
     dependencies:
       reusify: 1.1.0
-
-  favico.js@0.3.10: {}
 
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
