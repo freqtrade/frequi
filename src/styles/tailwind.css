@@ -44,6 +44,11 @@
 
 :root {
   color-scheme: light;
+  /* Theme-aware scrollbars (inherited by all scroll containers).
+     Transparent track blends with each container's background; the thumb token
+     keeps >= 3:1 contrast against it in both themes.
+     Don't add scrollbar-color to the theme transition - WebKit flickers. */
+  scrollbar-color: var(--ui-text-muted) transparent;
   /* default profit loss colors, can be overridden by custom style */
   --color-profit: #12bb7b;
   --color-loss: #ef5350;
