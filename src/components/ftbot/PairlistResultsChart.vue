@@ -44,7 +44,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 h-[calc(100dvh-60px)] min-h-[32rem]">
     <div class="flex items-center gap-5">
       <span class="text-xl font-bold self-start">Chart</span>
       <UFormField label="Timeframe">
@@ -55,7 +55,7 @@ function refreshOHLCV(pair: string, columns: string[]) {
         above pairlist evaluation results.</span
       >
     </div>
-    <div class="h-[70dvh] min-h-96">
+    <div class="grow min-h-0">
       <CandleChartContainer
         :key="`${timeframe}-${evaluationId}`"
         :available-pairs="pairlistStore.whitelist"

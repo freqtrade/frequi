@@ -78,10 +78,12 @@ if (pairlistStore.whitelist.length > 0) {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] px-3 mb-3 gap-3 w-full">
+  <div
+    class="grid grid-cols-1 lg:grid-cols-[auto_1fr_24rem] lg:grid-rows-[minmax(0,1fr)] lg:h-[calc(100dvh-60px-4rem)] px-3 mb-3 gap-3 w-full"
+  >
     <ul
       ref="availablePairlistsEl"
-      class="divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500 min-w-72 lg:max-h-[60dvh] lg:overflow-y-auto"
+      class="divide-y border-x border-neutral-500 rounded-sm border-y divide-solid divide-neutral-500 min-w-72 lg:overflow-y-auto"
     >
       <!-- Available pairlists-->
       <li
@@ -106,7 +108,7 @@ if (pairlistStore.whitelist.length > 0) {
         />
       </li>
     </ul>
-    <div class="flex flex-col">
+    <div class="flex flex-col lg:overflow-y-auto">
       <PairlistConfigActions />
       <div class="border rounded-sm border-neutral-500 p-2 mb-2">
         <div class="flex items-center gap-2 my-2">
@@ -163,7 +165,7 @@ if (pairlistStore.whitelist.length > 0) {
       </div>
     </div>
     <!-- Capped height: long results scroll inside, keeping the chart below in reach -->
-    <div class="flex flex-col w-full min-w-72 max-h-[60dvh]">
+    <div class="flex flex-col w-full min-w-0 max-h-[60dvh] lg:max-h-none">
       <USegmentedControl
         v-model="selectedView"
         class="mb-2"
@@ -177,16 +179,16 @@ if (pairlistStore.whitelist.length > 0) {
         disabled-key="disabled"
       >
       </USegmentedControl>
-      <div class="flex flex-col min-h-0">
+      <div class="flex flex-col grow min-h-0">
         <CopyableTextfield
           v-if="selectedView === 'Config'"
-          class="w-full"
+          class="w-full grow"
           :content="pairlistStore.configJSON"
           :is-valid="pairlistStore.pairlistValid"
         />
         <CopyableTextfield
           v-if="selectedView === 'Results'"
-          class="w-full"
+          class="w-full grow"
           :content="pairlistStore.whitelist"
         />
       </div>

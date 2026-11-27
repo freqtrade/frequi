@@ -6,9 +6,11 @@ const pairlistStore = usePairlistConfigStore();
 <template>
   <div class="flex flex-col gap-3 pt-4">
     <PairlistConfigurator />
-    <PairlistResultsChart
+    <template
       v-if="pairlistStore.whitelist.length > 0 && botStore.activeBot.botFeatures.chartLiveData"
-      class="px-3 mb-3"
-    />
+    >
+      <USeparator label="Pairlist-Chart" />
+      <PairlistResultsChart class="px-3 pb-3" />
+    </template>
   </div>
 </template>
