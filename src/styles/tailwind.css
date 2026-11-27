@@ -43,9 +43,14 @@
 }
 
 :root {
+  color-scheme: light;
   /* default profit loss colors, can be overridden by custom style */
   --color-profit: #12bb7b;
   --color-loss: #ef5350;
+}
+
+:root.dark {
+  color-scheme: dark;
 }
 
 body.ft-theme-transition,

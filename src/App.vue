@@ -5,6 +5,10 @@ onMounted(() => {
   setTimezone(settingsStore.timezone);
   colorStore.updateProfitLossColor();
 });
+// Runs synchronously during setup, so the theme is applied before the first render.
+watchEffect(() => {
+  document.documentElement.classList.toggle('dark', settingsStore.isDarkTheme);
+});
 watch(
   () => settingsStore.timezone,
   (tz) => {

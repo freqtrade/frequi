@@ -20,12 +20,6 @@ function setTheme(themeName: ThemeName) {
         document.body.classList.remove('ft-theme-transition');
       }, 1000);
     }
-    if (themeName.toLowerCase() === 'bootstrap' || themeName.toLowerCase() === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      // Add the dark theme
-      document.documentElement.classList.add('dark');
-    }
   }
   // Save the theme as localstorage
   settingsStore.currentTheme = themeName;
